@@ -292,7 +292,7 @@ const ring=(frac,col,icon)=>{const C=2*Math.PI*21;return `<div class="ring"><svg
 const dl=r=>{const [icon,kind]=KIND[r.kind];return `<a class="dl">${ring(r.frac,r.col,icon)}
   <div class="tx"><div class="kind u-${r.col}">${kind}</div><b>${r.t}</b>${r.pen?`<span class="pen">${I('heart','fill')}${r.pen}</span>`:''}</div>
   ${r.btn?r.btn:`<div class="left"><b class="u-${r.col==='blue'||r.col==='gold'?'x':r.col}">${r.left}</b><span>${r.until}</span></div>`}</a>`};
-const todo=rows=>`<div class="sectt"><h2>Сегодня${NEW('все дедлайны списком')}</h2></div><div class="todo">${rows.map(r=>r.kind?dl(r):`
+const todo=rows=>`<div class="sectt"><h2>Сегодня${NEW('все дедлайны списком')}</h2></div><div class="todo">${[...rows].sort((a,b)=>(a.mins??1e9)-(b.mins??1e9)).map(r=>r.kind?dl(r):`
   <a class="trow"><span class="ico">${I(r.icon||'user','','color:#6B9FFF')}</span><div class="tx"><b>${r.t}</b><span>${r.s}</span></div>${chev}</a>`).join('')}</div>`;
 
 /* Маршрут: разделы training_sections, уроки training_lessons */
@@ -372,25 +372,25 @@ const r1={pic:'glade.jpg',count:'4 из 14 уроков недели',stage:'Н�
 const g1={a:'40 000 ₽',b:'150 000 ₽',now:'18 000 ₽',pct:12};
 const S={
  a:{label:'1 · Понедельник, 08:10 — фокус ещё не поставлен',top:{name:'Александр',sub:'Поток 5 · Стандарт',lives:3,coins:10,points:10,bag:2},
-   todo:[{kind:'focus',col:'red',t:'Поставьте план на день',left:'50 мин',until:'до 09:00',frac:.09,pen:'за пропуски −1 жизнь'},
-         {kind:'challenge',col:'amb',t:'Отвали',left:'3 д 15 ч',until:'до чт, 23:14',frac:.73,pen:'−3 жизни'},
-         {kind:'key',col:'blue',t:'Сбор данных',left:'4 д 13 ч',until:'до пт, 21:00',frac:.91,pen:'−1 жизнь'},
-         {kind:'meet',col:'gold',t:'Разбор. Стандарт. Неделя 1',left:'2 дня',until:'ср, 17:00',frac:1}],
+   todo:[{kind:'focus',col:'red',t:'Поставьте план на день',left:'50 мин',until:'до 09:00',frac:.09,pen:'за пропуски −1 жизнь',mins:50},
+         {kind:'challenge',col:'amb',t:'Отвали',left:'3 д 15 ч',until:'до чт, 23:14',frac:.73,pen:'−3 жизни',mins:5224},
+         {kind:'key',col:'blue',t:'Сбор данных',left:'4 д 13 ч',until:'до пт, 21:00',frac:.91,pen:'−1 жизнь',mins:6530},
+         {kind:'meet',col:'gold',t:'Разбор. Стандарт. Неделя 1',left:'2 д 9 ч',until:'ср, 17:00',frac:1,mins:3410}],
    route:r1,goal:g1,
    focus:{id:'a',mode:'plan',plan:'now',rep:'wait',date:'28.09',goal:'Точка Б — 150 000 ₽',done:2,total:5,
      steps:['Написать 5 людям из записной книжки','Посчитать средний чек за 3 месяца','Собрать отзывы трёх клиентов']},
    meet:{d:'30',mon:'сен',title:'Разбор. Стандарт. Неделя 1',when:'30 сентября в 17:00 (ваше время) · через 2 дн.'},
    camp:{rank:'#12',team:'Поток 5 · Отряд 1',teamRank:'#2',income:true,done:4}},
  b:{label:'2 · Среда, 16:20 — план поставлен, впереди разбор и факт',top:{name:'Александр',sub:'Поток 5 · Стандарт',lives:2,coins:40,points:25,bag:2},
-   todo:[{kind:'meet',col:'gold',t:'Разбор. Стандарт. Неделя 1 — в 17:00',frac:1,btn:`<button class="b b-blue b-sm">${I('video')}Zoom</button>`},
-         {kind:'focus',col:'amb',t:'Сдайте факт дня',left:'7 ч 40 мин',until:'до 24:00',frac:.51,pen:'за пропуски −1 жизнь'},
-         {kind:'challenge',col:'amb',t:'Отвали',left:'1 д 7 ч',until:'до чт, 23:14',frac:.26,pen:'−3 жизни'}],
+   todo:[{kind:'meet',col:'gold',t:'Разбор. Стандарт. Неделя 1 — в 17:00',frac:1,mins:40,btn:`<button class="b b-blue b-sm">${I('video')}Zoom</button>`},
+         {kind:'focus',col:'amb',t:'Сдайте факт дня',left:'7 ч 40 мин',until:'до 24:00',frac:.51,pen:'за пропуски −1 жизнь',mins:460},
+         {kind:'challenge',col:'amb',t:'Отвали',left:'1 д 7 ч',until:'до чт, 23:14',frac:.26,pen:'−3 жизни',mins:1854}],
    route:{...r1,count:'6 из 14 уроков недели',bar:[1,1,1,1,1,1,0,0,0,0,0,0,0,0],lesson:'Записная книжка'},goal:{...g1,now:'24 000 ₽',pct:16},
    focus:{id:'b',mode:'report',plan:'ok',rep:'now',date:'30.09',plan:'Написать 5 людям из записной книжки'},
    meet:{today:true,d:'30',mon:'сен',title:'Разбор. Стандарт. Неделя 1',when:'сегодня в 17:00 (ваше время)'},
    camp:{rank:'#9',team:'Поток 5 · Отряд 1',teamRank:'#2',income:true,done:6}},
  c:{label:'3 · Новичок на «Прорыве»: нет Точки А, нет отряда',top:{name:'Мария',sub:'Поток 5 · Прорыв',lives:3,coins:0,points:0,bag:0},
-   todo:[{kind:'focus',col:'red',t:'Поставьте план на день',left:'50 мин',until:'до 09:00',frac:.09,pen:'за пропуски −1 жизнь'},
+   todo:[{kind:'focus',col:'red',t:'Поставьте план на день',left:'50 мин',until:'до 09:00',frac:.09,pen:'за пропуски −1 жизнь',mins:50},
          {icon:'user',t:'Заполните настройки',s:'Часовой пояс, Telegram-бот'}],
    route:{pic:'tent.jpg',count:'0 из 7 уроков',stage:'Подготовка',loc:'Инструктаж',bar:[0,0,0,0,0,0,0],
      nextKick:'Начните отсюда',lesson:'Настройка и активация',cta:'Начать'},
