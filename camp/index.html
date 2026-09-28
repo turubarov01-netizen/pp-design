@@ -243,6 +243,7 @@ body{background:#0A0E13}
 @media (max-width:560px){.lg-wrap{padding:12px 0 0;gap:28px}.lg-wrap>div{width:100%}.lg-wrap>div:has(.lg-desk){display:none}.lg-legend{margin:0 12px;width:auto;font-size:13px}.lg-label{margin:0 16px 10px}.lg-phone{width:100%;border-radius:0;border-left:0;border-right:0;min-height:0;padding-bottom:16px}.lg-phone .tabbar{position:sticky;bottom:12px;margin-top:24px}}
 </style></head>
 <body>
+<style>.pp-switch{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(10,14,19,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08);font:600 13px Inter,sans-serif}.pp-switch span{color:rgba(255,255,255,.5);margin-right:4px}.pp-switch a{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:18px;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.8);text-decoration:none}.pp-switch a.on{background:rgba(240,208,128,.12);border-color:rgba(240,208,128,.5);color:#F0D080}</style><nav class="pp-switch"><span>Экраны:</span><a href=".././" class="">Главная</a><a href="../camp/" class="on">Лагерь экспедиции</a></nav>
 <svg width="0" height="0" style="position:absolute">
  <symbol id="heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
  <symbol id="trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
@@ -343,7 +344,7 @@ const hearts=p=>`<span class="lg-hearts" aria-label="Жизни: ${p.lives} из
 const life=p=>p.st==='fin'?`<span class="lg-status fin">${I('trophy')}Финалист</span>`:p.st==='grad'?`<span class="lg-status grad">${I('grad')}Выпускник</span>`:hearts(p);
 const av=p=>`<span class="lg-av ${LV[p.lvl][1]?'lv':''}" style="--tb:${p.c}33;--lv:${LV[p.lvl][1]||'transparent'}" title="${LV[p.lvl][0]}">${p.ini}</span>`;
 const rep=p=>{const r=REP[p.rep];return `<span class="lg-rep" style="--rc:${r[2]}" title="${r[1]}">${I(r[0])}</span>`};
-const tabbar=()=>`<nav class="tabbar">${[['home','Главная'],['map','Маршрут'],['cal','Календарь'],['tent','Лагерь'],['grid','Ещё']].map((t,i)=>`<a class="tab ${i===3?'on':''}">${I(t[0])}${t[1]}</a>`).join('')}</nav>`;
+const tabbar=()=>`<nav class="tabbar">${[['home','Главная'],['map','Маршрут'],['cal','Календарь'],['tent','Лагерь'],['grid','Ещё']].map((t,i)=>`<a class="tab ${i===3?'on':''}" ${t[1]==='Главная'?'href="../"':''}>${I(t[0])}${t[1]}</a>`).join('')}</nav>`;
 
 // ── Шапка и результаты ──
 const title=()=>`<div class="lg-h1"><span class="lg-badge">${I('mountain')}</span><div><b>Лагерь экспедиции</b><span><em>Поток 5 · идёт неделя 1</em> · 27 участников · Сезон 2026</span></div></div>`;
@@ -412,7 +413,7 @@ const empties=()=>`<div class="lg-sec" style="margin-top:0"><h2>${I('trend')}П�
 
 // ── Компьютер ──
 const trow=(p,place)=>`<div class="lg-tr ${p.me?'lg-you':''}"><span class="prog" style="width:${Math.min(100,p.pct)}%"></span>${medal(place)}<div class="u">${av(p)}<b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b>${rep(p)}</div><span style="text-align:center">${p.pts}</span><span>${life(p)}</span><span class="inc">${fmt(p.inc)} <span>/ ${fmt(p.goal)} ₽</span></span><span class="pc">${p.pct}%</span></div>`;
-const snav=()=>`<nav class="snav"><div class="logo gold">План Продюсера</div><a>${I('home')}Главная</a><a>${I('map')}Маршрут</a><a>${I('cal')}Календарь</a><a class="on">${I('tent')}Лагерь</a><a>${I('bag')}Рюкзак</a><div class="grp">Общение</div><a>${I('chat')}Чат ПП</a><a>${I('users')}Чат отряда</a><div class="grp">Прочее</div><a>${I('shop')}Лавка</a><a>${I('gear')}Настройки</a><a class="foot">${I('back')}На главную платформы</a></nav>`;
+const snav=()=>`<nav class="snav"><div class="logo gold">План Продюсера</div><a href="../">${I('home')}Главная</a><a>${I('map')}Маршрут</a><a>${I('cal')}Календарь</a><a class="on">${I('tent')}Лагерь</a><a>${I('bag')}Рюкзак</a><div class="grp">Общение</div><a>${I('chat')}Чат ПП</a><a>${I('users')}Чат отряда</a><div class="grp">Прочее</div><a>${I('shop')}Лавка</a><a>${I('gear')}Настройки</a><a class="foot">${I('back')}На главную платформы</a></nav>`;
 const deskHead=()=>`<div class="lg-dtop"><div>${title()}${legend()}</div>${results()}</div>`;
 const desk=()=>snav()+`<main>${deskHead()}<div class="lg-d3">${podiums()}</div>
  <div class="lg-dgrid"><div class="lg-card"><div class="lg-tabsbox">${tabsMain('top')}${filters()}</div><div class="lg-th" style="margin-top:12px"><span>#</span><span>Участник</span><span>Баллы</span><span>Жизни</span><span>Доход / Точка Б</span><span style="text-align:right">Цель</span></div>${CUR.map((p,i)=>trow(p,i+1)).join('')}<div class="lg-dots">•••</div>${NEAR.map(p=>trow(p,p.place)).join('')}<a class="lg-more">Показать всех · 27 ${I('down')}</a></div>
