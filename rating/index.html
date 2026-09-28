@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>План Продюсера · рейтинг участников — варианты</title>
+<link rel="stylesheet" href="pp.css">
+<style>
+body{background:#0A0E13}
+.wrap{display:flex;flex-wrap:wrap;gap:40px;padding:32px;align-items:flex-start}
+.label{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin:0 0 10px 4px;max-width:390px;line-height:1.4}
+.label b{color:var(--gold-a)}
+.phone{border-radius:28px;border:1px solid var(--line2);overflow:hidden;min-height:844px;padding:16px 16px 104px;position:relative}
+.legend{width:100%;max-width:1440px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--t2);padding:14px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line);line-height:1.45}
+.legend b{color:#fff}
+.new{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;border:1px dashed rgba(107,159,255,.7);color:#9DBDFF;font-size:11px;font-weight:700;vertical-align:middle;margin-left:6px;white-space:nowrap;letter-spacing:.02em;text-transform:none}
+.ic{width:18px;height:18px}
+.h1{font-size:22px;font-weight:700;margin:4px 4px 16px}
+.sectt{display:flex;justify-content:space-between;align-items:center;margin:24px 4px 10px}
+.sectt h2{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.sectt a{font-size:14px;font-weight:600;color:var(--blue2)}
+.hearts{display:inline-flex;gap:2px;vertical-align:middle}
+.hearts .ic{width:13px;height:13px}
+.trophy{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--gold-a)}
+.trophy .ic{width:14px;height:14px}
+
+/* моё место */
+.me{background:linear-gradient(160deg,#18263A 0%,#141E2B 60%);border:1px solid rgba(240,208,128,.28);border-radius:20px;padding:18px}
+.me-top{display:flex;align-items:center;gap:16px}
+.me-place{font-size:44px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--gold-a),var(--gold-b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
+.me-place small{font-size:22px}
+.me-txt b{display:block;font-size:16px}
+.me-txt span{font-size:13px;color:var(--t3)}
+.me-bar{margin-top:16px}
+.me-bar .row{display:flex;justify-content:space-between;font-size:13px;color:var(--t3)}
+.me-bar .row b{color:#fff;font-weight:700}
+.me-bar .bar{height:8px;margin-top:6px}
+.me-stats{display:flex;gap:8px;margin-top:14px}
+.me-stats div{flex:1;height:40px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;font-weight:700}
+.me-stats .ic{width:15px;height:15px}
+.howto{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:13px;color:var(--blue2);font-weight:600}
+.howto .ic{width:15px;height:15px}
+
+/* подиум */
+.podium{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:8px;margin-top:4px}
+.pd{text-align:center}
+.pd .av2{width:52px;height:52px;border-radius:50%;margin:0 auto;display:grid;place-items:center;font-weight:700;font-size:16px;background:#223047;color:#fff;border:2px solid var(--ring,#6B9FFF)}
+.pd.p1 .av2{width:64px;height:64px;font-size:19px;border-width:3px}
+.pd .nm{font-size:13px;font-weight:600;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pd .pc{font-size:15px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums}
+.pd .base{margin-top:8px;border-radius:12px 12px 4px 4px;display:grid;place-items:center;font-size:20px;font-weight:800;color:rgba(255,255,255,.9)}
+.pd.p1 .base{height:72px;background:linear-gradient(180deg,rgba(240,208,128,.35),rgba(240,208,128,.08));color:#1A1406;text-shadow:none}
+.pd.p1 .base span{background:linear-gradient(135deg,var(--gold-a),var(--gold-b));width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
+.pd.p2 .base{height:52px;background:linear-gradient(180deg,rgba(200,210,225,.22),rgba(200,210,225,.05))}
+.pd.p3 .base{height:40px;background:linear-gradient(180deg,rgba(205,140,90,.25),rgba(205,140,90,.05))}
+
+/* сегмент */
+.seg2{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.seg2 button{height:40px;border:0;border-radius:10px;background:transparent;color:var(--t2);font:600 14px Inter,sans-serif;cursor:pointer}
+.seg2 button.on{background:#223047;color:#fff;box-shadow:inset 0 0 0 1px rgba(240,208,128,.35)}
+
+/* список */
+.list{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:4px 0;overflow:hidden}
+.rw{position:relative;display:flex;align-items:center;gap:12px;min-height:60px;padding:8px 14px}
+.rw+.rw{border-top:1px solid var(--line)}
+.rw .pl{width:24px;text-align:center;font-size:14px;font-weight:700;color:var(--t3);font-variant-numeric:tabular-nums;flex:none}
+.rw .av3{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:#223047;flex:none;border:2px solid var(--ring,transparent)}
+.rw .who2{flex:1;min-width:0}
+.rw .who2 b{display:block;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rw .who2 span{font-size:12px;color:var(--t3)}
+.rw .rt{text-align:right;flex:none}
+.rw .rt b{display:block;font-size:16px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums}
+.rw .rt .hearts{margin-top:2px}
+.rw.me2{background:rgba(240,208,128,.07)}
+.rw.me2::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--gold-b)}
+.rw.me2 .pl{color:var(--gold-a)}
+.gapr{display:flex;align-items:center;justify-content:center;height:28px;color:var(--t3);font-size:13px;letter-spacing:.2em}
+.more2{display:block;text-align:center;padding:14px;font-size:14px;font-weight:600;color:var(--blue2);border-top:1px solid var(--line)}
+.nodata{font-size:12px;color:var(--t3)}
+
+/* закреплённое «моё место» внизу */
+.stick{position:absolute;left:12px;right:12px;bottom:92px;display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:16px;background:rgba(24,38,58,.97);border:1px solid rgba(240,208,128,.4);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.stick .pl{font-size:18px;font-weight:800;color:var(--gold-a);width:auto}
+.stick .who2{flex:1}
+.stick b{font-size:14px}
+.stick span{font-size:12px;color:var(--t3)}
+
+/* вариант C — тропа */
+.trail{background:linear-gradient(180deg,#12301F 0%,#0F1B2A 100%);border:1px solid rgba(107,203,119,.25);border-radius:20px;padding:18px 16px 14px}
+.trail h3{font-size:16px;font-weight:700}
+.trail p{font-size:13px;color:var(--t2);margin-top:4px;line-height:1.4}
+.track{position:relative;height:120px;margin-top:10px}
+.track svg.path{position:absolute;inset:0;width:100%;height:100%}
+.pin{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;background:#223047;border:2px solid var(--ring,#6B9FFF);color:#fff}
+.pin.me3{width:36px;height:36px;border:3px solid var(--gold-a);box-shadow:0 0 0 4px rgba(240,208,128,.18);font-size:11px}
+.pin .tg{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--gold-a);white-space:nowrap}
+.flag{position:absolute;right:-2px;top:0;display:flex;flex-direction:column;align-items:center;font-size:11px;font-weight:700;color:var(--gold-a)}
+.flag .ic{width:20px;height:20px;color:var(--gold-a)}
+.track .ax{position:absolute;bottom:-4px;left:0;right:0;display:flex;justify-content:space-between;font-size:11px;color:var(--t3)}
+.rw .mb{height:4px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:6px;overflow:hidden}
+.rw .mb i{display:block;height:100%;background:var(--moss);border-radius:2px}
+
+/* компьютер */
+.desk{border-radius:20px;border:1px solid var(--line2);overflow:hidden;width:1440px;display:flex;background:var(--bg)}
+.desk main{flex:1;padding:28px 36px 40px}
+.dgrid{display:grid;grid-template-columns:380px minmax(0,1fr);gap:28px;align-items:start}
+.table{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.th,.tr{display:grid;grid-template-columns:56px minmax(0,1fr) 90px 110px 190px 80px;align-items:center;gap:12px;padding:0 20px}
+.th{height:44px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--line)}
+.tr{min-height:60px;border-bottom:1px solid var(--line);font-size:15px}
+.tr:last-child{border-bottom:0}
+.tr .pl{font-weight:700;color:var(--t3);font-variant-numeric:tabular-nums}
+.tr .u{display:flex;align-items:center;gap:12px;min-width:0}
+.tr .u b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr .u small{display:block;font-size:12px;color:var(--t3)}
+.tr .num{font-variant-numeric:tabular-nums}
+.tr .inc span{color:var(--t3);font-size:13px}
+.tr .inc .mb{height:4px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:6px;overflow:hidden}
+.tr .inc .mb i{display:block;height:100%;background:var(--moss)}
+.tr .pc{font-weight:800;color:var(--gold-a);text-align:right;font-variant-numeric:tabular-nums}
+.tr.me2{background:rgba(240,208,128,.07);box-shadow:inset 3px 0 0 var(--gold-b)}
+.tr.me2 .pl{color:var(--gold-a)}
+@media (max-width:560px){.wrap{padding:12px 0 0;gap:28px}.wrap>div{width:100%}.wrap>div:has(.desk){display:none}.legend{margin:0 12px;width:auto;font-size:13px}.label{margin:0 16px 10px}.phone{width:100%;border-radius:0;border-left:0;border-right:0}}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+ <symbol id="heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+ <symbol id="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+ <symbol id="trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+ <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+ <symbol id="flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></symbol>
+ <symbol id="home" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+ <symbol id="map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/></symbol>
+ <symbol id="cal" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+ <symbol id="tent" viewBox="0 0 24 24"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></symbol>
+ <symbol id="grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
+ <symbol id="chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+ <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+ <symbol id="bag" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 10h8"/><path d="M8 18h8"/><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></symbol>
+ <symbol id="shop" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+ <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></symbol>
+ <symbol id="back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+</svg>
+<div class="wrap" id="frames">
+ <div class="legend"><span><b>Рейтинг участников — 3 варианта.</b> Данные и правила — как на платформе сейчас: место по % выполнения цели (доход с начала потока ÷ Точка Б), при равенстве выше тот, у кого больше баллов; на 100% — финалист с кубком вместо сердец; имя в цвете отряда. Люди и суммы — условные.</span><span class="new" style="margin:0">новое</span><span>— этого сейчас нет.</span></div>
+</div>
+<script>
+const I=(id,c='',s='')=>`<svg class="ic ${c}" ${s?`style="${s}"`:''}><use href="#${id}"/></svg>`;
+const NEW=(t='новое')=>`<span class="new">${t}</span>`;
+const T1='#6B9FFF', T2='#6BCB77';
+const P=[
+ {n:'Мария С.',ini:'МС',pct:100,inc:'150 000',goal:'150 000',pts:210,lives:3,t:T1,fin:1},
+ {n:'Олег Р.',ini:'ОР',pct:71,inc:'106 500',goal:'150 000',pts:180,lives:3,t:T2},
+ {n:'Ирина В.',ini:'ИВ',pct:58,inc:'29 000',goal:'50 000',pts:150,lives:2,t:T1},
+ {n:'Дмитрий К.',ini:'ДК',pct:44,inc:'66 000',goal:'150 000',pts:140,lives:3,t:T2},
+ {n:'Елена П.',ini:'ЕП',pct:37,inc:'111 000',goal:'300 000',pts:95,lives:3,t:T1},
+];
+const ME={n:'Александр',ini:'А',place:12,pct:12,inc:'18 000',goal:'150 000',pts:25,lives:2,t:T1};
+const NEAR=[{place:11,n:'Анна К.',ini:'АК',pct:14,pts:40,lives:3,t:T2},{place:13,n:'Сергей Т.',ini:'СТ',pct:9,pts:30,lives:1,t:T1}];
+const hearts=l=>`<span class="hearts" aria-label="Жизни: ${l} из 3">${[0,1,2].map(i=>I('heart',i<l?'fill':'','color:'+(i<l?'#FF6B6B':'rgba(255,107,107,.3)'))).join('')}</span>`;
+const lifeOrCup=p=>p.fin?`<span class="trophy">${I('trophy')}финалист</span>`:hearts(p.lives);
+const tabbar=()=>`<nav class="tabbar">${[['home','Главная'],['map','Маршрут'],['cal','Календарь'],['tent','Лагерь'],['grid','Ещё']].map((t,i)=>`<a class="tab ${i===3?'on':''}">${I(t[0])}${t[1]}</a>`).join('')}</nav>`;
+
+const meCard=(extra='')=>`<div class="me">
+ <div class="me-top"><div class="me-place"><small>#</small>${ME.place}</div><div class="me-txt"><b>Ваше место</b><span>из 27 участников потока 5</span></div></div>
+ <div class="me-bar"><div class="row"><span>До Точки Б: <b>${ME.inc} из ${ME.goal} ₽</b></span><b style="color:var(--gold-a)">${ME.pct}%</b></div><div class="bar"><i style="width:${ME.pct}%"></i></div></div>
+ <div class="me-stats"><div>${I('star','fill','color:#F0D080')}${ME.pts} баллов</div><div>${hearts(ME.lives)}</div></div>
+ <a class="howto">${I('info')}Как считается место${NEW()}</a>${extra}</div>`;
+
+const podium=()=>{const o=[[P[1],2],[P[0],1],[P[2],3]];return `<div class="podium">${o.map(([p,k])=>`<div class="pd p${k}" style="--ring:${p.t}"><div class="av2">${p.ini}</div><div class="nm">${p.n}</div><div class="pc">${p.pct}%</div><div class="base"><span>${k}</span></div></div>`).join('')}</div>`};
+
+const row=(p,place,me)=>`<div class="rw ${me?'me2':''}" style="--ring:${p.t}"><span class="pl">${place}</span><span class="av3">${p.ini}</span><div class="who2"><b>${p.n}${me?' (вы)':''}</b><span>${p.pts} баллов</span></div><div class="rt"><b>${p.pct}%</b>${lifeOrCup(p)}</div></div>`;
+
+const list=(from=3)=>`<div class="list">${P.slice(from).map((p,i)=>row(p,i+from+1)).join('')}<div class="gapr">• • •</div>${row(NEAR[0],11)}${row(ME,12,1)}${row(NEAR[1],13)}<a class="more2">Все 27 участников</a></div>`;
+
+const teamRow=(n,ini,pct,pts,t,place,mine)=>`<div class="rw ${mine?'me2':''}" style="--ring:${t}"><span class="pl">${place}</span><span class="av3">${ini}</span><div class="who2"><b>${n}${mine?' · ваш':''}</b><span>${pts} баллов · ${place===1?8:7} участников</span></div><div class="rt"><b>${pct}%</b><span class="nodata">средний % цели</span></div></div>`;
+/* A — лента */
+const A=()=>`<div class="h1">Рейтинг</div>${meCard()}
+ <div class="sectt"><h2>Лидеры потока</h2><a>Все потоки</a></div>${podium()}
+ <div class="sectt"><h2>Участники</h2></div>${list()}
+ <div class="sectt"><h2>Отряды</h2></div>
+ <div class="list">${teamRow('Поток 5 · Отряд 2','2',41,720,T2,1)}${teamRow('Поток 5 · Отряд 1','1',33,640,T1,2,1)}</div>
+ ${tabbar()}`;
+
+/* B — вкладки + закреплённое место */
+const B=()=>`<div class="h1">Рейтинг</div>
+ <div class="seg2"><button class="on">Участники</button><button>Отряды</button><button>Рост недели</button></div>
+ <div style="height:18px"></div>${podium()}
+ <div style="height:16px"></div><div class="list">${P.slice(3).map((p,i)=>row(p,i+4)).join('')}${[6,7,8,9,10].map(k=>row({n:['Наталья Б.','Павел Л.','Юлия М.','Виктор Г.','Светлана Н.'][k-6],ini:['НБ','ПЛ','ЮМ','ВГ','СН'][k-6],pct:[33,29,24,20,17][k-6],pts:[120,90,110,70,60][k-6],lives:[3,3,2,3,3][k-6],t:k%2?T1:T2},k)).join('')}</div>
+ <div class="stick"><span class="pl">#12</span><span class="av3" style="width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#223047;font-size:12px;font-weight:700;border:2px solid var(--gold-a)">А</span><div class="who2"><b>Вы · 12%</b><span>до 11 места — 2%</span></div>${NEW('закреплено')}</div>
+ ${tabbar()}`;
+
+/* C — тропа к Точке Б */
+const pins=[[P[0],100,18],[P[1],71,34],[P[2],58,48],[P[3],44,58],[P[4],37,66]];
+const C=()=>`<div class="h1">Рейтинг</div>
+ <div class="trail"><h3>Тропа к Точке Б${NEW()}</h3><p>Каждый участник — на своём проценте пути. Вершина — 100%: там финалисты.</p>
+  <div class="track"><svg class="path" viewBox="0 0 100 120" preserveAspectRatio="none"><path d="M2 108 C 25 104, 30 80, 50 70 S 80 40, 96 14" fill="none" stroke="rgba(107,203,119,.55)" stroke-width="1.2" stroke-dasharray="3 2" vector-effect="non-scaling-stroke"/></svg>
+   ${pins.map(([p,pc,y])=>`<span class="pin" style="--ring:${p.t};left:${2+pc*0.92}%;top:${y+ (pc===100?0:0)}%">${p.ini}</span>`).join('')}
+   <span class="pin me3" style="left:${2+ME.pct*0.92}%;top:86%"><span class="tg">вы · 12%</span>А</span>
+   <span class="flag" style="top:-6px">${I('flag')}</span>
+   <div class="ax"><span>0%</span><span>Точка Б · 100%</span></div></div></div>
+ <div class="sectt"><h2>Участники</h2><a>Все потоки</a></div>
+ <div class="list">${P.map((p,i)=>row(p,i+1).replace('</b><span>',`</b><div class="mb"><i style="width:${p.pct}%"></i></div><span>`)).join('')}<div class="gapr">• • •</div>${row(ME,12,1).replace('</b><span>',`</b><div class="mb"><i style="width:${ME.pct}%"></i></div><span>`)}<a class="more2">Все 27 участников</a></div>
+ ${tabbar()}`;
+
+/* компьютер — вариант А */
+const tr=(p,place,me)=>`<div class="tr ${me?'me2':''}"><span class="pl">${place}</span><div class="u"><span class="av3" style="width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#223047;font-size:12px;font-weight:700;border:2px solid ${p.t}">${p.ini}</span><div style="min-width:0"><b style="color:${p.t}">${p.n}${me?' (вы)':''}</b></div></div><span class="num">${p.pts}</span><span>${lifeOrCup(p)}</span><div class="inc num">${p.inc||'—'} <span>/ ${p.goal||'—'} ₽</span><div class="mb"><i style="width:${p.pct}%"></i></div></div><span class="pc">${p.pct}%</span></div>`;
+const D=()=>`<nav class="snav"><div class="logo gold">План Продюсера</div>
+ <a>${I('home')}Главная</a><a>${I('map')}Маршрут</a><a>${I('cal')}Календарь</a><a class="on">${I('tent')}Лагерь</a><a>${I('bag')}Рюкзак</a>
+ <div class="grp">Общение</div><a>${I('chat')}Чат ПП</a><a>${I('users')}Чат отряда</a>
+ <div class="grp">Прочее</div><a>${I('shop')}Лавка</a><a>${I('gear')}Настройки</a><a class="foot">${I('back')}На главную платформы</a></nav>
+ <main><div class="h1" style="font-size:28px">Рейтинг</div><div class="dgrid"><div style="display:grid;gap:24px">${meCard()}<div><div class="sectt" style="margin-top:0"><h2>Лидеры потока</h2></div>${podium()}</div></div>
+ <div><div class="sectt" style="margin-top:0"><h2>Участники · поток 5</h2><a>Все потоки</a></div><div class="table"><div class="th"><span>Место</span><span>Участник</span><span>Баллы</span><span>Жизни</span><span>Доход / Точка Б</span><span style="text-align:right">Цель</span></div>
+ ${P.map((p,i)=>tr(p,i+1)).join('')}${tr({...NEAR[0],inc:'21 000',goal:'150 000'},11)}${tr(ME,12,1)}${tr({...NEAR[1],inc:'4 500',goal:'50 000'},13)}</div></div></div></main>`;
+
+const F=document.getElementById('frames');
+const add=(label,cls,html)=>{const w=document.createElement('div');w.innerHTML=`<div class="label">${label}</div><div class="${cls}">${html}</div>`;F.appendChild(w);};
+add('<b>A · Лента</b> — сначала «моё место», потом лидеры, потом список с людьми вокруг меня','phone',A());
+add('<b>B · Вкладки</b> — Участники / Отряды / Рост недели, моё место закреплено внизу','phone',B());
+add('<b>C · Тропа к Точке Б</b> — лор: все на одной тропе к вершине, я виден среди остальных','phone',C());
+add('Компьютер · вариант A','desk',D());
+
+/* типографика: неразрывные пробелы */
+(function(){const NB=' ';const sh=/(^|[\s(«])(в|во|с|со|к|ко|и|а|о|об|у|по|до|на|из|от|за|не|но|же|для|или|что|как|без|при|под|над|—)\s+/gi;
+const walk=n=>{if(n.nodeType===3){let t=n.nodeValue;t=t.replace(sh,(m,a,w)=>a+w+NB).replace(sh,(m,a,w)=>a+w+NB);t=t.replace(/(\d)\s+(?=[А-Яа-яЁё₽%])/g,'$1'+NB).replace(/(\d)\s(?=\d{3}(\D|$))/g,'$1'+NB).replace(/\s+(—|·|\/)/g,NB+'$1').replace(/(Точка|Точки|Точке)\s+([АБ])/g,'$1'+NB+'$2');n.nodeValue=t;return}
+if(n.nodeType===1&&!/^(TEXTAREA|INPUT|SCRIPT|STYLE|svg)$/i.test(n.nodeName))n.childNodes.forEach(walk)};walk(F)})();
+</script>
+</body></html>
