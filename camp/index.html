@@ -177,6 +177,26 @@ body{background:#0A0E13}
 .c-past small{display:block;font-size:12px;color:var(--t3);line-height:1.3}
 .c-past b{display:block;margin-top:6px;font-size:22px;font-weight:800;white-space:nowrap}
 .c-past b.gr{color:#4CC38A}.c-past b.g{color:var(--gold-a)}
+.c-curve{display:block;width:100%;height:auto}
+.c-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12px;color:var(--t2)}
+.c-legend span{display:inline-flex;align-items:center;gap:6px}
+.c-legend i{width:9px;height:9px;border-radius:50%}
+.c-stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.c-stat3 div{padding:10px;border-radius:12px;background:rgba(255,255,255,.04);text-align:center}
+.c-stat3 small{display:block;font-size:12px;color:var(--t3)}
+.c-stat3 b{display:block;margin-top:3px;font-size:15px;font-weight:700;white-space:nowrap}
+.c-stat3 .c-mine b{color:var(--gold-a)}
+.c-cw{position:relative}
+.c-cw .pt{cursor:pointer;outline:none}
+.c-cw .pt .d{transition:r .15s ease}
+.c-cw .pt:hover .d,.c-cw .pt.act .d,.c-cw .pt:focus .d{r:9}
+.c-cw .pt:hover .d[r="9"],.c-cw .pt.act .d[r="9"]{r:11}
+.c-tip{position:absolute;z-index:3;transform:translate(-50%,calc(-100% - 14px));padding:8px 12px;border-radius:12px;background:#223047;border:1px solid rgba(255,255,255,.16);box-shadow:0 8px 24px rgba(0,0,0,.4);pointer-events:none;opacity:0;transition:opacity .15s ease;white-space:nowrap}
+.c-tip.on{opacity:1}
+.c-tip b{display:block;font-size:14px;color:#fff}
+.c-tip span{display:flex;align-items:center;gap:6px;margin-top:2px;font-size:12px;color:var(--t3)}
+.c-tip i{width:8px;height:8px;border-radius:50%}
+.c-tip em{display:block;font-style:normal;margin-top:4px;font-size:13px;font-weight:700;color:#F0D080}
 .tabbar{height:72px;border-radius:22px}
 .tab{justify-content:flex-start;padding-top:10px;gap:6px;font-size:11px;font-weight:600}
 .tab .c-ic{width:22px;height:22px;position:relative;z-index:1}
@@ -276,12 +296,22 @@ const tabTeam=(mode)=>{if(mode==='past')return head(mode,'team')+`<div class="c-
 <div class="c-sec">Отряды потока</div>`+trows(cur)+tabbar()};
 
 // ── Доходы ──
+const curve=(pool,W=326,H=210)=>{const v=pool.map(p=>p.inc),n=v.length,mu=v.reduce((a,b)=>a+b)/n,sd=Math.sqrt(v.reduce((a,b)=>a+(b-mu)**2,0)/n)||1;
+ const hi=Math.max(mu+3*sd,Math.max(...v)*1.05),pad=14,base=H-30,top=46,pdf=x=>Math.exp(-.5*((x-mu)/sd)**2);
+ const X=x=>pad+x/hi*(W-2*pad),Y=x=>base-pdf(x)*(base-top);
+ let d='';for(let i=0;i<=90;i++){const x=hi*i/90;d+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(x).toFixed(1)}
+ const area=d+`L${X(hi).toFixed(1)} ${base} L${X(0).toFixed(1)} ${base} Z`;
+ const lead=[...pool].sort((a,b)=>b.inc-a.inc)[0];const others=pool.filter(p=>!p.me).sort((a,b)=>a.inc-b.inc).map(p=>`<g class="pt${p===lead?' lead':''}" tabindex="0" data-n="${p.n}" data-t="${T[p.t].n}" data-v="${fmt(p.inc)} ₽ · ${p.pct}% цели" data-x="${(X(p.inc)/W*100).toFixed(2)}" data-y="${(Y(p.inc)/H*100).toFixed(2)}"><circle cx="${X(p.inc).toFixed(1)}" cy="${Y(p.inc).toFixed(1)}" r="14" fill="transparent"/><circle class="d" cx="${X(p.inc).toFixed(1)}" cy="${Y(p.inc).toFixed(1)}" r="6" fill="${p.c}" stroke="#141C28" stroke-width="2"/></g>`).join('');
+ const me=pool.find(p=>p.me);const meDot=me?`<line x1="${X(me.inc).toFixed(1)}" x2="${X(me.inc).toFixed(1)}" y1="${(Y(me.inc)+10).toFixed(1)}" y2="${base}" stroke="#F0D080" stroke-width="1.5" stroke-dasharray="2 3" opacity=".7"/><g class="pt" tabindex="0" data-n="Александр (вы)" data-t="${T[me.t].n}" data-v="${fmt(me.inc)} ₽ · ${me.pct}% цели" data-x="${(X(me.inc)/W*100).toFixed(2)}" data-y="${(Y(me.inc)/H*100).toFixed(2)}"><circle class="d" cx="${X(me.inc).toFixed(1)}" cy="${Y(me.inc).toFixed(1)}" r="9" fill="#F0D080" stroke="#8A6420" stroke-width="3"/></g><g style="pointer-events:none" transform="translate(${Math.max(pad,X(me.inc)-18).toFixed(1)},${(Y(me.inc)-38).toFixed(1)})"><rect width="36" height="22" rx="11" fill="#F0D080"/><text x="18" y="15" text-anchor="middle" font-family="Inter" font-size="11" font-weight="800" fill="#1A1406">вы</text></g>`:'';
+ const mx=X(mu).toFixed(1);const meanL=`<line x1="${mx}" x2="${mx}" y1="${top-8}" y2="${base}" stroke="rgba(255,255,255,.45)" stroke-dasharray="4 4"/><text x="${mx}" y="${top-14}" text-anchor="middle" font-family="Inter" font-size="11" fill="rgba(255,255,255,.7)">среднее ${kfmt(mu)} ₽</text>`;
+ const ticks=[0,hi/2,hi].map((t,i)=>`<text x="${i===0?pad:i===2?W-pad:X(t)}" y="${H-8}" text-anchor="${i===0?'start':i===2?'end':'middle'}" font-family="Inter" font-size="11" fill="rgba(255,255,255,.5)">${t===0?'0 ₽':kfmt(t)+' ₽'}</text>`).join('');
+ return {mu,sd,svg:`<svg viewBox="0 0 ${W} ${H}" class="c-curve" role="img" aria-label="Кривая распределения дохода, ${n} участников"><defs><linearGradient id="cf${W}${n}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D080" stop-opacity=".28"/><stop offset="1" stop-color="#F0D080" stop-opacity="0"/></linearGradient></defs><line x1="${pad}" x2="${W-pad}" y1="${base}" y2="${base}" stroke="rgba(255,255,255,.1)"/><path d="${area}" fill="url(#cf${W}${n})"/><path d="${d}" fill="none" stroke="#F0D080" stroke-width="2.5"/>${meanL}${others}${meDot}${ticks}</svg>`}};
 const BINS=[[0,50000,'до 50 тыс'],[50000,100000,'50–100 тыс'],[100000,200000,'100–200 тыс'],[200000,400000,'200–400 тыс'],[400000,1e12,'от 400 тыс']];
 const tabInc=(mode)=>{const pool=(mode==='cur'?CURALL:PAST).filter(p=>p.inc>0),total=mode==='cur'?27:PAST.length;
  const cnt=BINS.map(([a,b])=>pool.filter(p=>p.inc>=a&&p.inc<b).length),mx=Math.max(...cnt),myB=mode==='cur'?BINS.findIndex(([a,b])=>ME.inc>=a&&ME.inc<b):-1;
  const sorted=[...pool].sort((a,b)=>b.inc-a.inc),mi=sorted.findIndex(p=>p.me),avg=sum(pool)/pool.length;
  return head(mode,'inc')+`<div class="c-sum"><div class="cur"><small>Заработали вместе</small><b>${kfmt(sum(pool))} ₽</b><span>${mode==='cur'?'участники потока 5':'выпускники прошлых походов'}</span></div><div><small>В среднем</small><b>${kfmt(avg)} ₽</b><span>у ${pool.length} из ${total} есть доход</span></div></div>
-<div class="c-sec">Сколько зарабатывают<span>${pool.length} чел.</span></div><div class="c-hist"><div class="cols">${cnt.map((c,i)=>`<div class="col ${i===myB?'me':''}">${i===myB?'<span class="you">вы здесь</span>':''}<b>${c}</b><i style="height:${Math.round(c/mx*110)+6}px"></i></div>`).join('')}</div><div class="ax">${BINS.map(b=>`<span>${b[2]}</span>`).join('')}</div><div class="cap">${mode==='cur'?`Столбик — сколько участников потока в этом диапазоне дохода. Ваш доход <b>18 000 ₽</b>, в среднем <b>${kfmt(avg)} ₽</b>.`:`Столбик — сколько выпускников в этом диапазоне дохода. В среднем <b>${kfmt(avg)} ₽</b>.`}</div></div>
+<div class="c-sec">Сколько зарабатывают<span>${pool.length} чел.</span></div><div class="c-hist">${(()=>{const c=curve(pool);return `<div class="c-cw">${c.svg}<div class="c-tip"></div></div><div class="c-legend">${[...new Set(pool.map(p=>p.t))].map(t=>`<span><i style="background:${T[t].c}"></i>${T[t].n}</span>`).join('')}${mode==='cur'?'<span><i style="background:#F0D080"></i>Вы</span>':''}</div><div class="c-stat3"><div><small>Среднее</small><b>${kfmt(c.mu)} ₽</b></div><div><small>Разброс</small><b>${kfmt(c.sd)} ₽</b></div>${mode==='cur'?'<div class="c-mine"><small>Вы</small><b>18 000 ₽</b></div>':`<div><small>Выше цели</small><b>${pool.filter(p=>p.pct>=100).length} чел.</b></div>`}</div><div class="cap">Каждая точка — участник. Чем правее, тем больше доход. Цвет точки — отряд.</div>`})()}</div>
 <div class="c-sec">По доходу</div><div class="c-list">${sorted.slice(0,5).map((p,i)=>`<div class="c-irow"><span class="n">${i+1}</span><span class="dot" style="--c:${p.c}"></span><span class="nm">${p.n}</span><b>${fmt(p.inc)} ₽</b></div>`).join('')}${mi>=5?`<div class="c-gap">•••</div><div class="c-irow me"><span class="n">${mi+1}</span><span class="dot" style="--c:#F0D080"></span><span class="nm">Александр (вы)</span><b>18 000 ₽</b></div>`:''}<a class="c-more">Весь список · ${pool.length} ${I('down')}</a></div>`+tabbar()};
 
 const F=document.getElementById('frames');
@@ -293,6 +323,12 @@ add('Прошлые походы · Рейтинг',tabRate('past'));
 add('Прошлые походы · Отряды',tabTeam('past'));
 add('Прошлые походы · Доходы',tabInc('past'));
 
+
+// подсказка на точке: наведение на компьютере, нажатие на телефоне
+document.querySelectorAll('.c-cw').forEach(w=>{const tip=w.querySelector('.c-tip');
+ const show=g=>{w.querySelectorAll('.pt.act').forEach(x=>x.classList.remove('act'));g.classList.add('act');let x=+g.dataset.x;x=Math.min(Math.max(x,22),78);tip.style.left=x+'%';tip.style.top=g.dataset.y+'%';const c=g.querySelector('.d').getAttribute('fill');tip.innerHTML=`<b>${g.dataset.n}</b><span><i style="background:${c}"></i>${g.dataset.t}</span><em>${g.dataset.v}</em>`;tip.classList.add('on')};
+ w.querySelectorAll('.pt').forEach(g=>{g.addEventListener('mouseenter',()=>show(g));g.addEventListener('click',()=>show(g));g.addEventListener('focus',()=>show(g))});
+ const lead=w.querySelector('.pt.lead');if(lead)show(lead);});
 (function(){const NB=' ';const sh=/(^|[\s(«])(в|во|с|со|к|ко|и|а|о|об|у|по|до|на|из|от|за|не|но|же|для|или|что|как|без|при|под|над|—)\s+/gi;
 const walk=n=>{if(n.nodeType===3){let t=n.nodeValue;t=t.replace(sh,(m,a,w)=>a+w+NB).replace(sh,(m,a,w)=>a+w+NB);t=t.replace(/(\d)\s+(?=[А-Яа-яЁё₽%])/g,'$1'+NB).replace(/(\d)\s(?=\d{3}(\D|$))/g,'$1'+NB).replace(/\s+(—|·|\/)/g,NB+'$1').replace(/(Точка|Точки|Точке)\s+([АБ])/g,'$1'+NB+'$2').replace(/([А-ЯЁа-яё]{2,})\s+([А-ЯЁ]\.)/g,'$1'+NB+'$2');n.nodeValue=t;return}
 if(n.nodeType===1&&!/^(TEXTAREA|INPUT|SCRIPT|STYLE|svg)$/i.test(n.nodeName))n.childNodes.forEach(walk)};walk(F)})();
