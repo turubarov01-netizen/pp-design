@@ -77,8 +77,8 @@ body{background:#0A0E13}
 .c-row .who span{display:block;margin-top:3px;font-size:13px;color:var(--t3);font-variant-numeric:tabular-nums;white-space:nowrap}
 .c-row .rt{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none}
 .c-row .rt>b{font-size:17px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums}
-.c-row.me{background:rgba(240,208,128,.08)}
-.c-row.me::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:2px;background:#C9973A}
+.c-row.is-me{background:rgba(240,208,128,.08)}
+.c-row.is-me::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:2px;background:#C9973A}
 .c-gap{display:flex;justify-content:center;align-items:center;height:28px;color:var(--t3);letter-spacing:.3em;border-top:1px solid var(--line)}
 .c-more{display:flex;justify-content:center;align-items:center;gap:6px;height:48px;border-top:1px solid var(--line);font-size:14px;font-weight:600;color:var(--blue2)}
 .c-more .c-ic{width:16px;height:16px}
@@ -130,8 +130,8 @@ body{background:#0A0E13}
 .c-hist .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px;position:relative}
 .c-hist .col b{font-size:14px;font-weight:700;color:var(--t2)}
 .c-hist .col i{display:block;width:100%;border-radius:8px 8px 3px 3px;background:rgba(255,255,255,.12)}
-.c-hist .col.me i{background:linear-gradient(180deg,#F0D080,#B8862E)}
-.c-hist .col.me b{color:var(--gold-a)}
+.c-hist .col.is-me i{background:linear-gradient(180deg,#F0D080,#B8862E)}
+.c-hist .col.is-me b{color:var(--gold-a)}
 .c-hist .col .you{position:absolute;top:-4px;left:50%;transform:translateX(-50%);height:22px;padding:0 8px;border-radius:11px;background:#F0D080;color:#1A1406;font-size:11px;font-weight:800;display:inline-flex;align-items:center;white-space:nowrap}
 .c-hist .ax{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
 .c-hist .ax span{font-size:11px;color:var(--t3);text-align:center;line-height:1.3}
@@ -143,7 +143,7 @@ body{background:#0A0E13}
 .c-irow .dot{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
 .c-irow .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .c-irow b{font-variant-numeric:tabular-nums;white-space:nowrap}
-.c-irow.me{background:rgba(240,208,128,.08);color:var(--gold-a);font-weight:700}
+.c-irow.is-me{background:rgba(240,208,128,.08);color:var(--gold-a);font-weight:700}
 .c-mode{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .c-mode a{display:flex;flex-direction:column;justify-content:center;min-height:56px;padding:8px 14px;border-radius:16px;border:1px solid var(--line2);background:rgba(255,255,255,.02)}
 .c-mode a b{font-size:15px;font-weight:700;color:var(--t2)}
@@ -197,6 +197,52 @@ body{background:#0A0E13}
 .c-tip span{display:flex;align-items:center;gap:6px;margin-top:2px;font-size:12px;color:var(--t3)}
 .c-tip i{width:8px;height:8px;border-radius:50%}
 .c-tip em{display:block;font-style:normal;margin-top:4px;font-size:13px;font-weight:700;color:#F0D080}
+
+/* ── компьютер ── */
+.c-desk{width:1440px;display:flex;border-radius:20px;border:1px solid var(--line2);overflow:hidden;background:var(--bg)}
+.c-desk main{flex:1;min-width:0;padding:28px 32px 40px}
+.snav a .c-ic{width:20px;height:20px}
+.d-top{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.d-title{display:flex;align-items:center;gap:14px}
+.d-title h1{font-size:30px;font-weight:800;letter-spacing:-.01em}
+.c-now.past{background:rgba(76,195,138,.12);color:#4CC38A}
+.c-now.past::before{display:none}
+.d-mode{width:520px;margin-top:0}
+.d-tabs{width:520px;margin-top:20px}
+.d-grid{display:grid;grid-template-columns:400px minmax(0,1fr);gap:24px;margin-top:24px;align-items:start}
+.d-grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;margin-top:24px;align-items:start}
+.d-grid3{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;margin-top:24px;align-items:start}
+.d-side .c-me,.d-side .c-past{margin-top:0}
+.d-card{margin-top:16px;padding:16px 16px 0;border-radius:20px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+.d-ct{display:flex;justify-content:space-between;align-items:baseline;font-size:16px;font-weight:700;margin-bottom:12px}
+.d-ct span{font-size:13px;font-weight:500;color:var(--t3)}
+.d-sec{display:flex;justify-content:space-between;align-items:baseline;margin:24px 2px 12px;font-size:17px;font-weight:700}
+.d-sec span{font-size:13px;font-weight:500;color:var(--t3)}
+.d-table{border-radius:20px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+.d-th,.d-tr{display:grid;grid-template-columns:36px minmax(0,1.5fr) minmax(0,1.1fr) 56px 104px 60px;gap:16px;align-items:center;padding:0 20px}
+.d-th{height:44px;font-size:12px;font-weight:600;color:var(--t3);border-bottom:1px solid var(--line)}
+.d-th span:nth-child(4),.d-th span:nth-child(5){text-align:center}
+.d-th span:last-child{text-align:right}
+.d-tr{position:relative;min-height:64px;border-top:1px solid var(--line)}
+.d-th+.d-tr,.d-table>.d-tr:first-child{border-top:0}
+.d-tr .n{font-size:14px;font-weight:700;color:var(--t3);text-align:center}
+.d-tr .u{display:flex;align-items:center;gap:12px;min-width:0}
+.d-tr .u b{font-size:15px;font-weight:600;color:var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d-tr .gl span{font-size:13px;color:var(--t3);white-space:nowrap}
+.d-tr .gl b{color:#fff;font-weight:600}
+.d-tr .gl .c-bar{height:5px;margin-top:6px}
+.d-tr .pts{text-align:center;font-size:14px;color:var(--t2)}
+.d-tr .lf{display:flex;justify-content:center}
+.d-tr .pc{text-align:right;font-size:17px;font-weight:800;color:var(--gold-a)}
+.d-tr.is-me{background:rgba(240,208,128,.08)}
+.d-tr.is-me::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:2px;background:#C9973A}
+.d-tm{grid-template-columns:36px minmax(0,1.4fr) minmax(0,1fr) 64px}
+.d-tm .u .c-rb{margin:0}
+.d-sum{grid-template-columns:repeat(3,1fr);margin-top:0}
+.d-sum div.mine b{color:#F0D080}
+.d-hist{margin-top:16px;padding:20px}
+.d-hist .c-legend .sd{margin-left:auto;color:var(--t3)}
+@media (max-width:560px){.c-wrap>div:has(.c-desk){display:none}}
 .tabbar{height:72px;border-radius:22px}
 .tab{justify-content:flex-start;padding-top:10px;gap:6px;font-size:11px;font-weight:600}
 .tab .c-ic{width:22px;height:22px;position:relative;z-index:1}
@@ -280,7 +326,7 @@ const lifeOf=p=>p.fin?`<span class="c-fin">${I('trophy')}Финалист</span>
 const meCard=()=>`<div class="c-me"><div class="pl"><b>#12</b><span>из 27</span></div><div class="gl"><span><b>18 000</b> из 150 000 ₽</span><em>12%</em></div><div class="bar"><div class="c-bar"><i style="width:12%"></i></div></div><div class="lv"><div><small>Баллы</small><b>25</b></div><div><small>Жизни</small><b>${[0,1,2].map(i=>I('heart',i<ME.lives?'fill':'','color:'+(i<ME.lives?'#FF6B6B':'rgba(255,107,107,.25)'))).join('')}</b></div><div title="Палатка активна до 2 окт, 21:00 · защищает фокус и ключевое"><small>Палатка</small><b class="c-tent">${I('tent')}до 2 окт</b></div></div></div>`;
 const pastCard=()=>{const P=PAST;return `<div class="c-past"><div><small>Выпускников</small><b class="gr">${P.length}</b></div><div><small>Заработали</small><b>${kfmt(sum(P))} ₽</b></div><div><small>Средняя цель</small><b class="g">${Math.round(P.reduce((s,p)=>s+p.pct,0)/P.length)}%</b></div></div>`};
 const podium=(a,fv)=>`<div class="c-pod">${[[a[1],2],[a[0],1],[a[2],3]].map(([p,k])=>`<div class="c-pd k${k}" style="--c:${p.c}"><div class="cr">${k===1?I('crown','fill'):''}</div><span class="av" style="--tb:${p.c}45">${p.ini}</span><div class="nm">${p.n}</div><div class="vl">${fv(p)}</div><div class="ped">${k}</div></div>`).join('')}</div>`;
-const row=(p,n)=>`<div class="c-row ${p.me?'me':''}"><span class="n">${n}</span>${av(p)}<div class="who"><b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b><span>${fmt(p.inc)} из ${fmt(p.goal)} ₽</span></div><div class="rt"><b>${p.pct}%</b>${lifeOf(p)}</div></div>`;
+const row=(p,n)=>`<div class="c-row ${p.me?'is-me':''}"><span class="n">${n}</span>${av(p)}<div class="who"><b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b><span>${fmt(p.inc)} из ${fmt(p.goal)} ₽</span></div><div class="rt"><b>${p.pct}%</b>${lifeOf(p)}</div></div>`;
 const sortBar=(past)=>`<div class="c-sort">${[['target','% цели'],['coin','Доход'],...(past?[]:[['trend','За неделю']])].map(([ic,t],i)=>`<a class="${i===0?'on':''}">${I(ic)}${t}</a>`).join('')}</div>`;
 const tabRate=(mode)=>{if(mode==='cur'){const s=[...CUR].sort((a,b)=>b.pct-a.pct);return head(mode,'rate')+meCard()+`<div class="c-sec">Кто впереди<span>27 участников</span></div>`+sortBar()+podium(s,p=>p.pct+'%')+`<div class="c-list">${s.slice(3).map((p,i)=>row(p,i+4)).join('')}<div class="c-gap">•••</div>${NEAR.map(p=>row(p,p.place)).join('')}<a class="c-more">Показать всех · 27 ${I('down')}</a></div>`+tabbar()}
  const s=[...PAST].sort((a,b)=>b.pct-a.pct);return head(mode,'rate')+pastCard()+`<div class="c-sec">Лучшие результаты</div>`+sortBar(1)+podium(s,p=>p.pct+'%')+`<div class="c-list">${s.slice(3,10).map((p,i)=>row(p,i+4)).join('')}<a class="c-more">Показать всех · ${PAST.length} ${I('down')}</a></div>`+tabbar()};
@@ -292,7 +338,7 @@ const MYT=[CUR[0],CUR[2],CUR[4],CUR[6],ME,NEAR[2]].sort((a,b)=>b.pct-a.pct);
 const tabTeam=(mode)=>{if(mode==='past')return head(mode,'team')+`<div class="c-sec" style="margin-top:20px">Отряды прошлых походов<span>по среднему % цели</span></div>`+trows(teamStats(['pr','sf','fx']))+tabbar();
  const cur=teamStats(['o1','o2']),my=cur.find(t=>t.mine);
  return head(mode,'team')+`<div class="c-team" style="--c:${T.o1.c}"><div class="th"><b>Поток 5 · Отряд 1</b><span>Проводник Анна Л. · 8 участников</span></div><div class="stats"><div><small>Место</small><b>${cur.indexOf(my)+1} из ${cur.length}</b></div><div><small>Ср. цель</small><b class="g">${my.avg}%</b></div><div><small>Заработали</small><b>${kfmt(my.inc)} ₽</b></div></div><div class="c-role"><span>Ваша роль</span><b>Казначей ${I('down')}</b></div></div>
-<div class="c-sec">Участники отряда</div><div class="c-list">${MYT.map((p,i)=>`<div class="c-row ${p.me?'me':''}"><span class="n">${i+1}</span>${av(p)}<div class="who"><b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b><span>${p.role?`<span class="c-rb">${p.role}</span>`:''}${fmt(p.inc)} ₽</span></div><div class="rt"><b>${p.pct}%</b></div></div>`).join('')}</div>
+<div class="c-sec">Участники отряда</div><div class="c-list">${MYT.map((p,i)=>`<div class="c-row ${p.me?'is-me':''}"><span class="n">${i+1}</span>${av(p)}<div class="who"><b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b><span>${p.role?`<span class="c-rb">${p.role}</span>`:''}${fmt(p.inc)} ₽</span></div><div class="rt"><b>${p.pct}%</b></div></div>`).join('')}</div>
 <div class="c-sec">Отряды потока</div>`+trows(cur)+tabbar()};
 
 // ── Доходы ──
@@ -312,16 +358,41 @@ const tabInc=(mode)=>{const pool=(mode==='cur'?CURALL:PAST).filter(p=>p.inc>0),t
  const sorted=[...pool].sort((a,b)=>b.inc-a.inc),mi=sorted.findIndex(p=>p.me),avg=sum(pool)/pool.length;
  return head(mode,'inc')+`<div class="c-sum"><div class="cur"><small>Заработали вместе</small><b>${kfmt(sum(pool))} ₽</b><span>${mode==='cur'?'участники потока 5':'выпускники прошлых походов'}</span></div><div><small>В среднем</small><b>${kfmt(avg)} ₽</b><span>у ${pool.length} из ${total} есть доход</span></div></div>
 <div class="c-sec">Сколько зарабатывают<span>${pool.length} чел.</span></div><div class="c-hist">${(()=>{const c=curve(pool);return `<div class="c-cw">${c.svg}<div class="c-tip"></div></div><div class="c-legend">${[...new Set(pool.map(p=>p.t))].map(t=>`<span><i style="background:${T[t].c}"></i>${T[t].n}</span>`).join('')}${mode==='cur'?'<span><i style="background:#F0D080"></i>Вы</span>':''}</div><div class="c-stat3"><div><small>Среднее</small><b>${kfmt(c.mu)} ₽</b></div><div><small>Разброс</small><b>${kfmt(c.sd)} ₽</b></div>${mode==='cur'?'<div class="c-mine"><small>Вы</small><b>18 000 ₽</b></div>':`<div><small>Выше цели</small><b>${pool.filter(p=>p.pct>=100).length} чел.</b></div>`}</div><div class="cap">Каждая точка — участник. Чем правее, тем больше доход. Цвет точки — отряд.</div>`})()}</div>
-<div class="c-sec">По доходу</div><div class="c-list">${sorted.slice(0,5).map((p,i)=>`<div class="c-irow"><span class="n">${i+1}</span><span class="dot" style="--c:${p.c}"></span><span class="nm">${p.n}</span><b>${fmt(p.inc)} ₽</b></div>`).join('')}${mi>=5?`<div class="c-gap">•••</div><div class="c-irow me"><span class="n">${mi+1}</span><span class="dot" style="--c:#F0D080"></span><span class="nm">Александр (вы)</span><b>18 000 ₽</b></div>`:''}<a class="c-more">Весь список · ${pool.length} ${I('down')}</a></div>`+tabbar()};
+<div class="c-sec">По доходу</div><div class="c-list">${sorted.slice(0,5).map((p,i)=>`<div class="c-irow"><span class="n">${i+1}</span><span class="dot" style="--c:${p.c}"></span><span class="nm">${p.n}</span><b>${fmt(p.inc)} ₽</b></div>`).join('')}${mi>=5?`<div class="c-gap">•••</div><div class="c-irow is-me"><span class="n">${mi+1}</span><span class="dot" style="--c:#F0D080"></span><span class="nm">Александр (вы)</span><b>18 000 ₽</b></div>`:''}<a class="c-more">Весь список · ${pool.length} ${I('down')}</a></div>`+tabbar()};
+
+
+// ════════ Компьютер ════════
+const snav=()=>`<nav class="snav"><div class="logo gold">План Продюсера</div><a href="../">${I('home')}Главная</a><a>${I('map')}Маршрут</a><a>${I('cal')}Календарь</a><a class="on">${I('tent')}Лагерь</a><a>${I('bag')}Рюкзак</a><div class="grp">Общение</div><a>${I('chat')}Чат ПП</a><a>${I('users')}Чат отряда</a><div class="grp">Прочее</div><a>${I('shop')}Лавка</a><a>${I('gear')}Настройки</a><a class="foot">${I('back')}На главную платформы</a></nav>`;
+const dHead=(mode,tab)=>`<div class="d-top"><div class="d-title"><h1>Лагерь</h1>${mode==='cur'?'<span class="c-now">Поток 5 · идёт неделя 1</span>':'<span class="c-now past">выпускники прошлых походов</span>'}</div><nav class="c-mode d-mode">${MODES.map(([k,t,s])=>`<a class="${k===mode?'on':''}"><b>${t}</b><span>${s}</span></a>`).join('')}</nav></div>
+<nav class="c-tabs d-tabs">${[['rate','trophy','Рейтинг'],['team','swords','Отряды'],['inc','coin','Доходы']].map(([k,ic,t])=>`<a class="${k===tab?'on':''}">${I(ic)}${t}</a>`).join('')}</nav>`;
+const dRow=(p,n)=>`<div class="d-tr ${p.me?'is-me':''}"><span class="n">${n}</span><div class="u">${av(p)}<b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b></div><div class="gl"><span><b>${fmt(p.inc)}</b> из ${fmt(p.goal)} ₽</span><div class="c-bar"><i style="width:${Math.min(100,p.pct)}%"></i></div></div><span class="pts">${p.pts??'—'}</span><span class="lf">${lifeOf(p)}</span><b class="pc">${p.pct}%</b></div>`;
+const dTable=(rows,more)=>`<div class="d-table"><div class="d-th"><span>#</span><span>Участник</span><span>Доход до Точки Б</span><span>Баллы</span><span>Жизни</span><span>Цель</span></div>${rows}<a class="c-more">${more} ${I('down')}</a></div>`;
+const deskRate=(mode)=>{const cur=mode==='cur',s=[...(cur?CUR:PAST)].sort((a,b)=>b.pct-a.pct);
+ const rows=cur?s.map((p,i)=>dRow(p,i+1)).join('')+`<div class="c-gap">•••</div>`+NEAR.map(p=>dRow(p,p.place)).join(''):s.slice(0,12).map((p,i)=>dRow(p,i+1)).join('');
+ return snav()+`<main>${dHead(mode,'rate')}<div class="d-grid"><div class="d-side">${cur?meCard():pastCard()}<div class="d-card"><div class="d-ct">${cur?'Лидеры потока':'Лучшие результаты'}</div>${sortBar(!cur)}${podium(s,p=>p.pct+'%')}</div></div><div>${dTable(rows,cur?'Показать всех · 27':'Показать всех · '+PAST.length)}</div></div></main>`};
+const deskTeam=(mode)=>{if(mode==='past')return snav()+`<main>${dHead(mode,'team')}<div class="d-sec">Отряды прошлых походов<span>по среднему % цели</span></div>${trows(teamStats(['pr','sf','fx']))}</main>`;
+ const cur=teamStats(['o1','o2']),my=cur.find(t=>t.mine);
+ return snav()+`<main>${dHead(mode,'team')}<div class="d-grid2"><div><div class="c-team" style="--c:${T.o1.c};margin-top:0"><div class="th"><b>Поток 5 · Отряд 1</b><span>Проводник Анна Л. · 8 участников</span></div><div class="stats"><div><small>Место</small><b>${cur.indexOf(my)+1} из ${cur.length}</b></div><div><small>Ср. цель</small><b class="g">${my.avg}%</b></div><div><small>Заработали</small><b>${kfmt(my.inc)} ₽</b></div></div><div class="c-role"><span>Ваша роль</span><b>Казначей ${I('down')}</b></div></div>
+ <div class="d-sec">Отряды потока</div>${trows(cur)}</div>
+ <div><div class="d-sec" style="margin-top:0">Участники отряда<span>по % цели</span></div><div class="d-table">${MYT.map((p,i)=>`<div class="d-tr d-tm ${p.me?'is-me':''}"><span class="n">${i+1}</span><div class="u">${av(p)}<b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b>${p.role?`<span class="c-rb">${p.role}</span>`:''}</div><div class="gl"><span><b>${fmt(p.inc)}</b> из ${fmt(p.goal)} ₽</span><div class="c-bar"><i style="width:${Math.min(100,p.pct)}%"></i></div></div><b class="pc">${p.pct}%</b></div>`).join('')}</div></div></div></main>`};
+const deskInc=(mode)=>{const cur=mode==='cur',pool=(cur?CURALL:PAST).filter(p=>p.inc>0),total=cur?27:PAST.length,sorted=[...pool].sort((a,b)=>b.inc-a.inc),avg=sum(pool)/pool.length,c=curve(pool,760,300);
+ return snav()+`<main>${dHead(mode,'inc')}<div class="d-grid3"><div><div class="c-sum d-sum"><div class="cur"><small>Заработали вместе</small><b>${kfmt(sum(pool))} ₽</b><span>${cur?'участники потока 5':'выпускники прошлых походов'}</span></div><div><small>В среднем</small><b>${kfmt(avg)} ₽</b><span>у ${pool.length} из ${total} есть доход</span></div><div class="${cur?'mine':''}"><small>${cur?'Ваш доход':'Выполнили цель'}</small><b>${cur?'18 000 ₽':pool.filter(p=>p.pct>=100).length+' чел.'}</b><span>${cur?'9-е место по доходу':'из '+pool.length}</span></div></div>
+ <div class="c-hist d-hist"><div class="d-ct">Сколько зарабатывают<span>${pool.length} чел. · наведите на точку</span></div><div class="c-cw">${c.svg}<div class="c-tip"></div></div><div class="c-legend">${[...new Set(pool.map(p=>p.t))].map(t=>`<span><i style="background:${T[t].c}"></i>${T[t].n}</span>`).join('')}${cur?'<span><i style="background:#F0D080"></i>Вы</span>':''}<span class="sd">Разброс ${kfmt(c.sd)} ₽</span></div></div></div>
+ <div><div class="d-sec" style="margin-top:0">По доходу</div><div class="c-list">${sorted.map((p,i)=>`<div class="c-irow ${p.me?'is-me':''}"><span class="n">${i+1}</span><span class="dot" style="--c:${p.me?'#F0D080':p.c}"></span><span class="nm">${p.n}${p.me?' (вы)':''}</span><b>${fmt(p.inc)} ₽</b></div>`).join('')}</div></div></div></main>`};
 
 const F=document.getElementById('frames');
-const add=(label,html)=>{const w=document.createElement('div');w.innerHTML=`<div class="c-label">${label}</div><div class="c-phone">${html}</div>`;F.appendChild(w);};
+const add=(label,html,cls='c-phone')=>{const w=document.createElement('div');w.innerHTML=`<div class="c-label">${label}</div><div class="${cls}">${html}</div>`;F.appendChild(w);};
 add('Текущий поход · Рейтинг (открывается по умолчанию)',tabRate('cur'));
 add('Текущий поход · Отряды',tabTeam('cur'));
 add('Текущий поход · Доходы',tabInc('cur'));
 add('Прошлые походы · Рейтинг',tabRate('past'));
 add('Прошлые походы · Отряды',tabTeam('past'));
 add('Прошлые походы · Доходы',tabInc('past'));
+add('Компьютер · Текущий поход · Рейтинг',deskRate('cur'),'c-desk');
+add('Компьютер · Текущий поход · Отряды',deskTeam('cur'),'c-desk');
+add('Компьютер · Текущий поход · Доходы',deskInc('cur'),'c-desk');
+add('Компьютер · Прошлые походы · Рейтинг',deskRate('past'),'c-desk');
+add('Компьютер · Прошлые походы · Доходы',deskInc('past'),'c-desk');
 
 
 // подсказка на точке: наведение на компьютере, нажатие на телефоне
