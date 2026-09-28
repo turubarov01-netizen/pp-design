@@ -187,6 +187,12 @@ body{background:#0A0E13}
   .tabbar{position:sticky;bottom:12px;margin-top:24px}
   .phone{padding-bottom:16px}
 }
+
+/* подписи: блочные строки со своим интервалом */
+.trow .tx span,.meet .tx span{display:block;line-height:1.4;margin-top:2px}
+.trow .tx b,.meet .tx b{line-height:1.3}
+.sub,.hint,.tz,.cnt,.why,.voice q,.legend{line-height:1.45}
+p{line-height:1.45}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute">
@@ -373,5 +379,20 @@ add('Компьютер · понедельник, утро','d','desk',`<nav cl
   <div class="grp">Прочее</div><a>${I('shop')}Лавка</a><a>${I('gear')}Настройки</a><a class="foot">${I('back')}На главную платформы</a></nav>
   <main>${topbar(S.a.top)}<div class="grid"><div class="col">${route(S.a.route,true)}<div>${focus(S.a.focus)}</div></div>
   <div class="col"><div>${todo(S.a.todo)}</div><div>${goal(S.a.goal)}</div><div>${meeting(S.a.meet)}</div><div>${camp(S.a.camp)}</div><div>${feed()}</div></div></div></main>`);
+
+/* Типографика: неразрывный пробел после коротких слов, между числом и единицей, перед тире и «·» */
+(function(){
+  const NB=' ';
+  const short=/(^|[\s(«])(в|во|с|со|к|ко|и|а|о|об|у|по|до|на|из|от|за|не|но|же|для|или|что|как|без|при|под|над|через|—)\s+/gi;
+  const walk=n=>{ if(n.nodeType===3){ let t=n.nodeValue;
+      t=t.replace(short,(m,a,w)=>a+w+NB).replace(short,(m,a,w)=>a+w+NB);
+      t=t.replace(/(\d)\s+(?=(дн|ч|мин|сек|уроков|урока|уроков|₽|из|сентября|октября|шагов))/g,'$1'+NB);
+      t=t.replace(/\s+(—|·|→)/g,NB+'$1');
+      t=t.replace(/(\d)\s(?=\d{3}(\D|$))/g,'$1'+NB).replace(/(Точка|Точку|Точки)\s+([АБ])/g,'$1'+NB+'$2');
+      t=t.replace(/(Неделя|Неделя 1|недели)\s+(\d)/g,'$1'+NB+'$2');
+      n.nodeValue=t; return; }
+    if(n.nodeType===1 && !/^(TEXTAREA|INPUT|SCRIPT|STYLE|svg)$/i.test(n.nodeName)) n.childNodes.forEach(walk); };
+  walk(document.getElementById('frames'));
+})();
 </script>
 </body></html>
