@@ -206,7 +206,7 @@ p{line-height:1.45}
 .dl .tx{flex:1;min-width:0}
 .dl .kind{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 .dl .tx b{display:block;font-size:15px;font-weight:600;line-height:1.3;margin-top:2px}
-.dl .pen{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--t3);margin-top:4px}
+.dl .pen{white-space:nowrap;display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--t3);margin-top:4px}
 .dl .pen .ic{width:12px;height:12px;color:#FF6B6B}
 .dl .left{text-align:right;flex:none}
 .dl .left b{display:block;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.2}
@@ -517,7 +517,7 @@ add('Компьютер · понедельник, утро','d','desk',`<nav cl
   const short=/(^|[\s(«])(в|во|с|со|к|ко|и|а|о|об|у|по|до|на|из|от|за|не|но|же|для|или|что|как|без|при|под|над|через|—)\s+/gi;
   const walk=n=>{ if(n.nodeType===3){ let t=n.nodeValue;
       t=t.replace(short,(m,a,w)=>a+w+NB).replace(short,(m,a,w)=>a+w+NB);
-      t=t.replace(/(\d)\s+(?=(дн|ч|мин|сек|уроков|урока|уроков|₽|из|сентября|октября|шагов))/g,'$1'+NB);
+      t=t.replace(/(\d)\s+(?=[А-Яа-яЁё₽%])/g,'$1'+NB);
       t=t.replace(/\s+(—|·|→)/g,NB+'$1');
       t=t.replace(/(\d)\s(?=\d{3}(\D|$))/g,'$1'+NB).replace(/(Точка|Точку|Точки)\s+([АБ])/g,'$1'+NB+'$2');
       t=t.replace(/(Неделя|Неделя 1|недели)\s+(\d)/g,'$1'+NB+'$2');
