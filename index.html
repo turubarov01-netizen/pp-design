@@ -366,6 +366,15 @@ p{line-height:1.45}
 .seg button{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border-radius:12px;border:1px solid var(--line2);background:transparent;color:var(--t2);font:600 14px Inter,sans-serif;cursor:pointer}
 .seg button .ic{width:16px;height:16px}
 .seg button.on{background:rgba(107,203,119,.15);border-color:rgba(107,203,119,.55);color:var(--moss)}
+
+/* нижнее меню: активный пункт — капсула вокруг иконки вместо полоски */
+.tabbar{height:72px;border-radius:22px}
+.tab{justify-content:flex-start;padding-top:10px;gap:6px;font-size:11px;font-weight:600;letter-spacing:.01em}
+.tab .ic{width:22px;height:22px;position:relative;z-index:1}
+.tab.on::before{content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);width:56px;height:32px;border-radius:16px;background:rgba(240,208,128,.14);box-shadow:inset 0 0 0 1px rgba(240,208,128,.28)}
+.tab.on{color:var(--gold-a)}
+.tab.on .ic{stroke-width:2.2}
+.tab:not(.on){color:rgba(255,255,255,.62)}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute">
