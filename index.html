@@ -272,6 +272,22 @@ p{line-height:1.45}
 .radbox.done .rk{color:var(--moss)}
 .focus.empty{text-align:center}
 .focus.empty .eic{width:48px;height:48px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:rgba(107,159,255,.12);color:var(--blue2)}
+
+/* срочность по порядку: первый — яркий, дальше спокойнее */
+.dl.lvl-0.tint-red{background:linear-gradient(90deg,rgba(255,107,107,.10),rgba(255,107,107,0) 70%)}
+.dl.lvl-0.tint-amb{background:linear-gradient(90deg,rgba(234,184,32,.09),rgba(234,184,32,0) 70%)}
+.dl.lvl-0.tint-blue{background:linear-gradient(90deg,rgba(107,159,255,.09),rgba(107,159,255,0) 70%)}
+.dl.lvl-0.tint-gold{background:linear-gradient(90deg,rgba(240,208,128,.08),rgba(240,208,128,0) 70%)}
+.todo{overflow:hidden}
+.dl.lvl-1 .ring svg.r circle:not(.trk){opacity:.5}
+.dl.lvl-1 .ico2,.dl.lvl-1 .kind{opacity:.7}
+.dl.lvl-1 .left b{color:var(--t1)!important;font-size:16px}
+.dl.lvl-1 .pen .ic{opacity:.6}
+.dl.lvl-2 .ring svg.r circle:not(.trk){opacity:.3}
+.dl.lvl-2 .ico2,.dl.lvl-2 .kind{opacity:.55}
+.dl.lvl-2 .tx b{color:var(--t2)}
+.dl.lvl-2 .left b{color:var(--t2)!important;font-size:15px}
+.dl.lvl-2 .pen .ic{opacity:.45}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute">
@@ -330,10 +346,10 @@ const topbar=o=>`<div class="topbar hdr"><div class="av">${o.name[0]}</div><div 
 const COL={red:'#FF6B6B',amb:'#EAB820',blue:'#6B9FFF',gold:'#F0D080',green:'#6BCB77'};
 const KIND={focus:['crosshair','Фокус дня'],challenge:['swords','Вызов Фримана'],key:['star','Ключевое задание'],meet:['video','Встреча'],rad:['book','Итоги дня · РАД']};
 const ring=(frac,col,icon)=>{const C=2*Math.PI*21;return `<div class="ring"><svg class="r" viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="21" stroke="${COL[col]}" stroke-linecap="round" stroke-dasharray="${(frac*C).toFixed(1)} ${C.toFixed(1)}"/></svg><div class="ico2 u-${col}">${I(icon)}</div></div>`};
-const dl=r=>{const [icon,kind]=KIND[r.kind];return `<a class="dl">${ring(r.frac,r.col,icon)}
+const dl=(r,i=0)=>{const [icon,kind]=KIND[r.kind];return `<a class="dl lvl-${Math.min(i,2)} tint-${r.col}">${ring(r.frac,r.col,icon)}
   <div class="tx"><div class="kind u-${r.col}">${kind}</div><b>${r.t}</b>${r.pen?`<span class="pen">${I('heart','fill')}${r.pen}</span>`:''}</div>
   ${r.btn?r.btn:`<div class="left"><b class="u-${r.col==='blue'||r.col==='gold'?'x':r.col}">${r.left}</b><span>${r.until}</span></div>`}</a>`};
-const todo=rows=>`<div class="sectt"><h2>Сегодня${NEW('все дедлайны списком')}</h2></div><div class="todo">${[...rows].sort((a,b)=>(a.mins??1e9)-(b.mins??1e9)).map(r=>r.kind?dl(r):`
+const todo=rows=>`<div class="sectt"><h2>Сегодня${NEW('все дедлайны списком')}</h2></div><div class="todo">${[...rows].sort((a,b)=>(a.mins??1e9)-(b.mins??1e9)).map((r,i)=>r.kind?dl(r,i):`
   <a class="trow" style="min-height:72px"><span class="ico" style="width:48px;height:48px;border-radius:50%">${I(r.icon||'user','','color:#6B9FFF')}</span><div class="tx"><b>${r.t}</b><span>${r.s}</span></div>${chev}</a>`).join('')}</div>`;
 
 /* Маршрут: разделы training_sections, уроки training_lessons */
