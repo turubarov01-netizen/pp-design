@@ -323,6 +323,25 @@ p{line-height:1.45}
 .chk.on{width:24px;height:24px;border-radius:7px;background:var(--moss);display:grid;place-items:center;flex:none;margin-top:2px}
 .chk.on .ic{width:15px;height:15px;color:#0D1117;stroke-width:3}
 .ask label{font-size:15px}
+
+.stats .st{cursor:pointer}
+.stats .st b{font-size:16px}
+.sheetframe{position:relative;overflow:hidden;max-height:844px}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:5}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;background:#141E2B;border-radius:24px 24px 0 0;border-top:1px solid var(--line2);padding:10px 18px 28px}
+.grab{width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.25);margin:0 auto 16px}
+.sh-head{display:flex;align-items:center;gap:12px}
+.sh-head .ic{width:32px;height:32px}
+.sh-head b{font-size:28px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.sh-head span{display:block;font-size:13px;color:var(--t3);margin-top:2px}
+.sheet .sub{margin-top:10px;line-height:1.45}
+.sh-list{margin-top:14px;border-top:1px solid var(--line)}
+.sh-row{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 0;border-bottom:1px solid var(--line)}
+.sh-row div{flex:1;min-width:0}
+.sh-row b{display:block;font-size:14px;font-weight:600;line-height:1.3}
+.sh-row span{display:block;font-size:12px;color:var(--t3);margin-top:2px}
+.sh-row em{font-style:normal;font-weight:700;color:var(--amber);font-variant-numeric:tabular-nums}
+@media (max-width:560px){.sheetframe{max-height:100vh}}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute">
@@ -373,9 +392,9 @@ const NEW=(t='новое')=>`<span class="new">${t}</span>`;
 /* Шапка: PPProfileWidget + PPCoinsWidget + PPPointsWidget + BackpackMiniWidget */
 const topbar=o=>`<div class="topbar hdr"><div class="av">${o.name[0]}</div><div class="who"><b>${o.name}</b><span>${o.sub}</span></div>
   <a class="bagbtn" aria-label="Рюкзак">${I('bag')}${o.bag?`<em>${o.bag}</em>`:''}</a>
-  <div class="stats"><a class="st" aria-label="Жизни: ${o.lives} из 3"><span class="hearts3">${[0,1,2].map(i=>I('heart',i<o.lives?'fill':'','color:'+(i<o.lives?'#FF6B6B':'rgba(255,107,107,.35)'))).join('')}</span></a>
-  <a class="st">${I('fire','','color:#EAB820')}<b>${o.coins}</b><small>фениксов</small></a>
-  <a class="st">${I('star','fill','color:#F0D080')}<b>${o.points}</b><small>баллов</small></a></div></div>`;
+  <div class="stats"><a class="st" role="button" aria-label="Жизни: ${o.lives} из 3"><span class="hearts3">${[0,1,2].map(i=>I('heart',i<o.lives?'fill':'','color:'+(i<o.lives?'#FF6B6B':'rgba(255,107,107,.35)'))).join('')}</span></a>
+  <a class="st" role="button" aria-label="Фениксы: ${o.coins}">${I('fire','','color:#EAB820')}<b>${o.coins}</b></a>
+  <a class="st" role="button" aria-label="Баллы: ${o.points}">${I('star','fill','color:#F0D080')}<b>${o.points}</b></a></div></div>`;
 
 /* Сегодня: FocusTimerWidget, KeyTaskTimerWidget, UpcomingEventWidget, PPSettingsNotification — одним списком */
 const COL={red:'#FF6B6B',amb:'#EAB820',blue:'#6B9FFF',gold:'#F0D080',green:'#6BCB77'};
@@ -520,12 +539,23 @@ const valley=()=>`<div class="valley2"><div class="pic" role="img" aria-label="�
   <div class="acts" style="margin-top:10px"><button class="b b-cta full">${I('bag')}Предмет из рюкзака</button><button class="b b-blue full">${I('users')}Попросить отряд или куратора</button></div>
   <div class="why">Кнопки${NEW()} — сейчас на экране комы это только текст.</div></div></div>`;
 
+
+/* Окно по нажатию на фениксы (мобильная версия) */
+const sheet=()=>`<div class="scrim"></div><div class="sheet" role="dialog" aria-label="Фениксы">
+  <div class="grab"></div>
+  <div class="sh-head">${I('fire','','color:#EAB820')}<div><b>120</b><span>фениксов</span></div></div>
+  <p class="sub">Начисляются за уроки и задания. Тратятся в Лавке на предметы для рюкзака.</p>
+  <div class="sh-list">${[['Урок «Записная книжка»','сегодня','+20'],['Урок «Формула достижения желаемого дохода»','вчера','+20'],['Квиз после урока','вчера','+10'],['Урок «Настройка и активация»','27 сен','+10']].map(r=>`<div class="sh-row"><div><b>${r[0]}</b><span>${r[1]}</span></div><em>${r[2]}</em></div>`).join('')}</div>
+  <a class="lnk" style="display:block;text-align:center;margin-top:10px">Вся история начислений</a>
+  <button class="b b-blue full" style="margin-top:16px">${I('shop')}Открыть Лавку</button>
+  <p class="why" style="text-align:center;margin-top:12px">Окно для ученика${NEW()} — список начислений уже есть на платформе.</p></div>`;
 const F=document.getElementById('frames');
 const add=(label,id,cls,html)=>{const w=document.createElement('div');w.innerHTML=`<div class="label">${label}</div><div id="${id}" class="${cls}">${html}</div>`;F.appendChild(w);};
 add(S.a.label,'p1','phone',phone(S.a));
 add(S.b.label,'p2','phone',phone(S.b));
 add(S.c.label,'p3','phone',phone(S.c));
 add(S.w.label,'p5','phone',phone(S.w));
+add('6 · Нажатие на фениксы','p6','phone sheetframe',phone(S.a)+sheet());
 add('5 · Кома — 0 жизней','p4','phone',valley()+tabbar());
 add('Компьютер · понедельник, утро','d','desk',`<nav class="snav"><div class="logo gold">План Продюсера</div>
   <a class="on">${I('home')}Главная</a><a>${I('map')}Маршрут</a><a>${I('cal')}Календарь</a><a>${I('tent')}Лагерь</a><a>${I('bag')}Рюкзак</a>
