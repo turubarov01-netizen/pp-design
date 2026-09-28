@@ -9,7 +9,7 @@ body{background:#0A0E13}
 .lg-wrap{display:flex;flex-wrap:wrap;gap:40px;padding:32px;align-items:flex-start}
 .lg-label{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin:0 0 10px 4px;max-width:390px;line-height:1.4}
 .lg-phone{width:390px;min-height:844px;border-radius:28px;border:1px solid var(--line2);overflow:hidden;padding:16px 16px 108px;position:relative;background:var(--bg)}
-.lg-legend{width:100%;max-width:1440px;font-size:14px;color:var(--t2);padding:14px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line);line-height:1.5}
+.lg-legend{width:100%;max-width:1440px;font-size:14px;color:var(--t2);padding:14px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line);line-height:1.55}
 .lg-legend b{color:#fff}
 .lg-new{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;border:1px dashed rgba(107,159,255,.7);color:#9DBDFF;font-size:11px;font-weight:700;vertical-align:middle;margin-left:6px;white-space:nowrap;text-transform:none;letter-spacing:0}
 .lg-ic{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -17,35 +17,49 @@ body{background:#0A0E13}
 .lg-h1{display:flex;align-items:center;gap:12px}
 .lg-h1 .lg-badge{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(240,208,128,.1);color:var(--gold-a);flex:none}
 .lg-h1 b{display:block;font-size:20px;line-height:1.2}
-.lg-h1 span{font-size:13px;color:var(--t3)}
+.lg-h1 span{font-size:13px;color:var(--t3);line-height:1.4}
+.lg-h1 span em{font-style:normal;color:var(--gold-a);font-weight:600}
 .lg-sec{display:flex;justify-content:space-between;align-items:center;margin:26px 2px 12px;gap:12px}
 .lg-sec h2{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);display:flex;align-items:center;gap:8px}
 .lg-sec h2 .lg-ic{width:16px;height:16px;color:var(--gold-a)}
-.lg-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
-.lg-kpi{padding:12px 14px;border-radius:14px;background:rgba(240,208,128,.06);border:1px solid rgba(240,208,128,.16)}
-.lg-kpi small{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);line-height:1.3}
-.lg-kpi b{display:block;font-size:19px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums;margin-top:4px;white-space:nowrap}
+.lg-sec>span{font-size:12px;color:var(--t3)}
+/* результаты потока */
+.lg-res{margin-top:16px;border-radius:16px;border:1px solid rgba(240,208,128,.18);background:rgba(240,208,128,.05);overflow:hidden}
+.lg-res-h,.lg-res-r{display:grid;grid-template-columns:minmax(0,1.15fr) 1fr 1fr;align-items:center;gap:8px;padding:0 14px}
+.lg-res-h{height:36px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid rgba(240,208,128,.12)}
+.lg-res-h span:not(:first-child),.lg-res-r b{text-align:right}
+.lg-res-h .cur{color:var(--gold-a)}
+.lg-res-r{min-height:52px;border-top:1px solid rgba(240,208,128,.08)}
+.lg-res-r:first-of-type{border-top:0}
+.lg-res-r small{font-size:13px;color:var(--t2);line-height:1.3}
+.lg-res-r small i{display:block;font-style:normal;font-size:11px;color:var(--t3);margin-top:2px}
+.lg-res-r b{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lg-res-r b.g{color:var(--gold-a)}
 .lg-teams{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
-.lg-tchip{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:13px;color:var(--t2);white-space:nowrap}
+.lg-tchip{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 11px;border-radius:15px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:12px;color:var(--t2);white-space:nowrap}
 .lg-tchip i{width:10px;height:10px;border-radius:50%;background:var(--c)}
-.lg-me{background:linear-gradient(160deg,#18263A,#141E2B 65%);border:1px solid rgba(240,208,128,.3);border-radius:20px;padding:18px}
+/* ваш рейтинг */
+.lg-mycard{background:linear-gradient(160deg,#18263A,#141E2B 65%);border:1px solid rgba(240,208,128,.3);border-radius:20px;padding:18px}
 .lg-me-top{display:flex;align-items:baseline;gap:12px}
 .lg-me-place{font-size:44px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--gold-a),var(--gold-b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
 .lg-me-top span{font-size:14px;color:var(--t3)}
 .lg-me-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.lg-me-grid.two{grid-template-columns:1fr 1fr;margin-top:8px}
 .lg-pill{padding:10px 8px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);text-align:center;min-width:0}
 .lg-pill small{display:block;font-size:11px;font-weight:600;color:var(--t3)}
-.lg-pill b{display:block;font-size:15px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.lg-pill.acc b{color:var(--gold-a)}
-.lg-me-bar{margin-top:14px}
-.lg-me-bar .r{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--t3);line-height:1.4}
-.lg-me-bar .r b{color:#fff}
-.lg-bar{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}
-.lg-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold-b),var(--gold-a))}
-.lg-hearts{display:inline-flex;gap:2px;justify-content:center}
+.lg-pill b{display:flex;justify-content:center;align-items:center;gap:4px;font-size:15px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lg-pill.acc{background:rgba(240,208,128,.1);border-color:rgba(240,208,128,.25)} .lg-pill.acc b{color:var(--gold-a)}
+.lg-tentnote{display:flex;gap:10px;align-items:center;margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(116,168,120,.1);border:1px solid rgba(116,168,120,.25);font-size:13px;color:var(--t2);line-height:1.4}
+.lg-tentnote .lg-ic{color:#8FC79A}
+.lg-tentnote b{color:#fff;font-weight:600}
+.lg-hearts{display:inline-flex;gap:2px;align-items:center}
 .lg-hearts .lg-ic{width:13px;height:13px}
-.lg-cup{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--gold-a);white-space:nowrap}
-.lg-cup .lg-ic{width:14px;height:14px}
+.lg-hearts .tent{color:#8FC79A;width:15px;height:15px;margin-right:3px}
+.lg-status{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 7px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap}
+.lg-status .lg-ic{width:12px;height:12px}
+.lg-status.fin{background:rgba(240,190,60,.15);color:#F2C14E}
+.lg-status.grad{background:rgba(52,178,120,.14);color:#4CC38A}
+/* переключатели */
 .lg-seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
 .lg-seg button{min-height:40px;padding:0 6px;border:0;border-radius:10px;background:transparent;color:var(--t2);font:600 13px Inter,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
 .lg-seg button .lg-ic{width:15px;height:15px}
@@ -54,48 +68,79 @@ body{background:#0A0E13}
 .lg-chip{height:34px;padding:0 12px;border-radius:17px;border:1px solid var(--line2);background:transparent;color:var(--t2);font:600 13px Inter,sans-serif;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .lg-chip.on{border-color:rgba(240,208,128,.55);color:#fff;background:rgba(240,208,128,.08)}
 .lg-chip .lg-ic{width:14px;height:14px}
-.lg-count{margin-left:auto;font-size:12px;color:var(--t3)}
-.lg-weeks{display:flex;gap:6px;margin-top:10px}
+.lg-count{margin-left:auto;font-size:12px;color:var(--t3);white-space:nowrap}
+.lg-weeks{display:flex;gap:6px;margin:0 0 4px}
 .lg-weeks span{height:30px;padding:0 12px;border-radius:15px;border:1px solid var(--line2);font-size:12px;font-weight:600;color:var(--t2);display:inline-flex;align-items:center}
-.lg-weeks span.on{background:#223047;color:#fff;border-color:rgba(240,208,128,.45)}
-.lg-podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:end;gap:8px;margin-top:16px}
-.lg-pd{text-align:center;min-width:0}
-.lg-crown{color:var(--gold-a);height:24px;display:flex;justify-content:center;align-items:flex-end}
-.lg-crown .lg-ic{width:22px;height:22px}
-.lg-av{border-radius:50%;display:grid;place-items:center;font-weight:700;background:#223047;color:#fff;border:2px solid var(--c,#6B9FFF);margin:0 auto;flex:none}
-.lg-pd .lg-av{width:50px;height:50px;font-size:15px}
-.lg-pd.k1 .lg-av{width:62px;height:62px;font-size:18px;border-width:3px}
-.lg-pd .nm{font-size:13px;font-weight:600;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c)}
-.lg-pd .vl{font-size:15px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums;white-space:nowrap}
-.lg-pd .base{margin-top:8px;border-radius:12px 12px 4px 4px;display:grid;place-items:center;font-size:18px;font-weight:800}
-.lg-pd.k1 .base{height:64px;background:linear-gradient(180deg,rgba(240,208,128,.34),rgba(240,208,128,.06));color:var(--gold-a)}
-.lg-pd.k2 .base{height:46px;background:linear-gradient(180deg,rgba(200,210,225,.2),rgba(200,210,225,.04));color:#D5DCE6}
-.lg-pd.k3 .base{height:36px;background:linear-gradient(180deg,rgba(205,140,90,.24),rgba(205,140,90,.05));color:#E0A77A}
+.lg-weeks span.on{background:linear-gradient(135deg,var(--gold-a),var(--gold-b));color:#1A1406;border-color:transparent}
+/* подиум */
 .lg-card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
-.lg-row{position:relative;display:flex;align-items:center;gap:10px;min-height:64px;padding:8px 14px;border-top:1px solid var(--line)}
+.lg-pcard{padding:14px 14px 0;position:relative}
+.lg-pcard+.lg-pcard{margin-top:12px}
+.lg-pcard h3{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.lg-pcard h3 .ib{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(240,208,128,.12);color:var(--gold-a)}
+.lg-pcard h3 .ib .lg-ic{width:16px;height:16px}
+.lg-pcard .lg-weeks{margin-top:10px}
+.lg-mtn{position:absolute;left:0;right:0;bottom:0;width:100%;height:110px;opacity:.07;color:#fff;pointer-events:none}
+.lg-podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:end;gap:6px;margin-top:12px;position:relative}
+.lg-pd{text-align:center;min-width:0;display:flex;flex-direction:column;align-items:center}
+.lg-crown{color:var(--gold-a);height:26px;display:flex;justify-content:center;align-items:flex-end}
+.lg-crown .lg-ic{width:22px;height:22px}
+.lg-pav{position:relative;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;background:var(--tb,#223047);border:3px solid var(--card)}
+.lg-pd.k1 .lg-pav{width:66px;height:66px;font-size:19px;box-shadow:0 0 0 3px #E8C45A,0 0 24px rgba(232,196,90,.4)}
+.lg-pd.k2 .lg-pav{width:54px;height:54px;font-size:15px;box-shadow:0 0 0 3px #C7CCD4,0 0 16px rgba(199,204,212,.25)}
+.lg-pd.k3 .lg-pav{width:50px;height:50px;font-size:14px;box-shadow:0 0 0 3px #B7773F,0 0 14px rgba(183,119,63,.22)}
+.lg-rk{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff}
+.lg-pd.k1 .lg-rk{width:26px;height:26px;background:linear-gradient(135deg,#F0D080,#B8862E)}
+.lg-pd.k2 .lg-rk{background:linear-gradient(135deg,#D9DDE3,#9CA3AF)}
+.lg-pd.k3 .lg-rk{background:linear-gradient(135deg,#C98A5E,#8A4E25)}
+.lg-pd .ln{margin-top:14px;font-size:13px;font-weight:700;color:var(--c);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lg-pd .fn{font-size:11px;color:var(--t3);line-height:1.3}
+.lg-pd .vl{font-size:15px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums;white-space:nowrap;margin-top:2px}
+.lg-pd.k1 .vl{font-size:17px}
+.lg-ped{margin-top:8px;width:100%;border-radius:14px 14px 0 0;border:1px solid rgba(255,255,255,.06);border-bottom:0}
+.lg-pd.k1 .lg-ped{height:64px;background:linear-gradient(180deg,rgba(232,196,90,.26),rgba(232,196,90,.03))}
+.lg-pd.k2 .lg-ped{height:44px;background:linear-gradient(180deg,rgba(199,204,212,.18),rgba(199,204,212,.02))}
+.lg-pd.k3 .lg-ped{height:30px;background:linear-gradient(180deg,rgba(183,119,63,.2),rgba(183,119,63,.02))}
+.lg-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:26px 16px 30px;color:var(--t3)}
+.lg-empty .ei{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.04);margin-bottom:10px}
+.lg-empty .ei .lg-ic{width:24px;height:24px;opacity:.5}
+.lg-empty b{font-size:14px;color:var(--t2)}
+.lg-empty span{font-size:13px;margin-top:4px}
+/* аватар с кольцом уровня */
+.lg-av{border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;background:var(--tb,#223047);flex:none;width:38px;height:38px;font-size:12px}
+.lg-av.lv{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--lv)}
+.lg-rep{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:6px;background:rgba(255,255,255,.06);color:var(--rc);flex:none}
+.lg-rep .lg-ic{width:12px;height:12px}
+/* строка рейтинга (телефон) */
+.lg-row{position:relative;display:flex;align-items:center;gap:10px;min-height:66px;padding:8px 14px;border-top:1px solid var(--line)}
 .lg-card>.lg-row:first-child{border-top:0}
 .lg-row .prog{position:absolute;left:0;top:0;bottom:0;background:rgba(240,208,128,.05);pointer-events:none}
 .lg-row>*:not(.prog){position:relative}
-.lg-row .pl{width:24px;text-align:center;font-size:14px;font-weight:700;color:var(--t3);font-variant-numeric:tabular-nums;flex:none}
-.lg-row .pl.m1{color:var(--gold-a)} .lg-row .pl.m2{color:#D5DCE6} .lg-row .pl.m3{color:#E0A77A}
-.lg-row .lg-av{width:36px;height:36px;font-size:12px;margin:0}
+.lg-pl{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--t3);font-variant-numeric:tabular-nums;flex:none}
+.lg-pl.m1{background:linear-gradient(135deg,#F0D080,#B8862E);color:#1A1406}
+.lg-pl.m2{background:linear-gradient(135deg,#D9DDE3,#9CA3AF);color:#16191F}
+.lg-pl.m3{background:linear-gradient(135deg,#C98A5E,#8A4E25);color:#fff}
 .lg-row .who{flex:1;min-width:0}
-.lg-row .who b{display:block;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c)}
-.lg-row .who .sub{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:12px;color:var(--t3);white-space:nowrap;overflow:hidden}
+.lg-row .who .nmr{display:flex;align-items:center;gap:6px;min-width:0}
+.lg-row .who .nmr b{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c)}
+.lg-row .who .ln2{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:12px;color:var(--t3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.lg-row .who .ln2 b{color:var(--t2);font-weight:600}
 .lg-role{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:6px;background:rgba(255,255,255,.06);font-size:11px;font-weight:600;color:var(--t2);white-space:nowrap}
-.lg-row .rt{text-align:right;flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
-.lg-row .rt b{font-size:16px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums;line-height:1.2}
+.lg-row .rt{text-align:right;flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.lg-row .rt>b{font-size:16px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums;line-height:1.2}
 .lg-row.lg-you{background:rgba(240,208,128,.07)}
 .lg-row.lg-you::after{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:2px;background:var(--gold-b)}
 .lg-dots{display:flex;justify-content:center;align-items:center;height:30px;color:var(--t3);letter-spacing:.3em;border-top:1px solid var(--line)}
 .lg-more{display:flex;justify-content:center;align-items:center;gap:6px;min-height:48px;font-size:14px;font-weight:600;color:var(--blue2);border-top:1px solid var(--line)}
 .lg-more .lg-ic{width:16px;height:16px}
+.lg-tabsbox{padding:14px 14px 4px}
+/* распределение */
 .lg-chart{padding:14px 12px 12px}
 .lg-chart svg{display:block;width:100%;height:auto}
 .lg-chart-h{display:flex;justify-content:space-between;align-items:center;margin:0 4px 6px;gap:8px}
 .lg-chart-h small:first-child{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
 .lg-chart-h small:last-child{font-size:12px;color:var(--t3)}
-.lg-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.lg-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .lg-sum div{padding:8px 4px;border-radius:10px;background:rgba(255,255,255,.04);text-align:center;min-width:0}
 .lg-sum small{display:block;font-size:11px;color:var(--t3)}
 .lg-sum b{font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -103,58 +148,87 @@ body{background:#0A0E13}
 .lg-irow{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border-top:1px solid var(--line);font-size:14px}
 .lg-card>.lg-irow:first-child{border-top:0}
 .lg-irow .n{width:20px;color:var(--t3);font-size:12px;text-align:right;font-variant-numeric:tabular-nums;flex:none}
-.lg-irow i{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.lg-irow>i{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
 .lg-irow .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lg-irow b{font-variant-numeric:tabular-nums;white-space:nowrap}
-.lg-irow.lg-you{background:rgba(240,208,128,.07);color:var(--gold-a)}
+.lg-irow.lg-you{background:rgba(240,208,128,.07);color:var(--gold-a);font-weight:700}
+.lg-2col{display:grid;grid-template-columns:1fr 1fr}
+.lg-2col .lg-irow:nth-child(2){border-top:0}
+.lg-2col .lg-irow:nth-child(odd){border-right:1px solid var(--line)}
+/* отряд и роли */
 .lg-team-head{padding:16px;border-bottom:1px solid var(--line)}
-.lg-team-head b{font-size:17px;color:var(--c)}
-.lg-team-head span{display:block;font-size:13px;color:var(--t3);margin-top:2px}
+.lg-team-head .tn{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--c)}
+.lg-team-head .tn .lg-ic{color:var(--c)}
+.lg-team-head .tg{display:block;font-size:13px;color:var(--t3);margin-top:3px}
 .lg-rolepick{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;min-height:48px;padding:0 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line2);font-size:14px}
 .lg-rolepick small{color:var(--t3);font-size:13px}
 .lg-rolepick b{display:flex;align-items:center;gap:6px}
 .lg-rolepick b .lg-ic{width:16px;height:16px}
-.lg-trow{display:flex;align-items:center;gap:12px;min-height:72px;padding:10px 14px;border-top:1px solid var(--line)}
+.lg-rolepick.open{border-color:rgba(240,208,128,.5)}
+.lg-roles{margin-top:8px;border-radius:14px;border:1px solid var(--line2);background:#121A25;overflow:hidden}
+.lg-roles .rh{padding:10px 14px;font-size:12px;color:var(--t3);border-bottom:1px solid var(--line)}
+.lg-ro{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-top:1px solid var(--line)}
+.lg-roles .rh+.lg-ro{border-top:0}
+.lg-ro .ri{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(240,208,128,.1);color:var(--gold-a);flex:none}
+.lg-ro .ri .lg-ic{width:16px;height:16px}
+.lg-ro .rb{flex:1;min-width:0}
+.lg-ro .rb b{display:block;font-size:14px}
+.lg-ro .rb span{display:block;font-size:12px;color:var(--t3);line-height:1.4;margin-top:2px}
+.lg-ro .rs{flex:none;font-size:12px;color:var(--t3);display:flex;align-items:center;gap:4px;white-space:nowrap;margin-top:6px}
+.lg-ro .rs .lg-ic{width:13px;height:13px}
+.lg-ro.taken{opacity:.5}
+.lg-ro.sel{background:rgba(240,208,128,.07)}
+.lg-ro.sel .rs{color:var(--gold-a)}
+/* команды */
+.lg-trow{display:flex;align-items:center;gap:12px;min-height:74px;padding:10px 14px;border-top:1px solid var(--line)}
 .lg-card>.lg-trow:first-child{border-top:0}
-.lg-trow .md{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;flex:none;background:rgba(255,255,255,.06);color:var(--t2)}
-.lg-trow .md.m1{background:linear-gradient(135deg,var(--gold-a),var(--gold-b));color:#1A1406}
-.lg-trow .md.m2{background:#C9D1DC;color:#1A1F27}
-.lg-trow .md.m3{background:#C98A5E;color:#1A1208}
 .lg-trow .tw{flex:1;min-width:0}
-.lg-trow .tw b{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--c);white-space:nowrap;overflow:hidden}
-.lg-trow .tw b i{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none}
-.lg-trow .tw span{display:block;font-size:12px;color:var(--t3);margin-top:3px;line-height:1.35}
-.lg-trow .tw .lg-bar{height:4px;margin-top:6px}
-.lg-trow .tw .lg-bar i{background:var(--c)}
+.lg-trow .tw>b{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--c);white-space:nowrap;overflow:hidden}
+.lg-trow .tw>b i{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none}
+.lg-trow .tw>span{display:block;font-size:12px;color:var(--t3);margin-top:3px;line-height:1.4}
+.lg-trow .tw .lg-bar{margin-top:7px}
 .lg-trow .avg{text-align:right;flex:none}
-.lg-trow .avg b{display:block;font-size:18px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums}
-.lg-trow .avg small{font-size:11px;color:var(--t3);white-space:nowrap}
-.lg-trow.mine{background:rgba(240,208,128,.05)}
+.lg-trow .avg b{display:block;font-size:19px;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums}
+.lg-trow .avg small{font-size:11px;color:var(--t3);white-space:nowrap;display:block}
+.lg-trow.mine{background:rgba(240,208,128,.05);box-shadow:inset 3px 0 0 var(--gold-b)}
 .lg-trow .chev{color:var(--t3);flex:none}
-.lg-sub{padding:0 14px 10px 56px;background:rgba(240,208,128,.03)}
-.lg-sub .lg-irow{border-top:0;min-height:36px;padding:0;font-size:13px}
-.lg-tag{display:inline-flex;height:18px;align-items:center;padding:0 6px;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:rgba(255,255,255,.08);color:var(--t2);flex:none}
+.lg-tag{display:inline-flex;height:18px;align-items:center;padding:0 6px;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:rgba(240,208,128,.15);color:var(--gold-a);flex:none}
+.lg-bar{height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
+.lg-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold-b),var(--gold-a))}
+.lg-over{display:block;font-size:10px;font-weight:700;color:#4CC38A}
+.lg-tsub{padding:4px 14px 10px 30px;background:rgba(240,208,128,.03);border-top:1px solid var(--line)}
+.lg-tsub .tm{display:flex;align-items:center;gap:10px;min-height:46px;border-left:2px solid rgba(240,208,128,.18);padding-left:12px}
+.lg-tsub .tm .lg-av{width:28px;height:28px;font-size:10px}
+.lg-tsub .tm .tn{width:14px;font-size:12px;color:var(--t3);flex:none}
+.lg-tsub .tm .nm{flex:1;min-width:0;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lg-tsub .tm .inc{font-size:12px;color:var(--t3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.lg-tsub .tm .inc b{color:var(--t2)}
+.lg-tsub .tm .pc{width:40px;text-align:right;font-size:13px;font-weight:800;color:var(--gold-a)}
+.lg-tsub .tm.lg-you .nm{color:var(--gold-a)}
+/* компьютер */
 .lg-desk{width:1440px;display:flex;border-radius:20px;border:1px solid var(--line2);overflow:hidden;background:var(--bg)}
 .lg-desk main{flex:1;padding:28px 32px 40px;min-width:0}
-.lg-dtop{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.lg-dtop .lg-kpis{margin:0 0 0 auto;grid-template-columns:210px 210px}
+.lg-dtop{display:grid;grid-template-columns:minmax(0,1fr) 520px;gap:24px;align-items:start}
+.lg-dtop .lg-res{margin-top:0}
 .lg-d3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:24px}
-.lg-d3 .lg-card{padding:16px 18px 18px}
-.lg-d3 h3{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
-.lg-d3 h3 .lg-ic{color:var(--gold-a);width:16px;height:16px}
+.lg-d3 .lg-pcard+.lg-pcard{margin-top:0}
 .lg-dgrid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:24px;margin-top:24px;align-items:start}
-.lg-th,.lg-tr{display:grid;grid-template-columns:32px minmax(0,1fr) 56px 76px 150px 52px;gap:12px;align-items:center;padding:0 18px}
+.lg-th,.lg-tr{display:grid;grid-template-columns:34px minmax(0,1fr) 64px 110px 170px 60px;gap:12px;align-items:center;padding:0 18px}
 .lg-th{height:42px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);border-top:1px solid var(--line)}
-.lg-tr{position:relative;min-height:58px;border-top:1px solid var(--line);font-size:14px}
+.lg-th span:nth-child(3),.lg-th span:nth-child(4){text-align:center}
+.lg-tr>span:nth-child(4),.lg-tr>span:nth-child(5){justify-self:center}
+.lg-tr{position:relative;min-height:60px;border-top:1px solid var(--line);font-size:14px}
 .lg-tr .prog{position:absolute;left:0;top:0;bottom:0;background:rgba(240,208,128,.05)}
 .lg-tr>*:not(.prog){position:relative;min-width:0}
 .lg-tr .u{display:flex;align-items:center;gap:10px;min-width:0}
-.lg-tr .u .lg-av{width:34px;height:34px;font-size:12px;margin:0}
+.lg-tr .u .lg-av{width:34px;height:34px;font-size:12px}
 .lg-tr .u b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c);font-weight:600;min-width:0}
 .lg-tr .inc{font-variant-numeric:tabular-nums;white-space:nowrap} .lg-tr .inc span{color:var(--t3);font-size:12px}
 .lg-tr .pc{text-align:right;font-weight:800;color:var(--gold-a);font-variant-numeric:tabular-nums}
 .lg-tr.lg-you{background:rgba(240,208,128,.07);box-shadow:inset 3px 0 0 var(--gold-b)}
-.lg-tabs{padding:16px 18px}
+.lg-desk .lg-trow{padding:12px 20px;gap:18px}
+.lg-tbar{width:180px;flex:none}
+.lg-desk .lg-tsub{padding-left:66px}
 .tabbar{height:72px;border-radius:22px}
 .tab{justify-content:flex-start;padding-top:10px;gap:6px;font-size:11px;font-weight:600;letter-spacing:.01em}
 .tab .lg-ic{width:22px;height:22px;position:relative;z-index:1}
@@ -189,106 +263,169 @@ body{background:#0A0E13}
  <symbol id="shop" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
  <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></symbol>
  <symbol id="back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+ <symbol id="lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+ <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+ <symbol id="feather" viewBox="0 0 24 24"><path d="M12.67 19a2 2 0 0 0 1.416-.588l6.154-6.172a6 6 0 0 0-8.49-8.49L5.586 9.914A2 2 0 0 0 5 11.328V18a1 1 0 0 0 1 1z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></symbol>
+ <symbol id="zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.920-6.02A1 1 0 0 0 11 14z"/></symbol>
+ <symbol id="flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+ <symbol id="gem" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></symbol>
+ <symbol id="anchor" viewBox="0 0 24 24"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><circle cx="12" cy="5" r="3"/></symbol>
+ <symbol id="laptop" viewBox="0 0 24 24"><rect width="18" height="12" x="3" y="4" rx="2"/><path d="M2 20h20"/></symbol>
+ <symbol id="brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></symbol>
+ <symbol id="palette" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></symbol>
+ <symbol id="award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></symbol>
+ <symbol id="pulse" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+ <symbol id="party" viewBox="0 0 24 24"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/><path d="M15 2h.01"/><path d="M22 8h.01"/><path d="M22 20h.01"/><path d="M4 3h.01"/></symbol>
+ <symbol id="clap" viewBox="0 0 24 24"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol>
 </svg>
 <div class="lg-wrap" id="frames">
- <div class="lg-legend"><b>Лагерь экспедиции — весь раздел, без потерь.</b> Сохранены все блоки платформы: шапка с «Заработано вместе» и «В среднем», три топа (% цели, прирост недели, доход), «Ваш рейтинг», «Топ экспедиции» с потоками и фильтрами, «Распределение дохода», «Мой отряд» с ролью, «Рейтинг команд» всех потоков. Цвета отрядов — настоящие из базы, люди и суммы — условные. <span class="lg-new" style="margin:0">новое</span> — этого сейчас нет.</div>
+ <div class="lg-legend"><b>Лагерь экспедиции — все блоки платформы, ничего не убрано.</b> Сверено по коду раздела 28.09: результаты (заработано вместе, в среднем на участника), три подиума, «Ваш рейтинг», «Топ экспедиции» с потоками и фильтрами, «Распределение дохода», «Мой отряд» с выбором роли, «Рейтинг команд». Подиумы, распределение, рейтинг команд и итоги считаются по всем потокам, как сейчас на платформе. В строке участника сохранены кольцо уровня на аватаре, значок репутации, жизни с палаткой, статус «Финалист» и «Выпускник». Имя и аватар открывают профиль. Цвета отрядов настоящие, люди и суммы условные. <span class="lg-new" style="margin:0">новое</span> — этого сейчас на платформе нет.</div>
 </div>
 <script>
 const I=(id,c='',s='')=>`<svg class="lg-ic ${c}" ${s?`style="${s}"`:''}><use href="#${id}"/></svg>`;
 const NEW=(t='новое')=>`<span class="lg-new">${t}</span>`;
-const A1='#f59e0b', A2='#38bdf8';
-const PP=[
- {n:'Мария С.',ini:'МС',t:A1,role:'Капитан',pct:100,inc:150000,goal:150000,pts:210,lives:3,fin:1},
- {n:'Олег Р.',ini:'ОР',t:A2,role:'Казначей',pct:71,inc:106500,goal:150000,pts:180,lives:3},
- {n:'Ирина В.',ini:'ИВ',t:A1,role:'Психолог',pct:58,inc:29000,goal:50000,pts:150,lives:2},
- {n:'Дмитрий К.',ini:'ДК',t:A2,role:'Хакер',pct:44,inc:66000,goal:150000,pts:140,lives:3},
- {n:'Елена П.',ini:'ЕП',t:A1,role:'Художник',pct:37,inc:111000,goal:300000,pts:95,lives:3},
- {n:'Наталья Б.',ini:'НБ',t:A2,role:'Сенсей',pct:33,inc:49500,goal:150000,pts:120,lives:3},
- {n:'Павел Л.',ini:'ПЛ',t:A1,role:'Тимбилдер',pct:29,inc:14500,goal:50000,pts:90,lives:3},
- {n:'Юлия М.',ini:'ЮМ',t:A2,role:'Reels Maker',pct:24,inc:36000,goal:150000,pts:110,lives:2},
+const fmt=v=>String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+const kfmt=v=>v>=1e6?(Math.round(v/1e5)/10+'').replace('.',',')+' млн':fmt(Math.round(v/1000)*1000);
+// Команды — цвета из базы
+const T={o1:{n:'Поток 5 · Отряд 1',c:'#f59e0b',g:'Анна Л.'},o2:{n:'Поток 5 · Отряд 2',c:'#38bdf8',g:'Анна Л.'},pr:{n:'Прорыв',c:'#6366F1',g:'Анна Л.'},sf:{n:'СуперФриманы',c:'#22C55E',g:'Ольга В.'},fx:{n:'Фениксы',c:'#06B6D4',g:'Мила К.'}};
+// Уровни (кольцо аватара) и репутация — как в config/levels.ts и ReputationBadge
+const LV={pawn:['Пешка',''],rebel:['Бунтарь','#B45309'],dreamer:['Мечтатель','#94A3B8'],architect:['Архитектор','#EAB308'],mentor:['Ментор','#9F1239'],elder:['Старейшина','#2563EB']};
+const REP={newcomer:['feather','Новичок','#9AA4B2'],activist:['zap','Активист','#60A5FA'],evangelist:['flame','Евангелист','#FB923C'],ambassador:['gem','Амбассадор','#C084FC'],archon:['crown','Архонт','#FBBF24']};
+const ROLES=[['Капитан','anchor','Ответственный за командный результат и правая рука Проводника'],['Казначей','chart','Ведёт оцифровку, контролирует прогресс и готовит отчёты'],['Хакер','laptop','Помогает с техническими вопросами: домен, платформа, настройки'],['Психолог','brain','Находит правильные слова, отвечает за моральный дух команды'],['Художник','palette','Помогает делать всё со вкусом: сайты, тексты, оформление'],['Сенсей','award','Опыт в запусках, консультирует по деталям'],['ЗОЖник','pulse','Следит за здоровьем команды, организует фитнес-программу'],['Тимбилдер','party','Душа команды, отвечает за выполнение вызовов всей командой'],['Reels Maker','clap','Помогает участникам выпускать видео-контент']];
+const mk=(f,l,t,o)=>({f,l,n:f+' '+l[0]+'.',ini:(f[0]+l[0]).toUpperCase(),t,...o});
+// Текущий поток (поток 5)
+const CUR=[
+ mk('Мария','Соколова','o1',{lvl:'architect',rep:'activist',pts:210,lives:3,st:'fin',inc:150000,goal:150000,role:'Капитан'}),
+ mk('Олег','Руденко','o2',{lvl:'rebel',rep:'activist',pts:180,lives:3,tent:1,inc:106500,goal:150000,role:'Казначей'}),
+ mk('Ирина','Волкова','o1',{lvl:'rebel',rep:'newcomer',pts:150,lives:2,inc:29000,goal:50000,role:'Психолог'}),
+ mk('Дмитрий','Котов','o2',{lvl:'dreamer',rep:'newcomer',pts:140,lives:3,inc:66000,goal:150000,role:'Хакер'}),
+ mk('Елена','Павлова','o1',{lvl:'pawn',rep:'activist',pts:95,lives:3,inc:111000,goal:300000,role:'Художник'}),
+ mk('Наталья','Белова','o2',{lvl:'pawn',rep:'newcomer',pts:120,lives:3,inc:49500,goal:150000,role:'Сенсей'}),
+ mk('Павел','Лебедев','o1',{lvl:'pawn',rep:'newcomer',pts:90,lives:3,inc:14500,goal:50000,role:'Тимбилдер'}),
+ mk('Юлия','Морозова','o2',{lvl:'pawn',rep:'newcomer',pts:110,lives:2,inc:36000,goal:150000,role:'Reels Maker'}),
 ];
-const NEAR=[{n:'Анна К.',ini:'АК',t:A2,role:'ЗОЖник',pct:14,inc:21000,goal:150000,pts:40,lives:3,place:11},
-            {n:'Александр',ini:'А',t:A1,role:'Казначей',pct:12,inc:18000,goal:150000,pts:25,lives:2,place:12,me:1},
-            {n:'Сергей Т.',ini:'СТ',t:A1,role:'',pct:9,inc:4500,goal:50000,pts:30,lives:1,place:13}];
+const NEAR=[
+ {...mk('Анна','Климова','o2',{lvl:'pawn',rep:'newcomer',pts:40,lives:3,inc:21000,goal:150000,role:'ЗОЖник'}),place:11},
+ {...mk('Александр','Т','o1',{lvl:'pawn',rep:'newcomer',pts:25,lives:2,tent:1,inc:18000,goal:150000,role:'Казначей',me:1}),n:'Александр',place:12},
+ {...mk('Сергей','Титов','o1',{lvl:'pawn',rep:'newcomer',pts:30,lives:1,inc:4500,goal:50000}),place:13},
+];
 const ME=NEAR[1];
-const fmt=v=>String(v).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
-const hearts=l=>`<span class="lg-hearts" aria-label="Жизни: ${l} из 3">${[0,1,2].map(i=>I('heart',i<l?'fill':'','color:'+(i<l?'#FF6B6B':'rgba(255,107,107,.3)'))).join('')}</span>`;
-const life=p=>p.fin?`<span class="lg-cup">${I('trophy')}Финалист</span>`:hearts(p.lives);
-const av=p=>`<span class="lg-av" style="--c:${p.t}">${p.ini}</span>`;
+// Прошлые потоки (выпускники) — участвуют в подиумах, распределении, рейтинге команд и итогах
+const PAST=[
+ mk('Вера','Громова','pr',{lvl:'mentor',rep:'ambassador',st:'grad',inc:615000,goal:246000}),
+ mk('Карина','Шилова','pr',{lvl:'architect',rep:'evangelist',st:'grad',inc:390000,goal:205000}),
+ mk('Глеб','Носов','pr',{lvl:'architect',rep:'activist',st:'grad',inc:372000,goal:300000}),
+ mk('Лидия','Зуева','pr',{lvl:'rebel',rep:'activist',st:'grad',inc:361000,goal:300000}),
+ mk('Марина','Фомина','sf',{lvl:'architect',rep:'evangelist',st:'grad',inc:236000,goal:150000}),
+ mk('Тамара','Юдина','fx',{lvl:'elder',rep:'evangelist',st:'grad',inc:214000,goal:150000}),
+ mk('Эдуард','Царёв','sf',{lvl:'rebel',rep:'activist',st:'grad',inc:181000,goal:150000}),
+ mk('Алла','Щукина','fx',{lvl:'dreamer',rep:'activist',st:'grad',inc:163000,goal:150000}),
+ mk('Жанна','Хохлова','sf',{lvl:'dreamer',rep:'activist',st:'grad',inc:152000,goal:150000}),
+ mk('Римма','Эйдель','fx',{lvl:'rebel',rep:'newcomer',st:'grad',inc:149000,goal:150000}),
+ mk('Стелла','Яшина','pr',{lvl:'rebel',rep:'newcomer',st:'grad',inc:121000,goal:150000}),
+ mk('Фёдор','Ильин','sf',{lvl:'pawn',rep:'newcomer',st:'grad',inc:86000,goal:150000}),
+ mk('Зоя','Уварова','fx',{lvl:'pawn',rep:'newcomer',st:'grad',inc:74000,goal:150000}),
+ mk('Лев','Чернов','sf',{lvl:'pawn',rep:'newcomer',st:'grad',inc:58000,goal:150000}),
+ mk('Ада','Ёлкина','fx',{lvl:'pawn',rep:'newcomer',st:'grad',inc:41000,goal:50000}),
+];
+const EVERY=[...CUR,...NEAR,...PAST];
+EVERY.forEach(p=>{p.pct=Math.round(p.inc/p.goal*100);p.c=T[p.t].c});
+const ALLINC=EVERY.filter(p=>p.inc>0);
+const CURINC=[...CUR,...NEAR].filter(p=>p.inc>0);
+const sum=a=>a.reduce((s,p)=>s+p.inc,0);
+
+const hearts=p=>`<span class="lg-hearts" aria-label="Жизни: ${p.lives} из 3${p.tent?', палатка активна':''}">${p.tent?I('tent','tent'):''}${[0,1,2].map(i=>I('heart',i<p.lives?'fill':'','color:'+(i<p.lives?'#FF6B6B':'rgba(255,107,107,.25)'))).join('')}</span>`;
+const life=p=>p.st==='fin'?`<span class="lg-status fin">${I('trophy')}Финалист</span>`:p.st==='grad'?`<span class="lg-status grad">${I('grad')}Выпускник</span>`:hearts(p);
+const av=p=>`<span class="lg-av ${LV[p.lvl][1]?'lv':''}" style="--tb:${p.c}33;--lv:${LV[p.lvl][1]||'transparent'}" title="${LV[p.lvl][0]}">${p.ini}</span>`;
+const rep=p=>{const r=REP[p.rep];return `<span class="lg-rep" style="--rc:${r[2]}" title="${r[1]}">${I(r[0])}</span>`};
 const tabbar=()=>`<nav class="tabbar">${[['home','Главная'],['map','Маршрут'],['cal','Календарь'],['tent','Лагерь'],['grid','Ещё']].map((t,i)=>`<a class="tab ${i===3?'on':''}">${I(t[0])}${t[1]}</a>`).join('')}</nav>`;
 
-const head=()=>`<div class="lg-h1"><span class="lg-badge">${I('mountain')}</span><div><b>Лагерь экспедиции</b><span>27 участников · Сезон 2026</span></div></div>
- <div class="lg-kpis"><div class="lg-kpi"><small>Заработано вместе</small><b>1 240 000 ₽</b></div><div class="lg-kpi"><small>В среднем на участника</small><b>62 000 ₽</b></div></div>
- <div class="lg-teams"><span class="lg-tchip" style="--c:${A1}"><i></i>Отряд 1 · 8</span><span class="lg-tchip" style="--c:${A2}"><i></i>Отряд 2 · 7</span>${NEW('легенда цветов')}</div>`;
+// ── Шапка и результаты ──
+const title=()=>`<div class="lg-h1"><span class="lg-badge">${I('mountain')}</span><div><b>Лагерь экспедиции</b><span><em>Поток 5 · идёт неделя 1</em> · 27 участников · Сезон 2026</span></div></div>`;
+const results=()=>`<div class="lg-res"><div class="lg-res-h"><span>Результаты</span><span class="cur">Поток 5 ${NEW()}</span><span>Все потоки</span></div>
+ <div class="lg-res-r"><small>Заработано вместе</small><b class="g">${kfmt(sum(CURINC))} ₽</b><b class="g">${kfmt(sum(ALLINC))} ₽</b></div>
+ <div class="lg-res-r"><small>В среднем на участника<i>у кого есть доход: ${CURINC.length} и ${ALLINC.length} чел.</i></small><b>${kfmt(sum(CURINC)/CURINC.length)} ₽</b><b>${kfmt(sum(ALLINC)/ALLINC.length)} ₽</b></div></div>`;
+const legend=(withMe)=>`<div class="lg-teams">${Object.values(T).map(t=>`<span class="lg-tchip" style="--c:${t.c}"><i></i>${t.n}</span>`).join('')}${withMe?`<span class="lg-tchip" style="--c:#F0D080"><i></i>Вы</span>`:''}</div>`;
+const head=()=>title()+results()+legend()+`<div style="margin-top:8px;font-size:12px;color:var(--t3)">Цвет имени — цвет отряда ${NEW('легенда')}</div>`;
 
-const myRank=(first)=>`<div class="lg-sec" ${first?'style="margin-top:0"':''}><h2>${I('trophy')}Ваш рейтинг</h2></div><div class="lg-me">
+// ── Ваш рейтинг ──
+const myRank=(first)=>`<div class="lg-sec" ${first?'style="margin-top:0"':''}><h2>${I('trophy')}Ваш рейтинг</h2><span>поток 5</span></div><div class="lg-mycard">
  <div class="lg-me-top"><span class="lg-me-place">#12</span><span>из 27 участников</span></div>
- <div class="lg-me-bar"><div class="r"><span>Доход <b>18 000 ₽</b> · Точка Б <b>150 000 ₽</b></span><b style="color:var(--gold-a)">12%</b></div><div class="lg-bar"><i style="width:12%"></i></div></div>
- <div class="lg-me-grid"><div class="lg-pill"><small>Баллы</small><b>25</b></div><div class="lg-pill"><small>Жизни</small><b>${hearts(2)}</b></div><div class="lg-pill acc"><small>Цель</small><b>12%</b></div></div></div>`;
+ <div class="lg-me-grid"><div class="lg-pill"><small>Баллы</small><b>25</b></div><div class="lg-pill"><small>Жизни</small><b>${hearts(ME)}</b></div><div class="lg-pill acc"><small>Цель</small><b>12%</b></div></div>
+ <div class="lg-me-grid two"><div class="lg-pill"><small>Доход</small><b>18 000 ₽</b></div><div class="lg-pill"><small>Точка Б</small><b>150 000 ₽</b></div></div>
+ <div class="lg-tentnote">${I('tent')}<span><b>Палатка активна</b> до 2 окт, 21:00 · защищает фокус и ключевое</span></div></div>`;
 
-const podium=(items,fv)=>{const o=[[items[1],2],[items[0],1],[items[2],3]];return `<div class="lg-podium">${o.map(([p,k])=>`<div class="lg-pd k${k}" style="--c:${p.t}"><div class="lg-crown">${k===1?I('crown','fill'):''}</div>${av(p)}<div class="nm">${p.n}</div><div class="vl">${fv(p)}</div><div class="base">${k}</div></div>`).join('')}</div>`};
-const WEEK=[{...PP[1],g:18},{...PP[2],g:15},{...PP[0],g:12}];
-const INCT=[PP[0],PP[4],PP[1]];
-const leaders=(mode,first)=>`<div class="lg-sec" ${first?'style="margin-top:0"':''}><h2>${I('medal')}Лидеры</h2></div>
- <div class="lg-seg"><button class="${mode==='goal'?'on':''}">${I('target')}% цели</button><button class="${mode==='week'?'on':''}">${I('trend')}Прирост</button><button class="${mode==='inc'?'on':''}">${I('coin')}Доход</button></div>
- ${mode==='week'?`<div class="lg-weeks"><span>Нед. 1</span><span class="on">Нед. 2</span></div>`:''}
- ${mode==='goal'?podium(PP,p=>p.pct+'%'):mode==='week'?podium(WEEK,p=>'+'+p.g+'%'):podium(INCT,p=>fmt(p.inc)+' ₽')}`;
+// ── Подиумы (все потоки) ──
+const mtn=`<svg class="lg-mtn" viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M0 120 L60 50 L120 90 L200 20 L280 70 L340 40 L400 80 L400 120Z" fill="currentColor"/></svg>`;
+const podium=(items,fv)=>{const o=[[items[1],2],[items[0],1],[items[2],3]];return `<div class="lg-podium">${o.map(([p,k])=>`<div class="lg-pd k${k}" style="--c:${p.c}"><div class="lg-crown">${k===1?I('crown','fill'):''}</div><span class="lg-pav" style="--tb:${p.c}40">${p.ini}<span class="lg-rk">${k}</span></span><div class="ln">${p.l}</div><div class="fn">${p.f}</div><div class="vl">${fv(p)}</div><div class="lg-ped"></div></div>`).join('')}</div>`};
+const byPct=[...EVERY].sort((a,b)=>b.pct-a.pct);
+const byInc=[...EVERY].sort((a,b)=>b.inc-a.inc);
+const WEEK=[{...CUR[1],g:18},{...CUR[2],g:15},{...CUR[0],g:12}];
+const pcard=(icon,t,body,extra='')=>`<div class="lg-card lg-pcard">${mtn}<h3><span class="ib">${I(icon)}</span>${t}</h3>${extra}${body}</div>`;
+const podiums=()=>pcard('target','Топ по % цели',podium(byPct,p=>p.pct+'%'))+pcard('trend','Прирост за неделю',podium(WEEK,p=>'+'+p.g+'%'),`<div class="lg-weeks"><span>Нед. 1</span><span class="on">Нед. 2</span></div>`)+pcard('coin','Топ по доходу',podium(byInc,p=>kfmt(p.inc)+' ₽'));
 
-const row=(p,place)=>`<div class="lg-row ${p.me?'lg-you':''}"><span class="prog" style="width:${Math.min(100,p.pct)}%"></span><span class="pl ${place<=3?'m'+place:''}">${place}</span>${av(p)}<div class="who"><b style="--c:${p.t}">${p.n}${p.me?' (вы)':''}</b><div class="sub">${p.role?`<span class="lg-role">${p.role}</span>`:''}<span>${p.pts} баллов</span></div></div><div class="rt"><b>${p.pct}%</b>${life(p)}</div></div>`;
+// ── Топ экспедиции ──
+const medal=n=>`<span class="lg-pl ${n<=3?'m'+n:''}">${n}</span>`;
+const row=(p,place,showRole)=>`<div class="lg-row ${p.me?'lg-you':''}"><span class="prog" style="width:${Math.min(100,p.pct)}%"></span>${medal(place)}${av(p)}<div class="who"><div class="nmr"><b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b>${rep(p)}${showRole&&p.role?`<span class="lg-role">${p.role}</span>`:''}</div><div class="ln2"><span><b>${fmt(p.inc)}</b> / ${fmt(p.goal)} ₽</span><span>${p.pts} б.</span></div></div><div class="rt"><b>${p.pct}%</b>${life(p)}</div></div>`;
 const tabsMain=w=>`<div class="lg-seg"><button class="${w==='top'?'on':''}">${I('users')}Топ экспедиции</button><button class="${w==='dist'?'on':''}">${I('chart')}Распределение</button></div>`;
-const top=()=>`${tabsMain('top')}
- <div class="lg-chips"><span class="lg-chip on">Текущий поток</span><span class="lg-chip">Все потоки</span></div>
- <div class="lg-chips"><span class="lg-chip on">Все · 27</span><span class="lg-chip">Активные · 26</span><span class="lg-chip">${I('grad')}Выпускники · 1</span></div>
- <div class="lg-card" style="margin-top:12px">${PP.map((p,i)=>row(p,i+1)).join('')}<div class="lg-dots">•••</div>${NEAR.map(p=>row(p,p.place)).join('')}<a class="lg-more">Показать всех · 27 ${I('down')}</a></div>`;
+const filters=()=>`<div class="lg-chips"><span class="lg-chip on">Текущий поток</span><span class="lg-chip">Все потоки</span></div><div class="lg-chips"><span class="lg-chip on">Все · 27</span><span class="lg-chip">Активные · 26</span><span class="lg-chip">${I('grad')}Выпускники · 1</span><span class="lg-count">27 в списке</span></div>`;
+const top=()=>`${tabsMain('top')}${filters()}<div class="lg-card" style="margin-top:12px">${CUR.map((p,i)=>row(p,i+1)).join('')}<div class="lg-dots">•••</div>${NEAR.map(p=>row(p,p.place)).join('')}<a class="lg-more">Показать всех · 27 ${I('down')}</a></div>`;
 
-const INC=[150000,106500,29000,66000,111000,49500,14500,36000,21000,18000,4500,58000,72000,43000,31000,88000,27000,52000];
-const COL=[A1,A2,A1,A2,A1,A2,A1,A2,A2,A1,A1,A2,A1,A2,A1,A2,A1,A2];
-const NAMES=['Мария С.','Олег Р.','Ирина В.','Дмитрий К.','Елена П.','Наталья Б.','Павел Л.','Юлия М.','Анна К.','Александр','Сергей Т.','Виктор Г.','Светлана Н.','Илья Ф.','Ольга Д.','Роман Ш.','Инна Ж.','Кирилл Е.'];
-const bell=()=>{const n=INC.length,mu=INC.reduce((a,b)=>a+b)/n,sd=Math.sqrt(INC.reduce((a,b)=>a+(b-mu)**2,0)/n);
- const lo=Math.max(0,mu-2.6*sd),hi=mu+2.6*sd,W=340,H=180,pad=16,base=H-30,pdf=x=>Math.exp(-.5*((x-mu)/sd)**2);
- const X=x=>pad+(x-lo)/(hi-lo)*(W-2*pad),Y=y=>base-y*(base-34);
- let d='';for(let i=0;i<=60;i++){const x=lo+(hi-lo)*i/60;d+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(pdf(x)).toFixed(1)}
- const area=d+`L${X(hi).toFixed(1)} ${base} L${X(lo).toFixed(1)} ${base} Z`;
- const dots=INC.map((v,i)=>{const me=v===ME.inc;return me?'':`<circle cx="${X(v).toFixed(1)}" cy="${Y(pdf(v)).toFixed(1)}" r="5" fill="${COL[i]}" stroke="#0D1117" stroke-width="1.5"/>`}).join('')+`<circle cx="${X(ME.inc).toFixed(1)}" cy="${Y(pdf(ME.inc)).toFixed(1)}" r="7" fill="#F0D080" stroke="#A07828" stroke-width="3"/>`;
- const ticks=[lo,mu,hi].map(v=>`<text x="${X(v).toFixed(1)}" y="${H-8}" fill="rgba(255,255,255,.5)" font-size="11" text-anchor="middle" font-family="Inter">${Math.round(v/1000)} тыс ₽</text>`).join('');
- return {svg:`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Кривая распределения дохода"><defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D080" stop-opacity=".3"/><stop offset="1" stop-color="#F0D080" stop-opacity=".02"/></linearGradient></defs><line x1="${pad}" x2="${W-pad}" y1="${base}" y2="${base}" stroke="rgba(255,255,255,.12)"/><path d="${area}" fill="url(#gf)"/><path d="${d}" fill="none" stroke="#F0D080" stroke-width="2"/><line x1="${X(mu).toFixed(1)}" x2="${X(mu).toFixed(1)}" y1="24" y2="${base}" stroke="rgba(255,255,255,.35)" stroke-dasharray="4 3"/><text x="${X(mu).toFixed(1)}" y="16" fill="rgba(255,255,255,.6)" font-size="11" text-anchor="middle" font-family="Inter">среднее</text>${dots}${ticks}</svg>`,mu,sd}};
-const dist=()=>{const b=bell();const sorted=INC.map((v,i)=>({v,i})).sort((a,c)=>c.v-a.v);const myIdx=sorted.findIndex(x=>x.v===ME.inc);
- return `${tabsMain('dist')}<div class="lg-card" style="margin-top:12px"><div class="lg-chart"><div class="lg-chart-h"><small>Кривая распределения</small><small>18 с доходом</small></div>${b.svg}
- <div class="lg-sum"><div><small>Среднее</small><b>${fmt(Math.round(b.mu/1000)*1000)} ₽</b></div><div><small>Разброс</small><b>${fmt(Math.round(b.sd/1000)*1000)} ₽</b></div><div class="gold2"><small>Вы</small><b>18 000 ₽</b></div></div></div></div>
- <div class="lg-sec"><h2>${I('users')}По участникам</h2></div><div class="lg-card">${sorted.slice(0,5).map((x,k)=>`<div class="lg-irow"><span class="n">${k+1}</span><i style="--c:${COL[x.i]}"></i><span class="nm">${NAMES[x.i]}</span><b>${fmt(x.v)} ₽</b></div>`).join('')}<div class="lg-dots">•••</div><div class="lg-irow lg-you"><span class="n">${myIdx+1}</span><i style="--c:#F0D080"></i><span class="nm">Александр (вы)</span><b>18 000 ₽</b></div><a class="lg-more">Весь список · 18 ${I('down')}</a></div>`};
+// ── Распределение дохода (все потоки) ──
+const bell=(W=340,H=200)=>{const INC=ALLINC.map(p=>p.inc),n=INC.length,mu=INC.reduce((a,b)=>a+b)/n,sd=Math.sqrt(INC.reduce((a,b)=>a+(b-mu)**2,0)/n);
+ const lo=Math.max(0,mu-3*sd),hi=mu+3*sd,pad=18,base=H-32,top=44,pdf=x=>Math.exp(-.5*((x-mu)/sd)**2);
+ const X=x=>pad+(x-lo)/(hi-lo)*(W-2*pad),Y=y=>base-y*(base-top);
+ let d='';for(let i=0;i<=80;i++){const x=lo+(hi-lo)*i/80;d+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(pdf(x)).toFixed(1)}
+ const area=d+`L${X(hi).toFixed(1)} ${base} L${X(lo).toFixed(1)} ${base} Z`,r=W>500?6:5;
+ const dots=ALLINC.filter(p=>!p.me).map(p=>`<circle cx="${X(p.inc).toFixed(1)}" cy="${Y(pdf(p.inc)).toFixed(1)}" r="${r}" fill="${p.c}" stroke="#0D1117" stroke-width="1.5"/>`).join('')+`<circle cx="${X(ME.inc).toFixed(1)}" cy="${Y(pdf(ME.inc)).toFixed(1)}" r="${r+2}" fill="#F0D080" stroke="#A07828" stroke-width="3"/>`;
+ const lead=byInc[0],tx=X(lead.inc),ty=Y(pdf(lead.inc)),bw=W>500?180:156,bx=Math.min(W-pad-bw,Math.max(pad,tx-bw+12)),by=ty-60;
+ const tip=`<g><rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw}" height="46" rx="10" fill="#1B2533" stroke="rgba(255,255,255,.16)"/><text x="${(bx+12).toFixed(1)}" y="${(by+19).toFixed(1)}" fill="#fff" font-size="13" font-weight="700" font-family="Inter">${lead.f} ${lead.l}</text><text x="${(bx+12).toFixed(1)}" y="${(by+36).toFixed(1)}" fill="rgba(255,255,255,.65)" font-size="12" font-family="Inter">Доход: ${fmt(lead.inc)} ₽</text></g>`;
+ const nt=W>500?5:3,ticks=Array.from({length:nt},(_,i)=>lo+(hi-lo)*i/(nt-1)).map(v=>`<text x="${X(v).toFixed(1)}" y="${H-10}" fill="rgba(255,255,255,.5)" font-size="11" text-anchor="middle" font-family="Inter">${kfmt(v)} ₽</text>`).join('');
+ return {svg:`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Кривая распределения дохода, ${n} участников"><defs><linearGradient id="gf${W}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D080" stop-opacity=".3"/><stop offset="1" stop-color="#F0D080" stop-opacity=".02"/></linearGradient></defs><line x1="${pad}" x2="${W-pad}" y1="${base}" y2="${base}" stroke="rgba(255,255,255,.12)"/><path d="${area}" fill="url(#gf${W})"/><path d="${d}" fill="none" stroke="#F0D080" stroke-width="2"/><line x1="${X(mu).toFixed(1)}" x2="${X(mu).toFixed(1)}" y1="${top-10}" y2="${base}" stroke="rgba(255,255,255,.35)" stroke-dasharray="4 3"/><text x="${X(mu).toFixed(1)}" y="${top-16}" fill="rgba(255,255,255,.65)" font-size="11" text-anchor="middle" font-family="Inter">среднее ${kfmt(mu)} ₽</text>${dots}${tip}${ticks}</svg>`,mu,sd,n}};
+const dist=(desk)=>{const b=bell(desk?1000:340,desk?270:200);const sorted=[...ALLINC].sort((a,c)=>c.inc-a.inc);const myIdx=sorted.findIndex(x=>x.me);
+ const item=(x,i)=>`<div class="lg-irow ${x.me?'lg-you':''}"><span class="n">${i+1}</span><i style="--c:${x.me?'#F0D080':x.c}"></i><span class="nm">${x.n}${x.me?' (вы)':''}</span><b>${fmt(x.inc)} ₽</b></div>`;
+ const list=desk?`<div class="lg-card lg-2col">${sorted.map(item).join('')}</div>`:`<div class="lg-card">${sorted.slice(0,10).map(item).join('')}<div class="lg-dots">•••</div>${item(sorted[myIdx],myIdx)}<a class="lg-more">Показать всех · ${b.n} ${I('down')}</a></div>`;
+ return `${desk?'':tabsMain('dist')}<div class="lg-card" style="margin-top:12px"><div class="lg-chart"><div class="lg-chart-h"><small>Кривая распределения</small><small>все потоки · ${b.n} уч.</small></div>${b.svg}
+ ${legend(1)}<div class="lg-sum"><div><small>Среднее</small><b>${kfmt(b.mu)} ₽</b></div><div><small>Разброс (σ)</small><b>${kfmt(b.sd)} ₽</b></div><div class="gold2"><small>Вы</small><b>18 000 ₽</b></div></div></div></div>
+ <div class="lg-sec"><h2>${I('users')}По участникам</h2><span>по доходу, все потоки</span></div>${list}`};
 
-const TEAM=[PP[0],PP[2],PP[4],PP[6],ME,NEAR[2]];
-const team=(first)=>`<div class="lg-sec" ${first?'style="margin-top:0"':''}><h2>${I('swords')}Мой отряд</h2></div><div class="lg-card"><div class="lg-team-head" style="--c:${A1}"><b>Поток 5 · Отряд 1</b><span>Проводник: Анна Л. · 8 участников</span>
- <div class="lg-rolepick"><small>Ваша роль</small><b>Казначей ${I('down')}</b></div></div>${TEAM.map((p,i)=>row(p,i+1)).join('')}</div>`;
+// ── Мой отряд и роли ──
+const MYTEAM=[CUR[0],CUR[2],CUR[4],CUR[6],ME,NEAR[2]];
+const team=(first,openRoles)=>`<div class="lg-sec" ${first?'style="margin-top:0"':''}><h2>${I('swords')}Мой отряд</h2></div><div class="lg-card"><div class="lg-team-head" style="--c:${T.o1.c}"><div class="tn">${I('swords')}Поток 5 · Отряд 1</div><span class="tg">Проводник: Анна Л. · 8 участников</span>
+ <div class="lg-rolepick ${openRoles?'open':''}"><small>Ваша роль</small><b>${I('chart')}Казначей ${I(openRoles?'up':'down')}</b></div>
+ ${openRoles?`<div class="lg-roles"><div class="rh">Роль выбирается один раз. Занятые в отряде роли закрыты.</div>${ROLES.map(([r,ic,d])=>{const who=MYTEAM.find(p=>p.role===r&&!p.me);const sel=r===ME.role;return `<div class="lg-ro ${who?'taken':''} ${sel?'sel':''}"><span class="ri">${I(ic)}</span><div class="rb"><b>${r}</b><span>${d}</span></div><span class="rs">${sel?I('check')+'ваша':who?I('lock')+who.n:''}</span></div>`}).join('')}</div>`:''}</div>
+ ${openRoles?'':MYTEAM.map((p,i)=>row(p,i+1,1)).join('')}</div>`;
 
-const TEAMS=[
- {n:'Фениксы',c:'#06B6D4',st:'прошлый поток',mem:8,pts:1120,inc:'2,1 млн',avg:64},
- {n:'СуперФриманы',c:'#22C55E',st:'прошлый поток',mem:7,pts:980,inc:'1,6 млн',avg:52},
- {n:'Прорыв',c:'#6366F1',st:'прошлый поток',mem:6,pts:760,inc:'940 тыс',avg:41},
- {n:'Поток 5 · Отряд 2',c:A2,st:'поток 5',mem:7,pts:720,inc:'540 тыс',avg:38},
- {n:'Поток 5 · Отряд 1',c:A1,st:'поток 5',mem:8,pts:640,inc:'610 тыс',avg:35,mine:1,open:1},
-];
-const teams=()=>`<div class="lg-sec"><h2>${I('medal')}Рейтинг команд</h2><span style="font-size:12px;color:var(--t3)">все потоки</span></div><div class="lg-card">${TEAMS.map((t,i)=>`<div class="lg-trow ${t.mine?'mine':''}" style="--c:${t.c}"><span class="md ${i<3?'m'+(i+1):''}">${i+1}</span><div class="tw"><b><i></i>${t.n}${t.mine?'<span class="lg-tag">ваш</span>':''}</b><span>${t.st} · ${t.mem} уч. · ${t.pts} баллов<br>${t.inc} ₽ заработано</span><div class="lg-bar"><i style="width:${t.avg}%"></i></div></div><div class="avg"><b>${t.avg}%</b><small>ср. цель</small></div><span class="chev">${I(t.open?'up':'down')}</span></div>${t.open?`<div class="lg-sub">${[PP[0],PP[2],PP[4],ME].map((p,k)=>`<div class="lg-irow ${p.me?'lg-you':''}"><span class="n">${k+1}</span><i style="--c:${p.t}"></i><span class="nm">${p.n}${p.role?' · '+p.role:''}</span><b>${p.pct}%</b></div>`).join('')}</div>`:''}`).join('')}</div>`;
+// ── Рейтинг команд (все потоки) ──
+const TEAMS=Object.entries(T).map(([k,t])=>{const m=EVERY.filter(p=>p.t===k);const cnt={pr:6,sf:7,fx:8,o1:8,o2:7}[k];const avg=Math.round(m.reduce((s,p)=>s+p.pct,0)/(k.startsWith('o')?cnt:m.length));const pts={pr:'57 290',sf:'61 140',fx:'69 520'}[k]||String(m.reduce((s,p)=>s+(p.pts||0),0));return {k,...t,m,cnt,avg,pts,inc:sum(m),mine:k==='o1',past:!k.startsWith('o')}}).sort((a,b)=>b.avg-a.avg);
+const teams=(desk,first)=>`<div class="lg-sec" ${first?'style="margin-top:0"':''}><h2>${I('medal')}Рейтинг команд</h2><span>все потоки</span></div><div class="lg-card">${TEAMS.map((t,i)=>`<div class="lg-trow ${t.mine?'mine':''}" style="--c:${t.c}">${medal(i+1)}<div class="tw"><b><i></i>${t.n}${t.mine?'<span class="lg-tag">ваш</span>':''}</b><span>${t.past?'прошлый поток':'поток 5'} · проводник ${t.g}${desk?' · ':'<br>'}${t.cnt} уч. · ${t.pts} баллов · ${kfmt(t.inc)} ₽ заработано</span>${desk?'':`<div class="lg-bar"><i style="width:${Math.min(100,t.avg)}%"></i></div>`}</div>${desk?`<div class="lg-bar lg-tbar"><i style="width:${Math.min(100,t.avg)}%"></i></div>`:''}<div class="avg"><b>${t.avg}%</b><small>ср. цель</small>${t.avg>100?'<span class="lg-over">перевыполнено</span>':''}</div><span class="chev">${I(t.mine?'up':'down')}</span></div>${t.mine?`<div class="lg-tsub">${[...t.m].sort((a,b)=>b.pct-a.pct).map((p,k)=>`<div class="tm ${p.me?'lg-you':''}"><span class="tn">${k+1}</span>${av(p)}<span class="nm">${p.n}${p.me?' (вы)':''}</span>${p.role?`<span class="lg-role">${p.role}</span>`:''}<span class="inc"><b>${kfmt(p.inc)}</b> / ${kfmt(p.goal)} ₽</span><span class="pc">${p.pct}%</span></div>`).join('')}</div>`:''}`).join('')}</div>`;
 
-const trow=(p,place)=>`<div class="lg-tr ${p.me?'lg-you':''}"><span class="prog" style="width:${Math.min(100,p.pct)}%"></span><span style="font-weight:700;color:${place===1?'var(--gold-a)':place===2?'#D5DCE6':place===3?'#E0A77A':'var(--t3)'}">${place}</span><div class="u">${av(p)}<b style="--c:${p.t}">${p.n}${p.me?' (вы)':''}</b>${p.role?`<span class="lg-role">${p.role}</span>`:''}</div><span>${p.pts}</span><span>${life(p)}</span><span class="inc">${fmt(p.inc)} <span>/ ${fmt(p.goal)} ₽</span></span><span class="pc">${p.pct}%</span></div>`;
-const card=(icon,title,body,extra='')=>`<div class="lg-card"><h3>${I(icon)}${title}</h3>${extra}${body}</div>`;
-const desk=()=>`<nav class="snav"><div class="logo gold">План Продюсера</div><a>${I('home')}Главная</a><a>${I('map')}Маршрут</a><a>${I('cal')}Календарь</a><a class="on">${I('tent')}Лагерь</a><a>${I('bag')}Рюкзак</a><div class="grp">Общение</div><a>${I('chat')}Чат ПП</a><a>${I('users')}Чат отряда</a><div class="grp">Прочее</div><a>${I('shop')}Лавка</a><a>${I('gear')}Настройки</a><a class="foot">${I('back')}На главную платформы</a></nav>
- <main><div class="lg-dtop"><div class="lg-h1"><span class="lg-badge">${I('mountain')}</span><div><b>Лагерь экспедиции</b><span>27 участников · Сезон 2026</span></div></div>
- <div class="lg-teams" style="margin:0"><span class="lg-tchip" style="--c:${A1}"><i></i>Отряд 1 · 8</span><span class="lg-tchip" style="--c:${A2}"><i></i>Отряд 2 · 7</span></div>
- <div class="lg-kpis"><div class="lg-kpi"><small>Заработано вместе</small><b>1 240 000 ₽</b></div><div class="lg-kpi"><small>В среднем на участника</small><b>62 000 ₽</b></div></div></div>
- <div class="lg-d3">${card('target','Топ по % цели',podium(PP,p=>p.pct+'%'))}${card('trend','Прирост за неделю',podium(WEEK,p=>'+'+p.g+'%'),`<div class="lg-weeks"><span>Нед. 1</span><span class="on">Нед. 2</span></div>`)}${card('coin','Топ по доходу',podium(INCT,p=>fmt(p.inc)+' ₽'))}</div>
- <div class="lg-dgrid"><div class="lg-card"><div class="lg-tabs">${tabsMain('top')}<div class="lg-chips"><span class="lg-chip on">Текущий поток</span><span class="lg-chip">Все потоки</span><span style="width:8px"></span><span class="lg-chip on">Все · 27</span><span class="lg-chip">Активные · 26</span><span class="lg-chip">${I('grad')}Выпускники · 1</span><span class="lg-count">27 в списке</span></div></div>
- <div class="lg-th"><span>#</span><span>Участник</span><span>Баллы</span><span>Жизни</span><span>Доход / Точка Б</span><span style="text-align:right">Цель</span></div>${PP.map((p,i)=>trow(p,i+1)).join('')}<div class="lg-dots">•••</div>${NEAR.map(p=>trow(p,p.place)).join('')}<a class="lg-more">Показать всех · 27 ${I('down')}</a></div>
- <div style="display:grid;gap:4px">${myRank(1)}${team()}${teams()}</div></div></main>`;
+// ── Пустые состояния ──
+const empties=()=>`<div class="lg-sec" style="margin-top:0"><h2>${I('trend')}Пустые состояния</h2></div>
+ <div class="lg-card lg-pcard">${mtn}<h3><span class="ib">${I('trend')}</span>Прирост за неделю</h3><div class="lg-empty"><span class="ei">${I('trend')}</span><b>Данные появятся позже</b><span>Когда трое участников внесут доход за неделю</span></div></div>
+ <div class="lg-sec"><h2>${I('chart')}Распределение дохода</h2></div><div class="lg-card"><div class="lg-empty"><span class="ei">${I('chart')}</span><b>Недостаточно данных для построения графика</b><span>Нужен доход хотя бы у двоих участников</span></div></div>`;
+
+// ── Компьютер ──
+const trow=(p,place)=>`<div class="lg-tr ${p.me?'lg-you':''}"><span class="prog" style="width:${Math.min(100,p.pct)}%"></span>${medal(place)}<div class="u">${av(p)}<b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b>${rep(p)}</div><span style="text-align:center">${p.pts}</span><span>${life(p)}</span><span class="inc">${fmt(p.inc)} <span>/ ${fmt(p.goal)} ₽</span></span><span class="pc">${p.pct}%</span></div>`;
+const snav=()=>`<nav class="snav"><div class="logo gold">План Продюсера</div><a>${I('home')}Главная</a><a>${I('map')}Маршрут</a><a>${I('cal')}Календарь</a><a class="on">${I('tent')}Лагерь</a><a>${I('bag')}Рюкзак</a><div class="grp">Общение</div><a>${I('chat')}Чат ПП</a><a>${I('users')}Чат отряда</a><div class="grp">Прочее</div><a>${I('shop')}Лавка</a><a>${I('gear')}Настройки</a><a class="foot">${I('back')}На главную платформы</a></nav>`;
+const deskHead=()=>`<div class="lg-dtop"><div>${title()}${legend()}</div>${results()}</div>`;
+const desk=()=>snav()+`<main>${deskHead()}<div class="lg-d3">${podiums()}</div>
+ <div class="lg-dgrid"><div class="lg-card"><div class="lg-tabsbox">${tabsMain('top')}${filters()}</div><div class="lg-th" style="margin-top:12px"><span>#</span><span>Участник</span><span>Баллы</span><span>Жизни</span><span>Доход / Точка Б</span><span style="text-align:right">Цель</span></div>${CUR.map((p,i)=>trow(p,i+1)).join('')}<div class="lg-dots">•••</div>${NEAR.map(p=>trow(p,p.place)).join('')}<a class="lg-more">Показать всех · 27 ${I('down')}</a></div>
+ <div>${myRank(1)}${team()}</div></div>${teams(1)}</main>`;
+const deskDist=()=>snav()+`<main>${deskHead()}<div class="lg-card" style="margin-top:24px"><div class="lg-tabsbox" style="padding-bottom:14px">${tabsMain('dist')}</div></div>${dist(1)}</main>`;
 
 const F=document.getElementById('frames');
 const add=(label,cls,html)=>{const w=document.createElement('div');w.innerHTML=`<div class="lg-label">${label}</div><div class="${cls}">${html}</div>`;F.appendChild(w);};
-add('Телефон · 1 — шапка, ваш рейтинг, лидеры','lg-phone',head()+myRank()+leaders('goal')+tabbar());
-add('Телефон · 2 — Топ экспедиции','lg-phone',top()+tabbar());
-add('Телефон · 3 — Распределение дохода','lg-phone',dist()+tabbar());
-add('Телефон · 4 — Мой отряд и Рейтинг команд','lg-phone',team(1)+teams()+tabbar());
-add('Телефон · Лидеры: «Прирост» и «Доход»','lg-phone',leaders('week',1)+`<div style="height:28px"></div>`+leaders('inc',1)+tabbar());
-add('Компьютер','lg-desk',desk());
+add('Телефон · 1 — шапка, результаты потока, ваш рейтинг','lg-phone',head()+myRank()+tabbar());
+add('Телефон · 2 — три подиума (все потоки)','lg-phone',podiums()+tabbar());
+add('Телефон · 3 — Топ экспедиции','lg-phone',top()+tabbar());
+add('Телефон · 4 — Распределение дохода (все потоки)','lg-phone',dist()+tabbar());
+add('Телефон · 5 — Мой отряд','lg-phone',team(1)+tabbar());
+add('Телефон · 6 — выбор роли в отряде','lg-phone',team(1,1)+tabbar());
+add('Телефон · 7 — Рейтинг команд (все потоки)','lg-phone',teams(0,1)+tabbar());
+add('Телефон · 8 — пустые состояния','lg-phone',empties()+tabbar());
+add('Компьютер — вкладка «Топ экспедиции»','lg-desk',desk());
+add('Компьютер — вкладка «Распределение дохода»','lg-desk',deskDist());
 
 (function(){const NB=' ';const sh=/(^|[\s(«])(в|во|с|со|к|ко|и|а|о|об|у|по|до|на|из|от|за|не|но|же|для|или|что|как|без|при|под|над|—)\s+/gi;
 const walk=n=>{if(n.nodeType===3){let t=n.nodeValue;t=t.replace(sh,(m,a,w)=>a+w+NB).replace(sh,(m,a,w)=>a+w+NB);t=t.replace(/(\d)\s+(?=[А-Яа-яЁё₽%])/g,'$1'+NB).replace(/(\d)\s(?=\d{3}(\D|$))/g,'$1'+NB).replace(/\s+(—|·|\/)/g,NB+'$1').replace(/(Точка|Точки|Точке)\s+([АБ])/g,'$1'+NB+'$2');n.nodeValue=t;return}
