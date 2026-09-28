@@ -17,7 +17,7 @@ body{background:#0A0E13}
 .topbar{display:flex;align-items:center;gap:6px;padding:2px 0 20px}
 .topbar .av{width:36px;height:36px;font-size:14px}
 .topbar .who{flex:1;min-width:0;line-height:1.25;margin-left:4px}
-.topbar .who b{font-size:15px;display:block} .topbar .who span{font-size:13px;color:var(--t3);white-space:nowrap}
+.topbar .who b{font-size:15px;display:block} .topbar .who span{font-size:13px;color:var(--t3);white-space:nowrap;display:block;overflow:hidden;text-overflow:ellipsis}
 .stat{display:flex;align-items:center;gap:4px;height:44px;padding:0 6px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
 .stat .ic{width:16px;height:16px}
 .stat.low{color:#FF9A9A}
@@ -129,13 +129,13 @@ body{background:#0A0E13}
 .desk .topbar{max-width:none}
 .desk .grid{grid-template-columns:minmax(0,1fr) 380px;gap:28px}
 .desk .col{gap:28px}
-.desk .route{display:grid;grid-template-columns:260px 1fr}
+.desk .route{display:grid;grid-template-columns:240px minmax(0,1fr)}
 .desk .route .pic{height:auto;min-height:100%}
 .desk .route .body{padding:22px 24px}
 
 .desk .rhd h1{font-size:34px}
 
-.desk .racts{display:flex;align-items:center;justify-content:center;gap:24px}
+.desk .racts{display:grid;justify-items:center;gap:12px}
 .desk .racts .b,.desk .racts .lnk{white-space:nowrap}
 
 /* v2: метка «новое» — элемента сейчас нет на платформе */
