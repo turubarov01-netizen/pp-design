@@ -1,0 +1,178 @@
+/* План Продюсера — кабинет ученика. Брендбук: plan-producer-guidelines-v10.html + палитра «Тёмный лес» */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap');
+:root{
+  --bg:#0D1117; --card:#141E2B; --card2:#1A2535; --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
+  --t1:#FFFFFF; --t2:rgba(255,255,255,.72); --t3:rgba(255,255,255,.5);
+  --gold-a:#F0D080; --gold-b:#CCA830; --amber:#EAB820; --blue:#4B7BFF; --blue2:#6B9FFF; --navy:#1E3A8A; --ink:#1E2B4A;
+  --moss:#6BCB77; --forest:#12301F; --forest2:#1B4430; --pine:#0B2217; --red:#FF6B6B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--t1)}
+body{font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;font-feature-settings:"kern","liga","calt"}
+a{color:inherit;text-decoration:none}
+.ic{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ic.fill{fill:currentColor;stroke:none}
+.gold{background:linear-gradient(135deg,var(--gold-a),var(--gold-b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;text-transform:uppercase;letter-spacing:-.02em;line-height:1.05}
+.kick{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2)}
+.amber{color:var(--amber);font-weight:700}
+.h3{font-size:18px;font-weight:700;line-height:1.25}
+.sub{font-size:14px;color:var(--t3)}
+.sec{margin-top:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+
+/* ── Кнопки 1:1 из брендбука ── */
+.b{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;position:relative;top:0;transition:top .1s,box-shadow .1s;font-family:Inter,sans-serif;font-weight:700;text-transform:uppercase;text-align:center;line-height:1.2}
+.b .ic{width:16px;height:16px}
+.b.full{width:100%}
+.b-cta{background:linear-gradient(180deg,#DFC880 0%,#C9A84C 100%);color:#3A2E18;font-size:13px;letter-spacing:.12em;padding:16px 40px;border-radius:20px;box-shadow:0 6px 0 #A07828,0 8px 16px rgba(0,0,0,.35);margin-bottom:6px}
+.b-cta:hover{top:3px;box-shadow:0 3px 0 #A07828,0 5px 10px rgba(0,0,0,.3)}
+.b-blue{background:linear-gradient(135deg,#4B7BFF,#6B9FFF);color:#fff;font-size:12px;letter-spacing:.1em;padding:14px 28px;border-radius:18px;box-shadow:0 4px 0 #2950CC,0 6px 12px rgba(0,0,0,.25);margin-bottom:4px}
+.b-blue:hover{top:2px;box-shadow:0 3px 0 #2950CC,0 4px 8px rgba(0,0,0,.2)}
+.b-out{background:transparent;color:var(--blue2);border:1.5px solid rgba(75,123,255,.45);font-size:12px;letter-spacing:.1em;padding:13px 28px;border-radius:18px;box-shadow:0 4px 0 rgba(75,123,255,.2);margin-bottom:4px}
+.b-white{background:linear-gradient(180deg,#fff,#f0f2f5);color:var(--ink);font-size:12px;letter-spacing:.1em;padding:14px 28px;border-radius:18px;box-shadow:0 5px 0 #c8cfd8,0 7px 14px rgba(0,0,0,.2);margin-bottom:5px}
+.b-white:hover{top:2px;box-shadow:0 3px 0 #c8cfd8,0 4px 8px rgba(0,0,0,.15)}
+.b-sm{padding:11px 18px;font-size:11px}
+.lnk{color:var(--blue2);font-weight:700;font-size:14px}
+
+/* ── Слот предупреждения (один за раз) ── */
+.alert{display:flex;gap:12px;align-items:center;border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.alert .tx{flex:1;font-size:14px;line-height:1.35}
+.alert .tx b{display:block;font-size:15px}
+.alert.warn{background:rgba(234,184,32,.08);border-left:3px solid var(--amber)} .alert.warn .ic{color:var(--amber)}
+.alert.tip{background:rgba(75,123,255,.08);border-left:3px solid var(--blue)} .alert.tip .ic{color:var(--blue2)}
+
+/* ── Hero (утверждён) ── */
+.hero{position:relative;overflow:hidden;border-radius:24px;padding:16px 16px 18px;background:radial-gradient(120% 70% at 80% 0%,rgba(107,155,255,.16) 0%,transparent 60%),linear-gradient(180deg,#0F1B2A 0%,#102619 58%,#0B2217 100%);border:1px solid rgba(107,203,119,.18)}
+.forest{position:absolute;left:0;right:0;bottom:0;width:100%;height:130px;pointer-events:none}
+.hud{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:15px;color:#1A1406;background:linear-gradient(135deg,var(--gold-a),var(--gold-b));box-shadow:0 0 0 2px var(--bg),0 0 0 3px rgba(240,208,128,.6);flex:none}
+.me b{display:block;font-size:16px;line-height:1.2} .me span{font-size:13px;color:var(--t2);white-space:nowrap}
+.chips{display:flex;gap:6px}
+.chip{display:flex;align-items:center;gap:4px;height:36px;padding:0 9px;border-radius:99px;background:rgba(13,17,23,.55);border:1px solid var(--line2);font-size:14px;font-weight:700;white-space:nowrap}
+.chip .ic{width:15px;height:15px} .chip small{font-weight:400;color:var(--t2);font-size:13px;margin-left:2px}
+.chip.life{border-color:rgba(255,107,107,.5)} .chip.life.low{background:rgba(255,107,107,.18)}
+.where{position:relative;margin-top:20px}
+.stage{display:flex;align-items:center;gap:8px;margin-top:8px}
+.stage h1{font-size:30px;flex:1;text-align:center}
+.nav44{width:44px;height:44px;border-radius:12px;border:1px solid var(--line2);background:rgba(13,17,23,.5);color:#fff;display:grid;place-items:center;flex:none}
+.where p{font-size:14px;color:var(--t2);margin-top:6px;text-align:center}
+.lesson{position:relative;margin-top:14px;border-radius:16px;padding:14px;background:rgba(13,17,23,.62);border:1px solid var(--line2)}
+.lesson .row{display:flex;gap:12px;align-items:center}
+.cover{width:56px;height:56px;border-radius:12px;flex:none;background:radial-gradient(circle at 30% 30%,#3a5a8a,#152238 70%);border:1px solid var(--line2);position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;inset:auto 0 0 0;height:40%;background:linear-gradient(0deg,#0B2217,transparent)}
+.lesson .k{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
+.lesson .t{font-size:17px;font-weight:700;line-height:1.25;margin-top:2px}
+.bar{height:6px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:12px}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--moss)}
+.upnext{list-style:none;margin-top:12px;border-top:1px solid var(--line);padding-top:10px;display:grid;gap:8px}
+.upnext li{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--t2)}
+.n24{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7)}
+.upnext li .lk{margin-left:auto;font-size:12px;color:var(--t3);display:flex;gap:4px;align-items:center}
+.hero .acts{position:relative;margin-top:16px;display:grid;gap:10px}
+
+/* ── Сегодня ── */
+.today{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.tile{border-radius:14px;padding:10px;background:var(--card);border:1px solid var(--line);min-height:78px;display:flex;flex-direction:column;justify-content:space-between}
+.tile .l{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.tile b{font-size:15px;line-height:1.2} .tile small{font-size:12px;font-weight:600}
+.tile.meet{border-color:rgba(107,159,255,.35)} .tile.meet .l,.tile.meet small{color:var(--blue2)}
+.tile.due{border-color:rgba(255,107,107,.45)} .tile.due .l,.tile.due small{color:#FF9A9A}
+.tile.hot{border-color:rgba(234,184,32,.5);background:rgba(234,184,32,.06)} .tile.hot .l,.tile.hot small{color:var(--amber)}
+.tile.ok{border-color:rgba(107,203,119,.35)} .tile.ok .l,.tile.ok small{color:var(--moss)}
+.sect{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin:22px 4px 8px}
+
+/* встреча */
+.meetc .top{display:flex;gap:14px;align-items:center}
+.tl{width:56px;height:60px;border-radius:14px;background:rgba(30,58,138,.5);border:1px solid rgba(107,159,255,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+.tl b{font-size:22px;line-height:1} .tl span{font-size:11px;color:var(--blue2);text-transform:uppercase;font-weight:700;letter-spacing:.08em}
+.meetc .when{font-size:17px;font-weight:700} .meetc .what{font-size:14px;color:var(--t2)}
+.meetc .b{margin-top:14px}
+.meetc .next{font-size:13px;color:var(--t3);margin-top:8px}
+/* вызов / ключевое задание — callout «предупреждение» */
+.call{border-radius:10px;padding:14px 16px;background:rgba(234,184,32,.08);border-left:3px solid var(--amber)}
+.call .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.call .h b{color:var(--amber);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.call .h span{font-size:13px;color:var(--t2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.call .t{font-size:20px;font-weight:700;margin-top:6px}
+.call p{font-size:14px;color:rgba(255,255,255,.8);margin-top:2px} .call p em{font-style:normal;color:#FF9A9A;font-weight:700}
+.call .b{margin-top:12px}
+.call.key{background:rgba(75,123,255,.08);border-left-color:var(--blue)} .call.key .h b{color:var(--blue2)}
+/* фокус */
+.fhd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.state{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700}
+.state i{width:8px;height:8px;border-radius:50%}
+.st-wait{color:#FF9A9A} .st-wait i{background:var(--red)}
+.st-plan{color:var(--amber)} .st-plan i{background:var(--amber)}
+.st-done{color:var(--moss)} .st-done i{background:var(--moss)}
+.step{display:grid;grid-template-columns:28px 1fr;gap:12px;margin-top:14px}
+.n28{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+.n28.wait{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.6)}
+.n28.done{background:rgba(107,203,119,.18);color:var(--moss)}
+.step .hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.step .hd b{font-size:16px} .step .hd small{font-size:13px;color:var(--t3);white-space:nowrap}
+.step label{display:block;font-size:13px;color:var(--t2);margin:8px 0 6px}
+.step textarea{width:100%;height:68px;resize:none;border-radius:12px;border:1px solid var(--line2);background:#0B1119;color:#fff;font:16px/1.4 Inter,sans-serif;padding:10px 12px}
+.step textarea::placeholder{color:var(--t3)}
+.step .b{margin-top:10px}
+.step .note{font-size:13px;color:var(--t2);margin-top:4px} .step .note em{font-style:normal;color:#FF9A9A;font-weight:700}
+.plan-txt{margin-top:6px;font-size:14px;color:var(--t1);background:rgba(255,255,255,.04);border-radius:10px;padding:8px 10px}
+.four{display:grid;gap:8px;margin-top:8px}
+.four div{border:1px solid var(--line2);border-radius:10px;padding:8px 10px;font-size:13px;color:var(--t3)}
+.four div b{display:block;color:var(--t2);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+
+/* второстепенное — свернутые строки */
+.rowlink{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.rowlink+.rowlink{margin-top:8px}
+.rowlink .ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.05);flex:none}
+.rowlink .tx{flex:1;min-width:0} .rowlink .tx b{display:block;font-size:15px} .rowlink .tx span{font-size:13px;color:var(--t3)}
+.rowlink .val{font-weight:700;font-size:15px;white-space:nowrap}
+.mini-bar{height:4px;border-radius:4px;background:rgba(255,255,255,.1);margin-top:6px;overflow:hidden} .mini-bar i{display:block;height:100%;background:var(--moss)}
+
+/* голос учеников — белые вставки */
+.voice{background:#fff;color:var(--ink);border-radius:16px;padding:16px;position:relative}
+.voice .k{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4B7BFF}
+.voice q{display:block;font-size:15px;line-height:1.5;margin-top:8px;font-style:italic;font-weight:500;quotes:"«" "»"}
+.voice .by{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:rgba(30,43,74,.7)}
+.voice .by .a{width:28px;height:28px;border-radius:50%;background:#E2E8F0;color:var(--ink);display:grid;place-items:center;font-size:11px;font-weight:700}
+.voice .tag{margin-left:auto;font-size:11px;font-weight:700;color:#1E3A8A;background:rgba(30,58,138,.08);border-radius:20px;padding:3px 8px;white-space:nowrap}
+.feed-item{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);font-size:14px;color:var(--t2)}
+.feed-item:first-child{border-top:0} .feed-item b{color:#fff}
+.feed-item .a{width:32px;height:32px;border-radius:50%;background:var(--navy);display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;flex:none}
+
+/* экран-ворота */
+.gate{min-height:760px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.gate .circ{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.4);color:var(--red);margin-bottom:22px}
+.gate .circ .ic{width:40px;height:40px}
+.gate h1{font-size:30px}
+.gate p{font-size:15px;color:var(--t2);margin-top:10px;max-width:320px}
+.gate .timer{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:18px;color:#fff}
+.gate .acts{display:grid;gap:12px;width:100%;margin-top:26px}
+
+/* меню */
+.tabbar{position:absolute;left:12px;right:12px;bottom:12px;height:68px;border-radius:20px;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(17,24,39,.96);border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:600;color:var(--t2);position:relative}
+.tab .ic{width:22px;height:22px} .tab.on{color:var(--gold-a)}
+.tab.on::before{content:"";position:absolute;top:6px;width:36px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--gold-a),var(--gold-b))}
+.snav{width:256px;flex:none;border-right:1px solid var(--line);background:linear-gradient(180deg,#0F1620,#0B1016);padding:24px 16px;display:flex;flex-direction:column;gap:4px}
+.snav .logo{font-size:14px;padding:4px 12px 18px;letter-spacing:.12em}
+.snav a{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:12px;color:var(--t2);font-size:15px;font-weight:600}
+.snav a.on{background:rgba(240,208,128,.08);color:var(--gold-a);box-shadow:inset 3px 0 0 var(--gold-b)}
+.snav .grp{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:16px 12px 6px}
+.snav .foot{margin-top:auto}
+
+/* рамки макета */
+.phone{width:390px;padding:12px 16px 100px;position:relative;background:var(--bg)}
+.desk{display:flex;width:1440px;background:var(--bg)}
+.desk main{flex:1;padding:28px 40px 40px;min-width:0}
+.desk .grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
+.desk .col{display:grid;gap:14px}
+.desk .sec{margin-top:0}
+.desk .hero{padding:26px 30px 28px}
+.desk .stage h1{font-size:44px;text-align:left}
+.desk .where p{text-align:left;font-size:16px}
+.desk .lesson{max-width:600px}
+.desk .hero .acts{display:flex;align-items:center;gap:16px}
+.desk .chip{height:40px;padding:0 12px}
+.desk .focus .steps{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.desk .sect{margin:6px 4px 0}
