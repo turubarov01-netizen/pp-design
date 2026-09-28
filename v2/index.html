@@ -2,7 +2,7 @@
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>План Продюсера · главная ученика — спокойная версия</title>
-<link rel="stylesheet" href="pp.css">
+<link rel="stylesheet" href="../pp.css">
 <style>
 /* Спокойная версия: одна иллюстрация на экран, текст никогда не лежит на картинке,
    дедлайны — одним списком «Сегодня», второстепенное — компактной группой ниже. */
@@ -113,7 +113,7 @@ body{background:#0A0E13}
 
 /* Долина смерти: картинка сверху, текст ниже на сплошном фоне */
 .valley2{margin:-14px -16px 0}
-.valley2 .pic{height:340px;background:url(img/valley-death.jpg) center top/cover;position:relative}
+.valley2 .pic{height:340px;background:url(../img/valley-death.jpg) center top/cover;position:relative}
 .valley2 .pic::after{content:"";position:absolute;inset:auto 0 0 0;height:80px;background:linear-gradient(180deg,rgba(13,17,23,0),#0D1117)}
 .valley2 .body{padding:4px 20px 0;text-align:center}
 .valley2 .zone{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#FF9A7A}
@@ -231,47 +231,6 @@ p{line-height:1.45}
 .desk .hdr .who{flex:0 1 auto;margin-right:auto}
 .desk .hdr .stats{order:2;flex:0 0 480px}
 .desk .hdr .bagbtn{order:3}
-
-/* фокус по модели трекера */
-.gtabs{display:flex;gap:8px;margin-top:12px;overflow:hidden}
-.gt{height:36px;padding:0 12px;border-radius:18px;border:1px solid var(--line2);background:transparent;color:var(--t2);font:600 13px Inter,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%;cursor:pointer}
-.gt.on{border-color:rgba(240,208,128,.55);color:#fff;background:rgba(240,208,128,.08)}
-.gbig{margin-top:14px}
-.gtitle{font-size:18px;font-weight:700;line-height:1.3}
-.gpct{display:flex;align-items:center;gap:12px;margin-top:8px}
-.gpct b{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
-.gpct b small{font-size:15px;font-weight:700}
-.gpct .bar{flex:1;margin:0;height:8px}
-.gmeta{font-size:13px;color:var(--t3);margin-top:6px;font-variant-numeric:tabular-nums}
-.daystat{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;border-radius:12px;background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.25);font-size:14px;font-weight:600;color:#FF9A9A}
-.daystat .ic{width:18px;height:18px}
-.daystat.ok{background:rgba(107,203,119,.08);border-color:rgba(107,203,119,.3);color:var(--moss)}
-.slist{display:grid;gap:6px;margin-top:14px}
-.srow{display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;border-radius:12px;border:1px solid var(--line2)}
-.srow .num{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:11px;font-weight:700;background:rgba(255,255,255,.08);color:var(--t3);font-variant-numeric:tabular-nums}
-.srow .num .ic{width:13px;height:13px}
-.srow .chk{width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,255,255,.35);flex:none;display:grid;place-items:center}
-.srow .chk .ic{width:14px;height:14px;color:#0D1117;stroke-width:3}
-.srow .stt{flex:1;min-width:0;font-size:15px;line-height:1.35}
-.srow .stt small{display:block;font-size:12px;color:var(--t3);margin-top:2px}
-.srow .w{font-size:12px;color:var(--t3);font-variant-numeric:tabular-nums}
-.srow.is-done{border-color:transparent;background:rgba(255,255,255,.03)}
-.srow.is-done .chk{background:var(--moss);border-color:var(--moss)}
-.srow.is-done .stt{color:var(--t3);text-decoration:line-through}
-.srow.is-done .stt small{text-decoration:none}
-.srow.is-done .num{background:rgba(107,203,119,.15);color:var(--moss)}
-.srow.is-key{border-color:rgba(107,159,255,.4);background:rgba(75,123,255,.06)}
-.srow.is-key .num{background:rgba(75,123,255,.2);color:var(--blue2)}
-.addrow .b-out{gap:6px;padding:0 14px}
-.radbox{margin-top:16px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px dashed var(--line2)}
-.radbox .rk{display:flex;justify-content:space-between;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
-.radbox .rk span{text-transform:none;letter-spacing:0;font-weight:500}
-.radbox p{font-size:14px;color:var(--t2);margin-top:6px}
-.radbox.open{border-style:solid;border-color:rgba(234,184,32,.45);background:rgba(234,184,32,.06)}
-.radbox.open .rk{color:var(--amber)}
-.radbox.done .rk{color:var(--moss)}
-.focus.empty{text-align:center}
-.focus.empty .eic{width:48px;height:48px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:rgba(107,159,255,.12);color:var(--blue2)}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute">
@@ -328,16 +287,16 @@ const topbar=o=>`<div class="topbar hdr"><div class="av">${o.name[0]}</div><div 
 
 /* Сегодня: FocusTimerWidget, KeyTaskTimerWidget, UpcomingEventWidget, PPSettingsNotification — одним списком */
 const COL={red:'#FF6B6B',amb:'#EAB820',blue:'#6B9FFF',gold:'#F0D080',green:'#6BCB77'};
-const KIND={focus:['crosshair','Фокус дня'],challenge:['swords','Вызов Фримана'],key:['star','Ключевое задание'],meet:['video','Встреча'],rad:['book','Итоги дня · РАД']};
+const KIND={focus:['crosshair','Фокус дня'],challenge:['swords','Вызов Фримана'],key:['star','Ключевое задание'],meet:['video','Встреча']};
 const ring=(frac,col,icon)=>{const C=2*Math.PI*21;return `<div class="ring"><svg class="r" viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="21" stroke="${COL[col]}" stroke-linecap="round" stroke-dasharray="${(frac*C).toFixed(1)} ${C.toFixed(1)}"/></svg><div class="ico2 u-${col}">${I(icon)}</div></div>`};
 const dl=r=>{const [icon,kind]=KIND[r.kind];return `<a class="dl">${ring(r.frac,r.col,icon)}
   <div class="tx"><div class="kind u-${r.col}">${kind}</div><b>${r.t}</b>${r.pen?`<span class="pen">${I('heart','fill')}${r.pen}</span>`:''}</div>
   ${r.btn?r.btn:`<div class="left"><b class="u-${r.col==='blue'||r.col==='gold'?'x':r.col}">${r.left}</b><span>${r.until}</span></div>`}</a>`};
 const todo=rows=>`<div class="sectt"><h2>Сегодня${NEW('все дедлайны списком')}</h2></div><div class="todo">${[...rows].sort((a,b)=>(a.mins??1e9)-(b.mins??1e9)).map(r=>r.kind?dl(r):`
-  <a class="trow" style="min-height:72px"><span class="ico" style="width:48px;height:48px;border-radius:50%">${I(r.icon||'user','','color:#6B9FFF')}</span><div class="tx"><b>${r.t}</b><span>${r.s}</span></div>${chev}</a>`).join('')}</div>`;
+  <a class="trow"><span class="ico">${I(r.icon||'user','','color:#6B9FFF')}</span><div class="tx"><b>${r.t}</b><span>${r.s}</span></div>${chev}</a>`).join('')}</div>`;
 
 /* Маршрут: разделы training_sections, уроки training_lessons */
-const route=(o,desk)=>`<div class="route"><div class="pic" style="background-image:url(img/${o.pic})" role="img" aria-label="${o.loc}"></div><div class="body">
+const route=(o,desk)=>`<div class="route"><div class="pic" style="background-image:url(../../img/${o.pic})" role="img" aria-label="${o.loc}"></div><div class="body">
   <div class="rhd"><button class="nav44" aria-label="Предыдущая неделя">${I('left')}</button>
     <div class="rt"><h1 class="gold">${o.stage}</h1><div class="loc">${o.loc}${NEW()}</div></div>
     <button class="nav44" aria-label="Следующая неделя">${I('right')}</button></div>
@@ -359,36 +318,32 @@ const goal=g=>g?`<div class="sectt"><h2>Цель экспедиции</h2><a>И�
   <button class="b b-blue full" style="margin-top:16px">${I('target')}Установить цель</button></div>`;
 
 /* Фокус дня: PPFocusWidget */
-/* Фокус дня — модель Трекера Фримана (FocusTab.tsx): цели в фокусе → 100 шагов → шаг сегодня → РАД после 18:00 */
-const stepRow=(st)=>`<div class="srow ${st.done?'is-done':''} ${st.key?'is-key':''}">
-  <span class="num">${st.key?I('star','fill'):st.n}</span>
-  <span class="chk" role="checkbox" aria-checked="${st.done?'true':'false'}">${st.done?I('check'):''}</span>
-  <span class="stt">${st.t}${st.key?`<small>Ключевое задание недели · до пт, 21:00${NEW()}</small>`:''}${st.today?`<small class="u-green">сделан сегодня</small>`:''}</span>
-  ${st.key||st.done?'':`<span class="w">+1%</span>`}</div>`;
+const stepper=(plan,rep)=>`<div class="stp">
+  <div class="s ${plan}"><i>${plan==='ok'?I('check'):'1'}</i><div><b>План</b><span>${plan==='ok'?'поставлен':'до 09:00'}</span></div></div>
+  <div class="ln"></div>
+  <div class="s ${rep}"><i>${rep==='ok'?I('check'):'2'}</i><div><b>Факт</b><span>${rep==='ok'?'сдан':'до 24:00'}</span></div></div></div>`;
+
 const focus=f=>{
-  const head=`<div class="sectt"><h2>Фокус дня</h2><a>Трекер Фримана →</a></div>`;
-  if(!f.goals.length) return head+`<div class="focus empty">
-    <div class="eic">${I('target')}</div>
-    <div class="goalt">Цели дня не выбраны</div>
-    <p class="sub" style="margin-top:6px">Держим не больше трёх целей — с ними и работаем каждый день.</p>
-    <button class="b b-blue full" style="margin-top:16px">${I('target')}Установить цель экспедиции</button>
-    <p class="hint">Точка Б сама встанет в фокус${NEW()}</p>
-    <a class="lnk" style="display:block;margin-top:10px">Выбрать цели в трекере</a></div>`;
-  const g=f.goals[0];
-  const rad=f.rad==='closed'?`<div class="radbox"><div class="rk">Итоги дня · РАД</div><p>Разбор дня пишем в конце рабочего дня — форма откроется после 18:00.</p></div>`
-    :f.rad==='open'?`<div class="radbox open"><div class="rk">Итоги дня · РАД <span>1 запись в день</span></div><p>Сегодня закрыто шагов: ${f.todaySteps}. Запишите один общий разбор дня.</p><button class="b b-blue full" style="margin-top:12px">Записать итоги дня</button><p class="hint" style="text-align:left">Результат, анализ, действие. Действие станет следующим шагом цели.</p></div>`
-    :`<div class="radbox done"><div class="rk">Итоги дня записаны</div></div>`;
-  return head+`<div class="focus">
-    <div class="fhead"><h3>Над чем работаю сегодня</h3><span class="sub">${f.goals.length}/3</span></div>
-    ${f.goals.length>1?`<div class="gtabs">${f.goals.map((x,i)=>`<button class="gt ${i===0?'on':''}">${x.t}</button>`).join('')}</div>`:''}
-    <div class="gbig"><div class="gtitle">${g.t}</div>
-      <div class="gpct"><b>${g.pct}<small>%</small></b><div class="bar"><i style="width:${g.pct}%"></i></div></div>
-      <div class="gmeta">Сделано ${g.done} из 100 шагов · в плане ${g.plan}</div></div>
-    <div class="daystat ${f.today?'ok':''}">${f.today?I('check'):I('crosshair')}<span>${f.today?'Шаг к цели сегодня сделан':'Шаг к цели сегодня — ещё нет'}</span></div>
-    <div class="slist">${f.steps.map(stepRow).join('')}</div>
-    <div class="addrow"><input placeholder="Какой шаг сделаю сегодня?" aria-label="Какой шаг сделаю сегодня?"><button class="b b-out">${I('plus')}Добавить</button></div>
-    ${rad}</div>`;
+  const st={plan:['wait','Ожидает'],report:['proc','В процессе'],done:['done','Выполнено']}[f.mode];
+  let body='';
+  if(f.mode==='plan'){
+    const steps=f.goal?`<div class="gline"><b>${f.goal}</b><span>Сделано ${f.done} из ${f.total}</span></div>
+      <div class="sug" style="margin-top:10px">${f.steps.map((s,i)=>`<button class="opt ${i===0?'on':''}"><span class="rd"></span>${s}</button>`).join('')}</div>
+      <div class="addrow"><input placeholder="Добавить свой шаг к цели" aria-label="Добавить свой шаг к цели"><button class="b b-out" aria-label="Добавить">${I('plus')}</button></div>
+      <p class="hint" style="text-align:left">Выбранный шаг закроется сам, когда вечером сдадите отчёт.</p>`
+     :`<p class="sub" style="margin-top:16px">Шаги к цели появятся здесь, когда установите цель экспедиции.</p>`;
+    body=`${steps}<div class="fld"><label for="pl${f.id}">Задачи на сегодня</label><textarea id="pl${f.id}" placeholder="1. …&#10;2. …">${f.goal?f.steps[0]:''}</textarea></div>
+      <button class="b b-blue full" style="margin-top:14px">Начать миссию</button>`;
+  }
+  if(f.mode==='report') body=`<div class="planbox"><small>Ваш план</small><p>${f.plan}</p></div>
+      <div class="four2">${['Результат — что конкретно получилось?','Анализ — почему так вышло?','Действие — что сделаю по-другому?','Инсайт дня'].map((p,i)=>`<div class="fld" style="margin-top:10px"><label for="r${f.id}${i}">${p.split(' — ')[0]}</label><textarea id="r${f.id}${i}" placeholder="${p.includes(' — ')?p.split(' — ')[1]:''}"></textarea></div>`).join('')}</div>
+      <button class="b b-blue full" style="margin-top:14px">Завершить миссию</button>`;
+  if(f.mode==='done') body=`<div class="donebox2"><b>Миссия выполнена</b><p>Результат: ${f.result}</p></div>`;
+  return `<div class="sectt"><h2>Фокус дня</h2></div><div class="focus">
+    <div class="fhead"><h3>Фокус дня — ${f.date}</h3><span class="chip2 ${st[0]}"><i></i>${st[1]}</span></div>
+    ${stepper(f.plan,f.rep)}${body}</div>`;
 };
+
 /* Встреча: UpcomingEventWidget (урок-встреча is_meeting) */
 const meeting=m=>`<div class="sectt"><h2>Ближайшая встреча</h2><a>Календарь →</a></div><div class="meet">
   <div class="tl"><b>${m.d}</b><span>${m.mon}</span></div><div class="tx"><b>${m.title}</b><span>${m.when}</span></div>
@@ -415,36 +370,32 @@ const tabbar=()=>`<nav class="tabbar">${[['home','Главная'],['map','Ма�
 const r1={pic:'glade.jpg',count:'4 из 14 уроков недели',stage:'Неделя 1',loc:'Поляна самоопределения',bar:[1,1,1,1,0,0,0,0,0,0,0,0,0,0],
   nextKick:'Следующий урок',lesson:'Формула достижения желаемого дохода',cta:'Продолжить урок'};
 const g1={a:'40 000 ₽',b:'150 000 ₽',now:'18 000 ₽',pct:12};
-const G2={t:'Запустить свой курс',pct:5,done:5,plan:2};
 const S={
- a:{label:'1 · Понедельник, 08:10 — шаг к цели ещё не сделан',top:{name:'Александр',sub:'Поток 5 · Стандарт',lives:3,coins:10,points:10,bag:2},
-   todo:[{kind:'focus',col:'blue',t:'Сделайте шаг к цели',left:'15 ч 50 мин',until:'до 24:00',frac:.66,pen:'за пропуски −1 жизнь',mins:950},
+ a:{label:'1 · Понедельник, 08:10 — фокус ещё не поставлен',top:{name:'Александр',sub:'Поток 5 · Стандарт',lives:3,coins:10,points:10,bag:2},
+   todo:[{kind:'focus',col:'red',t:'Поставьте план на день',left:'50 мин',until:'до 09:00',frac:.09,pen:'за пропуски −1 жизнь',mins:50},
          {kind:'challenge',col:'amb',t:'Отвали',left:'3 д 15 ч',until:'до чт, 23:14',frac:.73,pen:'−3 жизни',mins:5224},
          {kind:'key',col:'blue',t:'Сбор данных',left:'4 д 13 ч',until:'до пт, 21:00',frac:.91,pen:'−1 жизнь',mins:6530},
          {kind:'meet',col:'gold',t:'Разбор. Стандарт. Неделя 1',left:'2 д 9 ч',until:'ср, 17:00',frac:1,mins:3410}],
    route:r1,goal:g1,
-   focus:{goals:[{t:'Точка Б — 150 000 ₽',pct:12,done:12,plan:3},G2],today:false,rad:'closed',
-     steps:[{key:1,t:'Сбор данных о клиентах за 3 месяца'},{n:11,done:1,t:'Составил список из 30 контактов'},{n:12,done:1,t:'Посчитал доход за неделю'},
-            {n:13,t:'Написать 5 людям из записной книжки'},{n:14,t:'Посчитать средний чек за 3 месяца'},{n:15,t:'Собрать отзывы трёх клиентов'}]},
+   focus:{id:'a',mode:'plan',plan:'now',rep:'wait',date:'28.09',goal:'Точка Б — 150 000 ₽',done:2,total:5,
+     steps:['Написать 5 людям из записной книжки','Посчитать средний чек за 3 месяца','Собрать отзывы трёх клиентов']},
    meet:{d:'30',mon:'сен',title:'Разбор. Стандарт. Неделя 1',when:'30 сентября в 17:00 (ваше время) · через 2 дн.'},
    camp:{rank:'#12',team:'Поток 5 · Отряд 1',teamRank:'#2',income:true,done:4}},
- b:{label:'2 · Среда, 18:40 — шаг сделан, пора записать итоги дня',top:{name:'Александр',sub:'Поток 5 · Стандарт',lives:2,coins:40,points:25,bag:2},
-   todo:[{kind:'meet',col:'gold',t:'Разбор. Стандарт. Неделя 1 — идёт',frac:1,mins:0,btn:`<button class="b b-blue b-sm">${I('video')}Zoom</button>`},
-         {kind:'rad',col:'amb',t:'Запишите итоги дня',left:'5 ч 20 мин',until:'до 24:00',frac:.22,mins:320},
-         {kind:'challenge',col:'amb',t:'Отвали',left:'1 д 5 ч',until:'до чт, 23:14',frac:.24,pen:'−3 жизни',mins:1714}],
+ b:{label:'2 · Среда, 16:20 — план поставлен, впереди разбор и факт',top:{name:'Александр',sub:'Поток 5 · Стандарт',lives:2,coins:40,points:25,bag:2},
+   todo:[{kind:'meet',col:'gold',t:'Разбор. Стандарт. Неделя 1 — в 17:00',frac:1,mins:40,btn:`<button class="b b-blue b-sm">${I('video')}Zoom</button>`},
+         {kind:'focus',col:'amb',t:'Сдайте факт дня',left:'7 ч 40 мин',until:'до 24:00',frac:.51,pen:'за пропуски −1 жизнь',mins:460},
+         {kind:'challenge',col:'amb',t:'Отвали',left:'1 д 7 ч',until:'до чт, 23:14',frac:.26,pen:'−3 жизни',mins:1854}],
    route:{...r1,count:'6 из 14 уроков недели',bar:[1,1,1,1,1,1,0,0,0,0,0,0,0,0],lesson:'Записная книжка'},goal:{...g1,now:'24 000 ₽',pct:16},
-   focus:{goals:[{t:'Точка Б — 150 000 ₽',pct:13,done:13,plan:2},G2],today:true,rad:'open',todaySteps:1,
-     steps:[{key:1,t:'Сбор данных о клиентах за 3 месяца'},{n:12,done:1,t:'Посчитал доход за неделю'},{n:13,done:1,today:1,t:'Написать 5 людям из записной книжки'},
-            {n:14,t:'Посчитать средний чек за 3 месяца'},{n:15,t:'Собрать отзывы трёх клиентов'}]},
-   meet:{today:true,d:'30',mon:'сен',title:'Разбор. Стандарт. Неделя 1',when:'идёт сейчас · началась в 17:00'},
+   focus:{id:'b',mode:'report',plan:'ok',rep:'now',date:'30.09',plan:'Написать 5 людям из записной книжки'},
+   meet:{today:true,d:'30',mon:'сен',title:'Разбор. Стандарт. Неделя 1',when:'сегодня в 17:00 (ваше время)'},
    camp:{rank:'#9',team:'Поток 5 · Отряд 1',teamRank:'#2',income:true,done:6}},
- c:{label:'3 · Новичок на «Прорыве»: нет Точки А и целей в фокусе',top:{name:'Мария',sub:'Поток 5 · Прорыв',lives:3,coins:0,points:0,bag:0},
-   todo:[{icon:'target',t:'Выберите цель для фокуса',s:'без цели шаг дня не записать'},
+ c:{label:'3 · Новичок на «Прорыве»: нет Точки А, нет отряда',top:{name:'Мария',sub:'Поток 5 · Прорыв',lives:3,coins:0,points:0,bag:0},
+   todo:[{kind:'focus',col:'red',t:'Поставьте план на день',left:'50 мин',until:'до 09:00',frac:.09,pen:'за пропуски −1 жизнь',mins:50},
          {icon:'user',t:'Заполните настройки',s:'Часовой пояс, Telegram-бот'}],
    route:{pic:'tent.jpg',count:'0 из 7 уроков',stage:'Подготовка',loc:'Инструктаж',bar:[0,0,0,0,0,0,0],
      nextKick:'Начните отсюда',lesson:'Настройка и активация',cta:'Начать'},
    goal:null,
-   focus:{goals:[]},
+   focus:{id:'c',mode:'plan',plan:'now',rep:'wait',date:'28.09',goal:null},
    meet:{d:'30',mon:'сен',title:'Разбор. Стандарт. Неделя 1',when:'30 сентября в 17:00 (ваше время) · через 2 дн.'},
    camp:{rank:'—',team:'',income:false,done:0}}
 };
