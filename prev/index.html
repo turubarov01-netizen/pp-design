@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ПП · Главная ученика — итоговая версия (4 состояния)</title>
+<link rel="stylesheet" href="pp.css">
+<style>
+  .hudrow{position:relative;display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:nowrap}
+  .bagbtn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(13,17,23,.55);border:1px solid var(--line2);color:var(--gold-a);position:relative;flex:none}
+  .bagbtn em{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;border-radius:10px;background:var(--gold-b);color:#1A1406;font-style:normal;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+  .chips.w{flex:1;justify-content:space-between}
+  .done-row{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px;border-radius:12px;background:rgba(107,203,119,.08);border:1px solid rgba(107,203,119,.3)}
+  .done-row .tx{flex:1;font-size:14px} .done-row .tx b{display:block;font-size:15px;color:var(--moss)}
+  /* ── Лор через иллюстрации сайта ПП ── */
+  .hero.img{background-size:cover;background-position:center 35%}
+  .hero.img .forest{display:none}
+  .hero .locname{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);text-align:center;margin-top:2px}
+  .desk .hero .locname{text-align:left}
+  .meetc.fire{position:relative;overflow:hidden;padding-top:112px;border-color:rgba(255,160,70,.3)}
+  .meetc.fire::before{content:"";position:absolute;inset:0 0 auto 0;height:150px;background:linear-gradient(180deg,rgba(20,30,43,0) 30%,#141E2B 100%),url(../img/bonfire.jpg) center 70%/cover}
+  .meetc.fire>*{position:relative}
+  .meetc.fire .kick{position:absolute;top:14px;left:16px;color:#FFD9A8}
+  /* картинка-шапка у карточек и миниатюры у строк */
+  .banded{position:relative;overflow:hidden;padding-top:104px}
+  .banded .band{position:absolute;inset:0 0 auto 0;height:130px;background-size:cover;background-position:center}
+  .banded .band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,30,43,0) 25%,var(--bandbg,#141E2B) 100%)}
+  .banded>*:not(.band){position:relative}
+  .call.banded{--bandbg:#1d1a14;background:#1d1a14;border-left:3px solid var(--amber)}
+  .call.banded .band::after{background:linear-gradient(180deg,rgba(29,26,20,0) 20%,#1d1a14 100%)}
+  .thumb{width:44px;height:44px;border-radius:12px;background-size:cover;background-position:center;flex:none;border:1px solid var(--line2)}
+  /* Долина смерти экспертов */
+  .valley{position:relative;min-height:844px;margin:-12px -16px -100px;padding:0 20px 120px;display:flex;flex-direction:column;justify-content:flex-end;text-align:center;
+    background:linear-gradient(180deg,rgba(13,17,23,.15) 0%,rgba(40,12,8,.35) 35%,rgba(13,17,23,.92) 62%,#0D1117 78%),url(../img/valley-death.jpg) center top/cover}
+  .valley .hearts{display:flex;justify-content:center;gap:10px;margin-bottom:14px}
+  .valley .hearts .ic{width:26px;height:26px;color:rgba(255,107,107,.35)}
+  .valley .zone{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#FF9A7A}
+  .valley h1{font-size:28px;margin-top:8px}
+  .valley p{font-size:15px;color:var(--t2);margin:10px auto 0;max-width:330px}
+  .valley .timer{font-size:36px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:16px;color:#FFD9A8;text-shadow:0 0 24px rgba(255,120,60,.45)}
+  .valley .acts{display:grid;gap:12px;margin-top:22px}
+  .valley .why{font-size:13px;color:var(--t3);margin-top:16px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+  <symbol id="fire" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+  <symbol id="bag" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 10h8"/><path d="M8 18h8"/><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="cal" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><polygon points="7 4 20 12 7 20 7 4"/></symbol>
+  <symbol id="left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  <symbol id="home" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></symbol>
+  <symbol id="tent" viewBox="0 0 24 24"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></symbol>
+  <symbol id="grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
+  <symbol id="shop" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+  <symbol id="chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></symbol>
+  <symbol id="back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="skull" viewBox="0 0 24 24"><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M15 22a1 1 0 0 0 1-1v-1a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20v1a1 1 0 0 0 1 1z"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="12" r="1"/></symbol>
+  <symbol id="compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></symbol>
+  <symbol id="coins" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></symbol>
+  <symbol id="forestS" viewBox="0 0 400 150" preserveAspectRatio="none">
+    <g fill="#0E2A1C" opacity=".9"><polygon points="-10,150 20,60 50,150"/><polygon points="30,150 70,35 110,150"/><polygon points="95,150 125,75 155,150"/><polygon points="250,150 290,40 330,150"/><polygon points="310,150 345,70 380,150"/><polygon points="360,150 395,30 430,150"/></g>
+    <g fill="#08180F"><polygon points="-20,150 5,95 30,150"/><polygon points="60,150 90,90 120,150"/><polygon points="140,150 170,110 200,150"/><polygon points="200,150 225,100 250,150"/><polygon points="280,150 310,95 340,150"/><polygon points="340,150 375,85 410,150"/></g>
+  </symbol>
+</svg>
+
+<div id="frames"></div>
+
+<script>
+const I=(id,c='',s='')=>`<svg class="ic ${c}" ${s?`style="${s}"`:''}><use href="#${id}"/></svg>`;
+
+/* ── БЛОКИ ── */
+const alertSlot=a=>!a?'':`<div class="alert ${a.kind}">${I(a.icon)}<div class="tx"><b>${a.title}</b>${a.text}</div>${a.btn?`<a class="lnk" style="white-space:nowrap">${a.btn}</a>`:''}</div>`;
+
+const hero=(o,desk)=>`<div class="hero ${o.bg?'img':''}" ${o.bg?`style="background-image:linear-gradient(180deg,rgba(13,17,23,.55) 0%,rgba(13,17,23,.35) 30%,rgba(13,17,23,.78) 58%,rgba(11,20,16,.96) 100%),url(../../img/${o.bg})"`:''}><svg class="forest"><use href="#forestS"/></svg>
+  <div class="hud">
+    <div class="me"><div class="av">А</div><div><b>Александр</b><span>${o.sub}</span></div></div>
+    ${desk?chipsDesk(o):`<a class="bagbtn" aria-label="Рюкзак">${I('bag')}<em>${o.bag}</em></a>`}
+  </div>
+  ${desk?'':`<div class="hudrow"><div class="chips w">
+     <div class="chip life ${o.lives<=1?'low':''}">${I('heart','fill','color:#FF6B6B')}${o.lives}<small>жизни</small></div>
+     <div class="chip">${I('fire','','color:#EAB820')}${o.coins}</div>
+     <div class="chip">${I('star','fill','color:#F0D080')}${o.points}</div>
+     <div class="chip">${I('trophy','','color:#F0D080')}${o.rank}</div></div></div>`}
+  <div class="where"><div class="kick">Вы на этапе</div>
+    <div class="stage"><button class="nav44" aria-label="Предыдущая неделя">${I('left')}</button><div style="flex:1"><h1 class="gold" style="text-align:${desk?'left':'center'}">${o.stage}</h1>${o.loc?`<div class="locname">${o.loc}</div>`:''}</div><button class="nav44" aria-label="Следующая неделя">${I('right')}</button></div>
+    <p>Урок ${o.l} из ${o.lt} · осталось <span class="amber">${o.lt-o.l+1} ${o.lt-o.l+1<5?'урока':'уроков'}</span> · всего пройдено ${o.done} из 81</p></div>
+  <div class="lesson"><div class="row"><div class="cover"></div><div><div class="k">${o.lessonKick||'Следующий урок'}</div><div class="t">${o.lesson}</div></div></div>
+    <div class="bar"><i style="width:${Math.round((o.l-1)/o.lt*100)}%"></i></div>
+    <ul class="upnext">${o.next.map((n,i)=>`<li><span class="n24">${o.l+i+1}</span>${n[0]}${n[1]?`<span class="lk">${I('lock','','width:12px;height:12px')}${n[1]}</span>`:''}</li>`).join('')}</ul></div>
+  <div class="acts"><button class="b b-cta ${desk?'':'full'}">${I('play','fill')}Продолжить урок</button><button class="b b-white b-sm ${desk?'':'full'}">${I('map')}Весь маршрут</button></div>
+</div>`;
+const chipsDesk=o=>`<div class="chips">
+  <div class="chip life">${I('heart','fill','color:#FF6B6B')}${o.lives}<small>жизни</small></div>
+  <div class="chip">${I('fire','','color:#EAB820')}${o.coins}<small>фениксов</small></div>
+  <div class="chip">${I('star','fill','color:#F0D080')}${o.points}<small>баллов</small></div>
+  <div class="chip">${I('bag','','color:#F0D080')}${o.bag}<small>в рюкзаке</small></div></div>`;
+
+const tiles=t=>`<div class="today">${t.map(x=>`<a class="tile ${x.c}"><div class="l">${x.l}</div><b>${x.b}</b><small>${x.s}</small></a>`).join('')}</div>`;
+
+const meeting=m=>`<div class="card meetc sec"><div class="kick" style="margin-bottom:10px">${m.today?'Встреча сегодня':'Ближайшая встреча'}</div>
+  <div class="top"><div class="tl"><b>${m.d}</b><span>${m.mon}</span></div><div><div class="when">${m.when}</div><div class="what">${m.what}</div></div></div>
+  ${m.today?`<button class="b b-blue full">${I('video')}Войти в Zoom</button>`:`<button class="b b-white b-sm full">${I('cal')}Добавить в календарь</button>`}
+  <div class="next">${m.next}</div></div>`;
+
+const challenge=c=>`<div class="call ${c.key?'key':''} sec"><div class="h"><b>${c.key?'Ключевое задание недели':'Вызов Фримана'}</b><span>осталось ${c.left}</span></div>
+  <div class="t">${c.title}</div><p>Не выполните — <em>${c.pen}</em></p><button class="b b-blue full">${c.key?'Открыть задание':'Принять вызов'}</button></div>`;
+
+const focus=(f,desk)=>{
+  const hd=`<div class="fhd"><div class="h3">Фокус дня</div><span class="state ${f.st}"><i></i>${f.stl}</span></div><div class="sub" style="margin-top:2px">${f.date}</div>`;
+  if(f.mode==='nogoal') return `<div class="card focus sec">${hd}
+    <div class="step"><div class="n28">0</div><div><div class="hd"><b>Поставьте цель экспедиции</b></div>
+    <div class="note">Фокус дня строится от цели — где вы хотите быть в конце потока (Точка Б). Займёт одну форму.</div>
+    <button class="b b-blue full">${I('target')}Поставить цель</button></div></div></div>`;
+  if(f.mode==='done') return `<div class="card focus sec">${hd}
+    <div class="done-row">${I('check','','color:#6BCB77')}<div class="tx"><b>Фокус и отчёт сданы</b>Жизнь в безопасности. Завтра — снова до 09:00.</div></div>
+    <button class="b b-out full" style="margin-top:12px">Запланировать завтра</button></div>`;
+  const s1 = f.mode==='plan' ?
+    `<div class="step"><div class="n28">1</div><div><div class="hd"><b>План на сегодня</b><small>до 09:00</small></div>
+     <label>Задачи на сегодня — к цели «${f.goal}»</label><textarea placeholder="1. …&#10;2. …"></textarea>
+     <button class="b b-blue full">Сохранить план</button></div></div>` :
+    `<div class="step"><div class="n28 done">${I('check','','width:14px;height:14px')}</div><div><div class="hd"><b>План на сегодня</b><small>сдан в 08:42</small></div>
+     <div class="plan-txt">1. Написать 5 людям из записной книжки<br>2. Посчитать доход за неделю</div></div></div>`;
+  const s2 = f.mode==='plan' ?
+    `<div class="step"><div class="n28 wait">2</div><div><div class="hd"><b>Отчёт по плану</b><small>вечером</small></div>
+     <div class="note">Откроется после плана: результат, анализ, действие, инсайт. <em>Не сдадите — −1 жизнь.</em></div></div></div>` :
+    `<div class="step"><div class="n28">2</div><div><div class="hd"><b>Отчёт по плану</b><small>сегодня</small></div>
+     <div class="four"><div><b>Результат</b>Что получилось</div><div><b>Анализ</b>Почему так</div><div><b>Действие</b>Что сделаю завтра иначе</div><div><b>Инсайт</b>Главная мысль дня — увидят другие</div></div>
+     <button class="b b-blue full">Сдать отчёт</button></div></div>`;
+  return `<div class="card focus sec">${hd}${desk?`<div class="steps">${s1}${s2}</div>`:s1+s2}</div>`;
+};
+
+const progress=p=>`<div class="sect">Мой прогресс</div>
+  <a class="rowlink"><div class="ico">${I('map','','color:#6B9FFF')}</div><div class="tx"><b>Маршрут</b><span>пройдено ${p.done} из 81 урока</span><div class="mini-bar"><i style="width:${Math.max(2,Math.round(p.done/81*100))}%"></i></div></div>${I('right','','color:rgba(255,255,255,.4)')}</a>
+  <a class="rowlink"><div class="ico">${I('compass','','color:#6BCB77')}</div><div class="tx"><b>${p.goal?'Цель: '+p.goal:'Цель экспедиции'}</b><span>${p.goal?'Точка Б':'не поставлена'}</span>${p.goal?`<div class="mini-bar"><i style="width:${p.goalPct}%"></i></div>`:''}</div><div class="val">${p.goal?p.goalPct+'%':''}</div>${I('right','','color:rgba(255,255,255,.4)')}</a>
+  <a class="rowlink"><div class="ico">${I('coins','','color:#EAB820')}</div><div class="tx"><b>Фениксы и баллы</b><span>за что начисляются и на что тратить</span></div><div class="val">${p.coins} · ${p.points}</div>${I('right','','color:rgba(255,255,255,.4)')}</a>
+  <a class="rowlink"><div class="ico">${I('bag','','color:#F0D080')}</div><div class="tx"><b>Рюкзак</b><span>${p.bag?p.bag+' предмета — можно использовать':'пока пусто — находите предметы на маршруте'}</span></div>${I('right','','color:rgba(255,255,255,.4)')}</a>
+  ${p.income?`<a class="rowlink"><div class="ico">${I('wallet','','color:#EAB820')}</div><div class="tx"><b>Дневник дохода</b><span>сегодня — не внесено</span></div><div class="val lnk">+ Внести</div></a>`:''}
+  <a class="rowlink"><div class="ico">${I('trophy','','color:#F0D080')}</div><div class="tx"><b>Рейтинг потока</b><span>в Лагере</span></div><div class="val">${p.rank}</div>${I('right','','color:rgba(255,255,255,.4)')}</a>
+  ${p.team?`<a class="rowlink"><div class="ico">${I('users','','color:#6B9FFF')}</div><div class="tx"><b>Отряд «${p.team}»</b><span>место среди отрядов</span></div><div class="val">${p.teamRank}</div>${I('right','','color:rgba(255,255,255,.4)')}</a>`:''}`;
+
+const feed=()=>`<div class="sect">Жизнь потока</div>
+  <div class="voice"><div class="k">Инсайт участника</div>
+    <q>Это потрясающий урок! Наконец-то мне стало всё понятно про моё окружение, и я этому очень рада.</q>
+    <div class="by"><div class="a">АК</div>Анна К.<span class="tag">Н0 · Манифест</span></div></div>
+  <div class="card sec" style="padding:6px 16px">
+    <div class="feed-item"><div class="a">МС</div><div><b>Мария С.</b> достигла 25% финансовой цели<div class="sub" style="font-size:12px">сегодня</div></div></div>
+    <div class="feed-item"><div class="a">ОР</div><div><b>Олег Р.</b>: «Обращение за помощью ускоряет процесс»<div class="sub" style="font-size:12px">инсайт · Фокус · сегодня</div></div></div>
+  </div>
+  <a class="b b-white b-sm full sec">Все 359 инсайтов и новости</a>`;
+
+const extras=()=>`<div class="sect">Для настроения</div>
+  <a class="rowlink"><div class="ico">${I('book','','color:#6B9FFF')}</div><div class="tx"><b>Слово дня: Инфлюенсер</b><span>Influencer</span></div>${I('right','','color:rgba(255,255,255,.4)')}</a>
+  <a class="rowlink"><div class="ico">${I('moon','','color:#6B9FFF')}</div><div class="tx"><b>Оракул Фриманов</b><span>карта дня</span></div>${I('right','','color:rgba(255,255,255,.4)')}</a>`;
+
+const tabbar=()=>`<nav class="tabbar"><a class="tab on">${I('home')}Главная</a><a class="tab">${I('map')}Маршрут</a><a class="tab">${I('cal')}Календарь</a><a class="tab">${I('tent')}Лагерь</a><a class="tab">${I('grid')}Ещё</a></nav>`;
+
+/* ── СОСТОЯНИЯ ── */
+const base={bg:'glade.jpg',loc:'Поляна самоопределения',sub:'Поток 5 · Бизнес',lives:3,coins:10,points:10,rank:'12',bag:2,stage:'Неделя 1',l:4,lt:14,done:4,
+  lesson:'Формула достижения желаемого дохода',next:[['Записная книжка','завтра'],['50 вещей по пути к самооценке','ср'],['Оффер и закрытие сделок','чт']]};
+const S={
+ p1:{label:'1 · Будний день, утро',hero:base,
+   tiles:[{c:'due',l:'Фокус дня',b:'План не&nbsp;сдан',s:'до 09:00 · 1 ч 12 мин'},{c:'hot',l:'Вызов',b:'Отвали',s:'3 д 15 ч · −3 жизни'},{c:'meet',l:'Встреча',b:'Ср, 17:00',s:'через 2 дня'}],
+   blocks:[['focus',{mode:'plan',st:'st-wait',stl:'Ожидает',date:'понедельник, 28 сентября',goal:'200 000 ₽ в месяц'}],
+           ['challenge',{title:'Отвали',left:'3 д 15 ч',pen:'−3 жизни'}],
+           ['meeting',{d:'30',mon:'сен',when:'Ср, 30 сентября · 17:00',what:'Разбор · Бизнес · Неделя 1',next:'Время — ваше местное. Дальше: пт, 2 октября'}]],
+   prog:{goal:'200 000 ₽/мес',goalPct:18,income:true,rank:'12 из 32',team:'Волки',teamRank:'3 из 6',done:4,coins:10,points:10,bag:2}},
+ p2:{label:'2 · День встречи, вечер + доступ заканчивается',hero:{...base,l:5,done:5,lesson:'Записная книжка',next:[['50 вещей по пути к самооценке',''],['Оффер и закрытие сделок','чт'],['Как сделать, чтобы было больше клиентов','пт']]},
+   alert:{kind:'warn',icon:'alert',title:'Доступ заканчивается через 5 дней',text:'До 3 октября. Продлите, чтобы не потерять уроки.',btn:'Продлить'},
+   tiles:[{c:'meet',l:'Встреча',b:'Сегодня 17:00',s:'Войти в Zoom'},{c:'hot',l:'Отчёт',b:'Не сдан',s:'вечером · −1 жизнь'},{c:'ok',l:'Вызов',b:'Выполнен',s:'+30 фениксов'}],
+   blocks:[['meeting',{today:true,d:'30',mon:'сен',when:'Сегодня · 17:00',what:'Разбор · Бизнес · Неделя 1',next:'Время — ваше местное. Дальше: пт, 2 октября'}],
+           ['focus',{mode:'report',st:'st-plan',stl:'План сдан',date:'среда, 30 сентября'}]],
+   prog:{goal:'200 000 ₽/мес',goalPct:21,income:true,rank:'9 из 32',team:'Волки',teamRank:'2 из 6',done:5,coins:40,points:25,bag:2}},
+ p3:{label:'3 · Новичок, тариф Прорыв (без отряда)',hero:{...base,bg:'tent.jpg',loc:'Инструктаж',sub:'Поток 5 · Прорыв',stage:'Подготовка',l:1,lt:7,done:0,lesson:'Настройка и активация',lessonKick:'Начните отсюда',rank:'—',bag:0,
+     next:[['Как установить приложение на телефон',''],['Добро пожаловать или вызов рынку',''],['Манифест предпринимателя','']]},
+   alert:{kind:'tip',icon:'user',title:'Завершите настройку профиля',text:'Не хватает: Telegram-бот, часовой пояс.',btn:'Заполнить'},
+   tiles:[{c:'due',l:'Цель',b:'Не&nbsp;поставлена',s:'нужна для фокуса'},{c:'meet',l:'Встреча',b:'Ср, 17:00',s:'через 2 дня'},{c:'',l:'Вызов',b:'Пока нет',s:'появится здесь'}],
+   blocks:[['focus',{mode:'nogoal',st:'st-wait',stl:'Нет цели',date:'понедельник, 28 сентября'}],
+           ['meeting',{d:'30',mon:'сен',when:'Ср, 30 сентября · 17:00',what:'Разбор · Прорыв · Неделя 1',next:'Время — ваше местное.'}]],
+   prog:{goal:'',income:false,rank:'—',team:'',done:0,coins:0,points:0,bag:0}},
+ p4:{label:'4 · Кома (0 жизней)',gate:true}
+};
+
+const render=(s,desk)=>{
+  const blocks=s.blocks.map(([k,v])=>k==='focus'?focus(v,desk):k==='challenge'?challenge(v):meeting(v)).join('');
+  if(desk){
+    const left=s.blocks.filter(b=>b[0]==='focus').map(b=>focus(b[1],true)).join('');
+    const right=s.blocks.filter(b=>b[0]!=='focus').map(([k,v])=>k==='challenge'?challenge(v):meeting(v)).join('');
+    return `${alertSlot(s.alert)}<div class="grid"><div class="col">${hero(s.hero,true)}<div class="sect" style="margin-top:8px">Сегодня</div>${left}${feed()}</div><div class="col">${right}${progress(s.prog)}${extras()}</div></div>`;
+  }
+  return `${alertSlot(s.alert)}${hero(s.hero)}${tiles(s.tiles)}<div class="sect">Сегодня</div>${blocks}${progress(s.prog)}${feed()}${extras()}${tabbar()}`;
+};
+const gate=()=>`<div class="valley">
+  <div class="hearts">${I('heart','fill')}${I('heart','fill')}${I('heart','fill')}</div>
+  <div class="zone">Жизни закончились</div>
+  <h1 class="gold">Вы у края Долины смерти экспертов</h1>
+  <p>Если за 24 часа не вернуть хотя бы одну жизнь — вы выбываете из потока.</p>
+  <div class="timer">23:41:07</div><div class="sub">осталось, чтобы выбраться</div>
+  <div class="acts"><button class="b b-cta full">${I('bag')}Достать предмет из рюкзака</button><button class="b b-blue full">${I('users')}Позвать отряд</button><button class="b b-white b-sm full">${I('chat')}Написать проводнику</button></div>
+  <div class="why">Последнюю жизнь сняли 29 сентября: не сдан отчёт по фокусу дня.</div></div>`;
+
+const F=document.getElementById('frames');
+for(const k of ['p1','p2','p3','p4']){ const d=document.createElement('div'); d.id=k; d.className='phone'; d.innerHTML=S[k].gate?gate()+tabbar():render(S[k]); F.appendChild(d); }
+const D=document.createElement('div'); D.id='d'; D.className='desk';
+D.innerHTML=`<nav class="snav"><div class="logo gold">План Продюсера</div>
+  <a class="on">${I('home')}Главная</a><a>${I('map')}Маршрут</a><a>${I('cal')}Календарь</a><a>${I('tent')}Лагерь</a><a>${I('bag')}Рюкзак</a>
+  <div class="grp">Общение</div><a>${I('chat')}Чат ПП</a><a>${I('users')}Чат отряда</a>
+  <div class="grp">Прочее</div><a>${I('shop')}Лавка</a><a>${I('video')}Мои клиенты</a><a>${I('gear')}Настройки</a>
+  <a class="foot">${I('back')}На платформу</a></nav><main>${render(S.p1,true)}</main>`;
+F.appendChild(D);
+</script>
+</body></html>
