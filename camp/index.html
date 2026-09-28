@@ -123,7 +123,7 @@ body{background:#0A0E13}
 .lg-row .who{flex:1;min-width:0}
 .lg-row .who .nmr{display:flex;align-items:center;gap:6px;min-width:0}
 .lg-row .who .nmr b{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c)}
-.lg-row .who .ln2{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:12px;color:var(--t3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.lg-row .who .ln2{display:flex;flex-wrap:wrap;row-gap:2px;align-items:center;gap:8px;margin-top:4px;font-size:12px;color:var(--t3);white-space:nowrap;font-variant-numeric:tabular-nums}
 .lg-row .who .ln2 b{color:var(--t2);font-weight:600}
 .lg-role{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:6px;background:rgba(255,255,255,.06);font-size:11px;font-weight:600;color:var(--t2);white-space:nowrap}
 .lg-row .rt{text-align:right;flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
@@ -204,6 +204,11 @@ body{background:#0A0E13}
 .lg-tsub .tm .inc{font-size:12px;color:var(--t3);white-space:nowrap;font-variant-numeric:tabular-nums}
 .lg-tsub .tm .inc b{color:var(--t2)}
 .lg-tsub .tm .pc{width:40px;text-align:right;font-size:13px;font-weight:800;color:var(--gold-a)}
+.lg-tsub .tm .mid{flex:1;min-width:0}
+.lg-tsub .tm .mid .nm{display:block}
+.lg-tsub .tm .mid .l2{display:flex;align-items:center;gap:8px;margin-top:2px}
+.lg-desk .lg-tsub .tm .mid{display:flex;align-items:center;gap:12px}
+.lg-desk .lg-tsub .tm .mid .l2{margin:0 0 0 auto}
 .lg-tsub .tm.lg-you .nm{color:var(--gold-a)}
 /* компьютер */
 .lg-desk{width:1440px;display:flex;border-radius:20px;border:1px solid var(--line2);overflow:hidden;background:var(--bg)}
@@ -373,14 +378,14 @@ const topList=()=>`${tabsMain('top')}${filters()}<div class="lg-card" style="mar
 
 // ── Распределение дохода (все потоки) ──
 const bell=(W=340,H=200)=>{const INC=ALLINC.map(p=>p.inc),n=INC.length,mu=INC.reduce((a,b)=>a+b)/n,sd=Math.sqrt(INC.reduce((a,b)=>a+(b-mu)**2,0)/n);
- const lo=Math.max(0,mu-3*sd),hi=mu+3*sd,pad=18,base=H-32,top=44,pdf=x=>Math.exp(-.5*((x-mu)/sd)**2);
+ const lo=0,hi=Math.max(mu+3*sd,Math.max(...INC)*1.04),pad=18,base=H-32,top=44,pdf=x=>Math.exp(-.5*((x-mu)/sd)**2);
  const X=x=>pad+(x-lo)/(hi-lo)*(W-2*pad),Y=y=>base-y*(base-top);
  let d='';for(let i=0;i<=80;i++){const x=lo+(hi-lo)*i/80;d+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(pdf(x)).toFixed(1)}
  const area=d+`L${X(hi).toFixed(1)} ${base} L${X(lo).toFixed(1)} ${base} Z`,r=W>500?6:5;
  const dots=ALLINC.filter(p=>!p.me).map(p=>`<circle cx="${X(p.inc).toFixed(1)}" cy="${Y(pdf(p.inc)).toFixed(1)}" r="${r}" fill="${p.c}" stroke="#0D1117" stroke-width="1.5"/>`).join('')+`<circle cx="${X(ME.inc).toFixed(1)}" cy="${Y(pdf(ME.inc)).toFixed(1)}" r="${r+2}" fill="#F0D080" stroke="#A07828" stroke-width="3"/>`;
  const lead=byInc[0],tx=X(lead.inc),ty=Y(pdf(lead.inc)),bw=W>500?180:156,bx=Math.min(W-pad-bw,Math.max(pad,tx-bw+12)),by=ty-60;
  const tip=`<g><rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw}" height="46" rx="10" fill="#1B2533" stroke="rgba(255,255,255,.16)"/><text x="${(bx+12).toFixed(1)}" y="${(by+19).toFixed(1)}" fill="#fff" font-size="13" font-weight="700" font-family="Inter">${lead.f} ${lead.l}</text><text x="${(bx+12).toFixed(1)}" y="${(by+36).toFixed(1)}" fill="rgba(255,255,255,.65)" font-size="12" font-family="Inter">Доход: ${fmt(lead.inc)} ₽</text></g>`;
- const nt=W>500?5:3,ticks=Array.from({length:nt},(_,i)=>lo+(hi-lo)*i/(nt-1)).map(v=>`<text x="${X(v).toFixed(1)}" y="${H-10}" fill="rgba(255,255,255,.5)" font-size="11" text-anchor="middle" font-family="Inter">${kfmt(v)} ₽</text>`).join('');
+ const nt=W>500?5:3,ticks=Array.from({length:nt},(_,i)=>lo+(hi-lo)*i/(nt-1)).map((v,i)=>`<text x="${(i===0?pad:i===nt-1?W-pad:X(v)).toFixed(1)}" y="${H-10}" fill="rgba(255,255,255,.5)" font-size="11" text-anchor="${i===0?'start':i===nt-1?'end':'middle'}" font-family="Inter">${kfmt(v)} ₽</text>`).join('');
  return {svg:`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Кривая распределения дохода, ${n} участников"><defs><linearGradient id="gf${W}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D080" stop-opacity=".3"/><stop offset="1" stop-color="#F0D080" stop-opacity=".02"/></linearGradient></defs><line x1="${pad}" x2="${W-pad}" y1="${base}" y2="${base}" stroke="rgba(255,255,255,.12)"/><path d="${area}" fill="url(#gf${W})"/><path d="${d}" fill="none" stroke="#F0D080" stroke-width="2"/><line x1="${X(mu).toFixed(1)}" x2="${X(mu).toFixed(1)}" y1="${top-10}" y2="${base}" stroke="rgba(255,255,255,.35)" stroke-dasharray="4 3"/><text x="${X(mu).toFixed(1)}" y="${top-16}" fill="rgba(255,255,255,.65)" font-size="11" text-anchor="middle" font-family="Inter">среднее ${kfmt(mu)} ₽</text>${dots}${tip}${ticks}</svg>`,mu,sd,n}};
 const dist=(desk)=>{const b=bell(desk?1000:340,desk?270:200);const sorted=[...ALLINC].sort((a,c)=>c.inc-a.inc);const myIdx=sorted.findIndex(x=>x.me);
  const item=(x,i)=>`<div class="lg-irow ${x.me?'lg-you':''}"><span class="n">${i+1}</span><i style="--c:${x.me?'#F0D080':x.c}"></i><span class="nm">${x.n}${x.me?' (вы)':''}</span><b>${fmt(x.inc)} ₽</b></div>`;
@@ -398,7 +403,7 @@ const team=(first,openRoles)=>`<div class="lg-sec" ${first?'style="margin-top:0"
 
 // ── Рейтинг команд (все потоки) ──
 const TEAMS=Object.entries(T).map(([k,t])=>{const m=EVERY.filter(p=>p.t===k);const cnt={pr:6,sf:7,fx:8,o1:8,o2:7}[k];const avg=Math.round(m.reduce((s,p)=>s+p.pct,0)/(k.startsWith('o')?cnt:m.length));const pts={pr:'57 290',sf:'61 140',fx:'69 520'}[k]||String(m.reduce((s,p)=>s+(p.pts||0),0));return {k,...t,m,cnt,avg,pts,inc:sum(m),mine:k==='o1',past:!k.startsWith('o')}}).sort((a,b)=>b.avg-a.avg);
-const teams=(desk,first)=>`<div class="lg-sec" ${first?'style="margin-top:0"':''}><h2>${I('medal')}Рейтинг команд</h2><span>все потоки</span></div><div class="lg-card">${TEAMS.map((t,i)=>`<div class="lg-trow ${t.mine?'mine':''}" style="--c:${t.c}">${medal(i+1)}<div class="tw"><b><i></i>${t.n}${t.mine?'<span class="lg-tag">ваш</span>':''}</b><span>${t.past?'прошлый поток':'поток 5'} · проводник ${t.g}${desk?' · ':'<br>'}${t.cnt} уч. · ${t.pts} баллов · ${kfmt(t.inc)} ₽ заработано</span>${desk?'':`<div class="lg-bar"><i style="width:${Math.min(100,t.avg)}%"></i></div>`}</div>${desk?`<div class="lg-bar lg-tbar"><i style="width:${Math.min(100,t.avg)}%"></i></div>`:''}<div class="avg"><b>${t.avg}%</b><small>ср. цель</small>${t.avg>100?'<span class="lg-over">перевыполнено</span>':''}</div><span class="chev">${I(t.mine?'up':'down')}</span></div>${t.mine?`<div class="lg-tsub">${[...t.m].sort((a,b)=>b.pct-a.pct).map((p,k)=>`<div class="tm ${p.me?'lg-you':''}"><span class="tn">${k+1}</span>${av(p)}<span class="nm">${p.n}${p.me?' (вы)':''}</span>${p.role?`<span class="lg-role">${p.role}</span>`:''}<span class="inc"><b>${kfmt(p.inc)}</b> / ${kfmt(p.goal)} ₽</span><span class="pc">${p.pct}%</span></div>`).join('')}</div>`:''}`).join('')}</div>`;
+const teams=(desk,first)=>`<div class="lg-sec" ${first?'style="margin-top:0"':''}><h2>${I('medal')}Рейтинг команд</h2><span>все потоки</span></div><div class="lg-card">${TEAMS.map((t,i)=>`<div class="lg-trow ${t.mine?'mine':''}" style="--c:${t.c}">${medal(i+1)}<div class="tw"><b><i></i>${t.n}${t.mine?'<span class="lg-tag">ваш</span>':''}</b><span>${t.past?'прошлый поток':'поток 5'} · проводник ${t.g}${desk?' · ':'<br>'}${t.cnt} уч. · ${t.pts} баллов · ${kfmt(t.inc)} ₽ заработано</span>${desk?'':`<div class="lg-bar"><i style="width:${Math.min(100,t.avg)}%"></i></div>`}</div>${desk?`<div class="lg-bar lg-tbar"><i style="width:${Math.min(100,t.avg)}%"></i></div>`:''}<div class="avg"><b>${t.avg}%</b><small>ср. цель</small>${t.avg>100?'<span class="lg-over">перевыполнено</span>':''}</div><span class="chev">${I(t.mine?'up':'down')}</span></div>${t.mine?`<div class="lg-tsub">${[...t.m].sort((a,b)=>b.pct-a.pct).map((p,k)=>`<div class="tm ${p.me?'lg-you':''}"><span class="tn">${k+1}</span>${av(p)}<div class="mid"><span class="nm">${p.n}${p.me?' (вы)':''}</span><div class="l2">${p.role?`<span class="lg-role">${p.role}</span>`:''}<span class="inc"><b>${kfmt(p.inc)}</b> / ${kfmt(p.goal)} ₽</span></div></div><span class="pc">${p.pct}%</span></div>`).join('')}</div>`:''}`).join('')}</div>`;
 
 // ── Пустые состояния ──
 const empties=()=>`<div class="lg-sec" style="margin-top:0"><h2>${I('trend')}Пустые состояния</h2></div>
@@ -428,7 +433,7 @@ add('Компьютер — вкладка «Топ экспедиции»','lg-
 add('Компьютер — вкладка «Распределение дохода»','lg-desk',deskDist());
 
 (function(){const NB=' ';const sh=/(^|[\s(«])(в|во|с|со|к|ко|и|а|о|об|у|по|до|на|из|от|за|не|но|же|для|или|что|как|без|при|под|над|—)\s+/gi;
-const walk=n=>{if(n.nodeType===3){let t=n.nodeValue;t=t.replace(sh,(m,a,w)=>a+w+NB).replace(sh,(m,a,w)=>a+w+NB);t=t.replace(/(\d)\s+(?=[А-Яа-яЁё₽%])/g,'$1'+NB).replace(/(\d)\s(?=\d{3}(\D|$))/g,'$1'+NB).replace(/\s+(—|·|\/)/g,NB+'$1').replace(/(Точка|Точки|Точке)\s+([АБ])/g,'$1'+NB+'$2');n.nodeValue=t;return}
+const walk=n=>{if(n.nodeType===3){let t=n.nodeValue;t=t.replace(sh,(m,a,w)=>a+w+NB).replace(sh,(m,a,w)=>a+w+NB);t=t.replace(/(\d)\s+(?=[А-Яа-яЁё₽%])/g,'$1'+NB).replace(/(\d)\s(?=\d{3}(\D|$))/g,'$1'+NB).replace(/\s+(—|·|\/)/g,NB+'$1').replace(/(Точка|Точки|Точке)\s+([АБ])/g,'$1'+NB+'$2').replace(/([А-ЯЁа-яё]{2,})\s+([А-ЯЁ]\.)/g,'$1'+NB+'$2');n.nodeValue=t;return}
 if(n.nodeType===1&&!/^(TEXTAREA|INPUT|SCRIPT|STYLE|svg)$/i.test(n.nodeName))n.childNodes.forEach(walk)};walk(F)})();
 </script>
 </body></html>
