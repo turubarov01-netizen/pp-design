@@ -369,7 +369,7 @@ const medal=n=>`<span class="lg-pl ${n<=3?'m'+n:''}">${n}</span>`;
 const row=(p,place,showRole)=>`<div class="lg-row ${p.me?'lg-you':''}"><span class="prog" style="width:${Math.min(100,p.pct)}%"></span>${medal(place)}${av(p)}<div class="who"><div class="nmr"><b style="--c:${p.c}">${p.n}${p.me?' (вы)':''}</b>${rep(p)}${showRole&&p.role?`<span class="lg-role">${p.role}</span>`:''}</div><div class="ln2"><span><b>${fmt(p.inc)}</b> / ${fmt(p.goal)} ₽</span><span>${p.pts} б.</span></div></div><div class="rt"><b>${p.pct}%</b>${life(p)}</div></div>`;
 const tabsMain=w=>`<div class="lg-seg"><button class="${w==='top'?'on':''}">${I('users')}Топ экспедиции</button><button class="${w==='dist'?'on':''}">${I('chart')}Распределение</button></div>`;
 const filters=()=>`<div class="lg-chips"><span class="lg-chip on">Текущий поток</span><span class="lg-chip">Все потоки</span></div><div class="lg-chips"><span class="lg-chip on">Все · 27</span><span class="lg-chip">Активные · 26</span><span class="lg-chip">${I('grad')}Выпускники · 1</span><span class="lg-count">27 в списке</span></div>`;
-const top=()=>`${tabsMain('top')}${filters()}<div class="lg-card" style="margin-top:12px">${CUR.map((p,i)=>row(p,i+1)).join('')}<div class="lg-dots">•••</div>${NEAR.map(p=>row(p,p.place)).join('')}<a class="lg-more">Показать всех · 27 ${I('down')}</a></div>`;
+const topList=()=>`${tabsMain('top')}${filters()}<div class="lg-card" style="margin-top:12px">${CUR.map((p,i)=>row(p,i+1)).join('')}<div class="lg-dots">•••</div>${NEAR.map(p=>row(p,p.place)).join('')}<a class="lg-more">Показать всех · 27 ${I('down')}</a></div>`;
 
 // ── Распределение дохода (все потоки) ──
 const bell=(W=340,H=200)=>{const INC=ALLINC.map(p=>p.inc),n=INC.length,mu=INC.reduce((a,b)=>a+b)/n,sd=Math.sqrt(INC.reduce((a,b)=>a+(b-mu)**2,0)/n);
@@ -418,7 +418,7 @@ const F=document.getElementById('frames');
 const add=(label,cls,html)=>{const w=document.createElement('div');w.innerHTML=`<div class="lg-label">${label}</div><div class="${cls}">${html}</div>`;F.appendChild(w);};
 add('Телефон · 1 — шапка, результаты потока, ваш рейтинг','lg-phone',head()+myRank()+tabbar());
 add('Телефон · 2 — три подиума (все потоки)','lg-phone',podiums()+tabbar());
-add('Телефон · 3 — Топ экспедиции','lg-phone',top()+tabbar());
+add('Телефон · 3 — Топ экспедиции','lg-phone',topList()+tabbar());
 add('Телефон · 4 — Распределение дохода (все потоки)','lg-phone',dist()+tabbar());
 add('Телефон · 5 — Мой отряд','lg-phone',team(1)+tabbar());
 add('Телефон · 6 — выбор роли в отряде','lg-phone',team(1,1)+tabbar());
