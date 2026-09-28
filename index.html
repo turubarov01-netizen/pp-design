@@ -137,6 +137,43 @@ body{background:#0A0E13}
 
 .desk .racts{display:flex;align-items:center;justify-content:center;gap:24px}
 .desk .racts .b,.desk .racts .lnk{white-space:nowrap}
+
+/* v2: метка «новое» — элемента сейчас нет на платформе */
+.new{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;border:1px dashed rgba(107,159,255,.7);color:#9DBDFF;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:none;vertical-align:middle;margin-left:6px;white-space:nowrap}
+.legend{width:100%;max-width:1440px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--t2);padding:14px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.legend b{color:#fff}
+.goal{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+.goal .ab{display:flex;align-items:flex-end;justify-content:space-between;margin-top:12px}
+.goal .ab small{display:block;font-size:12px;color:var(--t3)}
+.goal .ab b{font-size:18px;font-variant-numeric:tabular-nums}
+.goal .ab .arrow{color:var(--t3);padding-bottom:4px}
+.goal .now{display:flex;justify-content:space-between;font-size:13px;color:var(--t3);margin-top:14px}
+.goal .now b{color:#fff}
+.fhead{display:flex;justify-content:space-between;align-items:center}
+.fhead h3{font-size:17px;font-weight:700}
+.chip2{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.chip2 i{width:8px;height:8px;border-radius:50%}
+.chip2.wait{color:#FF9A9A} .chip2.wait i{background:var(--red)}
+.chip2.proc{color:var(--amber)} .chip2.proc i{background:var(--amber)}
+.chip2.done{color:var(--moss)} .chip2.done i{background:var(--moss)}
+.gline{display:flex;justify-content:space-between;gap:10px;margin-top:16px;font-size:14px}
+.gline b{font-weight:600} .gline span{color:var(--t3);white-space:nowrap}
+.fld{margin-top:14px}
+.fld label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.fld textarea{width:100%;min-height:52px;resize:none;border-radius:14px;border:1px solid var(--line2);background:#0B1119;color:#fff;font:16px/1.4 Inter,sans-serif;padding:12px 14px}
+.fld textarea::placeholder{color:var(--t3)}
+.addrow{display:flex;gap:8px;margin-top:8px}
+.addrow input{flex:1;min-width:0;height:48px;border-radius:14px;border:1px dashed var(--line2);background:#0B1119;color:#fff;font:16px Inter,sans-serif;padding:0 14px}
+.addrow input::placeholder{color:var(--t3)}
+.addrow .b-out{padding:0 16px;height:48px;margin-bottom:0}
+.planbox{margin-top:16px;padding:12px 14px;border-radius:14px;background:rgba(234,184,32,.06);border:1px solid rgba(234,184,32,.25)}
+.planbox small{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
+.planbox p{font-size:15px;margin-top:4px}
+.four2{display:grid;gap:10px;margin-top:4px}
+.donebox2{margin-top:16px;padding:12px 14px;border-radius:14px;background:rgba(107,203,119,.08);border:1px solid rgba(107,203,119,.25)}
+.donebox2 b{color:var(--moss);display:block;font-size:15px}
+.donebox2 p{font-size:14px;color:var(--t2);margin-top:6px}
+.howto{margin-top:20px;text-align:left;font-size:13px;color:var(--t3)}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute">
@@ -175,122 +212,141 @@ body{background:#0A0E13}
     <g fill="#08180F"><polygon points="-20,150 5,95 30,150"/><polygon points="60,150 90,90 120,150"/><polygon points="140,150 170,110 200,150"/><polygon points="200,150 225,100 250,150"/><polygon points="280,150 310,95 340,150"/><polygon points="340,150 375,85 410,150"/></g>
   </symbol>
 </svg>
-<div class="wrap" id="frames"></div>
+<svg width="0" height="0" style="position:absolute"><symbol id="plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol></svg>
+<div class="wrap" id="frames">
+  <div class="legend"><span><b>Как читать макет.</b> Всё без пометки уже есть на платформе, данные и формулировки взяты из кода и базы.</span><span class="new" style="margin:0">новое</span><span>— этого сейчас нет, нужно доделать.</span></div>
+</div>
 <script>
 const I=(id,c='',s='')=>`<svg class="ic ${c}" ${s?`style="${s}"`:''}><use href="#${id}"/></svg>`;
 const chev=`<span class="chev">${I('right')}</span>`;
+const NEW=(t='новое')=>`<span class="new">${t}</span>`;
 
-/* 1. Верхняя строка: кто я + жизни, фениксы, баллы, рюкзак — всегда под рукой */
-const topbar=o=>`<div class="topbar"><div class="av">А</div><div class="who"><b>Александр</b><span>${o.sub}</span></div>
+/* Шапка: PPProfileWidget + PPCoinsWidget + PPPointsWidget + BackpackMiniWidget */
+const topbar=o=>`<div class="topbar"><div class="av">${o.name[0]}</div><div class="who"><b>${o.name}</b><span>${o.sub}</span></div>
   <a class="stat ${o.lives<=1?'low':''}" aria-label="Жизни">${I('heart','fill','color:#FF6B6B')}${o.lives}</a>
   <a class="stat" aria-label="Фениксы">${I('fire','','color:#EAB820')}${o.coins}</a>
   <a class="stat" aria-label="Баллы">${I('star','fill','color:#F0D080')}${o.points}</a>
   <a class="bagbtn" aria-label="Рюкзак">${I('bag')}${o.bag?`<em>${o.bag}</em>`:''}</a></div>`;
 
-/* 2. Сегодня — единственный список дедлайнов. Цвет точки = срочность, текст дублирует смысл */
+/* Сегодня: FocusTimerWidget, KeyTaskTimerWidget, UpcomingEventWidget, PPSettingsNotification — одним списком */
 const todo=rows=>`<div class="sectt"><h2>Сегодня</h2></div><div class="todo">${rows.map(r=>`
-  <a class="trow"><span class="dot ${r.dot}"></span><div class="tx"><b>${r.t}</b><span>${r.s}</span></div>${r.btn||chev}</a>`).join('')}</div>`;
+  <a class="trow"><span class="dot ${r.dot}"></span><div class="tx"><b>${r.t}${r.n?NEW(r.n):''}</b><span>${r.s}</span></div>${r.btn||chev}</a>`).join('')}</div>`;
 
-/* 3. Маршрут — иллюстрация этапа отдельной полосой, текст под ней */
+/* Маршрут: разделы training_sections, уроки training_lessons */
 const route=(o,desk)=>`<div class="route"><div class="pic" style="background-image:url(img/${o.pic})" role="img" aria-label="${o.loc}"></div><div class="body">
   <div class="rhd"><button class="nav44" aria-label="Предыдущая неделя">${I('left')}</button>
-    <div class="rt"><div class="kick">${o.kick}</div><h1 class="gold">${o.stage}</h1><div class="loc">${o.loc}</div></div>
+    <div class="rt"><h1 class="gold">${o.stage}</h1><div class="loc">${o.loc}${NEW()}</div></div>
     <button class="nav44" aria-label="Следующая неделя">${I('right')}</button></div>
-  <div class="weekbar" aria-label="${o.count}">${o.bar.map(x=>`<i class="${x?'on':''}"></i>`).join('')}</div>
+  <div class="cnt" style="margin-top:8px">переключение недель${NEW()}</div>
+  <div class="weekbar">${o.bar.map(x=>`<i class="${x?'on':''}"></i>`).join('')}</div>
   <div class="cnt">${o.count}</div>
-  <div class="next"><small>${o.nextKick}</small><b>${o.lesson}</b><span>${o.lessonMeta}</span></div>
+  <div class="next"><small>${o.nextKick}</small><b>${o.lesson}</b></div>
   <div class="racts"><button class="b b-cta ${desk?'':'full'}">${I('play','fill')}${o.cta}</button><a class="lnk">Весь маршрут →</a></div>
 </div></div>`;
 
-/* 4. Фокус дня — по новой механике: желание в фокусе → шаг из «100 шагов» → отчёт */
+/* Цель экспедиции: PPGoalWidget + computePointB */
+const goal=g=>g?`<div class="sectt"><h2>Цель экспедиции</h2><a>Изменить</a></div><div class="goal">
+  <div class="ab"><div><small>Точка А</small><b>${g.a}</b></div><div class="arrow">→</div><div style="text-align:right"><small>Точка Б</small><b class="amber">${g.b}</b></div></div>
+  <div class="now"><span>Сейчас по нише: <b>${g.now}</b></span><span><b>${g.pct}%</b></span></div>
+  <div class="bar"><i style="width:${g.pct}%"></i></div></div>`
+ :`<div class="sectt"><h2>Цель экспедиции</h2></div><div class="goal">
+  <div class="goalt" style="margin-top:0">Установите цель экспедиции</div>
+  <p class="sub" style="margin-top:6px">Выберите нишу из дневника доходов и укажите, сколько взяли себе по ней за 30 дней. Точку Б платформа посчитает сама.</p>
+  <button class="b b-blue full" style="margin-top:16px">${I('target')}Установить цель</button></div>`;
+
+/* Фокус дня: PPFocusWidget */
 const stepper=(plan,rep)=>`<div class="stp">
-  <div class="s ${plan}"><i>${plan==='ok'?I('check'):'1'}</i><div><b>Шаг на день</b><span>${plan==='ok'?'выбран':'до 09:00'}</span></div></div>
+  <div class="s ${plan}"><i>${plan==='ok'?I('check'):'1'}</i><div><b>План</b><span>${plan==='ok'?'поставлен':'до 09:00'}</span></div></div>
   <div class="ln"></div>
-  <div class="s ${rep}"><i>${rep==='ok'?I('check'):'2'}</i><div><b>Отчёт</b><span>${rep==='ok'?'сдан':'до 24:00'}</span></div></div></div>`;
+  <div class="s ${rep}"><i>${rep==='ok'?I('check'):'2'}</i><div><b>Факт</b><span>${rep==='ok'?'сдан':'до 24:00'}</span></div></div></div>`;
 
 const focus=f=>{
-  if(!f) return `<div class="sectt"><h2>Фокус дня</h2></div><div class="focus">
-    <div class="goalt" style="margin-top:0">Фокус начинается с желания</div>
-    <p class="sub" style="margin-top:6px">Запишите желания в трекере Фримана и поставьте одно в фокус. Потом — по шагу в день.</p>
-    <button class="b b-blue full" style="margin-top:16px">${I('target')}Выбрать желание</button></div>`;
+  const st={plan:['wait','Ожидает'],report:['proc','В процессе'],done:['done','Выполнено']}[f.mode];
   let body='';
-  if(f.mode==='plan') body=`<div class="ask"><label for="st${f.id}">Какой шаг сделаю сегодня?</label>
-      <div class="sug">${f.sug.map((s,i)=>`<button class="opt ${i===0?'on':''}"><span class="rd"></span>${s}</button>`).join('')}</div>
-      <div class="own"><input id="st${f.id}" placeholder="Или впишите свой шаг"></div>
-      <button class="b b-blue full" style="margin-top:14px">Взять шаг в работу</button></div>`;
-  if(f.mode==='report') body=`<div class="todaystep"><small>Шаг на сегодня</small><b>${f.today}</b></div>
-      <button class="b b-blue full" style="margin-top:14px">Сдать отчёт</button>
-      <p class="hint">После отчёта шаг отметится сделанным в трекере.</p>`;
-  if(f.mode==='done') body=`<div class="donebox">${I('check','','color:#6BCB77')}<div><b>День закрыт.</b> Шаг сделан, отчёт сдан.</div></div>`;
-  return `<div class="sectt"><h2>Фокус дня</h2><a>Трекер Фримана →</a></div><div class="focus">
-    <div class="wishrow"><span class="wlab">Желание в фокусе</span><span class="wmore">ещё ${f.more}</span></div>
-    <div class="goalt">${f.goal}</div>
-    <div class="prog"><span>Шаги к цели</span><span><b>${f.n}</b> из 100</span></div><div class="bar"><i style="width:${f.n}%"></i></div>
+  if(f.mode==='plan'){
+    const steps=f.goal?`<div class="gline"><b>${f.goal}</b><span>Сделано ${f.done} из ${f.total}</span></div>
+      <div class="sug" style="margin-top:10px">${f.steps.map((s,i)=>`<button class="opt ${i===0?'on':''}"><span class="rd"></span>${s}</button>`).join('')}</div>
+      <div class="addrow"><input placeholder="Добавить свой шаг к цели" aria-label="Добавить свой шаг к цели"><button class="b b-out" aria-label="Добавить">${I('plus')}</button></div>
+      <p class="hint" style="text-align:left">Выбранный шаг закроется сам, когда вечером сдадите отчёт.</p>`
+     :`<p class="sub" style="margin-top:16px">Шаги к цели появятся здесь, когда установите цель экспедиции.</p>`;
+    body=`${steps}<div class="fld"><label for="pl${f.id}">Задачи на сегодня</label><textarea id="pl${f.id}" placeholder="1. …&#10;2. …">${f.goal?f.steps[0]:''}</textarea></div>
+      <button class="b b-blue full" style="margin-top:14px">Начать миссию</button>`;
+  }
+  if(f.mode==='report') body=`<div class="planbox"><small>Ваш план</small><p>${f.plan}</p></div>
+      <div class="four2">${['Результат — что конкретно получилось?','Анализ — почему так вышло?','Действие — что сделаю по-другому?','Инсайт дня'].map((p,i)=>`<div class="fld" style="margin-top:10px"><label for="r${f.id}${i}">${p.split(' — ')[0]}</label><textarea id="r${f.id}${i}" placeholder="${p.includes(' — ')?p.split(' — ')[1]:''}"></textarea></div>`).join('')}</div>
+      <button class="b b-blue full" style="margin-top:14px">Завершить миссию</button>`;
+  if(f.mode==='done') body=`<div class="donebox2"><b>Миссия выполнена</b><p>Результат: ${f.result}</p></div>`;
+  return `<div class="sectt"><h2>Фокус дня</h2></div><div class="focus">
+    <div class="fhead"><h3>Фокус дня — ${f.date}</h3><span class="chip2 ${st[0]}"><i></i>${st[1]}</span></div>
     ${stepper(f.plan,f.rep)}${body}</div>`;
 };
 
-/* 5. Разбор */
+/* Встреча: UpcomingEventWidget (урок-встреча is_meeting) */
 const meeting=m=>`<div class="sectt"><h2>Ближайшая встреча</h2><a>Календарь →</a></div><div class="meet">
-  <div class="tl"><b>${m.d}</b><span>${m.mon}</span></div><div class="tx"><b>${m.when}</b><span>${m.what}</span></div>
+  <div class="tl"><b>${m.d}</b><span>${m.mon}</span></div><div class="tx"><b>${m.title}</b><span>${m.when}</span></div>
   ${m.today?`<button class="b b-blue b-sm">${I('video')}Zoom</button>`:chev}</div>
-  <p class="tz">Время — ваше местное. ${m.next}</p>`;
+  ${m.today?`<p class="tz">Кнопка Zoom${NEW()}</p>`:''}`;
 
-/* 6. Лагерь — второстепенное одной компактной группой */
+/* Лагерь: PPRankWidget, PPTeamRankWidget, PPIncomeDiaryWidget, PPCompletionWidget */
 const camp=p=>`<div class="sectt"><h2>Мой лагерь</h2></div><div class="todo">
-  <a class="trow"><span class="ico">${I('trophy','','color:#F0D080')}</span><div class="tx"><b>Рейтинг потока</b></div><span class="val">${p.rank}</span>${chev}</a>
-  ${p.team?`<a class="trow"><span class="ico">${I('users','','color:#6B9FFF')}</span><div class="tx"><b>Отряд «${p.team}»</b></div><span class="val">${p.teamRank}</span>${chev}</a>`:''}
-  ${p.income?`<a class="trow"><span class="ico">${I('wallet','','color:#EAB820')}</span><div class="tx"><b>Дневник дохода</b><span>сегодня не внесено</span></div><span class="val lnk">+ Внести</span></a>`:''}
-  <a class="trow"><span class="ico">${I('map','','color:#6BCB77')}</span><div class="tx"><b>Весь маршрут</b><span>пройдено ${p.done} из 81 урока</span></div>${chev}</a>
+  <a class="trow"><span class="ico">${I('trophy','','color:#F0D080')}</span><div class="tx"><b>Рейтинг</b></div><span class="val">${p.rank}</span>${chev}</a>
+  ${p.team?`<a class="trow"><span class="ico">${I('users','','color:#6B9FFF')}</span><div class="tx"><b>Отряд</b><span>${p.team}</span></div><span class="val">${p.teamRank}</span>${chev}</a>`:''}
+  ${p.income?`<a class="trow"><span class="ico">${I('wallet','','color:#EAB820')}</span><div class="tx"><b>Дневник дохода</b></div><span class="val lnk">+ Внести</span></a>`:''}
+  <a class="trow"><span class="ico">${I('map','','color:#6BCB77')}</span><div class="tx"><b>Пройдено уроков</b></div><span class="val">${p.done} из 81</span>${chev}</a>
 </div>`;
 
-/* 7. Голос потока — одна белая вставка */
-const feed=()=>`<div class="sectt"><h2>Жизнь потока</h2><a>Все 359 →</a></div>
+/* PPInsightWidget + NewsWidget + WordOfDay + Oracle */
+const feed=()=>`<div class="sectt"><h2>Жизнь потока</h2><a>Все инсайты →</a></div>
   <div class="voice"><div class="k">Инсайт участника</div><q>Наконец-то мне стало понятно про моё окружение, и я этому очень рада.</q>
-  <div class="by"><div class="a">АК</div>Анна К.<span class="tag">Н0 · Манифест</span></div></div>
-  <a class="more">${I('book','','color:#6B9FFF')}Слово дня и Оракул Фриманов${chev}</a>`;
+  <div class="by"><div class="a">АК</div>Анна К.</div></div>
+  <a class="more">${I('book','','color:#6B9FFF')}Новости, слово дня и Оракул${chev}</a>`;
 
 const tabbar=()=>`<nav class="tabbar">${[['home','Главная'],['map','Маршрут'],['cal','Календарь'],['tent','Лагерь'],['grid','Ещё']].map((t,i)=>`<a class="tab ${i===0?'on':''}">${I(t[0])}${t[1]}</a>`).join('')}</nav>`;
 
-/* ── СОСТОЯНИЯ ── */
-const r1={pic:'glade.jpg',kick:'Вы на маршруте',count:'Урок 4 из 14 этой недели',stage:'Неделя 1',loc:'Поляна самоопределения',bar:[1,1,1,0,0,0,0,0,0,0,0,0,0,0],
-  nextKick:'Следующий урок',lesson:'Формула достижения желаемого дохода',lessonMeta:'Открыт',cta:'Продолжить урок'};
+/* ── СОСТОЯНИЯ (поток 5, реальные названия уроков и встреч; люди и суммы — примеры) ── */
+const r1={pic:'glade.jpg',count:'4 из 14 уроков недели',stage:'Неделя 1',loc:'Поляна самоопределения',bar:[1,1,1,1,0,0,0,0,0,0,0,0,0,0],
+  nextKick:'Следующий урок',lesson:'Формула достижения желаемого дохода',cta:'Продолжить урок'};
+const g1={a:'40 000 ₽',b:'150 000 ₽',now:'18 000 ₽',pct:12};
 const S={
- a:{label:'1 · Будний день, 08:10 — шаг ещё не выбран',top:{sub:'Поток 5 · Бизнес',lives:3,coins:10,points:10,bag:2},
-   todo:[{dot:'red',t:'Шаг на день',s:'<em>до 09:00 · осталось 50 мин</em> · −1 жизнь'},
-         {dot:'amb',t:'Вызов Фримана «Отвали»',s:'осталось 3 д 15 ч · −3 жизни'},
-         {dot:'blu',t:'Ключевое задание недели',s:'до пятницы, 21:00 · −1 жизнь'}],
-   route:r1,
-   focus:{id:'a',mode:'plan',plan:'now',rep:'wait',goal:'Доход 200 000 ₽ в месяц',more:2,n:12,
-     sug:['Написать 5 людям из записной книжки','Посчитать средний чек за 3 месяца']},
-   meet:{d:'30',mon:'сен',when:'Ср, 30 сентября · 17:00',what:'Разбор · Бизнес · Неделя 1',next:'Дальше — пт, 2 октября.'},
-   camp:{rank:'12 из 32',team:'Волки',teamRank:'3 из 6',income:true,done:4}},
- b:{label:'2 · День разбора, 16:20 — отчёт впереди, доступ заканчивается',top:{sub:'Поток 5 · Бизнес',lives:2,coins:40,points:25,bag:2},
-   todo:[{dot:'blu',t:'Разбор сегодня в 17:00',s:'через 40 минут',btn:`<button class="b b-blue b-sm">${I('video')}Zoom</button>`},
-         {dot:'amb',t:'Отчёт по фокусу',s:'до 24:00 · иначе −1 жизнь'},
-         {dot:'amb',t:'Доступ заканчивается 3 октября',s:'продлите, чтобы не потерять уроки',btn:`<button class="b b-white b-sm">Продлить</button>`},
-         {dot:'ok',t:'Вызов Фримана выполнен',s:'+30 фениксов'}],
-   route:{...r1,count:'Урок 5 из 14 этой недели',bar:[1,1,1,1,0,0,0,0,0,0,0,0,0,0],lesson:'Записная книжка'},
-   focus:{id:'b',mode:'report',plan:'ok',rep:'now',goal:'Доход 200 000 ₽ в месяц',more:2,n:12,today:'Написать 5 людям из записной книжки'},
-   meet:{today:true,d:'30',mon:'сен',when:'Сегодня · 17:00',what:'Разбор · Бизнес · Неделя 1',next:'Дальше — пт, 2 октября.'},
-   camp:{rank:'9 из 32',team:'Волки',teamRank:'2 из 6',income:true,done:5}},
- c:{label:'3 · Новичок на «Прорыве»: нет желания в фокусе, нет отряда',top:{sub:'Поток 5 · Прорыв',lives:3,coins:0,points:0,bag:0},
-   todo:[{dot:'red',t:'Выберите желание в фокус',s:'без него не получится взять шаг на день'},
-         {dot:'blu',t:'Завершите профиль',s:'не хватает: Telegram-бот, часовой пояс'}],
-   route:{pic:'tent.jpg',kick:'Начало маршрута',count:'Урок 1 из 7',stage:'Подготовка',loc:'Инструктаж',bar:[0,0,0,0,0,0,0],
-     nextKick:'Начните отсюда',lesson:'Настройка и активация',lessonMeta:'Открыт',cta:'Начать'},
-   focus:null,
-   meet:{d:'30',mon:'сен',when:'Ср, 30 сентября · 17:00',what:'Разбор · Прорыв · Неделя 1',next:''},
+ a:{label:'1 · Понедельник, 08:10 — фокус ещё не поставлен',top:{name:'Александр',sub:'Поток 5 · Стандарт',lives:3,coins:10,points:10,bag:2},
+   todo:[{dot:'red',t:'Поставьте фокус дня',s:'<em>до 09:00 — 00:49:52</em>'},
+         {dot:'amb',t:'Вызов Фримана. Отвали',s:'3д 15:04:10'},
+         {dot:'blu',t:'КЛЮЧЕВОЕ ЗАДАНИЕ НЕДЕЛИ 1 - СБОР ДАННЫХ',s:'4д 12:49:52',n:'второй таймер'},
+         {dot:'blu',t:'Разбор. Стандарт. Неделя 1',s:'30 сентября в 17:00 (ваше время) · через 2 дн.'}],
+   route:r1,goal:g1,
+   focus:{id:'a',mode:'plan',plan:'now',rep:'wait',date:'28.09',goal:'Точка Б — 150 000 ₽',done:2,total:5,
+     steps:['Написать 5 людям из записной книжки','Посчитать средний чек за 3 месяца','Собрать отзывы трёх клиентов']},
+   meet:{d:'30',mon:'сен',title:'Разбор. Стандарт. Неделя 1',when:'30 сентября в 17:00 (ваше время) · через 2 дн.'},
+   camp:{rank:'#12',team:'Поток 5 · Отряд 1',teamRank:'#2',income:true,done:4}},
+ b:{label:'2 · Среда, 16:20 — план поставлен, впереди разбор и факт',top:{name:'Александр',sub:'Поток 5 · Стандарт',lives:2,coins:40,points:25,bag:2},
+   todo:[{dot:'blu',t:'Разбор. Стандарт. Неделя 1',s:'сегодня в 17:00 (ваше время)',btn:`<button class="b b-blue b-sm">${I('video')}Zoom</button>`},
+         {dot:'amb',t:'Сдайте факт дня',s:'Написать 5 людям из записной книжки'},
+         {dot:'amb',t:'Вызов Фримана. Отвали',s:'1д 06:54:10'}],
+   route:{...r1,count:'6 из 14 уроков недели',bar:[1,1,1,1,1,1,0,0,0,0,0,0,0,0],lesson:'Записная книжка'},goal:{...g1,now:'24 000 ₽',pct:16},
+   focus:{id:'b',mode:'report',plan:'ok',rep:'now',date:'30.09',plan:'Написать 5 людям из записной книжки'},
+   meet:{today:true,d:'30',mon:'сен',title:'Разбор. Стандарт. Неделя 1',when:'сегодня в 17:00 (ваше время)'},
+   camp:{rank:'#9',team:'Поток 5 · Отряд 1',teamRank:'#2',income:true,done:6}},
+ c:{label:'3 · Новичок на «Прорыве»: нет Точки А, нет отряда',top:{name:'Мария',sub:'Поток 5 · Прорыв',lives:3,coins:0,points:0,bag:0},
+   todo:[{dot:'red',t:'Поставьте фокус дня',s:'<em>до 09:00 — 00:49:52</em>'},
+         {dot:'blu',t:'Заполните настройки',s:'Часовой пояс, Telegram-бот'}],
+   route:{pic:'tent.jpg',count:'0 из 7 уроков',stage:'Подготовка',loc:'Инструктаж',bar:[0,0,0,0,0,0,0],
+     nextKick:'Начните отсюда',lesson:'Настройка и активация',cta:'Начать'},
+   goal:null,
+   focus:{id:'c',mode:'plan',plan:'now',rep:'wait',date:'28.09',goal:null},
+   meet:{d:'30',mon:'сен',title:'Разбор. Стандарт. Неделя 1',when:'30 сентября в 17:00 (ваше время) · через 2 дн.'},
    camp:{rank:'—',team:'',income:false,done:0}}
 };
 
-const phone=s=>`${topbar(s.top)}${todo(s.todo)}<div class="gap"></div>${route(s.route)}<div class="gap"></div>${focus(s.focus)}<div class="gap"></div>${meeting(s.meet)}<div class="gap"></div>${camp(s.camp)}<div class="gap"></div>${feed()}${tabbar()}`;
+const phone=s=>`${topbar(s.top)}${todo(s.todo)}<div class="gap"></div>${route(s.route)}<div class="gap"></div>${focus(s.focus)}<div class="gap"></div>${goal(s.goal)}<div class="gap"></div>${meeting(s.meet)}<div class="gap"></div>${camp(s.camp)}<div class="gap"></div>${feed()}${tabbar()}`;
 
+/* ComaOverlay: тексты из кода, лор — в картинке и заголовке */
 const valley=()=>`<div class="valley2"><div class="pic" role="img" aria-label="Долина с крестами"></div><div class="body">
-  <div class="zone">Жизни закончились</div><h1 class="gold">Вы у края Долины смерти экспертов</h1>
-  <p>Если за 24 часа не вернуть хотя бы одну жизнь — вы выбываете из потока.</p>
-  <div class="timer">23:41:07</div><div class="sub">осталось, чтобы выбраться</div>
-  <div class="acts"><button class="b b-cta full">${I('bag')}Предмет из рюкзака</button><button class="b b-blue full">${I('users')}Позвать отряд</button><button class="b b-white full">${I('chat')}Написать проводнику</button></div>
-  <div class="why">Последнюю жизнь сняли 29 сентября: не сдан отчёт по фокусу дня.</div></div></div>`;
+  <div class="zone">Вы в коме</div><h1 class="gold">Вы у края Долины смерти экспертов</h1>
+  <p>Вы потеряли все жизни. Восстановите хотя бы одну жизнь, чтобы продолжить экспедицию.</p>
+  <div class="timer">23:41:07</div><div class="sub">Осталось времени на восстановление</div>
+  <div class="howto">Как восстановить жизни:</div>
+  <div class="acts" style="margin-top:10px"><button class="b b-cta full">${I('bag')}Предмет из рюкзака</button><button class="b b-blue full">${I('users')}Попросить отряд или куратора</button></div>
+  <div class="why">Кнопки${NEW()} — сейчас на экране комы это только текст.</div></div></div>`;
 
 const F=document.getElementById('frames');
 const add=(label,id,cls,html)=>{const w=document.createElement('div');w.innerHTML=`<div class="label">${label}</div><div id="${id}" class="${cls}">${html}</div>`;F.appendChild(w);};
@@ -298,11 +354,11 @@ add(S.a.label,'p1','phone',phone(S.a));
 add(S.b.label,'p2','phone',phone(S.b));
 add(S.c.label,'p3','phone',phone(S.c));
 add('4 · Кома — 0 жизней','p4','phone',valley()+tabbar());
-add('Компьютер · будний день, утро','d','desk',`<nav class="snav"><div class="logo gold">План Продюсера</div>
+add('Компьютер · понедельник, утро','d','desk',`<nav class="snav"><div class="logo gold">План Продюсера</div>
   <a class="on">${I('home')}Главная</a><a>${I('map')}Маршрут</a><a>${I('cal')}Календарь</a><a>${I('tent')}Лагерь</a><a>${I('bag')}Рюкзак</a>
   <div class="grp">Общение</div><a>${I('chat')}Чат ПП</a><a>${I('users')}Чат отряда</a>
   <div class="grp">Прочее</div><a>${I('shop')}Лавка</a><a>${I('gear')}Настройки</a><a class="foot">${I('back')}На главную платформы</a></nav>
   <main>${topbar(S.a.top)}<div class="grid"><div class="col">${route(S.a.route,true)}<div>${focus(S.a.focus)}</div></div>
-  <div class="col"><div>${todo(S.a.todo)}</div><div>${meeting(S.a.meet)}</div><div>${camp(S.a.camp)}</div><div>${feed()}</div></div></div></main>`);
+  <div class="col"><div>${todo(S.a.todo)}</div><div>${goal(S.a.goal)}</div><div>${meeting(S.a.meet)}</div><div>${camp(S.a.camp)}</div><div>${feed()}</div></div></div></main>`);
 </script>
 </body></html>
