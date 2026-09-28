@@ -23,7 +23,7 @@ body{background:#0A0E13}
 .trophy .ic{width:14px;height:14px}
 
 /* моё место */
-.me{background:linear-gradient(160deg,#18263A 0%,#141E2B 60%);border:1px solid rgba(240,208,128,.28);border-radius:20px;padding:18px}
+.mycard{background:linear-gradient(160deg,#18263A 0%,#141E2B 60%);border:1px solid rgba(240,208,128,.28);border-radius:20px;padding:18px}
 .me-top{display:flex;align-items:center;gap:16px}
 .me-place{font-size:44px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--gold-a),var(--gold-b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
 .me-place small{font-size:22px}
@@ -98,6 +98,7 @@ body{background:#0A0E13}
 .rw .mb{height:4px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:6px;overflow:hidden}
 .rw .mb i{display:block;height:100%;background:var(--moss);border-radius:2px}
 
+.phone-b{padding-bottom:180px}
 /* компьютер */
 .desk{border-radius:20px;border:1px solid var(--line2);overflow:hidden;width:1440px;display:flex;background:var(--bg)}
 .desk main{flex:1;padding:28px 36px 40px}
@@ -119,6 +120,24 @@ body{background:#0A0E13}
 .tr.me2{background:rgba(240,208,128,.07);box-shadow:inset 3px 0 0 var(--gold-b)}
 .tr.me2 .pl{color:var(--gold-a)}
 @media (max-width:560px){.wrap{padding:12px 0 0;gap:28px}.wrap>div{width:100%}.wrap>div:has(.desk){display:none}.legend{margin:0 12px;width:auto;font-size:13px}.label{margin:0 16px 10px}.phone{width:100%;border-radius:0;border-left:0;border-right:0}}
+
+/* тропа v2: прямая линия, метки не накладываются */
+.track2{position:relative;height:56px;margin:18px 14px 0 14px}
+.track2 .line{position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;border-radius:2px;background:repeating-linear-gradient(90deg,rgba(107,203,119,.5) 0 6px,transparent 6px 10px)}
+.track2 .line i{display:block;height:100%;border-radius:2px;background:var(--gold-a)}
+.pin2{position:absolute;top:50%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;background:#223047;border:2px solid var(--ring,#6B9FFF);color:#fff}
+.pin2.me4{width:38px;height:38px;border:3px solid var(--gold-a);box-shadow:0 0 0 4px rgba(240,208,128,.18);z-index:2}
+.goal2{position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(240,208,128,.15);border:2px solid var(--gold-a);color:var(--gold-a)}
+.goal2 .ic{width:16px;height:16px}
+.ax2{position:relative;display:flex;justify-content:space-between;margin:10px 0 0;font-size:12px;color:var(--t3);height:18px}
+.ax2 .meL{position:absolute;top:0;transform:translateX(-10%);color:var(--gold-a);font-weight:700;white-space:nowrap;margin-left:14px}
+.ax2 span:first-child,.ax2 span:last-child{position:static}
+.fin{display:flex;align-items:center;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:var(--t2)}
+.fin .ic{width:15px;height:15px;color:var(--gold-a)}
+/* компьютер: колонкам хватает места */
+.dgrid{grid-template-columns:340px minmax(0,1fr)!important}
+.th,.tr{grid-template-columns:44px minmax(0,1fr) 64px 96px 150px 56px!important;gap:10px!important;padding:0 16px!important}
+.trophy{white-space:nowrap;font-size:11px}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute">
@@ -159,7 +178,7 @@ const hearts=l=>`<span class="hearts" aria-label="Жизни: ${l} из 3">${[0,
 const lifeOrCup=p=>p.fin?`<span class="trophy">${I('trophy')}финалист</span>`:hearts(p.lives);
 const tabbar=()=>`<nav class="tabbar">${[['home','Главная'],['map','Маршрут'],['cal','Календарь'],['tent','Лагерь'],['grid','Ещё']].map((t,i)=>`<a class="tab ${i===3?'on':''}">${I(t[0])}${t[1]}</a>`).join('')}</nav>`;
 
-const meCard=(extra='')=>`<div class="me">
+const meCard=(extra='')=>`<div class="mycard">
  <div class="me-top"><div class="me-place"><small>#</small>${ME.place}</div><div class="me-txt"><b>Ваше место</b><span>из 27 участников потока 5</span></div></div>
  <div class="me-bar"><div class="row"><span>До Точки Б: <b>${ME.inc} из ${ME.goal} ₽</b></span><b style="color:var(--gold-a)">${ME.pct}%</b></div><div class="bar"><i style="width:${ME.pct}%"></i></div></div>
  <div class="me-stats"><div>${I('star','fill','color:#F0D080')}${ME.pts} баллов</div><div>${hearts(ME.lives)}</div></div>
@@ -189,14 +208,16 @@ const B=()=>`<div class="h1">Рейтинг</div>
  ${tabbar()}`;
 
 /* C — тропа к Точке Б */
-const pins=[[P[0],100,18],[P[1],71,34],[P[2],58,48],[P[3],44,58],[P[4],37,66]];
 const C=()=>`<div class="h1">Рейтинг</div>
- <div class="trail"><h3>Тропа к Точке Б${NEW()}</h3><p>Каждый участник — на своём проценте пути. Вершина — 100%: там финалисты.</p>
-  <div class="track"><svg class="path" viewBox="0 0 100 120" preserveAspectRatio="none"><path d="M2 108 C 25 104, 30 80, 50 70 S 80 40, 96 14" fill="none" stroke="rgba(107,203,119,.55)" stroke-width="1.2" stroke-dasharray="3 2" vector-effect="non-scaling-stroke"/></svg>
-   ${pins.map(([p,pc,y])=>`<span class="pin" style="--ring:${p.t};left:${2+pc*0.92}%;top:${y+ (pc===100?0:0)}%">${p.ini}</span>`).join('')}
-   <span class="pin me3" style="left:${2+ME.pct*0.92}%;top:86%"><span class="tg">вы · 12%</span>А</span>
-   <span class="flag" style="top:-6px">${I('flag')}</span>
-   <div class="ax"><span>0%</span><span>Точка Б · 100%</span></div></div></div>
+ <div class="trail"><h3>Тропа к Точке Б${NEW()}</h3><p>Каждый на своём проценте пути. В конце тропы — Точка Б и финалисты.</p>
+  <div class="track2">
+   <div class="line"><i style="width:${ME.pct}%"></i></div>
+   ${[[P[1],71],[P[2],58],[P[3],44]].map(([p,pc])=>`<span class="pin2" style="--ring:${p.t};left:${pc}%" title="${p.n}">${p.ini}</span>`).join('')}
+   <span class="pin2 me4" style="left:${ME.pct}%">А</span>
+   <span class="goal2">${I('flag')}</span>
+  </div>
+  <div class="ax2"><span>Старт</span><span class="meL" style="left:${ME.pct}%">вы · ${ME.pct}%</span><span>Точка Б</span></div>
+  <div class="fin">${I('trophy')}Финалисты: Мария С.</div></div>
  <div class="sectt"><h2>Участники</h2><a>Все потоки</a></div>
  <div class="list">${P.map((p,i)=>row(p,i+1).replace('</b><span>',`</b><div class="mb"><i style="width:${p.pct}%"></i></div><span>`)).join('')}<div class="gapr">• • •</div>${row(ME,12,1).replace('</b><span>',`</b><div class="mb"><i style="width:${ME.pct}%"></i></div><span>`)}<a class="more2">Все 27 участников</a></div>
  ${tabbar()}`;
@@ -214,7 +235,7 @@ const D=()=>`<nav class="snav"><div class="logo gold">План Продюсер�
 const F=document.getElementById('frames');
 const add=(label,cls,html)=>{const w=document.createElement('div');w.innerHTML=`<div class="label">${label}</div><div class="${cls}">${html}</div>`;F.appendChild(w);};
 add('<b>A · Лента</b> — сначала «моё место», потом лидеры, потом список с людьми вокруг меня','phone',A());
-add('<b>B · Вкладки</b> — Участники / Отряды / Рост недели, моё место закреплено внизу','phone',B());
+add('<b>B · Вкладки</b> — Участники / Отряды / Рост недели, моё место закреплено внизу','phone phone-b',B());
 add('<b>C · Тропа к Точке Б</b> — лор: все на одной тропе к вершине, я виден среди остальных','phone',C());
 add('Компьютер · вариант A','desk',D());
 
