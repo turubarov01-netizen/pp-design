@@ -381,6 +381,13 @@ p{line-height:1.45}
 .st-open .t{line-height:1.35;align-self:center}
 .st-open .today-tag{margin:0;flex:none;align-self:center;line-height:1;padding:6px 8px;border-radius:8px;background:rgba(240,208,128,.12)}
 .st-open .n,.st-done .n{align-self:center}
+
+/* строка шага: текст на всю ширину, бейдж «Сегодня» над названием */
+.st-open{display:flex;width:100%;align-items:center;gap:12px}
+.st-open .t{flex:1 1 auto;min-width:0;display:block;text-align:left}
+.st-open .tt{display:block}
+.st-open .today-tag{display:inline-block;margin:0 0 4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.2;color:var(--gold-a);background:rgba(240,208,128,.14)}
+.st-open .w{flex:none}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute">
@@ -479,7 +486,7 @@ const pfStep=(plan,rep)=>`<div class="stp">
   <div class="ln"></div>
   <div class="s ${rep}"><i>${rep==='ok'?I('check'):'2'}</i><div><b>Итог и РАД</b><span>${rep==='ok'?'сдан':'до 24:00'}</span></div></div></div>`;
 const doneRow=d=>`<div class="st-done"><span class="n">${d.n}</span>${I('check')}<span class="t">${d.t}</span></div>`;
-const openRow=(o,sel)=>`<button class="st-open ${sel?'on':''} ${o.key?'key':''}"><span class="n">${o.key?I('star','fill'):o.n}</span><span class="t">${o.t}${o.key?`<small>Ключевое задание недели · до пт, 21:00</small>`:''}</span>${sel?`<span class="today-tag">сегодня</span>`:(o.key?'':`<span class="w">+1%</span>`)}</button>`;
+const openRow=(o,sel)=>`<button class="st-open ${sel?'on':''} ${o.key?'key':''}"><span class="n">${o.key?I('star','fill'):o.n}</span><span class="t">${sel?`<span class="today-tag">Сегодня</span>`:''}<span class="tt">${o.t}</span>${o.key?`<small>Ключевое задание недели · до пт, 21:00</small>`:''}</span>${sel||o.key?'':`<span class="w">+1%</span>`}</button>`;
 const focus=f=>{
   const head=`<div class="sectt"><h2>Фокус дня</h2><a>Трекер Фримана →</a></div>`;
   if(f.weekend) return '';
