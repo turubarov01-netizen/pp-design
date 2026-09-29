@@ -14,18 +14,20 @@ body{background:#0D1117;color:rgba(255,255,255,.76);font-family:Inter,system-ui,
 .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,17,23,0) 30%,#0D1117 100%)}
 .head{padding:0 16px 8px;margin-top:-30px;position:relative}
 .kick{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6B9FFF}
-h1{font-size:28px;font-weight:800;line-height:1.1;margin-top:8px;background:linear-gradient(135deg,#F0D080,#CCA830);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.aud{margin:20px 16px 4px;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;background:#141E2B;border:1px solid rgba(255,255,255,.12)}
-.aud-p{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:none;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#2A2008}
-.aud-p svg.i{width:18px;height:18px;fill:currentColor;stroke:none;margin-left:2px}
-.aud-t{flex:1;min-width:0}
-.aud-t b{display:block;font-size:16px;color:#fff}
-.aud-t small{display:block;font-size:13px;color:rgba(255,255,255,.5);margin-top:2px}
-.aud-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.1);margin-top:10px}
+h1{font-size:28px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:1.1;margin-top:8px;background:linear-gradient(135deg,#F0D080,#CCA830);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .next{margin:28px 16px 80px;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:18px;border:1px solid rgba(234,184,32,.45);background:rgba(234,184,32,.06);color:#fff;text-decoration:none}
 .next small{display:block;font-size:12px;color:rgba(255,255,255,.52);font-weight:600;margin-bottom:2px} .next b{font-size:16px}
 .next .go{margin-left:auto;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#3A2E18;font-weight:800;flex:none}
-@media (min-width:640px){.cover{border-radius:0 0 22px 22px}}
+.pl{margin:20px 16px 4px;padding:14px;border-radius:20px;background:#181616;border:1px solid rgba(255,255,255,.06)}
+.pl-b{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.pl-p{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:#2C271E;color:#E3C06A}
+.pl-p svg{width:16px;height:16px;margin-left:2px}
+.pl-t{flex:1;min-width:0}
+.pl-n{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:rgba(255,255,255,.92)}
+.pl-n svg{width:14px;height:14px;color:rgba(255,255,255,.55)}
+.pl-h{display:block;margin-top:2px;font-size:11px;color:rgba(230,220,200,.62)}
+.pl-w{width:16px;height:16px;flex:none;color:rgba(255,255,255,.25)}
+@media (min-width:640px){.cover{border-radius:22px;margin:0 16px} #part{padding:0 16px}}
 </style></head>
 <body>
 <div class="top"><span class="logo">ПП</span>Маршрут</div>
@@ -33,7 +35,7 @@ h1{font-size:28px;font-weight:800;line-height:1.1;margin-top:8px;background:line
 <div class="crumb">‹ <b>Маршрут</b> › Неделя 1 › Точки А и Б</div>
 <div class="cover"></div>
 <div class="head"><p class="kick">Инструктаж</p><h1>Точки А и Б</h1></div>
-<div class="aud"><span class="aud-p"><svg class="i" style="fill:currentColor;stroke:none" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span><div class="aud-t"><b>Аудио-урок</b><small>Аудио · 1:44</small><div class="aud-bar"></div></div></div>
+<div class="pl"><button class="pl-b" type="button"><span class="pl-p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></span><span class="pl-t"><span class="pl-n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>Аудио-урок</span><span class="pl-h">Нажмите, чтобы слушать&nbsp;— плеер откроется поверх страницы</span></span><svg class="pl-w" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg></button></div>
 <div id="part"></div>
 <a class="next" href="#"><span><small>Следующий урок</small><b>Ключевое задание недели 1 — сбор данных</b></span><span class="go">→</span></a>
 </div>
