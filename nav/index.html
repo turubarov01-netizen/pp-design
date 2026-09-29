@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>План Продюсера · меню и каркас кабинета — 3 варианта</title>
+<link rel="stylesheet" href="pp.css">
+<link rel="stylesheet" href="base.css">
+<style>
+body{background:#0A0E13}
+.doc{max-width:1440px;margin:0 auto;padding:28px 32px 60px}
+.doc h1.tt{font-size:28px;font-weight:800;letter-spacing:-.01em}
+.doc .lead{font-size:15px;color:var(--t2);margin-top:8px;max-width:760px;line-height:1.5}
+.blk{margin-top:36px;padding-top:28px;border-top:1px solid var(--line2)}
+.blk>h2{font-size:22px;font-weight:800}
+.blk>h2 small{font-size:14px;font-weight:600;color:var(--gold-a);margin-left:8px}
+.why{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;margin-top:14px;max-width:1100px}
+.why div{font-size:14px;line-height:1.5;color:var(--t2)}
+.why b{color:#fff}
+.why .pro b{color:var(--moss)} .why .con b{color:#FF9A9A}
+.frames{display:flex;flex-wrap:wrap;gap:32px;margin-top:22px;align-items:flex-start}
+.fl{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin:0 0 10px 4px}
+.now{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start;margin-top:16px}
+.now img{width:390px;border-radius:14px;border:1px solid var(--line2);display:block}
+.now ul{font-size:14px;color:var(--t2);line-height:1.55;max-width:560px;padding-left:18px}
+.now li+li{margin-top:6px}
+.now li b{color:#fff}
+
+/* телефон */
+.ph{position:relative;width:390px;height:780px;border-radius:28px;border:1px solid var(--line2);overflow:hidden;background:var(--bg)}
+.ph .scroll{position:absolute;inset:0;overflow:hidden;padding:0 16px}
+.appbar{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:10px;height:56px;margin:0 -16px 14px;padding:0 12px 0 16px;background:rgba(13,17,23,.92);border-bottom:1px solid var(--line)}
+.logo{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;font-size:12px;font-weight:800;color:#1A1406;background:linear-gradient(135deg,var(--gold-a),var(--gold-b))}
+.appbar .ttl{flex:1;min-width:0;font-size:17px;font-weight:700}
+.appbar .ttl small{display:block;font-size:12px;font-weight:500;color:var(--t3);margin-top:1px}
+.ib{position:relative;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--t2);flex:none}
+.ib .ic{width:22px;height:22px}
+.ib em{position:absolute;top:6px;right:6px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--red);color:#fff;font-style:normal;font-size:10px;font-weight:700;display:grid;place-items:center}
+.me2{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:#1A1406;background:linear-gradient(135deg,var(--gold-a),var(--gold-b));flex:none;margin-left:2px}
+
+/* нижнее меню */
+.tb{position:absolute;left:12px;right:12px;bottom:12px;z-index:5;height:72px;border-radius:22px;display:grid;background:rgba(17,24,39,.97);border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.tb.c5{grid-template-columns:repeat(5,1fr)} .tb.c4{grid-template-columns:repeat(4,1fr)}
+.t{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:10px;gap:6px;font-size:11px;font-weight:600;color:rgba(255,255,255,.62)}
+.t .ic{width:22px;height:22px;position:relative;z-index:1}
+.t.on{color:var(--gold-a)}
+.t.on::before{content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);width:56px;height:32px;border-radius:16px;background:rgba(240,208,128,.14);box-shadow:inset 0 0 0 1px rgba(240,208,128,.28)}
+.t em{position:absolute;top:4px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--gold-b);color:#1A1406;font-style:normal;font-size:10px;font-weight:700;display:grid;place-items:center;z-index:2}
+/* вариант Б: рюкзак в центре */
+.t.fab{padding-top:0;justify-content:center}
+.t.fab .disc{width:58px;height:58px;margin-top:-26px;border-radius:50%;display:grid;place-items:center;color:#1A1406;background:linear-gradient(180deg,#DFC880,#C9A84C);box-shadow:0 5px 0 #A07828,0 10px 22px rgba(0,0,0,.45);position:relative}
+.t.fab .disc .ic{width:26px;height:26px}
+.t.fab .disc em{top:-4px;left:auto;right:-4px;background:#fff;color:#1A1406}
+.t.fab span{margin-top:4px;color:var(--gold-a)}
+
+/* шторка «Ещё» */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:6}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:7;background:#141E2B;border-radius:24px 24px 0 0;border-top:1px solid var(--line2);padding:10px 16px 24px}
+.grab{width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.25);margin:0 auto 14px}
+.shh{display:flex;align-items:center;gap:12px;padding:0 4px 12px}
+.shh b{flex:1;font-size:18px}
+.grp{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin:14px 6px 6px}
+.mi{display:flex;align-items:center;gap:12px;min-height:52px;padding:0 10px;border-radius:14px;font-size:15px;font-weight:600}
+.mi+.mi{margin-top:2px}
+.mi .ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.05);flex:none}
+.mi .ico .ic{width:19px;height:19px}
+.mi .tx{flex:1;min-width:0}
+.mi .tx small{display:block;font-size:12px;font-weight:500;color:var(--t3);margin-top:1px}
+.mi .x{color:var(--t3)} .mi .x .ic{width:16px;height:16px}
+.mi .val{font-size:14px;font-weight:700;color:var(--t2)}
+.mi.exit{color:var(--t2)}
+.mi.exit .ico{background:transparent;border:1px solid var(--line2)}
+.sep{height:1px;background:var(--line);margin:12px 6px}
+
+/* вариант В: меню-страница */
+.menu-page .prof{display:flex;align-items:center;gap:12px;padding:14px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.menu-page .prof .me2{width:48px;height:48px;font-size:18px}
+.menu-page .prof b{display:block;font-size:17px} .menu-page .prof span{font-size:13px;color:var(--t3)}
+.menu-page .pst{display:flex;gap:8px;margin-top:10px}
+.menu-page .pst div{flex:1;height:40px;border-radius:12px;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:15px}
+.menu-page .pst .ic{width:16px;height:16px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.tile2{min-height:96px;padding:14px;border-radius:18px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between}
+.tile2 .ic{width:24px;height:24px}
+.tile2 b{font-size:15px;display:block}
+.tile2 small{font-size:12px;color:var(--t3)}
+.tile2 .top{display:flex;justify-content:space-between;align-items:flex-start}
+.tile2 .top .x .ic{width:15px;height:15px;color:var(--t3)}
+
+/* компьютер */
+.dk{width:1180px;height:720px;border-radius:20px;border:1px solid var(--line2);overflow:hidden;display:flex;background:var(--bg);position:relative}
+.side{width:248px;flex:none;border-right:1px solid var(--line);background:linear-gradient(180deg,#0F1620,#0B1016);padding:20px 14px;display:flex;flex-direction:column;gap:2px}
+.side .brand{display:flex;align-items:center;gap:10px;padding:2px 8px 18px}
+.side .brand b{font-size:15px;letter-spacing:.02em}
+.side .brand small{display:block;font-size:12px;color:var(--t3);font-weight:500}
+.sa{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:12px;color:var(--t2);font-size:15px;font-weight:600}
+.sa .ic{width:19px;height:19px}
+.sa .x{margin-left:auto;color:var(--t3)} .sa .x .ic{width:14px;height:14px}
+.sa em{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--gold-b);color:#1A1406;font-style:normal;font-size:11px;font-weight:700;display:grid;place-items:center}
+.sa.on{background:rgba(240,208,128,.09);color:var(--gold-a);box-shadow:inset 3px 0 0 var(--gold-b)}
+.side .g{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:16px 12px 6px}
+.side .foot{margin-top:auto}
+.dmain{flex:1;min-width:0;display:flex;flex-direction:column}
+.dbar{display:flex;align-items:center;gap:12px;height:64px;padding:0 24px;border-bottom:1px solid var(--line)}
+.dbar .ttl{flex:1;font-size:20px;font-weight:700}
+.dbody{padding:22px 28px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;overflow:hidden}
+/* вариант В на компьютере: меню сверху */
+.dk.topnav{flex-direction:column}
+.hnav{display:flex;align-items:center;gap:6px;height:68px;padding:0 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0F1620,#0B1016)}
+.hnav .brand{display:flex;align-items:center;gap:10px;margin-right:18px}
+.hnav .brand b{font-size:15px}
+.ha{display:flex;align-items:center;gap:8px;height:44px;padding:0 14px;border-radius:12px;color:var(--t2);font-size:15px;font-weight:600}
+.ha .ic{width:18px;height:18px}
+.ha.on{background:rgba(240,208,128,.1);color:var(--gold-a)}
+.hnav .sp{flex:1}
+.new2{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;border:1px dashed rgba(107,159,255,.7);color:#9DBDFF;font-size:11px;font-weight:700;margin-left:6px;vertical-align:middle}
+/* мини-контент главной (из утверждённого макета) */
+.mini .sectt{margin-top:0}
+.mini .todo{margin-bottom:20px}
+.mini .route .pic{height:96px}
+@media (max-width:560px){.doc{padding:16px 0}.doc>*:not(.blk){margin-left:14px;margin-right:14px}.blk{padding-left:0;padding-right:0}.blk>h2,.blk>.why,.blk>.lead{margin-left:14px;margin-right:14px}.why{grid-template-columns:1fr}.frames{gap:24px;justify-content:center}.dkwrap{display:none}.now{margin:16px 14px 0}.now img{width:100%}}
+</style>
+</head><body><style>.pp-switch{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(10,14,19,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08);font:600 13px Inter,sans-serif}.pp-switch span{color:rgba(255,255,255,.5);margin-right:4px}.pp-switch a{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:18px;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.8);text-decoration:none}.pp-switch a.on{background:rgba(240,208,128,.12);border-color:rgba(240,208,128,.5);color:#F0D080}</style><nav class="pp-switch"><span>Экраны:</span><a href="../" class="">Главная</a><a href="../camp/" class="">Лагерь экспедиции</a><a href="./" class="on">Меню · 3 варианта</a></nav>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+  <symbol id="fire" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+  <symbol id="bag" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 10h8"/><path d="M8 18h8"/><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="cal" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><polygon points="7 4 20 12 7 20 7 4"/></symbol>
+  <symbol id="left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  <symbol id="home" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></symbol>
+  <symbol id="tent" viewBox="0 0 24 24"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></symbol>
+  <symbol id="grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
+  <symbol id="shop" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+  <symbol id="chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></symbol>
+  <symbol id="back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="skull" viewBox="0 0 24 24"><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M15 22a1 1 0 0 0 1-1v-1a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20v1a1 1 0 0 0 1 1z"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="12" r="1"/></symbol>
+  <symbol id="compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></symbol>
+  <symbol id="coins" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></symbol>
+  <symbol id="forestS" viewBox="0 0 400 150" preserveAspectRatio="none">
+    <g fill="#0E2A1C" opacity=".9"><polygon points="-10,150 20,60 50,150"/><polygon points="30,150 70,35 110,150"/><polygon points="95,150 125,75 155,150"/><polygon points="250,150 290,40 330,150"/><polygon points="310,150 345,70 380,150"/><polygon points="360,150 395,30 430,150"/></g>
+    <g fill="#08180F"><polygon points="-20,150 5,95 30,150"/><polygon points="60,150 90,90 120,150"/><polygon points="140,150 170,110 200,150"/><polygon points="200,150 225,100 250,150"/><polygon points="280,150 310,95 340,150"/><polygon points="340,150 375,85 410,150"/></g>
+  </symbol>
+<symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+<symbol id="ext" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+<symbol id="out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></symbol>
+<symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+<symbol id="clip" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></symbol></svg>
+<div class="doc" id="doc"></div>
+<script>
+const I=(id,c='',s='')=>`<svg class="ic ${c}" ${s?`style="${s}"`:''}><use href="#${id}"/></svg>`;
+const NEW=(t='новое')=>`<span class="new2">${t}</span>`;
+const X=`<span class="x">${I('ext')}</span>`;
+
+/* мини-контент главной — из утверждённого макета, люди и суммы — примеры */
+const ring=(frac,col,icon)=>{const C=2*Math.PI*21,COL={red:'#FF6B6B',amb:'#EAB820',blue:'#6B9FFF',gold:'#F0D080'};return `<div class="ring"><svg class="r" viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="21" stroke="${COL[col]}" stroke-linecap="round" stroke-dasharray="${(frac*C).toFixed(1)} ${C.toFixed(1)}"/></svg><div class="ico2 u-${col}">${I(icon)}</div></div>`};
+const mini=()=>`<div class="mini">
+ <div class="sectt"><h2>Сегодня</h2></div>
+ <div class="todo">
+  <a class="dl lvl-0 tint-red">${ring(.09,'red','crosshair')}<div class="tx"><div class="kind u-red">Фокус дня</div><b>Выберите шаг на сегодня</b><span class="pen">${I('heart','fill')}−1 жизнь за неделю</span></div><div class="left"><b class="u-red">50 мин</b><span>до 09:00</span></div></a>
+  <a class="dl lvl-1 tint-amb">${ring(.73,'amb','swords')}<div class="tx"><div class="kind u-amb">Вызов Фримана</div><b>Отвали</b><span class="pen">${I('heart','fill')}−3 жизни</span></div><div class="left"><b>3 д 15 ч</b><span>до чт, 23:14</span></div></a>
+  <a class="dl lvl-2 tint-blue">${ring(.91,'blue','star')}<div class="tx"><div class="kind u-blue">Ключевое задание</div><b>Сбор данных</b></div><div class="left"><b>4 д 13 ч</b><span>до пт, 21:00</span></div></a>
+ </div>
+ <div class="route"><div class="pic" style="background-image:url(img/glade.jpg)"></div><div class="body">
+  <div class="rhd"><button class="nav44">${I('left')}</button><div class="rt"><h1 class="gold">Неделя 1</h1></div><button class="nav44">${I('right')}</button></div>
+  <div class="weekbar">${[1,1,1,1,0,0,0,0,0,0,0,0,0,0].map(x=>`<i class="${x?'on':''}"></i>`).join('')}</div>
+  <div class="cnt">4 из 14 уроков раздела</div>
+ </div></div>
+</div>`;
+
+/* шапка раздела */
+const appbar=(title,sub,opts={})=>`<div class="appbar"><div class="logo">ПП</div><div class="ttl">${title}${sub?`<small>${sub}</small>`:''}</div>
+  <span class="ib" aria-label="Уведомления">${I('bell')}<em>3</em></span>${opts.avatar?`<span class="me2">А</span>`:''}</div>`;
+
+/* пункты меню — из ProducerPlanLayout.tsx */
+const tab=(icon,label,on,badge)=>`<a class="t ${on?'on':''}">${I(icon)}${badge?`<em>${badge}</em>`:''}${label}</a>`;
+
+/* ── Вариант А: пять вкладок ── */
+const tbA=(active='Главная')=>`<nav class="tb c5">${[['home','Главная'],['map','Маршрут'],['cal','Календарь'],['tent','Лагерь'],['grid','Ещё']].map(([i,l])=>tab(i,l,l===active)).join('')}</nav>`;
+const sheetA=()=>`<div class="scrim"></div><div class="sheet" role="dialog" aria-label="Ещё"><div class="grab"></div>
+  <div class="shh"><b>Ещё</b><span class="ib">${I('x')}</span></div>
+  <div class="grp">Экспедиция</div>
+  <a class="mi"><span class="ico">${I('bag','','color:#F0D080')}</span><span class="tx">Рюкзак<small>2 предмета</small></span></a>
+  <a class="mi"><span class="ico">${I('shop','','color:#EAB820')}</span><span class="tx">Лавка<small>10 фениксов</small></span></a>
+  <div class="grp">Общение</div>
+  <a class="mi"><span class="ico">${I('chat','','color:#6B9FFF')}</span><span class="tx">Чат ПП<small>Telegram</small></span>${X}</a>
+  <a class="mi"><span class="ico">${I('users','','color:#6B9FFF')}</span><span class="tx">Чат отряда<small>Telegram</small></span>${X}</a>
+  <a class="mi"><span class="ico">${I('video','','color:#6B9FFF')}</span><span class="tx">Встречи<small>запись клиентов и Zoom · раздел платформы</small></span>${X}</a>
+  <div class="sep"></div>
+  <a class="mi"><span class="ico">${I('gear')}</span><span class="tx">Настройки кабинета</span></a>
+  <a class="mi exit"><span class="ico">${I('out')}</span><span class="tx">Выйти на платформу wearefree.club</span></a>
+</div>`;
+const sideA=(active='Главная')=>`<nav class="side"><div class="brand"><div class="logo">ПП</div><div><b class="gold" style="font-size:15px">План Продюсера</b><small>Поток 5 · Стандарт</small></div></div>
+  ${[['home','Главная'],['map','Маршрут'],['cal','Календарь'],['tent','Лагерь']].map(([i,l])=>`<a class="sa ${l===active?'on':''}">${I(i)}${l}</a>`).join('')}
+  <div class="g">Экспедиция</div><a class="sa">${I('bag')}Рюкзак<em>2</em></a><a class="sa">${I('shop')}Лавка</a>
+  <div class="g">Общение</div><a class="sa">${I('chat')}Чат ПП${X}</a><a class="sa">${I('users')}Чат отряда${X}</a><a class="sa">${I('video')}Встречи${X}</a>
+  <div class="foot"><a class="sa">${I('gear')}Настройки</a><a class="sa">${I('out')}На платформу</a></div></nav>`;
+
+/* ── Вариант Б: рюкзак в центре ── */
+const tbB=(active='Главная')=>`<nav class="tb c5">${tab('home','Главная',active==='Главная')}${tab('map','Маршрут',active==='Маршрут')}
+  <a class="t fab"><span class="disc">${I('bag')}<em>2</em></span><span>Рюкзак</span></a>${tab('tent','Лагерь',active==='Лагерь')}${tab('grid','Ещё',active==='Ещё')}</nav>`;
+const sheetB=()=>`<div class="scrim"></div><div class="sheet" role="dialog" aria-label="Ещё"><div class="grab"></div>
+  <div class="shh"><b>Ещё</b><span class="ib">${I('x')}</span></div>
+  <a class="mi"><span class="ico">${I('cal','','color:#6BCB77')}</span><span class="tx">Календарь<small>встречи потока и дедлайны недели</small></span></a>
+  <a class="mi"><span class="ico">${I('shop','','color:#EAB820')}</span><span class="tx">Лавка<small>10 фениксов</small></span></a>
+  <div class="grp">Общение</div>
+  <a class="mi"><span class="ico">${I('chat','','color:#6B9FFF')}</span><span class="tx">Чат ПП</span>${X}</a>
+  <a class="mi"><span class="ico">${I('users','','color:#6B9FFF')}</span><span class="tx">Чат отряда</span>${X}</a>
+  <a class="mi"><span class="ico">${I('video','','color:#6B9FFF')}</span><span class="tx">Встречи<small>запись клиентов и Zoom</small></span>${X}</a>
+  <div class="sep"></div>
+  <a class="mi"><span class="ico">${I('gear')}</span><span class="tx">Настройки кабинета</span></a>
+  <a class="mi exit"><span class="ico">${I('out')}</span><span class="tx">Выйти на платформу wearefree.club</span></a>
+</div>`;
+const sideB=()=>`<nav class="side"><div class="brand"><div class="logo">ПП</div><div><b class="gold" style="font-size:15px">План Продюсера</b><small>Поток 5 · Стандарт</small></div></div>
+  <a class="sa on">${I('home')}Главная</a><a class="sa">${I('map')}Маршрут</a><a class="sa" style="color:#F0D080">${I('bag')}Рюкзак<em>2</em></a><a class="sa">${I('tent')}Лагерь</a><a class="sa">${I('cal')}Календарь</a>
+  <div class="g">Экспедиция</div><a class="sa">${I('shop')}Лавка</a>
+  <div class="g">Общение</div><a class="sa">${I('chat')}Чат ПП${X}</a><a class="sa">${I('users')}Чат отряда${X}</a><a class="sa">${I('video')}Встречи${X}</a>
+  <div class="foot"><a class="sa">${I('gear')}Настройки</a><a class="sa">${I('out')}На платформу</a></div></nav>`;
+
+/* ── Вариант В: четыре вкладки + меню-страница, на компьютере меню сверху ── */
+const tbC=(active='Главная')=>`<nav class="tb c4">${[['home','Главная'],['map','Маршрут'],['tent','Лагерь'],['menu','Меню']].map(([i,l])=>tab(i,l,l===active)).join('')}</nav>`;
+const menuPage=()=>`<div class="menu-page">
+  <div class="prof"><span class="me2">А</span><div style="flex:1;min-width:0"><b>Александр</b><span>Поток 5 · Стандарт · Отряд 1</span></div></div>
+  <div class="pst"><div>${I('heart','fill','color:#FF6B6B')}3</div><div>${I('fire','','color:#EAB820')}10</div><div>${I('star','fill','color:#F0D080')}10</div></div>
+  <div class="tiles">
+    <a class="tile2"><div class="top">${I('bag','','color:#F0D080')}<span class="val" style="font-weight:700;color:#F0D080">2</span></div><div><b>Рюкзак</b><small>предметы и жизни</small></div></a>
+    <a class="tile2"><div class="top">${I('cal','','color:#6BCB77')}</div><div><b>Календарь</b><small>встречи и дедлайны</small></div></a>
+    <a class="tile2"><div class="top">${I('shop','','color:#EAB820')}</div><div><b>Лавка</b><small>10 фениксов</small></div></a>
+    <a class="tile2"><div class="top">${I('chat','','color:#6B9FFF')}${X}</div><div><b>Чат ПП</b><small>Telegram</small></div></a>
+    <a class="tile2"><div class="top">${I('users','','color:#6B9FFF')}${X}</div><div><b>Чат отряда</b><small>Telegram</small></div></a>
+    <a class="tile2"><div class="top">${I('video','','color:#6B9FFF')}${X}</div><div><b>Встречи</b><small>запись клиентов</small></div></a>
+  </div>
+  <a class="mi" style="margin-top:12px"><span class="ico">${I('gear')}</span><span class="tx">Настройки кабинета</span></a>
+  <a class="mi exit"><span class="ico">${I('out')}</span><span class="tx">Выйти на платформу wearefree.club</span></a>
+</div>`;
+const topnavC=()=>`<div class="hnav"><div class="brand"><div class="logo">ПП</div><b class="gold">План Продюсера</b></div>
+  <a class="ha on">${I('home')}Главная</a><a class="ha">${I('map')}Маршрут</a><a class="ha">${I('tent')}Лагерь</a><a class="ha">${I('cal')}Календарь</a><a class="ha">${I('bag')}Рюкзак</a><a class="ha">${I('grid')}Ещё</a>
+  <span class="sp"></span><span class="ib">${I('bell')}<em>3</em></span><span class="me2">А</span></div>`;
+
+const goalCard=()=>`<div class="mini"><div class="sectt"><h2>Цель экспедиции</h2><a>Изменить</a></div><div class="goal">
+  <div class="ab"><div><small>Точка А</small><b>40 000 ₽</b></div><div class="arrow">→</div><div style="text-align:right"><small>Точка Б</small><b class="amber">150 000 ₽</b></div></div>
+  <div class="now"><span>Сейчас по нише: <b>18 000 ₽</b></span><span><b>12%</b></span></div><div class="bar"><i style="width:12%"></i></div></div>
+  <div class="sectt" style="margin-top:22px"><h2>Ближайшая встреча</h2><a>Календарь →</a></div>
+  <div class="meet"><div class="tl"><b>30</b><span>сен</span></div><div class="tx"><b>Разбор. Стандарт. Неделя 1</b><span>30 сентября в 17:00 (ваше время)</span></div></div></div>`;
+const phone=(inner,extra='')=>`<div class="ph"><div class="scroll">${inner}</div>${extra}</div>`;
+const desk=(nav,top=false)=>top
+ ? `<div class="dk topnav">${nav}<div class="dbody" style="padding:24px 40px">${mini()}${goalCard()}</div></div>`
+ : `<div class="dk">${nav}<div class="dmain"><div class="dbar"><div class="ttl">Главная</div><span class="ib">${I('bell')}<em>3</em></span><span class="me2">А</span></div><div class="dbody">${mini()}${goalCard()}</div></div></div>`;
+
+const V=[
+ {id:'A',name:'А · Пять вкладок',tag:'рекомендую',
+  lead:'То, что нарисовано в утверждённом макете главной. Внизу пять разделов, которыми пользуются каждый день; всё остальное — в «Ещё», по группам и без повторов.',
+  pro:['<b>Привычно.</b> Так устроены почти все приложения: пять подписанных вкладок, активная подсвечена.','<b>Календарь под рукой</b> — встречи по средам и пятницам всегда в один тап.','<b>Выход на платформу</b> перестаёт занимать главное место: он последней строкой в «Ещё».'],
+  con:['<b>Рюкзак — в «Ещё»</b>, то есть в два тапа. На главной он есть кнопкой рядом с жизнями, поэтому скорее всего это не мешает.'],
+  frames:()=>[['Телефон · главная',phone(appbar('Главная','Поток 5 · Неделя 1')+mini(),tbA())],['Телефон · открыто «Ещё»',phone(appbar('Главная','Поток 5 · Неделя 1')+mini(),tbA('Ещё')+sheetA())],['Компьютер · боковое меню',desk(sideA())]]},
+ {id:'B',name:'Б · Рюкзак в центре',
+  lead:'Ты говорил, что рюкзаком пользуются постоянно. Здесь он — главная кнопка меню: золотая, по центру, с числом предметов. Календарь уходит в «Ещё», встречи и дедлайны и так видны на главной в «Сегодня».',
+  pro:['<b>Рюкзак в один тап</b> из любого раздела, и видно, сколько в нём предметов.','<b>Игровое ощущение</b> — центральная кнопка как в играх, подходит лору экспедиции.'],
+  con:['<b>Календарь в два тапа.</b>','<b>Выделенная кнопка тянет внимание</b> на себя: если рюкзак не главное действие дня, она отвлекает от фокуса и уроков.'],
+  frames:()=>[['Телефон · главная',phone(appbar('Главная','Поток 5 · Неделя 1')+mini(),tbB())],['Телефон · открыто «Ещё»',phone(appbar('Главная','Поток 5 · Неделя 1')+mini(),tbB('Ещё')+sheetB())],['Компьютер · боковое меню',desk(sideB())]]},
+ {id:'C',name:'В · Четыре вкладки и страница «Меню»',
+  lead:'Внизу только четыре крупных пункта. «Меню» — отдельная страница: сверху профиль с жизнями и фениксами, ниже плитки разделов. На компьютере меню не сбоку, а сверху — больше места под содержимое.',
+  pro:['<b>Крупные кнопки</b>, в них труднее промахнуться.','<b>Всё второстепенное в одном месте</b>, плитки понятнее списка.','<b>На компьютере шире контент</b> — нет боковой колонки.'],
+  con:['<b>И Календарь, и Рюкзак в два тапа.</b>','<b>Ещё один экран</b> вместо шторки: чтобы вернуться, нужен лишний тап.'],
+  frames:()=>[['Телефон · главная',phone(appbar('Главная','Поток 5 · Неделя 1',{avatar:false})+mini(),tbC())],['Телефон · страница «Меню»',phone(appbar('Меню','')+menuPage(),tbC('Меню'))],['Компьютер · меню сверху',desk(topnavC(),true)]]},
+];
+
+document.getElementById('doc').innerHTML=`
+<h1 class="tt">Меню и каркас кабинета · 3 варианта</h1>
+<p class="lead">Во всех трёх: одна тёмная тема «Тёмного леса» вместо двух, иконки вместо эмодзи, подписи 11 px вместо 9, отступ под «полоску» iPhone, шапка с названием раздела вместо «Europe/Moscow». Пункты меню — те же, что сейчас на платформе. Отличается только раскладка.</p>
+<div class="blk"><h2>Как сейчас</h2>
+ <div class="now"><img src="img/now-tabbar.jpg" alt="Нижнее меню сейчас">
+ <ul>
+  <li><b>«Домой» уводит с программы на платформу</b> — самое заметное место меню занимает выход.</li>
+  <li><b>Эмодзи вместо иконок</b>, на разных телефонах выглядят по-разному; 🏔️ и у «Дашборда», и у логотипа.</li>
+  <li><b>Подписи 9 px</b> — на пределе читаемости.</li>
+  <li><b>«Ещё» повторяет</b> пункты, которые уже видны внизу.</li>
+  <li><b>Две темы</b>: светлая кремовая и тёмно-синяя, меню всегда зелёное — ни одна не в стиле ПП.</li>
+  <li><b>«Встречи» и «Чат ПП» уводят из кабинета</b> без предупреждения.</li>
+  <li><b>В шапке нет названия раздела</b> — вместо него дата и «(Europe/Moscow)».</li>
+ </ul></div></div>
+${V.map(v=>`<div class="blk"><h2>${v.name}${v.tag?`<small>${v.tag}</small>`:''}</h2><p class="lead">${v.lead}</p>
+ <div class="why"><div class="pro">${v.pro.map(x=>`<div>+ ${x}</div>`).join('')}</div><div class="con">${v.con.map(x=>`<div>− ${x}</div>`).join('')}</div></div>
+ <div class="frames">${v.frames().map(([l,h],i)=>`<div class="${i===2?'dkwrap':''}"><div class="fl">${l}</div>${h}</div>`).join('')}</div></div>`).join('')}
+`;
+
+/* неразрывные пробелы после коротких слов */
+(function(){const NB=' ',short=/(^|[\s(«])(в|во|с|со|к|ко|и|а|о|об|у|по|до|на|из|от|за|не|но|же|для|или|что|как|без|при|под|над|через|—)\s+/gi;
+ const walk=n=>{if(n.nodeType===3){let t=n.nodeValue;t=t.replace(short,(m,a,w)=>a+w+NB).replace(short,(m,a,w)=>a+w+NB);t=t.replace(/(\d)\s+(?=[А-Яа-яЁё₽%])/g,'$1'+NB);t=t.replace(/\s+(—|·|→)/g,NB+'$1');n.nodeValue=t;return}
+ if(n.nodeType===1&&!/^(TEXTAREA|INPUT|SCRIPT|STYLE|svg)$/i.test(n.nodeName))n.childNodes.forEach(walk)};walk(document.getElementById('doc'));})();
+</script>
+</body></html>
