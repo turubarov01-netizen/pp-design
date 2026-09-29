@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>План Продюсера · Маршрут и страница урока — варианты</title>
+<link rel="stylesheet" href="pp.css">
+<style>
+body{background:#0A0E13}
+.doc{max-width:1440px;margin:0 auto;padding:28px 32px 60px}
+.doc h1.tt{font-size:28px;font-weight:800;letter-spacing:-.01em}
+.doc .lead{font-size:15px;color:var(--t2);margin-top:8px;max-width:820px;line-height:1.5}
+.part{margin-top:56px;padding:14px 18px;border-radius:16px;background:linear-gradient(90deg,rgba(240,208,128,.12),transparent);font-size:24px;font-weight:800}
+.part small{display:block;font-size:14px;font-weight:500;color:var(--t2);margin-top:4px}
+.blk{margin-top:36px;padding-top:28px;border-top:1px solid var(--line2)}
+.blk>h2{font-size:22px;font-weight:800}
+.blk>h2 small{font-size:14px;font-weight:600;color:var(--gold-a);margin-left:8px}
+.why{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;margin-top:14px;max-width:1100px}
+.why div{font-size:14px;line-height:1.5;color:var(--t2)}
+.why b{color:#fff}
+.why .pro b{color:var(--moss)} .why .con b{color:#FF9A9A}
+.frames{display:flex;flex-wrap:wrap;gap:32px;margin-top:22px;align-items:flex-start}
+.fl{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin:0 0 10px 4px}
+.now{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start;margin-top:16px}
+.now img{width:390px;border-radius:14px;border:1px solid var(--line2);display:block}
+.now ul{font-size:14px;color:var(--t2);line-height:1.55;max-width:600px;padding-left:18px}
+.now li+li{margin-top:6px}
+.now li b{color:#fff}
+.new2{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;border:1px dashed rgba(107,159,255,.7);color:#9DBDFF;font-size:11px;font-weight:700;margin-left:6px;vertical-align:middle;letter-spacing:0;text-transform:none;white-space:nowrap}
+.qs{margin-top:14px;max-width:900px;font-size:14px;color:var(--t2);line-height:1.55;padding-left:20px}
+.qs li+li{margin-top:8px} .qs b{color:#fff}
+
+/* ── телефон ── */
+.ph{position:relative;width:390px;height:780px;border-radius:28px;border:1px solid var(--line2);overflow:hidden;background:var(--bg)}
+.ph .scroll{position:absolute;inset:0;overflow:hidden}
+.ph .mv{padding:70px 16px 120px}
+.appbar{position:absolute;top:0;left:0;right:0;z-index:4;display:flex;align-items:center;gap:10px;height:56px;padding:0 12px 0 16px;background:rgba(13,17,23,.96);border-bottom:1px solid var(--line)}
+.logo{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;font-size:12px;font-weight:800;color:#1A1406;background:linear-gradient(135deg,var(--gold-a),var(--gold-b))}
+.appbar .ttl{flex:1;min-width:0;font-size:17px;font-weight:700}
+.appbar .ttl small{display:block;font-size:12px;font-weight:500;color:var(--t3);margin-top:1px}
+.ib{position:relative;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--t2);flex:none}
+.ib .ic{width:22px;height:22px}
+.ib em{position:absolute;top:6px;right:6px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--red);color:#fff;font-style:normal;font-size:10px;font-weight:700;display:grid;place-items:center}
+.tb{position:absolute;left:12px;right:12px;bottom:12px;z-index:5;height:72px;border-radius:22px;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(17,24,39,.97);border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.t{position:relative;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:6px;font-size:11px;font-weight:600;color:rgba(255,255,255,.62)}
+.t .ic{width:22px;height:22px;position:relative;z-index:1}
+.t.on{color:var(--gold-a)}
+.t.on::before{content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);width:56px;height:32px;border-radius:16px;background:rgba(240,208,128,.14);box-shadow:inset 0 0 0 1px rgba(240,208,128,.28)}
+.t em{position:absolute;top:4px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--gold-b);color:#1A1406;font-style:normal;font-size:10px;font-weight:700;display:grid;place-items:center;z-index:2}
+
+/* ── компьютер ── */
+.dk{width:1180px;height:760px;border-radius:20px;border:1px solid var(--line2);overflow:hidden;display:flex;background:var(--bg);position:relative}
+.side{width:248px;flex:none;border-right:1px solid var(--line);background:linear-gradient(180deg,#0F1620,#0B1016);padding:20px 14px;display:flex;flex-direction:column;gap:2px}
+.side .brand{display:flex;align-items:center;gap:10px;padding:2px 8px 18px}
+.side .brand b{font-size:15px;letter-spacing:.02em}
+.side .brand small{display:block;font-size:12px;color:var(--t3);font-weight:500}
+.sa{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:12px;color:var(--t2);font-size:15px;font-weight:600}
+.sa .ic{width:19px;height:19px}
+.sa .x{margin-left:auto;color:var(--t3)} .sa .x .ic{width:14px;height:14px}
+.sa em{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--gold-b);color:#1A1406;font-style:normal;font-size:11px;font-weight:700;display:grid;place-items:center}
+.sa.on{background:rgba(240,208,128,.09);color:var(--gold-a);box-shadow:inset 3px 0 0 var(--gold-b)}
+.side .g{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:16px 12px 6px}
+.side .foot{margin-top:auto}
+.dmain{flex:1;min-width:0;display:flex;flex-direction:column}
+.dbar{display:flex;align-items:center;gap:12px;height:64px;flex:none;padding:0 24px;border-bottom:1px solid var(--line)}
+.dbar .ttl{flex:1;font-size:20px;font-weight:700}
+.dbody{padding:22px 28px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;overflow:hidden;align-items:start}
+.dbody.one{grid-template-columns:minmax(0,1fr)}
+.me2{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:#1A1406;background:linear-gradient(135deg,var(--gold-a),var(--gold-b));flex:none}
+
+/* ── общие куски ── */
+.chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:13px;font-size:12px;font-weight:700;white-space:nowrap}
+.chip .ic{width:14px;height:14px}
+.c-done{background:rgba(107,203,119,.16);color:var(--moss)}
+.c-new{background:rgba(75,123,255,.16);color:#9DBDFF}
+.c-rev{background:rgba(75,123,255,.16);color:#9DBDFF}
+.c-draft{background:rgba(255,255,255,.08);color:var(--t2)}
+.c-key{background:rgba(234,184,32,.16);color:var(--amber)}
+.c-lock{background:rgba(255,255,255,.08);color:var(--t2)}
+.c-dark{background:rgba(13,17,23,.72);color:#fff;backdrop-filter:blur(4px)}
+.pbar{height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
+.pbar i{display:block;height:100%;border-radius:3px;background:var(--moss)}
+.meta{font-size:13px;color:var(--t3);margin-top:4px;line-height:1.4}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:24px 0 8px}
+.sh h2{font-size:20px;font-weight:800}
+.sh span{font-size:13px;color:var(--t3)}
+.strip{display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-top:10px}
+.strip .si{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex:none}
+.strip .si .ic{width:19px;height:19px}
+.strip .tx{flex:1;min-width:0}
+.strip .tx small{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.strip .tx b{display:block;font-size:15px;font-weight:600;margin-top:2px;line-height:1.3}
+.strip .rt{text-align:right;flex:none}
+.strip .rt b{font-size:15px;display:block}
+.strip .rt span{font-size:12px;color:var(--t3)}
+.si-amb{background:rgba(234,184,32,.14);color:var(--amber)} .si-blue{background:rgba(75,123,255,.14);color:var(--blue2)} .si-moss{background:rgba(107,203,119,.14);color:var(--moss)} .si-gold{background:rgba(240,208,128,.12);color:var(--gold-a)}
+.u-amb{color:var(--amber)} .u-blue{color:var(--blue2)} .u-moss{color:var(--moss)}
+.go{color:var(--t3);flex:none} .go .ic{width:18px;height:18px}
+
+/* недели-фишки */
+.wk{display:flex;gap:8px;overflow:hidden;margin:0 -16px;padding:0 16px;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+.wc{flex:none;height:44px;padding:0 14px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--t2)}
+.wc .ic{width:16px;height:16px}
+.wc small{font-size:12px;color:var(--t3);font-weight:500}
+.wc.on{background:rgba(240,208,128,.1);border-color:rgba(240,208,128,.45);color:var(--gold-a)}
+.wc.on small{color:rgba(240,208,128,.75)}
+.wc.done .ic{color:var(--moss)}
+.wc.fut{color:var(--t3)}
+
+/* «продолжить» */
+.hero{margin-top:14px;border-radius:20px;overflow:hidden;background:var(--card);border:1px solid rgba(240,208,128,.25)}
+.hero .pic{height:118px;background:center 40%/cover;position:relative}
+.hero .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,30,43,0) 40%,#141E2B)}
+.hero .pic .chip{position:absolute;top:12px;left:12px;z-index:1}
+.hero .body{padding:4px 16px 16px}
+.hero h3{font-size:19px;font-weight:700;line-height:1.25;margin-top:4px}
+.hero .pr{display:flex;align-items:center;gap:10px;margin:12px 0 14px}
+.hero .pr .pbar{flex:1}
+.hero .pr span{font-size:13px;color:var(--t2);font-weight:600}
+
+/* вариант А: тропа */
+.trail{position:relative;margin-top:4px}
+.trail::before{content:"";position:absolute;left:15px;top:30px;bottom:30px;width:2px;background:rgba(255,255,255,.09)}
+.day{position:relative;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin:18px 0 4px 46px}
+.day.today{color:var(--gold-a)}
+.day{white-space:nowrap}
+.row{position:relative;display:flex;align-items:center;gap:14px;min-height:64px;padding:8px 0}
+.node{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;position:relative;z-index:1;background:var(--bg)}
+.node .ic{width:16px;height:16px}
+.n-done{background:var(--moss);color:#0B2217}
+.n-cur{border:2px solid var(--gold-a);color:var(--gold-a);box-shadow:0 0 0 5px rgba(240,208,128,.14)}
+.n-new{border:2px solid var(--blue2);color:var(--blue2)}
+.n-key{background:#2A2410;border:2px solid var(--amber);color:var(--amber)}
+.n-lock{background:#161E29;border:1px solid var(--line2);color:var(--t3)}
+.row .tx{flex:1;min-width:0}
+.row b{display:block;font-size:15px;font-weight:600;line-height:1.3}
+.row small{display:block;font-size:13px;color:var(--t3);margin-top:3px;line-height:1.35}
+.row.done b{color:var(--t2)}
+.row.lock b{color:var(--t2)}
+.row .why2{color:#E9D9A6}
+.why2 .ic,.cn .ic{width:13px;height:13px;vertical-align:-2px;margin-right:4px}
+.cn .ic{color:#EAB820;margin-right:3px}
+.nw{display:inline-block;font-size:11px;font-weight:700;color:#9DBDFF;background:rgba(75,123,255,.16);padding:1px 7px;border-radius:8px;margin-left:6px;vertical-align:1px}
+.row.cur{background:rgba(240,208,128,.06);border-radius:16px;margin:0 -10px;padding:8px 10px}
+.soon{display:flex;align-items:center;gap:14px;min-height:56px;padding:6px 0;color:var(--t3);font-size:14px}
+.soon .node{border:1.5px dashed rgba(255,255,255,.25);color:var(--t3);background:var(--bg)}
+.lib{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.lt{min-height:88px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.lt .ic{width:22px;height:22px}
+.lt b{font-size:15px;display:block} .lt small{font-size:12px;color:var(--t3)}
+
+/* вариант Б: список по неделям */
+.seg{display:grid;grid-template-columns:1fr 1fr;height:48px;border-radius:14px;background:var(--card);border:1px solid var(--line);padding:4px}
+.seg a{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;font-size:15px;font-weight:600;color:var(--t2)}
+.seg a .ic{width:17px;height:17px}
+.seg a.on{background:rgba(240,208,128,.14);color:var(--gold-a)}
+.hc{display:flex;gap:14px;align-items:center;margin-top:14px;padding:14px;border-radius:20px;background:var(--card);border:1px solid rgba(240,208,128,.25);flex-wrap:wrap}
+.hc .th{width:76px;height:76px;border-radius:14px;background:center/cover;flex:none}
+.hc .tx{flex:1;min-width:0}
+.hc .tx small{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-a)}
+.hc .tx b{display:block;font-size:16px;font-weight:700;line-height:1.3;margin-top:3px}
+.hc .b{width:100%}
+.acc{border-radius:18px;background:var(--card);border:1px solid var(--line);margin-top:10px}
+.acc .ah{display:flex;align-items:center;gap:12px;min-height:62px;padding:0 14px 0 16px}
+.acc .ah .tx{flex:1;min-width:0}
+.acc .ah b{display:block;font-size:16px;font-weight:700}
+.acc .ah small{display:block;font-size:13px;color:var(--t3);margin-top:2px}
+.acc .ah .ok{width:28px;height:28px;border-radius:50%;background:rgba(107,203,119,.16);color:var(--moss);display:grid;place-items:center;flex:none}
+.acc .ah .ok .ic{width:15px;height:15px}
+.acc.open{border-color:rgba(240,208,128,.3)}
+.acc .apb{padding:0 16px 6px}
+.acc .ab{padding:0 16px 4px}
+.lr{display:flex;gap:12px;align-items:center;min-height:76px;padding:10px 0;border-top:1px solid var(--line)}
+.lr .th{width:56px;height:56px;border-radius:12px;background:center/cover;flex:none;position:relative}
+.lr .th.gray{filter:grayscale(1) brightness(.55)}
+.lr .th .st{position:absolute;right:-5px;bottom:-5px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--card)}
+.lr .th .st .ic{width:13px;height:13px}
+.lr .tx{flex:1;min-width:0}
+.lr b{display:block;font-size:15px;font-weight:600;line-height:1.3}
+.lr small{display:block;font-size:13px;color:var(--t3);margin-top:3px}
+.lr.cur b{color:var(--gold-a)}
+.st-done{background:var(--moss);color:#0B2217} .st-cur{background:var(--gold-a);color:#1A1406} .st-lock{background:#2A3342;color:#fff} .st-key{background:var(--amber);color:#1A1406}
+
+/* вариант В: обложки */
+.wsel{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 14px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.wsel .tx{flex:1} .wsel b{font-size:17px;font-weight:700;display:block} .wsel small{font-size:13px;color:var(--t3)}
+.cc{position:relative;border-radius:20px;overflow:hidden;height:196px;margin-top:12px;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 16px;border:1px solid var(--line)}
+.cc .bg{position:absolute;inset:0;background:center/cover}
+.cc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,17,23,.1) 20%,rgba(13,17,23,.94) 92%)}
+.cc>*:not(.bg){position:relative;z-index:1}
+.cc .top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;z-index:2}
+.cc b{font-size:18px;font-weight:700;line-height:1.25}
+.cc small{font-size:13px;color:rgba(255,255,255,.72);margin-top:4px;display:block}
+.cc.lock .bg{filter:grayscale(1) brightness(.45)}
+.cc.big{height:250px;border-color:rgba(240,208,128,.35)}
+.cc.big .b{margin-top:12px}
+.cc.done .bg{filter:saturate(.5) brightness(.7)}
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.dk .lcov{margin:0;border-radius:18px}
+.cgrid .cc{margin-top:0}
+
+/* ── страница урока ── */
+.lbar{display:flex;align-items:center;gap:4px;height:48px;margin:0 -8px}
+.back{display:flex;align-items:center;gap:6px;height:44px;padding:0 8px;font-size:15px;font-weight:600;color:var(--t2)}
+.back .ic{width:18px;height:18px}
+.lbar .pos{margin-left:auto;font-size:13px;color:var(--t3);padding-right:8px}
+.lcov{height:150px;margin:0 -16px;background:center 45%/cover;position:relative}
+.lcov::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,17,23,.05),#0D1117)}
+.lhead{margin-top:-34px;position:relative}
+.lhead.flat{margin-top:6px}
+.lhead h1{font-size:26px;margin-top:8px}
+.stat{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin-top:14px;font-size:13px;color:var(--t2)}
+.stat .pb2{display:flex;align-items:center;gap:8px;flex:1;min-width:150px}
+.stat .pb2 .pbar{flex:1}
+.stat .rw{display:flex;align-items:center;gap:6px}
+.stat .rw .ic{width:15px;height:15px}
+.prose{font-size:16px;line-height:1.6;color:rgba(255,255,255,.86);margin-top:18px}
+.vid{margin-top:16px;border-radius:18px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
+.vid .pic{aspect-ratio:16/9;background:center/cover;position:relative;display:grid;place-items:center}
+.vid .pic::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.35)}
+.vid .play{position:relative;z-index:1;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.92);color:#0D1117;display:grid;place-items:center}
+.vid .play .ic{width:24px;height:24px;margin-left:3px;fill:currentColor}
+.vid .dur{position:absolute;right:10px;bottom:10px;z-index:1;font-size:12px;font-weight:700;background:rgba(0,0,0,.7);padding:3px 8px;border-radius:8px}
+.vid .foot{display:flex;align-items:center;gap:10px;padding:12px 14px;min-height:56px}
+.vid .foot b{flex:1;font-size:15px;font-weight:600}
+.vid .src{font-size:13px;color:var(--t3);padding:0 14px 12px;display:flex;gap:8px}
+.vid .src span{height:32px;padding:0 12px;border-radius:10px;border:1px solid var(--line2);display:inline-flex;align-items:center}
+.vid .src span.on{border-color:rgba(240,208,128,.45);color:var(--gold-a)}
+.asg{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+.asg .hd{display:flex;align-items:center;gap:10px}
+.asg .hd .si{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(240,208,128,.12);color:var(--gold-a)}
+.asg .hd b{flex:1;font-size:17px;font-weight:700}
+.fld{margin-top:16px}
+.fld label{display:block;font-size:15px;font-weight:600;line-height:1.4}
+.fld label i{color:var(--amber);font-style:normal}
+.ta{margin-top:8px;min-height:92px;border-radius:14px;background:#0F1620;border:1px solid var(--line2);padding:12px 14px;font-size:15px;line-height:1.5;color:var(--t1)}
+.ta.empty{color:var(--t3)}
+.ta.err{border-color:#FF6B6B}
+.errt{font-size:13px;color:#FF9A9A;margin-top:6px}
+.saved{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t3);margin-top:12px}
+.saved .ic{width:14px;height:14px}
+.rwl{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.asg .b-cta{margin-top:14px}
+.sent{margin-top:12px;padding:12px 14px;border-radius:14px;background:#0F1620;border:1px solid var(--line);font-size:14px;color:var(--t2);line-height:1.5}
+.sent small{display:block;font-size:12px;color:var(--t3);margin-bottom:4px}
+.lnk{display:inline-flex;align-items:center;gap:6px;height:44px;font-size:14px;font-weight:600;color:var(--blue2)}
+.lnk .ic{width:16px;height:16px}
+.fin{margin-top:22px;border-radius:20px;padding:18px 16px;background:var(--card);border:1px solid var(--line)}
+.fin.ok{background:linear-gradient(180deg,rgba(107,203,119,.14),rgba(107,203,119,.04));border-color:rgba(107,203,119,.35)}
+.fin h3{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+.fin h3 .ic{width:22px;height:22px}
+.todo2{margin-top:10px}
+.todo2 a{display:flex;align-items:center;gap:12px;min-height:48px;font-size:15px;color:var(--t2);border-top:1px solid var(--line)}
+.todo2 a:first-child{border-top:0}
+.todo2 .ic{width:20px;height:20px}
+.todo2 .done{color:var(--t3);text-decoration:line-through}
+.todo2 .done .ic{color:var(--moss)}
+.todo2 .go{margin-left:auto}
+.fin p{font-size:14px;color:var(--t2);margin-top:8px;line-height:1.5}
+.fin .b{margin-top:14px}
+.nx{font-size:13px;color:var(--t3);margin-top:12px;text-align:center}
+.others{display:flex;align-items:center;gap:12px;min-height:60px;margin-top:12px;padding:0 14px;border-radius:16px;border:1px solid var(--line);color:var(--t2);font-size:15px;font-weight:600}
+.others .ic{width:19px;height:19px}
+.others .go{margin-left:auto}
+/* прилипающая строка */
+.sticky{position:absolute;left:0;right:0;top:56px;z-index:3;padding:8px 16px;background:rgba(13,17,23,.96);border-bottom:1px solid var(--line)}
+.sticky .in{display:flex;align-items:center;gap:10px;height:44px;padding:0 12px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.sticky .in b{font-size:14px;font-weight:700;white-space:nowrap}
+.sticky .in .pbar{flex:1}
+.sticky .in span{font-size:13px;color:var(--t3);white-space:nowrap}
+.sticky .in .ic{width:18px;height:18px;color:var(--t3)}
+.sticky .drop{margin-top:8px;border-radius:16px;background:var(--card2);border:1px solid var(--line2);padding:4px 14px 10px;box-shadow:0 16px 30px rgba(0,0,0,.5)}
+.ph.withsticky .mv{padding-top:136px}
+/* шаги */
+.steps{display:flex;gap:6px;margin-top:10px}
+.steps i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.1)}
+.steps i.on{background:var(--gold-a)} .steps i.done{background:var(--moss)}
+.stl{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;color:var(--t3)}
+.stl b{color:var(--t1);font-size:15px}
+.stnav{display:flex;gap:10px;margin-top:20px}
+.stnav .b{flex:1}
+.b-ghost{background:transparent;color:var(--t2);border:1.5px solid var(--line2);font-size:12px;letter-spacing:.1em;padding:14px 18px;border-radius:18px}
+.scol{border-radius:18px;background:var(--card);border:1px solid var(--line);padding:8px}
+.scol a{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 10px;border-radius:12px;font-size:15px;font-weight:600;color:var(--t2)}
+.scol a small{display:block;font-size:12px;font-weight:500;color:var(--t3)}
+.scol a.on{background:rgba(240,208,128,.1);color:var(--gold-a)}
+.scol .nn{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:rgba(255,255,255,.08);flex:none}
+.scol a.on .nn{background:var(--gold-a);color:#1A1406}
+.scol a.dn .nn{background:var(--moss);color:#0B2217}
+/* закрытый урок */
+.gate{text-align:center;padding:40px 8px 0}
+.gate .gi{width:72px;height:72px;border-radius:22px;display:grid;place-items:center;margin:0 auto;background:var(--card);border:1px solid var(--line2)}
+.gate .gi .ic{width:30px;height:30px}
+.gate h2{font-size:22px;font-weight:800;margin-top:18px;line-height:1.25}
+.gate p{font-size:15px;color:var(--t2);margin-top:10px;line-height:1.5}
+.gate .b{margin-top:22px}
+.gate .sm{font-size:13px;color:var(--t3);margin-top:12px}
+/* как сейчас: схема */
+.wf .wb{border:1px dashed rgba(255,255,255,.28);border-radius:12px;padding:10px 12px;font-size:13px;color:var(--t2);margin-top:8px;background:rgba(255,255,255,.03);line-height:1.4}
+.wf .wb b{color:#fff;font-weight:600}
+.wf .wb.hot{border-color:rgba(255,107,107,.6);background:rgba(255,107,107,.06)}
+.fold{position:absolute;left:0;right:0;z-index:6;border-top:2px dashed #FF6B6B}
+.fold span{position:absolute;right:10px;top:-24px;font-size:12px;font-weight:700;color:#FF9A9A;background:var(--bg);padding:2px 8px;border-radius:8px}
+.ph.tall{height:1180px}
+@media (max-width:560px){.doc{padding:16px 0}.doc>*:not(.blk){margin-left:14px;margin-right:14px}.blk>h2,.blk>.why,.blk>.lead,.blk>.qs{margin-left:14px;margin-right:14px}.why{grid-template-columns:1fr}.frames{gap:24px;justify-content:center}.dkwrap{display:none}.now{margin:16px 14px 0}.now img{width:100%}}
+</style>
+</head><body><style>.pp-switch{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(10,14,19,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08);font:600 13px Inter,sans-serif}.pp-switch span{color:rgba(255,255,255,.5);margin-right:4px}.pp-switch a{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:18px;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.8);text-decoration:none}.pp-switch a.on{background:rgba(240,208,128,.12);border-color:rgba(240,208,128,.5);color:#F0D080}</style><nav class="pp-switch"><span>Экраны:</span><a href="../" class="">Главная</a><a href="../camp/" class="">Лагерь экспедиции</a><a href="../nav/" class="">Меню · 3 варианта</a><a href="./" class="on">Маршрут и урок</a></nav>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+  <symbol id="fire" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+  <symbol id="bag" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 10h8"/><path d="M8 18h8"/><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="cal" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><polygon points="7 4 20 12 7 20 7 4"/></symbol>
+  <symbol id="left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  <symbol id="home" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></symbol>
+  <symbol id="tent" viewBox="0 0 24 24"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></symbol>
+  <symbol id="grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
+  <symbol id="shop" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+  <symbol id="chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></symbol>
+  <symbol id="back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="skull" viewBox="0 0 24 24"><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M15 22a1 1 0 0 0 1-1v-1a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20v1a1 1 0 0 0 1 1z"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="12" r="1"/></symbol>
+  <symbol id="compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></symbol>
+  <symbol id="coins" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></symbol>
+  <symbol id="forestS" viewBox="0 0 400 150" preserveAspectRatio="none">
+    <g fill="#0E2A1C" opacity=".9"><polygon points="-10,150 20,60 50,150"/><polygon points="30,150 70,35 110,150"/><polygon points="95,150 125,75 155,150"/><polygon points="250,150 290,40 330,150"/><polygon points="310,150 345,70 380,150"/><polygon points="360,150 395,30 430,150"/></g>
+    <g fill="#08180F"><polygon points="-20,150 5,95 30,150"/><polygon points="60,150 90,90 120,150"/><polygon points="140,150 170,110 200,150"/><polygon points="200,150 225,100 250,150"/><polygon points="280,150 310,95 340,150"/><polygon points="340,150 375,85 410,150"/></g>
+  </symbol>
+<symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+<symbol id="ext" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+<symbol id="out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></symbol>
+<symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+<symbol id="clip" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></symbol>  <symbol id="swords" viewBox="0 0 24 24"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></symbol>
+  <symbol id="headph" viewBox="0 0 24 24"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></symbol>
+  <symbol id="task" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+  <symbol id="down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+  <symbol id="more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+  <symbol id="listc" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>
+  <symbol id="msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="crown" viewBox="0 0 24 24"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></symbol>
+  <symbol id="circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></symbol>
+  <symbol id="lib" viewBox="0 0 24 24"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></symbol>
+  <symbol id="pen" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+  <symbol id="flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></symbol>
+</svg>
+<div class="doc" id="doc"></div>
+<script>
+const I=(id,c='',s='')=>`<svg class="ic ${c}" ${s?`style="${s}"`:''}><use href="#${id}"/></svg>`;
+const NEW=(t='новое')=>`<span class="new2">${t}</span>`;
+const X=`<span class="x">${I('ext')}</span>`;
+
+/* ── Данные: настоящая программа Потока 5, неделя 1. Прогресс ученика — пример. ── */
+const L=[
+ {n:1,t:'Правила курса',tag:'Инструктаж',img:'c1',m:'4 видео · 1 задание',st:'done',day:'Вс, 27 сентября'},
+ {n:2,t:'Точки А и Б',tag:'Инструктаж',img:'c2',m:'аудио',st:'done',day:'Вс, 27 сентября'},
+ {n:3,t:'Сбор данных',kick:'Ключевое задание недели',tag:'Инструктаж',img:'c3',m:'1 задание · до пт, 18:00',st:'key',day:'Вс, 27 сентября'},
+ {n:4,t:'Формула достижения желаемого дохода',tag:'Инструктаж',img:'c4',m:'1 видео · 1 задание · +100 фениксов',st:'cur',day:'Пн, 28 сентября'},
+ {n:5,t:'Записная книжка',tag:'Трафик',img:'c5',m:'6 видео · 1 задание',st:'done',day:'Пн, 28 сентября'},
+ {n:6,t:'50 вещей по пути к самооценке',tag:'Чаща сомнений',img:'c6',m:'1 задание',st:'done',day:'Вт, 29 сентября'},
+ {n:7,t:'Оффер и закрытие сделок',tag:'Продажи',img:'c7',m:'2 видео · 1 задание · +300 фениксов',st:'new',day:'Сегодня'},
+ {n:8,t:'Как сделать, чтобы было больше клиентов',tag:'Продажи',img:'c8',m:'1 видео · 1 задание · +50 фениксов',st:'new',day:'Сегодня'},
+ {n:9,t:'Система ценностей',tag:'Чаща сомнений',img:'c9',m:'6 заданий · +200 фениксов',st:'new',day:'Сегодня'},
+ {n:10,t:'НАПАРНИК',tag:'Инструктаж',img:'c10',m:'',st:'tariff',day:'Сегодня'},
+ {n:11,t:'Вызов Фримана. Отвали',tag:'Вызов Фримана',img:'c11',m:'',st:'tariff',day:'Сегодня'},
+];
+const img=k=>`img/${k}.jpg`;
+const cm=m=>(m||'').replace(/\+(\d+) фениксов/,(x,n)=>`<span class="cn">${I('coins')}${n}</span>`);
+const TARIFF=`${I('crown')}В тарифах Бизнес и VIP`;
+
+const appbar=(title,sub)=>`<div class="appbar"><div class="logo">ПП</div><div class="ttl">${title}${sub?`<small>${sub}</small>`:''}</div><span class="ib" aria-label="Уведомления">${I('bell')}<em>3</em></span></div>`;
+const tb=(active='Маршрут')=>`<nav class="tb">${[['home','Главная'],['map','Маршрут'],['bag','Рюкзак'],['tent','Лагерь'],['grid','Ещё']].map(([i,l])=>`<a class="t ${l===active?'on':''}">${I(i)}${l==='Рюкзак'?'<em>2</em>':''}${l}</a>`).join('')}</nav>`;
+const phone=({head='',body,off=0,extra='',cls=''})=>`<div class="ph ${cls}"><div class="scroll">${head}<div class="mv" style="transform:translateY(-${off}px)">${body}</div></div>${extra}</div>`;
+const side=(active='Маршрут')=>`<nav class="side"><div class="brand"><div class="logo">ПП</div><div><b class="gold" style="font-size:15px">План Продюсера</b><small>Поток 5 · Прорыв</small></div></div>
+  ${[['home','Главная'],['map','Маршрут'],['bag','Рюкзак'],['tent','Лагерь']].map(([i,l])=>`<a class="sa ${l===active?'on':''}">${I(i)}${l}${l==='Рюкзак'?'<em>2</em>':''}</a>`).join('')}
+  <div class="g">Экспедиция</div><a class="sa">${I('cal')}Календарь</a><a class="sa">${I('shop')}Лавка</a>
+  <div class="g">Общение</div><a class="sa">${I('chat')}Чат ПП${X}</a><a class="sa">${I('users')}Чат отряда${X}</a><a class="sa">${I('video')}Встречи${X}</a>
+  <div class="foot"><a class="sa">${I('gear')}Настройки</a><a class="sa">${I('out')}На платформу</a></div></nav>`;
+const desk=(title,body,cls='')=>`<div class="dk">${side()}<div class="dmain"><div class="dbar"><div class="ttl">${title}</div><span class="ib">${I('bell')}<em>3</em></span><span class="me2">А</span></div><div class="dbody ${cls}">${body}</div></div></div>`;
+
+/* общие блоки маршрута */
+const weeks=(full=true)=>`<div class="wk">
+  <a class="wc done">${I('check')}Подготовка</a>
+  <a class="wc done">${I('check')}Интенсив</a>
+  <a class="wc on">Неделя 1 <small>4/14</small></a>
+  <a class="wc fut">Неделя 2 <small>с 4 окт</small></a>
+  ${full?`<a class="wc fut">Неделя 3 <small>с 11 окт</small></a><a class="wc fut">Неделя 4 <small>с 18 окт</small></a><a class="wc fut">Финал <small>23 окт</small></a>`:''}</div>`;
+const hero=()=>`<div class="hero"><div class="pic" style="background-image:url(${img('c4')})"><span class="chip c-dark">${I('play')}Продолжить</span></div><div class="body">
+  <div class="kick">Неделя 1 · урок 4 из 14</div>
+  <h3>Формула достижения желаемого дохода</h3>
+  <div class="meta">Видео 8 мин · 1 задание · +100 фениксов</div>
+  <div class="pr"><div class="pbar"><i style="width:50%"></i></div><span>1 из 2</span></div>
+  <a class="b b-cta full">Продолжить урок ${I('arrow')}</a></div></div>`;
+const keyStrip=()=>`<a class="strip"><span class="si si-amb">${I('star','fill')}</span><span class="tx"><small class="u-amb">Ключевое задание недели</small><b>Сбор данных</b></span><span class="rt"><b>2 д 6 ч</b><span>до пт, 18:00</span></span></a>`;
+const meetStrip=()=>`<a class="strip"><span class="si si-blue">${I('video')}</span><span class="tx"><small class="u-blue">Разбор недели 1</small><b>Сегодня в 17:00</b></span><span class="rt"><span>запись<br>в 19:00</span></span></a>`;
+
+/* ═════ Маршрут · А: тропа ═════ */
+const node=st=>({done:`<span class="node n-done">${I('check')}</span>`,cur:`<span class="node n-cur">${I('play','fill')}</span>`,new:`<span class="node n-new">${I('circle')}</span>`,key:`<span class="node n-key">${I('star','fill')}</span>`,tariff:`<span class="node n-lock">${I('lock')}</span>`}[st]);
+const trailRow=l=>{
+  const sub=l.st==='tariff'?`<small class="why2">${TARIFF}</small>`:`<small>${l.tag}${l.m?` · ${cm(l.m)}`:''}</small>`;
+  const title=l.kick?`<small class="u-amb" style="margin:0 0 2px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">${l.kick}</small>${l.t}`:l.t;
+  return `<a class="row ${l.st==='tariff'?'lock':l.st}">${node(l.st)}<span class="tx"><b>${title}${l.st==='new'?'<span class="nw">новый</span>':''}</b>${sub}</span>${l.st==='tariff'?'':`<span class="go">${I('right')}</span>`}</a>`};
+const trail=()=>{let out='',d='';for(const l of L){if(l.day!==d){d=l.day;out+=`<div class="day ${d==='Сегодня'?'today':''}">${d==='Сегодня'?'Сегодня · 30 сентября':d}</div>`}out+=trailRow(l)}
+  return `<div class="trail">${out}<div class="soon"><span class="node">${I('clock')}</span><span>Ещё 3 урока откроются 1 и 2 октября в 10:00</span></div></div>`};
+const libA=()=>`<div class="sh"><h2>Библиотека</h2></div><div class="lib">
+  <a class="lt">${I('video','','color:#6B9FFF')}<div><b>Разборы и эфиры</b><small>база записей потока</small></div></a>
+  <a class="lt">${I('lib','','color:#F0D080')}<div><b>Бонусы</b><small>5 уроков</small></div></a></div>`;
+const routeA=()=>`${weeks()}${hero()}${keyStrip()}${meetStrip()}
+  <div class="sh"><h2>Неделя 1</h2><span>пройдено 4 из 14</span></div><div class="pbar"><i style="width:28.5%"></i></div>
+  ${trail()}${libA()}`;
+const deskA=()=>desk('Маршрут',`<div>${weeks()}<div class="sh" style="margin-top:20px"><h2>Неделя 1</h2><span>пройдено 4 из 14</span></div><div class="pbar"><i style="width:28.5%"></i></div>${trail()}</div>
+  <div>${hero().replace('class="hero"','class="hero" style="margin-top:0"')}${keyStrip()}${meetStrip()}${libA()}</div>`);
+
+/* ═════ Маршрут · Б: список по неделям ═════ */
+const stB={done:`<span class="st st-done">${I('check')}</span>`,cur:`<span class="st st-cur">${I('play','fill')}</span>`,key:`<span class="st st-key">${I('star','fill')}</span>`,tariff:`<span class="st st-lock">${I('lock')}</span>`,new:''};
+const lrow=l=>`<a class="lr ${l.st}"><span class="th ${l.st==='tariff'?'gray':''}" style="background-image:url(${img(l.img)})">${stB[l.st]}</span><span class="tx"><b>${l.kick?`${l.kick}: `:''}${l.t}${l.st==='new'?'<span class="nw">новый</span>':''}</b>${l.st==='tariff'?`<small class="why2" style="color:#E9D9A6">${TARIFF}</small>`:`<small>${cm(l.m)||l.tag}</small>`}</span></a>`;
+const accClosed=(t,s,done)=>`<div class="acc"><div class="ah">${done?`<span class="ok">${I('check')}</span>`:''}<span class="tx"><b>${t}</b><small>${s}</small></span><span class="go">${I('down')}</span></div></div>`;
+const routeB=()=>`<div class="seg"><a class="on">${I('map')}Уроки</a><a>${I('video')}Разборы</a></div>
+  <div class="hc"><span class="th" style="background-image:url(${img('c4')})"></span><span class="tx"><small>Продолжить · урок 4</small><b>Формула достижения желаемого дохода</b><span class="meta" style="display:block">1 из 2 · видео просмотрено</span></span><a class="b b-cta full">Продолжить урок</a></div>
+  ${keyStrip()}
+  ${accClosed('Подготовка','пройдено 7 из 7',1)}${accClosed('Интенсив Прорыв','пройдено 9 из 9',1)}
+  <div class="acc open"><div class="ah"><span class="tx"><b>Неделя 1</b><small>пройдено 4 из 14 · 3 урока откроются 1–2 окт</small></span><span class="go">${I('up')}</span></div>
+   <div class="apb"><div class="pbar"><i style="width:28.5%"></i></div></div>
+   <div class="ab" style="margin-top:8px">${L.map(lrow).join('')}</div></div>
+  ${accClosed('Неделя 2','откроется 4 октября')}${accClosed('Неделя 3','откроется 11 октября')}${accClosed('Неделя 4','откроется 18 октября')}${accClosed('Финальный интенсив','23–24 октября')}${accClosed('Бонусы','5 уроков · открыты')}`;
+const deskB=()=>desk('Маршрут',`<div><div class="seg" style="max-width:360px"><a class="on">${I('map')}Уроки</a><a>${I('video')}Разборы</a></div>
+  ${accClosed('Подготовка','пройдено 7 из 7',1)}${accClosed('Интенсив Прорыв','пройдено 9 из 9',1)}
+  <div class="acc open"><div class="ah"><span class="tx"><b>Неделя 1</b><small>пройдено 4 из 14 · 3 урока откроются 1–2 окт</small></span><span class="go">${I('up')}</span></div>
+  <div class="apb"><div class="pbar"><i style="width:28.5%"></i></div></div>
+  <div class="ab" style="display:grid;grid-template-columns:1fr 1fr;column-gap:24px;margin-top:8px">${L.map(lrow).join('')}</div></div></div>
+  <div>${routeB().match(/<div class="hc">[\s\S]*?<\/a><\/div>/)[0].replace('class="hc"','class="hc" style="margin-top:0"')}${keyStrip()}${meetStrip()}</div>`);
+
+/* ═════ Маршрут · В: обложки ═════ */
+const stC=l=>({done:`<span class="chip c-done">${I('check')}Пройден</span>`,cur:`<span class="chip c-dark">1 из 2</span>`,new:`<span class="chip c-new">Новый</span>`,key:`<span class="chip c-dark">${I('star','fill','color:#EAB820')}до пт, 18:00</span>`,tariff:`<span class="chip c-lock">${I('lock')}Бизнес и VIP</span>`}[l.st]);
+const card=l=>`<a class="cc ${l.st==='tariff'?'lock':l.st}"><span class="bg" style="background-image:url(${img(l.img)})"></span><span class="top"><span class="chip c-dark">${l.kick?'Ключевое':l.tag}</span>${stC(l)}</span><b>${l.t}</b><small>${l.st==='tariff'?'Урок в тарифах Бизнес и VIP':l.m}</small></a>`;
+const bigCard=()=>`<a class="cc big"><span class="bg" style="background-image:url(${img('c4')})"></span><span class="top"><span class="chip c-dark">${I('play','fill')}Продолжить</span><span class="chip c-dark">1 из 2</span></span><b>Формула достижения желаемого дохода</b><small>Неделя 1 · урок 4 из 14 · +100 фениксов</small><span class="b b-cta full">Продолжить урок</span></a>`;
+const routeC=()=>`<a class="wsel"><span class="tx"><b>Неделя 1</b><small>пройдено 4 из 14</small></span><span class="go">${I('down')}</span></a>
+  ${bigCard()}${keyStrip()}
+  <div class="sh"><h2>Уроки недели</h2><span>новые сверху</span></div>
+  ${[L[6],L[7],L[8],L[2],L[9],L[10],L[0],L[1],L[4],L[5]].map(card).join('')}`;
+const deskC=()=>desk('Маршрут',`<div><div style="display:flex;gap:12px;align-items:center"><a class="wsel" style="width:300px"><span class="tx"><b>Неделя 1</b><small>пройдено 4 из 14</small></span><span class="go">${I('down')}</span></a><span class="meta" style="margin:0">3 урока откроются 1–2 октября</span></div>
+  <div class="cgrid" style="margin-top:18px">${[L[6],L[7],L[8],L[2],L[9],L[10]].map(card).join('')}</div></div>
+  <div>${bigCard().replace('class="cc big"','class="cc big" style="margin-top:0"')}${keyStrip()}${meetStrip()}</div>`);
+
+/* ═════ Страница урока ═════ */
+const lbar=()=>`<div class="lbar"><a class="back">${I('left')}Маршрут</a><span class="pos">Неделя 1 · урок 4 из 14</span></div>`;
+const statLine=(done=1)=>`<div class="stat"><span class="pb2"><span class="pbar"><i style="width:${done*50}%"></i></span><b style="color:#fff">${done} из 2</b></span><span class="rw">${I('coins','','color:#EAB820')}+100 фениксов</span><span class="rw">${I('star','fill','color:#F0D080')}+100 баллов</span></div>`;
+const PROSE=`<p class="prose">Пора внести больше ясности в наш маленький экспертный бизнес. Задача этого видео — показать, как достичь желаемой суммы дохода и определить стратегию, как мы будем приближаться к этой цели.</p>`;
+const video=(watched=true)=>`<div class="vid"><div class="pic" style="background-image:url(${img('c4')})"><span class="play">${I('play')}</span><span class="dur">8:26</span></div>
+  <div class="foot"><b>Декомпозиция</b>${watched?`<span class="chip c-done">${I('check')}Просмотрено</span>`:`<a class="b b-out" style="padding:10px 14px">Отметить просмотр</a>`}</div>
+  <div class="src"><span class="on">Основной плеер</span><span>Для РФ без VPN</span></div></div>`;
+const F1='Поставьте план своего дохода на ближайший месяц и рассчитайте его по формуле P × Q в разрезе разовых сделок и пакетных предложений.';
+const F2='Напишите точную цифру: сколько клиентов вам нужно привлечь, чтобы закрыть свою цель по доходу?';
+const asgDraft=(err=false)=>`<div class="asg" id="asg"><div class="hd"><span class="si">${I('task')}</span><b>Задание</b><span class="chip c-draft">Черновик</span></div>
+  <div class="fld"><label>${F1} <i>*</i></label><div class="ta">Разовые: консультация 5 000 ₽ × 6 = 30 000 ₽. Пакет «3 месяца» 25 000 ₽ × 2 = 50 000 ₽. Итого 80 000 ₽.</div></div>
+  <div class="fld"><label>${F2} <i>*</i></label><div class="ta ${err?'err':'empty'}">${err?'':'Ваш ответ'}</div>${err?`<div class="errt">Заполните это поле, чтобы отправить ответ ${NEW()}</div>`:''}</div>
+  <div class="saved">${I('check')}Черновик сохранён в 12:04 ${NEW()}</div>
+  <a class="b b-cta full">Отправить на проверку ${I('send')}</a></div>`;
+const asgSent=()=>`<div class="asg"><div class="hd"><span class="si">${I('task')}</span><b>Задание</b><span class="chip c-rev">${I('clock')}На проверке</span></div>
+  <div class="sent"><small>Ваш ответ · 30 сентября, 12:21</small>Разовые: консультация 5 000 ₽ × 6 = 30 000 ₽. Пакет «3 месяца» 25 000 ₽ × 2 = 50 000 ₽…</div>
+  <a class="lnk">${I('pen')}Изменить ответ</a></div>`;
+const finTodo=()=>`<div class="fin"><h3>${I('listc','','color:#F0D080')}Что осталось в уроке ${NEW()}</h3><div class="todo2">
+  <a class="done">${I('check')}Посмотреть видео «Декомпозиция»</a>
+  <a>${I('circle')}Отправить задание<span class="go">${I('down')}</span></a></div></div>`;
+const finOk=()=>`<div class="fin ok"><h3>${I('check','','color:#6BCB77')}Урок пройден ${NEW()}</h3><p>Задание у проводника. Ответ придёт в уведомления, а фениксы и баллы — сразу после проверки.</p>
+  <a class="b b-cta full">Следующий урок ${I('arrow')}</a><div class="nx">Оффер и закрытие сделок · 2 видео · 1 задание</div></div>`;
+const others=()=>`<a class="others">${I('msg')}Как ответили другие<span class="go">${I('down')}</span></a>`;
+
+/* L1: статья с обложкой и итогом */
+const lesson1=(state='draft')=>`${lbar()}<div class="lcov" style="background-image:url(${img('c4')})"></div>
+  <div class="lhead"><div class="kick">Инструктаж</div><h1 class="gold">Формула достижения желаемого дохода</h1>${statLine(state==='ok'?2:1)}</div>
+  ${PROSE}${video()}${state==='ok'?asgSent():asgDraft(state==='err')}${state==='ok'?finOk():finTodo()}${others()}`;
+/* L2: компактная шапка + прилипающая строка */
+const stickyBar=(open=false,done=1)=>`<div class="sticky"><div class="in"><b>${done} из 2</b><span class="pbar"><i style="width:${done*50}%"></i></span><span>+100 фениксов</span>${I(open?'up':'down')}</div>${open?`<div class="drop"><div class="todo2">
+  <a class="done">${I('check')}Посмотреть видео «Декомпозиция»</a><a>${I('circle')}Отправить задание<span class="go">${I('right')}</span></a></div></div>`:''}</div>`;
+const lesson2=(state='draft')=>`${lbar()}<div class="lhead flat"><div class="kick">Инструктаж · 8 мин видео · 1 задание</div><h1 class="gold">Формула достижения желаемого дохода</h1></div>
+  ${PROSE}${video()}${state==='ok'?asgSent()+finOk():asgDraft()}${others()}`;
+/* L3: по шагам */
+const stepHead=(n)=>`${lbar()}<div class="lhead flat"><h1 class="gold" style="font-size:22px">Формула достижения желаемого дохода</h1></div>
+  <div class="steps">${[1,2,3].map(i=>`<i class="${i<n?'done':i===n?'on':''}"></i>`).join('')}</div>
+  <div class="stl"><b>Шаг ${n} из 3 · ${['Смотреть','Сделать','Итог'][n-1]}</b><a class="lnk" style="height:auto">${I('listc')}Все шаги</a></div>`;
+const lesson3=(n)=>n===1?`${stepHead(1)}${PROSE}${video()}<div class="stnav"><a class="b b-cta">Дальше: задание ${I('arrow')}</a></div>`
+ : n===2?`${stepHead(2)}${asgDraft().replace('Отправить на проверку','Отправить и дальше')}<div class="stnav"><a class="b b-ghost">${I('left')}Назад</a></div>`
+ : `${stepHead(3)}${finOk()}${others()}`;
+
+/* закрытые уроки */
+const gateTariff=()=>`${lbar()}<div class="gate"><div class="gi">${I('crown','','color:#F0D080')}</div><h2>НАПАРНИК</h2><p>Этот урок входит в тарифы <b style="color:#fff">Бизнес и VIP</b>. У вас тариф Прорыв.</p><a class="b b-cta full">Получить доступ</a><a class="lnk" style="justify-content:center;width:100%">${I('left')}Вернуться к маршруту</a></div>`;
+const gateDate=()=>`${lbar()}<div class="gate"><div class="gi">${I('clock','','color:#6B9FFF')}</div><h2>Урок откроется<br>1 октября в 10:00</h2><p>Уроки недели открываются по расписанию потока. Пока можно закончить открытые.</p><a class="b b-white full">К маршруту</a><div class="sm">Кнопки «Запросить в поддержке» здесь нет — ждать нужно просто по расписанию.</div></div>`;
+
+/* как сейчас: схема урока по коду */
+const nowLesson=()=>`<div class="ph tall"><div class="scroll"><div class="mv wf" style="padding-top:16px">
+  <div class="wb" style="height:140px"><b>Шапка с обложкой</b><br>бейдж типа, подзаголовок капсом 12 px, название</div>
+  <div class="wb"><b>Таймер дедлайна</b> — у ключевых и «Вызова» · «после: ×½» мелким значком</div>
+  <div class="wb hot"><b>Назад к маршруту · Ссылка · TG-ссылка</b> — служебные кнопки видны ученику, 12 px</div>
+  <div class="wb"><b>← Предыдущий урок · Следующий урок →</b> — подпись 10 px, кружок 28 px</div>
+  <div class="wb"><b>Прогресс: 1 из 2 выполнено</b> — не обновляется после действий до 10 минут</div>
+  <div class="wb"><b>Текст в рамке</b> — каждый абзац отдельной карточкой</div>
+  <div class="wb" style="height:190px"><b>Видео</b> + переключатель плеера 26 px</div>
+  <div class="wb">«✅ Нажмите, чтобы подтвердить просмотр»</div>
+  <div class="wb hot" style="height:220px"><b>Задание — жёлтая плашка</b><br>обязательные поля не проверяются · «Черновик сохранён автоматически» 10 px · «Отправить ответ» и «Сохранить черновик» одинаковые</div>
+  <div class="wb hot"><b>Ответы других участников</b> — по правам базы, скорее всего, только свой ответ</div>
+  <div class="wb"><b>← Предыдущий · Следующий →</b> ещё раз. Кнопки «следующий урок» после завершения нет</div>
+  </div></div><div class="fold" style="top:696px"><span>здесь кончается экран телефона</span></div></div>`;
+
+const PH_OFF={a2:1010,b2:880,c2:760,l1b:730,l1c:640,l2b:600};
+
+const ROUTE=[
+ {id:'A',name:'А · Тропа недели',tag:'рекомендую',
+  lead:'Наверху недели программы фишками: прошлые с галочкой, текущая золотая, будущие с датой. Ниже главная карточка «Продолжить» с одной золотой кнопкой, затем ключевое задание и разбор недели. Уроки недели идут тропой по дням открытия: у каждого понятный статус, а у закрытого — причина словами.',
+  pro:['<b>Сразу ясно, что делать:</b> одна кнопка «Продолжить» и два срока недели на первом экране.','<b>Тропа по дням</b> повторяет, как на самом деле открываются уроки: вечером в воскресенье и по утрам в 10:00. «Сегодня» подсвечено.','<b>Причина замка словами</b> — «В тарифах Бизнес и VIP», а не жёлтое «vip» на всём подряд.','<b>Список в одну колонку</b> — название 15 px вместо 12, строка 64 px, промахнуться трудно.'],
+  con:['<b>Обложки уроков уходят с экрана</b> — остаётся только одна, в «Продолжить». Маршрут становится менее «картинным».','<b>Разборы и бонусы переезжают в «Библиотеку»</b> в конце маршрута — к ним дальше листать.'],
+  frames:()=>[['Телефон · первый экран',phone({head:appbar('Маршрут','Поток 5 · Неделя 1'),body:routeA(),extra:tb()})],['Телефон · ниже: сегодня и закрытые',phone({head:appbar('Маршрут','Поток 5 · Неделя 1'),body:routeA(),off:PH_OFF.a2,extra:tb()})],['Компьютер',`<div class="dkwrap">${deskA()}</div>`]]},
+ {id:'B',name:'Б · Список по неделям',
+  lead:'Ближе всего к тому, что есть сейчас: те же раскрывающиеся секции, но плитка в две колонки становится списком с маленькой обложкой. Прошлые секции свёрнуты с итогом, будущие — с датой открытия. Сверху «Продолжить» и ключевое задание. Вкладок две: «Уроки» и «Разборы».',
+  pro:['<b>Меньше всего переделок</b> — логика секций та же, меняется только строка урока.','<b>Обложки остаются</b> маленькими миниатюрами, маршрут узнаваем.','<b>Вся программа видна сразу:</b> от подготовки до финального интенсива.'],
+  con:['<b>Нет разбивки по дням</b> — «что открылось сегодня» видно только по метке «новый».','<b>Разборы — отдельной вкладкой</b>, её легко не заметить.'],
+  frames:()=>[['Телефон · первый экран',phone({head:appbar('Маршрут','Поток 5 · Неделя 1'),body:routeB(),extra:tb()})],['Телефон · ниже',phone({head:appbar('Маршрут','Поток 5 · Неделя 1'),body:routeB(),off:PH_OFF.b2,extra:tb()})],['Компьютер',`<div class="dkwrap">${deskB()}</div>`]]},
+ {id:'C',name:'В · Обложки во всю ширину',
+  lead:'Делаем ставку на картинки, которые уже нарисованы к каждому уроку. Неделя выбирается сверху, первым идёт большой «Продолжить», дальше уроки крупными обложками: новые сверху, пройденные внизу. Статус и причина замка — на самой обложке.',
+  pro:['<b>Самый «игровой» и красивый</b> — обложки работают на атмосферу экспедиции.','<b>Новые уроки сверху</b> — не нужно искать, что появилось сегодня.'],
+  con:['<b>Длинная лента:</b> 11 уроков по 200 px — это пять экранов прокрутки.','<b>У части уроков одинаковые обложки</b>: у четырёх уроков одна картинка, у двух уроков продаж — тоже одна. Различать их придётся по названию.','<b>Текст на картинке</b> читается хуже, нужна тёмная подложка.'],
+  frames:()=>[['Телефон · первый экран',phone({head:appbar('Маршрут','Поток 5 · Неделя 1'),body:routeC(),extra:tb()})],['Телефон · ниже',phone({head:appbar('Маршрут','Поток 5 · Неделя 1'),body:routeC(),off:PH_OFF.c2,extra:tb()})],['Компьютер',`<div class="dkwrap">${deskC()}</div>`]]},
+];
+
+const deskL=(body,right)=>desk('Урок',`<div style="max-width:720px">${body}</div><div>${right}</div>`);
+const LESSON=[
+ {id:'L1',name:'1 · Статья с итогом',tag:'рекомендую',
+  lead:'Урок читается как статья: обложка, золотой заголовок, одна строка статуса (прогресс и награда). Текст без рамок, в рамках только то, что нужно сделать: видео и задание. В конце — «Что осталось в уроке», а после выполнения одна золотая кнопка «Следующий урок».',
+  pro:['<b>Содержание начинается на первом экране</b> — сейчас до первого видео пять служебных блоков.','<b>Один главный шаг на экран:</b> «Отправить на проверку», потом «Следующий урок». «Сохранить черновик» не нужен — черновик сохраняется сам.','<b>«Следующий урок» ведёт в следующий открытый урок</b>, в том числе в другую неделю.','<b>Пустое обязательное поле подсвечивается</b> — сейчас можно отправить пустой ответ.'],
+  con:['<b>Прогресс виден только сверху и в конце</b> — в середине длинного урока его не видно.'],
+  frames:()=>[['Телефон · начало урока',phone({head:appbar('Урок','Неделя 1'),body:lesson1(),extra:tb()})],['Телефон · задание: пустое поле',phone({head:appbar('Урок','Неделя 1'),body:lesson1('err'),off:PH_OFF.l1b,extra:tb()})],['Телефон · после отправки',phone({head:appbar('Урок','Неделя 1'),body:lesson1('ok'),off:PH_OFF.l1c,extra:tb()})],
+   ['Компьютер',`<div class="dkwrap">${deskL(lesson1(),`<div class="fin" style="margin-top:0">${finTodo().replace(/^<div class="fin">|<\/div>$/g,'')}</div>${keyStrip()}`)}</div>`]]},
+ {id:'L2',name:'2 · Строка прогресса прилипает сверху',
+  lead:'Без обложки: шапка компактнее, текст ещё выше. Под шапкой приклеена тонкая строка «1 из 2», она видна всё время. По нажатию раскрывается список: что сделано и что осталось, каждый пункт ведёт к нужному месту урока.',
+  pro:['<b>Прогресс виден в любой точке урока</b>, в том числе в длинных уроках на 19 видео («Как оформить соц. сети»).','<b>Самый короткий путь до видео</b> — обложки нет.'],
+  con:['<b>Ещё одна полоса на экране телефона</b> — меньше места под содержание.','<b>Строка должна обновляться сразу</b> после каждого действия — сейчас прогресс урока обновляется до 10 минут, это нужно чинить в любом варианте.'],
+  frames:()=>[['Телефон · начало урока',phone({head:appbar('Урок','Неделя 1')+stickyBar(),body:lesson2(),extra:tb(),cls:'withsticky'})],['Телефон · строка раскрыта',phone({head:appbar('Урок','Неделя 1')+stickyBar(true),body:lesson2(),off:260,extra:tb(),cls:'withsticky'})],['Телефон · после отправки',phone({head:appbar('Урок','Неделя 1')+stickyBar(false,2),body:lesson2('ok'),off:PH_OFF.l2b,extra:tb(),cls:'withsticky'})]]},
+ {id:'L3',name:'3 · По шагам: смотреть → сделать → итог',
+  lead:'На платформе уже есть пошаговый режим урока, сейчас он ни в одном уроке не включён. Урок делится на шаги, сверху полоса «Шаг 1 из 3», внизу «Дальше». На компьютере слева колонка шагов, как в существующем режиме.',
+  pro:['<b>Фокус на одном действии</b> — меньше прокрутки, понятнее новичку.','<b>Режим уже есть в коде</b> — не с нуля.'],
+  con:['<b>Методисту нужно разбить каждый урок на шаги</b> — в программе 70+ уроков.','<b>Больше нажатий</b> для тех, кто хочет просто пролистать урок.','<b>В пошаговом режиме сейчас пропадают задания-виджеты</b> («Точка А/Б», «Список желаний») — это нужно чинить до включения.'],
+  frames:()=>[['Телефон · шаг 1',phone({head:appbar('Урок','Неделя 1'),body:lesson3(1),off:170,extra:tb()})],['Телефон · шаг 2',phone({head:appbar('Урок','Неделя 1'),body:lesson3(2),off:230,extra:tb()})],['Телефон · шаг 3',phone({head:appbar('Урок','Неделя 1'),body:lesson3(3),extra:tb()})],
+   ['Компьютер',`<div class="dkwrap">${desk('Урок',`<div class="scol"><a class="dn"><span class="nn">${I('check')}</span><span>Смотреть<small>видео 8 мин</small></span></a><a class="on"><span class="nn">2</span><span>Сделать<small>задание</small></span></a><a><span class="nn">3</span><span>Итог</span></a></div><div style="max-width:720px">${lesson3(2)}</div>`,'').replace('class="dbody "','class="dbody" style="grid-template-columns:260px minmax(0,1fr)"')}</div>`]]},
+];
+
+const block=v=>`<div class="blk"><h2>${v.name}${v.tag?`<small>${v.tag}</small>`:''}</h2><p class="lead">${v.lead}</p>
+ <div class="why"><div class="pro">${v.pro.map(x=>`<div>+ ${x}</div>`).join('')}</div><div class="con">${v.con.map(x=>`<div>− ${x}</div>`).join('')}</div></div>
+ <div class="frames">${v.frames().map(([l,h])=>`<div class="${l.startsWith('Компьютер')?'dkwrap':''}"><div class="fl">${l}</div>${h}</div>`).join('')}</div></div>`;
+
+document.getElementById('doc').innerHTML=`
+<h1 class="tt">Маршрут и страница урока · варианты</h1>
+<p class="lead">Пример: ученик тарифа «Прорыв», Поток 5, среда 30 сентября, 12:00. Уроки, обложки, даты открытия, сроки и награды — настоящие из программы потока. Прогресс ученика и текст ответа — пример.</p>
+<p class="lead">Во всех вариантах: одна тёмная тема, иконки вместо эмодзи, текст от 13 px, зоны нажатия от 44 px, одна золотая кнопка на экран, у закрытого урока причина словами. Из вкладок Маршрута уходит «Фокус дня» — он уже на главной. «Участники» — инструмент проводника, переезжает к нему.</p>
+
+<div class="part">Часть 1 · Маршрут<small>/producer-plan/route</small></div>
+<div class="blk"><h2>Как сейчас</h2>
+ <div class="now"><img src="img/now-route.png" alt="Маршрут сейчас, неделя 1">
+ <ul>
+  <li><b>Нет ответа на вопрос «что делать сейчас»</b> — ни кнопки «Продолжить», ни срока ключевого задания. Ученик ищет нужную карточку сам.</li>
+  <li><b>Плитка в две колонки на телефоне:</b> название 12 px и обрезается («КЛЮЧЕВОЕ ЗАДАНИЕ НЕДЕЛИ …»), бейджи 9 px, «чек-лист» размером 12 px внутри нажимаемой карточки.</li>
+  <li><b>У четырёх уроков одна и та же обложка</b> — различаются только мелким названием.</li>
+  <li><b>Закрытые уроки не объясняют причину</b>, а при закрытии по тарифу всегда написано «vip», даже если урок для Бизнеса.</li>
+  <li><b>Четыре вкладки</b>: «Уроки», «Фокус дня», «Участники», «База разборов» — у команды не помещаются в строку.</li>
+  <li><b>Эмодзи вместо иконок</b>: 🗺️ 🏕️ ⚡ 🥾 🎁 ⭐ ⚔️ 👑.</li>
+ </ul></div></div>
+${ROUTE.map(block).join('')}
+
+<div class="part">Часть 2 · Страница урока<small>/producer-plan/lesson/… · пример: «Формула достижения желаемого дохода», неделя 1</small></div>
+<div class="blk"><h2>Как сейчас <small style="color:var(--t3)">схема по коду</small></h2>
+ <div class="now">${nowLesson()}
+ <ul>
+  <li><b>До видео пять служебных блоков</b> — на телефоне первый экран занят шапкой, таймером, ссылками и стрелками.</li>
+  <li><b>После выполнения урока некуда идти:</b> «Урок завершён ✅» есть, кнопки «Следующий урок» нет. Стрелки работают только внутри недели и могут вести в закрытый урок.</li>
+  <li><b>Прогресс урока не обновляется</b> после «подтвердить просмотр» и отправки задания — до 10 минут.</li>
+  <li><b>Обязательные поля не проверяются</b>, можно отправить пустой ответ. Поле «файл» не загружает файлы.</li>
+  <li><b>«На проверке» и «Принято» выглядят одинаково</b> — зелёное «Ответ отправлен».</li>
+  <li><b>«Ссылка» и «TG-ссылка с автовходом» видны ученикам.</b></li>
+  <li><b>Инсайт уходит в Telegram-чат потока без предупреждения.</b></li>
+  <li><b>Замороженный ученик</b> открывает урок по прямой ссылке и сдаёт ДЗ — страница урока заморозку не проверяет.</li>
+ </ul></div></div>
+${LESSON.map(block).join('')}
+
+<div class="blk"><h2>Закрытый урок <small>для всех вариантов</small></h2><p class="lead">Сейчас на всех экранах «урок закрыт» одна кнопка «Запросить в поддержке», а по тарифу всегда написано «только VIP». Предлагаю свой экран на каждую причину, с верными тарифами и одним действием. Кнопка «Получить доступ» ведёт по ссылке, которая уже настраивается в админке ПП.</p>
+ <div class="frames"><div><div class="fl">Урок другого тарифа</div>${phone({head:appbar('Урок','Неделя 1'),body:gateTariff(),extra:tb()})}</div><div><div class="fl">Урок ещё не открылся</div>${phone({head:appbar('Урок','Неделя 1'),body:gateDate(),extra:tb()})}</div></div></div>
+
+<div class="blk"><h2>Что нужно решить тебе</h2><ol class="qs">
+ <li><b>Ответы других участников.</b> Сейчас блок называется «Ответы других», а ученик, судя по правам базы, видит только свой ответ. Показывать чужие ответы? Если да — до своей отправки или только после, чтобы не списывали?</li>
+ <li><b>Инсайт в Telegram.</b> Публиковать автоматически с предупреждением «Увидят в чате потока» или дать галочку «опубликовать»?</li>
+ <li><b>Заморозка.</b> Замороженному ученику урок открывать только на чтение или закрывать совсем?</li>
+ <li><b>Просмотр видео.</b> Оставить кнопку «Отметить просмотр» или засчитывать сам после 90% просмотра?</li>
+ <li><b>«Ссылка» и «TG-ссылка»</b> на уроке — оставить только команде, в меню «⋯»?</li>
+</ol></div>
+`;
+
+(function(){const NB=' ',short=/(^|[\s(«])(в|во|с|со|к|ко|и|а|о|об|у|по|до|на|из|от|за|не|но|же|для|или|что|как|без|при|под|над|через|—)\s+/gi;
+ const walk=n=>{if(n.nodeType===3){let t=n.nodeValue;t=t.replace(short,(m,a,w)=>a+w+NB).replace(short,(m,a,w)=>a+w+NB);t=t.replace(/(\d)\s+(?=[А-Яа-яЁё₽%])/g,'$1'+NB);t=t.replace(/\s+(—|·|→)/g,NB+'$1');n.nodeValue=t;return}
+ if(n.nodeType===1&&!/^(TEXTAREA|INPUT|SCRIPT|STYLE|svg)$/i.test(n.nodeName))n.childNodes.forEach(walk)};walk(document.getElementById('doc'));})();
+</script>
+</body></html>
