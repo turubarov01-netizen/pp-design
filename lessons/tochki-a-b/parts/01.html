@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Точки А и Б</title>
+<style>
+/* Урок «Правила курса» — вставки HTML-страниц в урок кабинета «План Продюсера».
+   Фон и карточки совпадают с кабинетом (ProducerPlanLayout: --pl-bg #0D1117, --pl-card #141E2B). */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap');
+
+:root {
+  --bg: #0D1117;
+  --card: #141E2B;
+  --card2: #1A2535;
+  --line: rgba(255,255,255,.07);
+  --line2: rgba(255,255,255,.12);
+  --t1: #FFFFFF;
+  --t2: rgba(255,255,255,.76);
+  --t3: rgba(255,255,255,.52);
+  --blue: #6B9FFF;
+  --blue-bg: rgba(107,159,255,.10);
+  --blue-line: rgba(107,159,255,.28);
+  --amber: #EAB820;
+  --gold: linear-gradient(135deg, #F0D080 0%, #CCA830 100%);
+  --red: #FF6B6B;
+  --red-bg: rgba(255,107,107,.09);
+  --red-line: rgba(255,107,107,.28);
+  --green: #6BCB77;
+  --green-bg: rgba(107,203,119,.09);
+  --green-line: rgba(107,203,119,.28);
+  --r: 18px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg) !important; }
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: var(--t2);
+  font-size: 17px; line-height: 1.55; letter-spacing: -.011em;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-wrap: pretty;
+}
+.page { max-width: 720px; margin: 0 auto; padding: 8px 16px 24px; }
+
+b, strong { color: var(--t1); font-weight: 700; }
+.am { color: var(--amber); font-weight: 700; }
+p + p { margin-top: 12px; }
+svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ——— заголовки секций ——— */
+.sec { padding-top: 40px; }
+.sec:first-child { padding-top: 8px; }
+.kick { display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.h2 {
+  font-size: 28px; font-weight: 700; line-height: 1.12; letter-spacing: -.02em; margin-bottom: 14px; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.h3 { font-size: 19px; font-weight: 700; line-height: 1.25; color: var(--t1); margin: 24px 0 10px; text-wrap: balance; }
+.lead { font-size: 18px; color: var(--t2); }
+
+/* ——— карточки ——— */
+.card { background: var(--card); border: 1px solid var(--line2); border-radius: var(--r); padding: 20px; margin-top: 16px; }
+.card-t { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 14px; }
+.card-t svg.i { width: 18px; height: 18px; color: var(--blue); }
+
+/* ——— шпаргалка ——— */
+.cheat { background: linear-gradient(180deg, #172238 0%, var(--card) 100%); border-color: var(--blue-line); padding: 22px 20px 8px; }
+.cheat-h { font-size: 22px; font-weight: 700; color: var(--t1); line-height: 1.2; margin-bottom: 4px; text-wrap: balance; }
+.cheat-sub { font-size: 15px; color: var(--t3); margin-bottom: 14px; }
+.rule { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+.rule-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--blue-bg); color: var(--blue); }
+.rule-ic.red { background: var(--red-bg); color: var(--red); }
+.rule-name { font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.3; }
+.rule-txt { font-size: 15px; line-height: 1.45; color: var(--t2); margin-top: 3px; }
+.tag-loss { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; padding: 3px 10px 3px 8px; border-radius: 100px; background: var(--red-bg); border: 1px solid var(--red-line); color: #FF9B9B; font-size: 13px; font-weight: 600; }
+.tag-loss svg.i { width: 14px; height: 14px; fill: currentColor; stroke: none; }
+
+/* ——— сердечки ——— */
+.hearts { display: flex; gap: 8px; color: var(--red); flex: none; }
+.hearts svg { width: 28px; height: 28px; fill: var(--red); }
+.hearts.sm svg { width: 18px; height: 18px; }
+.hearts .off { fill: rgba(255,255,255,.14); }
+
+/* ——— цель 30 дней ——— */
+.goal { text-align: center; padding: 24px 20px; }
+.goal-days { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+.goal-num { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -.03em; margin: 6px 0 16px;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.goal-or { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.goal-opt { background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 14px; padding: 14px 10px; font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.25; }
+.goal-sep { font-size: 13px; color: var(--t3); font-weight: 600; }
+
+/* ——— списки ——— */
+.list { list-style: none; display: grid; gap: 10px; margin-top: 12px; }
+.list li { position: relative; padding-left: 22px; }
+.list li::before { content: ""; position: absolute; left: 4px; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+.list.red li::before { background: var(--red); }
+.list.green li::before { background: var(--green); }
+.list.muted li::before { background: var(--t3); }
+
+/* ——— цитата-вывод ——— */
+.quote { margin-top: 18px; padding: 4px 0 4px 16px; border-left: 3px solid; border-image: var(--gold) 1; font-size: 19px; font-weight: 600; line-height: 1.4; color: var(--t1); }
+
+/* ——— футбол ——— */
+.pair { display: grid; gap: 12px; margin-top: 16px; }
+.pair .card { margin-top: 0; }
+
+/* ——— Точка Б ——— */
+.lvls { display: grid; gap: 10px; margin-top: 16px; }
+.lvl { display: grid; grid-template-columns: 1fr 24px 1fr; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.lvl-lbl { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.lvl-now { font-size: 15px; font-weight: 600; color: var(--t1); line-height: 1.3; }
+.lvl-now small, .lvl-goal small { display: block; font-size: 13px; font-weight: 500; color: var(--t3); }
+.lvl-arrow { color: var(--t3); }
+.lvl-goal .lvl-lbl { color: #D9B94E; }
+.lvl-goal b { font-size: 20px; line-height: 1.15; background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.lvl-n { grid-column: 1 / -1; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: -2px; }
+
+/* ——— этапы (вертикальная линия) ——— */
+.steps { list-style: none; margin-top: 16px; }
+.step { position: relative; display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding-bottom: 20px; }
+.step:last-child { padding-bottom: 0; }
+.step:not(:last-child)::after { content: ""; position: absolute; left: 17px; top: 38px; bottom: 4px; width: 2px; background: linear-gradient(180deg, var(--blue-line), rgba(107,159,255,.06)); }
+.step-n { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; font-weight: 700; color: var(--blue); background: var(--blue-bg); border: 1px solid var(--blue-line); font-variant-numeric: tabular-nums; }
+.step-n.done { color: var(--green); background: var(--green-bg); border-color: var(--green-line); }
+.step-t { font-size: 17px; font-weight: 700; color: var(--t1); padding-top: 6px; line-height: 1.3; }
+.step-t .dur { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 100px; background: rgba(255,255,255,.06); font-size: 13px; font-weight: 600; color: var(--t2); vertical-align: 2px; }
+.step-d { font-size: 15px; color: var(--t2); margin-top: 4px; }
+.step-d.ok { color: var(--green); font-weight: 600; }
+
+/* ——— неделя: 3 плашки ——— */
+.week { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+.week div { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 12px; padding: 12px 14px; font-size: 15px; line-height: 1.3; color: var(--t2); }
+.week div b { width: 20px; text-align: center; font-size: 22px; color: var(--t1); flex: none; }
+.week div:first-child { border-color: rgba(234,184,32,.35); background: rgba(234,184,32,.07); }
+.week div:first-child b { color: var(--amber); }
+
+/* ——— 80/20 ——— */
+.split-bar { display: grid; grid-template-columns: 20fr 80fr; height: 40px; border-radius: 12px; overflow: hidden; margin: 16px 0 14px; font-size: 14px; font-weight: 700; }
+.split-bar span { display: flex; align-items: center; padding: 0 12px; }
+.split-bar span:first-child { background: var(--gold); color: #1A1406; justify-content: center; padding: 0; }
+.split-bar span:last-child { background: rgba(255,255,255,.07); color: var(--t3); }
+.split { display: grid; gap: 12px; }
+.split .card { margin-top: 0; }
+.split .must { border-color: rgba(234,184,32,.4); }
+.split .must .card-t { color: var(--amber); }
+.split .must .card-t svg.i { color: var(--amber); }
+
+/* ——— таймлайн недели задания ——— */
+.days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 8px; }
+.day { text-align: center; }
+.day-bar { height: 10px; border-radius: 5px; background: rgba(107,159,255,.28); }
+.day.open .day-bar { background: var(--blue); }
+.day.dl .day-bar { background: var(--red); }
+.day-n { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--t2); }
+.day-s { font-size: 11px; line-height: 1.25; color: var(--t3); margin-top: 2px; }
+.day.open .day-s { color: var(--blue); font-weight: 600; }
+.day.dl .day-s { color: #FF9B9B; font-weight: 600; }
+
+/* ——— факты-числа ——— */
+.facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; }
+.fact { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.fact b { display: block; font-size: 24px; line-height: 1.1; color: var(--t1); letter-spacing: -.02em; margin-bottom: 4px; }
+.fact.wide { grid-column: 1 / -1; }
+.fact.wide b { font-size: 18px; }
+.fact span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— красные / зелёные блоки ——— */
+.note { display: flex; gap: 12px; align-items: flex-start; border-radius: 14px; padding: 14px 16px; margin-top: 14px; border: 1px solid; font-size: 16px; line-height: 1.5; }
+.note svg.i { margin-top: 2px; }
+.note.red { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.note.red b { color: #FFD0D0; }
+.note.green { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.note.green b { color: #D2F5D6; }
+.note.blue { background: var(--blue-bg); border-color: var(--blue-line); color: #B5CCFF; }
+.note.blue b { color: #DCE7FF; }
+
+/* ——— путь жизней ——— */
+.path { display: grid; gap: 0; margin-top: 16px; }
+.path-st { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 16px; }
+.path-st.solo { border-color: rgba(234,184,32,.35); }
+.path-st.out { border-color: var(--red-line); background: linear-gradient(180deg, rgba(255,107,107,.06), var(--card)); }
+.path-hd { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.path-name { font-size: 17px; font-weight: 700; color: var(--t1); }
+.path-st p { font-size: 15px; margin-top: 6px; }
+.path-link { display: flex; align-items: center; gap: 8px; padding: 8px 0 8px 18px; font-size: 13px; font-weight: 600; color: #FF9B9B; }
+.path-link::before { content: ""; width: 2px; height: 22px; background: var(--red-line); margin-right: 6px; }
+
+/* ——— хорошо / плохо ——— */
+.vs { display: grid; gap: 10px; margin-top: 14px; }
+.vs-col { border-radius: 16px; padding: 14px 16px; border: 1px solid; }
+.vs-col.bad { background: var(--red-bg); border-color: var(--red-line); }
+.vs-col.good { background: var(--green-bg); border-color: var(--green-line); }
+.vs-h { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.vs-col.bad .vs-h { color: #FF9B9B; }
+.vs-col.good .vs-h { color: var(--green); }
+.vs-col ul { list-style: none; display: grid; gap: 6px; font-size: 15px; color: var(--t1); }
+
+/* ——— таймлайн дня ——— */
+.clock { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.clock div { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.clock b { display: block; font-size: 28px; line-height: 1; letter-spacing: -.02em; color: var(--t1); font-variant-numeric: tabular-nums; margin-bottom: 6px; }
+.clock span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— пример фокуса ——— */
+.ex { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; margin-top: 14px; }
+.ex > div { background: var(--card); border: 1px solid var(--line2); border-radius: 14px; padding: 12px 14px; }
+.ex small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.ex b { font-size: 16px; line-height: 1.3; }
+.ex .arrow { align-self: center; background: none; border: 0; padding: 0; color: var(--t3); }
+
+/* ——— монеты / баллы ——— */
+.cur { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.cur .card { margin-top: 0; padding: 16px; }
+.cur-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 10px; }
+.cur-ic.pts { background: var(--blue-bg); color: var(--blue); }
+.cur-ic.coin { background: rgba(234,184,32,.12); color: var(--amber); }
+.cur-n { font-size: 18px; font-weight: 700; color: var(--t1); }
+.cur-what { font-size: 14px; line-height: 1.4; color: var(--t2); margin-top: 4px; }
+.plusminus { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.pm { border-radius: 14px; padding: 12px 14px; border: 1px solid; font-size: 14px; line-height: 1.4; }
+.pm b { display: block; font-size: 20px; margin-bottom: 2px; }
+.pm.up { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.pm.up b { color: var(--green); }
+.pm.down { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.pm.down b { color: var(--red); }
+
+/* ——— свойства инвентаря ——— */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.tile { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px; font-size: 14px; line-height: 1.4; color: var(--t2); }
+.tile .rule-ic { margin-bottom: 10px; }
+.tile b { color: var(--t1); }
+
+/* ——— итоговый чек-лист ——— */
+.check { list-style: none; display: grid; gap: 10px; margin-top: 14px; }
+.check li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; font-size: 16px; color: var(--t1); font-weight: 600; line-height: 1.4; }
+.check li span.box { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; background: var(--green-bg); border: 1px solid var(--green-line); color: var(--green); }
+.check li span.box svg.i { width: 16px; height: 16px; stroke-width: 3; }
+.check li small { display: block; font-size: 14px; font-weight: 500; color: var(--t2); margin-top: 2px; }
+
+.divider { height: 1px; background: var(--line); margin: 36px 0 0; }
+
+@media (min-width: 640px) {
+  .page { padding: 8px 0 32px; }
+  .h2 { font-size: 34px; }
+  .card { padding: 24px; }
+  .pair, .split, .vs { grid-template-columns: 1fr 1fr; }
+  .lvls { grid-template-columns: repeat(3, 1fr); }
+  .lvl { grid-template-columns: 1fr; gap: 6px; }
+  .lvl-arrow { transform: rotate(90deg); justify-self: start; }
+  .facts { grid-template-columns: repeat(4, 1fr); }
+  .fact.wide { grid-column: span 2; }
+  .week { grid-template-columns: repeat(3, 1fr); }
+  .grid2 { grid-template-columns: repeat(4, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Урок «Точки А и Б»: дополнения к lesson.css урока «Правила курса». */
+.lead + p { margin-top: 8px; }
+.after { margin-top: 16px; }
+
+/* ——— тропа А → Б ——— */
+.trail { display: grid; grid-template-columns: 1fr 76px 1fr; align-items: start; gap: 6px; padding: 22px 16px 20px; margin-top: 20px;
+  background: radial-gradient(120% 140% at 50% 0%, #172238 0%, var(--card) 70%); border-color: var(--blue-line); }
+.trail-pt { text-align: center; }
+.trail-dot { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 10px;
+  font-size: 22px; font-weight: 700; }
+.trail-pt.a .trail-dot { color: var(--blue); background: var(--blue-bg); border: 2px solid var(--blue-line); }
+.trail-pt.b .trail-dot { color: #1A1406; background: var(--gold); box-shadow: 0 0 0 6px rgba(234,184,32,.12), 0 8px 24px rgba(204,168,48,.25);
+  animation: trail-glow .5s ease-out .9s both; }
+.trail-name { font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.2; }
+.trail-pt.b .trail-name { color: #F0D080; }
+.trail-txt { font-size: 13px; line-height: 1.35; color: var(--t2); margin-top: 4px !important; text-wrap: balance; }
+.trail-way { position: relative; padding-top: 8px; }
+.trail-way svg { display: block; width: 100%; height: 36px; overflow: visible; }
+.trail-way path { fill: none; stroke-width: 2.5; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.trail-base { stroke: rgba(255,255,255,.10); stroke-dasharray: 2 6; }
+.trail-line { stroke: #D9B94E; stroke-dasharray: 1; stroke-dashoffset: 1; animation: trail-draw .9s cubic-bezier(.4,0,.2,1) .15s forwards; }
+.trail-days { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--t3); white-space: nowrap; }
+.trail-days svg.i { width: 13px; height: 13px; }
+@keyframes trail-draw { to { stroke-dashoffset: 0; } }
+@keyframes trail-glow { from { transform: scale(.85); opacity: .4; } to { transform: scale(1); opacity: 1; } }
+
+/* ——— два случая точки А ——— */
+.case p { font-size: 15px; }
+.case .card-t { margin-bottom: 8px; }
+.case-num { font-size: 44px !important; font-weight: 700; line-height: 1; letter-spacing: -.03em; color: var(--blue); margin: 4px 0 12px !important; }
+.avg { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 4px 0 14px; }
+.avg-m { padding: 6px 10px; border-radius: 10px; background: var(--blue-bg); border: 1px solid var(--blue-line); color: var(--t1); font-size: 14px; font-weight: 600; }
+.avg-op { color: var(--t3); font-weight: 700; }
+.avg-div { padding: 6px 10px; border-radius: 10px; background: rgba(255,255,255,.06); color: var(--blue); font-size: 14px; font-weight: 700; }
+
+/* ——— валюты и категории ——— */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chips span { min-width: 40px; height: 36px; padding: 0 12px; border-radius: 100px; display: inline-grid; place-items: center;
+  background: rgba(255,255,255,.05); border: 1px solid var(--line2); color: var(--t1); font-size: 15px; font-weight: 600; }
+.chips-lbl { margin-top: 28px !important; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); }
+.chips.wide { margin: 10px 0 14px; }
+.steps .step-d + .step-d { margin-top: 8px; }
+
+/* ——— пример конвертации ——— */
+.conv { margin-top: 20px; }
+.conv-flow { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
+.conv-src { display: grid; gap: 8px; }
+.conv-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--line2); font-size: 14px; color: var(--t1); }
+.conv-row b { color: var(--blue); font-size: 16px; }
+.conv-arrow { color: var(--t3); display: grid; place-items: center; }
+.conv-main { padding: 14px 12px; border-radius: 14px; text-align: center; border: 1px solid rgba(234,184,32,.35); background: rgba(234,184,32,.07); }
+.conv-main small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #D9B94E; margin-bottom: 4px; }
+.conv-main b { font-size: 16px; color: var(--t1); }
+.conv-txt { font-size: 15px; margin-top: 14px; }
+
+/* ——— калькулятор точки Б (только CSS) ——— */
+.sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); border: 0; opacity: 0; }
+.calc { position: relative; margin-top: 20px; padding: 22px 18px;
+  background: linear-gradient(180deg, #1E2230 0%, var(--card) 100%); border-color: rgba(234,184,32,.28); }
+.calc-h { font-size: 20px; font-weight: 700; color: var(--t1); line-height: 1.2; }
+.calc-sub { font-size: 15px; color: var(--t3); margin: 4px 0 14px !important; }
+.calc-tabs { display: grid; gap: 8px; }
+.calc-tabs label { position: relative; display: block; min-height: 52px; padding: 10px 14px 10px 44px; border-radius: 14px; cursor: pointer;
+  background: rgba(255,255,255,.04); border: 1px solid var(--line2); color: var(--t1); font-size: 16px; font-weight: 700; line-height: 1.25;
+  transition: border-color .2s, background-color .2s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.calc-tabs label small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 2px; }
+.calc-tabs label::before { content: ""; position: absolute; left: 14px; top: 50%; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.28); transition: border-color .2s, box-shadow .2s; }
+.calc-tabs label:hover { border-color: rgba(234,184,32,.4); }
+.calc-tabs label:active { background: rgba(255,255,255,.07); }
+#pa1:checked ~ .calc-tabs label[for="pa1"],
+#pa2:checked ~ .calc-tabs label[for="pa2"],
+#pa3:checked ~ .calc-tabs label[for="pa3"] { border-color: rgba(234,184,32,.6); background: rgba(234,184,32,.09); }
+#pa1:checked ~ .calc-tabs label[for="pa1"]::before,
+#pa2:checked ~ .calc-tabs label[for="pa2"]::before,
+#pa3:checked ~ .calc-tabs label[for="pa3"]::before { border-color: #EAB820; box-shadow: inset 0 0 0 4px #1E2230, inset 0 0 0 9px #EAB820; }
+#pa1:focus-visible ~ .calc-tabs label[for="pa1"],
+#pa2:focus-visible ~ .calc-tabs label[for="pa2"],
+#pa3:focus-visible ~ .calc-tabs label[for="pa3"] { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+.calc-res { margin-top: 12px; border-radius: 16px; background: rgba(0,0,0,.22); border: 1px solid var(--line); padding: 18px 16px; text-align: center; }
+.calc-r { display: none; }
+#pa1:checked ~ .calc-res .r1, #pa2:checked ~ .calc-res .r2, #pa3:checked ~ .calc-res .r3 { display: block; animation: calc-in .22s ease-out; }
+.calc-lbl { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #D9B94E; }
+.calc-num { font-size: 40px !important; font-weight: 700; line-height: 1.05; letter-spacing: -.03em; margin: 6px 0 8px !important; font-variant-numeric: tabular-nums;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.calc-ex { font-size: 15px; color: var(--t2); margin-top: 0 !important; }
+.calc-foot { font-size: 13px; color: var(--t3); margin-top: 12px !important; }
+@keyframes calc-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+@media (min-width: 560px) {
+  .calc-tabs { grid-template-columns: repeat(3, 1fr); }
+  .trail { grid-template-columns: 1fr 160px 1fr; padding: 28px 24px 24px; }
+  .trail-txt { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trail-line { stroke-dashoffset: 0; animation: none; }
+  .trail-pt.b .trail-dot, .calc-r { animation: none !important; }
+}
+
+</style>
+</head>
+<body>
+<main class="page">
+<section class="sec">
+  <p class="lead">Добро пожаловать в&nbsp;урок точка&nbsp;А&nbsp;и&nbsp;точка&nbsp;Б!</p>
+  <p>В&nbsp;этом уроке мы&nbsp;с&nbsp;вами определяемся с&nbsp;точкой&nbsp;А&nbsp;и&nbsp;точкой&nbsp;Б.</p>
+
+  <div class="card trail" aria-label="Путь от точки&nbsp;А к точке Б за 30 дней">
+    <div class="trail-pt a">
+      <span class="trail-dot">А</span>
+      <p class="trail-name">Точка&nbsp;А</p>
+      <p class="trail-txt">то, с&nbsp;чем вы&nbsp;пришли на&nbsp;этот тренинг</p>
+    </div>
+    <div class="trail-way" aria-hidden="true">
+      <svg viewBox="0 0 200 40" preserveAspectRatio="none"><path class="trail-base" d="M2 30 C 60 30, 70 8, 110 14 S 170 30, 198 10"/><path class="trail-line" pathLength="1" d="M2 30 C 60 30, 70 8, 110 14 S 170 30, 198 10"/></svg>
+      <span class="trail-days"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 30&nbsp;дней</span>
+    </div>
+    <div class="trail-pt b">
+      <span class="trail-dot">Б</span>
+      <p class="trail-name">Точка&nbsp;Б</p>
+      <p class="trail-txt">сумма, которую необходимо заработать за&nbsp;30&nbsp;дней</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick">Шаг 1</span>
+  <h2 class="h2">Точка&nbsp;А</h2>
+  <p><b>Точка&nbsp;А&nbsp;–</b> это то, с&nbsp;чем вы&nbsp;пришли на&nbsp;этот тренинг. Именно в&nbsp;той нише, которую вы&nbsp;будете реализовывать, в&nbsp;том продукте, который вы&nbsp;будете реализовывать.</p>
+
+  <div class="pair">
+    <div class="card case">
+      <div class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M9.94 14.06 8.5 20l-1.44-5.94L1 12.5l6.06-1.44L8.5 5l1.44 6.06L16 12.5z"/><path d="M20 3v4"/><path d="M22 5h-4"/></svg>Впервые в&nbsp;нише</div>
+      <p class="case-num">0</p>
+      <p>Если вы&nbsp;до&nbsp;этого в&nbsp;этой нише не&nbsp;зарабатывали, то&nbsp;есть вы&nbsp;впервые открываете наставничество, впервые будете заниматься этим направлением, то&nbsp;ваш доход ноль.</p>
+    </div>
+    <div class="card case">
+      <div class="card-t"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>Давно в&nbsp;теме</div>
+      <div class="avg" aria-label="Сумма за три месяца, делённая на три">
+        <span class="avg-m">1&nbsp;мес</span><span class="avg-op">+</span><span class="avg-m">2&nbsp;мес</span><span class="avg-op">+</span><span class="avg-m">3&nbsp;мес</span>
+        <span class="avg-div">÷&nbsp;3</span>
+      </div>
+      <p>Если вы&nbsp;давно в&nbsp;этой теме и&nbsp;зарабатываете, то&nbsp;он&nbsp;определяется средним арифметическим за&nbsp;последние три месяца. Сколько вы&nbsp;заработали. Чтобы определить, сколько в&nbsp;среднем получается у&nbsp;вас сделать денег.</p>
+    </div>
+  </div>
+  <p class="after">После этого вы&nbsp;выбираете здесь в&nbsp;графе Точка&nbsp;А ваш результат.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Шаг 2</span>
+  <h2 class="h2">Валюта и&nbsp;источники дохода</h2>
+
+  <ol class="steps">
+    <li class="step">
+      <span class="step-n">01</span>
+      <div>
+        <p class="step-t">Валюта</p>
+        <p class="step-d">Также выбираете валюту, которую вы&nbsp;будете дальше считать. У&nbsp;вас есть возможность изменить валюту для того, чтобы вам было удобно. В&nbsp;рублях, гривнах, тенге или в&nbsp;других валютах, которые есть в&nbsp;списке. Если вашей валюты нет, выберите максимально удобную вам для понимания процесса.</p>
+        <div class="chips" aria-hidden="true"><span>₽</span><span>₴</span><span>₸</span><span>…</span></div>
+      </div>
+    </li>
+    <li class="step">
+      <span class="step-n">02</span>
+      <div>
+        <p class="step-t">Источники дохода</p>
+        <p class="step-d">После этого можете выбрать источники дохода. В&nbsp;какой категории вы&nbsp;будете зарабатывать.</p>
+        <p class="step-d">Это у&nbsp;вас будут: консультации, курсы... Вы&nbsp;можете создать несколько: 5, 10, 20&nbsp;источников дохода. В&nbsp;каждом источнике дохода вы&nbsp;можете выбрать свою валюту.</p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="card conv">
+    <div class="card-t"><svg class="i" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>Пример</div>
+    <div class="conv-flow">
+      <div class="conv-src">
+        <div class="conv-row"><span>Консультации</span><b>₽</b></div>
+        <div class="conv-row"><span>Консультации</span><b>$</b></div>
+      </div>
+      <span class="conv-arrow"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      <div class="conv-main"><small>Основная валюта</small><b>одна сумма</b></div>
+    </div>
+    <p class="conv-txt">Например, вы&nbsp;продаете консультации в&nbsp;рублях, потом делаете консультации в&nbsp;долларах. Например, если у&nbsp;вас два источника дохода. Для того, чтобы вам легко и&nbsp;удобно было считать.</p>
+    <div class="note blue"><svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>Но&nbsp;конвертироваться все эти доходы будут <b>автоматически в&nbsp;вашу основную валюту.</b></span></div>
+  </div>
+
+  <p class="chips-lbl">Категории дохода могут быть разными</p>
+  <div class="chips wide" aria-hidden="true"><span>Консультации</span><span>Курсы</span><span>Инфокурсы</span><span>Наставничество</span><span>Трипваер</span></div>
+  <p>Соответственно, возможно, у&nbsp;вас будет инфо курсы, возможно, будет дополнительное наставничество, возможно, будет какой-то трипваер и&nbsp;в&nbsp;дальнейшем у&nbsp;продукта вы&nbsp;можете этим самым удобно вести себе источники дохода, чтобы понимать: где и&nbsp;на&nbsp;чем зарабатывать и&nbsp;какие продукты вам принесут больше всего денег. Так, для удобства подсчетов.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Шаг 3</span>
+  <h2 class="h2">Точка&nbsp;Б</h2>
+  <p>Ваша <b>точка&nbsp;Б</b> определяется вашей точкой&nbsp;А.</p>
+  <p>И&nbsp;точка&nbsp;Б, которую покажет вам система, это та&nbsp;сумма, которую вам необходимо заработать за&nbsp;30&nbsp;дней для того, чтобы считаться финалистом тренинга, исходя из&nbsp;вашей точки&nbsp;А.</p>
+
+  <div class="card calc">
+    <p class="calc-h">Как система считает точку&nbsp;Б</p>
+    <p class="calc-sub">Выберите, сколько вы&nbsp;зарабатываете сейчас</p>
+    <input class="sr" type="radio" name="pa" id="pa1" checked>
+    <input class="sr" type="radio" name="pa" id="pa2">
+    <input class="sr" type="radio" name="pa" id="pa3">
+    <div class="calc-tabs" role="radiogroup" aria-label="Ваша точка&nbsp;А">
+      <label for="pa1"><small>Точка&nbsp;А</small>до&nbsp;20&nbsp;000&nbsp;₽</label>
+      <label for="pa2"><small>Точка&nbsp;А</small>20&nbsp;000&nbsp;–&nbsp;75&nbsp;000&nbsp;₽</label>
+      <label for="pa3"><small>Точка&nbsp;А</small>больше 75&nbsp;000&nbsp;₽</label>
+    </div>
+    <div class="calc-res">
+      <div class="calc-r r1">
+        <p class="calc-lbl">Точка&nbsp;Б за&nbsp;30&nbsp;дней</p>
+        <p class="calc-num">50&nbsp;000&nbsp;₽</p>
+        <p class="calc-ex">Например, 0&nbsp;₽ → 50&nbsp;000&nbsp;₽</p>
+      </div>
+      <div class="calc-r r2">
+        <p class="calc-lbl">Точка&nbsp;Б за&nbsp;30&nbsp;дней</p>
+        <p class="calc-num">150&nbsp;000&nbsp;₽</p>
+        <p class="calc-ex">Например, 40&nbsp;000&nbsp;₽ → 150&nbsp;000&nbsp;₽</p>
+      </div>
+      <div class="calc-r r3">
+        <p class="calc-lbl">Точка&nbsp;Б за&nbsp;30&nbsp;дней</p>
+        <p class="calc-num">точка&nbsp;А&nbsp;×&nbsp;2</p>
+        <p class="calc-ex">Например, 100&nbsp;000&nbsp;₽ → 200&nbsp;000&nbsp;₽</p>
+      </div>
+    </div>
+    <p class="calc-foot">Если вы&nbsp;считаете в&nbsp;другой валюте, пороги пересчитываются по&nbsp;курсу.</p>
+  </div>
+
+  <p class="quote">Приятного прохождения курса!</p>
+</section>
+</main>
+</body>
+</html>
