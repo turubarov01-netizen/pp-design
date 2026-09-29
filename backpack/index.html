@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>План Продюсера · встречи и календарь — варианты</title>
+<title>План Продюсера · Рюкзак, Лавка и кома — варианты</title>
 <link rel="stylesheet" href="pp.css">
 <style>
 
@@ -303,73 +303,108 @@ body{background:#0A0E13}
 .ph.tall{height:1180px}
 @media (max-width:560px){.doc{padding:16px 0}.doc>*:not(.blk){margin-left:14px;margin-right:14px}.blk>h2,.blk>.why,.blk>.lead,.blk>.qs{margin-left:14px;margin-right:14px}.why{grid-template-columns:1fr}.frames{gap:24px;justify-content:center}.dkwrap{display:none}.now{margin:16px 14px 0}.now img{width:100%}}
 
-/* ── встречи ── */
-.mt-hero{margin-top:4px;border-radius:20px;overflow:hidden;background:var(--card);border:1px solid rgba(240,208,128,.3)}
-.mt-hero.live{border-color:rgba(107,203,119,.55);box-shadow:0 0 0 4px rgba(107,203,119,.08)}
-.mt-hero .body{padding:16px}
-.mt-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.mt-hero h3{font-size:20px;font-weight:700;line-height:1.25;margin-top:6px}
-.mt-when{display:flex;align-items:baseline;gap:10px;margin-top:10px;flex-wrap:wrap}
-.mt-when b{font-size:28px;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-.mt-when span{font-size:14px;color:var(--t2)}
-.mt-note{font-size:13px;color:var(--t3);margin-top:10px;line-height:1.45}
-.mt-hero .b{margin-top:14px}
-.chip.c-live{background:rgba(107,203,119,.16);color:var(--moss)}
-.chip.c-live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--moss);box-shadow:0 0 0 3px rgba(107,203,119,.25)}
-.chip.c-soon{background:rgba(240,208,128,.14);color:var(--gold-a)}
-.chip.c-vip{background:rgba(240,208,128,.12);color:var(--gold-a)}
-.ml{display:flex;align-items:center;gap:14px;min-height:68px;padding:10px 0;border-top:1px solid var(--line)}
-.ml:first-child{border-top:0}
-.ml .dt{width:52px;height:52px;border-radius:14px;background:var(--card2);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;border:1px solid var(--line)}
-.ml .dt b{font-size:19px;font-weight:800;line-height:1}
-.ml .dt span{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--t3);margin-top:3px;letter-spacing:.06em}
-.ml .tx{flex:1;min-width:0}
-.ml .tx b{display:block;font-size:15px;font-weight:600;line-height:1.3}
-.ml .tx small{display:block;font-size:13px;color:var(--t3);margin-top:3px}
-.ml.past .tx b{color:var(--t2)}
-.ml .act{flex:none}
-.box{border-radius:18px;background:var(--card);border:1px solid var(--line);padding:4px 16px}
-.lnk2{display:inline-flex;align-items:center;gap:6px;height:44px;font-size:14px;font-weight:600;color:var(--blue2)}
-.lnk2 .ic{width:16px;height:16px}
-.b-sm{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:12px;border:1px solid var(--line2);font-size:13px;font-weight:600;color:var(--t2)}
-.b-sm .ic{width:15px;height:15px}
-.b-sm.play{border-color:rgba(75,123,255,.45);color:var(--blue2)}
-.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.wd{height:64px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
-.wd small{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--t3);letter-spacing:.06em}
-.wd b{font-size:18px;font-weight:700}
-.wd i{width:6px;height:6px;border-radius:50%;background:transparent}
-.wd.has i{background:var(--blue2)}
-.wd.today{border-color:rgba(240,208,128,.5);background:rgba(240,208,128,.08)}
-.wd.today b{color:var(--gold-a)}
-.wd.sel{background:var(--gold-a);border-color:var(--gold-a)}
-.wd.sel b,.wd.sel small{color:#1A1406}
-.wd.sel i{background:#1A1406}
-.wnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.wnav b{font-size:16px}
-.wnav .ib{width:44px;height:44px}
-.today-row{display:flex;align-items:center;gap:14px;min-height:68px;padding:12px 14px}
-.today-row .ring{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none;background:rgba(75,123,255,.14);color:var(--blue2)}
-.today-row .ring .ic{width:20px;height:20px}
-.today-row .tx{flex:1;min-width:0}
-.today-row .tx small{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.today-row .tx b{display:block;font-size:15px;font-weight:600;margin-top:2px}
-.zoom-sm{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0 16px;border-radius:14px;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#3A2E18;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 3px 0 #A07828}
-.zoom-sm .ic{width:15px;height:15px}
-.sub-cal{display:flex;align-items:center;gap:12px;margin-top:12px;padding:14px;border-radius:16px;border:1px dashed rgba(107,159,255,.45);background:rgba(75,123,255,.06)}
-.sub-cal .ic{width:22px;height:22px;color:var(--blue2);flex:none}
-.sub-cal b{display:block;font-size:15px}
-.sub-cal small{display:block;font-size:13px;color:var(--t3);margin-top:2px}
-.states{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:22px}
-.st-card{border-radius:18px;background:var(--card);border:1px solid var(--line);padding:14px}
-.st-card .fl{margin:0 0 8px}
-.rec{margin-top:4px;border-radius:14px;overflow:hidden;background:var(--card2);aspect-ratio:16/9;display:grid;place-items:center;position:relative}
-.rec .play{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.9);color:#0D1117;display:grid;place-items:center}
-.rec .play .ic{width:22px;height:22px;fill:currentColor;margin-left:3px}
-@media (max-width:900px){.states{grid-template-columns:1fr 1fr}}
-@media (max-width:560px){.states{grid-template-columns:1fr;margin-left:14px;margin-right:14px}}
+/* ── рюкзак ── */
+.lv{border-radius:20px;background:var(--card);border:1px solid var(--line);padding:16px}
+.lv .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hearts{display:flex;gap:6px}
+.hearts .ic{width:28px;height:28px;color:var(--red);fill:var(--red);stroke:none}
+.hearts .ic.off{fill:none;stroke:rgba(255,255,255,.28);stroke-width:2}
+.lv .cnt{font-size:15px;font-weight:700}
+.lv .cnt small{display:block;font-size:13px;font-weight:500;color:var(--t3);text-align:right}
+.why3{display:flex;gap:10px;margin-top:14px;padding:12px;border-radius:14px;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.22)}
+.why3 .ic{width:18px;height:18px;color:var(--red);margin-top:2px}
+.why3 b{display:block;font-size:14px;font-weight:600;line-height:1.35}
+.why3 small{display:block;font-size:13px;color:var(--t3);margin-top:2px}
+.lk{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-size:14px;font-weight:600;color:var(--blue2)}
+.lk .ic{width:16px;height:16px}
+.wal{display:flex;align-items:center;gap:14px}
+.wal .coin{width:48px;height:48px;border-radius:14px;background:rgba(234,184,32,.14);display:grid;place-items:center;flex:none}
+.wal .coin .ic{width:24px;height:24px;color:var(--amber)}
+.wal b{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.wal small{display:block;font-size:13px;color:var(--t3)}
+.wal .more{margin-left:auto}
+.row2{display:flex;gap:10px;margin-top:12px}
+.row2 .b{flex:1;padding:12px 8px;letter-spacing:.06em;white-space:nowrap}
+.it{display:flex;align-items:center;gap:12px;min-height:72px;padding:12px 0;border-top:1px solid var(--line)}
+.it:first-child{border-top:0}
+.it .ti{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;flex:none;position:relative}
+.it .ti .ic{width:26px;height:26px}
+.it .ti em{position:absolute;right:-6px;top:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--gold-a);color:#1A1406;font-size:12px;font-weight:800;font-style:normal;display:grid;place-items:center}
+.it .tx{flex:1;min-width:0}
+.it .tx b{display:block;font-size:15px;font-weight:600;line-height:1.3}
+.it .tx small{display:block;font-size:13px;color:var(--t3);margin-top:3px;line-height:1.4}
+.it.used .tx b{color:var(--t2)}
+.it.ghost .ti{filter:grayscale(1);opacity:.55}
+.use{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 16px;border-radius:14px;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#3A2E18;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 3px 0 #A07828;flex:none;padding:0 14px}
+.t-gold{background:rgba(234,184,32,.14);color:var(--amber)}
+.t-blue{background:rgba(75,123,255,.16);color:var(--blue2)}
+.t-red{background:rgba(255,107,107,.14);color:var(--red)}
+.t-moss{background:rgba(107,203,119,.14);color:var(--moss)}
+.act-now{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:rgba(107,203,119,.08);border:1px solid rgba(107,203,119,.3)}
+.act-now .ic{width:22px;height:22px;color:var(--moss)}
+.act-now b{display:block;font-size:14px}
+.act-now small{display:block;font-size:13px;color:var(--t3)}
+.coll{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-top:10px}
+.coll .tx{flex:1}
+.coll .tx b{display:block;font-size:15px;font-weight:600}
+.coll .tx small{display:block;font-size:13px;color:var(--t3)}
+.coll>.ic{color:var(--t3)}
+.rule{display:flex;gap:10px;padding:12px 14px;border-radius:14px;background:rgba(75,123,255,.08);border:1px solid rgba(75,123,255,.25);margin-bottom:12px}
+.rule .ic{width:18px;height:18px;color:var(--blue2);margin-top:2px}
+.rule b{font-size:14px;line-height:1.4;font-weight:600}
+.pt{display:flex;align-items:center;gap:12px;min-height:60px}
+.pt .av{width:44px;height:44px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-weight:700;color:var(--t2);flex:none}
+.pt .tx{flex:1}
+.pt .tx b{display:block;font-size:15px}
+.pt .tx small{display:block;font-size:13px;color:var(--t3)}
+.mini-h{display:flex;gap:3px}
+.mini-h .ic{width:14px;height:14px;fill:var(--red);stroke:none}
+.mini-h .ic.off{fill:none;stroke:rgba(255,255,255,.3);stroke-width:2}
+.segm{display:flex;gap:4px;padding:4px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:14px}
+.segm a{flex:1;height:40px;border-radius:12px;display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--t2)}
+.segm a.on{background:rgba(240,208,128,.14);color:var(--gold-a)}
+/* шторка */
+.dim{position:absolute;inset:0;z-index:40;background:rgba(0,0,0,.55)}
+.sheet2{position:absolute;z-index:41;left:0;right:0;bottom:0;border-radius:24px 24px 0 0;background:#121A26;border-top:1px solid var(--line2);padding:10px 16px 28px}
+.sheet2 .grab{width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.2);margin:0 auto 14px}
+.sheet2 h3{font-size:18px;font-weight:700}
+.hl{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.hl:first-of-type{border-top:0}
+.hl .d{width:48px;flex:none;font-size:13px;color:var(--t3);padding-top:2px}
+.hl .tx{flex:1}
+.hl .tx b{display:block;font-size:14px;font-weight:600;line-height:1.35}
+.hl .tx small{display:block;font-size:13px;color:var(--t3);margin-top:2px}
+.hl .v{font-weight:800;font-size:15px;flex:none}
+.hl .v.m{color:var(--red)} .hl .v.p{color:var(--moss)}
+.rl{display:flex;gap:10px;align-items:flex-start;padding:9px 0}
+.rl .ic{width:18px;height:18px;margin-top:2px;flex:none}
+.rl span{font-size:14px;line-height:1.4;color:var(--t2)}
+.rl b{color:#fff;font-weight:600}
+/* кома */
+.coma{position:absolute;inset:0;background:radial-gradient(120% 60% at 50% 0%,rgba(255,107,107,.16),transparent 60%),var(--bg);padding:64px 20px 24px;display:flex;flex-direction:column}
+.coma .sk{width:72px;height:72px;border-radius:50%;background:rgba(255,107,107,.12);display:grid;place-items:center;margin:0 auto}
+.coma .sk .ic{width:36px;height:36px;color:var(--red)}
+.coma h2{text-align:center;font-size:26px;margin-top:16px}
+.coma .tm{text-align:center;margin-top:14px}
+.coma .tm b{display:block;font-size:40px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.coma .tm small{font-size:14px;color:var(--t3)}
+.coma .card{margin-top:18px;padding:14px}
+.coma .card p{font-size:14px;line-height:1.5;color:var(--t2)}
+.coma .card p+p{margin-top:8px}
+.coma .card b{color:#fff}
+.coma .acts{margin-top:auto}
+.coma .acts .b{margin-top:10px}
+.saved2{position:absolute;inset:0;background:radial-gradient(120% 60% at 50% 0%,rgba(107,203,119,.16),transparent 60%),var(--bg);padding:90px 20px 24px;display:flex;flex-direction:column;text-align:center}
+.saved2 .sk{width:72px;height:72px;border-radius:50%;background:rgba(107,203,119,.12);display:grid;place-items:center;margin:0 auto}
+.saved2 .sk .ic{width:36px;height:36px;color:var(--moss)}
+.saved2 h2{font-size:26px;margin-top:16px}
+.saved2 p{font-size:15px;color:var(--t2);margin-top:10px;line-height:1.5}
+.saved2 .acts{margin-top:auto}
+.states3{display:grid;grid-template-columns:repeat(3,390px);gap:24px;margin-top:18px;overflow-x:auto}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start}
+@media (max-width:900px){.states3{grid-template-columns:390px}}
 </style>
-</head><body><style>.pp-switch{position:sticky;top:0;z-index:50;display:flex;overflow-x:auto;align-items:center;gap:8px;padding:10px 16px;background:rgba(10,14,19,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08);font:600 13px Inter,sans-serif}.pp-switch span{color:rgba(255,255,255,.5);margin-right:4px}.pp-switch a{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:18px;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.8);text-decoration:none}.pp-switch a.on{background:rgba(240,208,128,.12);border-color:rgba(240,208,128,.5);color:#F0D080}</style><nav class="pp-switch"><span>Экраны:</span><a href="../" class="">Главная</a><a href="../camp/" class="">Лагерь экспедиции</a><a href="../nav/" class="">Меню</a><a href="../route/" class="">Маршрут и урок</a><a href="./" class="on">Встречи</a><a href="../backpack/" class="">Рюкзак и кома</a></nav>
+</head><body><style>.pp-switch{position:sticky;top:0;z-index:50;display:flex;overflow-x:auto;align-items:center;gap:8px;padding:10px 16px;background:rgba(10,14,19,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08);font:600 13px Inter,sans-serif}.pp-switch span{color:rgba(255,255,255,.5);margin-right:4px}.pp-switch a{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:18px;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.8);text-decoration:none}.pp-switch a.on{background:rgba(240,208,128,.12);border-color:rgba(240,208,128,.5);color:#F0D080}</style><nav class="pp-switch"><span>Экраны:</span><a href="../" class="">Главная</a><a href="../camp/" class="">Лагерь экспедиции</a><a href="../nav/" class="">Меню</a><a href="../route/" class="">Маршрут и урок</a><a href="../meetings/" class="">Встречи</a><a href="./" class="on">Рюкзак и кома</a></nav>
 <svg width="0" height="0" style="position:absolute">
   <symbol id="heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
   <symbol id="fire" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
@@ -428,7 +463,18 @@ body{background:#0A0E13}
   <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
   <symbol id="flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="hist" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
+  <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="flask" viewBox="0 0 24 24"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></symbol>
+  <symbol id="wand" viewBox="0 0 24 24"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></symbol>
+  <symbol id="radio" viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></symbol>
+  <symbol id="mount" viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></symbol>
+  <symbol id="medal" viewBox="0 0 24 24"><path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/><path d="m13 12 5.88-9.8"/><path d="M8 7h8"/><circle cx="12" cy="17" r="5"/></symbol>
+  <symbol id="aid" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="15" rx="2"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M12 10v7"/><path d="M8.5 13.5h7"/></symbol>
 </svg>
+
 <div class="doc" id="doc"></div>
 <script>
 
@@ -437,139 +483,133 @@ const NEW=(t='новое')=>`<span class="new2">${t}</span>`;
 const X=`<span class="x">${I('ext')}</span>`;
 
 
-/* Пример: ученик тарифа «Бизнес», Поток 5, среда 30 сентября, 16:50 МСК. Встречи, даты, ссылки — настоящие из расписания потока. */
+/* Пример: ученица тарифа «Бизнес», Поток 5, вторник 29 сентября. Жизни, причина списания, предметы и их описания — из базы Потока 5. */
 const appbar=(title,sub)=>`<div class="appbar"><div class="logo">ПП</div><div class="ttl">${title}${sub?`<small>${sub}</small>`:''}</div><span class="ib" aria-label="Уведомления">${I('bell')}<em>3</em></span></div>`;
-const tb=(active='Ещё')=>`<nav class="tb">${[['home','Главная'],['map','Маршрут'],['bag','Рюкзак'],['tent','Лагерь'],['grid','Ещё']].map(([i,l])=>`<a class="t ${l===active?'on':''}">${I(i)}${l==='Рюкзак'?'<em>2</em>':''}${l}</a>`).join('')}</nav>`;
+const tb=(active='Рюкзак')=>`<nav class="tb">${[['home','Главная'],['map','Маршрут'],['bag','Рюкзак'],['tent','Лагерь'],['grid','Ещё']].map(([i,l])=>`<a class="t ${l===active?'on':''}">${I(i)}${l==='Рюкзак'?'<em>1</em>':''}${l}</a>`).join('')}</nav>`;
 const phone=({head='',body,off=0,extra=''})=>`<div class="ph"><div class="scroll">${head}<div class="mv" style="transform:translateY(-${off}px)">${body}</div></div>${extra}</div>`;
 const side=(active)=>`<nav class="side"><div class="brand"><div class="logo">ПП</div><div><b class="gold" style="font-size:15px">План Продюсера</b><small>Поток 5 · Бизнес</small></div></div>
-  ${[['home','Главная'],['map','Маршрут'],['bag','Рюкзак'],['tent','Лагерь']].map(([i,l])=>`<a class="sa ${l===active?'on':''}">${I(i)}${l}${l==='Рюкзак'?'<em>2</em>':''}</a>`).join('')}
-  <div class="g">Экспедиция</div><a class="sa ${active==='Встречи'?'on':''}">${I('video')}Встречи</a><a class="sa">${I('shop')}Лавка</a>
+  ${[['home','Главная'],['map','Маршрут'],['bag','Рюкзак'],['tent','Лагерь']].map(([i,l])=>`<a class="sa ${l===active?'on':''}">${I(i)}${l}${l==='Рюкзак'?'<em>1</em>':''}</a>`).join('')}
+  <div class="g">Экспедиция</div><a class="sa">${I('video')}Встречи потока</a><a class="sa">${I('cal')}Встречи с клиентами${X}</a>
   <div class="g">Общение</div><a class="sa">${I('chat')}Чат ПП${X}</a><a class="sa">${I('users')}Чат отряда${X}</a>
-  <div class="g">Инструменты</div><a class="sa">${I('cal')}Запись клиентов${X}</a>
   <div class="foot"><a class="sa">${I('gear')}Настройки</a><a class="sa">${I('out')}На платформу</a></div></nav>`;
-const desk=(title,body,active='Встречи')=>`<div class="dk">${side(active)}<div class="dmain"><div class="dbar"><div class="ttl">${title}</div><span class="ib">${I('bell')}<em>3</em></span><span class="me2">А</span></div><div class="dbody">${body}</div></div></div>`;
+const desk=(title,body,active='Рюкзак')=>`<div class="dk">${side(active)}<div class="dmain"><div class="dbar"><div class="ttl">${title}</div><span class="ib">${I('bell')}<em>3</em></span><span class="me2">А</span></div><div class="dbody one">${body}</div></div></div>`;
+const H=(n,of=3)=>Array.from({length:of},(_,i)=>I('heart',i<n?'':'off')).join('');
 
-/* ── встречи Потока 5 для тарифа Бизнес ── */
-const M=[
- {d:30,m:'сен',wd:'ср',t:'17:00',title:'Разбор недели 1',sub:'Стандарт · Zoom'},
- {d:7,m:'окт',wd:'ср',t:'17:00',title:'Разбор недели 2',sub:'Стандарт · Zoom'},
- {d:14,m:'окт',wd:'ср',t:'17:00',title:'Разбор недели 3',sub:'Стандарт · Zoom'},
- {d:21,m:'окт',wd:'ср',t:'17:00',title:'Разбор недели 4',sub:'Стандарт · Zoom'},
- {d:24,m:'окт',wd:'сб',t:'12:00',title:'Финальный интенсив',sub:'Для всех тарифов · Zoom'},
-];
-const PAST=[{d:27,m:'сен',wd:'вс',t:'12:00',title:'Интенсив. День 2',rec:true}];
+/* ── предметы: названия и описания из training_inventory_items ── */
+const IT={
+ compass:{n:'Компас',ic:'compass',c:'t-blue',e:'+2 дня к сроку ключевого задания и 1 пропуск фокуса дня без потери жизни'},
+ first_aid:{n:'Аптечка',ic:'aid',c:'t-red',e:'+1 жизнь участнику и его напарнику. Бросок кубика: на 1 предмет портится'},
+ tent:{n:'Палатка',ic:'tent',c:'t-moss',e:'5 дней вы и напарник защищены от потери жизни'},
+ medallion:{n:'Медальон Турубарова',ic:'medal',c:'t-gold',e:'Возвращает 1 или все 3 жизни — решает кубик'},
+ flask:{n:'Фляга родниковой воды',ic:'flask',c:'t-blue',e:'×2 фениксов и баллов за следующее задание всей команде'},
+ producer_journal:{n:'Журнал Продюсера',ic:'book',c:'t-gold',e:'Разовая скидка 50% в Лавке, сгорает через 7 дней'},
+ staff:{n:'Посох Графа',ic:'wand',c:'t-gold',e:'Выводит участника из комы, пока не прошли 24 часа'},
+ starlink:{n:'Starlink',ic:'radio',c:'t-blue',e:'Экстренная 20-минутная встреча с Игорем для участника отряда'},
+ via_ferrata:{n:'Виа Феррата',ic:'mount',c:'t-gold',e:'Награда за доход от $5 000: выбор одного из подарков'},
+};
+const HOW={first_aid:'Психологу раз в неделю без потерь жизней',tent:'За задания «300 целей», «Стенографист», «Хакер Тайм»',medallion:'Сенсею раз в неделю со 2-й недели без потерь жизней',flask:'Казначею каждую неделю',producer_journal:'За задание «50 вещей по пути к самооценке»',staff:'Первым 20% участников, дошедшим до 50% цели',starlink:'Капитану при выборе роли',via_ferrata:'За доход $5 000'};
+const item=(k,{q=1,btn=true,used='',ghost=false}={})=>{const x=IT[k];return `<div class="it ${used?'used':''} ${ghost?'ghost':''}"><span class="ti ${x.c}">${I(x.ic)}${q>1?`<em>×${q}</em>`:''}</span><span class="tx"><b>${x.n}</b><small>${ghost?HOW[k]:used?used:x.e}</small></span>${btn&&!used&&!ghost?`<a class="use">Применить</a>`:''}${ghost?`<span class="go">${I('right')}</span>`:''}</div>`};
 
-const heroSoon=()=>`<div class="mt-hero"><div class="body">
-  <div class="mt-row"><span class="kick">Ближайшая встреча</span><span class="chip c-soon">${I('clock')}через 10 мин</span></div>
-  <h3>Разбор недели 1</h3>
-  <div class="mt-when"><b>17:00</b><span>сегодня, ср 30 сентября · ваше время</span></div>
-  <a class="b b-cta full">${I('video')}Войти в Zoom</a>
-  <div class="mt-note">Ссылка одна на все разборы тарифа «Стандарт». Кнопка открывается за 15 минут до начала ${NEW()}</div>
-</div></div>`;
-const heroLive=()=>`<div class="mt-hero live"><div class="body">
-  <div class="mt-row"><span class="kick" style="color:var(--moss)">Идёт сейчас</span><span class="chip c-live">идёт 35 мин</span></div>
-  <h3>Разбор недели 1</h3>
-  <div class="mt-when"><b>17:00</b><span>началась 35 минут назад</span></div>
-  <a class="b b-cta full">${I('video')}Войти в Zoom</a>
-</div></div>`;
-const heroLater=()=>`<div class="mt-hero"><div class="body">
-  <div class="mt-row"><span class="kick">Ближайшая встреча</span><span class="chip c-dark" style="background:rgba(255,255,255,.08)">${I('clock')}завтра</span></div>
-  <h3>Разбор недели 1</h3>
-  <div class="mt-when"><b>17:00</b><span>ср 30 сентября · ваше время</span></div>
-  <a class="b b-white full">${I('cal')}Добавить в мой календарь</a>
-  <div class="mt-note">Кнопка «Войти в Zoom» появится здесь за 15 минут до начала.</div>
-</div></div>`;
-const nextList=(from=1,n=4)=>`<div class="box">${M.slice(from,from+n).map(x=>`<a class="ml"><span class="dt"><b>${x.d}</b><span>${x.m}</span></span><span class="tx"><b>${x.title}</b><small>${x.wd}, ${x.t} · ${x.sub}</small></span><span class="go">${I('right')}</span></a>`).join('')}</div>`;
-const pastList=()=>`<div class="box">${PAST.map(x=>`<a class="ml past"><span class="dt"><b>${x.d}</b><span>${x.m}</span></span><span class="tx"><b>${x.title}</b><small>${x.wd}, ${x.t}</small></span><span class="act"><span class="b-sm play">${I('play')}Запись</span></span></a>`).join('')}
-  <a class="ml past"><span class="dt"><b>30</b><span>сен</span></span><span class="tx"><b>Разбор недели 1</b><small>Запись появится в этом уроке</small></span></a></div>`;
+/* ── блоки рюкзака ── */
+const lives=()=>`<div class="lv"><div class="top"><div><div class="kick" style="color:var(--red)">Жизни</div><div class="hearts" style="margin-top:8px">${H(2)}</div></div><div class="cnt">2 из 3<small>в игре</small></div></div>
+  <div class="why3">${I('alert')}<span><b>29 сен, −1 жизнь</b><small>Старт: не выполнено задание «заработать деньги»</small></span></div>
+  <a class="lk">${I('hist')}История и правила жизней ${NEW()}</a></div>`;
+const wallet=()=>`<div class="card"><div class="wal"><span class="coin">${I('coins')}</span><span><b>505</b><small>фениксов экспедиции</small></span><span class="ib more" aria-label="Ещё">${I('more')}</span></div>
+  <div class="row2"><a class="b b-out b-sm">${I('hist')}История</a><a class="b b-out b-sm">${I('bulb')}Как заработать</a></div></div>`;
+const myItems=()=>`<div class="sh"><h2>Мои предметы</h2><span>1 предмет</span></div>
+  <div class="card" style="padding:4px 16px">${item('compass')}${item('first_aid',{used:'Использована 29 сен · +1 жизнь вам и напарнику'})}</div>`;
+const activeNow=()=>`<div class="sh"><h2>Действует сейчас</h2></div><div class="act-now">${I('shield')}<span><b>Палатка · до 3 октября</b><small>Вы и напарник защищены от одной потери жизни · пример состояния</small></span></div>`;
+const colls=()=>`<a class="coll"><span class="tx"><b>Какие ещё бывают предметы</b><small>8 предметов и как их получить</small></span>${I('down')}</a>
+  <a class="coll"><span class="tx"><b>Достижения</b><small>0 из 3 · 50% цели, Топ-3, доход $5 000</small></span>${I('down')}</a>`;
+const partners=()=>`<div class="sh"><h2>Напарники</h2><span>до 2</span></div>
+  <div class="rule">${I('info')}<b>Вы отвечаете друг за друга: промах напарника стоит жизни и вам. Предметы на жизни действуют на обоих.</b></div>
+  <div class="card" style="padding:8px 16px"><div class="pt"><span class="av">М</span><span class="tx"><b>Напарница</b><small>фокус сегодня сдан · 5 уроков</small></span><span class="mini-h">${H(2)}</span></div>
+  <div class="pt" style="border-top:1px solid var(--line)"><span class="av" style="background:transparent;border:1.5px dashed var(--line2)">${I('plus')}</span><span class="tx"><b style="color:var(--blue2)">Найти второго напарника</b><small>можно ещё одного</small></span></div></div>`;
 
-/* ═══ А · Страница «Встречи» ═══ */
-const pageA=(hero=heroSoon)=>`${hero()}
-  <div class="sh"><h2>Дальше по программе</h2><span>ваш тариф</span></div>${nextList()}
-  <a class="lnk2">${I('down')}Ещё 1 встреча</a>
-  <div class="sh"><h2>Записи</h2><span>прошедшие встречи</span></div>${pastList()}`;
-const deskA=()=>desk('Встречи',`<div>${heroSoon()}<div class="sh"><h2>Записи</h2><span>прошедшие встречи</span></div>${pastList()}</div><div><div class="sh" style="margin-top:0"><h2>Дальше по программе</h2></div>${nextList(1,4)}</div>`);
+/* ═══ А · Рюкзак = что у меня есть ═══ */
+const pageA=()=>`${lives()}<div style="height:12px"></div>${wallet()}${myItems()}${activeNow()}${partners()}<div style="height:8px"></div>${colls()}`;
+const sheetLives=()=>`<div class="dim"></div><div class="sheet2"><div class="grab"></div><h3>Жизни</h3>
+  <div class="sh" style="margin-top:14px"><h2 style="font-size:15px">Что с вами было</h2></div>
+  <div class="hl"><span class="d">29 сен</span><span class="tx"><b>Старт: не выполнено задание «заработать деньги»</b><small>списала команда</small></span><span class="v m">−1</span></div>
+  <div class="sh" style="margin-top:12px"><h2 style="font-size:15px">За что снимают жизнь</h2></div>${sheetRules()}</div>`;
+const sheetRules=()=>`
+  <div class="rl">${I('target','','color:var(--blue2)')}<span><b>Фокус дня</b> — план не сдан до 09:00 или факт до 00:00 в будний день. −1</span></div>
+  <div class="rl">${I('star','','color:var(--amber)')}<span><b>Ключевое задание</b> — не сдано до пятницы 18:00. −1</span></div>
+  <div class="rl">${I('swords','','color:var(--red)')}<span><b>Вызов Фримана</b> — не выполнен. Сгорают все жизни</span></div>
+  <div class="rl">${I('users','','color:var(--t2)')}<span><b>Промах напарника</b> — теряете жизнь вместе с ним</span></div>
+  <div class="rl">${I('skull','','color:var(--t3)')}<span><b>0 жизней</b> — кома на 24 часа</span></div>`;
 
-/* ═══ Б · Неделя лентой ═══ */
-const week=(sel=2)=>{const days=[['пн',28],['вт',29],['ср',30],['чт',1],['пт',2],['сб',3],['вс',4]];
-  return `<div class="wnav"><span class="ib">${I('left')}</span><b>28 сентября — 4 октября</b><span class="ib">${I('right')}</span></div>
-  <div class="week">${days.map(([w,d],i)=>`<a class="wd ${i===sel?'sel':''} ${i===1?'today':''} ${i===2?'has':''}"><small>${w}</small><b>${d}</b><i></i></a>`).join('')}</div>`};
-const pageB=()=>`${week(2)}
-  <div class="sh"><h2>Среда, 30 сентября</h2><span>1 встреча</span></div>
-  ${heroSoon().replace('Ближайшая встреча','Разбор')}
-  <div class="sh"><h2>Весь поток</h2><span>5 встреч</span></div>${nextList(0,5)}
-  <div class="sh"><h2>Записи</h2></div>${pastList()}`;
-const deskB=()=>desk('Встречи',`<div>${week(2)}<div class="sh"><h2>Среда, 30 сентября</h2><span>1 встреча</span></div>${heroSoon().replace('Ближайшая встреча','Разбор')}</div><div><div class="sh" style="margin-top:0"><h2>Весь поток</h2></div>${nextList(0,5)}</div>`);
+/* ═══ Б · Рюкзак вкладками ═══ */
+const pageB1=()=>`<div class="segm"><a class="on">Предметы</a><a>Жизни</a><a>Напарники</a></div>${wallet()}<div style="height:12px"></div>
+  <div class="card" style="padding:4px 16px">${item('compass')}${item('first_aid',{used:'Использована 29 сен'})}</div>
+  ${activeNow()}<div class="sh"><h2>Можно получить</h2></div>
+  <div class="card" style="padding:4px 16px">${item('tent',{ghost:true})}${item('staff',{ghost:true})}${item('producer_journal',{ghost:true})}</div>`;
+const pageB2=()=>`<div class="segm"><a>Предметы</a><a class="on">Жизни</a><a>Напарники</a></div>${lives()}<div class="card" style="margin-top:12px">${sheetRules()}</div>`;
 
-/* ═══ В · Без отдельной страницы ═══ */
-const homeToday=()=>`<div class="sh" style="margin-top:4px"><h2>Сегодня</h2></div>
-  <div class="box" style="padding:0">
-   <div class="today-row"><span class="ring">${I('video')}</span><span class="tx"><small class="u-blue">Разбор недели 1 · через 10 мин</small><b>Сегодня в 17:00</b></span><a class="zoom-sm">${I('video')}Zoom</a></div>
-   <div class="today-row" style="border-top:1px solid var(--line)"><span class="ring" style="background:rgba(234,184,32,.14);color:var(--amber)">${I('star','fill')}</span><span class="tx"><small class="u-amb">Ключевое задание</small><b>Сбор данных</b></span><span style="text-align:right;font-size:13px;color:var(--t3)"><b style="display:block;color:#fff;font-size:15px">2 д 1 ч</b>до пт, 18:00</span></div>
-  </div>
-  <div class="sh"><h2>Встречи потока</h2><a class="lnk2" style="height:auto">Все ${I('right')}</a></div>${nextList(1,2)}
-  <a class="sub-cal">${I('cal')}<span><b>Все встречи в вашем календаре</b><small>Одна ссылка для Google, Apple или Outlook — даты обновятся сами ${NEW()}</small></span></a>`;
-const menuC=()=>`<div class="sheet" style="position:static;border-radius:20px;padding:12px 16px 16px">
-  <div class="grp">Экспедиция</div>
-  <a class="mi"><span class="ico">${I('shop','','color:#EAB820')}</span><span class="tx">Лавка<small>10 фениксов</small></span></a>
-  <div class="grp">Общение</div>
-  <a class="mi"><span class="ico">${I('chat','','color:#6B9FFF')}</span><span class="tx">Чат ПП<small>Telegram</small></span>${X}</a>
-  <a class="mi"><span class="ico">${I('users','','color:#6B9FFF')}</span><span class="tx">Чат отряда<small>Telegram</small></span>${X}</a>
-  <div class="grp">Инструменты</div>
-  <a class="mi"><span class="ico">${I('cal','','color:#6BCB77')}</span><span class="tx">Запись клиентов<small>ваша страница записи и Zoom</small></span>${X}</a>
-  <div class="sep"></div><a class="mi"><span class="ico">${I('gear')}</span><span class="tx">Настройки кабинета</span></a></div>`;
+/* ── Лавка ── */
+const shopEmpty=()=>`<div class="card" style="text-align:center;padding:24px 18px"><span class="coin" style="width:56px;height:56px;border-radius:16px;background:rgba(234,184,32,.14);display:grid;place-items:center;margin:0 auto">${I('shop','','color:var(--amber);width:26px;height:26px')}</span>
+  <b style="display:block;font-size:17px;margin-top:12px">В Лавке пока пусто</b><p style="font-size:14px;color:var(--t3);margin-top:6px;line-height:1.5">Предметы экспедиции появятся здесь, когда их откроет команда. Фениксы копятся — потратить их можно будет сразу.</p></div>`;
 
-/* ═══ урок-встреча: 4 состояния ═══ */
-const lessonTop=(kick,title)=>`<div class="lbar" style="margin:0 0 4px"><a class="back">${I('left')}Встречи</a></div><div class="kick">${kick}</div><h1 class="gold" style="font-size:22px;margin-top:6px">${title}</h1>`;
-const S1=()=>`${lessonTop('Разбор · Стандарт','Разбор недели 1')}<div class="mt-when"><b style="font-size:22px">ср 30 сен, 17:00</b></div><div class="mt-note" style="margin-top:4px">Ваше время</div><a class="b b-white full" style="margin-top:14px">${I('cal')}В мой календарь</a><div class="mt-note">Кнопка Zoom откроется за 15 минут до начала.</div>`;
-const S2=()=>`${lessonTop('Разбор · Стандарт','Разбор недели 1')}<div class="mt-when"><b style="font-size:22px">через 10 мин</b></div><div class="mt-note" style="margin-top:4px">Сегодня в 17:00 · ваше время</div><a class="b b-cta full" style="margin-top:14px">${I('video')}Войти в Zoom</a>`;
-const S3=()=>`${lessonTop('Идёт сейчас','Разбор недели 1')}<div style="margin-top:10px"><span class="chip c-live">идёт 35 мин</span></div><a class="b b-cta full" style="margin-top:14px">${I('video')}Войти в Zoom</a><div class="mt-note">Можно зайти и после начала.</div>`;
-const S4=()=>`${lessonTop('Прошла 30 сентября','Разбор недели 1')}<div class="rec" style="margin-top:12px"><span class="play">${I('play')}</span></div><div class="mt-note">Запись встречи</div>`;
+/* ═══ кома ═══ */
+const coma=()=>`<div class="coma"><div class="sk">${I('skull')}</div><h2 class="gold">Вы в коме</h2>
+  <div class="tm"><b>23:41:12</b><small>осталось, чтобы вернуться в игру</small></div>
+  <div class="card"><p><b>Почему:</b> не выполнен «Вызов Фримана» — сгорели все жизни.</p>
+  <p><b>Вернут хотя бы одну жизнь за 24 часа</b> — вы продолжите на своём тарифе.</p>
+  <p><b>Не вернут</b> — неиспользованные предметы сгорят, тариф понизится.</p></div>
+  <div class="card" style="margin-top:10px"><p style="margin-bottom:6px"><b>Кто может спасти</b></p>
+  <div class="rl" style="padding:4px 0">${I('wand','','color:var(--gold-a)')}<span>Посох Графа — у любого участника потока</span></div>
+  <div class="rl" style="padding:4px 0">${I('aid','','color:var(--red)')}<span>Аптечка или Медальон — у напарника</span></div></div>
+  <div class="acts"><a class="b b-cta full">${I("users")}Позвать отряд</a><a class="b b-white full">${I("bag")}Открыть рюкзак</a><div class="mt-note" style="text-align:center;font-size:13px;color:var(--t3);margin-top:6px">«Позвать отряд» откроет чат отряда в Telegram</div></div></div>`;
+const saved=()=>`<div class="saved2"><div class="sk">${I('heart')}</div><h2 class="gold">Вы снова в игре</h2>
+  <p>Напарница применила Аптечку: +1 жизнь вам и ей.</p><div class="hearts" style="justify-content:center;margin-top:18px">${H(1)}</div>
+  <p style="font-size:13px;color:var(--t3)">1 из 3 жизней. Берегите её: следующий промах — снова кома.</p>
+  <div class="acts"><a class="b b-cta full">Вернуться к маршруту${I('right')}</a></div></div>`;
+const comaNow=()=>`<div class="coma" style="background:rgba(8,10,14,.93)"><div style="margin:auto;text-align:center;padding:0 12px"><div style="font-size:64px">💀</div><h2 style="font-size:26px;margin-top:10px">Вы в коме</h2>
+  <p style="font-size:14px;color:var(--t2);margin-top:10px;line-height:1.5">Таймер 24 часа. Используйте предмет из рюкзака или попросите напарника.</p>
+  <p style="font-size:13px;color:var(--t3);margin-top:18px">Кнопок на экране нет, рюкзак закрыт</p></div></div>`;
 
 const block=v=>`<div class="blk"><h2>${v.name}${v.tag?`<small>${v.tag}</small>`:''}</h2><p class="lead">${v.lead}</p>
  <div class="why"><div class="pro">${v.pro.map(x=>`<div>+ ${x}</div>`).join('')}</div><div class="con">${v.con.map(x=>`<div>− ${x}</div>`).join('')}</div></div>
  <div class="frames">${v.frames().map(([l,h])=>`<div class="${l.startsWith('Компьютер')?'dkwrap':''}"><div class="fl">${l}</div>${h}</div>`).join('')}</div></div>`;
 
 const V=[
- {name:'А · Страница «Встречи» вместо календаря',tag:'рекомендую',
-  lead:'Сетку месяца убираем: встречи идут раз в неделю, в сетке их почти не видно. На первом месте — ближайшая встреча с одной золотой кнопкой «Войти в Zoom». Ниже следующие встречи вашего тарифа и записи прошедших. Пункт меню «Календарь» становится «Встречи», а нынешние «Встречи» (запись ваших клиентов) переезжают в «Инструменты» под понятным названием.',
-  pro:['<b>Ссылка на Zoom в одно нажатие</b> — сейчас она появляется только после «Иду!» внутри урока.','<b>Только ваши встречи</b>: по тарифу и по датам вашего потока. Сейчас Бизнес видит VIP-разборы, а «Финальный интенсив» стоит в прошедших с датой 18 апреля.','<b>Записи рядом</b> — не нужно искать урок прошедшей встречи.'],
-  con:['<b>Нет общего вида месяца</b>. Если он кому-то нужен, его заменит выгрузка встреч в личный календарь (вариант В).'],
-  frames:()=>[['Телефон · за 10 минут до встречи',phone({head:appbar('Встречи','Поток 5'),body:pageA(),extra:tb()})],['Телефон · встреча идёт',phone({head:appbar('Встречи','Поток 5'),body:pageA(heroLive),extra:tb()})],['Телефон · за день до встречи',phone({head:appbar('Встречи','Поток 5'),body:pageA(heroLater),extra:tb()})],['Компьютер',`<div class="dkwrap">${deskA()}</div>`]]},
- {name:'Б · Неделя лентой',
-  lead:'Календарь остаётся, но вместо сетки месяца — одна неделя из семи крупных дней. Точка под днём значит, что в этот день встреча. Нажали день — ниже встречи этого дня с кнопкой Zoom. Под неделей — весь поток списком и записи.',
-  pro:['<b>Привычный вид календаря</b>, но дни крупные: 50 × 64 px вместо 42 × 32 сейчас.','<b>Видна неделя целиком</b> — удобно, когда у VIP две встречи в неделю (ср и пт).'],
-  con:['<b>Лишний шаг</b>: чтобы увидеть следующую неделю, нужно листать стрелками.','<b>У тарифа Бизнес одна встреча в неделю</b> — шесть пустых дней из семи.'],
-  frames:()=>[['Телефон',phone({head:appbar('Встречи','Поток 5'),body:pageB(),extra:tb()})],['Телефон · ниже',phone({head:appbar('Встречи','Поток 5'),body:pageB(),off:560,extra:tb()})],['Компьютер',`<div class="dkwrap">${deskB()}</div>`]]},
- {name:'В · Без отдельной страницы',
-  lead:'Встречи и так видны на главной в «Сегодня» и на маршруте. Добавляем туда маленькую золотую кнопку «Zoom» и выгрузку всех встреч в личный календарь телефона одной ссылкой. Пункт «Календарь» из меню убираем, список встреч открывается по «Все».',
-  pro:['<b>Меньше разделов в меню</b> — ученик заходит на главную, а там уже кнопка.','<b>Встречи в родном календаре телефона</b> с напоминанием за 15 минут — это надёжнее любого уведомления платформы.'],
-  con:['<b>Выгрузки в календарь сейчас нет</b> — её нужно сделать с нуля (ссылка-подписка на встречи потока).','<b>Записи прошедших встреч</b> придётся искать в уроках-встречах на маршруте.'],
-  frames:()=>[['Телефон · главная',phone({head:appbar('Главная','Поток 5 · Неделя 1'),body:homeToday(),extra:tb('Главная')})],['Телефон · «Ещё»',phone({head:appbar('Ещё',''),body:menuC(),extra:tb('Ещё')})]]},
+ {name:'А · Рюкзак — «что у меня есть»',tag:'рекомендую',
+  lead:'Сверху то, что чаще всего нужно: сколько жизней и почему сняли последнюю. Ниже фениксы, свои предметы с названием и эффектом прямо на экране, что действует сейчас и напарники с главным правилом. Чужие предметы и достижения свёрнуты в две строки. Карта маршрута уходит — она уже есть в «Маршруте».',
+  pro:['<b>Видно, за что сняли жизнь.</b> Сегодня 10 из 15 активных учеников Потока 5 потеряли жизнь и не видят почему.','<b>Название и действие предмета без наведения мышью</b> и одна кнопка «Использовать» 44 px.','<b>Правило напарников на виду</b>: «промах напарника стоит жизни и вам».'],
+  con:['<b>Экран длиннее, чем с вкладками</b> — напарники ниже первого экрана телефона.','<b>Историю жизней нужно открыть ученику</b>: сейчас её видят только проводники и админы (правка прав в базе).'],
+  frames:()=>[['Телефон',phone({head:appbar('Рюкзак','Поток 5'),body:pageA(),extra:tb()})],['Телефон · ниже',phone({head:appbar('Рюкзак','Поток 5'),body:pageA(),off:600,extra:tb()})],['Телефон · «История и правила жизней»',phone({head:appbar('Рюкзак','Поток 5'),body:pageA(),extra:tb()+sheetLives()})],['Компьютер',`<div class="dkwrap">${desk('Рюкзак',`<div class="dgrid"><div>${lives()}${myItems()}${activeNow()}<div style="height:8px"></div>${colls()}</div><div>${wallet()}${partners()}</div></div>`)}</div>`]]},
+ {name:'Б · Рюкзак вкладками',
+  lead:'Три вкладки сверху: «Предметы» (с фениксами), «Жизни», «Напарники». Каждая короткая и помещается в экран. Во вкладке предметов сразу видно, какие ещё можно получить и как.',
+  pro:['<b>Короткие экраны</b> без прокрутки.','<b>Удобно, если предметов станет много</b>.'],
+  con:['<b>Жизни прячутся за вкладкой</b>, а это главное, что ученик проверяет.','<b>Ещё один уровень навигации</b> на телефоне.'],
+  frames:()=>[['Телефон · предметы',phone({head:appbar('Рюкзак','Поток 5'),body:pageB1(),extra:tb()})],['Телефон · жизни',phone({head:appbar('Рюкзак','Поток 5'),body:pageB2(),extra:tb()})]]},
 ];
 
 document.getElementById('doc').innerHTML=`
-<h1 class="tt">Встречи и календарь · варианты</h1>
-<p class="lead">Пример: ученик тарифа «Бизнес», Поток 5, среда 30 сентября, 16:50. Встречи, даты и ссылки — настоящие из расписания потока: разбор «Стандарт» по средам в 17:00, VIP по пятницам в 14:00, финальный интенсив 24 октября в 12:00 (время МСК).</p>
+<h1 class="tt">Рюкзак, Лавка и кома · варианты</h1>
+<p class="lead">Пример: ученица тарифа «Бизнес», Поток 5, вторник 29 сентября. Две жизни из трёх и причина списания — как у 10 учеников Потока 5 сегодня. Предметы, их описания и как их получить — из базы программы. Число фениксов — пример из диапазона Потока 5.</p>
 <div class="blk"><h2>Как сейчас</h2>
- <div class="now"><img src="img/now-calendar.png" alt="Календарь сейчас"><img src="img/now-meeting.png" alt="Урок-встреча сейчас">
+ <div class="now" style="grid-template-columns:390px 1fr">${phone({body:'',extra:comaNow()})}
  <ul>
-  <li><b>Ссылки на Zoom нет ни в календаре, ни на главной.</b> Она появляется только в уроке-встрече после кнопки «Иду!». С 20 сентября «Иду!» нажали 8 раз при 29 активных учениках — остальные ссылку просто не видят.</li>
-  <li><b>Встречи не фильтруются по тарифу:</b> Бизнес видит «Разбор. VIP» и, открыв его, упирается в «Улучшить тариф».</li>
-  <li><b>Даты берутся не у потока.</b> «Финальный интенсив» стоит в прошедших с датой 18 апреля, хотя у Потока 5 он 24 октября. «Старт» показывает 22 марта вместо 26 сентября.</li>
-  <li><b>Идущая встреча уходит в «Прошедшие» с первой минуты</b> — ровно тогда, когда её ищут.</li>
-  <li><b>«Встречи» в меню — это не встречи программы</b>, а запись ваших клиентов. Ученик, который ищет ссылку на разбор, нажмёт туда.</li>
-  <li><b>Под записавшимися на встречу считаются все потоки сразу</b> — «17 участников» на разборе, который ещё не проводился у Потока 5.</li>
+  <li><b>Не видно, за что сняли жизнь.</b> Сегодня у 10 из 15 активных учеников Потока 5 списана жизнь с причиной «Старт: не выполнено задание заработать деньги». В Рюкзаке у них просто два сердца. История жизней открыта только проводникам и админам.</li>
+  <li><b>Фениксов два кошелька с одним названием.</b> Рюкзак и Лавка показывают кошелёк платформы: у активных Потока 5 в среднем 22 581. Предметы в Лавке покупаются из кошелька ПП: в среднем 36, максимум 505. Человек видит «22 581» и кнопку «Мало фениксов».</li>
+  <li><b>В Лавке ПП нет ни одного предмета.</b> Товаров в программе ноль, покупок за всё время ноль. По коду покупка к тому же сломана: фениксы списываются, а предмет в рюкзак не попадает.</li>
+  <li><b>Кома запирает</b> (слева — как сейчас). Экран советует «используйте предмет из рюкзака», но кнопок нет и рюкзак не открыть. В Потоке 5 в коме пока никого.</li>
+  <li><b>Название предмета видно только при наведении мышью</b> — на телефоне одни картинки. Свои, чужие серые и значки достижений перемешаны в одной сетке. Использованные предметы пропадают, поэтому активную палатку не увидеть.</li>
+  <li><b>Карта маршрута в Рюкзаке</b> повторяет «Маршрут» и считает процент по-другому.</li>
  </ul></div></div>
 ${V.map(block).join('')}
-<div class="blk"><h2>Урок-встреча <small>для всех вариантов</small></h2><p class="lead">Страница самой встречи меняется по времени. Главное действие всегда одно: за день — «В мой календарь», за 15 минут и во время — «Войти в Zoom», после — запись. Кнопку «Иду!» предлагаю убрать или сделать необязательной — см. вопросы.</p>
- <div class="states"><div class="st-card"><div class="fl">За день</div>${S1()}</div><div class="st-card"><div class="fl">За 10 минут</div>${S2()}</div><div class="st-card"><div class="fl">Идёт</div>${S3()}</div><div class="st-card"><div class="fl">После</div>${S4()}</div></div></div>
+<div class="blk"><h2>Кома <small>для всех вариантов</small></h2><p class="lead">Вместо глухого экрана — таймер, причина, что будет дальше, кто может спасти, и две кнопки: позвать отряд и открыть рюкзак. Кабинет остаётся закрытым, но выход есть ${NEW()}</p>
+ <div class="states3"><div><div class="fl">В коме</div>${phone({body:'',extra:coma()})}</div><div><div class="fl">Спасли</div>${phone({body:'',extra:saved()})}</div></div></div>
+<div class="blk"><h2>Лавка <small>для всех вариантов</small></h2><p class="lead">Товаров для ПП нет, покупок не было ни разу, а покупка по коду сломана. Предлагаю убрать «Лавку» из меню, пока в ней нет предметов, и вернуть уже с работающей покупкой: подтверждение «Купить Палатку за N фениксов?» и «Лежит в рюкзаке». Если оставляем сейчас — честное пустое состояние вместо «Лавка закрыта».</p>
+ <div class="frames"><div><div class="fl">Телефон · Лавка без товаров</div>${phone({head:appbar('Лавка','Поток 5'),body:shopEmpty(),extra:tb('Ещё')})}</div></div></div>
 <div class="blk"><h2>Что нужно решить тебе</h2><ol class="qs">
- <li><b>Кнопка «Иду!».</b> Она нужна для подсчёта явки? Если нет — показываем Zoom всем сразу, без неё. Если да — оставляем, но ссылку всё равно даём без нажатия.</li>
- <li><b>Прорыв и разборы.</b> Разборы «Стандарт» сейчас открыты только Бизнесу и VIP. Прорыв на них не ходит — так и задумано?</li>
- <li><b>Записи разборов.</b> Где они будут лежать и когда появляются? Сейчас в уроках-встречах Потока 5 записей нет, а «База разборов» — это 20 тематических роликов, а не записи недели.</li>
- <li><b>Бизнес и VIP-разборы.</b> Бизнесу показывать VIP-разборы закрытыми (как повод перейти на VIP) или не показывать совсем? В макете — не показываем.</li>
- <li><b>«Встречи» (запись клиентов).</b> Переименовать в «Запись клиентов» и перенести в «Инструменты»?</li>
+ <li><b>Фениксы — один кошелёк или два?</b> Сейчас в Рюкзаке показан кошелёк платформы (в среднем 22 581), а тратить в Лавке можно только фениксы ПП (в среднем 36). Какой показывать ученику в ПП?</li>
+ <li><b>Лавка.</b> Убираем из меню, пока нет предметов? Или наполняем — тогда какие предметы и по какой цене?</li>
+ <li><b>Кома.</b> Может ли человек в коме сам применить свою Аптечку или Медальон? Или спасают только другие?</li>
+ <li><b>Что после комы.</b> Код понижает тариф в старые «Стандарт» и «Одиночку». Для новых тарифов цепочка VIP → Бизнес → Прорыв → заморозка?</li>
+ <li><b>История жизней.</b> Показываем ученику все его списания с причинами? Рекомендую да — сегодня это 10 человек.</li>
+ <li><b>Перевод фениксов другому человеку</b> — оставить в Рюкзаке (в меню «⋯») или только в общем профиле платформы?</li>
 </ol></div>`;
 
 (function(){const NB=' ',short=/(^|[\s(«])(в|во|с|со|к|ко|и|а|о|об|у|по|до|на|из|от|за|не|но|же|для|или|что|как|без|при|под|над|через|—)\s+/gi;
