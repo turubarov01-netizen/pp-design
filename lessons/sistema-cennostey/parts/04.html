@@ -328,12 +328,28 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
 .final .task-go { justify-content: center; }
 .final-t { font-size: 26px !important; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; margin: 6px 0 4px !important;
   background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.sec > .h3:first-of-type { margin-top: 4px; }
 .label.gold { color: #D9B94E; margin-bottom: 8px; }
 .list + p { margin-top: 12px; }
 .card + .h3, .talk + .h3 { margin-top: 28px; }
 .task-go { display: block !important; }
 .task-down { display: inline-grid !important; vertical-align: -8px; margin-left: 8px; }
+
+/* ——— ритм отступов (одна сетка для всех частей): текст 12, блоки 20, подзаголовок 32/10 ——— */
+.sec > * { margin-bottom: 0 !important; }
+.sec > * + * { margin-top: 12px !important; }
+.sec > .kick { margin-bottom: 10px !important; }
+.sec > .kick + * { margin-top: 0 !important; }
+.sec > .h2 { margin-bottom: 0 !important; }
+.sec > .h2 + * { margin-top: 14px !important; }
+.sec > * + :is(.card, .talk, .quote, .note), .sec > :is(.card, .talk, .quote, .note) + * { margin-top: 20px !important; }
+.sec > * + .h3 { margin-top: 32px !important; }
+.sec > .h2 + .h3 { margin-top: 16px !important; }
+.sec > .h3 + * { margin-top: 10px !important; }
+.card > :first-child { margin-top: 0 !important; }
+.cheat { padding-bottom: 8px; }
+.cheat-sub { margin-bottom: 10px !important; }
+.task { padding: 22px 20px; }
+.task-go { line-height: 1.25 !important; text-wrap: balance; }
 
 </style>
 </head>
