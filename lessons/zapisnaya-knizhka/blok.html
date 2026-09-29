@@ -105,6 +105,46 @@ h1{margin-top:8px;font-size:28px;font-weight:800;line-height:1.1;text-transform:
 .lockcard{margin-top:12px;border-radius:20px;border:1px dashed var(--line2);padding:22px;text-align:center;color:var(--t2)}
 .lockcard .ic{width:48px;height:48px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:var(--muted);color:var(--t3)}
 
+
+/* Б · карточки-кадры */
+.thumbs{display:flex;gap:10px;margin:14px -16px 0;padding:2px 16px 6px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.thumbs::-webkit-scrollbar{display:none}
+.th{flex:none;width:176px;display:flex;flex-direction:column;scroll-snap-align:start;text-align:left;border-radius:16px;border:1px solid var(--line2);background:var(--card);overflow:hidden;transition:border-color .2s,transform .2s}
+.th:hover{transform:translateY(-2px)}
+.th .pic{display:block;position:relative;flex:none;aspect-ratio:16/10;overflow:hidden;background:#05070A}
+.th .pic img{width:100%;height:100%;object-fit:cover;display:block;transition:filter .3s}
+.th .badge{white-space:nowrap;position:absolute;left:8px;top:8px;display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:100px;font-size:11px;font-weight:700;background:rgba(13,17,23,.8);color:var(--t1)}
+.th .badge svg{width:12px;height:12px}
+.th .dur{position:absolute;right:8px;bottom:8px;padding:1px 7px;border-radius:7px;background:rgba(0,0,0,.65);font-size:11px;font-weight:600}
+.th .pl2{position:absolute;inset:0;margin:auto;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(13,17,23,.55);border:1px solid rgba(255,255,255,.3)}
+.th .pl2 svg{width:15px;height:15px;fill:#fff;stroke:none;margin-left:2px}
+.th .lk{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg,rgba(13,17,23,.25),rgba(13,17,23,.7))}
+.th .lk span{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(13,17,23,.75);border:1.5px solid rgba(240,208,128,.55);color:var(--gold);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.th .lk svg{width:20px;height:20px}
+.th.lock .pic img{filter:blur(3px) grayscale(.5) brightness(.6);transform:scale(1.06)}
+.th .cap{display:block;padding:10px 11px 12px}
+.th .cap small{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.th .cap b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:4px;font-size:13px;font-weight:600;line-height:1.3}
+.th .cap i{display:block;margin-top:6px;font-style:normal;font-size:12px;line-height:1.3;color:var(--t3)}
+.th.done .badge{color:var(--green)}.th.done .cap small{color:var(--green)}
+.th.cur{border-color:rgba(240,208,128,.6);box-shadow:0 0 0 1px rgba(240,208,128,.25)}.th.cur .cap small{color:var(--gold)}
+.th.lock .cap small{color:#D9B94E}
+.th.sel{border-color:rgba(107,159,255,.8);box-shadow:0 0 0 2px rgba(107,159,255,.35)}
+@media(min-width:640px){.thumbs{display:grid;grid-template-columns:repeat(4,1fr);margin:14px 0 0;padding:2px 0 6px;overflow:visible}.th{width:auto}}
+.thumbs+.stage,.thumbs+.lockcard{margin-top:10px}
+.lockcard.rich{padding:0;overflow:hidden;text-align:left}
+.lockcard.rich .pic{position:relative;aspect-ratio:16/9}
+.lockcard.rich .pic img{width:100%;height:100%;object-fit:cover;filter:blur(6px) brightness(.45);transform:scale(1.08)}
+.lockcard.rich .pic .lk{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px}
+.lockcard.rich .pic .lk span{width:60px;height:60px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:rgba(13,17,23,.75);border:1.5px solid rgba(240,208,128,.6);color:var(--gold)}
+.lockcard.rich .pic .lk svg{width:26px;height:26px}
+.lockcard.rich .pic b{display:block;font-size:17px;color:var(--t1)}
+.lockcard.rich .pic p{margin-top:4px;font-size:14px;color:var(--t2)}
+.lockcard.rich .inner{padding:14px 16px 16px}
+.lockcard.rich .inner small{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D9B94E}
+.lockcard.rich .inner h3{margin-top:4px;font-size:18px;color:var(--t1)}
+.lockcard.rich .inner .d{margin-top:4px;font-size:14px;color:var(--t3)}
+
 /* ===== В · Карта ===== */
 .map{margin-top:14px;border-radius:20px;border:1px solid var(--line);background:radial-gradient(120% 90% at 50% 0%,#172031,#0F151E);padding:18px 12px 16px}
 .map .root{margin:0 auto;width:max-content;padding:8px 16px;border-radius:12px;font-weight:800;color:var(--gold);font-size:17px}
@@ -132,7 +172,7 @@ h1{margin-top:8px;font-size:28px;font-weight:800;line-height:1.1;text-transform:
 <main class="wrap">
   <nav class="vsw">Блок:
     <a data-v="a" href="?v=a">А · Лестница</a>
-    <a data-v="b" href="?v=b">Б · Вкладки</a>
+    <a data-v="b" href="?v=b">Б · Кадры из видео</a>
     <a data-v="c" href="?v=c">В · Карта</a>
     <a class="rst" href="#" id="rst">Сначала</a>
   </nav>
@@ -197,6 +237,11 @@ function stageHtml(i, anim) {
 function lockHtml(i) {
   return `<div class="lockcard"><div class="ic">${I.lock}</div><b>Часть ${i + 1} пока закрыта</b><p style="margin-top:4px;font-size:14px">Откроется, когда сдадите задание к части ${doneCount() + 1}.</p></div>`;
 }
+function richLock(i) {
+  const p = P[i];
+  return `<div class="lockcard rich"><div class="pic"><img src="${p.img}" alt=""><div class="lk"><div><span>${I.lock}</span><b>Эта часть пока закрыта</b><p>Сдайте задание к части ${doneCount() + 1}, и она откроется сразу</p></div></div></div>
+    <div class="inner"><small>Часть ${i + 1} · ${p.dur}</small><h3>${esc(p.t)}</h3><div class="d">${esc(p.s)}</div></div></div>`;
+}
 function bind(i) {
   const ta = document.getElementById('ta'), sub = document.getElementById('sub');
   if (!ta) return;
@@ -216,7 +261,7 @@ function render(anim) {
   document.getElementById('pnum').textContent = `${n} из ${P.length}`;
   const box = document.getElementById('block');
   const cur = Math.min(n, P.length - 1);
-  let open = st.open ?? cur; if (status(open) === 'lock') open = cur;
+  let open = st.open ?? cur; if (v === 'a' && status(open) === 'lock') open = cur;
 
   if (v === 'a') {
     box.innerHTML = `<div class="lad">${P.map((p, i) => { const s = status(i);
@@ -228,10 +273,15 @@ function render(anim) {
     box.querySelectorAll('.mini').forEach((b) => b.onclick = () => { st.open = +b.dataset.i; save(); render(); });
     bind(open);
   } else if (v === 'b') {
-    box.innerHTML = `<div class="tabs">${P.map((p, i) => { const s = status(i);
-      return `<button class="tab ${s} ${i === open ? 'sel' : ''}" data-i="${i}"><span class="s">${s === 'done' ? I.check : s === 'lock' ? I.lock : i + 1}</span><b>Часть ${i + 1}</b></button>`; }).join('')}</div>
-      ${status(open) === 'lock' ? lockHtml(open) : stageHtml(open, anim)}`;
-    box.querySelectorAll('.tab').forEach((b) => b.onclick = () => { st.open = +b.dataset.i; save(); render(); });
+    box.innerHTML = `<div class="thumbs">${P.map((p, i) => { const s = status(i);
+      const badge = s === 'done' ? `<span class="badge">${I.check}Пройдено</span>` : s === 'cur' ? '<span class="badge">Сейчас</span>' : '';
+      const over = s === 'lock' ? `<span class="lk"><span>${I.lock}</span></span>` : `<span class="pl2">${I.play}</span>`;
+      const sub = s === 'lock' ? `Откроется после задания к части ${i}` : s === 'done' ? 'Задание сдано' : 'Задание в конце';
+      return `<button class="th ${s} ${i === open ? 'sel' : ''}" data-i="${i}"><span class="pic"><img src="${p.img}" alt="">${over}${badge}<span class="dur">${p.dur}</span></span>
+        <span class="cap"><small>Часть ${i + 1}</small><b>${esc(p.t)}</b><i>${sub}</i></span></button>`; }).join('')}</div>
+      ${status(open) === 'lock' ? richLock(open) : stageHtml(open, anim)}`;
+    box.querySelectorAll('.th').forEach((b) => b.onclick = () => { st.open = +b.dataset.i; save(); render(); });
+    const sel = box.querySelector('.th.sel'); if (sel) { const sc = box.querySelector('.thumbs'); sc.scrollLeft = sel.offsetLeft - 16; }
     bind(open);
   } else {
     const node = (i, label) => { const s = status(i); return `<button class="node ${s} ${i === open ? 'sel' : ''}" data-i="${i}"><span class="s">${s === 'done' ? I.check : s === 'lock' ? I.lock : i + 1}</span>${label}</button>`; };
