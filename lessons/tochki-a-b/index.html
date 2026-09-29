@@ -15,9 +15,13 @@ body{background:#0D1117;color:rgba(255,255,255,.76);font-family:Inter,system-ui,
 .head{padding:0 16px 8px;margin-top:-30px;position:relative}
 .kick{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6B9FFF}
 h1{font-size:28px;font-weight:800;line-height:1.1;margin-top:8px;background:linear-gradient(135deg,#F0D080,#CCA830);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.audio{margin:20px 16px 4px;background:#141E2B;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:14px 16px}
-.audio p{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.52);margin-bottom:8px}
-.audio audio{width:100%;height:40px}
+.aud{margin:20px 16px 4px;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;background:#141E2B;border:1px solid rgba(255,255,255,.12)}
+.aud-p{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:none;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#2A2008}
+.aud-p svg.i{width:18px;height:18px;fill:currentColor;stroke:none;margin-left:2px}
+.aud-t{flex:1;min-width:0}
+.aud-t b{display:block;font-size:16px;color:#fff}
+.aud-t small{display:block;font-size:13px;color:rgba(255,255,255,.5);margin-top:2px}
+.aud-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.1);margin-top:10px}
 .next{margin:28px 16px 80px;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:18px;border:1px solid rgba(234,184,32,.45);background:rgba(234,184,32,.06);color:#fff;text-decoration:none}
 .next small{display:block;font-size:12px;color:rgba(255,255,255,.52);font-weight:600;margin-bottom:2px} .next b{font-size:16px}
 .next .go{margin-left:auto;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#3A2E18;font-weight:800;flex:none}
@@ -29,7 +33,7 @@ h1{font-size:28px;font-weight:800;line-height:1.1;margin-top:8px;background:line
 <div class="crumb">‹ <b>Маршрут</b> › Неделя 1 › Точки А и Б</div>
 <div class="cover"></div>
 <div class="head"><p class="kick">Инструктаж</p><h1>Точки А и Б</h1></div>
-<div class="audio"><p>Аудио · 1:44</p><audio controls preload="none" src="https://media.wearefree.club/lessons/audio/1774600793740-umc6nz.mp3"></audio></div>
+<div class="aud"><span class="aud-p"><svg class="i" style="fill:currentColor;stroke:none" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span><div class="aud-t"><b>Аудио-урок</b><small>Аудио · 1:44</small><div class="aud-bar"></div></div></div>
 <div id="part"></div>
 <a class="next" href="#"><span><small>Следующий урок</small><b>Ключевое задание недели 1 — сбор данных</b></span><span class="go">→</span></a>
 </div>
