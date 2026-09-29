@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Правила курса — предпросмотр</title>
+<style>
+/* Урок «Правила курса» — вставки HTML-страниц в урок кабинета «План Продюсера».
+   Фон и карточки совпадают с кабинетом (ProducerPlanLayout: --pl-bg #0D1117, --pl-card #141E2B). */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap');
+
+:root {
+  --bg: #0D1117;
+  --card: #141E2B;
+  --card2: #1A2535;
+  --line: rgba(255,255,255,.07);
+  --line2: rgba(255,255,255,.12);
+  --t1: #FFFFFF;
+  --t2: rgba(255,255,255,.76);
+  --t3: rgba(255,255,255,.52);
+  --blue: #6B9FFF;
+  --blue-bg: rgba(107,159,255,.10);
+  --blue-line: rgba(107,159,255,.28);
+  --amber: #EAB820;
+  --gold: linear-gradient(135deg, #F0D080 0%, #CCA830 100%);
+  --red: #FF6B6B;
+  --red-bg: rgba(255,107,107,.09);
+  --red-line: rgba(255,107,107,.28);
+  --green: #6BCB77;
+  --green-bg: rgba(107,203,119,.09);
+  --green-line: rgba(107,203,119,.28);
+  --r: 18px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg) !important; }
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: var(--t2);
+  font-size: 17px; line-height: 1.55; letter-spacing: -.011em;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-wrap: pretty;
+}
+.page { max-width: 720px; margin: 0 auto; padding: 8px 16px 24px; }
+
+b, strong { color: var(--t1); font-weight: 700; }
+.am { color: var(--amber); font-weight: 700; }
+p + p { margin-top: 12px; }
+svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ——— заголовки секций ——— */
+.sec { padding-top: 40px; }
+.sec:first-child { padding-top: 8px; }
+.kick { display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.h2 {
+  font-size: 28px; font-weight: 700; line-height: 1.12; letter-spacing: -.02em; margin-bottom: 14px; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.h3 { font-size: 19px; font-weight: 700; line-height: 1.25; color: var(--t1); margin: 24px 0 10px; text-wrap: balance; }
+.lead { font-size: 18px; color: var(--t2); }
+
+/* ——— карточки ——— */
+.card { background: var(--card); border: 1px solid var(--line2); border-radius: var(--r); padding: 20px; margin-top: 16px; }
+.card-t { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 14px; }
+.card-t svg.i { width: 18px; height: 18px; color: var(--blue); }
+
+/* ——— шпаргалка ——— */
+.cheat { background: linear-gradient(180deg, #172238 0%, var(--card) 100%); border-color: var(--blue-line); padding: 22px 20px 8px; }
+.cheat-h { font-size: 22px; font-weight: 700; color: var(--t1); line-height: 1.2; margin-bottom: 4px; text-wrap: balance; }
+.cheat-sub { font-size: 15px; color: var(--t3); margin-bottom: 14px; }
+.rule { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+.rule-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--blue-bg); color: var(--blue); }
+.rule-ic.red { background: var(--red-bg); color: var(--red); }
+.rule-name { font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.3; }
+.rule-txt { font-size: 15px; line-height: 1.45; color: var(--t2); margin-top: 3px; }
+.tag-loss { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; padding: 3px 10px 3px 8px; border-radius: 100px; background: var(--red-bg); border: 1px solid var(--red-line); color: #FF9B9B; font-size: 13px; font-weight: 600; }
+.tag-loss svg.i { width: 14px; height: 14px; fill: currentColor; stroke: none; }
+
+/* ——— сердечки ——— */
+.hearts { display: flex; gap: 8px; color: var(--red); flex: none; }
+.hearts svg { width: 28px; height: 28px; fill: var(--red); }
+.hearts.sm svg { width: 18px; height: 18px; }
+.hearts .off { fill: rgba(255,255,255,.14); }
+
+/* ——— цель 30 дней ——— */
+.goal { text-align: center; padding: 24px 20px; }
+.goal-days { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+.goal-num { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -.03em; margin: 6px 0 16px;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.goal-or { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.goal-opt { background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 14px; padding: 14px 10px; font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.25; }
+.goal-sep { font-size: 13px; color: var(--t3); font-weight: 600; }
+
+/* ——— списки ——— */
+.list { list-style: none; display: grid; gap: 10px; margin-top: 12px; }
+.list li { position: relative; padding-left: 22px; }
+.list li::before { content: ""; position: absolute; left: 4px; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+.list.red li::before { background: var(--red); }
+.list.green li::before { background: var(--green); }
+.list.muted li::before { background: var(--t3); }
+
+/* ——— цитата-вывод ——— */
+.quote { margin-top: 18px; padding: 4px 0 4px 16px; border-left: 3px solid; border-image: var(--gold) 1; font-size: 19px; font-weight: 600; line-height: 1.4; color: var(--t1); }
+
+/* ——— футбол ——— */
+.pair { display: grid; gap: 12px; margin-top: 16px; }
+.pair .card { margin-top: 0; }
+
+/* ——— Точка Б ——— */
+.lvls { display: grid; gap: 10px; margin-top: 16px; }
+.lvl { display: grid; grid-template-columns: 1fr 24px 1fr; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.lvl-lbl { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.lvl-now { font-size: 15px; font-weight: 600; color: var(--t1); line-height: 1.3; }
+.lvl-now small, .lvl-goal small { display: block; font-size: 13px; font-weight: 500; color: var(--t3); }
+.lvl-arrow { color: var(--t3); }
+.lvl-goal .lvl-lbl { color: #D9B94E; }
+.lvl-goal b { font-size: 20px; line-height: 1.15; background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.lvl-n { grid-column: 1 / -1; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: -2px; }
+
+/* ——— этапы (вертикальная линия) ——— */
+.steps { list-style: none; margin-top: 16px; }
+.step { position: relative; display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding-bottom: 20px; }
+.step:last-child { padding-bottom: 0; }
+.step:not(:last-child)::after { content: ""; position: absolute; left: 17px; top: 38px; bottom: 4px; width: 2px; background: linear-gradient(180deg, var(--blue-line), rgba(107,159,255,.06)); }
+.step-n { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; font-weight: 700; color: var(--blue); background: var(--blue-bg); border: 1px solid var(--blue-line); font-variant-numeric: tabular-nums; }
+.step-n.done { color: var(--green); background: var(--green-bg); border-color: var(--green-line); }
+.step-t { font-size: 17px; font-weight: 700; color: var(--t1); padding-top: 6px; line-height: 1.3; }
+.step-t .dur { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 100px; background: rgba(255,255,255,.06); font-size: 13px; font-weight: 600; color: var(--t2); vertical-align: 2px; }
+.step-d { font-size: 15px; color: var(--t2); margin-top: 4px; }
+.step-d.ok { color: var(--green); font-weight: 600; }
+
+/* ——— неделя: 3 плашки ——— */
+.week { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+.week div { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 12px; padding: 12px 14px; font-size: 15px; line-height: 1.3; color: var(--t2); }
+.week div b { width: 20px; text-align: center; font-size: 22px; color: var(--t1); flex: none; }
+.week div:first-child { border-color: rgba(234,184,32,.35); background: rgba(234,184,32,.07); }
+.week div:first-child b { color: var(--amber); }
+
+/* ——— 80/20 ——— */
+.split-bar { display: grid; grid-template-columns: 20fr 80fr; height: 40px; border-radius: 12px; overflow: hidden; margin: 16px 0 14px; font-size: 14px; font-weight: 700; }
+.split-bar span { display: flex; align-items: center; padding: 0 12px; }
+.split-bar span:first-child { background: var(--gold); color: #1A1406; justify-content: center; padding: 0; }
+.split-bar span:last-child { background: rgba(255,255,255,.07); color: var(--t3); }
+.split { display: grid; gap: 12px; }
+.split .card { margin-top: 0; }
+.split .must { border-color: rgba(234,184,32,.4); }
+.split .must .card-t { color: var(--amber); }
+.split .must .card-t svg.i { color: var(--amber); }
+
+/* ——— таймлайн недели задания ——— */
+.days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 8px; }
+.day { text-align: center; }
+.day-bar { height: 10px; border-radius: 5px; background: rgba(107,159,255,.28); }
+.day.open .day-bar { background: var(--blue); }
+.day.dl .day-bar { background: var(--red); }
+.day-n { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--t2); }
+.day-s { font-size: 11px; line-height: 1.25; color: var(--t3); margin-top: 2px; }
+.day.open .day-s { color: var(--blue); font-weight: 600; }
+.day.dl .day-s { color: #FF9B9B; font-weight: 600; }
+
+/* ——— факты-числа ——— */
+.facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; }
+.fact { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.fact b { display: block; font-size: 24px; line-height: 1.1; color: var(--t1); letter-spacing: -.02em; margin-bottom: 4px; }
+.fact.wide { grid-column: 1 / -1; }
+.fact.wide b { font-size: 18px; }
+.fact span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— красные / зелёные блоки ——— */
+.note { display: flex; gap: 12px; align-items: flex-start; border-radius: 14px; padding: 14px 16px; margin-top: 14px; border: 1px solid; font-size: 16px; line-height: 1.5; }
+.note svg.i { margin-top: 2px; }
+.note.red { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.note.red b { color: #FFD0D0; }
+.note.green { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.note.green b { color: #D2F5D6; }
+.note.blue { background: var(--blue-bg); border-color: var(--blue-line); color: #B5CCFF; }
+.note.blue b { color: #DCE7FF; }
+
+/* ——— путь жизней ——— */
+.path { display: grid; gap: 0; margin-top: 16px; }
+.path-st { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 16px; }
+.path-st.solo { border-color: rgba(234,184,32,.35); }
+.path-st.out { border-color: var(--red-line); background: linear-gradient(180deg, rgba(255,107,107,.06), var(--card)); }
+.path-hd { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.path-name { font-size: 17px; font-weight: 700; color: var(--t1); }
+.path-st p { font-size: 15px; margin-top: 6px; }
+.path-link { display: flex; align-items: center; gap: 8px; padding: 8px 0 8px 18px; font-size: 13px; font-weight: 600; color: #FF9B9B; }
+.path-link::before { content: ""; width: 2px; height: 22px; background: var(--red-line); margin-right: 6px; }
+
+/* ——— хорошо / плохо ——— */
+.vs { display: grid; gap: 10px; margin-top: 14px; }
+.vs-col { border-radius: 16px; padding: 14px 16px; border: 1px solid; }
+.vs-col.bad { background: var(--red-bg); border-color: var(--red-line); }
+.vs-col.good { background: var(--green-bg); border-color: var(--green-line); }
+.vs-h { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.vs-col.bad .vs-h { color: #FF9B9B; }
+.vs-col.good .vs-h { color: var(--green); }
+.vs-col ul { list-style: none; display: grid; gap: 6px; font-size: 15px; color: var(--t1); }
+
+/* ——— таймлайн дня ——— */
+.clock { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.clock div { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.clock b { display: block; font-size: 28px; line-height: 1; letter-spacing: -.02em; color: var(--t1); font-variant-numeric: tabular-nums; margin-bottom: 6px; }
+.clock span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— пример фокуса ——— */
+.ex { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; margin-top: 14px; }
+.ex > div { background: var(--card); border: 1px solid var(--line2); border-radius: 14px; padding: 12px 14px; }
+.ex small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.ex b { font-size: 16px; line-height: 1.3; }
+.ex .arrow { align-self: center; background: none; border: 0; padding: 0; color: var(--t3); }
+
+/* ——— монеты / баллы ——— */
+.cur { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.cur .card { margin-top: 0; padding: 16px; }
+.cur-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 10px; }
+.cur-ic.pts { background: var(--blue-bg); color: var(--blue); }
+.cur-ic.coin { background: rgba(234,184,32,.12); color: var(--amber); }
+.cur-n { font-size: 18px; font-weight: 700; color: var(--t1); }
+.cur-what { font-size: 14px; line-height: 1.4; color: var(--t2); margin-top: 4px; }
+.plusminus { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.pm { border-radius: 14px; padding: 12px 14px; border: 1px solid; font-size: 14px; line-height: 1.4; }
+.pm b { display: block; font-size: 20px; margin-bottom: 2px; }
+.pm.up { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.pm.up b { color: var(--green); }
+.pm.down { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.pm.down b { color: var(--red); }
+
+/* ——— свойства инвентаря ——— */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.tile { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px; font-size: 14px; line-height: 1.4; color: var(--t2); }
+.tile .rule-ic { margin-bottom: 10px; }
+.tile b { color: var(--t1); }
+
+/* ——— итоговый чек-лист ——— */
+.check { list-style: none; display: grid; gap: 10px; margin-top: 14px; }
+.check li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; font-size: 16px; color: var(--t1); font-weight: 600; line-height: 1.4; }
+.check li span.box { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; background: var(--green-bg); border: 1px solid var(--green-line); color: var(--green); }
+.check li span.box svg.i { width: 16px; height: 16px; stroke-width: 3; }
+.check li small { display: block; font-size: 14px; font-weight: 500; color: var(--t2); margin-top: 2px; }
+
+.divider { height: 1px; background: var(--line); margin: 36px 0 0; }
+
+@media (min-width: 640px) {
+  .page { padding: 8px 0 32px; }
+  .h2 { font-size: 34px; }
+  .card { padding: 24px; }
+  .pair, .split, .vs { grid-template-columns: 1fr 1fr; }
+  .lvls { grid-template-columns: repeat(3, 1fr); }
+  .lvl { grid-template-columns: 1fr; gap: 6px; }
+  .lvl-arrow { transform: rotate(90deg); justify-self: start; }
+  .facts { grid-template-columns: repeat(4, 1fr); }
+  .fact.wide { grid-column: span 2; }
+  .week { grid-template-columns: repeat(3, 1fr); }
+  .grid2 { grid-template-columns: repeat(4, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+
+body { padding: 0; }
+.pv { max-width: 720px; margin: 0 auto; }
+.pv-top { display:flex; align-items:center; gap:10px; height:56px; padding:0 16px; border-bottom:1px solid var(--line); font-size:18px; font-weight:700; color:#fff; }
+.pv-logo { width:32px; height:32px; border-radius:10px; display:grid; place-items:center; font-size:12px; font-weight:800; color:#1A1406; background:var(--gold); }
+.pv-back { display:flex; justify-content:space-between; padding:14px 16px; font-size:15px; color:var(--t2); }
+.pv-back span:last-child { color:var(--t3); font-size:13px; }
+.pv-cover { height: 150px; background: center/cover no-repeat url(https://owfmgpeandpdnyctiqng.supabase.co/storage/v1/object/public/producer-plan/covers/8763d252-bfc7-41e7-95f5-33913b5aa6c6-1771915717391.jpg); position: relative; }
+.pv-cover::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(13,17,23,0) 30%, #0D1117 100%); }
+.pv-head { padding: 0 16px 8px; margin-top: -28px; position: relative; }
+.pv-kick { font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--blue); }
+.pv-title { font-size:26px; font-weight:800; text-transform:uppercase; line-height:1.1; margin-top:8px; background:var(--gold); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.pv-video { margin: 28px 16px 8px; }
+.pv-player { aspect-ratio: 16/9; border-radius: 16px; background: #05070A; border:1px solid var(--line2); display:grid; place-items:center; }
+.pv-play { width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,.1); display:grid; place-items:center; color:#fff; }
+.pv-play svg.i { width:22px; height:22px; fill:#fff; stroke:none; margin-left:3px; }
+.pv-vt { font-size:16px; font-weight:700; color:#fff; margin-top:10px; }
+.pv-vd { font-size:13px; color:var(--t3); }
+.pv-task { margin: 28px 16px 120px; background: var(--card); border:1px solid var(--line2); border-radius:18px; padding:18px; }
+.pv-task p { font-size:16px; font-weight:700; color:#fff; margin-bottom:14px; }
+.pv-task label { display:flex; gap:12px; align-items:center; font-size:15px; color:var(--t1); }
+.pv-task label span { width:24px; height:24px; border-radius:7px; border:2px solid var(--line2); flex:none; }
+.pv-part { }
+</style>
+</head>
+<body>
+<main>
+<div class="pv">
+<div class="pv-top"><span class="pv-logo">ПП</span>Урок</div>
+<div class="pv-back"><span>‹ Маршрут</span><span>Инструктаж</span></div>
+<div class="pv-cover"></div>
+<div class="pv-head"><p class="pv-kick">Инструктаж</p><h1 class="pv-title">Правила курса</h1></div>
+<div class="pv-part page" data-part="1"><section class="sec">
+  <div class="card cheat">
+    <p class="cheat-h">Правила игры за&nbsp;одну минуту</p>
+    <p class="cheat-sub">Подробно каждое правило разобрано ниже, после видео.</p>
+
+    <div class="rule">
+      <div class="rule-ic red"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
+      <div>
+        <p class="rule-name">У&nbsp;тебя 3&nbsp;жизни</p>
+        <p class="rule-txt">Жизни теряются <b>только</b> за&nbsp;невыполнение обязательных действий вовремя. Не&nbsp;за&nbsp;«плохо сделано».</p>
+      </div>
+    </div>
+
+    <div class="rule">
+      <div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg></div>
+      <div>
+        <p class="rule-name">Ключевое задание недели</p>
+        <p class="rule-txt">Открывается в&nbsp;<b>воскресенье в&nbsp;18:00</b>, сдать до&nbsp;<b>18:00 пятницы</b> по&nbsp;твоему часовому поясу.</p>
+        <span class="tag-loss"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> −1 жизнь, если не&nbsp;сдано</span>
+      </div>
+    </div>
+
+    <div class="rule">
+      <div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+      <div>
+        <p class="rule-name">Фокус на&nbsp;день</p>
+        <p class="rule-txt">Поставить до&nbsp;<b>09:00</b>, отчитаться до&nbsp;<b>23:59</b> того же&nbsp;дня.</p>
+        <span class="tag-loss"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> −1 жизнь за&nbsp;неделю, не&nbsp;больше</span>
+      </div>
+    </div>
+
+    <div class="rule">
+      <div class="rule-ic red"><svg class="i" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+      <div>
+        <p class="rule-name">Вызов Фримана</p>
+        <p class="rule-txt">Приходит неожиданно, у&nbsp;каждого вызова свой срок.</p>
+        <span class="tag-loss"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> можно потерять все 3&nbsp;жизни сразу</span>
+      </div>
+    </div>
+
+    <div class="rule">
+      <div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+      <div>
+        <p class="rule-name">Обязательно только 20% программы</p>
+        <p class="rule-txt">Ключевые задания, фокус и&nbsp;вызовы Фримана. Остальное усиливает результат.</p>
+      </div>
+    </div>
+  </div>
+</section></div><div class="pv-video"><div class="pv-player"><span class="pv-play"><svg class="i" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span></div>
+<p class="pv-vt">Как добиться успеха</p><p class="pv-vd">Видео · 15:35</p></div><div class="pv-part page" data-part="2"><section class="sec">
+  <span class="kick">Приветствие</span>
+  <h2 class="h2">Добро пожаловать в&nbsp;«План Продюсера»</h2>
+
+  <div class="card goal">
+    <p class="goal-days">Цель программы</p>
+    <p class="goal-num">30 дней</p>
+    <div class="goal-or">
+      <div class="goal-opt">Заработать первые деньги</div>
+      <span class="goal-sep">или</span>
+      <div class="goal-opt">Удвоить текущий доход</div>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="fact wide"><b>Экспертная деятельность</b><span>Ключевой упор курса: инфобизнес, наставничество, менторство и&nbsp;развитие личного бренда.</span></div>
+    <div class="fact wide"><b>20%+</b><span>участников потока&nbsp;— представители классического бизнеса. Все задания применимы для масштабирования, независимо от&nbsp;формата бизнеса.</span></div>
+  </div>
+
+  <h3 class="h3">Важно понимать одно</h3>
+  <p>Очень многое из&nbsp;того, что ты внедришь в&nbsp;этом курсе, повлияет <span class="am">не&nbsp;только на&nbsp;доход</span>, но&nbsp;и&nbsp;на&nbsp;твою жизнь в&nbsp;целом.</p>
+  <p>Каждый курс, который я&nbsp;создаю, пишется с&nbsp;учётом разных этапов развития личности. Надеюсь, ты&nbsp;уже посмотрел урок из&nbsp;инструктажа&nbsp;— <b>«Пирамида этапов развития личности»</b>.</p>
+
+  <div class="card">
+    <p class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg> Смысл программы&nbsp;— помочь тебе</p>
+    <ul class="list">
+      <li>перейти с&nbsp;одного уровня на&nbsp;другой;</li>
+      <li>получить чёткое разделение жизни на&nbsp;<b>«до» и&nbsp;«после»</b>;</li>
+      <li>сформировать новое понимание того, куда ты&nbsp;идёшь и&nbsp;зачем.</li>
+    </ul>
+  </div>
+  <p class="quote">Проще говоря, это тренинг, который должен стать для тебя life-changing.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Зачем правила</span>
+  <h2 class="h2">Но есть важное условие</h2>
+  <p>Чтобы результат действительно случился&nbsp;— тот результат, ради которого ты&nbsp;здесь,&nbsp;— нам необходимо <b>создать правила игры</b>. Не&nbsp;для ограничений и&nbsp;не&nbsp;для диктатуры.</p>
+  <div class="note blue"><svg class="i" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg><div><b>Правила нужны для одного:</b> ускорить процесс интеграции знаний и&nbsp;инструментов в&nbsp;твою реальную жизнь.</div></div>
+
+  <div class="pair">
+    <div class="card">
+      <p class="card-t"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m12 7 4.2 3-1.6 5H9.4l-1.6-5z"/><path d="M12 2v5"/><path d="m16.2 10 5.3-1.7"/><path d="m14.6 15 3.3 4.5"/><path d="M9.4 15 6.1 19.5"/><path d="M7.8 10 2.5 8.3"/></svg> В&nbsp;футболе</p>
+      <ul class="list muted">
+        <li>мяч нельзя трогать руками;</li>
+        <li>он не&nbsp;должен выходить за&nbsp;линию поля;</li>
+        <li>цель&nbsp;— забить гол.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg> В&nbsp;этом курсе</p>
+      <p>Правила нужны, чтобы ты&nbsp;не&nbsp;играл руками, а&nbsp;потом не&nbsp;удивлялся: почему получил <span class="am">жёлтую карточку</span> или оказался вне команды.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick">Цель</span>
+  <h2 class="h2">Как стать финалистом и&nbsp;в&nbsp;чём цель?</h2>
+  <p>Твоя цель на&nbsp;тренинг&nbsp;— Точка&nbsp;Б. Она определяется точкой А, твоим текущим доходом.</p>
+
+  <div class="lvls">
+    <div class="lvl">
+      <p class="lvl-n">Уровень 01</p>
+      <div><p class="lvl-lbl">Текущий доход</p><p class="lvl-now">от 0 до&nbsp;20&nbsp;000&nbsp;₽ <small>до $300</small></p></div>
+      <span class="lvl-arrow"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      <div class="lvl-goal"><p class="lvl-lbl">Цель</p><b>50&nbsp;000&nbsp;₽</b><small>$650</small></div>
+    </div>
+    <div class="lvl">
+      <p class="lvl-n">Уровень 02</p>
+      <div><p class="lvl-lbl">Текущий доход</p><p class="lvl-now">от 20&nbsp;000 до&nbsp;75&nbsp;000&nbsp;₽ <small>до $1&nbsp;000</small></p></div>
+      <span class="lvl-arrow"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      <div class="lvl-goal"><p class="lvl-lbl">Цель</p><b>150&nbsp;000&nbsp;₽</b><small>$2&nbsp;000</small></div>
+    </div>
+    <div class="lvl">
+      <p class="lvl-n">Уровень 03</p>
+      <div><p class="lvl-lbl">Текущий доход</p><p class="lvl-now">от 150&nbsp;000&nbsp;₽ <small>и выше</small></p></div>
+      <span class="lvl-arrow"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      <div class="lvl-goal"><p class="lvl-lbl">Цель</p><b>Удвоить доход</b></div>
+    </div>
+  </div>
+</section></div><div class="pv-video"><div class="pv-player"><span class="pv-play"><svg class="i" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span></div>
+<p class="pv-vt">Как стать финалистом</p><p class="pv-vd">Видео · 6:44</p></div><div class="pv-part page" data-part="3"><section class="sec">
+  <span class="kick">Структура тренинга</span>
+  <h2 class="h2">Три ключевых этапа</h2>
+  <ol class="steps">
+    <li class="step">
+      <span class="step-n done"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div><p class="step-t">Стартовый интенсив <span class="dur">16 часов</span></p><p class="step-d ok">В самом начале программы&nbsp;— ты&nbsp;уже его прошёл</p></div>
+    </li>
+    <li class="step">
+      <span class="step-n">2</span>
+      <div><p class="step-t">Четыре недели практического внедрения</p><p class="step-d">Основная часть тренинга, где и&nbsp;происходит реальный рост и&nbsp;результат.</p></div>
+    </li>
+    <li class="step">
+      <span class="step-n">3</span>
+      <div><p class="step-t">Завершающий интенсив <span class="dur">8 часов</span></p><p class="step-d">Финальный этап: подводит итоги и&nbsp;закрепляет полученные результаты.</p></div>
+    </li>
+  </ol>
+
+  <h3 class="h3">Каждая из&nbsp;четырёх недель устроена одинаково</h3>
+  <div class="week">
+    <div><b>1</b>ключевое задание на&nbsp;неделю</div>
+    <div><b>+</b>дополнительные задания на&nbsp;каждый день</div>
+    <div><b>+</b>дополнительные уроки на&nbsp;каждый день</div>
+  </div>
+  <p style="margin-top:12px">Выполняя ежедневные задания и&nbsp;дополнительные уроки, ты&nbsp;сможешь лучше прокачать свои навыки, глубже прожить процесс и&nbsp;эффективнее пройти курс.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Ключевое правило</span>
+  <h2 class="h2">80% уроков не&nbsp;обязательны</h2>
+  <p>Всего лишь <span class="am">20% всего контента</span> в&nbsp;программе является обязательным к&nbsp;исполнению. И&nbsp;именно эти 20% напрямую влияют на&nbsp;твой результат.</p>
+  <div class="split-bar"><span>20%</span><span>80%&nbsp;— усилители</span></div>
+  <div class="split">
+    <div class="card must">
+      <p class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg> Обязательно, чтобы стать финалистом</p>
+      <ul class="list">
+        <li><b>ключевые задания</b> каждой недели;</li>
+        <li><b>ежедневный фокус</b>;</li>
+        <li><b>все вызовы Фримана</b>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="card-t"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> Всё остальное</p>
+      <p style="font-size:15px">Упражнения, дополнительные уроки и&nbsp;домашние задания нужны, чтобы:</p>
+      <ul class="list muted" style="font-size:15px">
+        <li>сделать результат в&nbsp;разы больше;</li>
+        <li>прожить жизнь более эффективно;</li>
+        <li>закрепить изменения навсегда;</li>
+        <li>продолжить рост после окончания тренинга.</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:14px">Дальше подробно разберём каждый пункт: что именно нужно делать, как это работает и&nbsp;за&nbsp;что начисляются монеты и&nbsp;баллы.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Обязательное №1</span>
+  <h2 class="h2">Ключевое задание на&nbsp;неделю</h2>
+  <p>Это <b>список задач</b>, которые необходимо выполнить в&nbsp;течение текущей недели.</p>
+  <div class="note red"><svg class="i" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><div><b>Это обязательные к&nbsp;исполнению задания.</b> Пока ты&nbsp;не&nbsp;выполнишь задание недели, тебе не&nbsp;откроется следующая. Это не&nbsp;курс на&nbsp;«посмотреть».</div></div>
+
+  <div class="card">
+    <p class="card-t"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Сроки, по&nbsp;твоему часовому поясу</p>
+    <div class="days">
+      <div class="day open"><div class="day-bar"></div><p class="day-n">Вс</p><p class="day-s">18:00 открылось</p></div>
+      <div class="day"><div class="day-bar"></div><p class="day-n">Пн</p></div>
+      <div class="day"><div class="day-bar"></div><p class="day-n">Вт</p></div>
+      <div class="day"><div class="day-bar"></div><p class="day-n">Ср</p></div>
+      <div class="day"><div class="day-bar"></div><p class="day-n">Чт</p></div>
+      <div class="day dl"><div class="day-bar"></div><p class="day-n">Пт</p><p class="day-s">18:00 сдать</p></div>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><b>1–2 дня</b><span>в среднем уходит на&nbsp;задание</span></div>
+    <div class="fact"><b>до 3 дней</b><span>в сложных случаях</span></div>
+    <div class="fact"><b>5 дней</b><span>есть у&nbsp;тебя с&nbsp;запасом. Сдать заранее&nbsp;— можно</span></div>
+    <div class="fact"><b>Лично</b><span>отчёты каждую неделю проверяют Игорь и&nbsp;Александр</span></div>
+  </div>
+
+  <h3 class="h3">Когда теряется жизнь</h3>
+  <div class="vs">
+    <div class="vs-col bad">
+      <p class="vs-h"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> −1 жизнь</p>
+      <ul><li>Задание не&nbsp;подано до&nbsp;18:00 пятницы.</li></ul>
+    </div>
+    <div class="vs-col bad">
+      <p class="vs-h"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> −1 жизнь</p>
+      <ul><li>Подано вовремя, но&nbsp;выполнено некорректно, халатно, «на&nbsp;отстань»&nbsp;— задание могут отклонить.</li></ul>
+    </div>
+  </div>
+
+  <h3 class="h3">Что считается некорректным выполнением?</h3>
+  <p>Это не&nbsp;про качество на&nbsp;«3», «4» или «5 баллов». Это нормально. Но&nbsp;если задание выполнено формально, без попытки разобраться, без реального включения&nbsp;— оно может быть отменено.</p>
+  <div class="note green"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><div><b>Мы не&nbsp;гонимся за&nbsp;идеальным качеством. Главное&nbsp;— сделать попытку.</b> За&nbsp;годы работы в&nbsp;бизнесе мы&nbsp;поняли простую вещь: рост происходит через попытки, выводы и&nbsp;последующее улучшение.</div></div>
+</section>
+
+<section class="sec">
+  <span class="kick">Система жизней</span>
+  <h2 class="h2">Что такое жизни?</h2>
+  <div class="card" style="display:flex;align-items:center;gap:16px">
+    <div class="hearts"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
+    <p>Как у&nbsp;любого персонажа в&nbsp;компьютерной игре, у&nbsp;тебя в&nbsp;тренинге есть <b>3&nbsp;жизни</b>.</p>
+  </div>
+
+  <div class="pair">
+    <div class="card">
+      <p class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> Жизнь теряется за</p>
+      <ul class="list red">
+        <li>несданные ключевые задания недели;</li>
+        <li>нарушение правил ежедневного фокуса;</li>
+        <li>вызовы Фримана.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Жизнь не&nbsp;теряется за</p>
+      <ul class="list green">
+        <li>«плохо сделано»;</li>
+        <li>«неидеально»;</li>
+        <li>«с ошибками».</li>
+      </ul>
+    </div>
+  </div>
+  <p class="quote">Жизни теряются за&nbsp;одно&nbsp;— ничего не&nbsp;делать.</p>
+
+  <h3 class="h3">Что будет, если потерять все жизни</h3>
+  <div class="path">
+    <div class="path-st">
+      <div class="path-hd"><p class="path-name">Групповой формат</p><div class="hearts sm"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div></div>
+      <p>Обратная связь, проверка домашних заданий, работа с&nbsp;группой, участие в&nbsp;общем движении.</p>
+    </div>
+    <p class="path-link">потерял все 3 жизни</p>
+    <div class="path-st solo">
+      <div class="path-hd"><p class="path-name">Одиночный режим</p><div class="hearts sm"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div></div>
+      <p>Ты&nbsp;продолжаешь проходить курс самостоятельно, доступ ко&nbsp;всем материалам остаётся. <b>Но&nbsp;ты&nbsp;теряешь</b> обратную связь, проверку домашних заданий, работу с&nbsp;группой и&nbsp;участие в&nbsp;общем движении.</p>
+    </div>
+    <p class="path-link">потерял ещё 3 жизни</p>
+    <div class="path-st out">
+      <div class="path-hd"><p class="path-name">Вылет из&nbsp;программы</p><div class="hearts sm"><svg class="off" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg class="off" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg class="off" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div></div>
+      <p>Тебе останутся доступны лишь те&nbsp;уроки, которые были открыты на&nbsp;момент вылета.</p>
+    </div>
+  </div>
+
+  <h3 class="h3">Важный момент&nbsp;— прочитай внимательно</h3>
+  <p>Ни&nbsp;у&nbsp;меня, ни&nbsp;у&nbsp;команды <b>нет цели</b>, чтобы ты&nbsp;вылетел из&nbsp;программы. Наоборот&nbsp;— <span class="am">вылететь из&nbsp;программы реально сложно</span>. Чтобы потерять все 3&nbsp;жизни, нужно системно ничего не&nbsp;делать, пропадать из&nbsp;программы и&nbsp;игнорировать задания несколько недель подряд.</p>
+  <div class="note blue"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><div><b>Например:</b> из&nbsp;4&nbsp;недель тренинга не&nbsp;выполнить 3&nbsp;ключевых задания. На&nbsp;практике жизни теряют только те, кто просто «забивает» на&nbsp;участие.</div></div>
+
+  <h3 class="h3">Можно ли восстановить жизни?</h3>
+  <p>Да. И&nbsp;не&nbsp;одним способом.</p>
+  <div class="card">
+    <p class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> В&nbsp;течение программы ты&nbsp;сможешь</p>
+    <ul class="list green">
+      <li>восстанавливать жизни;</li>
+      <li>избегать потери жизни;</li>
+      <li>использовать предметы инвентаря;</li>
+      <li>получать поддержку от&nbsp;напарников и&nbsp;капитанов.</li>
+    </ul>
+    <p style="margin-top:12px;font-size:15px;color:var(--t3)">Все эти механики разберём позже.</p>
+  </div>
+
+  <h3 class="h3">Итоговая логика</h3>
+  <p><b>Жизни&nbsp;— это не&nbsp;наказание. Жизни&nbsp;— это система удержания фокуса.</b> Они нужны, чтобы ты&nbsp;не&nbsp;выпадал из&nbsp;процесса, не&nbsp;сливался молча и&nbsp;доводил начатое до&nbsp;конца. Это мягкий, но&nbsp;честный механизм ответственности.</p>
+  <p class="quote">Никто не&nbsp;хочет, чтобы ты&nbsp;«умер» в&nbsp;этой игре. Но&nbsp;игра хочет, чтобы ты&nbsp;жил активно. Старайся не&nbsp;умереть за&nbsp;программу.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Обязательное №2</span>
+  <h2 class="h2">Фокус на&nbsp;день</h2>
+  <p>За годы развития бизнеса, трансформации людей до&nbsp;результата и&nbsp;большого опыта наставничества и&nbsp;менторства мне стало очевидно одно:</p>
+  <p class="quote">Всё упирается не&nbsp;в&nbsp;то, что человек знает, и&nbsp;не&nbsp;в&nbsp;то, сколько он&nbsp;знает, а&nbsp;в&nbsp;то, что он&nbsp;делает.</p>
+  <p style="margin-top:14px">Особенность нашего мозга такова, что мы&nbsp;либо постоянно отвлекаемся на&nbsp;неважные задачи, либо, наоборот, перегружаем себя огромным их&nbsp;количеством.</p>
+  <div class="card">
+    <p class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Опыт более 30&nbsp;000 клиентов показывает</p>
+    <p style="color:var(--t1);font-weight:600">Если каждый день делать хотя&nbsp;бы одну задачу, которая ведёт тебя к&nbsp;цели, то&nbsp;за&nbsp;месяц это уже <span class="am">выдающийся результат</span>. А&nbsp;за&nbsp;год&nbsp;— результат, превосходящий любые ожидания.</p>
+  </div>
+  <p style="margin-top:14px"><b>Главное&nbsp;— каждый день понимать, какая именно задача является ключевой.</b> В&nbsp;этом и&nbsp;есть суть фокуса.</p>
+
+  <h3 class="h3">Что такое фокус на&nbsp;день</h3>
+  <p>Фокус на&nbsp;день&nbsp;— это ключевая задача дня. Его главная цель&nbsp;— <span class="am">научить тебя ставить фокус</span>. Даже не&nbsp;выполнять. А&nbsp;именно&nbsp;— ставить.</p>
+  <p>Человек, который не&nbsp;умеет понимать, что ему нужно делать сегодня, не&nbsp;способен стабильно двигаться к&nbsp;цели.</p>
+
+  <div class="clock">
+    <div><b>09:00</b><span>до этого времени ставишь фокус на&nbsp;день</span></div>
+    <div><b>23:59</b><span>до этого времени отчитываешься о&nbsp;факте дня</span></div>
+  </div>
+  <p style="margin-top:10px;font-size:15px;color:var(--t3)">По твоему часовому поясу. У&nbsp;тебя есть почти сутки, чтобы закрыть этот цикл.</p>
+
+  <h3 class="h3">Что здесь действительно важно</h3>
+  <p>Не&nbsp;имеет значения, выполнил ты&nbsp;фокус или нет и&nbsp;насколько идеально он&nbsp;был исполнен. <b>Имеет значение только одно: поставил&nbsp;ли ты&nbsp;фокус на&nbsp;день и&nbsp;зафиксировал&nbsp;ли факт дня.</b></p>
+  <div class="ex">
+    <div><small>Фокус на&nbsp;день</small><b>Провести 5&nbsp;созвонов с&nbsp;клиентами</b></div>
+    <div class="arrow"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+    <div><small>Факт дня</small><b>0</b></div>
+  </div>
+  <p style="margin-top:10px">Ничего страшного не&nbsp;происходит. На&nbsp;следующий день ставишь новый фокус.</p>
+
+  <div class="note red"><svg class="i" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><div><b>Почему это критически важно.</b> Если человек теряет фокус, не&nbsp;понимает, что ему нужно делать, и&nbsp;не&nbsp;способен удерживать фокус 30&nbsp;дней подряд, вероятность того, что он&nbsp;добьётся серьёзного успеха в&nbsp;жизни, крайне мала.</div></div>
+
+  <h3 class="h3">Правило №1. Фокус должен быть выполним за&nbsp;один день</h3>
+  <p>Рекомендация: <span class="am">фокус должен занимать 2–3&nbsp;часа, максимум</span>. Ты&nbsp;начинаешь день с&nbsp;фокуса, а&nbsp;потом уже занимаешься остальными рутинными задачами.</p>
+  <div class="vs">
+    <div class="vs-col bad"><p class="vs-h"><svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> Нельзя</p><ul><li>Построить дом</li><li>Сделать сайт</li><li>Обзвонить 5000 клиентов</li></ul></div>
+  </div>
+
+  <h3 class="h3">Правило №2. Только измеримый результат</h3>
+  <p>Ты учишься ставить задачи так, чтобы их&nbsp;невозможно было интерпретировать двусмысленно.</p>
+  <div class="vs">
+    <div class="vs-col bad"><p class="vs-h"><svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> Результат непонятен</p><ul><li>Обзвонить клиентов</li><li>Сходить в&nbsp;спортзал</li></ul></div>
+    <div class="vs-col good"><p class="vs-h"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Корректно</p><ul><li>Провести 10 звонков по&nbsp;базе</li><li>Провести 2-часовую тренировку на&nbsp;все группы мышц</li><li>Достичь 300&nbsp;ккал по&nbsp;смарт-часам</li><li>Пробежать 30&nbsp;км в&nbsp;темпе 6:30</li></ul></div>
+  </div>
+  <p style="margin-top:12px">Так ты&nbsp;обучаешь мозг работать с&nbsp;конкретными результатами, а&nbsp;не&nbsp;размытыми формулировками.</p>
+
+  <h3 class="h3">Потеря жизни за&nbsp;фокус</h3>
+  <div class="vs">
+    <div class="vs-col bad"><p class="vs-h"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> −1 жизнь</p><ul><li>Хотя&nbsp;бы один раз за&nbsp;неделю не&nbsp;поставил фокус на&nbsp;день или не&nbsp;отчитался по&nbsp;нему вовремя.</li><li style="color:var(--t2);font-size:14px">За&nbsp;неделю можно потерять не&nbsp;более одной жизни, даже если пропусков два.</li></ul></div>
+    <div class="vs-col good"><p class="vs-h"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Жизнь сохраняется</p><ul><li>Выдерживаешь все 5&nbsp;рабочих дней недели.</li></ul></div>
+  </div>
+  <p class="quote">Учись ставить фокус, удерживать его и&nbsp;честно фиксировать результат. Этот навык меняет жизнь.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Обязательное №3</span>
+  <h2 class="h2">Вызов Фримана</h2>
+  <p>Самая весёлая часть программы. И&nbsp;одновременно&nbsp;— самая сложная. Большинство участников называют Вызовы Фримана самыми сложными заданиями, самыми запоминающимися моментами и&nbsp;самыми трансформирующими упражнениями всей программы.</p>
+
+  <div class="grid2">
+    <div class="tile"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></div><b>Ты не&nbsp;знаешь заранее</b>, что это будет за&nbsp;задание</div>
+    <div class="tile"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><b>Не знаешь, когда</b>: в&nbsp;расписании заранее или случайно&nbsp;— за&nbsp;сутки</div>
+    <div class="tile"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg></div>У каждого вызова <b>чёткий срок</b> исполнения</div>
+    <div class="tile"><div class="rule-ic red"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>Сорвал срок&nbsp;— <b>можно потерять все три жизни сразу</b></div>
+  </div>
+
+  <div class="note red"><svg class="i" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><div>Вызов Фримана&nbsp;— <b>единственное задание во&nbsp;всей программе</b>, при нарушении сроков которого можно потерять все три жизни сразу. Моментально. АААААААААААА... ПАНИКАААААА</div></div>
+
+  <h3 class="h3">Первая реакция будет у&nbsp;всех</h3>
+  <p>Практически на&nbsp;каждом Вызове Фримана, когда ты&nbsp;будешь читать задание, твоя первая мысль будет: <b>«Это невозможно».</b> Это нормально.</p>
+  <div class="card goal">
+    <p class="goal-days">Факт, проверенный временем</p>
+    <p class="goal-num">13 лет</p>
+    <p style="color:var(--t1);font-weight:600">провожу Вызов Фримана&nbsp;— и&nbsp;не&nbsp;было ни&nbsp;одного человека, который&nbsp;бы не&nbsp;справился с&nbsp;этим заданием. Ни&nbsp;одного. За&nbsp;всю историю всех программ.</p>
+  </div>
+  <p style="margin-top:14px">Вызов Фримана&nbsp;— это точка настоящей трансформации. Именно здесь ломаются ограничения, которые человек носил в&nbsp;голове годами. Поэтому относись к&nbsp;нему серьёзно.</p>
+  <p class="quote">Это не&nbsp;игра. Это момент, где ты&nbsp;переходишь на&nbsp;другой уровень.</p>
+
+  <div class="divider"></div>
+  <div class="sec" style="padding-top:28px">
+    <span class="kick">Дальше&nbsp;— видео</span>
+    <h2 class="h2" style="margin-bottom:0">Что такое монеты и&nbsp;баллы</h2>
+  </div>
+</section></div><div class="pv-video"><div class="pv-player"><span class="pv-play"><svg class="i" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span></div>
+<p class="pv-vt">Монеты и баллы</p><p class="pv-vd">Видео · 5:05</p></div><div class="pv-part page" data-part="4"><section class="sec">
+  <p>За&nbsp;<b>каждое выполненное задание</b> в&nbsp;программе&nbsp;— как за&nbsp;основные, так и&nbsp;за&nbsp;дополнительные&nbsp;— тебе начисляются монеты и&nbsp;баллы.</p>
+  <div class="cur">
+    <div class="card">
+      <div class="cur-ic pts"><svg class="i" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+      <p class="cur-n">Баллы</p>
+      <p class="cur-what">Формируют <b>рейтинг</b>&nbsp;— твой личный и&nbsp;твоей команды. Показывают, насколько ты&nbsp;эффективнее относительно других участников.</p>
+    </div>
+    <div class="card">
+      <div class="cur-ic coin"><svg class="i" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg></div>
+      <p class="cur-n">Монеты</p>
+      <p class="cur-what"><b>Внутренняя валюта</b> программы. Начисляются, как правило, соразмерно баллам.</p>
+    </div>
+  </div>
+  <div class="note blue"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><div><b>Например:</b> ты&nbsp;можешь получить 1000 баллов и&nbsp;1000 монет одновременно.</div></div>
+
+  <h3 class="h3">Зачем нужны монеты?</h3>
+  <p>Монеты можно <b>тратить</b> во&nbsp;внутреннем магазине программы. Там ты&nbsp;сможешь получать:</p>
+  <ul class="list">
+    <li>дополнительные знания;</li>
+    <li>усилители прохождения;</li>
+    <li>активацию отдельных функций и&nbsp;механик;</li>
+    <li>переключения, которые реально пригодятся тебе в&nbsp;жизни и&nbsp;бизнесе.</li>
+  </ul>
+
+  <h3 class="h3">Важно про качество выполнения заданий</h3>
+  <p>При проверке домашних заданий куратор или наставник может изменить награду:</p>
+  <div class="plusminus">
+    <div class="pm up"><b>+</b>увеличить монеты и&nbsp;баллы&nbsp;— как «+10 очков Гриффиндору»</div>
+    <div class="pm down"><b>−</b>уменьшить награду, если задание выполнено неудовлетворительно</div>
+  </div>
+  <p style="margin-top:12px">Это работает ровно так&nbsp;же, как в&nbsp;реальном бизнесе: за&nbsp;хорошую работу&nbsp;— бонусы и&nbsp;привилегии, за&nbsp;плохую&nbsp;— штрафы и&nbsp;ограничения.</p>
+  <p class="quote">Баллы показывают твоё место в&nbsp;рейтинге. Монеты дают дополнительные возможности.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Поход к&nbsp;вершине</span>
+  <h2 class="h2">Инвентарь</h2>
+  <p>Так как ты&nbsp;идёшь в&nbsp;<b>поход к&nbsp;вершине своего успеха</b>, в&nbsp;языке программы у&nbsp;тебя появляется инвентарь. По&nbsp;ходу курса ты&nbsp;будешь находить полезные элементы, получать особые предметы и&nbsp;складывать их&nbsp;в&nbsp;свой инвентарь.</p>
+
+  <h3 class="h3">У каждого предмета свои свойства</h3>
+  <div class="grid2">
+    <div class="tile"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>Увеличивать количество <b>монет и&nbsp;баллов</b></div>
+    <div class="tile"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>Помогать <b>пережить потерю жизни</b></div>
+    <div class="tile"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>Восстанавливать жизнь <b>напарника или члена команды</b></div>
+    <div class="tile"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div><b>Связаться напрямую</b> с&nbsp;Игорем или Александром для личной консультации</div>
+  </div>
+  <p style="margin-top:12px">Все эти элементы позволяют тебе проходить маршрут быстрее и&nbsp;эффективнее.</p>
+
+  <h3 class="h3">Важные правила инвентаря</h3>
+  <p>Большую часть предметов <b>можно получить только один раз</b>. Существует несколько типов:</p>
+  <div class="pair">
+    <div class="card">
+      <p class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 10h8"/><path d="M8 18h8"/><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg> Открытый</p>
+      <p style="font-size:15px">Его может получить любой участник, вне зависимости от&nbsp;момента, в&nbsp;который он&nbsp;выполнит секретное задание.</p>
+    </div>
+    <div class="card" style="border-color:rgba(234,184,32,.35)">
+      <p class="card-t" style="color:var(--amber)"><svg class="i" viewBox="0 0 24 24"><path d="M9.94 14.06 8.5 20l-1.44-5.94L1 12.5l6.06-1.44L8.5 5l1.44 6.06L16 12.5z"/><path d="M20 3v4"/><path d="M22 5h-4"/></svg> Ограниченный</p>
+      <p style="font-size:15px">Существует в&nbsp;ограниченном количестве. Его получают:</p>
+      <ul class="list" style="font-size:15px">
+        <li>первые участники, выполнившие конкретное задание;</li>
+        <li>первые, кто достиг определённого уровня;</li>
+        <li>те, кто показывает лучшие результаты по&nbsp;направлениям.</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:14px">Если ты&nbsp;хочешь получить <b>реальное преимущество</b>, тебе нужно стремиться быть <span class="am">лучшим&nbsp;— в&nbsp;скорости, качестве и&nbsp;включённости</span>.</p>
+
+  <h3 class="h3">Как использовать инвентарь?</h3>
+  <p>Когда и&nbsp;каким образом использовать предметы, ты&nbsp;узнаешь не&nbsp;заранее, а&nbsp;в&nbsp;процессе прохождения программы&nbsp;— по&nbsp;мере появления каждого элемента в&nbsp;твоём инвентаре.</p>
+  <p class="quote">И да… Вполне возможно, что за&nbsp;время интенсива кто-то из&nbsp;вас уже успел найти секретные предметы.</p>
+
+  <div class="divider"></div>
+  <div class="sec" style="padding-top:28px">
+    <span class="kick">Дальше&nbsp;— видео</span>
+    <h2 class="h2" style="margin-bottom:0">Ловушка начинающих экспертов</h2>
+  </div>
+</section></div><div class="pv-video"><div class="pv-player"><span class="pv-play"><svg class="i" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span></div>
+<p class="pv-vt">Ловушка начинающих экспертов</p><p class="pv-vd">Видео · 16:03</p></div><div class="pv-part page" data-part="5"><section class="sec">
+  <span class="kick">Итог урока</span>
+  <h2 class="h2">Главный фокус на&nbsp;время программы</h2>
+  <ul class="check">
+    <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div>Ключевое задание каждой недели<small>Открывается в&nbsp;воскресенье в&nbsp;18:00, сдать до&nbsp;18:00 пятницы</small></div></li>
+    <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div>Ежедневный фокус<small>Поставить до&nbsp;09:00, отчитаться до&nbsp;23:59</small></div></li>
+    <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div>Все вызовы Фримана<small>Срок у&nbsp;каждого свой&nbsp;— сорвёшь, можешь потерять все 3&nbsp;жизни</small></div></li>
+  </ul>
+  <p style="margin-top:16px">Этих 20% достаточно, чтобы стать финалистом программы и&nbsp;получить ключевой результат. Если всё понятно&nbsp;— отметь это ниже.</p>
+</section></div>
+<div class="pv-task"><p>Поставьте галочку, что изучили правила игры</p><label><span></span>Я согласен(на) с правилами игры и мне они понятны</label></div>
+</div>
+</main>
+</body>
+</html>
