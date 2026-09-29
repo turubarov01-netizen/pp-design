@@ -70,9 +70,12 @@ h1{margin-top:8px;font-size:28px;font-weight:800;line-height:1.1;text-transform:
 .task.done{border-color:rgba(107,203,119,.3);background:rgba(107,203,119,.06)}
 .task.done .l{color:var(--green)}
 .task .ans{margin-top:8px;font-size:14px;color:var(--t2);white-space:pre-wrap}
+.toast.lk{background:#221D10;border-color:rgba(240,208,128,.45);color:#F3DB8C}
+.shake{animation:sh .35s}
+@keyframes sh{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
 .unlock{animation:un .5s cubic-bezier(.2,.8,.2,1)}
 @keyframes un{from{opacity:0;transform:translateY(10px) scale(.98)}}
-.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:60;display:flex;gap:10px;align-items:center;padding:12px 16px;border-radius:14px;background:#1B2A1E;border:1px solid rgba(107,203,119,.4);color:#BDEFC4;font-size:14px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,.5);animation:un .3s}
+.toast{position:fixed;left:50%;bottom:22px;width:max-content;max-width:calc(100vw - 32px);transform:translateX(-50%);z-index:60;display:flex;gap:10px;align-items:center;padding:12px 16px;border-radius:14px;background:#1B2A1E;border:1px solid rgba(107,203,119,.4);color:#BDEFC4;font-size:14px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,.5);animation:un .3s}
 
 /* ===== А · Лестница ===== */
 .lad{margin-top:14px;position:relative}
@@ -144,6 +147,39 @@ h1{margin-top:8px;font-size:28px;font-weight:800;line-height:1.1;text-transform:
 .lockcard.rich .inner small{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D9B94E}
 .lockcard.rich .inner h3{margin-top:4px;font-size:18px;color:var(--t1)}
 .lockcard.rich .inner .d{margin-top:4px;font-size:14px;color:var(--t3)}
+
+
+/* телефон: облегчённый вид Б */
+@media(max-width:639px){
+  .thumbs{gap:8px}
+  .th{width:128px;border-radius:12px;border-color:var(--line)}
+  .th .pic{aspect-ratio:16/9}
+  .th .badge,.th .dur,.th .cap i{display:none}
+  .th .pl2{width:30px;height:30px}.th .pl2 svg{width:11px;height:11px}
+  .th .lk span{width:32px;height:32px}.th .lk svg{width:15px;height:15px}
+  .th .cap{padding:7px 8px 9px}
+  .th .cap small{font-size:10px;letter-spacing:.06em}
+  .th .cap b{font-size:12px;font-weight:500;-webkit-line-clamp:2;color:var(--t2)}
+  .th.cur .cap b,.th.sel .cap b{color:var(--t1)}
+  .th .ok{position:absolute;left:6px;top:6px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#0D1117}
+  .th .ok svg{width:12px;height:12px;stroke-width:3}
+  .th.sel{box-shadow:none;border-color:rgba(240,208,128,.7)}
+  .stage{border:0;background:none;padding:0;border-radius:0}
+  .thumbs+.stage{margin-top:18px}
+  .stage h3{font-size:18px}
+  .stage .d{font-size:13px;color:var(--t3)}
+  .stage .vid{margin:12px 0 0;border-radius:14px}
+  .task{margin-top:14px;padding:14px;border-radius:16px}
+  .task textarea{min-height:92px}
+  .lockcard.rich{border-style:solid;border-color:var(--line)}
+  .lockcard.rich .pic .lk span{width:48px;height:48px;margin-bottom:8px}
+  .lockcard.rich .pic b{font-size:15px}.lockcard.rich .pic p{font-size:13px}
+  .lockcard.rich .inner h3{font-size:16px}
+  .prog{margin-top:22px}
+  .intro .b{padding:14px 14px 16px}
+  .mission{font-size:13px;padding:10px 12px}
+}
+@media(min-width:640px){.th .ok{display:none}}
 
 /* ===== В · Карта ===== */
 .map{margin-top:14px;border-radius:20px;border:1px solid var(--line);background:radial-gradient(120% 90% at 50% 0%,#172031,#0F151E);padding:18px 12px 16px}
@@ -242,6 +278,10 @@ function richLock(i) {
   return `<div class="lockcard rich"><div class="pic"><img src="${p.img}" alt=""><div class="lk"><div><span>${I.lock}</span><b>Эта часть пока закрыта</b><p>Сдайте задание к части ${doneCount() + 1}, и она откроется сразу</p></div></div></div>
     <div class="inner"><small>Часть ${i + 1} · ${p.dur}</small><h3>${esc(p.t)}</h3><div class="d">${esc(p.s)}</div></div></div>`;
 }
+function lockNudge(el, i) {
+  el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
+  toast(`Пока закрыто. Откроется после задания к части ${doneCount() + 1}`, true);
+}
 function bind(i) {
   const ta = document.getElementById('ta'), sub = document.getElementById('sub');
   if (!ta) return;
@@ -253,7 +293,7 @@ function bind(i) {
     document.getElementById('block').scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 }
-function toast(t) { const d = document.createElement('div'); d.className = 'toast'; d.innerHTML = I.check + t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
+function toast(t, lock) { document.querySelectorAll('.toast').forEach((x) => x.remove()); const d = document.createElement('div'); d.className = 'toast' + (lock ? ' lk' : ''); d.innerHTML = (lock ? I.lock : I.check) + t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
 
 function render(anim) {
   const n = doneCount();
@@ -275,13 +315,17 @@ function render(anim) {
   } else if (v === 'b') {
     box.innerHTML = `<div class="thumbs">${P.map((p, i) => { const s = status(i);
       const badge = s === 'done' ? `<span class="badge">${I.check}Пройдено</span>` : s === 'cur' ? '<span class="badge">Сейчас</span>' : '';
-      const over = s === 'lock' ? `<span class="lk"><span>${I.lock}</span></span>` : `<span class="pl2">${I.play}</span>`;
+      const over = (s === 'lock' ? `<span class="lk"><span>${I.lock}</span></span>` : `<span class="pl2">${I.play}</span>`) + (s === 'done' ? `<span class="ok">${I.check}</span>` : '');
       const sub = s === 'lock' ? `Откроется после задания к части ${i}` : s === 'done' ? 'Задание сдано' : 'Задание в конце';
       return `<button class="th ${s} ${i === open ? 'sel' : ''}" data-i="${i}"><span class="pic"><img src="${p.img}" alt="">${over}${badge}<span class="dur">${p.dur}</span></span>
-        <span class="cap"><small>Часть ${i + 1}</small><b>${esc(p.t)}</b><i>${sub}</i></span></button>`; }).join('')}</div>
-      ${status(open) === 'lock' ? richLock(open) : stageHtml(open, anim)}`;
-    box.querySelectorAll('.th').forEach((b) => b.onclick = () => { st.open = +b.dataset.i; save(); render(); });
-    const sel = box.querySelector('.th.sel'); if (sel) { const sc = box.querySelector('.thumbs'); sc.scrollLeft = sel.offsetLeft - 16; }
+        <span class="cap"><small>Часть ${i + 1} · ${p.dur}</small><b>${esc(p.t)}</b><i>${sub}</i></span></button>`; }).join('')}</div>
+      ${stageHtml(status(open) === 'lock' ? cur : open, anim)}`;
+    box.querySelectorAll('.th').forEach((b) => b.onclick = () => {
+      const i = +b.dataset.i;
+      if (status(i) === 'lock') { lockNudge(b, i); return; }
+      st.open = i; save(); render();
+    });
+    const sel = box.querySelector('.th.sel'); if (sel) { const sc = box.querySelector('.thumbs'); sc.scrollLeft = Math.max(0, sel.offsetLeft - 16 - 56); }
     bind(open);
   } else {
     const node = (i, label) => { const s = status(i); return `<button class="node ${s} ${i === open ? 'sel' : ''}" data-i="${i}"><span class="s">${s === 'done' ? I.check : s === 'lock' ? I.lock : i + 1}</span>${label}</button>`; };
