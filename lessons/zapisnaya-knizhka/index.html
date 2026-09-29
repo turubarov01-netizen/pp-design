@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Урок «Записная книжка» — варианты теста</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0D1117;--card:#141B24;--card2:#18212C;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.14);--t1:#F2F4F7;--t2:rgba(242,244,247,.74);--t3:rgba(242,244,247,.52);--blue:#6B9FFF;--gold:#F0D080;--amber:#EAB820;--green:#6BCB77;--red:#FF6B6B;--muted:rgba(255,255,255,.08)}
+html,body{background:var(--bg)}
+body{font-family:Inter,-apple-system,system-ui,sans-serif;color:var(--t1);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+svg.i{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;background:rgba(13,17,23,.96);border-bottom:1px solid var(--line);font-size:18px;font-weight:700}
+.logo{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:12px;font-weight:800;color:#1A1406;background:linear-gradient(135deg,#F0D080,#CCA830)}
+.wrap{max-width:768px;margin:0 auto;padding:0 16px 120px}
+.vsw{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:14px 0 0;font-size:12px;color:var(--t3)}
+.vsw a{min-height:36px;display:inline-flex;align-items:center;padding:0 12px;border-radius:10px;border:1px dashed var(--line2);font-weight:700;color:var(--t2);text-decoration:none}
+.vsw a.on{border-style:solid;border-color:rgba(240,208,128,.55);color:var(--gold);background:rgba(240,208,128,.06)}
+.cover{height:150px;margin:16px -16px 0;background:linear-gradient(180deg,rgba(13,17,23,0) 30%,#0D1117),url(https://owfmgpeandpdnyctiqng.supabase.co/storage/v1/object/public/producer-plan/covers/6bfdfc14-d012-4a41-b5c7-e31d842b001e-1771917195800.jpg) center/cover}
+@media(min-width:640px){.cover{margin:16px 0 0;border-radius:20px}}
+.kick{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+h1{margin-top:6px;font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-.01em;text-transform:uppercase;color:var(--gold)}
+.meta{display:flex;align-items:center;gap:14px;margin-top:12px;font-size:13px;color:var(--t2)}
+.bar{flex:1;height:6px;border-radius:3px;background:var(--muted);overflow:hidden}.bar i{display:block;height:100%;width:28%;background:var(--green);border-radius:3px}
+
+/* разделы урока */
+.part{margin-top:34px}
+.part-h{display:flex;align-items:baseline;gap:10px}
+.part-n{flex:none;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.part h2{font-size:21px;font-weight:700;line-height:1.25}
+.part p.sub{margin-top:6px;color:var(--t2);font-size:15px}
+.vid{margin-top:14px;border-radius:18px;overflow:hidden;background:#05070A;border:1px solid var(--line)}
+.vid .ph{aspect-ratio:16/9;display:grid;place-items:center;background:radial-gradient(60% 80% at 50% 40%,#18212c,#05070a)}
+.vid .pl{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.12)}
+.vid .pl svg{width:22px;height:22px;fill:#fff;stroke:none;margin-left:3px}
+.vid .cap{display:flex;align-items:center;gap:10px;padding:12px 14px;font-size:14px;font-weight:600}
+.vid .cap small{margin-left:auto;font-size:12px;font-weight:600;color:var(--t3)}
+.chapters{margin-top:10px;display:grid;gap:8px}
+.ch{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.02);font-size:15px;text-align:left;width:100%}
+.ch .n{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:13px;font-weight:700;color:var(--t3);border:1px solid var(--line2)}
+.ch.on{border-color:rgba(240,208,128,.45);background:rgba(240,208,128,.06)}.ch.on .n{border:0;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#2A2008}
+.ch.done .n{border-color:rgba(107,203,119,.4);color:var(--green);background:rgba(107,203,119,.1)}
+.ch small{margin-left:auto;font-size:12px;color:var(--t3)}
+
+/* общие карточки */
+.card{margin-top:14px;border-radius:20px;border:1px solid var(--line);background:var(--card);padding:20px}
+@media(min-width:640px){.card{padding:24px}}
+.row{display:flex;align-items:flex-start;gap:14px}
+.tile{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;flex:none;background:rgba(107,159,255,.12);color:var(--blue)}
+.tile svg{width:24px;height:24px}
+.kk{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+.tt{margin-top:3px;font-size:19px;font-weight:700;line-height:1.3}
+.mm{margin-top:3px;font-size:14px;color:var(--t2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:100px;font-size:13px;font-weight:600}
+.chip.b{background:rgba(107,159,255,.12);color:#9DBDFF}.chip.g{background:rgba(234,184,32,.12);color:#F0CE5C}.chip.gr{background:rgba(107,203,119,.14);color:#8FE09B}
+.gold{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:54px;padding:0 24px;border-radius:18px;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#2A2008;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 5px 0 #A07828;transition:transform .15s,box-shadow .15s,opacity .2s;position:relative;top:0}
+.gold:hover{transform:translateY(2px);box-shadow:0 3px 0 #A07828}
+.gold:disabled{opacity:.4;pointer-events:none}
+.gold svg{width:18px;height:18px}
+.w100{width:100%}
+.rb{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;flex:none;border:1px solid var(--line2)}
+.rb:hover{background:rgba(255,255,255,.05)}
+.ghost{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:14px;border:1px solid var(--line2);font-size:14px;font-weight:600;color:var(--t2)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* вопрос */
+.qhead{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+.qhead b{color:var(--gold);font-variant-numeric:tabular-nums}
+.qhead span{color:var(--t3)}
+.seg{display:grid;gap:4px;margin-top:10px}
+.seg i{height:5px;border-radius:3px;background:var(--muted);transition:background .25s}
+.seg i.cur{background:var(--gold)}.seg i.ans{background:rgba(107,159,255,.6)}.seg i.ok{background:var(--green)}.seg i.bad{background:var(--red)}
+.q{margin-top:18px;font-size:19px;font-weight:600;line-height:1.35}
+.multi{display:inline-flex;margin-top:10px;height:28px;align-items:center;padding:0 12px;border-radius:100px;background:rgba(234,184,32,.12);color:#F0CE5C;font-size:12px;font-weight:600}
+.opts{display:grid;gap:10px;margin-top:16px}
+.opt{display:flex;align-items:center;gap:12px;min-height:58px;width:100%;padding:12px 14px;border-radius:16px;border:1px solid var(--line2);background:rgba(255,255,255,.02);text-align:left;font-size:15px;line-height:1.4;color:var(--t2);transition:border-color .2s,background .2s}
+.opt:hover{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.04)}
+.opt .l{width:32px;height:32px;display:grid;place-items:center;flex:none;border-radius:50%;border:1px solid var(--line2);font-size:13px;font-weight:700;color:var(--t3)}
+.opt.m .l{border-radius:9px}
+.opt.sel{border-color:rgba(240,208,128,.6);background:rgba(240,208,128,.07);color:var(--t1)}
+.opt.sel .l{border:0;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#2A2008}
+.opt.ok{border-color:rgba(107,203,119,.6);background:rgba(107,203,119,.08);color:var(--t1)}.opt.ok .l{border:0;background:var(--green);color:#0D1117}
+.opt.bad{border-color:rgba(255,107,107,.6);background:rgba(255,107,107,.08);color:var(--t1)}.opt.bad .l{border:0;background:var(--red);color:#0D1117}
+.opt.dim{opacity:.55}
+.opt svg{width:16px;height:16px;stroke-width:3}
+.nav{display:flex;gap:12px;margin-top:22px}
+.nav .gold{flex:1}
+.fb{margin-top:14px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;font-size:14px;font-weight:600}
+.fb.ok{background:rgba(107,203,119,.12);color:#8FE09B}.fb.bad{background:rgba(255,107,107,.1);color:#FF9B9B}
+.fb .chip{margin-left:auto;height:28px}
+.pop{animation:pop .35s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{transform:scale(.85);opacity:0}}
+.slide{animation:sl .22s cubic-bezier(.2,.7,.2,1)}
+@keyframes sl{from{opacity:0;transform:translateX(24px)}}
+
+/* результат */
+.ring{position:relative;flex:none}
+.ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-variant-numeric:tabular-nums}
+.rev{display:grid;gap:8px;margin-top:18px}
+.rv{display:flex;gap:12px;padding:12px 14px;border-radius:14px;font-size:14px;line-height:1.45}
+.rv.ok{background:rgba(107,203,119,.07);border:1px solid rgba(107,203,119,.22)}
+.rv.bad{background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.22)}
+.rv .ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none}
+.rv.ok .ic{background:rgba(107,203,119,.2);color:var(--green)}.rv.bad .ic{background:rgba(255,107,107,.2);color:#FF8A8A}
+.rv .ic svg{width:13px;height:13px;stroke-width:3}
+.rv small{display:block;margin-top:3px;color:#FF9B9B;font-size:13px}
+
+/* вариант В: все вопросы сразу */
+.vq{margin-top:14px;border-radius:20px;border:1px solid var(--line);background:var(--card);padding:18px}
+.vq .q{margin-top:6px;font-size:17px}
+.vq .qn{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.vq.done .qn{color:var(--blue)}
+.dock{position:sticky;bottom:12px;z-index:5;margin-top:14px;display:flex;align-items:center;gap:12px;padding:10px 10px 10px 16px;border-radius:20px;background:rgba(20,27,36,.98);border:1px solid var(--line2);box-shadow:0 12px 30px rgba(0,0,0,.45)}
+.dock .t{flex:1;font-size:14px;color:var(--t2)}
+.dock .t b{color:var(--t1)}
+.dock .gold{min-height:48px;padding:0 18px;font-size:13px}
+
+/* инструменты платформы */
+.task{margin-top:12px;border-radius:16px;border:1px solid var(--line2);background:rgba(255,255,255,.02);padding:14px 16px}
+.task .h{display:flex;gap:12px;align-items:flex-start;font-size:15px;font-weight:600;line-height:1.4}
+.task .h svg{color:var(--t3);margin-top:1px}
+.task .go{display:inline-flex;align-items:center;gap:8px;height:42px;margin:12px 0 0 32px;padding:0 14px;border-radius:12px;border:1px solid rgba(240,208,128,.45);color:var(--gold);font-size:14px;font-weight:600;text-decoration:none}
+.steps{margin:14px 0 0 32px;display:grid;gap:10px;counter-reset:s}
+.steps li{list-style:none;position:relative;padding-left:34px;font-size:14px;color:var(--t2);line-height:1.45}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:-1px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--blue);background:rgba(107,159,255,.12)}
+.steps li b{color:var(--t1)}
+details.more{margin:12px 0 0 32px}
+details.more summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;font-size:14px;font-weight:600;color:var(--blue)}
+details.more summary::-webkit-details-marker{display:none}
+details.more .steps{margin-left:0}
+.asg .fld{margin-top:12px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);font-size:14px;color:var(--t2)}
+.asg .fld b{display:block;color:var(--t1);font-weight:600;margin-bottom:6px}
+.asg .fld i{display:block;height:44px;border-radius:10px;background:rgba(0,0,0,.25);border:1px solid var(--line)}
+.note{margin-top:30px;padding:14px 16px;border-radius:14px;border:1px dashed rgba(240,208,128,.35);font-size:13px;color:var(--t2)}
+@media(min-width:1024px){h1{font-size:34px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top"><span class="logo">ПП</span>Маршрут</div>
+<main class="wrap">
+  <nav class="vsw" aria-label="Вариант теста">Тест:
+    <a data-v="a" href="?v=a">А · По одному, итог в конце</a>
+    <a data-v="b" href="?v=b">Б · Проверка сразу</a>
+    <a data-v="c" href="?v=c">В · Все вопросы сразу</a>
+  </nav>
+  <div class="cover"></div>
+  <div style="margin-top:-24px;position:relative"><span class="kick">Трафик</span><h1>Записная книжка</h1></div>
+  <div class="meta"><span class="bar"><i></i></span><b>2 из 7</b><span>+500 фениксов</span></div>
+
+  <!-- Урок 1 -->
+  <section class="part">
+    <div class="part-h"><span class="part-n">Урок 1</span></div>
+    <h2>Лучший способ быстро заработать деньги</h2>
+    <p class="sub">Простая техника, которая дает возможность всегда иметь деньги.</p>
+    <div class="vid"><div class="ph"><span class="pl"><svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span></div>
+      <div class="cap">Лучший способ быстро заработать деньги</div></div>
+
+    <h2 style="margin-top:26px;font-size:18px">Как можно работать с записной книжкой</h2>
+    <p class="sub">Александр расскажет, как максимально эффективно работать с записной книжкой.</p>
+    <div class="vid"><div class="ph"><span class="pl"><svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span></div>
+      <div class="cap">Записная книжка · часть 2<small>2 из 4</small></div></div>
+    <div class="chapters">
+      <button class="ch done"><span class="n">✓</span>Часть 1<small>просмотрено</small></button>
+      <button class="ch on"><span class="n">2</span>Часть 2<small>сейчас</small></button>
+      <button class="ch"><span class="n">3</span>Часть 3</button>
+      <button class="ch"><span class="n">4</span>Часть 4</button>
+    </div>
+  </section>
+
+  <!-- Урок 2 -->
+  <section class="part">
+    <div class="part-h"><span class="part-n">Урок 2</span></div>
+    <h2>«Я не хочу быть в состоянии просящего. Что делать?»</h2>
+    <p class="sub">Что делать, если есть сопротивление делать исходящие действия, писать или звонить людям первым? Не хочется «унижаться», а хочется, чтобы люди сами выстраивались в очередь для работы с вами? Игорь расскажет, какие варианты возможны в вашем случае.</p>
+    <div class="vid"><div class="ph"><span class="pl"><svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span></div>
+      <div class="cap">Не хочу писать первым</div></div>
+  </section>
+
+  <!-- Тест -->
+  <section class="part" id="quiz"></section>
+
+  <!-- Инструменты платформы -->
+  <section class="part">
+    <div class="card">
+      <div class="row">
+        <span class="tile"><svg class="i" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+        <div><div class="kk">Засчитывается автоматически</div><div class="tt">Задание через инструменты платформы</div><div class="mm">Скриншоты не нужны: платформа сама видит ваши данные и засчитывает задание.</div></div>
+      </div>
+      <div class="task">
+        <div class="h"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>Создайте свою ссылку на запись (тип встречи) и отправляйте приглашение на КЭВ с ней</div>
+        <details class="more"><summary>Как это сделать — 5 шагов</summary>
+          <ol class="steps">
+            <li><b>Подключите Zoom:</b> вкладка «Настройки» → «Подключить Zoom» → войдите в свой аккаунт Zoom.</li>
+            <li><b>Создайте тип встречи:</b> вкладка «Типы встреч» → например «КЭВ / диагностика», 30–60 минут, место — «Zoom (авто)».</li>
+            <li><b>Настройте расписание:</b> вкладка «Расписание» — дни и часы, когда вы свободны.</li>
+            <li><b>Отправляйте личную ссылку</b> в каждом приглашении из записной книжки.</li>
+            <li><b>После встречи</b> во вкладке «Записи» отметьте «Завершена».</li>
+          </ol>
+        </details>
+        <a class="go" href="#">Открыть «Регистратор 24/7» →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Задание -->
+  <section class="part">
+    <div class="card asg">
+      <div class="row"><span class="tile" style="background:rgba(234,184,32,.12);color:var(--amber)"><svg class="i" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></span>
+        <div><div class="kk" style="color:var(--amber)">Задание урока</div><div class="tt">4 пункта · проверяет проводник</div></div></div>
+      <div class="fld"><b>1. Выпишите список из 10 контактов, которые в потенциале могут стать вашими клиентами.</b><i></i></div>
+      <div class="fld"><b>2. Напишите текст приглашения на ваш КЭВ, который вы можете разослать потенциальным клиентам.</b><i></i></div>
+      <div class="fld"><b>3. Напишите текст в лоб вашего продукта, который вы можете разослать потенциальным клиентам.</b><i></i></div>
+      <div class="fld"><b>4. Задача — сделать минимум 10 исходящих сообщений по записной книжке.</b><i></i></div>
+      <button class="gold w100" style="margin-top:18px">Отправить на проверку</button>
+    </div>
+  </section>
+
+  <p class="note">Макет. Видео, задание и блок «инструменты» показаны схемой; тест — рабочий, на настоящих 6 вопросах урока. Переключайте варианты теста вверху.</p>
+</main>
+
+<script>
+const Q = [
+ {q:'Почему работа с записной книжкой самый быстрый способом получить обратную связь от мира?',o:['a) Потому что это самый дешевый метод рекламы.','b) Потому что помогает развивать навыки общения.','c) Это позволяет увеличить количество подписчиков в соцсетях.','d) Потому что есть люди, которые уже знакомы с нами, и мы можем быстро проверить нашу гипотезу, не взращивая авторитет в их глазах.'],c:[3]},
+ {q:'Какие два подхода к работе с записной книжкой предлагает автор?',o:['a) Прямой и косвенный.','b) Онлайн и офлайн.','c) Точечный и массовый.','d) Когда не важно, что продавать, и когда есть определенный продукт или услуга.'],c:[3]},
+ {q:'Для чего использовать первый подход к работе с записной книжкой? (2 правильных ответа)',o:['a) Для долгосрочного построения бизнеса.','b) Для увеличения популярности в социальных сетях.','c) Для развития навыка продаж и навыка делегирования','d) Для определения позиционирования и быстрого заработка.'],c:[2,3]},
+ {q:'Выберите неправильное утверждение: Почему Александр не рекомендует сразу указывать цену в офере на КЭВ?',o:['a) Чтобы не спугнуть клиента.','b) Потому что важно сначала заинтересовать клиента и получить согласие на дальнейшее общение.','c) Потому что нужно сформировать правильные ценности в голове у клиента.','d) Чтобы увеличить стоимость позже.'],c:[3]},
+ {q:'Что является плюсом широкого подхода к работе с записной книжкой?',o:['a) Индивидуальный подход к каждому клиенту.','b) Высокая конверсия в продажи.','c) Увеличение ценности продукта.','d) Многие люди быстро узнают о вашей деятельности.'],c:[3]},
+ {q:'Что является минусом широкого подхода к работе с записной книжкой?',o:['a) Высокие затраты времени.','b) Обезличенный подход и низкая вероятность отклика от клиентов без острой потребности.','c) Неэффективность в социальных сетях.','d) Сложность технической реализации.'],c:[1]},
+];
+const PTS = 10, COINS = 10, L = 'ABCDEFGH';
+const strip = (s) => s.replace(/^\s*[a-zа-яё]\s*[).]\s*/i, '');
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const I = {
+  right: '<svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+  left: '<svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>',
+  check: '<svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>',
+  x: '<svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+  list: '<svg class="i" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>',
+  redo: '<svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>',
+};
+const same = (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
+const ring = (pct, size) => { const r = 42, C = 2 * Math.PI * r, col = pct >= 80 ? '#6BCB77' : pct >= 50 ? '#F0D080' : '#FF6B6B';
+  return `<div class="ring" style="width:${size}px;height:${size}px"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="7"/><circle cx="48" cy="48" r="${r}" fill="none" stroke="${col}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${(pct / 100 * C).toFixed(1)} ${C.toFixed(1)}"/></svg><b style="font-size:${Math.round(size * .24)}px;color:${col}">${pct}%</b></div>`; };
+const words = (n) => n % 10 === 1 && n % 100 !== 11 ? 'вопрос' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'вопроса' : 'вопросов';
+
+function startCard(box, onStart) {
+  box.innerHTML = `<div class="card"><div class="row"><span class="tile">${I.list}</span><div>
+    <div class="kk">Проверьте себя</div><div class="tt">Тест «Записная книжка»</div><div class="mm">${Q.length} ${words(Q.length)} · около 3 мин</div></div></div>
+    <div class="mm" style="margin-top:16px;font-size:12px">За правильные ответы до</div>
+    <div class="chips" style="margin-top:8px"><span class="chip b">+${Q.length * PTS} баллов</span><span class="chip g">+${Q.length * COINS} фениксов</span></div>
+    <button class="gold w100" style="margin-top:20px" id="go">Начать тест ${I.right}</button></div>`;
+  box.querySelector('#go').onclick = onStart;
+}
+function result(box, ans, restart, withReview = true) {
+  const res = Q.map((q, i) => same(ans[i] || [], q.c));
+  const ok = res.filter(Boolean).length, pct = Math.round(ok / Q.length * 100);
+  box.innerHTML = `<div class="card"><div class="row" style="align-items:center">${ring(pct, 96)}<div>
+    <div class="kk">Результат теста</div><div class="tt">${ok === Q.length ? 'Все ответы верные' : `Правильно ${ok} из ${Q.length}`}</div>
+    <div class="chips" style="margin-top:10px">${ok ? `<span class="chip b">+${ok * PTS} баллов</span><span class="chip g">+${ok * COINS} фениксов</span>` : ''}</div></div></div>
+    ${withReview ? `<div class="rev">${Q.map((q, i) => `<div class="rv ${res[i] ? 'ok' : 'bad'}"><span class="ic">${res[i] ? I.check : I.x}</span><div>${i + 1}. ${esc(q.q)}${res[i] ? '' : `<small>Ваш ответ: ${(ans[i] || []).map((k) => L[k] + ') ' + esc(strip(q.o[k]))).join('; ')}</small>`}</div></div>`).join('')}</div>` : ''}
+    <button class="ghost w100" style="margin-top:18px" id="re">${I.redo}Пройти ещё раз</button></div>`;
+  box.querySelector('#re').onclick = restart;
+}
+
+/* ===== А: по одному, итог в конце ===== */
+function variantA(box) {
+  let cur = 0, ans = {};
+  const draw = (dir) => {
+    const q = Q[cur], multi = q.c.length > 1, sel = ans[cur] || [], last = cur === Q.length - 1;
+    box.innerHTML = `<div class="card"><div class="qhead"><b>Вопрос ${cur + 1} из ${Q.length}</b><span>Тест «Записная книжка»</span></div>
+      <div class="seg" style="grid-template-columns:repeat(${Q.length},1fr)">${Q.map((_, i) => `<i class="${i === cur ? 'cur' : ans[i]?.length ? 'ans' : ''}"></i>`).join('')}</div>
+      <div class="${dir ? 'slide' : ''}"><div class="q">${esc(q.q)}</div>${multi ? '<span class="multi">Несколько правильных ответов</span>' : ''}
+      <div class="opts">${q.o.map((o, i) => `<button class="opt ${multi ? 'm' : ''} ${sel.includes(i) ? 'sel' : ''}" data-i="${i}"><span class="l">${sel.includes(i) && multi ? I.check : L[i]}</span>${esc(strip(o))}</button>`).join('')}</div></div>
+      <div class="nav"><button class="rb" id="bk" aria-label="Назад">${I.left}</button><button class="gold" id="nx" ${sel.length ? '' : 'disabled'}>${last ? 'Завершить тест ' + I.check : 'Дальше ' + I.right}</button></div></div>`;
+    box.querySelectorAll('.opt').forEach((b) => b.onclick = () => { const i = +b.dataset.i; ans[cur] = multi ? (sel.includes(i) ? sel.filter((x) => x !== i) : [...sel, i]) : [i]; draw(); });
+    box.querySelector('#bk').onclick = () => { if (cur === 0) return startCard(box, () => draw()); cur--; draw(1); };
+    box.querySelector('#nx').onclick = () => { if (last) return result(box, ans, () => { cur = 0; ans = {}; variantA(box); }); cur++; draw(1); };
+  };
+  startCard(box, () => draw());
+}
+
+/* ===== Б: проверка сразу после ответа ===== */
+function variantB(box) {
+  let cur = 0, ans = {}, checked = {};
+  const draw = (dir) => {
+    const q = Q[cur], multi = q.c.length > 1, sel = ans[cur] || [], last = cur === Q.length - 1, ch = checked[cur];
+    const good = ch && same(sel, q.c);
+    const score = Object.keys(checked).filter((k) => same(ans[k], Q[k].c)).length;
+    box.innerHTML = `<div class="card"><div class="qhead"><b>Вопрос ${cur + 1} из ${Q.length}</b><span>Верно: ${score}</span></div>
+      <div class="seg" style="grid-template-columns:repeat(${Q.length},1fr)">${Q.map((_, i) => `<i class="${checked[i] ? (same(ans[i], Q[i].c) ? 'ok' : 'bad') : i === cur ? 'cur' : ''}"></i>`).join('')}</div>
+      <div class="${dir ? 'slide' : ''}"><div class="q">${esc(q.q)}</div>${multi ? '<span class="multi">Несколько правильных ответов</span>' : ''}
+      <div class="opts">${q.o.map((o, i) => { let c = ''; if (ch) { c = q.c.includes(i) ? 'ok' : sel.includes(i) ? 'bad' : 'dim'; } else if (sel.includes(i)) c = 'sel';
+        const mark = ch ? (q.c.includes(i) ? I.check : sel.includes(i) ? I.x : L[i]) : (sel.includes(i) && multi ? I.check : L[i]);
+        return `<button class="opt ${multi ? 'm' : ''} ${c}" data-i="${i}" ${ch ? 'disabled' : ''}><span class="l">${mark}</span>${esc(strip(o))}</button>`; }).join('')}</div>
+      ${ch ? `<div class="fb ${good ? 'ok' : 'bad'} pop">${good ? I.check + 'Верно' : I.x + 'Неверно: правильный ответ отмечен зелёным'}${good ? `<span class="chip g">+${PTS} баллов · +${COINS} фениксов</span>` : ''}</div>` : ''}</div>
+      <div class="nav"><button class="rb" id="bk" aria-label="Назад" ${cur === 0 && !ch ? '' : ''}>${I.left}</button>
+      <button class="gold" id="nx" ${sel.length ? '' : 'disabled'}>${!ch ? 'Проверить' : last ? 'Итог ' + I.right : 'Дальше ' + I.right}</button></div></div>`;
+    box.querySelectorAll('.opt').forEach((b) => b.onclick = () => { if (ch) return; const i = +b.dataset.i; ans[cur] = multi ? (sel.includes(i) ? sel.filter((x) => x !== i) : [...sel, i]) : [i]; draw(); });
+    box.querySelector('#bk').onclick = () => { if (cur === 0) return startCard(box, () => draw()); cur--; draw(1); };
+    box.querySelector('#nx').onclick = () => { if (!ch) { checked[cur] = true; return draw(); } if (last) return result(box, ans, () => { cur = 0; ans = {}; checked = {}; variantB(box); }, false); cur++; draw(1); };
+  };
+  startCard(box, () => draw());
+}
+
+/* ===== В: все вопросы на одной странице ===== */
+function variantC(box) {
+  let ans = {}, done = false;
+  const draw = () => {
+    const n = Object.values(ans).filter((a) => a.length).length;
+    const res = Q.map((q, i) => same(ans[i] || [], q.c)); const ok = res.filter(Boolean).length;
+    box.innerHTML = `<div class="row" style="align-items:center">${done ? ring(Math.round(ok / Q.length * 100), 64) : `<span class="tile">${I.list}</span>`}<div>
+      <div class="kk">${done ? 'Результат теста' : 'Проверьте себя'}</div><div class="tt">${done ? `Правильно ${ok} из ${Q.length}` : 'Тест «Записная книжка»'}</div>
+      <div class="mm">${done ? (ok ? `+${ok * PTS} баллов · +${ok * COINS} фениксов` : 'Баллы не начислены') : `${Q.length} ${words(Q.length)} · за правильные ответы до +${Q.length * PTS} баллов и +${Q.length * COINS} фениксов`}</div></div></div>
+      ${Q.map((q, qi) => { const multi = q.c.length > 1, sel = ans[qi] || [];
+        return `<div class="vq ${sel.length ? 'done' : ''}"><div class="qn" style="${done ? `color:${res[qi] ? '#6BCB77' : '#FF8A8A'}` : ''}">Вопрос ${qi + 1}${done ? (res[qi] ? ' · верно' : ' · неверно') : ''}</div><div class="q">${esc(q.q)}</div>${multi ? '<span class="multi">Несколько правильных ответов</span>' : ''}
+        <div class="opts">${q.o.map((o, i) => { let c = ''; if (done) c = sel.includes(i) ? (res[qi] ? 'ok' : 'bad') : 'dim'; else if (sel.includes(i)) c = 'sel';
+          return `<button class="opt ${multi ? 'm' : ''} ${c}" data-q="${qi}" data-i="${i}" ${done ? 'disabled' : ''}><span class="l">${sel.includes(i) && (multi || done) ? (done && !res[qi] ? I.x : I.check) : L[i]}</span>${esc(strip(o))}</button>`; }).join('')}</div></div>`; }).join('')}
+      <div class="dock">${done ? `<div class="t"><b>Правильно ${ok} из ${Q.length}</b></div><button class="ghost" id="re">${I.redo}Ещё раз</button>`
+        : `<div class="t">Отвечено <b>${n} из ${Q.length}</b></div><button class="gold" id="ck" ${n === Q.length ? '' : 'disabled'}>Проверить</button>`}</div>`;
+    box.querySelectorAll('.opt').forEach((b) => b.onclick = () => { const qi = +b.dataset.q, i = +b.dataset.i, multi = Q[qi].c.length > 1, sel = ans[qi] || [];
+      ans[qi] = multi ? (sel.includes(i) ? sel.filter((x) => x !== i) : [...sel, i]) : [i]; draw(); });
+    const ck = box.querySelector('#ck'); if (ck) ck.onclick = () => { done = true; draw(); box.scrollIntoView({ behavior: 'smooth' }); };
+    const re = box.querySelector('#re'); if (re) re.onclick = () => { ans = {}; done = false; draw(); };
+  };
+  draw();
+}
+
+const v = new URLSearchParams(location.search).get('v') || 'a';
+document.querySelectorAll('.vsw a').forEach((a) => a.classList.toggle('on', a.dataset.v === v));
+const box = document.getElementById('quiz');
+({ a: variantA, b: variantB, c: variantC }[v])(box);
+</script>
+</body>
+</html>
