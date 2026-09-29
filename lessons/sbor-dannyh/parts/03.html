@@ -328,6 +328,15 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
 .btn { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; margin-top: 20px; padding: 0 20px; border-radius: 14px; background: linear-gradient(180deg, #DFC880, #C9A84C); color: #2A2008; font-size: 16px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 0 #A07828; }
 .btn svg.i { width: 18px; height: 18px; }
 
+/* ——— ссылка на урок-инструкцию ——— */
+.nx-lesson { display: flex; align-items: center; gap: 14px; margin-top: 28px; padding: 18px; border-radius: var(--r); border: 1px solid var(--blue-line); background: linear-gradient(135deg, rgba(107,159,255,.12), rgba(107,159,255,.03)); text-decoration: none; color: var(--t2); }
+.nx-t { flex: 1; min-width: 0; }
+.nx-t small { display: block; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); }
+.nx-t b { display: block; margin-top: 4px; font-size: 17px; line-height: 1.3; color: var(--t1); }
+.nx-t > span { display: block; margin-top: 4px; font-size: 14px; line-height: 1.4; color: var(--t2); }
+.nx-go { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--blue-bg); border: 1px solid var(--blue-line); color: var(--blue); }
+.nx-go svg.i { width: 18px; height: 18px; }
+
 /* ——— подкаст ——— */
 .pod { background: linear-gradient(180deg, #1B2233 0%, var(--card) 100%); }
 .pod p { font-size: 16px; }
@@ -354,6 +363,12 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
     <li class="step key"><span class="step-n">5</span><div><p class="step-t">После встречи</p><p class="step-d">Во&nbsp;вкладке «Записи» отметьте «Завершена»&nbsp;— <b>только так встреча засчитывается в&nbsp;задания.</b></p></div></li>
   </ol>
   <a class="btn" href="https://wearefree.club/booking">Открыть «Встречи»<svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+
+  <a class="nx-lesson" href="#">
+    <span class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>
+    <span class="nx-t"><small>Как провести разговор&nbsp;— следующий урок</small><b>Кастдев: как проверить идею продукта</b><span>Как найти собеседников, пригласить их на&nbsp;разговор, какие вопросы задавать. 9&nbsp;шагов, 15&nbsp;страниц.</span></span>
+    <span class="nx-go"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+  </a>
 </section>
 </main>
 </body>
