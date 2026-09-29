@@ -397,23 +397,30 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
     </div>
     <div class="card case">
       <div class="card-t"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>Давно в&nbsp;теме</div>
-      <div class="avg" aria-label="Сумма за три месяца, делённая на три">
-        <span class="avg-m">1&nbsp;мес</span><span class="avg-op">+</span><span class="avg-m">2&nbsp;мес</span><span class="avg-op">+</span><span class="avg-m">3&nbsp;мес</span>
-        <span class="avg-div">÷&nbsp;3</span>
-      </div>
-      <p>Если вы&nbsp;давно в&nbsp;этой теме и&nbsp;зарабатываете, то&nbsp;он&nbsp;определяется средним арифметическим за&nbsp;последние три месяца. Сколько вы&nbsp;заработали. Чтобы определить, сколько в&nbsp;среднем получается у&nbsp;вас сделать денег.</p>
+      <div class="avg"><span class="avg-m"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>последние 30&nbsp;дней</span></div>
+      <p><span class="upd">Если вы&nbsp;давно в&nbsp;этой теме и&nbsp;зарабатываете, то&nbsp;Точка&nbsp;А&nbsp;— это сколько денег вы&nbsp;взяли себе по&nbsp;этой нише за&nbsp;последние 30&nbsp;дней.</span></p>
     </div>
   </div>
-  <p class="after">После этого вы&nbsp;выбираете здесь в&nbsp;графе Точка&nbsp;А ваш результат.</p>
+  <div class="note blue"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="upd">Точку&nbsp;А вы&nbsp;указываете при первом входе в&nbsp;кабинет: пока цели нет, маршрут и&nbsp;уроки закрыты. Поменять её&nbsp;можно на&nbsp;главной, в&nbsp;блоке <b>«Цель экспедиции»</b>, кнопкой <b>«Изменить»</b>.</span></div>
 </section>
 
 <section class="sec">
   <span class="kick">Шаг 2</span>
-  <h2 class="h2">Валюта и&nbsp;источники дохода</h2>
+  <h2 class="h2">Как заполнить цель</h2>
+  <p><span class="upd">В&nbsp;форме три поля, по&nbsp;порядку.</span></p>
 
   <ol class="steps">
     <li class="step">
       <span class="step-n">01</span>
+      <div>
+        <p class="step-t">Источник дохода</p>
+        <p class="step-d"><span class="upd">Сначала выберите источник дохода&nbsp;— нишу, которую развиваете на&nbsp;этом тренинге.</span> В&nbsp;какой категории вы&nbsp;будете зарабатывать.</p>
+        <p class="step-d">Это у&nbsp;вас будут: консультации, курсы... Вы&nbsp;можете создать несколько: 5, 10, 20&nbsp;источников дохода. В&nbsp;каждом источнике дохода вы&nbsp;можете выбрать свою валюту.</p>
+        <p class="step-d"><span class="upd">Если источников пока нет, добавьте его прямо в&nbsp;форме&nbsp;— он&nbsp;сохранится и&nbsp;в&nbsp;дневнике доходов платформы.</span></p>
+      </div>
+    </li>
+    <li class="step">
+      <span class="step-n">02</span>
       <div>
         <p class="step-t">Валюта</p>
         <p class="step-d">Также выбираете валюту, которую вы&nbsp;будете дальше считать. У&nbsp;вас есть возможность изменить валюту для того, чтобы вам было удобно. В&nbsp;рублях, гривнах, тенге или в&nbsp;других валютах, которые есть в&nbsp;списке. Если вашей валюты нет, выберите максимально удобную вам для понимания процесса.</p>
@@ -421,11 +428,10 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
       </div>
     </li>
     <li class="step">
-      <span class="step-n">02</span>
+      <span class="step-n">03</span>
       <div>
-        <p class="step-t">Источники дохода</p>
-        <p class="step-d">После этого можете выбрать источники дохода. В&nbsp;какой категории вы&nbsp;будете зарабатывать.</p>
-        <p class="step-d">Это у&nbsp;вас будут: консультации, курсы... Вы&nbsp;можете создать несколько: 5, 10, 20&nbsp;источников дохода. В&nbsp;каждом источнике дохода вы&nbsp;можете выбрать свою валюту.</p>
+        <p class="step-t">Доход за&nbsp;30&nbsp;дней</p>
+        <p class="step-d"><span class="upd">Впишите, сколько вы&nbsp;взяли себе по&nbsp;этой нише за&nbsp;последние 30&nbsp;дней. Если вы&nbsp;ведёте дневник доходов на&nbsp;платформе, сумма подставится сама. Под полем форма сразу покажет вашу Точку&nbsp;Б.</span></p>
       </div>
     </li>
   </ol>
@@ -485,6 +491,7 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
     </div>
     <p class="calc-foot">Если вы&nbsp;считаете в&nbsp;другой валюте, пороги пересчитываются по&nbsp;курсу.</p>
   </div>
+  <div class="note blue"><svg class="i" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span class="upd">Точка&nbsp;Б фиксируется в&nbsp;момент, когда вы&nbsp;ставите цель. От&nbsp;курса валют она потом не&nbsp;меняется.</span></div>
 
   <p class="quote">Приятного прохождения курса!</p>
 </section>
