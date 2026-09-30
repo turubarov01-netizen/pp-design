@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Рюкзак · три варианта</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B0F15;--card:#121A25;--card2:#18222F;--line:rgba(255,255,255,.08);--mut:rgba(255,255,255,.55);--t2:rgba(255,255,255,.78);--g:#EDBE4A;--g2:rgba(237,190,74,.12);--green:#4CC38A;--red:#FF6B6B;--blue:#6B9FFF;--epic:#B07CFF;--rare:#5B9BFF;--unc:#4CC38A;--leg:#EDBE4A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#07090D;color:#F4F6F8;font:15px/1.45 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.ic{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sw{position:sticky;top:0;z-index:9;display:flex;gap:8px;align-items:center;padding:10px 24px;background:rgba(7,9,13,.94);border-bottom:1px solid var(--line);font-weight:600;font-size:13px;overflow-x:auto}
+.sw span{color:var(--mut)}.sw a{height:34px;display:inline-flex;align-items:center;padding:0 14px;border-radius:17px;border:1px solid rgba(255,255,255,.14);color:var(--t2);text-decoration:none;white-space:nowrap}
+.page{max-width:1640px;margin:0 auto;padding:0 32px}
+.sec{padding:44px 0 56px;border-bottom:1px solid var(--line)}
+.vh .k{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.vh h2{margin-top:6px;font-size:26px;font-weight:800}.vh p{margin-top:8px;max-width:860px;color:var(--t2);font-size:15px}
+.vh ul{margin:10px 0 0 18px;max-width:860px;color:var(--t2);font-size:14px}.vh li{margin-top:4px}
+.row{display:flex;gap:28px;align-items:flex-start;margin-top:26px;flex-wrap:wrap}
+.cap{font-size:12px;font-weight:600;color:var(--mut);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+/* рамки */
+.ph{width:390px;background:var(--bg);border:1px solid rgba(255,255,255,.12);border-radius:28px;overflow:hidden;position:relative}
+.dk{width:1180px;background:var(--bg);border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden}
+.bar{display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;border-bottom:1px solid var(--line)}
+.bar .lg{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#F0D080,#CCA830);color:#1a1405;font-weight:800;font-size:13px;display:grid;place-items:center}
+.bar b{font-size:17px;flex:1}.bar .st{display:flex;gap:12px;align-items:center;font-size:14px;font-weight:700}
+.bar .st span{display:inline-flex;align-items:center;gap:4px}
+.hearts{display:inline-flex;gap:2px;color:var(--red)}.hearts .ic{width:15px;height:15px;fill:currentColor;stroke:none}.hearts .off{fill:none;stroke:currentColor;stroke-width:2;opacity:.45}
+.tabbar{display:grid;grid-template-columns:repeat(5,1fr);height:64px;border-top:1px solid var(--line);background:#0E131B}
+.tabbar div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;color:var(--mut)}.tabbar .on{color:var(--g)}
+.body{padding:16px}
+.dk .body{padding:28px 32px}
+h3{font-size:17px;font-weight:700}
+.h3row{display:flex;justify-content:space-between;align-items:baseline;margin:22px 2px 10px}.h3row span{font-size:13px;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0 18px;border-radius:12px;font-weight:700;font-size:15px;border:0}
+.btn.gold{background:linear-gradient(135deg,#F0D080,#CCA830);color:#1a1405}.btn.ghost{background:rgba(255,255,255,.06);color:var(--t2);border:1px solid var(--line)}
+.btn.sm{height:36px;padding:0 14px;font-size:14px;border-radius:10px}
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:#2E8B7A;border:2px solid #B7773F}
+.ico{flex:none;display:grid;place-items:center;border-radius:14px;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.08),transparent 70%)}
+.ico img{width:88%;height:88%;object-fit:contain}
+.rar-epic{--rc:var(--epic)}.rar-rare{--rc:var(--rare)}.rar-uncommon{--rc:var(--unc)}.rar-legendary{--rc:var(--leg)}
+.pill{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.lock{filter:grayscale(1);opacity:.45}
+/* ── общие куски ── */
+.req{padding:16px;border-color:rgba(237,190,74,.4);background:linear-gradient(180deg,rgba(237,190,74,.08),rgba(237,190,74,.02))}
+.req .top{display:flex;gap:12px;align-items:center}.req .top b{display:block;font-size:16px}.req .top span{font-size:13px;color:var(--t2)}
+.req .why{margin-top:10px;font-size:13px;color:var(--mut)}
+.req .acts{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
+.why-life{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;font-size:13px;color:var(--t2)}
+.why-life .ic{color:var(--red);margin-top:1px}.why-life b{color:#fff}
+/* ── A ── */
+.a-stat{display:grid;grid-template-columns:1.3fr 1fr 1fr}
+.a-stat>div{padding:12px 14px}.a-stat>div+div{border-left:1px solid var(--line)}
+.a-stat small{display:block;font-size:12px;color:var(--mut)}.a-stat b{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:18px}
+.a-stat .lf{grid-column:1/-1;border-top:1px solid var(--line);border-left:0!important}.a-stat .lf b{display:inline;font-size:14px;margin:0}.a-stat .lf .ic{width:16px;height:16px}
+.it{display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 12px;align-items:start;padding:12px 14px;border-top:1px solid var(--line)}.it .ico{grid-row:span 2}.it .btn{justify-self:start;margin-top:6px}.dk .it{grid-template-columns:64px minmax(0,1fr) auto;align-items:center}.dk .it .ico{grid-row:auto}.dk .it .btn{margin-top:0}
+.it:first-child{border-top:0}
+.it .ico{width:64px;height:64px;border:1.5px solid var(--rc)}
+.it b{display:block;font-size:15px}.it span{display:block;font-size:13px;color:var(--mut);margin-top:2px;line-height:1.35}
+.it .tag{margin-top:6px;font-size:12px;color:var(--g)}
+.gt{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}
+.gt:first-child{border-top:0}.gt .ico{width:44px;height:44px;border-radius:10px}
+.gt b{display:block;font-size:14px;font-weight:600;color:var(--t2)}.gt span{display:block;font-size:12px;color:var(--mut);margin-top:1px;line-height:1.35}
+.more{display:flex;justify-content:center;align-items:center;gap:6px;height:44px;border-top:1px solid var(--line);font-size:14px;font-weight:600;color:var(--blue)}
+.ach{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ach>div{padding:12px 8px;text-align:center;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.ach img{width:64px;height:64px;object-fit:contain}.ach b{display:block;margin-top:6px;font-size:12px;font-weight:600}
+.ach .pb{height:4px;border-radius:2px;background:rgba(255,255,255,.08);margin:8px 8px 0;overflow:hidden}.ach .pb i{display:block;height:100%;background:var(--g)}
+.ach span{display:block;font-size:11px;color:var(--mut);margin-top:4px}
+.dk .a-grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:28px;align-items:start}
+/* ── B ── */
+.b-st{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px}
+.b-st>div{padding:12px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.b-st small{display:block;font-size:12px;color:var(--mut)}.b-st b{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:18px}
+.b-st em{display:block;font-style:normal;margin-top:4px;font-size:11px;color:var(--red);line-height:1.3}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:16px;padding:4px;border-radius:14px;background:rgba(255,255,255,.05)}
+.seg div{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border-radius:10px;font-size:14px;font-weight:600;color:var(--mut)}
+.seg .on{background:var(--bg);color:#fff}.seg i{font-style:normal;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;display:grid;place-items:center}
+.seg u{text-decoration:none;font-size:12px;color:var(--mut)}
+.bg3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bi{position:relative;padding:10px 8px 12px;border-radius:16px;background:var(--card);border:1.5px solid var(--rc);text-align:center}
+.bi .ico{width:100%;aspect-ratio:1;border-radius:12px}.bi b{display:block;margin-top:6px;font-size:13px;line-height:1.25}
+.bi .btn{margin-top:8px;width:100%;height:32px;font-size:13px;border-radius:9px}
+.bi.lk{border-color:var(--line)}.bi.lk b{color:var(--mut)}.bi.lk small{display:block;margin-top:4px;font-size:11px;color:var(--mut);line-height:1.3}
+.dk .b-cols{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,.8fr);gap:20px;align-items:start;margin-top:20px}
+.dk .b-cols .bg3{grid-template-columns:repeat(3,1fr)}.dk .b-cols .ach{grid-template-columns:1fr}.dk .b-cols .ach>div{display:grid;grid-template-columns:56px 1fr;grid-template-areas:'i b' 'i p' 'i s';text-align:left;column-gap:12px;align-items:center}.dk .b-cols .ach img{grid-area:i;width:56px;height:56px}.dk .b-cols .ach b{grid-area:b;margin:0}.dk .b-cols .ach .pb{grid-area:p;margin:6px 0 0}.dk .b-cols .ach span{grid-area:s}
+/* ── C ── */
+.c-now{display:flex;gap:8px;overflow:hidden}
+.c-now span{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;background:var(--g2);color:var(--g);font-size:13px;font-weight:600;white-space:nowrap}
+.slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px;border-radius:22px;background:linear-gradient(180deg,#1A2230,#121A25);border:1px solid var(--line)}
+.sl{position:relative;aspect-ratio:1;border-radius:14px;background:rgba(0,0,0,.28);border:1.5px solid var(--line);display:grid;place-items:center}
+.sl img{width:84%;height:84%;min-width:0;object-fit:contain}
+.sl.own{border-color:var(--rc);box-shadow:0 0 18px -6px var(--rc)}.sl.sel{outline:2px solid #fff;outline-offset:2px}
+.sl.lk img{filter:grayscale(1) brightness(.5);opacity:.5}
+.sl em{position:absolute;right:4px;bottom:4px;font-style:normal;min-width:18px;height:18px;border-radius:9px;background:var(--bg);border:1px solid var(--line);font-size:11px;font-weight:700;display:grid;place-items:center}
+.sl .nm{position:absolute;left:0;right:0;bottom:-18px;font-size:10px;color:var(--mut);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slots.lbl{row-gap:28px;padding-bottom:30px}
+.sheet{position:absolute;left:0;right:0;bottom:0;padding:10px 18px 22px;border-radius:24px 24px 0 0;background:#161F2C;border-top:1px solid rgba(255,255,255,.14);box-shadow:0 -20px 50px rgba(0,0,0,.6)}
+.sheet .gr{width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.2);margin:0 auto 14px}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.55)}
+.det .hd{display:flex;gap:14px;align-items:center}.det .ico{width:84px;height:84px;border:1.5px solid var(--rc);border-radius:18px}
+.det h4{font-size:20px;font-weight:800}.det .ef{margin-top:14px;font-size:15px;color:var(--t2)}
+.det .how{margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);font-size:13px;color:var(--mut)}.det .how b{display:block;color:var(--t2);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.det .btn{width:100%;margin-top:16px}
+.toast{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:16px;background:var(--card);border:1px solid rgba(237,190,74,.4)}
+.toast .av{width:36px;height:36px;font-size:13px}.toast div{flex:1;min-width:0;font-size:13px;color:var(--t2)}.toast b{color:#fff}
+.dk .c-grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:28px;align-items:start}
+.dk .slots{grid-template-columns:repeat(5,minmax(0,1fr))}
+.note{margin-top:14px;font-size:13px;color:var(--mut);max-width:1180px}
+.now img{display:block;border-radius:20px;border:1px solid rgba(255,255,255,.12)}
+.prob{columns:2;column-gap:36px;max-width:1180px;margin-top:14px;color:var(--t2);font-size:14px}.prob p{break-inside:avoid;margin-bottom:12px}.prob b{color:#fff}
+</style></head><body>
+<nav class="sw"><span>Рюкзак:</span><a href="#now">Как сейчас</a><a href="#A">А · Сначала действия</a><a href="#B">Б · Три вкладки</a><a href="#C">В · Инвентарь</a></nav>
+<div class="page" id="root"></div>
+<script>
+const I=(n,c='')=>{const P={heart:'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',star:'<path d="M11.5 2.3a.6.6 0 0 1 1 0l2.7 5.6 6.1.9a.6.6 0 0 1 .3 1l-4.4 4.3 1 6.1a.6.6 0 0 1-.8.6L12 18l-5.4 2.8a.6.6 0 0 1-.8-.6l1-6.1L2.4 9.8a.6.6 0 0 1 .3-1l6.1-.9Z"/>',fire:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5Z"/>',home:'<path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',map:'<path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3Z"/><path d="M9 3v15M15 6v15"/>',bag:'<path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 10h8M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M8 18v-4h8v4"/>',tent:'<path d="M3.5 21 14 3M20.5 21 10 3M15.5 21 12 15l-3.5 6M2 21h20"/>',grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',down:'<path d="m6 9 6 6 6-6"/>',users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',send:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>'};return `<svg class="ic ${c}" viewBox="0 0 24 24">${P[n]}</svg>`};
+const U='https://owfmgpeandpdnyctiqng.supabase.co/storage/v1/object/public/inventory-items/c351da9c-ff14-44c4-b8c7-242b7163a651/';
+const IT={compass:['e19899f6-1994-4d6c-9962-882000190969','Компас','epic','+2 дня к ключевому заданию и пропуск 1 фокуса дня без потери жизни. Действует и на напарника.','Хакеру при выборе роли, потом каждую неделю'],
+first_aid:['84bbc861-1286-4215-b422-63ba6f267158','Аптечка','uncommon','+1 жизнь вам и напарнику (бросок кубика).','Психологу каждую неделю без потерь жизней и за задание «ЗОЖник»'],
+tent:['c210889a-329e-421f-8c64-888c1806e74c','Палатка','epic','5 дней вы и напарник не теряете жизни.','За задание «300 целей», «Стенографист» или «Хакер Тайм»'],
+producer_journal:['7df5adc3-17d2-4159-8a05-51719958d06b','Журнал Продюсера','rare','Скидка 50% на одну покупку в Лавке. Сгорает через 7 дней.','За задание в уроке «50 вещей по пути к самооценке»'],
+flask:['4600b8c2-3804-466a-b661-6a45255d86ab','Фляга родниковой воды','rare','x2 фениксов и баллов за следующее задание всей команде.','Казначею при выборе роли и каждую неделю'],
+medallion:['bfbc4ab3-f7ce-4278-995f-71567dab4307','Медальон Турубарова','legendary','Возвращает 1 или 3 жизни.','Сенсею каждую неделю со 2-й недели, если нет потерь жизней'],
+staff:['5227cb39-119f-4788-9a4f-520b200c25aa','Посох Графа','legendary','Выводит из комы: 3 жизни одному или по 1 с напарниками.','Первым 20% участников, кто дошёл до 50% цели'],
+starlink:['6fa0c55f-a622-428a-90a3-d2211514af57','Starlink','legendary','Созвон 20 минут с Игорем или Сашей для любого участника.','Капитану при выборе роли, один раз'],
+via_ferrata:['73387219-3c3b-4672-aa83-f988799962fc','Виа Феррата','legendary','Подарок на выбор: эфир, обед с авторами или скидка.','За доход $5 000 в эквиваленте']};
+const it=s=>{const[id,n,r,e,h]=IT[s];return{s,img:U+id+'.png',n,r,e,h}};
+const S=new URLSearchParams(location.search);
+const OWN=['compass','first_aid'], REST=['tent','producer_journal','flask','medallion','staff','starlink','via_ferrata'];
+const BADGE=['https://turubarov01-netizen.github.io/pp-design/img/source.png'];
+const ico=(x,cls='')=>`<span class="ico rar-${x.r} ${cls}"><img src="${x.img}" alt=""></span>`;
+const hearts=n=>`<span class="hearts">${[0,1,2].map(i=>I('heart',i<n?'':'off')).join('')}</span>`;
+const bar=()=>`<div class="bar"><span class="lg">ПП</span><b>Рюкзак</b><div class="st"><span>${hearts(2)}</span><span style="color:var(--g)">${I('fire')}40</span></div></div>`;
+const tabbar=()=>`<div class="tabbar">${[['home','Главная'],['map','Маршрут'],['bag','Рюкзак'],['tent','Лагерь'],['grid','Ещё']].map(([i,t])=>`<div class="${t==='Рюкзак'?'on':''}">${I(i)}${t}</div>`).join('')}</div>`;
+const req=(big=true)=>`<div class="card req"><div class="top"><span class="av">МК</span><div><b>Мария Кравец зовёт вас в напарники</b><span>Поток 5 · Отряд 2 · сегодня в 11:40</span></div></div><div class="why">Без напарника не откроется упражнение в уроке «Напарник»</div><div class="acts"><span class="btn gold">Принять</span><span class="btn ghost">Отклонить</span></div></div>`;
+const whyLife=()=>`<div class="why-life">${I('heart')}<div><b>−1 жизнь 29 сентября</b><br>Старт: не выполнено задание «заработать деньги»</div></div>`;
+const ach=()=>`<div class="ach">${[['План Продюсера','8% из 50%',16,'badge-pp'],['Топ-3 недели','ещё не было',0,'badge-top3'],['Доход $5 000','$50 из $5 000',1,'badge-5k']].map(([t,s,p,im])=>`<div><img src="img/${im}.png" style="${p>=100?'':'filter:grayscale(.85);opacity:.7'}"><b>${t}</b><div class="pb"><i style="width:${p}%"></i></div><span>${s}</span></div>`).join('')}</div>`;
+// ── A ──
+const aItems=()=>`<div class="card">${OWN.map(s=>{const x=it(s);return `<div class="it rar-${x.r}">${ico(x)}<div><b>${x.n}</b><span>${x.e}</span></div><span class="btn gold sm">Применить</span></div>`}).join('')}</div>`;
+const aGet=(n=4)=>`<div class="card">${REST.slice(0,n).map(s=>{const x=it(s);return `<div class="gt">${ico(x,'lock')}<div><b>${x.n}</b><span>${x.h}</span></div></div>`}).join('')}${n<REST.length?`<div class="more">Ещё ${REST.length-n} предмета ${I('down')}</div>`:''}</div>`;
+const aStat=()=>`<div class="card a-stat"><div><small>Жизни</small><b>${hearts(2)}</b></div><div><small>Фениксы ПП</small><b style="color:var(--g)">40</b></div><div><small>Баллы</small><b>10</b></div><div class="lf">${whyLife().replace('class="why-life"','class="why-life" style="padding:0"')}</div></div>`;
+const A_ph=()=>`<div class="ph">${bar()}<div class="body">${req()}<div class="h3row"><h3>Мои предметы</h3><span>2</span></div>${aItems()}<div class="h3row"><h3>Жизни и счёт</h3></div>${aStat()}<div class="h3row"><h3>Можно получить</h3><span>7</span></div>${aGet(3)}<div class="h3row"><h3>Достижения</h3></div>${ach()}</div>${tabbar()}</div>`;
+const A_dk=()=>`<div class="dk">${bar()}<div class="body a-grid"><div>${req()}<div class="h3row"><h3>Мои предметы</h3><span>2</span></div>${aItems()}<div class="h3row"><h3>Можно получить</h3><span>7</span></div>${aGet(7)}</div><div><div class="h3row" style="margin-top:0"><h3>Жизни и счёт</h3></div>${aStat()}<div class="h3row"><h3>Достижения</h3></div>${ach()}<div class="h3row"><h3>Перевести фениксы</h3></div><div class="card" style="padding:14px;font-size:14px;color:var(--t2);display:flex;justify-content:space-between;align-items:center">Другому участнику платформы<span class="btn ghost sm">${I('send')}Перевести</span></div></div></div></div>`;
+// ── B ──
+const bSt=()=>`<div class="b-st"><div><small>Жизни</small><b>${hearts(2)}</b><em>−1 · 29.09 · задание «заработать деньги»</em></div><div><small>Фениксы ПП</small><b style="color:var(--g)">40</b></div><div><small>Баллы</small><b>10</b></div></div>`;
+const seg=on=>`<div class="seg">${[['Предметы','<u>2</u>'],['Напарник','<i>1</i>'],['Достижения','']].map(([t,x])=>`<div class="${t===on?'on':''}">${t}${x}</div>`).join('')}</div>`;
+const bItems=()=>`<div class="h3row"><h3>У вас</h3><span>нажмите, чтобы применить</span></div><div class="bg3">${OWN.map(s=>{const x=it(s);return `<div class="bi rar-${x.r}">${ico(x)}<b>${x.n}</b><span class="btn gold">Применить</span></div>`}).join('')}</div><div class="h3row"><h3>Можно получить</h3><span>7</span></div><div class="bg3">${REST.slice(0,6).map(s=>{const x=it(s);return `<div class="bi lk rar-${x.r}">${ico(x,'lock')}<b>${x.n}</b><small>${x.h}</small></div>`}).join('')}</div>`;
+const bPart=()=>`${req()}<div class="note" style="margin-top:12px">Когда напарник принят, здесь его день: план, отчёт, жизни и предметы.</div>`;
+const B_ph=(tab)=>`<div class="ph">${bar()}<div class="body">${bSt()}${seg(tab)}${tab==='Предметы'?bItems():`<div style="margin-top:16px">${bPart()}</div>`}</div>${tabbar()}</div>`;
+const B_dk=()=>`<div class="dk">${bar()}<div class="body">${bSt()}<div class="b-cols"><div><div class="h3row" style="margin-top:0"><h3>Предметы</h3><span>2 у вас</span></div>${bItems().replace('<div class="h3row"><h3>У вас</h3><span>нажмите, чтобы применить</span></div>','')}</div><div><div class="h3row" style="margin-top:0"><h3>Напарник</h3><span>1 заявка</span></div>${bPart()}</div><div><div class="h3row" style="margin-top:0"><h3>Достижения</h3></div>${ach().replace('grid-template-columns','x')}</div></div></div></div>`;
+// ── C ──
+const slots=(sel,lbl=true)=>{const all=[...OWN,...REST];return `<div class="slots ${lbl?'lbl':''}">${all.map(s=>{const x=it(s),own=OWN.includes(s);return `<div class="sl rar-${x.r} ${own?'own':'lk'} ${sel===s?'sel':''}"><img src="${x.img}">${own?'<em>1</em>':''}${lbl?`<span class="nm">${x.n}</span>`:''}</div>`}).join('')}</div>`};
+const det=(s,own)=>{const x=it(s);return `<div class="det rar-${x.r}"><div class="hd">${ico(x,own?'':'lock')}<div><span class="pill" style="background:rgba(176,124,255,.15);color:var(--rc)">${x.r==='epic'?'Эпический':x.r==='legendary'?'Легендарный':x.r==='rare'?'Редкий':'Необычный'}</span><h4 style="margin-top:6px">${x.n}</h4></div></div><div class="ef">${x.e}</div><div class="how"><b>Как получить</b>${x.h}</div>${own?'<span class="btn gold">Применить на себя или напарника</span>':'<span class="btn ghost">Пока нет</span>'}</div>`};
+const toast=()=>`<div class="toast"><span class="av">МК</span><div><b>Мария Кравец</b> зовёт в напарники</div><span class="btn gold sm">Принять</span><span class="btn ghost sm" style="width:36px;padding:0">${I('x')}</span></div>`;
+const cTop=()=>`${toast()}<div class="c-now" style="margin-top:12px"><span>${I('heart')}−1 жизнь 29.09: задание «заработать деньги»</span></div>`;
+const C_ph=(open)=>`<div class="ph" style="${open?'height:844px':''}">${bar()}<div class="body">${cTop()}<div class="h3row"><h3>Мой инвентарь</h3><span>2 из 9</span></div>${slots(open?'compass':null)}<div class="h3row"><h3>Достижения</h3></div>${ach()}</div>${open?`<div class="dim"></div><div class="sheet"><div class="gr"></div>${det('compass',true)}</div>`:tabbar()}</div>`;
+const C_dk=()=>`<div class="dk">${bar()}<div class="body c-grid"><div>${cTop()}<div class="h3row"><h3>Мой инвентарь</h3><span>2 из 9 · нажмите на предмет</span></div>${slots('compass')}<div class="h3row"><h3>Достижения</h3></div>${ach()}</div><div class="card" style="padding:20px;position:sticky;top:0">${det('compass',true)}</div></div></div>`;
+const V=[
+['A','Вариант А','Сначала то, что требует действия','Одна лента сверху вниз по важности. Заявка в напарники первым блоком с большими кнопками. Свои предметы списком: картинка, название, что делает, «Применить». Остальные предметы ниже, серые, с тем, как их получить. Жизни с причиной списания. Карты маршрута нет: она повторяет «Маршрут».',['На компьютере две колонки: слева действия и предметы, справа жизни, достижения и перевод фениксов.','Плюс: ничего не прячется, человек сразу видит, что сделать. Минус: страница всё ещё длинная, если предметов станет много.'],()=>`<div><div class="cap">Телефон</div>${A_ph()}</div><div><div class="cap">Компьютер</div>${A_dk()}</div>`],
+['B','Вариант Б','Три вкладки: Предметы · Напарник · Достижения','Сверху три цифры: жизни с причиной, фениксы ПП, баллы. Ниже переключатель на три вкладки, на вкладке «Напарник» красная метка, пока висит заявка. Предметы плиткой по три с названиями и кнопкой «Применить».',['На компьютере вкладки раскрываются в три колонки рядом, как рейтинг в Лагере.','Плюс: каждый экран короткий. Минус: заявку в напарники видно только по метке, её легко пропустить.'],()=>`<div><div class="cap">Телефон · Предметы</div>${B_ph('Предметы')}</div><div><div class="cap">Телефон · Напарник</div>${B_ph('Напарник')}</div><div><div class="cap">Компьютер</div>${B_dk()}</div>`],
+['C','Вариант В','Инвентарь как в игре','Рюкзак выглядит как инвентарь: 9 ячеек, свои горят цветом редкости, чужие тёмные, названия под каждой. Нажатие открывает карточку снизу: что делает, как получить, «Применить». Заявка в напарники — плашка сверху.',['На компьютере ячейки слева, карточка выбранного предмета справа.','Плюс: самый короткий и «игровой», видно все 9 предметов разом. Минус: чтобы прочитать, что делает предмет, нужно нажать.'],()=>`<div><div class="cap">Телефон</div>${C_ph(false)}</div><div><div class="cap">Телефон · нажали на Компас</div>${C_ph(true)}</div><div><div class="cap">Компьютер</div>${C_dk()}</div>`]];
+const now=`<section class="sec" id="now"><div class="vh"><div class="k">Как сейчас</div><h2>Что мешает в Рюкзаке</h2></div>
+<div class="prob">
+<p><b>Заявки в напарники не видно.</b> Сегодня в Потоке 5 отправлено 8 заявок, ни одна не принята. Принять можно только в Рюкзаке, а блок стоит на третьем экране под сеткой, с маленькими ✓ и ✕. Без принятого напарника не открывается упражнение в уроке «Напарник».</p>
+<p><b>Непонятно, за что сняли жизнь.</b> У 11 человек Потока 5 списана жизнь 29.09 («Старт: не выполнено задание заработать деньги»). В Рюкзаке просто два сердца.</p>
+<p><b>12 больших квадратов, из них 1–2 своих.</b> 9 предметов программы и 3 значка в одной сетке. Чужие серые, названия только при наведении мышью, на телефоне одни картинки. У Потока 5 на руках всего 4 предмета на 15 человек.</p>
+<p><b>Плитки сверху повторяют шапку.</b> Жизни и фениксы уже есть в шапке. Фениксы показаны из кошелька платформы (в среднем 14 409), а в программе у людей в среднем 76.</p>
+<p><b>Карта маршрута повторяет «Маршрут».</b> Больше половины страницы, при этом процент считается иначе, чем на странице «Маршрут».</p>
+<p><b>Страница длиной почти в 4 экрана телефона.</b> До напарников приходится листать 2,5 экрана.</p></div>
+<div class="row now"><div><div class="cap">Телефон · заявка от напарника</div><img src="img/now-in.jpg" width="300"></div><div><div class="cap">Телефон · предметы и напарник</div><img src="img/now-full.jpg" width="300"></div></div></section>`;
+document.getElementById('root').innerHTML=now+V.map(([id,k,t,p,ul,fr])=>`<section class="sec" id="${id}"><div class="vh"><div class="k">${k}</div><h2>${t}</h2><p>${p}</p><ul>${ul.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="row">${fr()}</div></section>`).join('');
+(function(){const NB=' ';const re=/(^|[\s («„"'>—-])([A-Za-zА-Яа-яЁё]{1,2})[ \t]+(?=\S)/g;const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(n.parentElement.closest('script,style'))continue;let t=n.nodeValue;for(let i=0;i<3;i++)t=t.replace(re,`$1$2${NB}`);t=t.replace(/(\d)[ \t]+(?=[A-Za-zА-Яа-яЁё%₽$€])/g,`$1${NB}`).replace(/[ \t]+—/g,`${NB}—`);if(t!==n.nodeValue)n.nodeValue=t;}})();
+</script></body></html>
