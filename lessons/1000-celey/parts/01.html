@@ -315,8 +315,20 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
 .task .kick { color: #D9B94E; }
 .task p { font-size: 17px; color: var(--t1); }
 .task p + p { margin-top: 12px; }
-.sw { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin: 0 5px 0 1px; vertical-align: -1px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
-.sw.b { background: #3D7BFF; } .sw.o { background: #FF9A3D; } .sw.r { background: #FF5A5A; } .sw.y { background: #FFD43D; }
+.cw { font-weight: 600; }
+.cw.b { color: #7EA8FF; } .cw.o { color: #FFAD66; } .cw.r { color: #FF8080; } .cw.y { color: #FFD95C; }
+/* четыре ватмана с рукописными строчками; часть строк вычеркнута — «через 10 лет будете вычеркивать» */
+.sheets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 300px; margin: 20px auto 24px !important; padding: 0 6px; }
+.sheet { aspect-ratio: 3 / 4; border-radius: 6px; padding: 16% 13%; display: grid; align-content: start; gap: 11%;
+  box-shadow: 0 6px 14px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.12); }
+.sheet:nth-child(1) { transform: rotate(-4deg); } .sheet:nth-child(2) { transform: rotate(2deg) translateY(4px); }
+.sheet:nth-child(3) { transform: rotate(-2deg); } .sheet:nth-child(4) { transform: rotate(4deg) translateY(3px); }
+.sheet.b { background: #3D6FE0; } .sheet.o { background: #E8893A; } .sheet.r { background: #D9504F; } .sheet.y { background: #E9C23B; }
+.sheet i { position: relative; display: block; height: 3px; border-radius: 2px; background: rgba(255,255,255,.55); }
+.sheet i:nth-child(2n) { width: 78%; } .sheet i:nth-child(3n) { width: 62%; }
+.sheet i.x { background: rgba(255,255,255,.3); }
+.sheet i.x::after { content: ""; position: absolute; left: -6%; right: -6%; top: 50%; height: 2px; margin-top: -1px; background: #1A1406; border-radius: 1px; transform: rotate(-3deg); }
+.sheet.y i { background: rgba(40,30,0,.45); } .sheet.y i.x { background: rgba(40,30,0,.25); } .sheet.y i.x::after { background: #fff; }
 .task-go { margin-top: 16px !important; font-size: 24px !important; font-weight: 700; line-height: 1.25 !important; text-wrap: balance;
   background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 
@@ -340,7 +352,6 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
 .sec > * + :is(.card, .talk, .tiers), .sec > :is(.card, .talk, .tiers) + * { margin-top: 20px !important; }
 .card > :first-child { margin-top: 0 !important; }
 .card > .card-t + * { margin-top: 0 !important; }
-.swc { white-space: nowrap; }
 
 </style>
 </head>
@@ -439,7 +450,9 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
   <div class="card task">
     <span class="kick">Задание урока</span>
     <p>Поэтому задание такое.</p>
-    <p>Советую вам пойти в&nbsp;канцтовары, взять <b>большой ватман,</b> желательно цветной: <span class="swc"><span class="sw b"></span>синий,</span> <span class="swc"><span class="sw o"></span>оранжевый,</span> <span class="swc"><span class="sw r"></span>красный,</span> <span class="swc"><span class="sw y"></span>желтого</span> цвета, чтобы это был не&nbsp;просто белый, потому что он&nbsp;будет у&nbsp;вас храниться. И&nbsp;потом, через 10&nbsp;лет, вы&nbsp;на&nbsp;этом ватмане будете вычеркивать, что вам удалось реализовать.</p>
+    <p>Советую вам пойти в&nbsp;канцтовары, взять <b>большой ватман,</b> желательно цветной: <span class="cw b">синий,</span> <span class="cw o">оранжевый,</span> <span class="cw r">красный,</span> <span class="cw y">желтого</span> цвета, чтобы это был не&nbsp;просто белый, потому что он&nbsp;будет у&nbsp;вас храниться.</p>
+    <div class="sheets" aria-hidden="true"><span class="sheet b"><i></i><i class="x"></i><i></i><i class="x"></i><i></i></span><span class="sheet o"><i></i><i class="x"></i><i></i><i class="x"></i><i></i></span><span class="sheet r"><i></i><i class="x"></i><i></i><i class="x"></i><i></i></span><span class="sheet y"><i></i><i class="x"></i><i></i><i class="x"></i><i></i></span></div>
+    <p>И&nbsp;потом, через 10&nbsp;лет, вы&nbsp;на&nbsp;этом ватмане будете вычеркивать, что вам удалось реализовать.</p>
     <p>Так что приступайте к&nbsp;выполнению задания.</p>
     <p class="task-go">И&nbsp;пусть оно изменит вашу жизнь.</p>
   </div>
