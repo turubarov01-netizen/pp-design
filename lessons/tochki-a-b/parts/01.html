@@ -359,6 +359,17 @@ svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none;
 }
 .avg-m svg.i { width: 15px; height: 15px; color: var(--blue); }
 
+/* ——— ритм отступов (сетка как в «Системе ценностей»): текст 12, блоки 20, подзаголовок 32/10 ——— */
+.sec > * { margin-bottom: 0 !important; }
+.sec > * + * { margin-top: 12px !important; }
+.sec > .kick { margin-bottom: 10px !important; }
+.sec > .kick + * { margin-top: 0 !important; }
+.sec > .h2 { margin-bottom: 0 !important; }
+.sec > .h2 + * { margin-top: 14px !important; }
+.sec > * + :is(.card, .pair, .steps, .note, .quote, .chips-lbl), .sec > :is(.card, .pair, .steps, .note, .quote, .chips) + * { margin-top: 20px !important; }
+.sec > .chips-lbl + .chips { margin-top: 10px !important; }
+.card > :first-child { margin-top: 0 !important; }
+
 </style>
 </head>
 <body>
