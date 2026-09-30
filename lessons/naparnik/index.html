@@ -68,6 +68,31 @@ h1{margin-top:4px;font-size:28px;font-weight:800;line-height:1.1;text-transform:
 .together{margin-top:8px;display:flex;gap:8px;align-items:center;font-size:13px;color:var(--t3)}
 .together svg{width:15px;height:15px;color:var(--blue)}
 
+/* плеер — как в кабинете (AudioLessonPlayer) */
+.aw{margin-top:14px;border-radius:20px;border:1px solid var(--line);background:var(--card);padding:14px}
+.au{display:flex;width:100%;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1px solid var(--line2);background:rgba(20,27,36,.6);text-align:left}
+.au .pc{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;background:rgba(240,208,128,.1);color:var(--gold)}
+.au .pc svg{width:16px;height:16px;fill:currentColor;stroke:none;margin-left:2px}
+.au .t{flex:1;min-width:0}
+.au .tt{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500}
+.au .tt svg{width:14px;height:14px;color:var(--t3)}
+.au .ts{display:block;margin-top:2px;font-size:10px;color:var(--t3)}
+.au .al{width:16px;height:16px;color:rgba(242,244,247,.3)}
+/* таймер — как кольца в кабинете (TimerRow) */
+.pld{display:grid;grid-template-columns:52px minmax(0,1fr) auto;grid-template-areas:"ring kind left" "ring title left";column-gap:14px;align-items:center;padding:16px;border-radius:20px;border:1px solid var(--line2);background:var(--card)}
+.pld.hot{border-color:rgba(255,107,107,.35);background:linear-gradient(90deg,rgba(255,107,107,.10),var(--card) 70%)}
+.pld-ring{grid-area:ring;position:relative;width:52px;height:52px}
+.pld-ring>svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.pld-ring circle{fill:none;stroke-width:4}.pld-ring .trk{stroke:var(--muted)}
+.pld-ring .ico{position:absolute;inset:0;display:grid;place-items:center}.pld-ring .ico svg{width:20px;height:20px}
+.pld .kind{grid-area:kind;align-self:end;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.pld .ttl{grid-area:title;align-self:start;margin-top:3px;font-size:16px;font-weight:600;line-height:1.3}
+.pld .left{grid-area:left;text-align:right}
+.pld .left b{display:block;font-size:20px;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pld .left span{display:block;margin-top:3px;font-size:12px;color:var(--t3);white-space:nowrap}
+@media(max-width:520px){.pld{grid-template-columns:46px minmax(0,1fr);grid-template-areas:"ring kind" "ring left" "ring title";column-gap:12px;padding:14px}.pld-ring{width:46px;height:46px;align-self:start;margin-top:2px}.pld .left{display:flex;align-items:baseline;gap:6px;margin-top:3px;text-align:left}.pld .left b{font-size:22px}.pld .left span{margin:0}.pld .ttl{font-size:14px;font-weight:500;color:var(--t2)}}
+.sec>.pld{margin-top:14px}
+
 /* текст урока */
 .txt{margin-top:16px;color:var(--t2);font-size:16px;line-height:1.6}
 .txt p+p{margin-top:12px}
@@ -164,14 +189,14 @@ details.p1 .p1b{padding:0 14px 16px}
 <div class="top"><span class="logo">ПП</span>Маршрут</div>
 <main class="wrap">
   <nav class="vsw">
-    <div class="g">Кнопка старта:
-      <a data-k="v" data-val="a" href="#">А · Предупреждает</a>
-      <a data-k="v" data-val="b" href="#">Б · Ждёт напарника</a>
-      <a class="rst" href="#" id="rst">Сначала</a></div>
     <div class="g">Напарник в «Рюкзаке»:
       <a data-k="p" data-val="none" href="#">Нет</a>
       <a data-k="p" data-val="pending" href="#">Заявка отправлена</a>
       <a data-k="p" data-val="ok" href="#">Принял</a></div>
+    <div class="g">Напарник нажал «Готовы приступить»:
+      <a data-k="pr" data-val="no" href="#">Ещё нет</a>
+      <a data-k="pr" data-val="yes" href="#">Нажал</a>
+      <a class="rst" href="#" id="rst">Сначала</a></div>
   </nav>
 
   <div class="hero" style="margin-top:14px"><img src="img/cover.jpg" alt=""></div>
@@ -182,7 +207,7 @@ details.p1 .p1b{padding:0 14px 16px}
   <div class="parts" id="parts"></div>
   <div id="body"></div>
 
-  <p class="note">Макет. Переключатели сверху показывают, что видит ученик в зависимости от статуса напарника в «Рюкзаке»: его нет, заявка отправлена или напарник её принял. В кабинете статус будет подтягиваться сам. Весь текст урока — дословно из урока, поменялось только оформление. «Сначала» сбрасывает прохождение.</p>
+  <p class="note">Макет. Переключатели сверху показывают, что видит ученик: есть ли напарник в «Рюкзаке» и нажал ли он «Готовы приступить». В кабинете это будет подтягиваться само. Вторая часть и таймер 30 минут запускаются, когда нажали оба. Плеер — тот же, что во всех уроках кабинета. Весь текст урока — дословно из урока, поменялось только оформление. «Сначала» сбрасывает прохождение.</p>
 </main>
 
 <script>
@@ -200,7 +225,18 @@ const I = {
   users: '<svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
 };
 const bars = (n) => Array.from({ length: n }, (_, i) => `<i style="height:${6 + Math.round(14 * Math.abs(Math.sin(i * 1.7)))}px"></i>`).join('');
-const audio = (t, dur) => `<div class="aud"><button class="pb" aria-label="Слушать">${I.play}</button><div class="tx"><b>${t}</b><small>Аудио · ${dur}</small></div><div class="wave">${bars(9)}</div></div>`;
+const HP = '<svg class="i" viewBox="0 0 24 24"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>';
+const AL = '<svg class="i al" viewBox="0 0 24 24"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg>';
+const audio = (t) => `<div class="aw"><button class="au" type="button"><span class="pc">${I.play}</span><span class="t"><span class="tt">${HP}<span>${t}</span></span><span class="ts">Нажмите, чтобы слушать — плеер откроется поверх страницы</span></span>${AL}</button></div>`;
+const TIMER_MS = 30 * 60 * 1000;
+const mmss = (ms) => { const s = Math.max(0, Math.ceil(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+function timerCard() {
+  const left = TIMER_MS - (Date.now() - (st.t0 || Date.now()));
+  const hot = left < 5 * 60 * 1000, col = hot ? '#FF6B6B' : '#F0D080', C = 2 * Math.PI * 21, f = Math.max(0, Math.min(1, left / TIMER_MS));
+  return `<div class="pld${hot ? ' hot' : ''}" id="tmr" role="timer"><div class="pld-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="21" stroke="${col}" stroke-linecap="round" stroke-dasharray="${(f * C).toFixed(1)} ${C.toFixed(1)}"/></svg><div class="ico" style="color:${col}">${I.users}</div></div>
+    <div class="kind" style="color:${col}">Упражнение с напарником</div><div class="ttl">Пройти вместе и нажать «Принимаю»</div>
+    <div class="left"><b ${hot ? `style="color:${col}"` : ''}>${left > 0 ? mmss(left) : 'Время вышло'}</b>${left > 0 ? '<span>осталось</span>' : ''}</div></div>`;
+}
 
 // Текст урока — дословно из блоков урока
 const INTRO = `<p>Добро пожаловать в первое упражнение с вашим напарником!</p><p>И оно будет очень специфическим. И, скорее всего, вы измените друг к другу отношение по итогу программы и уж тем более по итогу этого упражнения.</p><p>Упражнение сложное. И сделать его нужно одновременно со своим напарником.</p><p>Поэтому убедитесь, что ваш напарник рядышком и вы сможете одновременно запустить ZOOM-трансляцию или видео-звонок друг другу в социальной сети и выполнять его одновременно.</p><p>Таймер не запускается, пока вы просто открыли урок. Сначала дождитесь, когда напарник примет вашу заявку в «Рюкзаке», и договоритесь о времени созвона.</p>`;
@@ -211,7 +247,9 @@ const OATH = `<p>Я твой напарник. С этого момента мы
 const T2B = `<p>Ну что, поздравляю вас, напарники!</p><p>Теперь вы одно единое целое.</p><p>С этого дня очень много упражнений и задач вы будете делать вместе.</p><p>Но самая главная из задач - это то, что вы теперь не одни на этом пути. Помогите другому человеку дойти до конца. А он поможет дойти до конца вам.</p>`;
 
 const KEY = 'naparnik-mock';
-let st = JSON.parse(localStorage.getItem(KEY) || '{"v":"a","p":"ok","call":false,"started":false,"accepted":false}');
+let st = JSON.parse(localStorage.getItem(KEY) || '{"p":"ok","pr":"no","call":false,"me":false,"t0":0,"accepted":false}');
+if (st.pr === undefined) st = { p: 'ok', pr: 'no', call: false, me: false, t0: 0, accepted: false };
+const both = () => st.me && st.pr === 'yes' && st.p === 'ok';
 const save = () => localStorage.setItem(KEY, JSON.stringify(st));
 function toast(t, lk) { document.querySelectorAll('.toast').forEach((x) => x.remove()); const el = document.createElement('div'); el.className = 'toast' + (lk ? ' lk' : ''); el.innerHTML = (lk ? I.lock : I.check) + t; document.body.appendChild(el); setTimeout(() => el.remove(), 3200); }
 
@@ -225,22 +263,25 @@ function partnerRow() {
 }
 
 function render(anim) {
+  st.started = both(); if (st.started && !st.t0) { st.t0 = Date.now(); save(); }
   const s1 = st.started ? 'done' : 'cur', s2 = !st.started ? 'lock' : st.accepted ? 'done' : 'cur';
   const pt = (n, s, t) => `<button class="pt ${s}" data-part="${n}"><span class="s">${s === 'done' ? I.check : s === 'lock' ? I.lock : n}</span><span><small>${s === 'done' ? 'Пройдено' : s === 'lock' ? 'Закрыто' : 'Часть ' + n}</small><b>${t}</b></span></button>`;
   document.getElementById('parts').innerHTML = pt(1, s1, 'Подготовка') + pt(2, s2, 'Вместе с напарником');
 
-  const canStart = st.v === 'a' || st.p === 'ok';
+  const canStart = st.p === 'ok';
+  const waitRow = `<div class="row ok"><span class="ck">${I.check}</span><div class="tx"><b>Вы нажали «Готовы приступить»</b></div></div>
+        <div class="row wait"><span class="ck"><span class="dots"><i></i><i></i><i></i></span></span><div class="tx"><b>Ждём, когда Мария К. нажмёт</b><small>Как только нажмёт, у вас обоих откроется вторая часть и пойдёт таймер на 30 минут.</small></div></div>`;
   const prep = st.started
-    ? `<div class="prep done"><div class="okline">${I.check}Вы начали упражнение вместе с напарником</div></div>`
+    ? `<div class="prep done"><div class="okline">${I.check}Вы оба нажали «Готовы приступить»</div></div>`
     : `<div class="prep" id="prep"><div class="l">Перед стартом</div>
         ${partnerRow()}
         <div class="row self ${st.call ? 'ok' : ''}" id="call"><span class="ck">${I.check}</span><div class="tx"><b>Вы оба на связи</b><small>Zoom или видеозвонок в соцсети. Отметьте, когда созвонились.</small></div></div>
-        ${st.v === 'a' && st.p !== 'ok' ? `<div class="warn">${I.alert}<span>Без напарника упражнение не получится: вторая часть делается вдвоём.</span></div>` : ''}
-        <button class="gold" id="go" ${canStart ? '' : 'disabled'}>Готовы приступить ${I.right}</button>
-        <div class="hint">${canStart ? 'После нажатия сразу откроется вторая часть' : 'Кнопка станет активной, когда напарник примет заявку'}</div></div>`;
+        ${st.me ? waitRow : `<button class="gold" id="go" ${canStart ? '' : 'disabled'}>Готовы приступить ${I.right}</button>
+        <div class="hint">${canStart ? 'Вторая часть откроется, когда нажмёте оба. С&nbsp;этого момента у&nbsp;вас 30&nbsp;минут' : 'Кнопка станет активной, когда напарник примет заявку'}</div>`}</div>`;
 
   const part2 = st.started ? `<section class="sec ${anim ? 'unlock' : ''}" id="p2"><div class="n">Часть 2 из 2</div><h2>Вместе с напарником</h2>
-      ${audio('Бадди 2 часть', '3:12')}
+      ${st.accepted ? '' : timerCard()}
+      ${audio('Бадди 2 часть')}
       <div class="together">${I.video}Слушайте вместе, на одном созвоне</div>
       <details class="tr"><summary>${I.text}Текст аудио до клятвы${I.down}</summary><div class="txt">${T2A}</div></details>
       <div class="oath"><div class="l">${I.hand}Клятва напарника · повторяйте вслух</div>
@@ -252,9 +293,9 @@ function render(anim) {
         : `<div class="fin" id="fin"><div class="l">Последний шаг</div><p>Правила игры приняты. Я отвечаю за напарника</p><button class="gold" id="acc">Принимаю ${I.check}</button><div class="hint">Засчитается сразу, проверка проводником не нужна</div></div>`}
     </section>`
     : `<section class="sec"><div class="n">Часть 2 из 2</div><h2>Вместе с напарником</h2>
-      <div class="lockcard" id="lk"><div class="ic">${I.lock}</div><b>Откроется после «Готовы приступить»</b><p>Эту часть проходите вдвоём, на одном созвоне</p></div></section>`;
+      <div class="lockcard" id="lk"><div class="ic">${I.lock}</div><b>Откроется, когда вы оба нажмёте «Готовы приступить»</b><p>С&nbsp;этого момента у&nbsp;вас 30&nbsp;минут, чтобы пройти её вместе</p></div></section>`;
 
-  const p1body = `${audio('Бадди 1 часть', '1:05')}
+  const p1body = `${audio('Бадди 1 часть')}
       <div class="txt">${INTRO}</div>
       <div class="call">${I.alert}<span>${CALL}</span></div>
       <div class="txt">${NEXT}</div>`;
@@ -268,22 +309,25 @@ function render(anim) {
 }
 function bind() {
   const call = document.getElementById('call'); if (call) call.onclick = () => { st.call = !st.call; save(); render(); };
-  const go = document.getElementById('go'); if (go) go.onclick = () => { st.started = true; save(); render(true); toast('Открылась вторая часть'); setTimeout(() => document.getElementById('p2').scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); };
+  const go = document.getElementById('go'); if (go) go.onclick = () => { st.me = true; save(); render(both()); if (both()) opened(); else toast('Ждём, когда напарник тоже нажмёт'); };
   const acc = document.getElementById('acc'); if (acc) acc.onclick = () => { st.accepted = true; save(); render(); toast('Вы напарники. Правила приняты'); };
-  const lk = document.getElementById('lk'); if (lk) lk.onclick = () => { lk.classList.remove('shake'); void lk.offsetWidth; lk.classList.add('shake'); toast('Пока закрыто. Откроется после «Готовы приступить»', true); };
+  const lk = document.getElementById('lk'); if (lk) lk.onclick = () => { lk.classList.remove('shake'); void lk.offsetWidth; lk.classList.add('shake'); toast('Пока закрыто. Откроется, когда вы оба нажмёте «Готовы приступить»', true); };
   document.querySelectorAll('.pt').forEach((b) => b.onclick = () => {
-    if (b.classList.contains('lock')) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); toast('Пока закрыто. Откроется после «Готовы приступить»', true); return; }
+    if (b.classList.contains('lock')) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); toast('Пока закрыто. Откроется, когда вы оба нажмёте «Готовы приступить»', true); return; }
     const d1 = document.querySelector('details.p1'); if (b.dataset.part === '1' && d1) d1.open = true; const el = b.dataset.part === '2' ? document.getElementById('p2') : document.querySelector('.sec'); el && el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 }
+function opened() { toast('Вы оба готовы. Открылась вторая часть, пошёл таймер'); setTimeout(() => document.getElementById('p2')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); }
+setInterval(() => { const t = document.getElementById('tmr'); if (t) t.outerHTML = timerCard(); }, 1000);
 function syncNav() { document.querySelectorAll('.vsw a[data-k]').forEach((a) => a.classList.toggle('on', st[a.dataset.k] === a.dataset.val)); }
-document.querySelectorAll('.vsw a[data-k]').forEach((a) => a.onclick = (e) => { e.preventDefault(); st[a.dataset.k] = a.dataset.val; save(); syncNav(); render(); });
-document.getElementById('rst').onclick = (e) => { e.preventDefault(); st = { v: st.v, p: st.p, call: false, started: false, accepted: false }; save(); render(); };
+document.querySelectorAll('.vsw a[data-k]').forEach((a) => a.onclick = (e) => { e.preventDefault(); const was = both(); st[a.dataset.k] = a.dataset.val; save(); syncNav(); render(!was && both()); if (!was && both()) opened(); });
+document.getElementById('rst').onclick = (e) => { e.preventDefault(); st = { p: st.p, pr: 'no', call: false, me: false, t0: 0, accepted: false }; save(); render(); };
 const q = new URLSearchParams(location.search);
-['v', 'p'].forEach((k) => q.get(k) && (st[k] = q.get(k)));
-if (q.get('s') === '1') { st.started = true; st.accepted = false; }
-if (q.get('s') === '2') { st.started = true; st.accepted = true; }
-if (q.get('s') === '0') { st.started = false; st.accepted = false; st.call = false; }
+['p', 'pr'].forEach((k) => q.get(k) && (st[k] = q.get(k)));
+if (q.get('s') === '0') { st.me = false; st.t0 = 0; st.accepted = false; st.call = false; }
+if (q.get('s') === 'w') { st.p = 'ok'; st.me = true; st.pr = 'no'; st.t0 = 0; st.accepted = false; }
+if (q.get('s') === '1') { st.p = 'ok'; st.me = true; st.pr = 'yes'; st.t0 = Date.now() - 83000; st.accepted = false; }
+if (q.get('s') === '2') { st.p = 'ok'; st.me = true; st.pr = 'yes'; st.accepted = true; }
 syncNav(); render();
 </script>
 </body>
