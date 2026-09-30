@@ -329,6 +329,16 @@ if (q.get('s') === 'w') { st.p = 'ok'; st.me = true; st.pr = 'no'; st.t0 = 0; st
 if (q.get('s') === '1') { st.p = 'ok'; st.me = true; st.pr = 'yes'; st.t0 = Date.now() - 83000; st.accepted = false; }
 if (q.get('s') === '2') { st.p = 'ok'; st.me = true; st.pr = 'yes'; st.accepted = true; }
 syncNav(); render();
+
+// Неразрывные пробелы: короткие слова не висят в конце строки (как в кабинете, src/lib/typograf.ts)
+(function () {
+  const NB = '\u00a0', SHORT = /(^|[\s\u00a0(«„"'>—-])([A-Za-zА-Яа-яЁё]{1,2})[ \t]+(?=\S)/g;
+  const fix = (s) => { let o = s; for (let i = 0; i < 3; i++) { const n = o.replace(SHORT, (_, p, w) => p + w + NB); if (n === o) break; o = n; }
+    return o.replace(/(\d)[ \t]+(?=[A-Za-zА-Яа-яЁё%₽$€])/g, '$1' + NB).replace(/[ \t]+—/g, NB + '—'); };
+  const walk = (root) => { const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) { if (n.parentElement && n.parentElement.closest('script,style')) continue; const v = n.nodeValue; const f = fix(v); if (f !== v) n.nodeValue = f; } };
+  walk(document.body);
+  new MutationObserver((l) => l.forEach((m) => m.addedNodes.forEach((a) => a.nodeType === 1 ? walk(a) : a.nodeType === 3 && (a.nodeValue = fix(a.nodeValue))))).observe(document.body, { childList: true, subtree: true });
+})();
 </script>
 </body>
 </html>
