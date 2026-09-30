@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Лагерь · три рейтинга сразу · варианты для компьютера</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B0F15;--card:#121A25;--card2:#18222F;--line:rgba(255,255,255,.08);--mut:rgba(255,255,255,.55);--t2:rgba(255,255,255,.75);--g:#EDBE4A;--g2:rgba(237,190,74,.12);--green:#4CC38A;--red:#FF6B6B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:#F4F6F8;font:15px/1.45 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.ic{width:17px;height:17px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sw{position:sticky;top:0;z-index:9;display:flex;gap:8px;align-items:center;padding:10px 24px;background:rgba(11,15,21,.94);border-bottom:1px solid var(--line);font-weight:600;font-size:13px}
+.sw span{color:var(--mut);margin-right:4px}.sw a{height:34px;display:inline-flex;align-items:center;padding:0 14px;border-radius:17px;border:1px solid rgba(255,255,255,.14);color:var(--t2);text-decoration:none}
+.sw a:hover{border-color:rgba(237,190,74,.5);color:var(--g)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.var{padding:40px 0 56px;border-bottom:1px solid var(--line)}
+.vh{margin-bottom:22px}.vh .k{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B9FFF}
+.vh h2{margin-top:6px;font-size:24px;font-weight:800}.vh p{margin-top:6px;max-width:760px;color:var(--mut);font-size:14px}
+/* шапка Лагеря как сейчас */
+.head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.title{display:flex;align-items:center;gap:12px}.title h1{font-size:26px;font-weight:800}
+.now{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:14px;background:var(--g2);color:var(--g);font-size:13px;font-weight:600}.now::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green)}
+.mode{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:520px}
+.mode div{min-height:56px;padding:8px 14px;border-radius:16px;border:1px solid var(--line)}.mode b{display:block;font-size:15px;color:var(--mut)}.mode span{font-size:12px;color:var(--mut)}
+.mode .on{border-color:rgba(237,190,74,.6);background:rgba(237,190,74,.1)}.mode .on b{color:var(--g)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;width:520px;margin-top:20px;padding:4px;border-radius:16px;background:rgba(255,255,255,.05)}
+.tabs div{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border-radius:12px;font-weight:600;color:var(--mut)}.tabs .on{background:var(--bg);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+/* аватар */
+.av{flex:none;display:grid;place-items:center;border-radius:50%;font-weight:700;color:#fff;border:2px solid #B7773F}
+.av.s{width:40px;height:40px;font-size:13px}.av.m{width:56px;height:56px;font-size:16px}.av.l{width:68px;height:68px;font-size:19px}.av.xs{width:32px;height:32px;font-size:11px;border-width:1.5px}
+/* моё место */
+.me{padding:16px;border-radius:20px;background:var(--card);border:1px solid rgba(237,190,74,.35);display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:center}
+.me .pl{grid-row:span 2;text-align:center;padding-right:16px;border-right:1px solid var(--line)}.me .pl b{display:block;font-size:40px;line-height:1;font-weight:800;color:var(--g)}.me .pl span{font-size:12px;color:var(--mut)}
+.me .gl{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--mut)}.me .gl b{font-size:16px;color:#fff}.me .gl em{font-style:normal;font-size:18px;font-weight:800;color:var(--g)}
+.me .lv{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.me .lv div+div{padding-left:12px;border-left:1px solid var(--line)}.me .lv small{display:block;font-size:12px;color:var(--mut)}.me .lv b{display:flex;gap:3px;margin-top:4px;font-size:17px}
+.bar{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden}.bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#B8741A,var(--g))}
+.hearts{display:inline-flex;gap:2px;color:var(--red)}.hearts .ic{width:14px;height:14px;fill:currentColor;stroke:none}.hearts .off{opacity:.3}
+/* пьедестал как сейчас */
+.ph{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ph b{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700}.ph b .ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--g2);color:var(--g)}
+.ph span{font-size:13px;color:var(--mut)}
+.pod{display:grid;grid-template-columns:1fr 1.2fr 1fr;align-items:end;gap:8px;margin-top:14px}
+.pd{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+.pd .cr{height:22px;color:var(--g)}.pd .cr .ic{width:22px;height:22px;fill:currentColor;stroke:none}
+.pd .nm{margin-top:8px;font-size:14px;font-weight:600;line-height:1.25;max-width:100%;overflow-wrap:anywhere}.pd .nm span{display:block}
+.pd .vl{margin-top:2px;font-size:16px;font-weight:800;color:var(--g);white-space:nowrap}
+.pd .ped{margin-top:8px;width:100%;border-radius:12px 12px 0 0;display:grid;place-items:center;font-weight:800}
+.k1 .ped{height:56px;background:linear-gradient(180deg,rgba(237,190,74,.3),rgba(237,190,74,.04));color:var(--g)}
+.k2 .ped{height:40px;background:linear-gradient(180deg,rgba(160,170,185,.25),rgba(160,170,185,.04))}
+.k3 .ped{height:28px;background:linear-gradient(180deg,rgba(183,119,63,.28),rgba(183,119,63,.04));color:#C98A5E}
+.mine{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 -16px;padding:11px 16px;border-top:1px solid var(--line);font-size:13px;color:var(--mut);background:rgba(237,190,74,.05);border-radius:0 0 20px 20px}
+.mine b{color:var(--g);font-weight:700}
+/* таблица */
+.tbl .th,.tbl .tr{display:grid;grid-template-columns:36px minmax(0,1.6fr) minmax(0,1.3fr) 100px 64px 96px 72px;gap:14px;align-items:center;padding:0 20px}
+.tbl .th{height:44px;font-size:12px;font-weight:600;color:var(--mut);border-bottom:1px solid var(--line)}
+.tbl .th>*:nth-child(n+4){text-align:center;justify-content:center}.tbl .th>*:last-child{text-align:right;justify-content:flex-end}.tbl .th span:last-child{text-align:right}
+.tbl .th .srt{display:inline-flex;align-items:center;justify-content:center;gap:4px;cursor:pointer}.tbl .th .srt.on{color:var(--g)}.tbl .th .srt .ic{width:12px;height:12px}
+.tbl .tr{min-height:62px;border-top:1px solid var(--line);position:relative}.tbl .tr:first-of-type{border-top:0}
+.tbl .n{text-align:center;font-weight:700;color:var(--mut)}
+.tbl .who{display:flex;align-items:center;gap:12px;min-width:0}.tbl .who b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbl .goal{font-size:13px;color:var(--mut);white-space:nowrap}.tbl .goal b{color:#fff;font-weight:600}.tbl .goal .bar{height:5px;margin-top:6px}
+.tbl .c{text-align:center;font-size:14px;color:var(--t2);font-variant-numeric:tabular-nums}.tbl .c.up{color:var(--green);font-weight:600}
+.tbl .rt{text-align:right;font-size:17px;font-weight:800;color:var(--g)}
+.tbl .tr.me{background:rgba(237,190,74,.08)}
+.tbl .gap{height:28px;display:grid;place-items:center;color:var(--mut);letter-spacing:.3em;border-top:1px solid var(--line)}
+.tbl .more{height:48px;display:grid;place-items:center;border-top:1px solid var(--line);font-size:14px;font-weight:600;color:#6B9FFF}
+/* полоса «моё место» */
+.mst{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:28px;align-items:center;margin-top:24px;padding:14px 20px;border-radius:20px;background:var(--card);border:1px solid rgba(237,190,74,.35)}
+.mst .pl{display:flex;align-items:baseline;gap:8px}.mst .pl b{font-size:32px;line-height:1;font-weight:800;color:var(--g)}.mst .pl span{font-size:13px;color:var(--mut)}
+.mst .gl{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--mut);margin-bottom:8px}.mst .gl b{font-size:15px;color:#fff}.mst .gl em{font-style:normal;font-size:17px;font-weight:800;color:var(--g)}
+.mst small{display:block;font-size:12px;color:var(--mut)}.mst .kv b{display:flex;margin-top:3px;font-size:17px}
+/* вариант A */
+.a3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.a3 .card{padding:16px 16px 0}
+.a-bot{display:grid;grid-template-columns:360px minmax(0,1fr);gap:24px;margin-top:24px;align-items:start}
+/* вариант B */
+.b-top{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.b-top .card{padding:16px 16px 0;display:flex;flex-direction:column}
+.lr{display:grid;grid-template-columns:22px auto minmax(0,1fr) auto;gap:10px;align-items:center;min-height:56px;border-top:1px solid var(--line)}
+.lr:first-of-type{border-top:0;margin-top:8px}
+.lr .p{font-weight:800;text-align:center;color:var(--mut)}.lr.r1 .p{color:var(--g)}.lr.r2 .p{color:#B9C2CE}.lr.r3 .p{color:#C98A5E}
+.lr .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lr .nm small{display:block;font-size:12px;font-weight:500;color:var(--mut)}
+.lr .v{font-size:17px;font-weight:800;color:var(--g);font-variant-numeric:tabular-nums}
+.lr.r1{background:linear-gradient(90deg,rgba(237,190,74,.1),transparent 70%);margin:8px -16px 0;padding:0 16px;border-top:0;border-radius:12px}
+.b-top .mine{margin-top:auto}
+/* вариант C */
+.c-top{display:grid;grid-template-columns:360px minmax(0,1fr);gap:24px;margin-top:24px;align-items:stretch}
+.lead{display:grid;grid-template-columns:repeat(3,1fr)}
+.lead>div{padding:18px 20px;min-width:0}.lead>div+div{border-left:1px solid var(--line)}
+.lead .lb{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--mut)}.lead .lb .ic{color:var(--g)}
+.lead .one{display:flex;align-items:center;gap:12px;margin-top:14px}
+.lead .one .crw{position:relative}.lead .one .crw .ic{position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:20px;height:20px;color:var(--g);fill:currentColor;stroke:none}
+.lead .one b{display:block;font-size:15px;font-weight:700;line-height:1.25}.lead .one em{display:block;font-style:normal;margin-top:2px;font-size:22px;font-weight:800;color:var(--g);line-height:1.1}
+.lead .rest{margin-top:14px;padding-top:10px;border-top:1px solid var(--line)}
+.lead .rest div{display:flex;align-items:center;gap:8px;min-height:36px;font-size:13px}
+.lead .rest i{font-style:normal;width:14px;font-weight:800;color:var(--mut)}.lead .rest .rn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--t2)}.lead .rest b{color:var(--g);font-variant-numeric:tabular-nums}
+.lead .you{margin-top:6px;font-size:12px;color:var(--mut)}.lead .you b{color:var(--g)}
+.full{margin-top:24px}
+.note{margin-top:14px;font-size:13px;color:var(--mut)}
+</style></head><body>
+<nav class="sw"><span>Варианты:</span><a href="#A">А · Три пьедестала</a><a href="#B">Б · Три топа списком</a><a href="#C">В · Лидеры одной панелью</a></nav>
+<div class="wrap" id="root"></div>
+<script>
+const I=(n,c='')=>{const P={target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',usd:'<circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>',up:'<path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/>',crown:'<path d="M11.56 3.27a.5.5 0 0 1 .88 0l2.95 5.6a1 1 0 0 0 1.52.29L21.18 5.5a.5.5 0 0 1 .8.52l-2.83 10.25a1 1 0 0 1-.96.73H5.81a1 1 0 0 1-.96-.73L2.02 6.02a.5.5 0 0 1 .8-.52l4.27 3.66a1 1 0 0 0 1.52-.29z"/><path d="M5 21h14"/>',heart:'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',trophy:'<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',swords:'<path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6"/><path d="m16 16 4 4"/><path d="m19 21 2-2"/>',down:'<path d="m6 9 6 6 6-6"/>'};return `<svg class="ic ${c}" viewBox="0 0 24 24">${P[n]}</svg>`};
+// Данные для примера (вымышленные участники)
+const COL=['#6B5BD2','#2E8B7A','#B85C8A','#3B6FD1','#A0662F','#5C8A3B','#8A3B5C','#3B8A8A','#7A5CB8','#B8813B','#4F6B8A','#8A6B4F','#5C5CB8','#3B8A5C','#8A3B3B'];
+const P=[['Ольга Смирнова',56,4120,9],['Марина Козлова',13,2860,4],['Ирина Волкова',8,610,0],['Светлана Орлова',24,1950,12],['Наталья Лебедева',31,3400,6],['Татьяна Морозова',19,980,3],['Мария Кузнецова',12,740,5],['Алина Кравец',5,300,2],['Ксения Белова',0,0,0],['Дарья Никитина',17,1210,8],['Вера Павлова',9,520,1],['Анна Соколова',3,150,0],['Елена Фёдорова',22,1640,0],['Юлия Зайцева',7,410,2],['Оксана Попова',0,0,0]].map((r,i)=>({nm:r[0],pct:r[1],inc:r[2],wk:r[3],lives:[3,3,2,3,3,2,3,1,3,3,2,3,3,2,3][i],pts:[182,140,96,160,171,120,110,64,40,130,88,52,150,70,30][i],goal:[7400,22000,7600,8100,11000,5200,6200,6000,5000,7100,5800,5000,7500,5900,4000][i],col:COL[i],me:i===6}));
+const ini=n=>n.split(' ').map(w=>w[0]).join('');
+const av=(p,s='s')=>`<span class="av ${s}" style="background:${p.col}">${ini(p.nm)}</span>`;
+const $=n=>'$'+n.toLocaleString('en-US');
+const nm=p=>p.nm+(p.me?' (вы)':'');
+const hearts=n=>`<span class="hearts">${[0,1,2].map(i=>I('heart',i<n?'':'off')).join('')}</span>`;
+const M={goal:{t:'% цели',ic:'target',v:p=>p.pct+'%',s:(a,b)=>b.pct-a.pct},inc:{t:'Доход',ic:'usd',v:p=>$(p.inc),s:(a,b)=>b.inc-a.inc},wk:{t:'За неделю',ic:'up',v:p=>'+'+p.wk+'%',s:(a,b)=>b.wk-a.wk}};
+const sorted=k=>[...P].filter(p=>k!=='wk'||p.wk>0).sort(M[k].s);
+const myPlace=k=>sorted(k).findIndex(p=>p.me)+1;
+const ME=P.find(p=>p.me);
+const head=(tabs=true)=>`<div class="head"><div class="title"><h1>Лагерь</h1><span class="now">ПП 5 · 3 неделя</span></div><div class="mode"><div class="on"><b>Текущий поход</b><span>ПП 5</span></div><div><b>Прошлые походы</b><span>выпускники</span></div></div></div>${tabs?`<div class="tabs"><div class="on">${I('trophy')}Рейтинг</div><div>${I('swords')}Отряды</div><div>${I('usd')}Доходы</div></div>`:''}`;
+const meCard=()=>`<div class="me"><div class="pl"><b>#${myPlace('goal')}</b><span>из ${P.length}</span></div><div class="gl"><span><b>${$(ME.inc)}</b> из ${$(ME.goal)}</span><em>${ME.pct}%</em></div><div><div class="bar"><i style="width:${ME.pct}%"></i></div></div><div class="lv"><div><small>Баллы</small><b>${ME.pts}</b></div><div><small>Жизни</small><b>${hearts(ME.lives)}</b></div></div></div>`;
+const meStrip=()=>`<div class="mst"><div class="pl"><b>#${myPlace('goal')}</b><span>из ${P.length} по % цели</span></div><div><div class="gl"><span>Мой доход <b>${$(ME.inc)}</b> из ${$(ME.goal)}</span><em>${ME.pct}%</em></div><div class="bar"><i style="width:${ME.pct}%"></i></div></div><div class="kv"><small>Баллы</small><b>${ME.pts}</b></div><div class="kv"><small>Жизни</small><b>${hearts(ME.lives)}</b></div></div>`;
+const podium=k=>{const s=sorted(k);return `<div class="pod">${[[s[1],2],[s[0],1],[s[2],3]].map(([p,n])=>`<div class="pd k${n}"><div class="cr">${n===1?I('crown'):''}</div>${av(p,n===1?'m':'s')}<div class="nm">${p.nm.split(' ').map(w=>`<span>${w}</span>`).join('')}</div><div class="vl">${M[k].v(p)}</div><div class="ped">${n}</div></div>`).join('')}</div>`};
+const mine=k=>`<div class="mine"><span>Ваше место</span><span><b>${myPlace(k)}-е</b> · ${M[k].v(ME)}</span></div>`;
+const ph=k=>`<div class="ph"><b><span class="ico">${I(M[k].ic)}</span>${M[k].t}</b><span>${k==='wk'?'прирост дохода':P.length+' уч.'}</span></div>`;
+const table=(sortKey='goal',cols=false)=>{const s=sorted(sortKey==='wk'?'goal':sortKey);const th=(k,t)=>cols?`<span class="srt ${sortKey===k?'on':''}">${t}${sortKey===k?I('down'):''}</span>`:`<span>${t}</span>`;const vis=s.slice(0,6);const mi=s.findIndex(p=>p.me);
+const row=(p,n)=>`<div class="tr ${p.me?'me':''}"><span class="n">${n}</span><div class="who">${av(p)}<b>${nm(p)}</b></div><div class="goal"><span><b>${$(p.inc)}</b> из ${$(p.goal)}</span><div class="bar"><i style="width:${p.pct}%"></i></div></div><span class="c ${p.wk?'up':''}">${p.wk?'+'+p.wk+'%':'—'}</span><span class="c">${p.pts}</span><span class="c">${hearts(p.lives)}</span><span class="rt">${p.pct}%</span></div>`;
+return `<div class="card tbl"><div class="th"><span>#</span><span>Участник</span>${th('inc','Доход до Точки Б')}${th('wk','За неделю')}<span>Баллы</span><span>Жизни</span>${th('goal','% цели')}</div>${vis.map((p,i)=>row(p,i+1)).join('')}${mi>=6?`<div class="gap">•••</div>${row(s[mi],mi+1)}`:''}<div class="more">Показать всех · ${P.length}</div></div>`};
+const A=`<section class="var" id="A"><div class="vh"><div class="k">Вариант А</div><h2>Три пьедестала в ряд, как было раньше</h2><p>Сверху на всю ширину три отдельных блока: % цели, доход, прирост за неделю. У каждого свой пьедестал и строка «ваше место». Переключатель внутри блока убран. Ниже полоса с вашим местом и полная таблица.</p></div>
+${head()}<div class="a3">${['goal','inc','wk'].map(k=>`<div class="card">${ph(k)}${podium(k)}${mine(k)}</div>`).join('')}</div>
+${meStrip()}<div class="full">${table('goal',true)}</div></section>`;
+const lr=(p,n,k)=>`<div class="lr r${n}"><span class="p">${n}</span>${av(p,n===1?'m':'s')}<span class="nm">${p.nm}<small>${k==='goal'?$(p.inc)+' из '+$(p.goal):k==='inc'?p.pct+'% цели':'доход '+$(p.inc)}</small></span><span class="v">${M[k].v(p)}</span></div>`;
+const B=`<section class="var" id="B"><div class="vh"><div class="k">Вариант Б</div><h2>Три топа списком</h2><p>Те же три блока, но вместо пьедестала короткий список 1, 2, 3 с подписью под именем. Блоки ниже вдвое, до таблицы меньше листать. Первое место подсвечено золотом.</p></div>
+${head()}<div class="b-top">${['goal','inc','wk'].map(k=>{const s=sorted(k);return `<div class="card">${ph(k)}${s.slice(0,3).map((p,i)=>lr(p,i+1,k)).join('')}${mine(k)}</div>`}).join('')}</div>
+${meStrip()}<div class="full">${table('goal',true)}</div></section>`;
+const C=`<section class="var" id="C"><div class="vh"><div class="k">Вариант В</div><h2>Ваше место и лидеры в одной строке</h2><p>Слева ваша карточка, справа одна панель на три колонки: лидер каждого рейтинга крупно, второе и третье место строкой ниже. Под ними таблица на всю ширину, её можно сортировать по % цели, доходу и приросту за неделю.</p></div>
+${head()}<div class="c-top">${meCard()}<div class="card lead">${['goal','inc','wk'].map(k=>{const s=sorted(k);return `<div><div class="lb">${I(M[k].ic)}${M[k].t}</div><div class="one"><span class="crw">${I('crown')}${av(s[0],'l')}</span><span style="min-width:0"><b>${s[0].nm}</b><em>${M[k].v(s[0])}</em></span></div><div class="rest">${[1,2].map(i=>`<div><i>${i+1}</i>${av(s[i],'xs')}<span class="rn">${s[i].nm}</span><b>${M[k].v(s[i])}</b></div>`).join('')}</div><div class="you">Вы: <b>${myPlace(k)}-е место</b> · ${M[k].v(ME)}</div></div>`}).join('')}</div></div>
+<div class="full">${table('goal',true)}</div><p class="note">Нажатие на «Доход до Точки Б», «За неделю» или «% цели» в шапке таблицы пересортирует список.</p></section>`;
+document.getElementById('root').innerHTML=A+B+C;
+// типограф: короткие слова не висят
+(function(){const NB=' ';const re=/(^|[\s («„"'>—-])([A-Za-zА-Яа-яЁё]{1,2})[ \t]+(?=\S)/g;const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(n.parentElement.closest('script,style'))continue;let t=n.nodeValue;for(let i=0;i<3;i++)t=t.replace(re,`$1$2${NB}`);t=t.replace(/(\d)[ \t]+(?=[A-Za-zА-Яа-яЁё%₽$€])/g,`$1${NB}`).replace(/[ \t]+—/g,`${NB}—`);if(t!==n.nodeValue)n.nodeValue=t;}})();
+</script></body></html>
