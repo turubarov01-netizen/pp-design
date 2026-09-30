@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Проводник и команда</title>
+<style>
+/* Урок «Правила курса» — вставки HTML-страниц в урок кабинета «План Продюсера».
+   Фон и карточки совпадают с кабинетом (ProducerPlanLayout: --pl-bg #0D1117, --pl-card #141E2B). */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap');
+
+:root {
+  --bg: #0D1117;
+  --card: #141E2B;
+  --card2: #1A2535;
+  --line: rgba(255,255,255,.07);
+  --line2: rgba(255,255,255,.12);
+  --t1: #FFFFFF;
+  --t2: rgba(255,255,255,.76);
+  --t3: rgba(255,255,255,.52);
+  --blue: #6B9FFF;
+  --blue-bg: rgba(107,159,255,.10);
+  --blue-line: rgba(107,159,255,.28);
+  --amber: #EAB820;
+  --gold: linear-gradient(135deg, #F0D080 0%, #CCA830 100%);
+  --red: #FF6B6B;
+  --red-bg: rgba(255,107,107,.09);
+  --red-line: rgba(255,107,107,.28);
+  --green: #6BCB77;
+  --green-bg: rgba(107,203,119,.09);
+  --green-line: rgba(107,203,119,.28);
+  --r: 18px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg) !important; }
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: var(--t2);
+  font-size: 17px; line-height: 1.55; letter-spacing: -.011em;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-wrap: pretty;
+}
+.page { max-width: 720px; margin: 0 auto; padding: 8px 16px 24px; }
+
+b, strong { color: var(--t1); font-weight: 700; }
+.am { color: var(--amber); font-weight: 700; }
+p + p { margin-top: 12px; }
+svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ——— заголовки секций ——— */
+.sec { padding-top: 40px; }
+.sec:first-child { padding-top: 8px; }
+.kick { display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.h2 {
+  font-size: 28px; font-weight: 700; line-height: 1.12; letter-spacing: -.02em; margin-bottom: 14px; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.h3 { font-size: 19px; font-weight: 700; line-height: 1.25; color: var(--t1); margin: 24px 0 10px; text-wrap: balance; }
+.lead { font-size: 18px; color: var(--t2); }
+
+/* ——— карточки ——— */
+.card { background: var(--card); border: 1px solid var(--line2); border-radius: var(--r); padding: 20px; margin-top: 16px; }
+.card-t { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 14px; }
+.card-t svg.i { width: 18px; height: 18px; color: var(--blue); }
+
+/* ——— шпаргалка ——— */
+.cheat { background: linear-gradient(180deg, #172238 0%, var(--card) 100%); border-color: var(--blue-line); padding: 22px 20px 8px; }
+.cheat-h { font-size: 22px; font-weight: 700; color: var(--t1); line-height: 1.2; margin-bottom: 4px; text-wrap: balance; }
+.cheat-sub { font-size: 15px; color: var(--t3); margin-bottom: 14px; }
+.rule { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+.rule-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--blue-bg); color: var(--blue); }
+.rule-ic.red { background: var(--red-bg); color: var(--red); }
+.rule-name { font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.3; }
+.rule-txt { font-size: 15px; line-height: 1.45; color: var(--t2); margin-top: 3px; }
+.tag-loss { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; padding: 3px 10px 3px 8px; border-radius: 100px; background: var(--red-bg); border: 1px solid var(--red-line); color: #FF9B9B; font-size: 13px; font-weight: 600; }
+.tag-loss svg.i { width: 14px; height: 14px; fill: currentColor; stroke: none; }
+
+/* ——— сердечки ——— */
+.hearts { display: flex; gap: 8px; color: var(--red); flex: none; }
+.hearts svg { width: 28px; height: 28px; fill: var(--red); }
+.hearts.sm svg { width: 18px; height: 18px; }
+.hearts .off { fill: rgba(255,255,255,.14); }
+
+/* ——— цель 30 дней ——— */
+.goal { text-align: center; padding: 24px 20px; }
+.goal-days { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+.goal-num { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -.03em; margin: 6px 0 16px;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.goal-or { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.goal-opt { background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 14px; padding: 14px 10px; font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.25; }
+.goal-sep { font-size: 13px; color: var(--t3); font-weight: 600; }
+
+/* ——— списки ——— */
+.list { list-style: none; display: grid; gap: 10px; margin-top: 12px; }
+.list li { position: relative; padding-left: 22px; }
+.list li::before { content: ""; position: absolute; left: 4px; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+.list.red li::before { background: var(--red); }
+.list.green li::before { background: var(--green); }
+.list.muted li::before { background: var(--t3); }
+
+/* ——— цитата-вывод ——— */
+.quote { margin-top: 18px; padding: 4px 0 4px 16px; border-left: 3px solid; border-image: var(--gold) 1; font-size: 19px; font-weight: 600; line-height: 1.4; color: var(--t1); }
+
+/* ——— футбол ——— */
+.pair { display: grid; gap: 12px; margin-top: 16px; }
+.pair .card { margin-top: 0; }
+
+/* ——— Точка Б ——— */
+.lvls { display: grid; gap: 10px; margin-top: 16px; }
+.lvl { display: grid; grid-template-columns: 1fr 24px 1fr; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.lvl-lbl { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.lvl-now { font-size: 15px; font-weight: 600; color: var(--t1); line-height: 1.3; }
+.lvl-now small, .lvl-goal small { display: block; font-size: 13px; font-weight: 500; color: var(--t3); }
+.lvl-arrow { color: var(--t3); }
+.lvl-goal .lvl-lbl { color: #D9B94E; }
+.lvl-goal b { font-size: 20px; line-height: 1.15; background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.lvl-n { grid-column: 1 / -1; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: -2px; }
+
+/* ——— этапы (вертикальная линия) ——— */
+.steps { list-style: none; margin-top: 16px; }
+.step { position: relative; display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding-bottom: 20px; }
+.step:last-child { padding-bottom: 0; }
+.step:not(:last-child)::after { content: ""; position: absolute; left: 17px; top: 38px; bottom: 4px; width: 2px; background: linear-gradient(180deg, var(--blue-line), rgba(107,159,255,.06)); }
+.step-n { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; font-weight: 700; color: var(--blue); background: var(--blue-bg); border: 1px solid var(--blue-line); font-variant-numeric: tabular-nums; }
+.step-n.done { color: var(--green); background: var(--green-bg); border-color: var(--green-line); }
+.step-t { font-size: 17px; font-weight: 700; color: var(--t1); padding-top: 6px; line-height: 1.3; }
+.step-t .dur { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 100px; background: rgba(255,255,255,.06); font-size: 13px; font-weight: 600; color: var(--t2); vertical-align: 2px; }
+.step-d { font-size: 15px; color: var(--t2); margin-top: 4px; }
+.step-d.ok { color: var(--green); font-weight: 600; }
+
+/* ——— неделя: 3 плашки ——— */
+.week { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+.week div { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 12px; padding: 12px 14px; font-size: 15px; line-height: 1.3; color: var(--t2); }
+.week div b { width: 20px; text-align: center; font-size: 22px; color: var(--t1); flex: none; }
+.week div:first-child { border-color: rgba(234,184,32,.35); background: rgba(234,184,32,.07); }
+.week div:first-child b { color: var(--amber); }
+
+/* ——— 80/20 ——— */
+.split-bar { display: grid; grid-template-columns: 20fr 80fr; height: 40px; border-radius: 12px; overflow: hidden; margin: 16px 0 14px; font-size: 14px; font-weight: 700; }
+.split-bar span { display: flex; align-items: center; padding: 0 12px; }
+.split-bar span:first-child { background: var(--gold); color: #1A1406; justify-content: center; padding: 0; }
+.split-bar span:last-child { background: rgba(255,255,255,.07); color: var(--t3); }
+.split { display: grid; gap: 12px; }
+.split .card { margin-top: 0; }
+.split .must { border-color: rgba(234,184,32,.4); }
+.split .must .card-t { color: var(--amber); }
+.split .must .card-t svg.i { color: var(--amber); }
+
+/* ——— таймлайн недели задания ——— */
+.days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 8px; }
+.day { text-align: center; }
+.day-bar { height: 10px; border-radius: 5px; background: rgba(107,159,255,.28); }
+.day.open .day-bar { background: var(--blue); }
+.day.dl .day-bar { background: var(--red); }
+.day-n { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--t2); }
+.day-s { font-size: 11px; line-height: 1.25; color: var(--t3); margin-top: 2px; }
+.day.open .day-s { color: var(--blue); font-weight: 600; }
+.day.dl .day-s { color: #FF9B9B; font-weight: 600; }
+
+/* ——— факты-числа ——— */
+.facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; }
+.fact { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.fact b { display: block; font-size: 24px; line-height: 1.1; color: var(--t1); letter-spacing: -.02em; margin-bottom: 4px; }
+.fact.wide { grid-column: 1 / -1; }
+.fact.wide b { font-size: 18px; }
+.fact span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— красные / зелёные блоки ——— */
+.note { display: flex; gap: 12px; align-items: flex-start; border-radius: 14px; padding: 14px 16px; margin-top: 14px; border: 1px solid; font-size: 16px; line-height: 1.5; }
+.note svg.i { margin-top: 2px; }
+.note.red { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.note.red b { color: #FFD0D0; }
+.note.green { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.note.green b { color: #D2F5D6; }
+.note.blue { background: var(--blue-bg); border-color: var(--blue-line); color: #B5CCFF; }
+.note.blue b { color: #DCE7FF; }
+
+/* ——— путь жизней ——— */
+.path { display: grid; gap: 0; margin-top: 16px; }
+.path-st { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 16px; }
+.path-st.solo { border-color: rgba(234,184,32,.35); }
+.path-st.out { border-color: var(--red-line); background: linear-gradient(180deg, rgba(255,107,107,.06), var(--card)); }
+.path-hd { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.path-name { font-size: 17px; font-weight: 700; color: var(--t1); }
+.path-st p { font-size: 15px; margin-top: 6px; }
+.path-link { display: flex; align-items: center; gap: 8px; padding: 8px 0 8px 18px; font-size: 13px; font-weight: 600; color: #FF9B9B; }
+.path-link::before { content: ""; width: 2px; height: 22px; background: var(--red-line); margin-right: 6px; }
+
+/* ——— хорошо / плохо ——— */
+.vs { display: grid; gap: 10px; margin-top: 14px; }
+.vs-col { border-radius: 16px; padding: 14px 16px; border: 1px solid; }
+.vs-col.bad { background: var(--red-bg); border-color: var(--red-line); }
+.vs-col.good { background: var(--green-bg); border-color: var(--green-line); }
+.vs-h { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.vs-col.bad .vs-h { color: #FF9B9B; }
+.vs-col.good .vs-h { color: var(--green); }
+.vs-col ul { list-style: none; display: grid; gap: 6px; font-size: 15px; color: var(--t1); }
+
+/* ——— таймлайн дня ——— */
+.clock { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.clock div { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.clock b { display: block; font-size: 28px; line-height: 1; letter-spacing: -.02em; color: var(--t1); font-variant-numeric: tabular-nums; margin-bottom: 6px; }
+.clock span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— пример фокуса ——— */
+.ex { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; margin-top: 14px; }
+.ex > div { background: var(--card); border: 1px solid var(--line2); border-radius: 14px; padding: 12px 14px; }
+.ex small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.ex b { font-size: 16px; line-height: 1.3; }
+.ex .arrow { align-self: center; background: none; border: 0; padding: 0; color: var(--t3); }
+
+/* ——— монеты / баллы ——— */
+.cur { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.cur .card { margin-top: 0; padding: 16px; }
+.cur-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 10px; }
+.cur-ic.pts { background: var(--blue-bg); color: var(--blue); }
+.cur-ic.coin { background: rgba(234,184,32,.12); color: var(--amber); }
+.cur-n { font-size: 18px; font-weight: 700; color: var(--t1); }
+.cur-what { font-size: 14px; line-height: 1.4; color: var(--t2); margin-top: 4px; }
+.plusminus { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.pm { border-radius: 14px; padding: 12px 14px; border: 1px solid; font-size: 14px; line-height: 1.4; }
+.pm b { display: block; font-size: 20px; margin-bottom: 2px; }
+.pm.up { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.pm.up b { color: var(--green); }
+.pm.down { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.pm.down b { color: var(--red); }
+
+/* ——— свойства инвентаря ——— */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.tile { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px; font-size: 14px; line-height: 1.4; color: var(--t2); }
+.tile .rule-ic { margin-bottom: 10px; }
+.tile b { color: var(--t1); }
+
+/* ——— итоговый чек-лист ——— */
+.check { list-style: none; display: grid; gap: 10px; margin-top: 14px; }
+.check li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; font-size: 16px; color: var(--t1); font-weight: 600; line-height: 1.4; }
+.check li span.box { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; background: var(--green-bg); border: 1px solid var(--green-line); color: var(--green); }
+.check li span.box svg.i { width: 16px; height: 16px; stroke-width: 3; }
+.check li small { display: block; font-size: 14px; font-weight: 500; color: var(--t2); margin-top: 2px; }
+
+.divider { height: 1px; background: var(--line); margin: 36px 0 0; }
+
+@media (min-width: 640px) {
+  .page { padding: 8px 0 32px; }
+  .h2 { font-size: 34px; }
+  .card { padding: 24px; }
+  .pair, .split, .vs { grid-template-columns: 1fr 1fr; }
+  .lvls { grid-template-columns: repeat(3, 1fr); }
+  .lvl { grid-template-columns: 1fr; gap: 6px; }
+  .lvl-arrow { transform: rotate(90deg); justify-self: start; }
+  .facts { grid-template-columns: repeat(4, 1fr); }
+  .fact.wide { grid-column: span 2; }
+  .week { grid-template-columns: repeat(3, 1fr); }
+  .grid2 { grid-template-columns: repeat(4, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Урок «Проводник и команда» — дополнения к pravila-kursa/lesson.css */
+.upd { color: inherit; }
+.after { margin-top: 14px; }
+
+/* шпаргалка урока (как в «50 вещей») */
+.cheat { background: linear-gradient(180deg, #172238 0%, var(--card) 100%); border-color: var(--blue-line); padding: 22px 20px 8px; }
+.cheat-h { font-size: 22px; font-weight: 700; color: var(--t1); line-height: 1.2; margin-bottom: 4px; text-wrap: balance; }
+
+/* проводник */
+.guide { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
+.guide-ic { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; flex: none;
+  background: rgba(240,208,128,.10); border: 1px solid rgba(240,208,128,.32); color: #F0D080; }
+.guide-ic svg.i { width: 28px; height: 28px; }
+.guide-role { font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); }
+.guide-name { font-size: 22px; font-weight: 700; line-height: 1.2; margin-top: 2px;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* отряды */
+.squads { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+.squad { display: flex; align-items: center; gap: 10px; padding: 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--line2);
+  font-size: 17px; font-weight: 700; color: var(--t1); }
+.squad-ic { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; flex: none; background: var(--blue-bg); color: var(--blue); }
+.squad-ic svg.i { width: 18px; height: 18px; }
+
+/* стоп-урок */
+.stop { background: var(--red-bg); border-color: var(--red-line); color: #FFC9C9; }
+.stop b { color: #FFE0E0; }
+.stop .card-t { color: #FF9B9B; margin-bottom: 10px; }
+.stop .card-t svg.i { color: var(--red); }
+
+/* приз */
+.prize { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center;
+  background: linear-gradient(180deg, #221d12 0%, var(--card) 100%); border-color: rgba(240,208,128,.32); }
+.prize-ic { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: rgba(240,208,128,.12); color: #F0D080; }
+
+/* роли */
+.roles { display: grid; gap: 10px; margin-top: 4px; }
+@media (min-width: 560px) { .roles { grid-template-columns: 1fr 1fr; } }
+.role { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; padding: 14px; border-radius: 16px;
+  background: var(--card); border: 1px solid var(--line2); }
+.role-n { font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.3; }
+.role-d { font-size: 15px; line-height: 1.45; color: var(--t2); margin-top: 3px; }
+.role.must { background: linear-gradient(180deg, #221d12 0%, var(--card) 100%); border-color: rgba(240,208,128,.32); }
+.role.must .rule-ic { background: rgba(240,208,128,.12); color: #F0D080; }
+
+/* совет Игоря */
+.tip { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; margin-top: 16px; padding: 16px; border-radius: 16px;
+  background: rgba(234,184,32,.07); border: 1px solid rgba(234,184,32,.30); }
+.tip-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(234,184,32,.14); color: var(--amber); }
+.final { margin-top: 22px; font-size: 19px; font-weight: 700; color: var(--t1); }
+
+</style>
+</head>
+<body>
+<main class="page">
+<section class="sec">
+  <h2 class="h2">Командный этап</h2>
+  <p class="lead">Это один из&nbsp;самых важных и&nbsp;ярких этапов программы. Командный формат даёт опыт, который невозможно получить в&nbsp;одиночку: многие упражнения и&nbsp;задачи выполняются только вместе.</p>
+
+  <div class="card cheat">
+    <p class="cheat-h"><span class="upd">Что сделать в&nbsp;этом уроке</span></p>
+    <div class="rule">
+      <div class="rule-ic red"><svg class="i" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></div>
+      <div><p class="rule-name"><span class="upd">Вступить в&nbsp;чат своего отряда</span></p>
+        <p class="rule-txt"><span class="upd">Кнопка «Вступить в&nbsp;чат отряда»&nbsp;— в&nbsp;начале урока. Без этого следующие уроки не&nbsp;откроются.</span></p></div>
+    </div>
+    <div class="rule">
+      <div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div><p class="rule-name"><span class="upd">Придумать название отряда и&nbsp;распределить роли</span></p></div>
+    </div>
+    <div class="rule">
+      <div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 10h8"/><path d="M8 18h8"/><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg></div>
+      <div><p class="rule-name"><span class="upd">Выбрать напарника в&nbsp;«Рюкзаке»</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <h2 class="h2">Проводник команды</h2>
+  <div class="card guide">
+    <div class="guide-ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></div>
+    <div>
+      <p class="guide-role"><span class="upd">Проводник потока</span></p>
+      <p class="guide-name"><span class="upd">Кристина Барикянц</span></p>
+    </div>
+  </div>
+  <p class="after">Проводник потока&nbsp;— <b>Кристина Барикянц</b>. Она ведёт оба отряда, проверяет домашние задания и&nbsp;помогает дойти до&nbsp;результата. Посмотрите её видео выше.</p>
+</section>
+
+<section class="sec">
+  <h2 class="h2">Ваш отряд</h2>
+  <div class="squads">
+    <div class="squad"><span class="squad-ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg></span><span class="upd">Отряд&nbsp;1</span></div>
+    <div class="squad"><span class="squad-ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg></span><span class="upd">Отряд&nbsp;2</span></div>
+  </div>
+  <p class="after">В&nbsp;потоке <b>2&nbsp;отряда</b>&nbsp;— Отряд&nbsp;1 и&nbsp;Отряд&nbsp;2. Распределение уже сделано автоматически, выбирать ничего не&nbsp;нужно. Свой отряд вы&nbsp;видите в&nbsp;начале урока и&nbsp;в&nbsp;разделе <b>«Чат отряда»</b>.</p>
+
+  <div class="card stop">
+    <div class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span class="upd">Стоп-урок</span></div>
+    <p><b>Это стоп-урок.</b> Вступите в&nbsp;Telegram-чат своего отряда по&nbsp;кнопке «Вступить в&nbsp;чат отряда» в&nbsp;начале урока. Бот проверит вступление, и&nbsp;только после этого откроются следующие уроки.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <h2 class="h2">Командная игра и&nbsp;рейтинг</h2>
+  <div class="grid2">
+    <div class="tile"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>У&nbsp;отрядов общий командный зачёт и&nbsp;рейтинг</div>
+    <div class="tile"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>Все баллы, которые вы&nbsp;зарабатываете индивидуально, идут в&nbsp;результат отряда</div>
+  </div>
+  <div class="card prize">
+    <div class="prize-ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 4.8 0 0 1 12 8a4.8 4.8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg></div>
+    <p><b>В&nbsp;финале определится отряд-победитель, который получит приз.</b> Какой&nbsp;— узнаете ближе к&nbsp;завершению.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <h2 class="h2">После вступления в&nbsp;чат</h2>
+  <ol class="steps">
+    <li class="step"><span class="step-n">1</span><div><p class="step-t">Придумайте название отряда</p></div></li>
+    <li class="step"><span class="step-n">2</span><div><p class="step-t">Распределите роли</p></div></li>
+  </ol>
+</section>
+
+<section class="sec">
+  <h2 class="h2">Роли в&nbsp;отряде</h2>
+  <p>Роли <b>не&nbsp;дублируются</b>: у&nbsp;каждого участника одна роль, и&nbsp;в&nbsp;отряде каждая роль занята одним человеком. У&nbsp;ролей есть спецзадания, а&nbsp;у&nbsp;некоторых&nbsp;— бонусы в&nbsp;виде предметов инвентаря.</p>
+  <div class="note red"><svg class="i" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><div>Не&nbsp;выбирайте роль по&nbsp;остаточному принципу: не&nbsp;справитесь со&nbsp;спецзаданием&nbsp;— отряд потеряет баллы.</div></div>
+
+  <h3 class="h3">Обязательные роли</h3>
+  <div class="roles">
+    <div class="role must"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg></div><div><p class="role-n">Капитан</p><p class="role-d">отвечает за&nbsp;командный результат, правая рука Проводника.</p></div></div>
+    <div class="role must"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div><div><p class="role-n">Казначей</p><p class="role-d">ведёт оцифровку отряда, следит, сколько каждому осталось до&nbsp;результата, еженедельно готовит отчёт для Проводника и&nbsp;Капитана.</p></div></div>
+  </div>
+
+  <h3 class="h3">Героические роли</h3>
+  <div class="roles">
+    <div class="role"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div><div><p class="role-n">Хакер</p><p class="role-d">помогает с&nbsp;техникой: домен, приложения, сайт, навигация по&nbsp;платформе.</p></div></div>
+    <div class="role"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div><div><p class="role-n">Психолог</p><p class="role-d">разбирается в&nbsp;«стопах» и&nbsp;держит моральный дух.</p></div></div>
+    <div class="role"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r="1.2"/><circle cx="17.5" cy="10.5" r="1.2"/><circle cx="8.5" cy="7.5" r="1.2"/><circle cx="6.5" cy="12.5" r="1.2"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></div><div><p class="role-n">Художник</p><p class="role-d">следит, чтобы сайты, тексты и&nbsp;соцсети отряда выглядели со&nbsp;вкусом.</p></div></div>
+    <div class="role"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg></div><div><p class="role-n">Сенсей</p><p class="role-d">опытный в&nbsp;запусках, консультирует по&nbsp;деталям запуска.</p></div></div>
+    <div class="role"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg></div><div><p class="role-n">ЗОЖник</p><p class="role-d">отвечает за&nbsp;питание, спорт и&nbsp;энергию отряда.</p></div></div>
+    <div class="role"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><p class="role-n">Тимбилдер</p><p class="role-d">организует выполнение командных заданий-вызовов.</p></div></div>
+    <div class="role"><div class="rule-ic"><svg class="i" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></div><div><p class="role-n">Reels Maker</p><p class="role-d">помогает снимать видео и&nbsp;прокачивает отряд в&nbsp;контенте.</p></div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <h2 class="h2">Напарник</h2>
+  <p>Выберите себе <b>1–2 напарника</b>&nbsp;— из&nbsp;своего или другого отряда. Напарник выбирается в&nbsp;разделе <b>«Рюкзак»</b>.</p>
+  <div class="tip">
+    <div class="tip-ic"><svg class="i" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
+    <p><b>Совет от&nbsp;Игоря:</b> выберите того, кто вас триггернул&nbsp;— бесит или раздражает. Работа в&nbsp;паре с&nbsp;человеком другого психотипа даёт самую сильную проработку.</p>
+  </div>
+  <p class="final">Вступайте в&nbsp;чат отряда&nbsp;— и&nbsp;вперёд.</p>
+</section>
+</main>
+</body>
+</html>
