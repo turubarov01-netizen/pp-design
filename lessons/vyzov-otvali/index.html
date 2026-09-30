@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вызов Фримана. Отвали — три варианта оформления</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0D1117;--card:#141B24;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.14);--t1:#F2F4F7;--t2:rgba(242,244,247,.74);--t3:rgba(242,244,247,.52);--blue:#6B9FFF;--gold:#F0D080;--green:#6BCB77;
+--ember:#FF6A3D;--ember2:#FF8A4C;--ink:#E5484D;--embg:rgba(255,106,61,.10);--emline:rgba(255,106,61,.42)}
+html,body{background:var(--bg)}
+body{font-family:Inter,-apple-system,system-ui,sans-serif;color:var(--t1);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+svg.i{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{max-width:430px;margin:0 auto;padding:0 16px 120px}
+
+/* переключатель вариантов (не часть кабинета) */
+.vsw{position:sticky;top:0;z-index:40;margin:0 -16px;padding:10px 16px;background:rgba(10,13,18,.96);border-bottom:1px solid var(--line)}
+.vsw .g{display:flex;gap:6px}
+.vsw button{flex:1;min-height:44px;padding:4px 6px;border-radius:12px;border:1px dashed var(--line2);font-size:13px;font-weight:700;line-height:1.15;color:var(--t2)}
+.vsw button small{display:block;font-size:11px;font-weight:600;color:var(--t3)}
+.vsw button.on{border-style:solid;border-color:rgba(240,208,128,.55);color:var(--gold);background:rgba(240,208,128,.06)}
+.vdesc{margin-top:14px;padding:12px 14px;border-radius:14px;border:1px dashed var(--line2);font-size:13px;line-height:1.5;color:var(--t2)}
+.vdesc b{color:var(--t1)}
+.vdesc .rs{display:inline-block;margin-top:6px;font-size:12px;color:var(--t3)}
+
+/* шапка кабинета */
+.top{display:flex;align-items:center;gap:10px;height:52px;margin:6px -4px 0;font-size:15px;font-weight:600;color:rgba(242,244,247,.78)}
+.top svg{width:18px;height:18px}
+.hero{position:relative;margin:4px -16px 0;aspect-ratio:16/8;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,17,23,0) 35%,var(--bg))}
+.head{position:relative;margin-top:-40px;z-index:1}
+.kick{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ember)}
+.kick svg{width:15px;height:15px}
+h1{margin-top:4px;font-size:28px;font-weight:800;line-height:1.08;text-transform:uppercase;color:var(--gold)}
+.meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--t3)}
+.meta span{display:inline-flex;align-items:center;gap:6px}.meta svg{width:15px;height:15px}
+
+/* плеер — как в кабинете (AudioLessonPlayer) */
+.aw{margin-top:18px;border-radius:20px;border:1px solid var(--line);background:var(--card);padding:14px}
+.au{display:flex;width:100%;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1px solid var(--line2);background:rgba(20,27,36,.6);text-align:left}
+.au .pc{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;background:rgba(240,208,128,.1);color:var(--gold)}
+.au .pc svg{width:16px;height:16px;fill:currentColor;stroke:none;margin-left:2px}
+.au .t{flex:1;min-width:0}
+.au .tt{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500}
+.au .tt svg{width:14px;height:14px;color:var(--t3)}
+.au .ts{display:block;margin-top:2px;font-size:10px;color:var(--t3)}
+.au .al{width:16px;height:16px;color:rgba(242,244,247,.3)}
+
+.sec{margin-top:30px}
+.lbl{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+h2{margin-top:4px;font-size:22px;font-weight:800;line-height:1.2}
+.p{margin-top:8px;font-size:15px;color:var(--t2)}
+.p b{color:var(--t1)}
+
+/* общие блоки */
+.ask{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.ask span{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid var(--line2);font-size:14px;font-weight:600}
+.ask span svg{width:16px;height:16px;color:var(--ember)}
+.ask span.own{border-style:dashed;color:var(--t3);font-weight:500}
+.stake{margin-top:14px;display:flex;align-items:center;gap:14px;padding:16px;border-radius:18px;background:rgba(229,72,77,.08);border:1px solid rgba(229,72,77,.35)}
+.hearts{display:flex;gap:4px;flex:none}
+.hearts svg{width:22px;height:22px;fill:#E5484D;stroke:none}
+.stake p{font-size:14px;line-height:1.45;color:#FFC9C9}
+.stake b{color:#FFE0E0}
+.quote{margin-top:26px;padding:4px 0 4px 0}
+.quote p{font-size:21px;font-weight:700;line-height:1.3;color:var(--t1)}
+.quote p::before{content:"«"}.quote p::after{content:"»"}
+.quote small{display:block;margin-top:8px;font-size:13px;color:var(--t3)}
+
+/* блок задания — как в кабинете */
+.task{margin-top:28px;padding:18px 16px;border-radius:20px;background:var(--card);border:1px solid var(--line2)}
+.task .th{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.task .th b{font-size:16px}
+.task .dl{font-size:12px;font-weight:700;color:var(--ember);white-space:nowrap}
+.task label{display:block;margin-top:14px;font-size:13px;font-weight:600;color:var(--t2)}
+.task .f{margin-top:6px;min-height:52px;border-radius:12px;border:1px solid var(--line2);background:#0F1620;padding:12px;font-size:14px;color:var(--t3)}
+.task .f.tall{min-height:96px}
+.gold{margin-top:16px;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:54px;border-radius:16px;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#2A2008;font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 5px 0 #A07828}
+
+/* ═════ А · ПРИКАЗ ═════ */
+.env{position:relative;margin-top:22px;border-radius:22px;overflow:hidden;background:#1B1510;border:1px solid rgba(240,208,128,.28)}
+.env .paper{position:relative;padding:26px 20px 24px;background:
+ radial-gradient(120% 80% at 50% 0%,rgba(240,208,128,.10),transparent 60%),
+ repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 2px,transparent 2px 5px),#1B1510}
+.env .from{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,208,128,.7)}
+.env .to{margin-top:6px;font-size:20px;font-weight:800;line-height:1.25}
+.env .hint{margin-top:6px;font-size:14px;color:var(--t3)}
+.seal{position:relative;display:grid;place-items:center;width:132px;height:132px;margin:22px auto 4px;border-radius:50%;
+ background:radial-gradient(circle at 38% 32%,#E4564A,#A81E22 62%,#7A1216);box-shadow:0 10px 30px rgba(168,30,34,.45),inset 0 -6px 14px rgba(0,0,0,.35),inset 0 5px 10px rgba(255,255,255,.18);
+ transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .45s}
+.seal::before{content:"";position:absolute;inset:12px;border-radius:50%;border:2px dashed rgba(255,220,200,.35)}
+.seal svg{width:54px;height:54px;color:#FFD9CC;stroke-width:1.8}
+.seal svg.ring{position:absolute;left:0;top:0;width:132px;height:132px;animation:spin 18s linear infinite}
+.seal .ring text{font:800 9.5px Inter;letter-spacing:.28em;fill:rgba(255,225,210,.8)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.env .open{display:flex;width:100%;margin-top:18px;align-items:center;justify-content:center;gap:10px;min-height:56px;border-radius:16px;background:var(--ember);color:#2A0E04;font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 5px 0 #B9401C}
+.env.opened .seal{transform:scale(1.35) rotate(-24deg);opacity:0;pointer-events:none;position:absolute;left:50%;top:40px;margin-left:-66px}
+.env .order{display:none}
+.env.opened .order{display:block;animation:unfold .6s cubic-bezier(.22,1,.36,1)}
+.env.opened .open,.env.opened .hint,.env.opened .paper>.from,.env.opened .to{display:none}
+@keyframes unfold{from{opacity:0;transform:translateY(-10px) scaleY(.96)}to{opacity:1;transform:none}}
+.order .cmd{margin-top:18px;font-size:34px;font-weight:900;line-height:1;letter-spacing:-.02em;text-transform:uppercase;color:#FFE7C7}
+.order .cmd em{font-style:normal;color:var(--ember)}
+.order .sub{margin-top:10px;font-size:15px;color:var(--t2)}
+.sign{margin-top:18px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t3)}
+.sign i{flex:1;height:1px;background:rgba(240,208,128,.25)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.mode{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:16px 14px;border-radius:18px;border:1px solid var(--line2);background:rgba(255,255,255,.02);text-align:left}
+.mode .mn{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.mode .big{font-size:40px;font-weight:900;line-height:1;letter-spacing:-.03em}
+.mode .big small{font-size:14px;font-weight:700;letter-spacing:0;margin-left:4px;color:var(--t2)}
+.mode .when{font-size:13px;color:var(--t2)}
+.mode .tm{margin-top:6px;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t3)}
+.mode.on{border-color:var(--emline);background:var(--embg)}
+.mode.on .mn,.mode.on .tm{color:var(--ember)}
+.mode.on::after{content:"";position:absolute;top:12px;right:12px;width:10px;height:10px;border-radius:50%;background:var(--ember);box-shadow:0 0 0 4px rgba(255,106,61,.2)}
+
+/* ═════ Б · КОЛЛЕКЦИЯ «НЕТ» ═════ */
+.stampHero{position:relative;margin-top:20px;padding:22px 18px 20px;border-radius:22px;background:#150F10;border:1px solid rgba(229,72,77,.3);overflow:hidden}
+.stampHero .word{font-size:74px;font-weight:900;font-style:italic;line-height:.9;letter-spacing:-.04em;text-transform:uppercase;color:transparent;-webkit-text-stroke:2px rgba(229,72,77,.55)}
+.stampHero .word.fill{position:absolute;left:18px;top:22px;color:var(--ink);-webkit-text-stroke:0;clip-path:inset(0 100% 0 0);transition:clip-path .6s cubic-bezier(.22,1,.36,1)}
+.stampHero p{position:relative;margin-top:12px;font-size:15px;color:var(--t2)}
+.stampHero p b{color:var(--t1)}
+.counter{margin-top:14px;padding:18px 16px;border-radius:22px;background:var(--card);border:1px solid var(--line2)}
+.cnt{display:flex;align-items:flex-end;gap:10px}
+.cnt .n{font-size:64px;font-weight:900;line-height:.9;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.cnt .of{padding-bottom:6px;font-size:18px;font-weight:700;color:var(--t3)}
+.cnt .st{margin-left:auto;padding-bottom:8px;font-size:13px;font-weight:600;color:var(--t2);text-align:right}
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:14px;padding:4px;border-radius:14px;background:rgba(255,255,255,.04)}
+.seg2 button{min-height:44px;border-radius:11px;font-size:13px;font-weight:700;color:var(--t3)}
+.seg2 button.on{background:rgba(229,72,77,.14);color:#FF9A9C;box-shadow:inset 0 0 0 1px rgba(229,72,77,.4)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:16px}
+.slot{position:relative;aspect-ratio:1;border-radius:50%;border:1.5px dashed rgba(255,255,255,.16);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--t3)}
+.slot.hit{border:0}
+.slot.hit::before{content:"НЕТ";position:absolute;inset:4%;border-radius:50%;display:grid;place-items:center;border:2.5px solid var(--ink);color:var(--ink);font-size:13px;font-weight:900;letter-spacing:.04em;transform:rotate(var(--r,-12deg));background:rgba(229,72,77,.09);
+ animation:stamp .34s cubic-bezier(.22,1,.36,1)}
+@keyframes stamp{0%{transform:scale(1.9) rotate(var(--r,-12deg));opacity:0}60%{opacity:1}100%{transform:scale(1) rotate(var(--r,-12deg))}}
+.plus{display:flex;width:100%;margin-top:16px;align-items:center;justify-content:center;gap:10px;min-height:60px;border-radius:18px;background:var(--ink);color:#fff;font-size:17px;font-weight:800;box-shadow:0 5px 0 #9E2227;transition:transform .12s,box-shadow .12s}
+.plus:active{transform:translateY(3px);box-shadow:0 2px 0 #9E2227}
+.plus svg{width:22px;height:22px;stroke-width:2.6}
+.minus{display:block;margin:10px auto 0;min-height:40px;padding:0 12px;font-size:13px;font-weight:600;color:var(--t3)}
+.win{display:none;margin-top:14px;padding:14px;border-radius:16px;background:rgba(107,203,119,.1);border:1px solid rgba(107,203,119,.35);font-size:14px;color:#CFF2D3}
+.win.show{display:block;animation:unfold .5s}
+.win b{color:#fff}
+.miles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.mile{padding:8px;border-radius:12px;border:1px solid var(--line);font-size:12px;line-height:1.3;color:var(--t3);text-align:center}
+.mile b{display:block;font-size:15px;color:var(--t2)}
+.mile.ok{border-color:rgba(229,72,77,.4);color:#FFB3B5}.mile.ok b{color:#fff}
+.math{margin-top:14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.math .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(240,208,128,.1);color:var(--gold)}
+.math p{font-size:14px;color:var(--t2)}.math b{color:var(--t1)}
+
+/* ═════ В · ЧАЩА СТРАХОВ ═════ */
+.climb{position:relative;margin:20px -16px 0;height:760px;overflow:hidden;background:#140C07}
+.climb .bg{position:absolute;inset:0;background:url(img/cover.jpg) 68% 50%/cover no-repeat;filter:saturate(1.05)}
+.climb .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,17,23,.15) 0%,rgba(13,17,23,.25) 30%,rgba(13,17,23,.75) 72%,var(--bg) 100%)}
+.climb svg.trail{position:absolute;inset:0;width:100%;height:100%}
+.climb .peak{position:absolute;left:50%;top:18px;transform:translateX(-50%);text-align:center;width:80%}
+.climb .peak b{display:block;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#FFE7C7;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.climb .peak span{font-size:13px;color:rgba(255,231,199,.8);text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.wp{position:absolute;z-index:2;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:rgba(255,255,255,.7);background:rgba(13,17,23,.72);border:1.5px solid rgba(255,255,255,.35);transition:background .35s,border-color .35s,box-shadow .35s,color .35s}
+.wp.lit{background:#FFB547;border-color:#FFE2A8;color:#3A1C02;box-shadow:0 0 0 6px rgba(255,181,71,.18),0 0 22px rgba(255,160,60,.8)}
+.wp.next{border-color:#FFB547;color:#FFB547;animation:pulse 1.6s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,181,71,.55)}100%{box-shadow:0 0 0 14px rgba(255,181,71,0)}}
+.fear{position:absolute;z-index:1;max-width:165px;padding:10px 12px;border-radius:14px 14px 14px 4px;background:rgba(18,12,20,.82);border:1px solid rgba(190,150,255,.28);font-size:13px;font-style:italic;line-height:1.35;color:#E6D9FF;transition:opacity .6s,filter .6s,transform .6s}
+.fear small{display:block;margin-top:3px;font-style:normal;font-size:11px;color:rgba(230,217,255,.55)}
+.fear.gone{opacity:.3;filter:blur(1px);transform:scale(.96)}
+.climb .base{position:absolute;left:16px;right:16px;bottom:18px}
+.climb .base .lb{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#FFB547}
+.climb .base .ct{margin-top:2px;font-size:30px;font-weight:900;line-height:1.05;letter-spacing:-.02em}
+.climb .base .ct small{font-size:16px;font-weight:700;color:var(--t3)}
+.step{display:flex;width:100%;margin-top:12px;align-items:center;justify-content:center;gap:10px;min-height:58px;border-radius:18px;background:#FFB547;color:#3A1C02;font-size:16px;font-weight:800;box-shadow:0 5px 0 #B36E14}
+.step svg{width:20px;height:20px;stroke-width:2.4}
+.chips2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.chips2 button{min-height:44px;border-radius:12px;border:1px solid var(--line2);font-size:13px;font-weight:700;color:var(--t3)}
+.chips2 button.on{border-color:rgba(255,181,71,.55);color:#FFB547;background:rgba(255,181,71,.08)}
+
+.v{display:none}.v.on{display:block}
+.fin{margin-top:40px;font-size:12px;color:var(--t3);text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vsw"><div class="g">
+    <button data-v="a" class="on">А · Приказ<small>печать и два режима</small></button>
+    <button data-v="b">Б · Коллекция «нет»<small>штампы-счётчик</small></button>
+    <button data-v="c">В · Чаща страхов<small>тропа к вершине</small></button>
+  </div></div>
+  <div class="vdesc" id="vdesc"></div>
+
+  <div class="top"><svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>Маршрут</div>
+  <div class="hero"><img src="img/cover.jpg" alt=""></div>
+  <div class="head">
+    <div class="kick"><svg class="i" viewBox="0 0 24 24"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6"/><path d="m16 16 4 4"/><path d="m19 21 2-2"/><path d="M14.5 6.5 18 3h3v3l-3.5 3.5"/><path d="m5 14 4 4"/><path d="m7 17-3 3"/><path d="m3 19 2 2"/></svg>Вызов Фримана</div>
+    <h1>Отвали</h1>
+    <div class="meta"><span><svg class="i" viewBox="0 0 24 24"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>Аудио Игоря · 7 мин</span><span><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>48 часов</span></div>
+  </div>
+
+  <div class="aw"><button class="au" type="button"><span class="pc"><svg class="i" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="t"><span class="tt"><svg class="i" viewBox="0 0 24 24"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg><span>Вызов Фримана. Отвали</span></span><span class="ts">Нажмите, чтобы слушать — плеер откроется поверх страницы</span></span><svg class="i al" viewBox="0 0 24 24"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg></button></div>
+
+  <!-- ═════ А ═════ -->
+  <div class="v on" id="v-a">
+    <div class="env" id="env"><div class="paper">
+      <div class="from">Лично от Игоря Графа</div>
+      <div class="to">Вскройте перед выходом на&nbsp;улицу</div>
+      <div class="hint">Внутри задание на&nbsp;сегодня. После вскрытия пойдёт отсчёт.</div>
+      <div class="seal" aria-hidden="true">
+        <svg class="ring" viewBox="0 0 132 132"><defs><path id="cp" d="M66,66 m-50,0 a50,50 0 1,1 100,0 a50,50 0 1,1 -100,0"/></defs><text><textPath href="#cp" textLength="306" lengthAdjust="spacing">ВЫЗОВ ФРИМАНА · ВЫЗОВ ФРИМАНА ·</textPath></text></svg>
+        <svg class="i" viewBox="0 0 24 24"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6"/><path d="m16 16 4 4"/><path d="m19 21 2-2"/><path d="M14.5 6.5 18 3h3v3l-3.5 3.5"/><path d="m5 14 4 4"/><path d="m7 17-3 3"/><path d="m3 19 2 2"/></svg>
+      </div>
+      <button class="open" id="openSeal"><svg class="i" viewBox="0 0 24 24"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>Сорвать печать</button>
+      <div class="order">
+        <div class="from">Приказ на&nbsp;сегодня</div>
+        <div class="cmd">Попросите <em>бесплатно.</em><br>Соберите «нет» на&nbsp;камеру.</div>
+        <div class="sub">Целый день на&nbsp;улице просите дать вам что-то просто так и&nbsp;снимаете, как вам отказывают.</div>
+        <div class="sign"><i></i>Игорь Граф<i></i></div>
+      </div>
+    </div></div>
+
+    <div class="sec">
+      <div class="lbl">Выберите режим</div>
+      <div class="modes" id="modes">
+        <button class="mode on" data-m="24"><span class="mn">Рывок</span><span class="big">20<small>отказов</small></span><span class="when">если сдаёте сегодня</span><span class="tm" data-t="24">—</span></button>
+        <button class="mode" data-m="48"><span class="mn">Марафон</span><span class="big">40<small>отказов</small></span><span class="when">если сдаёте за&nbsp;48&nbsp;часов</span><span class="tm" data-t="48">—</span></button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">Что просить бесплатно</div>
+      <div class="ask">
+        <span><svg class="i" viewBox="0 0 24 24"><path d="M3 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18"/><path d="M3 22h12"/><path d="M15 12h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0V9.83a2 2 0 0 0-.59-1.42L19 5"/><path d="M7 7h4"/></svg>Заправить машину</span>
+        <span><svg class="i" viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>Чипсы в&nbsp;магазине</span>
+        <span><svg class="i" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><path d="M8 15h.01"/><path d="M16 15h.01"/></svg>Проезд в&nbsp;трамвае или метро</span>
+        <span class="own">+ придумайте свои</span>
+      </div>
+      <p class="p">Моменты, где вам сказали «да», тоже можно добавить в&nbsp;ролик. Это прикольно.</p>
+    </div>
+
+    <div class="stake"><div class="hearts"><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
+      <p><b>На кону 3 жизни.</b> Главное правило Вызова Фримана: не сдадите&nbsp;— рискуете улететь в&nbsp;Одиночку.</p></div>
+
+    <div class="quote"><p>Люди никогда не&nbsp;отказывают лично вам. Они отказывают своим возможностям.</p><small>Игорь Граф, из&nbsp;аудио</small></div>
+  </div>
+
+  <!-- ═════ Б ═════ -->
+  <div class="v" id="v-b">
+    <div class="stampHero">
+      <div class="word">Нет.</div><div class="word fill" id="fillWord">Нет.</div>
+      <p><b>Сегодня вы коллекционируете отказы.</b> Просите на&nbsp;улице что-то бесплатно и&nbsp;снимайте каждый «нет». Отказал&nbsp;— ставьте штамп.</p>
+    </div>
+    <div class="counter">
+      <div class="cnt"><span class="n" id="bn">0</span><span class="of" id="bof">/ 20</span><span class="st" id="bst">штампов<br>пока нет</span></div>
+      <div class="seg2" id="bseg"><button data-g="20" class="on">Сегодня · 20</button><button data-g="40">За 48 часов · 40</button></div>
+      <div class="grid" id="bgrid"></div>
+      <button class="plus" id="bplus"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Мне отказали</button>
+      <button class="minus" id="bminus">Отменить последний штамп</button>
+      <div class="win" id="bwin"><b>Коллекция собрана.</b> Смонтируйте ролик из&nbsp;отказов, загрузите в&nbsp;Telegram, соцсети или на&nbsp;файлообменник и&nbsp;вставьте ссылку в&nbsp;задание ниже.</div>
+      <div class="miles" id="bmiles"></div>
+    </div>
+    <div class="math"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+      <p><b>«Я просто набираю баллы».</b> Игорь учит считать продажи конверсией: каждый разговор чего-то стоит, даже если человек отказал.</p></div>
+    <div class="sec">
+      <div class="lbl">Что просить бесплатно</div>
+      <div class="ask"><span>Заправить машину</span><span>Чипсы в&nbsp;магазине</span><span>Проезд в&nbsp;трамвае или метро</span><span class="own">+ свои идеи</span></div>
+    </div>
+    <div class="stake"><div class="hearts"><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
+      <p><b>На кону 3 жизни.</b> Не&nbsp;сдадите Вызов&nbsp;— рискуете улететь в&nbsp;Одиночку.</p></div>
+  </div>
+
+  <!-- ═════ В ═════ -->
+  <div class="v" id="v-c">
+    <div class="climb" id="climb">
+      <div class="bg"></div>
+      <svg class="trail" id="trail" preserveAspectRatio="none"></svg>
+      <div class="peak"><b id="cpeak">Вершина дня · 20 отказов</b><span>Каждый отказ&nbsp;— шаг вверх</span></div>
+      <div id="wps"></div>
+      <div class="fear" style="left:16px;top:540px" data-at="2">Как я&nbsp;буду выглядеть?<small>страх унижения</small></div>
+      <div class="fear" style="right:16px;top:392px" data-at="7">Ещё и&nbsp;снимаю себя на&nbsp;камеру…<small>страх унижения</small></div>
+      <div class="fear" style="left:16px;top:250px" data-at="13">Мне отказали. Значит, я&nbsp;плохой.<small>отказ «слишком лично»</small></div>
+      <div class="base"><div class="lb">Чаща страхов</div><div class="ct"><span id="cn">0</span> <small id="cof">из 20 отказов</small></div></div>
+    </div>
+    <button class="step" id="cstep"><svg class="i" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>Получил отказ, иду выше</button>
+    <div class="chips2" id="cseg"><button data-g="20" class="on">Сегодня · 20</button><button data-g="40">За 48 часов · 40</button></div>
+    <p class="p" style="margin-top:14px">Просите на&nbsp;улице что-то бесплатно: заправить машину, взять чипсы в&nbsp;магазине, проехать в&nbsp;трамвае. Снимайте каждый отказ, из&nbsp;них получится ролик.</p>
+    <div class="quote"><p>Отказ&nbsp;— неотъемлемая часть пути.</p><small>Игорь Граф, из&nbsp;аудио</small></div>
+    <div class="stake"><div class="hearts"><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
+      <p><b>На кону 3 жизни.</b> Не&nbsp;сдадите Вызов&nbsp;— рискуете улететь в&nbsp;Одиночку.</p></div>
+  </div>
+
+  <!-- задание — одинаковое во всех вариантах -->
+  <div class="task">
+    <div class="th"><b>Сдать Вызов</b><span class="dl" id="dl">осталось —</span></div>
+    <label>Ссылка на видео</label><div class="f">Telegram-канал, соцсети или файлообменник</div>
+    <label>Ваши мысли :) Что о&nbsp;себе узнали?</label><div class="f tall"></div>
+    <button class="gold">Отправить</button>
+  </div>
+  <p class="fin">Макет для выбора. Задание и&nbsp;плеер — блоки кабинета, как сейчас.</p>
+</div>
+
+<script>
+const DESC={
+a:'<b>А · Приказ.</b> Задание спрятано в конверт с сургучной печатью: ученик сам «срывает» её, и это момент решения. Дальше выбор режима: Рывок (20 отказов сегодня) или Марафон (40 за 48 часов) с живым отсчётом. Жизни на кону — отдельной плашкой.<br><span class="rs">Внедрение: почти всё — HTML-вставка; печать и отсчёт — маленький блок в коде.</span>',
+b:'<b>Б · Коллекция «нет».</b> Отказ превращён в трофей: каждый «нет» ставит красный штамп в сетку 20 или 40 ячеек, слово «Нет.» наливается цветом. Пригодится прямо на улице: ученик ведёт счёт в телефоне между дублями. Опора на мысль Игоря «я просто набираю баллы».<br><span class="rs">Внедрение: блок в коде, счёт хранится на устройстве ученика.</span>',
+c:'<b>В · Чаща страхов.</b> Обложка урока становится тропой к вершине. Каждый отказ зажигает следующую веху, а шёпот страхов из аудио Игоря («как я буду выглядеть?») гаснет, когда ученик проходит мимо. Самый «лорный» вариант: Этап 2 маршрута — Чаща страхов.<br><span class="rs">Внедрение: блок в коде, самый трудоёмкий из трёх.</span>'};
+const $=s=>document.querySelector(s);
+/* типографика: неразрывный пробел после коротких слов */
+(function nb(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentNode.closest("script,style")?2:1});let n;while(n=w.nextNode()){n.nodeValue=n.nodeValue.replace(/(^|[\s(«])([А-ЯЁа-яёA-Za-z]{1,2}) /g,'$1$2 ')}})(document.body);
+
+/* переключатель вариантов */
+function setV(v){document.querySelectorAll('.vsw button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));document.querySelectorAll('.v').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$('#vdesc').innerHTML=DESC[v];history.replaceState(null,'','#'+v);if(v==='c')drawTrail()}
+document.querySelectorAll('.vsw button').forEach(b=>b.onclick=()=>setV(b.dataset.v));
+
+/* отсчёт: урок открылся сегодня в 9:00 */
+const open=new Date();open.setHours(9,0,0,0);
+const endToday=new Date();endToday.setHours(23,59,59,0);
+const end48=new Date(open.getTime()+48*3600e3);
+const fmt=ms=>{ms=Math.max(0,ms);const h=Math.floor(ms/3600e3),m=Math.floor(ms%3600e3/6e4),s=Math.floor(ms%6e4/1e3);return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`};
+let mode='24';
+function tick(){const now=Date.now();document.querySelectorAll('[data-t="24"]').forEach(e=>e.textContent='осталось '+fmt(endToday-now));document.querySelectorAll('[data-t="48"]').forEach(e=>e.textContent='осталось '+fmt(end48-now));$('#dl').textContent='осталось '+fmt((mode==='24'?endToday:end48)-now)}
+setInterval(tick,1000);tick();
+
+/* А */
+$('#openSeal').onclick=()=>{$('#env').classList.add('opened')};
+document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll('.mode').forEach(x=>x.classList.toggle('on',x===b));tick()});
+
+/* Б */
+const B={goal:20,n:0,rot:[]};
+function renderB(){const g=$('#bgrid');g.innerHTML='';for(let i=0;i<B.goal;i++){const d=document.createElement('div');d.className='slot'+(i<B.n?' hit':'');if(i<B.n){d.style.setProperty('--r',(B.rot[i]||-12)+'deg')}else d.textContent=i+1;g.appendChild(d)}
+ $('#bn').textContent=B.n;$('#bof').textContent='/ '+B.goal;
+ const left=B.goal-B.n;$('#bst').innerHTML=B.n===0?'штампов<br>пока нет':left>0?`осталось<br>${left}`:'готово';
+ $('#fillWord').style.clipPath=`inset(0 ${100-Math.min(100,B.n/B.goal*100)}% 0 0)`;
+ $('#bwin').classList.toggle('show',B.n>=B.goal);
+ const ms=B.goal===20?[5,10,20]:[10,20,40];const nm=['Разогрелись','Полпути','Вызов принят'];
+ $('#bmiles').innerHTML=ms.map((m,i)=>`<div class="mile ${B.n>=m?'ok':''}"><b>${m}</b>${nm[i]}</div>`).join('');
+ $('#bplus').disabled=B.n>=B.goal;}
+$('#bplus').onclick=()=>{if(B.n<B.goal){B.rot[B.n]=Math.round(Math.random()*30-22);B.n++;renderB()}};
+$('#bminus').onclick=()=>{if(B.n>0){B.n--;renderB()}};
+document.querySelectorAll('#bseg button').forEach(b=>b.onclick=()=>{B.goal=+b.dataset.g;B.n=Math.min(B.n,B.goal);document.querySelectorAll('#bseg button').forEach(x=>x.classList.toggle('on',x===b));renderB()});
+B.n=7;for(let i=0;i<7;i++)B.rot[i]=Math.round(Math.random()*30-22);renderB();
+
+/* В */
+const C={goal:20,n:6};
+function pts(){const el=$('#climb');const W=el.clientWidth,H=el.clientHeight;const top=110,bot=H-150;const out=[];
+ for(let i=0;i<C.goal;i++){const t=i/(C.goal-1);const y=bot-(bot-top)*t;const x=W*(0.5+0.30*Math.sin(t*Math.PI*3.2)*(1-t*0.55));out.push([x,y])}return out}
+function drawTrail(){const el=$('#climb');if(!el.offsetParent)return;const P=pts();const svg=$('#trail');const W=el.clientWidth,H=el.clientHeight;svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+ const d=P.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+ const lit=P.slice(0,Math.max(1,C.n)).map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+ svg.innerHTML=`<path d="${d}" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-dasharray="4 7" stroke-linecap="round"/>`+(C.n>1?`<path d="${lit}" fill="none" stroke="#FFB547" stroke-width="3.5" stroke-linecap="round" style="filter:drop-shadow(0 0 6px rgba(255,170,70,.8))"/>`:'');
+ $('#wps').innerHTML=P.map((p,i)=>`<div class="wp ${i<C.n?'lit':i===C.n?'next':''}" style="left:${p[0]}px;top:${p[1]}px">${i+1}</div>`).join('');
+ $('#cn').textContent=C.n;$('#cof').textContent='из '+C.goal+' отказов';$('#cpeak').textContent='Вершина дня · '+C.goal+' отказов';
+ document.querySelectorAll('.fear').forEach(f=>{const k=Math.round(+f.dataset.at*(C.goal/20));const q=P[Math.min(k,P.length-1)];f.style.top=(q[1]-86)+'px';if(q[0]>W/2){f.style.left='14px';f.style.right='auto'}else{f.style.right='14px';f.style.left='auto'}f.classList.toggle('gone',C.n>k)});
+ $('#cstep').disabled=C.n>=C.goal;$('#cstep').lastChild.textContent=C.n>=C.goal?'Вершина взята. Монтируйте ролик':'Получил отказ, иду выше';}
+$('#cstep').onclick=()=>{if(C.n<C.goal){C.n++;drawTrail()}};
+document.querySelectorAll('#cseg button').forEach(b=>b.onclick=()=>{C.goal=+b.dataset.g;C.n=Math.min(C.n,C.goal);document.querySelectorAll('#cseg button').forEach(x=>x.classList.toggle('on',x===b));drawTrail()});
+addEventListener('resize',drawTrail);addEventListener('hashchange',()=>setV(location.hash.slice(1)||'a'));
+
+setV((location.hash||'#a').slice(1).replace(/[^abc]/g,'')||'a');
+</script>
+</body>
+</html>
