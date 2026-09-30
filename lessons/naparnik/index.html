@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Напарник — макет урока</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0D1117;--card:#141B24;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.14);--t1:#F2F4F7;--t2:rgba(242,244,247,.74);--t3:rgba(242,244,247,.52);--blue:#6B9FFF;--gold:#F0D080;--amber:#EAB820;--green:#6BCB77;--red:#FF6B6B;--muted:rgba(255,255,255,.08)}
+html,body{background:var(--bg)}
+body{font-family:Inter,-apple-system,system-ui,sans-serif;color:var(--t1);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+svg.i{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;background:rgba(13,17,23,.97);border-bottom:1px solid var(--line);font-size:18px;font-weight:700}
+.logo{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:12px;font-weight:800;color:#1A1406;background:linear-gradient(135deg,#F0D080,#CCA830)}
+.wrap{max-width:768px;margin:0 auto;padding:0 16px 120px}
+.vsw{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:14px 0 0;font-size:12px;color:var(--t3)}
+.vsw .g{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%}
+.vsw a{min-height:36px;display:inline-flex;align-items:center;padding:0 12px;border-radius:10px;border:1px dashed var(--line2);font-weight:700;color:var(--t2);text-decoration:none}
+.vsw a.on{border-style:solid;border-color:rgba(240,208,128,.55);color:var(--gold);background:rgba(240,208,128,.06)}
+.vsw .rst{margin-left:auto;border-style:solid;color:var(--t3)}
+.gold{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 22px;border-radius:16px;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#2A2008;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 5px 0 #A07828;transition:transform .15s,box-shadow .15s,opacity .2s}
+.gold:hover{transform:translateY(2px);box-shadow:0 3px 0 #A07828}
+.gold:disabled{opacity:.4;pointer-events:none}
+.gold svg{width:18px;height:18px}
+.ghost{text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:12px;border:1px solid var(--line2);font-size:13px;font-weight:600;color:var(--t1)}
+.ghost svg{width:16px;height:16px}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* шапка урока */
+.hero{position:relative;margin:0 -16px;aspect-ratio:16/7;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,17,23,0) 40%,var(--bg))}
+.head{position:relative;margin-top:-34px;z-index:1}
+.kick{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+h1{margin-top:4px;font-size:28px;font-weight:800;line-height:1.1;text-transform:uppercase;color:var(--gold)}
+.meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--t3)}
+.meta span{display:inline-flex;align-items:center;gap:6px}.meta svg{width:15px;height:15px}
+
+/* две части */
+.parts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}
+.pt{display:flex;align-items:center;gap:10px;min-height:56px;padding:8px 12px;border-radius:14px;border:1px solid var(--line2);background:rgba(255,255,255,.02);text-align:left}
+.pt .s{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:12px;font-weight:700;border:1px solid var(--line2);color:var(--t3)}
+.pt .s svg{width:14px;height:14px}
+.pt small{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.pt b{display:block;font-size:13px;font-weight:600;line-height:1.25;color:var(--t2)}
+.pt.cur{border-color:rgba(240,208,128,.55);background:rgba(240,208,128,.06)}.pt.cur .s{border:0;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#2A2008}.pt.cur b{color:var(--t1)}.pt.cur small{color:var(--gold)}
+.pt.done .s{border:0;background:rgba(107,203,119,.16);color:var(--green)}.pt.done small{color:var(--green)}
+.pt.lock{opacity:.65}.pt.lock small{color:#D9B94E}
+
+/* секция части */
+.sec{margin-top:26px}
+.sec>.n{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.sec>h2{margin-top:4px;font-size:21px;line-height:1.25}
+.sec>.d{margin-top:4px;font-size:14px;color:var(--t3)}
+
+/* аудио */
+.aud{margin-top:14px;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;border:1px solid var(--line2);background:var(--card)}
+.aud .pb{width:48px;height:48px;border-radius:50%;flex:none;display:grid;place-items:center;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#2A2008}
+.aud .pb svg{width:18px;height:18px;fill:currentColor;stroke:none;margin-left:2px}
+.aud .tx{flex:1;min-width:0}
+.aud b{display:block;font-size:15px}
+.aud small{display:block;font-size:13px;color:var(--t3)}
+.aud .wave{display:flex;gap:2px;align-items:center;height:22px}
+.aud .wave i{width:3px;border-radius:2px;background:rgba(240,208,128,.45)}
+.aud .t{font-size:13px;font-variant-numeric:tabular-nums;color:var(--t3)}
+.together{margin-top:8px;display:flex;gap:8px;align-items:center;font-size:13px;color:var(--t3)}
+.together svg{width:15px;height:15px;color:var(--blue)}
+
+/* текст урока */
+.txt{margin-top:16px;color:var(--t2);font-size:16px;line-height:1.6}
+.txt p+p{margin-top:12px}
+.txt strong{color:var(--t1)}
+.call{margin-top:16px;display:flex;gap:12px;padding:14px;border-radius:14px;background:rgba(234,184,32,.08);border:1px solid rgba(234,184,32,.28);font-size:15px;line-height:1.5;color:#F3DB8C}
+.call svg{color:var(--amber);margin-top:2px}
+.call b{color:#FBE7A6}
+
+/* подготовка */
+.prep{margin-top:18px;border-radius:20px;border:1px solid rgba(240,208,128,.35);background:var(--card);padding:16px}
+.prep .l{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
+.row{display:flex;gap:12px;align-items:flex-start;padding:12px 0}
+.row+.row{border-top:1px solid var(--line)}
+.row .ck{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center;border:1.5px solid var(--line2);color:transparent;margin-top:1px}
+.row .ck svg{width:15px;height:15px;stroke-width:3}
+.row.ok .ck{border:0;background:var(--green);color:#0D1117}
+.row.wait .ck{border-color:rgba(240,208,128,.6);color:var(--gold)}
+.row .ck .dots{display:flex;gap:2px}.row .ck .dots i{width:3px;height:3px;border-radius:50%;background:var(--gold)}
+.row .tx{flex:1;min-width:0}
+.row b{display:block;font-size:15px;line-height:1.35}
+.row small{display:block;margin-top:2px;font-size:13px;color:var(--t3)}
+.row .pp{display:flex;align-items:center;gap:8px;margin-top:8px}
+.ava{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:12px;font-weight:700;color:#0D1117;background:linear-gradient(135deg,#9CC2FF,#6B9FFF)}
+.ava.me{background:linear-gradient(135deg,#F0D080,#CCA830)}
+.row .ghost{margin-top:10px}
+.row.self{cursor:pointer}
+.warn{margin-top:4px;display:flex;gap:8px;font-size:13px;color:#F3DB8C}
+.warn svg{width:16px;height:16px;color:var(--amber);margin-top:2px}
+.prep .gold{width:100%;margin-top:14px}
+.prep .hint{margin-top:10px;font-size:13px;color:var(--t3);text-align:center}
+.prep.done{border-color:rgba(107,203,119,.3)}
+.okline{display:flex;gap:10px;align-items:center;font-size:15px;font-weight:600;color:#BDEFC4}
+.okline svg{color:var(--green)}
+
+/* закрытая часть */
+.lockcard{margin-top:14px;border-radius:20px;border:1px dashed var(--line2);padding:22px 18px;text-align:center;color:var(--t2)}
+.lockcard .ic{width:52px;height:52px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:rgba(13,17,23,.75);border:1.5px solid rgba(240,208,128,.55);color:var(--gold)}
+.lockcard b{display:block;font-size:16px;color:var(--t1)}
+.lockcard p{margin-top:4px;font-size:14px}
+
+/* клятва */
+.oath{position:relative;margin-top:18px;border-radius:22px;padding:20px 18px 18px;background:radial-gradient(120% 90% at 50% 0%,#231C0C,#141B24 70%);border:1px solid rgba(240,208,128,.4);overflow:hidden}
+.oath .l{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.oath .l svg{width:16px;height:16px}
+.oath .pair{display:flex;align-items:center;gap:6px;margin-top:12px}
+.oath .pair .ava{width:34px;height:34px}
+.oath .pair .knot{width:22px;height:2px;background:rgba(240,208,128,.55)}
+.oath .pair span{margin-left:6px;font-size:13px;color:var(--t2)}
+.oath blockquote{margin-top:14px;font-size:18px;line-height:1.55;font-weight:500;color:#FBF3DA}
+.oath blockquote p+p{margin-top:10px}
+.oath .say{margin-top:12px;font-size:13px;color:var(--t3)}
+
+/* расшифровка */
+details.tr{margin-top:12px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
+details.tr summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:52px;padding:0 16px;font-size:15px;font-weight:600;cursor:pointer}
+details.tr summary::-webkit-details-marker{display:none}
+details.tr summary svg:last-child{margin-left:auto;transition:transform .2s;color:var(--t3)}
+details.tr[open] summary svg:last-child{transform:rotate(180deg)}
+details.tr .txt{margin:0;padding:0 16px 16px;font-size:15px}
+
+/* финал */
+.fin{margin-top:18px;border-radius:20px;border:1px solid var(--line2);background:var(--card);padding:16px}
+.fin .l{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
+.fin p{margin-top:6px;font-size:16px;font-weight:600;line-height:1.4}
+.fin .gold{width:100%;margin-top:14px}
+.fin .hint{margin-top:8px;font-size:13px;color:var(--t3);text-align:center}
+.fin.done{border-color:rgba(107,203,119,.35);background:rgba(107,203,119,.06)}
+.fin.done .l{color:var(--green)}
+
+/* свёрнутая часть 1 */
+details.p1{border-radius:16px;border:1px solid rgba(107,203,119,.28);background:rgba(107,203,119,.05)}
+details.p1 summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:60px;padding:8px 14px;cursor:pointer}
+details.p1 summary::-webkit-details-marker{display:none}
+details.p1 .s{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center;background:rgba(107,203,119,.16);color:var(--green)}
+details.p1 .s svg{width:14px;height:14px}
+details.p1 small{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+details.p1 b{display:block;font-size:15px}
+details.p1 em{margin-left:auto;font-style:normal;font-size:13px;color:var(--t3)}
+details.p1 summary>svg:last-child{color:var(--t3);transition:transform .2s}
+details.p1[open] summary>svg:last-child{transform:rotate(180deg)}
+details.p1 .p1b{padding:0 14px 16px}
+.toast{position:fixed;left:50%;bottom:22px;width:max-content;max-width:calc(100vw - 32px);transform:translateX(-50%);z-index:60;display:flex;gap:10px;align-items:center;padding:12px 16px;border-radius:14px;background:#1B2A1E;border:1px solid rgba(107,203,119,.4);color:#BDEFC4;font-size:14px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,.5);animation:un .3s}
+.toast.lk{background:#221D10;border-color:rgba(240,208,128,.45);color:#F3DB8C}
+.unlock{animation:un .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes un{from{opacity:0;transform:translateY(10px) scale(.98)}}
+.shake{animation:sh .35s}
+@keyframes sh{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+.note{margin-top:34px;padding:14px;border-radius:14px;border:1px dashed var(--line2);font-size:13px;color:var(--t3)}
+@media(min-width:640px){.hero{margin:0;border-radius:0 0 20px 20px}h1{font-size:34px}.prep,.fin{padding:20px}.oath{padding:26px 26px 22px}.oath blockquote{font-size:20px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top"><span class="logo">ПП</span>Маршрут</div>
+<main class="wrap">
+  <nav class="vsw">
+    <div class="g">Кнопка старта:
+      <a data-k="v" data-val="a" href="#">А · Предупреждает</a>
+      <a data-k="v" data-val="b" href="#">Б · Ждёт напарника</a>
+      <a class="rst" href="#" id="rst">Сначала</a></div>
+    <div class="g">Напарник в «Рюкзаке»:
+      <a data-k="p" data-val="none" href="#">Нет</a>
+      <a data-k="p" data-val="pending" href="#">Заявка отправлена</a>
+      <a data-k="p" data-val="ok" href="#">Принял</a></div>
+  </nav>
+
+  <div class="hero" style="margin-top:14px"><img src="img/cover.jpg" alt=""></div>
+  <div class="head"><span class="kick">Инструктаж</span><h1>Напарник</h1>
+    <div class="meta"><span><svg class="i" viewBox="0 0 24 24"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>2 аудио · 4 мин</span><span><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Вдвоём, на одном созвоне</span></div>
+  </div>
+
+  <div class="parts" id="parts"></div>
+  <div id="body"></div>
+
+  <p class="note">Макет. Переключатели сверху показывают, что видит ученик в зависимости от статуса напарника в «Рюкзаке»: его нет, заявка отправлена или напарник её принял. В кабинете статус будет подтягиваться сам. Весь текст урока — дословно из урока, поменялось только оформление. «Сначала» сбрасывает прохождение.</p>
+</main>
+
+<script>
+const I = {
+  check: '<svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>',
+  lock: '<svg class="i" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+  play: '<svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>',
+  right: '<svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+  down: '<svg class="i" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>',
+  alert: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>',
+  bag: '<svg class="i" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M8 21v-5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v5"/></svg>',
+  video: '<svg class="i" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg>',
+  text: '<svg class="i" viewBox="0 0 24 24"><path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/></svg>',
+  hand: '<svg class="i" viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-4 0"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>',
+  users: '<svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+};
+const bars = (n) => Array.from({ length: n }, (_, i) => `<i style="height:${6 + Math.round(14 * Math.abs(Math.sin(i * 1.7)))}px"></i>`).join('');
+const audio = (t, dur) => `<div class="aud"><button class="pb" aria-label="Слушать">${I.play}</button><div class="tx"><b>${t}</b><small>Аудио · ${dur}</small></div><div class="wave">${bars(9)}</div></div>`;
+
+// Текст урока — дословно из блоков урока
+const INTRO = `<p>Добро пожаловать в первое упражнение с вашим напарником!</p><p>И оно будет очень специфическим. И, скорее всего, вы измените друг к другу отношение по итогу программы и уж тем более по итогу этого упражнения.</p><p>Упражнение сложное. И сделать его нужно одновременно со своим напарником.</p><p>Поэтому убедитесь, что ваш напарник рядышком и вы сможете одновременно запустить ZOOM-трансляцию или видео-звонок друг другу в социальной сети и выполнять его одновременно.</p><p>Таймер не запускается, пока вы просто открыли урок. Сначала дождитесь, когда напарник примет вашу заявку в «Рюкзаке», и договоритесь о времени созвона.</p>`;
+const CALL = `<b>Нажимайте «Готовы приступить», только когда напарник рядом и вы оба на связи.</b>`;
+const NEXT = `<p><strong>Что происходит дальше.</strong></p><p>Как только вы нажмете кнопку «Готовы приступить», вам откроется дополнительный урок с моими аудио и подробными инструкциями по выполнению.</p><p>Как только вы выполните те аудио, те предпосылки, которые вам будут доступны, вы возвращаетесь в урок и пишите отчет о прохождении этого упражнения.</p><p>Удачного вам прохождения!</p>`;
+const T2A = `<p>Итак. Вы находитесь в упражнении с&nbsp;Buddy.</p><p>Если он прямо сейчас находится с вами, в ZOOM-созвоне, вы он-лайн и слушаете это аудио вместе, то продолжайте.</p><p>Если нет, поставьте это аудио на паузу и вернитесь к этому упражнению тогда, когда будете оба он-лайн.</p><p>Иначе вы сделать это упражнение не сможете.</p><p>Надесюь, вы оба подключены.</p><p>Надеюсь, вы оба раздражаете друг друга))</p><p>Надеюсь, это изменится в дальнейшем. Потому что это 1 из интересных показателей вашего дальнейшего взаимодействия.</p><p>Первое. Я хочу, чтобы вы кое что поняли.</p><p>С этого момента, на протяжении всей программы, с понедельника по пятницу, вы устраиваете утренние созвоны на 15 минут. Где каждый день 15 минут вы разговариваете друг с другом и помогаете поставить план на день, поставить фокус.</p><p>Ваша задача помогать друг другу, структурировать знания и не выпадать.</p><p>Т.е. фактически вы являетесь трекерами либо кураторами друг друга.</p><p>Ваша задача помогать человеку не залипать, не выпадать и четко помнить ради чего вы действуете.</p><p>Поэтому для того, чтобы провести это макимально эффективно, сейчас вы будете давать одну простую клятву друг перед другом.</p><p>Повторяйте за мной вслух:</p>`;
+const OATH = `<p>Я твой напарник. С этого момента мы идем в программе «План продюсера» вместе. Я понимаю, что порой нам может быть тяжело, но я знаю, что мы друг друга поддержим. Даже когда будет тяжело.</p><p>С этого дня я твоя опора и поддержка. Теперь я несу ответственность не только перед собой и не только за себя. Но и за тебя. С этого дня мы напарники.</p><p>И если ты потеряешь жизнь, я тоже теряю жизнь. Если ты вылетишь из программы, я тоже вылечу из программы. Мы связано. Но мы дойдем до конца вместе!</p>`;
+const T2B = `<p>Ну что, поздравляю вас, напарники!</p><p>Теперь вы одно единое целое.</p><p>С этого дня очень много упражнений и задач вы будете делать вместе.</p><p>Но самая главная из задач - это то, что вы теперь не одни на этом пути. Помогите другому человеку дойти до конца. А он поможет дойти до конца вам.</p>`;
+
+const KEY = 'naparnik-mock';
+let st = JSON.parse(localStorage.getItem(KEY) || '{"v":"a","p":"ok","call":false,"started":false,"accepted":false}');
+const save = () => localStorage.setItem(KEY, JSON.stringify(st));
+function toast(t, lk) { document.querySelectorAll('.toast').forEach((x) => x.remove()); const el = document.createElement('div'); el.className = 'toast' + (lk ? ' lk' : ''); el.innerHTML = (lk ? I.lock : I.check) + t; document.body.appendChild(el); setTimeout(() => el.remove(), 3200); }
+
+function partnerRow() {
+  if (st.p === 'ok') return `<div class="row ok"><span class="ck">${I.check}</span><div class="tx"><b>Напарник принял заявку</b>
+    <div class="pp"><span class="ava me">Я</span><span class="ava">МК</span><small style="margin:0">Мария К. · ваш напарник</small></div></div></div>`;
+  if (st.p === 'pending') return `<div class="row wait"><span class="ck"><span class="dots"><i></i><i></i><i></i></span></span><div class="tx"><b>Заявка отправлена</b>
+    <small>Мария К. пока не ответила. Напишите ей, чтобы приняла заявку в «Рюкзаке».</small><a class="ghost" href="#">${I.bag}Открыть «Рюкзак»</a></div></div>`;
+  return `<div class="row"><span class="ck"></span><div class="tx"><b>Выберите напарника</b>
+    <small>Отправьте заявку в «Рюкзаке». Упражнение делается вдвоём.</small><a class="ghost" href="#">${I.bag}Выбрать в «Рюкзаке»</a></div></div>`;
+}
+
+function render(anim) {
+  const s1 = st.started ? 'done' : 'cur', s2 = !st.started ? 'lock' : st.accepted ? 'done' : 'cur';
+  const pt = (n, s, t) => `<button class="pt ${s}" data-part="${n}"><span class="s">${s === 'done' ? I.check : s === 'lock' ? I.lock : n}</span><span><small>${s === 'done' ? 'Пройдено' : s === 'lock' ? 'Закрыто' : 'Часть ' + n}</small><b>${t}</b></span></button>`;
+  document.getElementById('parts').innerHTML = pt(1, s1, 'Подготовка') + pt(2, s2, 'Вместе с напарником');
+
+  const canStart = st.v === 'a' || st.p === 'ok';
+  const prep = st.started
+    ? `<div class="prep done"><div class="okline">${I.check}Вы начали упражнение вместе с напарником</div></div>`
+    : `<div class="prep" id="prep"><div class="l">Перед стартом</div>
+        ${partnerRow()}
+        <div class="row self ${st.call ? 'ok' : ''}" id="call"><span class="ck">${I.check}</span><div class="tx"><b>Вы оба на связи</b><small>Zoom или видеозвонок в соцсети. Отметьте, когда созвонились.</small></div></div>
+        ${st.v === 'a' && st.p !== 'ok' ? `<div class="warn">${I.alert}<span>Без напарника упражнение не получится: вторая часть делается вдвоём.</span></div>` : ''}
+        <button class="gold" id="go" ${canStart ? '' : 'disabled'}>Готовы приступить ${I.right}</button>
+        <div class="hint">${canStart ? 'После нажатия сразу откроется вторая часть' : 'Кнопка станет активной, когда напарник примет заявку'}</div></div>`;
+
+  const part2 = st.started ? `<section class="sec ${anim ? 'unlock' : ''}" id="p2"><div class="n">Часть 2 из 2</div><h2>Вместе с напарником</h2>
+      ${audio('Бадди 2 часть', '3:12')}
+      <div class="together">${I.video}Слушайте вместе, на одном созвоне</div>
+      <details class="tr"><summary>${I.text}Текст аудио до клятвы${I.down}</summary><div class="txt">${T2A}</div></details>
+      <div class="oath"><div class="l">${I.hand}Клятва напарника · повторяйте вслух</div>
+        <div class="pair"><span class="ava me">Я</span><i class="knot"></i><span class="ava">МК</span><span>${st.p === 'ok' ? 'Вы и Мария К.' : 'Вы и ваш напарник'}</span></div>
+        <blockquote>${OATH}</blockquote></div>
+      <div class="txt">${T2B}</div>
+      ${st.accepted
+        ? `<div class="fin done"><div class="l">Готово</div><p>Правила игры приняты. Я отвечаю за напарника</p></div>`
+        : `<div class="fin" id="fin"><div class="l">Последний шаг</div><p>Правила игры приняты. Я отвечаю за напарника</p><button class="gold" id="acc">Принимаю ${I.check}</button><div class="hint">Засчитается сразу, проверка проводником не нужна</div></div>`}
+    </section>`
+    : `<section class="sec"><div class="n">Часть 2 из 2</div><h2>Вместе с напарником</h2>
+      <div class="lockcard" id="lk"><div class="ic">${I.lock}</div><b>Откроется после «Готовы приступить»</b><p>Эту часть проходите вдвоём, на одном созвоне</p></div></section>`;
+
+  const p1body = `${audio('Бадди 1 часть', '1:05')}
+      <div class="txt">${INTRO}</div>
+      <div class="call">${I.alert}<span>${CALL}</span></div>
+      <div class="txt">${NEXT}</div>`;
+  document.getElementById('body').innerHTML = st.started
+    ? `<section class="sec"><details class="p1"><summary><span class="s">${I.check}</span><span><small>Часть 1 · пройдено</small><b>Подготовка</b></span><em>Открыть снова</em>${I.down}</summary><div class="p1b">${p1body}</div></details></section>${part2}`
+    : `<section class="sec"><div class="n">Часть 1 из 2</div><h2>Подготовка</h2><div class="d">Послушайте вступление и договоритесь с напарником о созвоне</div>
+      ${p1body}
+      ${prep}
+    </section>${part2}`;
+  bind();
+}
+function bind() {
+  const call = document.getElementById('call'); if (call) call.onclick = () => { st.call = !st.call; save(); render(); };
+  const go = document.getElementById('go'); if (go) go.onclick = () => { st.started = true; save(); render(true); toast('Открылась вторая часть'); setTimeout(() => document.getElementById('p2').scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); };
+  const acc = document.getElementById('acc'); if (acc) acc.onclick = () => { st.accepted = true; save(); render(); toast('Вы напарники. Правила приняты'); };
+  const lk = document.getElementById('lk'); if (lk) lk.onclick = () => { lk.classList.remove('shake'); void lk.offsetWidth; lk.classList.add('shake'); toast('Пока закрыто. Откроется после «Готовы приступить»', true); };
+  document.querySelectorAll('.pt').forEach((b) => b.onclick = () => {
+    if (b.classList.contains('lock')) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); toast('Пока закрыто. Откроется после «Готовы приступить»', true); return; }
+    const d1 = document.querySelector('details.p1'); if (b.dataset.part === '1' && d1) d1.open = true; const el = b.dataset.part === '2' ? document.getElementById('p2') : document.querySelector('.sec'); el && el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+function syncNav() { document.querySelectorAll('.vsw a[data-k]').forEach((a) => a.classList.toggle('on', st[a.dataset.k] === a.dataset.val)); }
+document.querySelectorAll('.vsw a[data-k]').forEach((a) => a.onclick = (e) => { e.preventDefault(); st[a.dataset.k] = a.dataset.val; save(); syncNav(); render(); });
+document.getElementById('rst').onclick = (e) => { e.preventDefault(); st = { v: st.v, p: st.p, call: false, started: false, accepted: false }; save(); render(); };
+const q = new URLSearchParams(location.search);
+['v', 'p'].forEach((k) => q.get(k) && (st[k] = q.get(k)));
+if (q.get('s') === '1') { st.started = true; st.accepted = false; }
+if (q.get('s') === '2') { st.started = true; st.accepted = true; }
+if (q.get('s') === '0') { st.started = false; st.accepted = false; st.call = false; }
+syncNav(); render();
+</script>
+</body>
+</html>
