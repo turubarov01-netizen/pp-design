@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>План Продюсера · кнопка «Назад» в уроках — варианты</title>
+<style>
+:root{--bg:#0D1117;--bg2:#0A0E13;--card:#141E2B;--card2:#1A2535;--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.12);
+--t1:#fff;--t2:rgba(255,255,255,.72);--t3:rgba(255,255,255,.5);--gold-a:#F0D080;--gold-b:#CCA830;--blue:#6B9FFF;--moss:#6BCB77;
+--gold:linear-gradient(135deg,#F0D080,#CCA830)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg2);color:var(--t1)}
+body{font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pp-switch{position:sticky;top:0;z-index:50;display:flex;overflow-x:auto;align-items:center;gap:8px;padding:10px 16px;background:rgba(10,14,19,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08);font:600 13px Inter,sans-serif}
+.pp-switch span{color:rgba(255,255,255,.5);margin-right:4px;white-space:nowrap}
+.pp-switch a{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:18px;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.8);text-decoration:none;white-space:nowrap}
+.pp-switch a.on{background:rgba(240,208,128,.12);border-color:rgba(240,208,128,.5);color:#F0D080}
+.doc{max-width:1200px;margin:0 auto;padding:22px 20px 60px}
+.doc h1{font-size:24px;font-weight:800;letter-spacing:-.01em}
+.lead{font-size:14px;color:var(--t2);margin-top:6px;max-width:780px}
+.ctl{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;align-items:center}
+.seg{display:inline-flex;padding:4px;border-radius:14px;background:#111822;border:1px solid var(--line2);gap:4px;flex-wrap:wrap}
+.seg button{min-height:40px;padding:0 14px;border-radius:10px;font-size:14px;font-weight:600;color:var(--t2)}
+.seg button.on{background:rgba(240,208,128,.14);color:var(--gold-a);box-shadow:inset 0 0 0 1px rgba(240,208,128,.3)}
+.btn2{min-height:40px;padding:0 14px;border-radius:12px;border:1px solid var(--line2);font-size:14px;font-weight:600;color:var(--t2)}
+.btn2:hover{color:#fff}
+.wrap{display:grid;grid-template-columns:375px 1fr;gap:32px;margin-top:22px;align-items:start}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}.phone{margin:0 auto}}
+.desc{font-size:14px;color:var(--t2);line-height:1.55;max-width:560px}
+.desc h2{font-size:18px;color:#fff;margin-bottom:8px}
+.desc p{margin-top:8px}.desc b{color:#fff}.desc .pro{color:var(--moss)}.desc .con{color:#FF9A9A}
+.desc ol{margin:10px 0 0 18px}.desc li{margin-top:4px}
+.rec{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:8px;background:rgba(107,203,119,.15);color:var(--moss);font-size:12px;font-weight:700;vertical-align:middle}
+.hist{margin-top:14px;font-size:13px;color:var(--t3)}
+.hist b{color:var(--t2);font-weight:600}
+/* ── телефон ── */
+.phone{position:relative;width:375px;height:760px;border-radius:38px;border:1px solid var(--line2);background:var(--bg);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.scr{position:absolute;inset:0 0 72px 0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.scr::-webkit-scrollbar{display:none}
+.pad{padding:0 16px 28px}
+.status{height:44px}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:72px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:rgba(13,17,23,.96);padding-bottom:14px}
+.tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;color:var(--t3)}
+.tabs button.on{color:var(--gold-a)}
+.chat{position:absolute;right:14px;bottom:86px;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#EAB820;color:#2A1F05;box-shadow:0 6px 16px rgba(0,0,0,.4)}
+/* шапка урока */
+.topbar{display:flex;align-items:center;height:48px;margin:0 -8px}
+.back{display:inline-flex;align-items:center;gap:6px;min-height:44px;max-width:220px;padding:0 8px;border-radius:12px;font-size:15px;font-weight:600;color:rgba(255,255,255,.78)}
+.back:hover{color:#fff}.back span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toc{margin-left:auto;display:inline-flex;white-space:nowrap;flex:none;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:12px;border:1px solid rgba(240,208,128,.3);background:rgba(240,208,128,.1);color:var(--gold-a);font-size:14px;font-weight:600}
+.toc em{font-style:normal;color:rgba(240,208,128,.7);font-weight:500}
+/* липкая полоса (вариант Б) */
+.sticky{position:absolute;left:0;right:0;top:0;z-index:5;display:flex;align-items:center;gap:6px;height:52px;padding:0 8px 0 6px;background:rgba(13,17,23,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line2);transform:translateY(-100%);transition:transform .2s ease-out}
+.sticky.show{transform:none}
+.sticky .ttl{flex:1;min-width:0;font-size:14px;font-weight:600;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sticky .n{font-size:13px;color:var(--t3);padding-right:8px;white-space:nowrap}
+/* плавающая кнопка (вариант В) */
+.fab{position:absolute;left:14px;bottom:86px;z-index:5;display:inline-flex;align-items:center;gap:6px;height:48px;padding:0 16px 0 12px;border-radius:24px;background:#1E2A3A;border:1px solid var(--line2);box-shadow:0 8px 20px rgba(0,0,0,.45);font-size:15px;font-weight:600;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .2s,transform .2s}
+.fab.show{opacity:1;transform:none;pointer-events:auto}
+.cover{position:relative;height:150px;margin:0 -16px;background:#1a1410 center/cover no-repeat}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,17,23,0) 30%,var(--bg) 100%)}
+.kick{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.ltitle{margin-top:6px;font-size:24px;font-weight:800;line-height:1.08;text-transform:uppercase;background:var(--gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.head{position:relative;margin-top:-34px}
+.video{margin-top:18px;aspect-ratio:16/9;border-radius:16px;background:#05070A;border:1px solid var(--line2);display:grid;place-items:center;color:var(--t3);font-size:13px}
+.txt p{margin-top:12px;color:var(--t2);font-size:15px;line-height:1.6}
+.task{margin-top:20px;padding:16px;border-radius:18px;background:var(--card);border:1px solid var(--line2)}
+.task b{font-size:15px}.task p{margin-top:6px;font-size:14px;color:var(--t2)}
+.field{margin-top:12px;height:88px;border-radius:12px;border:1px solid var(--line2);background:#0F1620}
+.gbtn{margin-top:18px;width:100%;height:54px;border-radius:18px;background:linear-gradient(180deg,#DFC880,#C9A84C);color:#3A2E18;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 5px 0 #A07828}
+.pager{margin-top:22px;display:grid;gap:10px}
+.pg{display:flex;align-items:center;gap:10px;min-height:60px;padding:10px 14px;border-radius:16px;border:1px solid var(--line2);text-align:left}
+.pg small{display:block;font-size:12px;color:var(--t3)}.pg b{display:block;font-size:14px}
+.pg.nx{background:rgba(240,208,128,.08);border-color:rgba(240,208,128,.3)}
+/* главная и маршрут */
+.h1{font-size:22px;font-weight:800;margin-top:8px}
+.card{margin-top:14px;padding:16px;border-radius:18px;background:var(--card);border:1px solid var(--line2)}
+.card small{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.card .lk{margin-top:10px;display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:10px 12px;border-radius:14px;background:var(--card2);text-align:left;font-weight:600}
+.card .lk .grow{flex:1}
+.row{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:8px 4px;border-bottom:1px solid var(--line);text-align:left}
+.row .d{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line2);font-size:12px;color:var(--t3)}
+.row .d.ok{background:rgba(107,203,119,.16);border-color:transparent;color:var(--moss)}
+.row .grow{flex:1;font-size:14px;font-weight:600}
+.toast{position:absolute;left:50%;top:60px;z-index:9;transform:translateX(-50%);padding:8px 14px;border-radius:12px;background:#243246;font-size:13px;white-space:nowrap;opacity:0;transition:opacity .2s}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<nav class="pp-switch"><span>Экраны:</span><a href="../">Главная</a><a href="../camp/">Лагерь экспедиции</a><a href="../nav/">Меню</a><a href="../route/">Маршрут и урок</a><a href="../meetings/">Встречи</a><a href="../backpack/">Рюкзак и кома</a><a href="./" class="on">Кнопка «Назад»</a></nav>
+<div class="doc">
+  <h1>Кнопка «Назад» в уроках — три варианта</h1>
+  <p class="lead">Жалоба учеников: в уроке нет кнопки «назад», можно вернуться только в одно меню. Сейчас кнопка слева вверху всегда ведёт на Маршрут, даже если ученик пришёл с главной или из соседнего урока. А в Telegram у страницы нет своей кнопки «назад» браузера. Телефон ниже живой: откройте урок с главной или с маршрута, перейдите к следующему уроку и нажмите «Назад». Прокрутите урок вниз.</p>
+  <div class="ctl">
+    <div class="seg" id="segV">
+      <button data-v="now">Сейчас</button>
+      <button data-v="a">А · Назад, откуда пришёл</button>
+      <button data-v="b" class="on">Б · А + шапка при прокрутке</button>
+      <button data-v="c">В · А + кнопка внизу</button>
+    </div>
+    <button class="btn2" id="viaLink">Открыть урок по ссылке из Telegram</button>
+    <button class="btn2" id="reset">Сначала</button>
+  </div>
+  <div class="wrap">
+    <div class="phone" id="phone"></div>
+    <div>
+      <div class="desc" id="desc"></div>
+      <p class="hist" id="hist"></p>
+    </div>
+  </div>
+</div>
+<script>
+const COVER='https://owfmgpeandpdnyctiqng.supabase.co/storage/v1/object/public/producer-plan/covers/8763d252-bfc7-41e7-95f5-33913b5aa6c6-1771915717391.jpg';
+const L=['Правила курса','Точки А и Б','Ключевое задание недели 1 — сбор данных','Формула достижения желаемого дохода','Записная книжка','50 вещей по пути к самооценке'];
+const I={back:'<path d="m15 18-6-6 6-6"/>',fwd:'<path d="m9 18 6-6-6-6"/>',book:'<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+home:'<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+map:'<path d="M14.1 5.55a2 2 0 0 0 1.79 0l3.66-1.83A1 1 0 0 1 21 4.62v12.76a1 1 0 0 1-.55.9l-4.56 2.28a2 2 0 0 1-1.79 0l-4.21-2.1a2 2 0 0 0-1.79 0l-3.66 1.83A1 1 0 0 1 3 19.38V6.62a1 1 0 0 1 .55-.9L8.1 3.45a2 2 0 0 1 1.79 0z"/><path d="M15 5.76v15"/><path d="M9 3.24v15"/>',
+video:'<path d="m16 13 5.22 3.48a.5.5 0 0 0 .78-.42V7.87a.5.5 0 0 0-.76-.43L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/>',
+more:'<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+chat:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',check:'<path d="M20 6 9 17l-5-5"/>'};
+const ic=(n,s)=>`<svg class="i" viewBox="0 0 24 24"${s?` style="width:${s}px;height:${s}px"`:''}>${I[n]}</svg>`;
+const S={v:'b',stack:[{s:'home'}],scroll:0};
+const cur=()=>S.stack[S.stack.length-1];
+const short=t=>t.length>22?t.slice(0,21)+'…':t;
+const labelOf=e=>!e?'Маршрут':e.s==='home'?'Главная':e.s==='route'?'Маршрут':e.s==='meet'?'Встречи':`Урок ${e.i+1}`;
+function go(e){S.stack.push(e);S.scroll=0;render()}
+function tab(s){S.stack=[{s}];S.scroll=0;render()}
+function back(){
+  if(S.v==='now'){tab('route');return}
+  if(S.stack.length>1){S.stack.pop();S.scroll=0;render()}else{tab('route')}
+}
+const prevEntry=()=>S.stack.length>1?S.stack[S.stack.length-2]:null;
+function backLabel(){ if(S.v==='now')return 'Маршрут'; return labelOf(prevEntry()); }
+function homeScr(){return `<div class="pad"><div class="status"></div><div class="h1">Доброе утро!</div>
+<div class="card"><small>Шаг на сегодня</small><button class="lk" data-go="2">${ic('book')}<span class="grow">${L[2]}</span>${ic('fwd')}</button></div>
+<div class="card"><small>Продолжить маршрут</small><button class="lk" data-go="1">${ic('map')}<span class="grow">${L[1]}</span>${ic('fwd')}</button></div></div>`}
+function routeScr(){return `<div class="pad"><div class="status"></div><div class="h1">Маршрут · Неделя 1</div><div style="margin-top:8px">${L.map((t,i)=>`<button class="row" data-go="${i}"><span class="d ${i<1?'ok':''}">${i<1?ic('check',14):i+1}</span><span class="grow">${t}</span>${ic('fwd')}</button>`).join('')}</div></div>`}
+function meetScr(){return `<div class="pad"><div class="status"></div><div class="h1">Встречи потока</div><div class="card"><small>Скоро</small><p style="margin-top:8px;color:var(--t2);font-size:14px">Групповая встреча, четверг 19:00</p></div></div>`}
+function lessonScr(i){
+  const prev=i>0?`<button class="pg" data-go="${i-1}">${ic('back')}<span><small>Предыдущий урок</small><b>${L[i-1]}</b></span></button>`:'';
+  const next=i<L.length-1?`<button class="pg nx" data-go="${i+1}"><span style="flex:1"><small>Следующий урок</small><b>${L[i+1]}</b></span>${ic('fwd')}</button>`:'';
+  return `<div class="pad"><div class="status"></div>
+<div class="topbar"><button class="back" data-back>${ic('back')}<span>${backLabel()}</span></button><button class="toc">${ic('book',16)}Оглавление <em>· ${i+1} из 14</em></button></div>
+<div class="cover" style="background-image:url(${COVER})"></div>
+<div class="head"><div class="kick">Неделя 1 · инструктаж</div><div class="ltitle">${L[i]}</div></div>
+<div class="video">${ic('video',28)}</div>
+<div class="txt"><p>Текст урока. Здесь объяснение темы, примеры и то, что нужно сделать после просмотра видео.</p><p>Второй абзац урока. Ученик прокручивает вниз, читает и выполняет задание.</p><p>Третий абзац. Чем длиннее урок, тем дальше кнопка вверху от пальца.</p></div>
+<div class="task"><b>Задание</b><p>Запишите ответ в поле и отправьте на проверку.</p><div class="field"></div></div>
+<button class="gbtn">Отправить задание</button>
+<div class="pager">${prev}${next}</div></div>`}
+function render(){
+  const e=cur(), inLesson=e.s==='lesson';
+  const body=e.s==='home'?homeScr():e.s==='route'?routeScr():e.s==='meet'?meetScr():lessonScr(e.i);
+  const t=e.s==='lesson'?'route':e.s;
+  const lessonExtra=inLesson?(
+    S.v==='b'?`<div class="sticky" id="stk"><button class="back" data-back>${ic('back')}<span>${backLabel()}</span></button><span class="ttl">${L[e.i]}</span><span class="n">${e.i+1} из 14</span></div>`:
+    S.v==='c'?`<button class="fab" id="fab" data-back>${ic('back')}Назад</button>`:''):'';
+  document.getElementById('phone').innerHTML=`<div class="scr" id="scr">${body}</div>${lessonExtra}
+<div class="chat">${ic('chat',22)}</div><div class="toast" id="toast"></div>
+<nav class="tabs">${[['home','Главная','home'],['route','Маршрут','map'],['meet','Встречи','video'],['more','Ещё','more']].map(([s,n,icn])=>`<button data-tab="${s}" class="${t===s?'on':''}">${ic(icn,22)}${n}</button>`).join('')}</nav>`;
+  const scr=document.getElementById('scr');
+  scr.addEventListener('scroll',()=>{const y=scr.scrollTop;const st=document.getElementById('stk');if(st)st.classList.toggle('show',y>150);const f=document.getElementById('fab');if(f)f.classList.toggle('show',y>150)});
+  document.querySelectorAll('#phone [data-go]').forEach(b=>b.onclick=()=>go({s:'lesson',i:+b.dataset.go}));
+  document.querySelectorAll('#phone [data-back]').forEach(b=>b.onclick=back);
+  document.querySelectorAll('#phone [data-tab]').forEach(b=>b.onclick=()=>{if(b.dataset.tab!=='more')tab(b.dataset.tab)});
+  document.querySelectorAll('#segV button').forEach(b=>b.classList.toggle('on',b.dataset.v===S.v));
+  document.getElementById('desc').innerHTML=DESC[S.v];
+  document.getElementById('hist').innerHTML='Путь ученика в демо: <b>'+S.stack.map(x=>x.s==='lesson'?`урок ${x.i+1}`:labelOf(x).toLowerCase()).join(' → ')+'</b>';
+}
+const DESC={
+now:`<h2>Сейчас</h2><p>Кнопка слева вверху всегда ведёт на <b>Маршрут</b>, откуда бы ученик ни пришёл. Открыл урок с главной — возвращается не на главную. Прошёл три урока подряд — к предыдущему только через «Предыдущий урок» в самом низу или через оглавление.</p><p>При прокрутке кнопка уезжает вверх вместе со страницей.</p>`,
+a:`<h2>А · Назад, откуда пришёл</h2><p>Кнопка слева вверху возвращает на тот экран, с которого ученик открыл урок, и прямо пишет куда: <b>‹ Главная</b>, <b>‹ Маршрут</b>, <b>‹ Урок 3</b> (номер урока в программе). Нажал ещё раз — ещё шаг назад, как в браузере.</p><p>Если урок открыт по ссылке из Telegram и возвращаться некуда, кнопка ведёт на <b>Маршрут</b>.</p><p class="pro">+ Минимум изменений, привычно по приложениям.</p><p class="con">− В длинном уроке кнопка уезжает вверх, за ней надо прокручивать.</p>`,
+b:`<h2>Б · А + шапка при прокрутке <span class="rec">советую</span></h2><p>Всё как в А. Плюс, когда ученик прокручивает урок вниз, сверху выезжает тонкая полоса: та же кнопка назад, название урока и «4 из 14». Назад можно нажать с любого места урока.</p><p class="pro">+ Так сделано в большинстве приложений (Telegram, почта, настройки телефона): назад всегда в одном месте, слева вверху.</p><p class="pro">+ Ничего не закрывает внизу: там меню, чат поддержки и «Наверх».</p><p class="con">− Полоса занимает 52 пикселя сверху, пока урок прокручен.</p>`,
+c:`<h2>В · А + кнопка «Назад» внизу</h2><p>Всё как в А. Плюс при прокрутке внизу слева появляется круглая кнопка <b>‹ Назад</b> над меню, под большой палец.</p><p class="pro">+ Удобно достать одной рукой.</p><p class="con">− Внизу уже меню, чат поддержки и «Наверх»: четвёртая плавающая кнопка перегружает экран и может закрыть «Следующий урок».</p><p class="con">− Непривычное место: «назад» обычно ищут вверху слева.</p>`};
+document.querySelectorAll('#segV button').forEach(b=>b.onclick=()=>{S.v=b.dataset.v;render()});
+document.getElementById('reset').onclick=()=>{S.stack=[{s:'home'}];render()};
+document.getElementById('viaLink').onclick=()=>{S.stack=[{s:'lesson',i:3}];render()};
+const q=new URLSearchParams(location.search);
+if(q.get('v'))S.v=q.get('v');
+if(q.get('demo')==='deep'){S.stack=[{s:'home'},{s:'lesson',i:2},{s:'lesson',i:3}]}
+render();
+if(q.get('scroll')){requestAnimationFrame(()=>{const s=document.getElementById('scr');s.scrollTop=+q.get('scroll');s.dispatchEvent(new Event('scroll'))})}
+</script>
+</body>
+</html>
