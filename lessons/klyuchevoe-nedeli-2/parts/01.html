@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Итоги первой недели</title>
+<style>
+/* Урок «Правила курса» — вставки HTML-страниц в урок кабинета «План Продюсера».
+   Фон и карточки совпадают с кабинетом (ProducerPlanLayout: --pl-bg #0D1117, --pl-card #141E2B). */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap');
+
+:root {
+  --bg: #0D1117;
+  --card: #141E2B;
+  --card2: #1A2535;
+  --line: rgba(255,255,255,.07);
+  --line2: rgba(255,255,255,.12);
+  --t1: #FFFFFF;
+  --t2: rgba(255,255,255,.76);
+  --t3: rgba(255,255,255,.52);
+  --blue: #6B9FFF;
+  --blue-bg: rgba(107,159,255,.10);
+  --blue-line: rgba(107,159,255,.28);
+  --amber: #EAB820;
+  --gold: linear-gradient(135deg, #F0D080 0%, #CCA830 100%);
+  --red: #FF6B6B;
+  --red-bg: rgba(255,107,107,.09);
+  --red-line: rgba(255,107,107,.28);
+  --green: #6BCB77;
+  --green-bg: rgba(107,203,119,.09);
+  --green-line: rgba(107,203,119,.28);
+  --r: 18px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg) !important; }
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: var(--t2);
+  font-size: 17px; line-height: 1.55; letter-spacing: -.011em;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-wrap: pretty;
+}
+.page { max-width: 720px; margin: 0 auto; padding: 8px 16px 24px; }
+
+b, strong { color: var(--t1); font-weight: 700; }
+.am { color: var(--amber); font-weight: 700; }
+p + p { margin-top: 12px; }
+svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ——— заголовки секций ——— */
+.sec { padding-top: 40px; }
+.sec:first-child { padding-top: 8px; }
+.kick { display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.h2 {
+  font-size: 28px; font-weight: 700; line-height: 1.12; letter-spacing: -.02em; margin-bottom: 14px; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.h3 { font-size: 19px; font-weight: 700; line-height: 1.25; color: var(--t1); margin: 24px 0 10px; text-wrap: balance; }
+.lead { font-size: 18px; color: var(--t2); }
+
+/* ——— карточки ——— */
+.card { background: var(--card); border: 1px solid var(--line2); border-radius: var(--r); padding: 20px; margin-top: 16px; }
+.card-t { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 14px; }
+.card-t svg.i { width: 18px; height: 18px; color: var(--blue); }
+
+/* ——— шпаргалка ——— */
+.cheat { background: linear-gradient(180deg, #172238 0%, var(--card) 100%); border-color: var(--blue-line); padding: 22px 20px 8px; }
+.cheat-h { font-size: 22px; font-weight: 700; color: var(--t1); line-height: 1.2; margin-bottom: 4px; text-wrap: balance; }
+.cheat-sub { font-size: 15px; color: var(--t3); margin-bottom: 14px; }
+.rule { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+.rule-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--blue-bg); color: var(--blue); }
+.rule-ic.red { background: var(--red-bg); color: var(--red); }
+.rule-name { font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.3; }
+.rule-txt { font-size: 15px; line-height: 1.45; color: var(--t2); margin-top: 3px; }
+.tag-loss { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; padding: 3px 10px 3px 8px; border-radius: 100px; background: var(--red-bg); border: 1px solid var(--red-line); color: #FF9B9B; font-size: 13px; font-weight: 600; }
+.tag-loss svg.i { width: 14px; height: 14px; fill: currentColor; stroke: none; }
+
+/* ——— сердечки ——— */
+.hearts { display: flex; gap: 8px; color: var(--red); flex: none; }
+.hearts svg { width: 28px; height: 28px; fill: var(--red); }
+.hearts.sm svg { width: 18px; height: 18px; }
+.hearts .off { fill: rgba(255,255,255,.14); }
+
+/* ——— цель 30 дней ——— */
+.goal { text-align: center; padding: 24px 20px; }
+.goal-days { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+.goal-num { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -.03em; margin: 6px 0 16px;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.goal-or { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.goal-opt { background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 14px; padding: 14px 10px; font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.25; }
+.goal-sep { font-size: 13px; color: var(--t3); font-weight: 600; }
+
+/* ——— списки ——— */
+.list { list-style: none; display: grid; gap: 10px; margin-top: 12px; }
+.list li { position: relative; padding-left: 22px; }
+.list li::before { content: ""; position: absolute; left: 4px; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+.list.red li::before { background: var(--red); }
+.list.green li::before { background: var(--green); }
+.list.muted li::before { background: var(--t3); }
+
+/* ——— цитата-вывод ——— */
+.quote { margin-top: 18px; padding: 4px 0 4px 16px; border-left: 3px solid; border-image: var(--gold) 1; font-size: 19px; font-weight: 600; line-height: 1.4; color: var(--t1); }
+
+/* ——— футбол ——— */
+.pair { display: grid; gap: 12px; margin-top: 16px; }
+.pair .card { margin-top: 0; }
+
+/* ——— Точка Б ——— */
+.lvls { display: grid; gap: 10px; margin-top: 16px; }
+.lvl { display: grid; grid-template-columns: 1fr 24px 1fr; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.lvl-lbl { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.lvl-now { font-size: 15px; font-weight: 600; color: var(--t1); line-height: 1.3; }
+.lvl-now small, .lvl-goal small { display: block; font-size: 13px; font-weight: 500; color: var(--t3); }
+.lvl-arrow { color: var(--t3); }
+.lvl-goal .lvl-lbl { color: #D9B94E; }
+.lvl-goal b { font-size: 20px; line-height: 1.15; background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.lvl-n { grid-column: 1 / -1; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: -2px; }
+
+/* ——— этапы (вертикальная линия) ——— */
+.steps { list-style: none; margin-top: 16px; }
+.step { position: relative; display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding-bottom: 20px; }
+.step:last-child { padding-bottom: 0; }
+.step:not(:last-child)::after { content: ""; position: absolute; left: 17px; top: 38px; bottom: 4px; width: 2px; background: linear-gradient(180deg, var(--blue-line), rgba(107,159,255,.06)); }
+.step-n { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; font-weight: 700; color: var(--blue); background: var(--blue-bg); border: 1px solid var(--blue-line); font-variant-numeric: tabular-nums; }
+.step-n.done { color: var(--green); background: var(--green-bg); border-color: var(--green-line); }
+.step-t { font-size: 17px; font-weight: 700; color: var(--t1); padding-top: 6px; line-height: 1.3; }
+.step-t .dur { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 100px; background: rgba(255,255,255,.06); font-size: 13px; font-weight: 600; color: var(--t2); vertical-align: 2px; }
+.step-d { font-size: 15px; color: var(--t2); margin-top: 4px; }
+.step-d.ok { color: var(--green); font-weight: 600; }
+
+/* ——— неделя: 3 плашки ——— */
+.week { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+.week div { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 12px; padding: 12px 14px; font-size: 15px; line-height: 1.3; color: var(--t2); }
+.week div b { width: 20px; text-align: center; font-size: 22px; color: var(--t1); flex: none; }
+.week div:first-child { border-color: rgba(234,184,32,.35); background: rgba(234,184,32,.07); }
+.week div:first-child b { color: var(--amber); }
+
+/* ——— 80/20 ——— */
+.split-bar { display: grid; grid-template-columns: 20fr 80fr; height: 40px; border-radius: 12px; overflow: hidden; margin: 16px 0 14px; font-size: 14px; font-weight: 700; }
+.split-bar span { display: flex; align-items: center; padding: 0 12px; }
+.split-bar span:first-child { background: var(--gold); color: #1A1406; justify-content: center; padding: 0; }
+.split-bar span:last-child { background: rgba(255,255,255,.07); color: var(--t3); }
+.split { display: grid; gap: 12px; }
+.split .card { margin-top: 0; }
+.split .must { border-color: rgba(234,184,32,.4); }
+.split .must .card-t { color: var(--amber); }
+.split .must .card-t svg.i { color: var(--amber); }
+
+/* ——— таймлайн недели задания ——— */
+.days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 8px; }
+.day { text-align: center; }
+.day-bar { height: 10px; border-radius: 5px; background: rgba(107,159,255,.28); }
+.day.open .day-bar { background: var(--blue); }
+.day.dl .day-bar { background: var(--red); }
+.day-n { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--t2); }
+.day-s { font-size: 11px; line-height: 1.25; color: var(--t3); margin-top: 2px; }
+.day.open .day-s { color: var(--blue); font-weight: 600; }
+.day.dl .day-s { color: #FF9B9B; font-weight: 600; }
+
+/* ——— факты-числа ——— */
+.facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; }
+.fact { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.fact b { display: block; font-size: 24px; line-height: 1.1; color: var(--t1); letter-spacing: -.02em; margin-bottom: 4px; }
+.fact.wide { grid-column: 1 / -1; }
+.fact.wide b { font-size: 18px; }
+.fact span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— красные / зелёные блоки ——— */
+.note { display: flex; gap: 12px; align-items: flex-start; border-radius: 14px; padding: 14px 16px; margin-top: 14px; border: 1px solid; font-size: 16px; line-height: 1.5; }
+.note svg.i { margin-top: 2px; }
+.note.red { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.note.red b { color: #FFD0D0; }
+.note.green { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.note.green b { color: #D2F5D6; }
+.note.blue { background: var(--blue-bg); border-color: var(--blue-line); color: #B5CCFF; }
+.note.blue b { color: #DCE7FF; }
+
+/* ——— путь жизней ——— */
+.path { display: grid; gap: 0; margin-top: 16px; }
+.path-st { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 16px; }
+.path-st.solo { border-color: rgba(234,184,32,.35); }
+.path-st.out { border-color: var(--red-line); background: linear-gradient(180deg, rgba(255,107,107,.06), var(--card)); }
+.path-hd { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.path-name { font-size: 17px; font-weight: 700; color: var(--t1); }
+.path-st p { font-size: 15px; margin-top: 6px; }
+.path-link { display: flex; align-items: center; gap: 8px; padding: 8px 0 8px 18px; font-size: 13px; font-weight: 600; color: #FF9B9B; }
+.path-link::before { content: ""; width: 2px; height: 22px; background: var(--red-line); margin-right: 6px; }
+
+/* ——— хорошо / плохо ——— */
+.vs { display: grid; gap: 10px; margin-top: 14px; }
+.vs-col { border-radius: 16px; padding: 14px 16px; border: 1px solid; }
+.vs-col.bad { background: var(--red-bg); border-color: var(--red-line); }
+.vs-col.good { background: var(--green-bg); border-color: var(--green-line); }
+.vs-h { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.vs-col.bad .vs-h { color: #FF9B9B; }
+.vs-col.good .vs-h { color: var(--green); }
+.vs-col ul { list-style: none; display: grid; gap: 6px; font-size: 15px; color: var(--t1); }
+
+/* ——— таймлайн дня ——— */
+.clock { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.clock div { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.clock b { display: block; font-size: 28px; line-height: 1; letter-spacing: -.02em; color: var(--t1); font-variant-numeric: tabular-nums; margin-bottom: 6px; }
+.clock span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— пример фокуса ——— */
+.ex { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; margin-top: 14px; }
+.ex > div { background: var(--card); border: 1px solid var(--line2); border-radius: 14px; padding: 12px 14px; }
+.ex small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.ex b { font-size: 16px; line-height: 1.3; }
+.ex .arrow { align-self: center; background: none; border: 0; padding: 0; color: var(--t3); }
+
+/* ——— монеты / баллы ——— */
+.cur { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.cur .card { margin-top: 0; padding: 16px; }
+.cur-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 10px; }
+.cur-ic.pts { background: var(--blue-bg); color: var(--blue); }
+.cur-ic.coin { background: rgba(234,184,32,.12); color: var(--amber); }
+.cur-n { font-size: 18px; font-weight: 700; color: var(--t1); }
+.cur-what { font-size: 14px; line-height: 1.4; color: var(--t2); margin-top: 4px; }
+.plusminus { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.pm { border-radius: 14px; padding: 12px 14px; border: 1px solid; font-size: 14px; line-height: 1.4; }
+.pm b { display: block; font-size: 20px; margin-bottom: 2px; }
+.pm.up { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.pm.up b { color: var(--green); }
+.pm.down { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.pm.down b { color: var(--red); }
+
+/* ——— свойства инвентаря ——— */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.tile { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px; font-size: 14px; line-height: 1.4; color: var(--t2); }
+.tile .rule-ic { margin-bottom: 10px; }
+.tile b { color: var(--t1); }
+
+/* ——— итоговый чек-лист ——— */
+.check { list-style: none; display: grid; gap: 10px; margin-top: 14px; }
+.check li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; font-size: 16px; color: var(--t1); font-weight: 600; line-height: 1.4; }
+.check li span.box { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; background: var(--green-bg); border: 1px solid var(--green-line); color: var(--green); }
+.check li span.box svg.i { width: 16px; height: 16px; stroke-width: 3; }
+.check li small { display: block; font-size: 14px; font-weight: 500; color: var(--t2); margin-top: 2px; }
+
+.divider { height: 1px; background: var(--line); margin: 36px 0 0; }
+
+@media (min-width: 640px) {
+  .page { padding: 8px 0 32px; }
+  .h2 { font-size: 34px; }
+  .card { padding: 24px; }
+  .pair, .split, .vs { grid-template-columns: 1fr 1fr; }
+  .lvls { grid-template-columns: repeat(3, 1fr); }
+  .lvl { grid-template-columns: 1fr; gap: 6px; }
+  .lvl-arrow { transform: rotate(90deg); justify-self: start; }
+  .facts { grid-template-columns: repeat(4, 1fr); }
+  .fact.wide { grid-column: span 2; }
+  .week { grid-template-columns: repeat(3, 1fr); }
+  .grid2 { grid-template-columns: repeat(4, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Урок «Ключевое задание недели 2»: дополнения к lesson.css урока «Правила курса». */
+.hello { font-size: 30px; font-weight: 800; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.lead { color: var(--t1); }
+.hn { -webkit-text-fill-color: rgba(240,208,128,.5); font-variant-numeric: tabular-nums; }
+.over { display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #D9B94E; margin-bottom: 10px; }
+.h3 { margin: 0; }
+.list li { font-size: 16px; line-height: 1.45; }
+a.rule { color: inherit; text-decoration: none; }
+
+/* ——— оглавление ——— */
+.toc { border-color: var(--blue-line); background: linear-gradient(180deg, #172238 0%, var(--card) 100%); }
+.toc-l { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.toc-l li span { display: flex; align-items: center; gap: 10px; height: 100%; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.04);
+  border: 1px solid var(--line); font-size: 15px; font-weight: 600; line-height: 1.25; color: var(--t1); }
+.toc-l b { width: 26px; height: 26px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 13px; color: var(--blue);
+  background: var(--blue-bg); border: 1px solid var(--blue-line); }
+
+/* ——— три вещи ——— */
+.trio { display: grid; gap: 12px; }
+.tri { margin-top: 0; }
+.tri-h { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.tri-t { font-size: 18px; font-weight: 700; line-height: 1.25; color: var(--t1); }
+.tri p { font-size: 16px; }
+
+/* ——— а) б) в) ——— */
+.abc { list-style: none; display: grid; padding: 6px 18px; }
+.abc li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; padding: 14px 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.5; color: var(--t2); }
+.abc li:first-child { border-top: 0; }
+.abc-n { margin-top: -2px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; font-weight: 700; color: var(--blue);
+  background: var(--blue-bg); border: 1px solid var(--blue-line); }
+
+/* ——— строки с иконкой ——— */
+.rows { list-style: none; display: grid; padding: 6px 18px; }
+.rows li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; padding: 14px 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.45; color: var(--t1); }
+.rows li:first-child { border-top: 0; }
+.rows svg.i { width: 34px; height: 34px; padding: 8px; border-radius: 10px; background: var(--blue-bg); color: var(--blue); margin-top: -5px; }
+.rows.red { border-color: var(--red-line); }
+.rows.red svg.i { background: var(--red-bg); color: var(--red); }
+
+/* ——— карточки-акценты ——— */
+.energy { border-color: var(--blue-line); background: linear-gradient(180deg, rgba(107,159,255,.07), var(--card)); }
+.energy p { font-size: 17px; color: var(--t1); }
+.story { border-color: var(--red-line); background: linear-gradient(180deg, rgba(255,107,107,.06), var(--card)); }
+.story .card-t { color: #FF9B9B; }
+.story .card-t svg.i { color: var(--red); fill: var(--red); }
+.story p { font-size: 16px; color: var(--t1); }
+.thesis { padding: 22px 20px; border-color: rgba(234,184,32,.30); background: linear-gradient(180deg, #1E2230 0%, var(--card) 100%); }
+.thesis-t { font-size: 20px; font-weight: 700; line-height: 1.35; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.thesis p + p { margin-top: 10px; }
+.thesis.tg .thesis-t { font-size: 24px; }
+.quote { margin-top: 0; }
+.quote.red { border-image: none; border-left-color: var(--red); color: #FFD0D0; }
+.note { margin-top: 0; }
+.note.amber { background: rgba(234,184,32,.08); border-color: rgba(234,184,32,.32); color: #F3DFA0; }
+.note.amber b { color: #FFE9A8; }
+.note.amber svg.i { color: var(--amber); }
+
+/* ——— вопросы к себе ——— */
+.ask-l { list-style: none; display: grid; gap: 10px; }
+.ask-l li { padding: 10px 14px; border-radius: 14px 14px 14px 4px; background: rgba(255,255,255,.05); border: 1px solid var(--line); font-size: 16px; font-style: italic; line-height: 1.4; color: var(--t1); }
+
+/* ——— реплики ——— */
+.talk { display: grid; gap: 10px; }
+.bub { position: relative; max-width: 88%; padding: 12px 16px; border-radius: 18px; font-size: 16px; line-height: 1.45; color: var(--t1);
+  background: rgba(255,255,255,.06); border: 1px solid var(--line2); margin: 0 !important; }
+.bub.l { justify-self: start; border-bottom-left-radius: 6px; font-style: italic; }
+.bub.r { justify-self: end; border-bottom-right-radius: 6px; background: rgba(234,184,32,.08); border-color: rgba(234,184,32,.32); font-weight: 600; }
+.talk-n { justify-self: start; margin: 0 0 0 16px !important; font-size: 13px; color: var(--t3); }
+.step .talk { margin-top: 10px; }
+.step .bub.r { max-width: 100%; font-weight: 500; font-style: italic; }
+
+/* ——— будут ——— */
+.will { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.will p { margin: 0 !important; display: grid; place-items: center; text-align: center; min-height: 64px; padding: 10px 8px; border-radius: 14px;
+  background: rgba(234,184,32,.07); border: 1px solid rgba(234,184,32,.28); font-size: 15px; font-weight: 700; line-height: 1.25; color: #F0D080; }
+
+/* ——— финал ——— */
+.task { border-color: rgba(234,184,32,.45); background: radial-gradient(120% 120% at 50% 0%, #2A2412 0%, var(--card) 70%); padding: 24px 20px; }
+.task p { font-size: 17px; color: var(--t1); }
+.task p + p, .task p + ul, .task ul + p { margin-top: 12px; }
+.task-h { font-size: 26px !important; font-weight: 800; line-height: 1.15; letter-spacing: -.02em; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.task-go { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 24px !important; font-weight: 700; line-height: 1.25 !important; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.task .task-go { margin-top: 18px !important; }
+.task-down { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: #2A2008;
+  -webkit-text-fill-color: #2A2008; animation: task-bob 1.6s ease-in-out infinite; }
+.task-down svg.i { width: 18px; height: 18px; }
+@keyframes task-bob { 50% { transform: translateY(3px); } }
+
+/* ——— шпаргалка недели ——— */
+.cheat .rule:first-of-type { border-top: 0; }
+.cheat-h { margin-bottom: 6px; }
+.cheat .rule-ic { font-size: 17px; font-weight: 700; }
+.cheat .rule-name { padding-top: 9px; }
+.tag-gain { display: inline-flex; align-items: flex-start; gap: 6px; margin-top: 10px; padding: 5px 12px 5px 9px; border-radius: 14px;
+  background: rgba(234,184,32,.10); border: 1px solid rgba(234,184,32,.32); color: #F0CE5C; font-size: 13px; font-weight: 600; line-height: 1.35; }
+.tag-gain svg.i { width: 14px; height: 14px; margin-top: 2px; }
+
+/* ——— шаги ——— */
+.steps { margin-top: 0; }
+.step-t { padding-top: 5px; }
+.step-d { margin-top: 8px !important; font-size: 16px; line-height: 1.5; }
+.step .list { margin-top: 8px; }
+.step .note { margin-top: 12px; font-size: 15px; }
+.why .step-n { font-size: 15px; }
+.tgs .step-n svg.i { width: 17px; height: 17px; }
+.tgs .step-n svg.i polygon { fill: currentColor; }
+.st-k { display: block; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); margin-bottom: 2px; }
+.tgs .step-t { padding-top: 0; }
+.eg { padding: 10px 14px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid var(--line); color: var(--t1); }
+
+/* ——— путь к продаже ——— */
+.flow { display: grid; justify-items: center; gap: 6px; }
+.flow p { margin: 0 !important; width: 100%; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line2); text-align: center; font-size: 16px; line-height: 1.35; color: var(--t1); }
+.flow-a { color: var(--t3); display: grid; }
+.flow-a svg.i { width: 18px; height: 18px; }
+.flow .flow-end { border-color: rgba(234,184,32,.45); background: rgba(234,184,32,.08); font-size: 18px; }
+.flow-end b { color: #F0D080; }
+
+/* ——— 341 000 ——— */
+.sum { text-align: center; padding: 22px 18px 24px; border-color: rgba(234,184,32,.35); background: radial-gradient(120% 120% at 50% 100%, #2A2412 0%, var(--card) 70%); }
+.sum-no { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.sum-no li { padding: 5px 12px; border-radius: 100px; background: rgba(255,255,255,.05); border: 1px solid var(--line2); font-size: 14px; font-weight: 600; color: var(--t2); }
+.sum-t { margin-top: 18px !important; font-size: 16px; line-height: 1.45; color: var(--t2); }
+.sum-n { display: block; margin-top: 8px; font-size: 40px; font-weight: 800; line-height: 1.05; letter-spacing: -.03em; font-variant-numeric: tabular-nums; white-space: nowrap;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* ——— набор инструментов ——— */
+.kit-h { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.kit-t { font-size: 19px; font-weight: 700; line-height: 1.25; color: var(--t1); }
+.kit p { font-size: 16px; }
+.kit > * + * { margin-top: 12px !important; }
+.kit .quote { margin-top: 16px !important; font-size: 18px; }
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { padding: 7px 13px; border-radius: 14px; background: var(--blue-bg); border: 1px solid var(--blue-line); font-size: 15px; font-weight: 600; line-height: 1.3; color: #DCE7FF; }
+.me { border-color: var(--green-line); background: linear-gradient(180deg, rgba(107,203,119,.06), var(--card)); }
+.me-t { font-size: 18px; font-weight: 700; line-height: 1.3; color: var(--t1); text-wrap: balance; }
+.check { margin-top: 0; }
+.me .check { margin-top: 14px; }
+.check li { font-weight: 500; }
+
+/* ——— примеры чека ——— */
+.exs-t { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 14px; }
+.exs-t svg.i { width: 18px; height: 18px; color: var(--amber); }
+.exs-t + .ex { margin-top: 0; }
+.ex { margin-top: 0; grid-template-columns: 1fr 20px 1fr; }
+.ex + .ex { margin-top: 8px; }
+.ex > div { background: rgba(255,255,255,.04); font-size: 14px; line-height: 1.35; color: var(--t2); }
+.ex span { display: block; }
+.ex b { font-size: 24px; line-height: 1.15; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--t1); }
+.ex .to { border-color: rgba(234,184,32,.4); background: rgba(234,184,32,.07); }
+.ex .to b { color: #F0D080; }
+.ex .arrow svg.i { width: 18px; height: 18px; }
+
+/* ——— неделя / дальше ——— */
+.split-t { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: var(--t1); margin-bottom: 12px; }
+.split-t svg.i { color: var(--blue); }
+.must .split-t svg.i { color: var(--amber); }
+.split .card p { font-size: 16px; }
+.split .list { margin-top: 0; }
+.split .card p + .list { margin-top: 12px; }
+
+/* ——— что в задании ——— */
+.how { border-color: var(--blue-line); margin-top: 20px; }
+.how .card-t { margin-bottom: 6px; }
+.how-l { list-style: none; display: grid; }
+.how-l li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; padding: 12px 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.45; color: var(--t1); }
+.how-l li:first-child { border-top: 0; }
+.how-l li:last-child { padding-bottom: 0; }
+.how-n { margin-top: -2px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--blue);
+  background: var(--blue-bg); border: 1px solid var(--blue-line); }
+
+/* ——— ритм отступов (сетка ПП): текст 12, блоки 20, после kick 10, после h2 14, h3 28/12 ——— */
+.sec > * { margin-bottom: 0 !important; }
+.sec > * + * { margin-top: 12px !important; }
+.sec > :is(.kick, .over) { margin-bottom: 10px !important; }
+.sec > :is(.kick, .over) + * { margin-top: 0 !important; }
+.sec > .h2 + * { margin-top: 14px !important; }
+.sec > * + :is(.card, .talk, .trio, .will, .flow, .steps, .split, .note, .quote, .check),
+.sec > :is(.card, .talk, .trio, .will, .flow, .steps, .split, .note, .quote, .check) + * { margin-top: 20px !important; }
+.sec > * + .h3 { margin-top: 28px !important; }
+.sec > .h3 + * { margin-top: 12px !important; }
+.sec > .hello + .lead { margin-top: 6px !important; }
+.card > :first-child { margin-top: 0 !important; }
+.card > .card-t + * { margin-top: 0 !important; }
+@media (min-width: 640px) {
+  .trio { grid-template-columns: 1fr; }
+  .toc-l { grid-template-columns: repeat(4, 1fr); }
+  .hello { font-size: 36px; }
+}
+
+</style>
+</head>
+<body>
+<main class="page">
+<section class="sec">
+  <p class="hello">Приветствую, герои!</p>
+  <p class="lead"><b>Добро пожаловать в&nbsp;начало второй недели!</b></p>
+  <p>Поздравляю вас с&nbsp;финалом первой. Выдохнули. Я&nbsp;знаю, было весело: были и&nbsp;слезы, и&nbsp;нервы, и&nbsp;страхи, и&nbsp;желание слиться. Потом вы&nbsp;восстанавливались и&nbsp;двигались дальше. Но&nbsp;в&nbsp;любом случае впереди еще более веселая неделя.</p>
+  <p>Но&nbsp;давайте для начала порефлексируем над тем, что вы&nbsp;поняли для себя по&nbsp;итогу этой недели. А&nbsp;я&nbsp;сделаю определенные акценты, чтобы вы&nbsp;могли обратить внимание на&nbsp;важные вещи. Потому что, когда вы&nbsp;не&nbsp;понимаете, что происходит, вы&nbsp;делаете ложные выводы, а&nbsp;отсюда появляется дополнительная нервотрепка.</p>
+  <p>Давайте разберемся по&nbsp;пунктам.</p>
+
+  <div class="card toc">
+    <div class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>Четыре вывода первой недели</div>
+    <ol class="toc-l">
+      <li><span class="upd"><b>1</b>Команда</span></li>
+      <li><span class="upd"><b>2</b>Напарник</span></li>
+      <li><span class="upd"><b>3</b>Игра как модель жизни</span></li>
+      <li><span class="upd"><b>4</b>Ролевая модель</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick">Команда</span>
+  <h2 class="h2"><span class="hn">1.</span> Вы&nbsp;разделились на&nbsp;команды</h2>
+  <p>Большинство из&nbsp;вас находятся в&nbsp;разных командах, кроме одиночки. Зачем это нужно? Я&nbsp;не&nbsp;знаю, как далеко вы&nbsp;пойдете в&nbsp;своей карьере, насколько великими экспертами или предпринимателями вы&nbsp;станете, но&nbsp;я&nbsp;точно знаю одно: вы&nbsp;либо будете возглавлять команды, либо станете частью чьей-то команды.</p>
+  <p>То&nbsp;есть на&nbsp;протяжении всей своей жизни, если вы&nbsp;будете стремиться к&nbsp;масштабу, вы&nbsp;будете взаимодействовать с&nbsp;другими людьми.</p>
+  <p>А&nbsp;люди проявляются по-разному. Каждому человеку нужен свой подход, своя мотивация, и&nbsp;с&nbsp;каждым нужно выстраивать отношения по-своему.</p>
+  <p>Одну вещь, которую вы&nbsp;должны понять сейчас по&nbsp;поводу команды:</p>
+  <p class="quote">бизнес состоит из&nbsp;трех ключевых вещей.</p>
+
+  <div class="trio">
+    <div class="card tri">
+      <div class="tri-h"><span class="rule-ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><h3 class="tri-t">Первое&nbsp;— цель бизнеса</h3></div>
+      <p>У&nbsp;самого бизнеса есть цель. Например, бизнес хочет получать прибыль в&nbsp;размере 1&nbsp;миллиона долларов. Или захватить 5% рынка. Это цель бизнеса.</p>
+    </div>
+    <div class="card tri">
+      <div class="tri-h"><span class="rule-ic"><svg class="i" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></span><h3 class="tri-t">Второе&nbsp;— функции</h3></div>
+      <p>У&nbsp;бизнеса есть функции. Совокупность большого количества функций дает результат. Например, чтобы достичь 150&nbsp;тысяч рублей за&nbsp;месяц, нужно выполнить ряд действий: настроить рекламу, снимать рилсы, провести переговоры, выполнить обязательства.</p>
+      <p>Это и&nbsp;есть различные функции в&nbsp;компании.</p>
+    </div>
+    <div class="card tri">
+      <div class="tri-h"><span class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><h3 class="tri-t">Третье&nbsp;— человек</h3></div>
+      <p>За&nbsp;каждую функцию отвечает человек. Это третье звено в&nbsp;системе&nbsp;— человек, который это делает. Пока что это делаете вы, но&nbsp;в&nbsp;дальнейшем это будут делать разные люди. И, соответственно, у&nbsp;человека есть свои желания и&nbsp;свои цели.</p>
+    </div>
+  </div>
+
+  <p>И&nbsp;вот в&nbsp;чем искусство работы в&nbsp;команде:</p>
+  <ol class="card abc">
+    <li><span class="abc-n">а)</span><div>понимать, к&nbsp;какой цели мы&nbsp;стремимся. Например, какую выручку мы&nbsp;пытаемся достичь;</div></li>
+    <li><span class="abc-n">б)</span><div>понимать, из&nbsp;каких функций состоит эта цель. Какие действия необходимо выполнить, чтобы добиться результата. По&nbsp;каждому действию есть свой итог. Какой результат должен дать рилс? Какой результат должны дать правильные сообщения? Какой результат должен быть у&nbsp;КЭВа? И&nbsp;именно совокупность этих результатов приводит к&nbsp;общей цели;</div></li>
+    <li><span class="abc-n">в)</span><div>каждый человек, отвечающий за&nbsp;свою функцию, должен знать, какой результат он&nbsp;обязан выдать. Если ты&nbsp;отвечаешь за&nbsp;рилсы, то&nbsp;какой результат ты&nbsp;должен получить на&nbsp;выходе?</div></li>
+  </ol>
+
+  <p>Именно поэтому мы&nbsp;и&nbsp;тренируемся писать результат и&nbsp;анализ действия&nbsp;— чтобы учиться видеть все действия через призму результата. Потому что именно от&nbsp;этого в&nbsp;дальнейшем и&nbsp;будет происходить рост.</p>
+  <p>И&nbsp;третье, что надо понимать: у&nbsp;каждого человека внутри своей функции есть собственные желания.</p>
+  <p>Например, каждый в&nbsp;вашей команде пришел в&nbsp;эту программу со&nbsp;своими мотивами. Кто-то хочет что-то делать, кто-то не&nbsp;хочет. Кто-то относится к&nbsp;команде наплевательски, кто-то, наоборот, тянет ее&nbsp;вперед. Это неважно. Но&nbsp;для того чтобы все работали как единый организм, нужно знать цели и&nbsp;желания каждого участника.</p>
+
+  <ul class="card rows">
+    <li><svg class="i" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Каждый участник должен четко понимать, какой результат он&nbsp;должен выдать вам как своей функцией.</span></li>
+    <li><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Каждый участник должен понимать, как достижение его результата приведет к&nbsp;результату команды, то&nbsp;есть бизнеса.</span></li>
+    <li><svg class="i" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span>И&nbsp;как достижение результата бизнеса поможет ему достичь его личных результатов.</span></li>
+  </ul>
+
+  <p>Если вы&nbsp;не&nbsp;научитесь соорганизовывать эти смыслы между собой, вам будет очень трудно находиться в&nbsp;команде и&nbsp;уж&nbsp;тем более ею&nbsp;управлять.</p>
+  <div class="card thesis">
+    <p class="thesis-t">Поэтому во&nbsp;взаимодействии с&nbsp;командой важно понимать: вместе вы&nbsp;сильнее, но&nbsp;только в&nbsp;одном случае&nbsp;— если вы&nbsp;научитесь соорганизовываться. Действовать сообща.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick">Напарник</span>
+  <h2 class="h2"><span class="hn">2.</span> Второй популярный момент&nbsp;— это Напарник</h2>
+  <p>На&nbsp;протяжении всей своей жизни вы&nbsp;очень часто либо играете роль спасателя&nbsp;— когда спасаете тех, кто даже не&nbsp;просит, либо живете наплевательски&nbsp;— когда вы&nbsp;сами по&nbsp;себе, и&nbsp;все, что вокруг вас, вас не&nbsp;интересует.</p>
+
+  <div class="card energy">
+    <div class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Зачем напарник</div>
+    <p><b>Напарник</b>&nbsp;— это, по&nbsp;большому счету, имитация бизнес-партнера, который у&nbsp;вас в&nbsp;жизни обязательно будет.</p>
+  </div>
+
+  <p>Партнерство бывает равное, а&nbsp;бывает так, что у&nbsp;вас, например, есть топ-менеджер. Он&nbsp;тоже отчасти ваш партнер, потому что от&nbsp;него зависит очень многое.</p>
+  <p>И&nbsp;в&nbsp;партнерстве важно понимать: насколько бы&nbsp;ты&nbsp;ни&nbsp;был эффективным, если твой партнер не&nbsp;справляется, вся команда идет ко&nbsp;дну.</p>
+
+  <div class="card story">
+    <div class="card-t"><svg class="i" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Как теряли жизнь</div>
+    <p>И&nbsp;на&nbsp;протяжении недели могло быть так: даже если вы&nbsp;держали невероятный фокус и&nbsp;все сделали, но&nbsp;забыли про своего напарника, про своего Buddy,&nbsp;— вы&nbsp;потеряли жизнь просто потому, что лишний раз не&nbsp;уточнили, успевает он&nbsp;или не&nbsp;успевает, не&nbsp;проконтролировали. И, соответственно, все полетело в&nbsp;тартарары.</p>
+  </div>
+
+  <p>В&nbsp;бизнесе происходит то&nbsp;же&nbsp;самое.</p>
+  <ul class="card rows red">
+    <li><svg class="i" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span>Вы&nbsp;не&nbsp;проконтролировали сотрудника: отправил ли&nbsp;он&nbsp;отчет вовремя.</span></li>
+    <li><svg class="i" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span>Бухгалтера: подал ли&nbsp;он&nbsp;налоговую декларацию вовремя.</span></li>
+    <li><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Сдал ли&nbsp;он&nbsp;все задания и&nbsp;домашки вовремя.</span></li>
+  </ul>
+  <p class="quote red">А&nbsp;в&nbsp;штраф попадаете вы.</p>
+  <p>И&nbsp;вы&nbsp;можете обижаться, злиться, но&nbsp;такова реальность.</p>
+  <p>И&nbsp;вам впервые нужно при масштабировании и&nbsp;в&nbsp;стремлении добиться какого-то выдающегося результата думать не&nbsp;только о&nbsp;том, на&nbsp;что способны вы, но&nbsp;и&nbsp;о&nbsp;том, на&nbsp;что способны ваши партнеры и&nbsp;члены вашей команды.</p>
+  <p>Потому что сейчас вы&nbsp;могли видеть, что какие-то команды получили награды, а&nbsp;какие-то&nbsp;— нет.</p>
+
+  <div class="card thesis">
+    <p class="thesis-t">И&nbsp;опять-таки вопрос: являешься ли&nbsp;ты&nbsp;в&nbsp;своей команде тем самым человеком, который помог ей&nbsp;заработать награду? Или нет&nbsp;— ты&nbsp;был тем, кого все тащили?</p>
+    <p>И, соответственно, какие выводы ты&nbsp;сделаешь на&nbsp;следующей неделе? И&nbsp;кем ты&nbsp;станешь?</p>
+  </div>
+
+  <div class="note green"><svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>Ведь на&nbsp;этой неделе счет обнуляется, и&nbsp;у&nbsp;вас есть шанс сделать крутой результат уже сейчас.</span></div>
+  <p>И&nbsp;всему этому вы&nbsp;учитесь по&nbsp;ходу.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Игра</span>
+  <h2 class="h2"><span class="hn">3.</span> Вся программа&nbsp;— это моделирование реальной жизни</h2>
+  <p>Вся программа&nbsp;— это лишь моделирование того, что происходит в&nbsp;реальной жизни. Все упражнения и&nbsp;задания созданы здесь таким образом, чтобы повторять ваше поведение в&nbsp;реальности.</p>
+  <p>Чтобы вы&nbsp;увидели здесь, в&nbsp;игре, где максимальный риск&nbsp;— просто потерять жизнь или не&nbsp;добрать баллов. А&nbsp;в&nbsp;жизни это потеря клиентов, потеря роста, потеря денег и&nbsp;так далее.</p>
+  <p>То&nbsp;есть здесь мы&nbsp;тренируемся увидеть: а&nbsp;как эта же&nbsp;самая ситуация проявляется у&nbsp;нас в&nbsp;жизни?</p>
+
+  <div class="card ask">
+    <div class="card-t"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Вопросы к&nbsp;себе</div>
+    <ul class="ask-l">
+      <li>Что конкретно нас бесит?</li>
+      <li>Что конкретно мы&nbsp;не&nbsp;можем заставить себя делать?</li>
+      <li>Почему мы&nbsp;относимся к&nbsp;той или иной функции именно так?</li>
+      <li>Почему нас бесят определенные люди в&nbsp;команде?</li>
+      <li>Почему я&nbsp;должен за&nbsp;них отвечать?</li>
+      <li>Почему я&nbsp;должен отчитываться?</li>
+      <li>Я&nbsp;вообще пришел за&nbsp;свободой. Я&nbsp;пришел за&nbsp;деньгами. Я&nbsp;пришел…</li>
+    </ul>
+  </div>
+
+  <p class="quote">Но&nbsp;все это неизбежно в&nbsp;вашем развитии. Вам все равно придется это делать.</p>
+  <p>И&nbsp;неважно, какими навыками вы&nbsp;обладали в&nbsp;прошлом, какой опыт проходили&nbsp;— все эти качества пригодятся при построении своей собственной компании.</p>
+  <p>Вы&nbsp;даже не&nbsp;представляете, какое количество людей на&nbsp;программе потеряли жизни просто из-за невнимательности.</p>
+  <p>Например, тот же&nbsp;самый <b>Фокус</b>, где задача очень простая: просто поставить себе напоминание и&nbsp;не&nbsp;забыть сделать задачу. Но&nbsp;оказывается, так сложно 8&nbsp;раз написать сообщение.</p>
+  <p>Более того, я&nbsp;обожаю читать ваши <b>Фокусы</b>, <b>План/Факты</b> и&nbsp;смотреть, насколько серьезно вы&nbsp;понимаете задачи, которые перед вами стоят. Насколько вы&nbsp;умеете отфильтровывать важное от&nbsp;неважного. Насколько халатно вы&nbsp;делаете&nbsp;— на&nbsp;отстань&nbsp;— или действительно стараетесь сделать лучше. Насколько внимательно или невнимательно вы&nbsp;читаете задания.</p>
+  <p>И&nbsp;поверьте мне: по&nbsp;некоторым участникам, когда я&nbsp;видел, как люди писали пост, как писали План, как отчитывались по&nbsp;домашке, я&nbsp;с&nbsp;самого начала говорил:</p>
+  <div class="talk"><p class="bub l">«Саша, вот этот человек, скорее всего, не&nbsp;выдержит и&nbsp;недели».</p></div>
+  <p>И&nbsp;пока у&nbsp;меня всегда 100% попадание. Потому что за&nbsp;мои годы насмотренности я&nbsp;уже знаю закономерности того, кто на&nbsp;самом деле добьется результата.</p>
+  <div class="note green"><svg class="i" viewBox="0 0 24 24"><path d="M9.94 14.06 8.5 20l-1.44-5.94L1 12.5l6.06-1.44L8.5 5l1.44 6.06L16 12.5z"/><path d="M20 3v4"/><path d="M22 5h-4"/></svg><span>Но&nbsp;человек всегда может измениться.</span></div>
+</section>
+
+<section class="sec">
+  <span class="kick">Паттерны</span>
+  <h2 class="h2"><span class="hn">4.</span> Все, что вы&nbsp;делаете,&nbsp;— это ваша ролевая модель</h2>
+  <p>Все, что вы&nbsp;делаете в&nbsp;жизни,&nbsp;— это ваша ролевая модель.</p>
+  <p>Вы&nbsp;думаете, что вы&nbsp;уникальны. Думаете, что вы&nbsp;самобытны. На&nbsp;самом деле у&nbsp;вас просто есть паттерны поведения.</p>
+  <p>И&nbsp;задача программы&nbsp;— исправить, подкорректировать и&nbsp;направить их&nbsp;в&nbsp;более эффективную сторону, чтобы вы&nbsp;могли использовать свои сильные стороны и&nbsp;гасить свои слабые.</p>
+  <p>Впереди вас ждет удивительное приключение. И&nbsp;за&nbsp;эту неделю вы&nbsp;еще больше узнаете о&nbsp;себе самого разного.</p>
+  <p>Так что впереди у&nbsp;вас классная, потрясающая, захватывающая неделя.</p>
+
+  <div class="will">
+    <p>Слезы будут.</p>
+    <p>Смех будет.</p>
+    <p>Новая дружба будет.</p>
+  </div>
+
+  <p>Но&nbsp;одно я&nbsp;знаю точно: в&nbsp;любом случае весь этот тренинг станет одним из&nbsp;самых незабываемых приключений вашей жизни.</p>
+  <p>Вам будет что вспомнить.</p>
+  <p class="task-go">Хорошей вам недели. Выполняйте задания на&nbsp;неделю.</p>
+</section>
+</main>
+</body>
+</html>

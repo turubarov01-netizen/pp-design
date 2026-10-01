@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание на вторую неделю</title>
+<style>
+/* Урок «Правила курса» — вставки HTML-страниц в урок кабинета «План Продюсера».
+   Фон и карточки совпадают с кабинетом (ProducerPlanLayout: --pl-bg #0D1117, --pl-card #141E2B). */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap');
+
+:root {
+  --bg: #0D1117;
+  --card: #141E2B;
+  --card2: #1A2535;
+  --line: rgba(255,255,255,.07);
+  --line2: rgba(255,255,255,.12);
+  --t1: #FFFFFF;
+  --t2: rgba(255,255,255,.76);
+  --t3: rgba(255,255,255,.52);
+  --blue: #6B9FFF;
+  --blue-bg: rgba(107,159,255,.10);
+  --blue-line: rgba(107,159,255,.28);
+  --amber: #EAB820;
+  --gold: linear-gradient(135deg, #F0D080 0%, #CCA830 100%);
+  --red: #FF6B6B;
+  --red-bg: rgba(255,107,107,.09);
+  --red-line: rgba(255,107,107,.28);
+  --green: #6BCB77;
+  --green-bg: rgba(107,203,119,.09);
+  --green-line: rgba(107,203,119,.28);
+  --r: 18px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg) !important; }
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: var(--t2);
+  font-size: 17px; line-height: 1.55; letter-spacing: -.011em;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-wrap: pretty;
+}
+.page { max-width: 720px; margin: 0 auto; padding: 8px 16px 24px; }
+
+b, strong { color: var(--t1); font-weight: 700; }
+.am { color: var(--amber); font-weight: 700; }
+p + p { margin-top: 12px; }
+svg.i { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ——— заголовки секций ——— */
+.sec { padding-top: 40px; }
+.sec:first-child { padding-top: 8px; }
+.kick { display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.h2 {
+  font-size: 28px; font-weight: 700; line-height: 1.12; letter-spacing: -.02em; margin-bottom: 14px; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.h3 { font-size: 19px; font-weight: 700; line-height: 1.25; color: var(--t1); margin: 24px 0 10px; text-wrap: balance; }
+.lead { font-size: 18px; color: var(--t2); }
+
+/* ——— карточки ——— */
+.card { background: var(--card); border: 1px solid var(--line2); border-radius: var(--r); padding: 20px; margin-top: 16px; }
+.card-t { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 14px; }
+.card-t svg.i { width: 18px; height: 18px; color: var(--blue); }
+
+/* ——— шпаргалка ——— */
+.cheat { background: linear-gradient(180deg, #172238 0%, var(--card) 100%); border-color: var(--blue-line); padding: 22px 20px 8px; }
+.cheat-h { font-size: 22px; font-weight: 700; color: var(--t1); line-height: 1.2; margin-bottom: 4px; text-wrap: balance; }
+.cheat-sub { font-size: 15px; color: var(--t3); margin-bottom: 14px; }
+.rule { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+.rule-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--blue-bg); color: var(--blue); }
+.rule-ic.red { background: var(--red-bg); color: var(--red); }
+.rule-name { font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.3; }
+.rule-txt { font-size: 15px; line-height: 1.45; color: var(--t2); margin-top: 3px; }
+.tag-loss { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; padding: 3px 10px 3px 8px; border-radius: 100px; background: var(--red-bg); border: 1px solid var(--red-line); color: #FF9B9B; font-size: 13px; font-weight: 600; }
+.tag-loss svg.i { width: 14px; height: 14px; fill: currentColor; stroke: none; }
+
+/* ——— сердечки ——— */
+.hearts { display: flex; gap: 8px; color: var(--red); flex: none; }
+.hearts svg { width: 28px; height: 28px; fill: var(--red); }
+.hearts.sm svg { width: 18px; height: 18px; }
+.hearts .off { fill: rgba(255,255,255,.14); }
+
+/* ——— цель 30 дней ——— */
+.goal { text-align: center; padding: 24px 20px; }
+.goal-days { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+.goal-num { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -.03em; margin: 6px 0 16px;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.goal-or { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.goal-opt { background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 14px; padding: 14px 10px; font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.25; }
+.goal-sep { font-size: 13px; color: var(--t3); font-weight: 600; }
+
+/* ——— списки ——— */
+.list { list-style: none; display: grid; gap: 10px; margin-top: 12px; }
+.list li { position: relative; padding-left: 22px; }
+.list li::before { content: ""; position: absolute; left: 4px; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+.list.red li::before { background: var(--red); }
+.list.green li::before { background: var(--green); }
+.list.muted li::before { background: var(--t3); }
+
+/* ——— цитата-вывод ——— */
+.quote { margin-top: 18px; padding: 4px 0 4px 16px; border-left: 3px solid; border-image: var(--gold) 1; font-size: 19px; font-weight: 600; line-height: 1.4; color: var(--t1); }
+
+/* ——— футбол ——— */
+.pair { display: grid; gap: 12px; margin-top: 16px; }
+.pair .card { margin-top: 0; }
+
+/* ——— Точка Б ——— */
+.lvls { display: grid; gap: 10px; margin-top: 16px; }
+.lvl { display: grid; grid-template-columns: 1fr 24px 1fr; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.lvl-lbl { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.lvl-now { font-size: 15px; font-weight: 600; color: var(--t1); line-height: 1.3; }
+.lvl-now small, .lvl-goal small { display: block; font-size: 13px; font-weight: 500; color: var(--t3); }
+.lvl-arrow { color: var(--t3); }
+.lvl-goal .lvl-lbl { color: #D9B94E; }
+.lvl-goal b { font-size: 20px; line-height: 1.15; background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.lvl-n { grid-column: 1 / -1; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: -2px; }
+
+/* ——— этапы (вертикальная линия) ——— */
+.steps { list-style: none; margin-top: 16px; }
+.step { position: relative; display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding-bottom: 20px; }
+.step:last-child { padding-bottom: 0; }
+.step:not(:last-child)::after { content: ""; position: absolute; left: 17px; top: 38px; bottom: 4px; width: 2px; background: linear-gradient(180deg, var(--blue-line), rgba(107,159,255,.06)); }
+.step-n { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; font-weight: 700; color: var(--blue); background: var(--blue-bg); border: 1px solid var(--blue-line); font-variant-numeric: tabular-nums; }
+.step-n.done { color: var(--green); background: var(--green-bg); border-color: var(--green-line); }
+.step-t { font-size: 17px; font-weight: 700; color: var(--t1); padding-top: 6px; line-height: 1.3; }
+.step-t .dur { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 100px; background: rgba(255,255,255,.06); font-size: 13px; font-weight: 600; color: var(--t2); vertical-align: 2px; }
+.step-d { font-size: 15px; color: var(--t2); margin-top: 4px; }
+.step-d.ok { color: var(--green); font-weight: 600; }
+
+/* ——— неделя: 3 плашки ——— */
+.week { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+.week div { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-radius: 12px; padding: 12px 14px; font-size: 15px; line-height: 1.3; color: var(--t2); }
+.week div b { width: 20px; text-align: center; font-size: 22px; color: var(--t1); flex: none; }
+.week div:first-child { border-color: rgba(234,184,32,.35); background: rgba(234,184,32,.07); }
+.week div:first-child b { color: var(--amber); }
+
+/* ——— 80/20 ——— */
+.split-bar { display: grid; grid-template-columns: 20fr 80fr; height: 40px; border-radius: 12px; overflow: hidden; margin: 16px 0 14px; font-size: 14px; font-weight: 700; }
+.split-bar span { display: flex; align-items: center; padding: 0 12px; }
+.split-bar span:first-child { background: var(--gold); color: #1A1406; justify-content: center; padding: 0; }
+.split-bar span:last-child { background: rgba(255,255,255,.07); color: var(--t3); }
+.split { display: grid; gap: 12px; }
+.split .card { margin-top: 0; }
+.split .must { border-color: rgba(234,184,32,.4); }
+.split .must .card-t { color: var(--amber); }
+.split .must .card-t svg.i { color: var(--amber); }
+
+/* ——— таймлайн недели задания ——— */
+.days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 8px; }
+.day { text-align: center; }
+.day-bar { height: 10px; border-radius: 5px; background: rgba(107,159,255,.28); }
+.day.open .day-bar { background: var(--blue); }
+.day.dl .day-bar { background: var(--red); }
+.day-n { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--t2); }
+.day-s { font-size: 11px; line-height: 1.25; color: var(--t3); margin-top: 2px; }
+.day.open .day-s { color: var(--blue); font-weight: 600; }
+.day.dl .day-s { color: #FF9B9B; font-weight: 600; }
+
+/* ——— факты-числа ——— */
+.facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; }
+.fact { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.fact b { display: block; font-size: 24px; line-height: 1.1; color: var(--t1); letter-spacing: -.02em; margin-bottom: 4px; }
+.fact.wide { grid-column: 1 / -1; }
+.fact.wide b { font-size: 18px; }
+.fact span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— красные / зелёные блоки ——— */
+.note { display: flex; gap: 12px; align-items: flex-start; border-radius: 14px; padding: 14px 16px; margin-top: 14px; border: 1px solid; font-size: 16px; line-height: 1.5; }
+.note svg.i { margin-top: 2px; }
+.note.red { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.note.red b { color: #FFD0D0; }
+.note.green { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.note.green b { color: #D2F5D6; }
+.note.blue { background: var(--blue-bg); border-color: var(--blue-line); color: #B5CCFF; }
+.note.blue b { color: #DCE7FF; }
+
+/* ——— путь жизней ——— */
+.path { display: grid; gap: 0; margin-top: 16px; }
+.path-st { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 16px; }
+.path-st.solo { border-color: rgba(234,184,32,.35); }
+.path-st.out { border-color: var(--red-line); background: linear-gradient(180deg, rgba(255,107,107,.06), var(--card)); }
+.path-hd { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.path-name { font-size: 17px; font-weight: 700; color: var(--t1); }
+.path-st p { font-size: 15px; margin-top: 6px; }
+.path-link { display: flex; align-items: center; gap: 8px; padding: 8px 0 8px 18px; font-size: 13px; font-weight: 600; color: #FF9B9B; }
+.path-link::before { content: ""; width: 2px; height: 22px; background: var(--red-line); margin-right: 6px; }
+
+/* ——— хорошо / плохо ——— */
+.vs { display: grid; gap: 10px; margin-top: 14px; }
+.vs-col { border-radius: 16px; padding: 14px 16px; border: 1px solid; }
+.vs-col.bad { background: var(--red-bg); border-color: var(--red-line); }
+.vs-col.good { background: var(--green-bg); border-color: var(--green-line); }
+.vs-h { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.vs-col.bad .vs-h { color: #FF9B9B; }
+.vs-col.good .vs-h { color: var(--green); }
+.vs-col ul { list-style: none; display: grid; gap: 6px; font-size: 15px; color: var(--t1); }
+
+/* ——— таймлайн дня ——— */
+.clock { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.clock div { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; }
+.clock b { display: block; font-size: 28px; line-height: 1; letter-spacing: -.02em; color: var(--t1); font-variant-numeric: tabular-nums; margin-bottom: 6px; }
+.clock span { font-size: 14px; line-height: 1.35; color: var(--t2); display: block; }
+
+/* ——— пример фокуса ——— */
+.ex { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; margin-top: 14px; }
+.ex > div { background: var(--card); border: 1px solid var(--line2); border-radius: 14px; padding: 12px 14px; }
+.ex small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 4px; }
+.ex b { font-size: 16px; line-height: 1.3; }
+.ex .arrow { align-self: center; background: none; border: 0; padding: 0; color: var(--t3); }
+
+/* ——— монеты / баллы ——— */
+.cur { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.cur .card { margin-top: 0; padding: 16px; }
+.cur-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 10px; }
+.cur-ic.pts { background: var(--blue-bg); color: var(--blue); }
+.cur-ic.coin { background: rgba(234,184,32,.12); color: var(--amber); }
+.cur-n { font-size: 18px; font-weight: 700; color: var(--t1); }
+.cur-what { font-size: 14px; line-height: 1.4; color: var(--t2); margin-top: 4px; }
+.plusminus { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.pm { border-radius: 14px; padding: 12px 14px; border: 1px solid; font-size: 14px; line-height: 1.4; }
+.pm b { display: block; font-size: 20px; margin-bottom: 2px; }
+.pm.up { background: var(--green-bg); border-color: var(--green-line); color: #A9E8B1; }
+.pm.up b { color: var(--green); }
+.pm.down { background: var(--red-bg); border-color: var(--red-line); color: #FFB3B3; }
+.pm.down b { color: var(--red); }
+
+/* ——— свойства инвентаря ——— */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.tile { background: var(--card); border: 1px solid var(--line2); border-radius: 16px; padding: 14px; font-size: 14px; line-height: 1.4; color: var(--t2); }
+.tile .rule-ic { margin-bottom: 10px; }
+.tile b { color: var(--t1); }
+
+/* ——— итоговый чек-лист ——— */
+.check { list-style: none; display: grid; gap: 10px; margin-top: 14px; }
+.check li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; font-size: 16px; color: var(--t1); font-weight: 600; line-height: 1.4; }
+.check li span.box { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; background: var(--green-bg); border: 1px solid var(--green-line); color: var(--green); }
+.check li span.box svg.i { width: 16px; height: 16px; stroke-width: 3; }
+.check li small { display: block; font-size: 14px; font-weight: 500; color: var(--t2); margin-top: 2px; }
+
+.divider { height: 1px; background: var(--line); margin: 36px 0 0; }
+
+@media (min-width: 640px) {
+  .page { padding: 8px 0 32px; }
+  .h2 { font-size: 34px; }
+  .card { padding: 24px; }
+  .pair, .split, .vs { grid-template-columns: 1fr 1fr; }
+  .lvls { grid-template-columns: repeat(3, 1fr); }
+  .lvl { grid-template-columns: 1fr; gap: 6px; }
+  .lvl-arrow { transform: rotate(90deg); justify-self: start; }
+  .facts { grid-template-columns: repeat(4, 1fr); }
+  .fact.wide { grid-column: span 2; }
+  .week { grid-template-columns: repeat(3, 1fr); }
+  .grid2 { grid-template-columns: repeat(4, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Урок «Ключевое задание недели 2»: дополнения к lesson.css урока «Правила курса». */
+.hello { font-size: 30px; font-weight: 800; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.lead { color: var(--t1); }
+.hn { -webkit-text-fill-color: rgba(240,208,128,.5); font-variant-numeric: tabular-nums; }
+.over { display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #D9B94E; margin-bottom: 10px; }
+.h3 { margin: 0; }
+.list li { font-size: 16px; line-height: 1.45; }
+a.rule { color: inherit; text-decoration: none; }
+
+/* ——— оглавление ——— */
+.toc { border-color: var(--blue-line); background: linear-gradient(180deg, #172238 0%, var(--card) 100%); }
+.toc-l { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.toc-l li span { display: flex; align-items: center; gap: 10px; height: 100%; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.04);
+  border: 1px solid var(--line); font-size: 15px; font-weight: 600; line-height: 1.25; color: var(--t1); }
+.toc-l b { width: 26px; height: 26px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 13px; color: var(--blue);
+  background: var(--blue-bg); border: 1px solid var(--blue-line); }
+
+/* ——— три вещи ——— */
+.trio { display: grid; gap: 12px; }
+.tri { margin-top: 0; }
+.tri-h { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.tri-t { font-size: 18px; font-weight: 700; line-height: 1.25; color: var(--t1); }
+.tri p { font-size: 16px; }
+
+/* ——— а) б) в) ——— */
+.abc { list-style: none; display: grid; padding: 6px 18px; }
+.abc li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; padding: 14px 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.5; color: var(--t2); }
+.abc li:first-child { border-top: 0; }
+.abc-n { margin-top: -2px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; font-weight: 700; color: var(--blue);
+  background: var(--blue-bg); border: 1px solid var(--blue-line); }
+
+/* ——— строки с иконкой ——— */
+.rows { list-style: none; display: grid; padding: 6px 18px; }
+.rows li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; padding: 14px 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.45; color: var(--t1); }
+.rows li:first-child { border-top: 0; }
+.rows svg.i { width: 34px; height: 34px; padding: 8px; border-radius: 10px; background: var(--blue-bg); color: var(--blue); margin-top: -5px; }
+.rows.red { border-color: var(--red-line); }
+.rows.red svg.i { background: var(--red-bg); color: var(--red); }
+
+/* ——— карточки-акценты ——— */
+.energy { border-color: var(--blue-line); background: linear-gradient(180deg, rgba(107,159,255,.07), var(--card)); }
+.energy p { font-size: 17px; color: var(--t1); }
+.story { border-color: var(--red-line); background: linear-gradient(180deg, rgba(255,107,107,.06), var(--card)); }
+.story .card-t { color: #FF9B9B; }
+.story .card-t svg.i { color: var(--red); fill: var(--red); }
+.story p { font-size: 16px; color: var(--t1); }
+.thesis { padding: 22px 20px; border-color: rgba(234,184,32,.30); background: linear-gradient(180deg, #1E2230 0%, var(--card) 100%); }
+.thesis-t { font-size: 20px; font-weight: 700; line-height: 1.35; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.thesis p + p { margin-top: 10px; }
+.thesis.tg .thesis-t { font-size: 24px; }
+.quote { margin-top: 0; }
+.quote.red { border-image: none; border-left-color: var(--red); color: #FFD0D0; }
+.note { margin-top: 0; }
+.note.amber { background: rgba(234,184,32,.08); border-color: rgba(234,184,32,.32); color: #F3DFA0; }
+.note.amber b { color: #FFE9A8; }
+.note.amber svg.i { color: var(--amber); }
+
+/* ——— вопросы к себе ——— */
+.ask-l { list-style: none; display: grid; gap: 10px; }
+.ask-l li { padding: 10px 14px; border-radius: 14px 14px 14px 4px; background: rgba(255,255,255,.05); border: 1px solid var(--line); font-size: 16px; font-style: italic; line-height: 1.4; color: var(--t1); }
+
+/* ——— реплики ——— */
+.talk { display: grid; gap: 10px; }
+.bub { position: relative; max-width: 88%; padding: 12px 16px; border-radius: 18px; font-size: 16px; line-height: 1.45; color: var(--t1);
+  background: rgba(255,255,255,.06); border: 1px solid var(--line2); margin: 0 !important; }
+.bub.l { justify-self: start; border-bottom-left-radius: 6px; font-style: italic; }
+.bub.r { justify-self: end; border-bottom-right-radius: 6px; background: rgba(234,184,32,.08); border-color: rgba(234,184,32,.32); font-weight: 600; }
+.talk-n { justify-self: start; margin: 0 0 0 16px !important; font-size: 13px; color: var(--t3); }
+.step .talk { margin-top: 10px; }
+.step .bub.r { max-width: 100%; font-weight: 500; font-style: italic; }
+
+/* ——— будут ——— */
+.will { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.will p { margin: 0 !important; display: grid; place-items: center; text-align: center; min-height: 64px; padding: 10px 8px; border-radius: 14px;
+  background: rgba(234,184,32,.07); border: 1px solid rgba(234,184,32,.28); font-size: 15px; font-weight: 700; line-height: 1.25; color: #F0D080; }
+
+/* ——— финал ——— */
+.task { border-color: rgba(234,184,32,.45); background: radial-gradient(120% 120% at 50% 0%, #2A2412 0%, var(--card) 70%); padding: 24px 20px; }
+.task p { font-size: 17px; color: var(--t1); }
+.task p + p, .task p + ul, .task ul + p { margin-top: 12px; }
+.task-h { font-size: 26px !important; font-weight: 800; line-height: 1.15; letter-spacing: -.02em; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.task-go { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 24px !important; font-weight: 700; line-height: 1.25 !important; text-wrap: balance;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.task .task-go { margin-top: 18px !important; }
+.task-down { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: #2A2008;
+  -webkit-text-fill-color: #2A2008; animation: task-bob 1.6s ease-in-out infinite; }
+.task-down svg.i { width: 18px; height: 18px; }
+@keyframes task-bob { 50% { transform: translateY(3px); } }
+
+/* ——— шпаргалка недели ——— */
+.cheat .rule:first-of-type { border-top: 0; }
+.cheat-h { margin-bottom: 6px; }
+.cheat .rule-ic { font-size: 17px; font-weight: 700; }
+.cheat .rule-name { padding-top: 9px; }
+.tag-gain { display: inline-flex; align-items: flex-start; gap: 6px; margin-top: 10px; padding: 5px 12px 5px 9px; border-radius: 14px;
+  background: rgba(234,184,32,.10); border: 1px solid rgba(234,184,32,.32); color: #F0CE5C; font-size: 13px; font-weight: 600; line-height: 1.35; }
+.tag-gain svg.i { width: 14px; height: 14px; margin-top: 2px; }
+
+/* ——— шаги ——— */
+.steps { margin-top: 0; }
+.step-t { padding-top: 5px; }
+.step-d { margin-top: 8px !important; font-size: 16px; line-height: 1.5; }
+.step .list { margin-top: 8px; }
+.step .note { margin-top: 12px; font-size: 15px; }
+.why .step-n { font-size: 15px; }
+.tgs .step-n svg.i { width: 17px; height: 17px; }
+.tgs .step-n svg.i polygon { fill: currentColor; }
+.st-k { display: block; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); margin-bottom: 2px; }
+.tgs .step-t { padding-top: 0; }
+.eg { padding: 10px 14px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid var(--line); color: var(--t1); }
+
+/* ——— путь к продаже ——— */
+.flow { display: grid; justify-items: center; gap: 6px; }
+.flow p { margin: 0 !important; width: 100%; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line2); text-align: center; font-size: 16px; line-height: 1.35; color: var(--t1); }
+.flow-a { color: var(--t3); display: grid; }
+.flow-a svg.i { width: 18px; height: 18px; }
+.flow .flow-end { border-color: rgba(234,184,32,.45); background: rgba(234,184,32,.08); font-size: 18px; }
+.flow-end b { color: #F0D080; }
+
+/* ——— 341 000 ——— */
+.sum { text-align: center; padding: 22px 18px 24px; border-color: rgba(234,184,32,.35); background: radial-gradient(120% 120% at 50% 100%, #2A2412 0%, var(--card) 70%); }
+.sum-no { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.sum-no li { padding: 5px 12px; border-radius: 100px; background: rgba(255,255,255,.05); border: 1px solid var(--line2); font-size: 14px; font-weight: 600; color: var(--t2); }
+.sum-t { margin-top: 18px !important; font-size: 16px; line-height: 1.45; color: var(--t2); }
+.sum-n { display: block; margin-top: 8px; font-size: 40px; font-weight: 800; line-height: 1.05; letter-spacing: -.03em; font-variant-numeric: tabular-nums; white-space: nowrap;
+  background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* ——— набор инструментов ——— */
+.kit-h { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.kit-t { font-size: 19px; font-weight: 700; line-height: 1.25; color: var(--t1); }
+.kit p { font-size: 16px; }
+.kit > * + * { margin-top: 12px !important; }
+.kit .quote { margin-top: 16px !important; font-size: 18px; }
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { padding: 7px 13px; border-radius: 14px; background: var(--blue-bg); border: 1px solid var(--blue-line); font-size: 15px; font-weight: 600; line-height: 1.3; color: #DCE7FF; }
+.me { border-color: var(--green-line); background: linear-gradient(180deg, rgba(107,203,119,.06), var(--card)); }
+.me-t { font-size: 18px; font-weight: 700; line-height: 1.3; color: var(--t1); text-wrap: balance; }
+.check { margin-top: 0; }
+.me .check { margin-top: 14px; }
+.check li { font-weight: 500; }
+
+/* ——— примеры чека ——— */
+.exs-t { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 14px; }
+.exs-t svg.i { width: 18px; height: 18px; color: var(--amber); }
+.exs-t + .ex { margin-top: 0; }
+.ex { margin-top: 0; grid-template-columns: 1fr 20px 1fr; }
+.ex + .ex { margin-top: 8px; }
+.ex > div { background: rgba(255,255,255,.04); font-size: 14px; line-height: 1.35; color: var(--t2); }
+.ex span { display: block; }
+.ex b { font-size: 24px; line-height: 1.15; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--t1); }
+.ex .to { border-color: rgba(234,184,32,.4); background: rgba(234,184,32,.07); }
+.ex .to b { color: #F0D080; }
+.ex .arrow svg.i { width: 18px; height: 18px; }
+
+/* ——— неделя / дальше ——— */
+.split-t { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: var(--t1); margin-bottom: 12px; }
+.split-t svg.i { color: var(--blue); }
+.must .split-t svg.i { color: var(--amber); }
+.split .card p { font-size: 16px; }
+.split .list { margin-top: 0; }
+.split .card p + .list { margin-top: 12px; }
+
+/* ——— что в задании ——— */
+.how { border-color: var(--blue-line); margin-top: 20px; }
+.how .card-t { margin-bottom: 6px; }
+.how-l { list-style: none; display: grid; }
+.how-l li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; padding: 12px 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.45; color: var(--t1); }
+.how-l li:first-child { border-top: 0; }
+.how-l li:last-child { padding-bottom: 0; }
+.how-n { margin-top: -2px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--blue);
+  background: var(--blue-bg); border: 1px solid var(--blue-line); }
+
+/* ——— ритм отступов (сетка ПП): текст 12, блоки 20, после kick 10, после h2 14, h3 28/12 ——— */
+.sec > * { margin-bottom: 0 !important; }
+.sec > * + * { margin-top: 12px !important; }
+.sec > :is(.kick, .over) { margin-bottom: 10px !important; }
+.sec > :is(.kick, .over) + * { margin-top: 0 !important; }
+.sec > .h2 + * { margin-top: 14px !important; }
+.sec > * + :is(.card, .talk, .trio, .will, .flow, .steps, .split, .note, .quote, .check),
+.sec > :is(.card, .talk, .trio, .will, .flow, .steps, .split, .note, .quote, .check) + * { margin-top: 20px !important; }
+.sec > * + .h3 { margin-top: 28px !important; }
+.sec > .h3 + * { margin-top: 12px !important; }
+.sec > .hello + .lead { margin-top: 6px !important; }
+.card > :first-child { margin-top: 0 !important; }
+.card > .card-t + * { margin-top: 0 !important; }
+@media (min-width: 640px) {
+  .trio { grid-template-columns: 1fr; }
+  .toc-l { grid-template-columns: repeat(4, 1fr); }
+  .hello { font-size: 36px; }
+}
+
+</style>
+</head>
+<body>
+<main class="page">
+<section class="sec">
+  <h2 class="h2">Задание на&nbsp;вторую неделю</h2>
+  <p>Сейчас будет задание для <b>второй недели</b>. Но&nbsp;сначала я&nbsp;коротко хочу подвести итоги того, что нам уже удалось сделать.</p>
+
+  <div class="card cheat">
+    <p class="cheat-h"><span class="upd">Три задачи недели</span></p>
+    <a class="rule" href="#z1">
+      <div class="rule-ic"><span class="upd">1</span></div>
+      <div><p class="rule-name"><span class="upd">Сделать минимум 3&nbsp;продажи своих услуг</span></p></div>
+    </a>
+    <a class="rule" href="#z2">
+      <div class="rule-ic"><span class="upd">2</span></div>
+      <div><p class="rule-name"><span class="upd">Поднять средний чек на&nbsp;30%</span></p>
+        <p class="rule-txt"><span class="upd">Но&nbsp;не&nbsp;меньше, чем на&nbsp;500&nbsp;рублей.</span></p></div>
+    </a>
+    <a class="rule" href="#z3">
+      <div class="rule-ic"><span class="upd">3</span></div>
+      <div><p class="rule-name"><span class="upd">Выполнить план по&nbsp;доходу</span></p>
+        <span class="tag-gain"><svg class="i" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg><span class="upd">За&nbsp;задание в&nbsp;срок&nbsp;— 1000&nbsp;баллов и&nbsp;1000&nbsp;фениксов, после срока&nbsp;— 300</span></span></div>
+    </a>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick">Итоги</span>
+  <h2 class="h2">Что мы&nbsp;сделали на&nbsp;первой неделе</h2>
+  <p>На&nbsp;первой неделе мы&nbsp;с&nbsp;вами проводили <b class="am">10&nbsp;созвонов с&nbsp;потенциальными клиентами</b>.</p>
+  <h3 class="h3">Зачем это было нужно?</h3>
+
+  <ol class="steps why">
+    <li class="step">
+      <span class="step-n">1.</span>
+      <div>
+        <p class="step-t">Чтобы вы&nbsp;выбрались из&nbsp;своей теплой норки</p>
+        <p class="step-d">Из&nbsp;той самой норки, в&nbsp;которой многие сидели по&nbsp;нескольку лет, и&nbsp;наконец-то снова начали проявляться.</p>
+        <p class="step-d">Чтобы люди:</p>
+        <ul class="list">
+          <li>увидели вас;</li>
+          <li>узнали о&nbsp;вашем существовании;</li>
+          <li>поняли, чем вы&nbsp;занимаетесь.</li>
+        </ul>
+      </div>
+    </li>
+    <li class="step">
+      <span class="step-n">2.</span>
+      <div>
+        <p class="step-t">Чтобы вы&nbsp;услышали реальные проблемы людей</p>
+        <p class="step-d">Те, у&nbsp;кого не&nbsp;было ниши, кто не&nbsp;понимал, какую именно проблему он&nbsp;решает, наконец-то вышли из&nbsp;своей коробочки и&nbsp;перестали бесконечно размышлять в&nbsp;духе: <i>«Чем бы&nbsp;мне заняться?»</i></p>
+        <p class="step-d">Вместо этого вы&nbsp;начали слышать <b>реальные проблемы реальных людей</b>&nbsp;— а&nbsp;значит, получили материал для того, чтобы придумать оффер и&nbsp;понять, как именно вы&nbsp;можете помочь.</p>
+        <div class="note red"><svg class="i" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Если вы&nbsp;этого не&nbsp;сделали&nbsp;— это плохо. На&nbsp;этой неделе вам придется догонять остальных, потому что это <b>крайне важно</b>.</span></div>
+      </div>
+    </li>
+    <li class="step">
+      <span class="step-n">3.</span>
+      <div>
+        <p class="step-t">Мы&nbsp;написали оффер на&nbsp;КЭВ</p>
+        <p class="step-d">Мы&nbsp;с&nbsp;вами написали <b>оффер на&nbsp;КЭВ&nbsp;— на&nbsp;ключевой этап воронки</b>.</p>
+        <p class="step-d">И&nbsp;теперь этот оффер у&nbsp;нас есть.</p>
+        <p class="step-d">Почему мы&nbsp;делали это именно на&nbsp;первой неделе? Потому что тогда вы&nbsp;могли протестировать его на&nbsp;своей <b>лояльной базе</b>&nbsp;— на&nbsp;людях, которые вас уже знают.</p>
+      </div>
+    </li>
+  </ol>
+  <p>Теперь же&nbsp;задача другая:</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Что меняется</span>
+  <h2 class="h2">Задача второй недели</h2>
+  <div class="card thesis">
+    <p class="thesis-t">Теперь нам нужно сделать так, чтобы даже те&nbsp;люди, которые нас не&nbsp;знают, хорошо реагировали на&nbsp;наш оффер на&nbsp;КЭВ.</p>
+  </div>
+  <p>Именно поэтому у&nbsp;нас были:</p>
+  <ul class="list">
+    <li>публичные разборы домашних заданий;</li>
+    <li>подробная проработка этой темы;</li>
+    <li>детальная обратная связь.</li>
+  </ul>
+  <p>Потому что чем глубже вы&nbsp;понимаете эту механику, тем выше будет <b>конверсия перехода</b>:</p>
+  <div class="flow">
+    <p>от&nbsp;этапа, где люди вас еще не&nbsp;знают,</p>
+    <span class="flow-a" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span>
+    <p>к&nbsp;этапу, где они переходят на&nbsp;ключевой этап воронки,</p>
+    <span class="flow-a" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span>
+    <p class="flow-end">то&nbsp;есть&nbsp;— <b>к&nbsp;продаже</b>.</p>
+  </div>
+  <p>Поэтому мы&nbsp;так плотно с&nbsp;этим и&nbsp;работали.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Деньги первой недели</span>
+  <h2 class="h2">Еще один важный итог первой недели</h2>
+  <p>Кто-то воспользовался упражнением <b>«10&nbsp;созвонов»</b>, заработал деньги и&nbsp;даже <b>зафиналил тренинг</b>. И&nbsp;это очень круто.</p>
+  <p>Все, кто это сделал,&nbsp;— красавчики.<br>Все ребята, которые приблизились к&nbsp;своему финансовому плану,&nbsp;— тоже большие молодцы.</p>
+  <p>Но&nbsp;по&nbsp;факту у&nbsp;нас <b>не&nbsp;было задачи на&nbsp;первой неделе продавать</b>.</p>
+  <p>Потому что такая задача у&nbsp;вас будет <b>на&nbsp;второй неделе</b>.</p>
+  <p>И&nbsp;в&nbsp;этот момент вы&nbsp;можете сказать мне:</p>
+  <div class="talk">
+    <p class="bub l">«Саша, но&nbsp;мы&nbsp;же&nbsp;не&nbsp;умеем продавать».</p>
+    <p class="bub r">Не&nbsp;получится. Вы&nbsp;спалились.</p>
+  </div>
+  <p>Потому что мы&nbsp;с&nbsp;вами <b>на&nbsp;второй день тренинга</b> за <b>один час</b> всей группой заработали <b>341&nbsp;тысячу рублей</b>.</p>
+
+  <div class="card sum">
+    <ul class="sum-no">
+      <li>Без скриптов.</li>
+      <li>Без глубокого понимания проблемы.</li>
+      <li>Без КЭВов.</li>
+      <li>Без всего.</li>
+    </ul>
+    <p class="sum-t">В <b>2&nbsp;часа ночи</b>, в&nbsp;воскресенье, группа каким-то образом сгенерировала <span class="sum-n">341&nbsp;000&nbsp;рублей.</span></p>
+  </div>
+
+  <p class="quote">Так что теперь ваша задача&nbsp;— продавать в&nbsp;течение 5&nbsp;будничных дней.</p>
+</section>
+
+<section class="sec" id="z1">
+  <span class="over">Главная задача недели</span>
+  <h2 class="h2">Задача №1&nbsp;— сделать 3&nbsp;продажи</h2>
+  <p>Вам нужно сделать <b class="am">три продажи своих услуг</b>.</p>
+  <p>Чтобы у&nbsp;вас это получилось, мы, конечно же, даем вам все необходимые инструменты.</p>
+  <h3 class="h3">Что именно вы&nbsp;получаете?</h3>
+
+  <div class="card kit">
+    <div class="kit-h"><span class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><p class="kit-t">Скрипты продаж</p></div>
+    <p>Но&nbsp;сразу важно понять:</p>
+    <p><i>Скрипты продаж</i>&nbsp;— это не&nbsp;про то, что нужно слово в&nbsp;слово повторять, как сказал Саша.</p>
+    <p>Скрипты&nbsp;— это:</p>
+    <ul class="chips">
+      <li>база;</li>
+      <li>фундамент;</li>
+      <li>понимание принципов, по&nbsp;которым строится продажа.</li>
+    </ul>
+    <p>То&nbsp;есть вы&nbsp;понимаете:</p>
+    <ul class="list">
+      <li>с&nbsp;чего начать разговор;</li>
+      <li>как развивать мысль;</li>
+      <li>как определить проблему;</li>
+      <li>как подвести к&nbsp;офферу;</li>
+      <li>как отрабатывать возражения.</li>
+    </ul>
+  </div>
+
+  <div class="card kit">
+    <div class="kit-h"><span class="rule-ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span><p class="kit-t">Разные форматы продаж</p></div>
+    <p>Чтобы у&nbsp;вас было объемное понимание темы, мы&nbsp;даем вам продажи:</p>
+    <ul class="chips">
+      <li>через разборы;</li>
+      <li>через диагностику;</li>
+      <li>через переписку.</li>
+    </ul>
+    <p>Плюс&nbsp;— отдельно разбираем:</p>
+    <ul class="chips">
+      <li>возражения;</li>
+      <li>способы закрытия;</li>
+      <li>реальные примеры.</li>
+    </ul>
+    <p>Я&nbsp;даже даю вам разбор продаж моей клиентки с&nbsp;первого потока&nbsp;— натуропата. Чтобы вы&nbsp;послушали и&nbsp;поняли:</p>
+    <p class="quote">«Ага, все. Вот теперь можно работать».</p>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick">Клиенты</span>
+  <h2 class="h2">Где брать клиентов?</h2>
+  <p>И&nbsp;вот в&nbsp;этот момент вы&nbsp;можете сказать:</p>
+  <div class="talk">
+    <p class="bub l">«Саша, у&nbsp;меня записная книжка закончилась. Что мне делать?»</p>
+    <p class="bub r">Честно? Я&nbsp;в&nbsp;это очень слабо верю.</p>
+  </div>
+  <p>Почему?</p>
+  <p>Потому что нам надо было провести всего <b>10&nbsp;созвонов</b>, а&nbsp;значит, ваша записная книжка, скорее всего, еще <b>не&nbsp;дообработана</b>.</p>
+  <p>Тем более, если у&nbsp;вас теперь есть <b>новый крутой КЭВ</b>, вероятность найти людей становится еще выше.</p>
+  <p>А&nbsp;нам нужно сделать <b>всего три продажи</b>.</p>
+
+  <div class="card me">
+    <h3 class="me-t">Если бы&nbsp;я&nbsp;был на&nbsp;вашем месте, я&nbsp;бы&nbsp;делал так:</h3>
+    <ul class="check">
+      <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>работал бы&nbsp;с&nbsp;записной книжкой;</span></li>
+      <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>пошел бы&nbsp;к&nbsp;людям-паукам и&nbsp;рассказал бы&nbsp;им&nbsp;про свой КЭВ и&nbsp;про то, как я&nbsp;могу помочь;</span></li>
+      <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>написал бы&nbsp;тем, кто уже что-то у&nbsp;меня покупал;</span></li>
+      <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>узнал бы, с&nbsp;какими проблемами они сталкиваются сейчас;</span></li>
+      <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>предложил бы&nbsp;им&nbsp;новое решение.</span></li>
+    </ul>
+  </div>
+
+  <h3 class="h3">Какие еще есть источники клиентов?</h3>
+  <p>У&nbsp;вас также будет:</p>
+  <ul class="list">
+    <li>инструмент работы с&nbsp;досками;</li>
+    <li>работа с&nbsp;альтернативными платформами;</li>
+    <li>способы поиска клиентов вне привычного круга.</li>
+  </ul>
+  <p>Но, наверное, <b>самый рабочий и&nbsp;самый результативный способ</b>, особенно если вы&nbsp;говорите:</p>
+  <div class="talk">
+    <p class="bub l">«Саша, я&nbsp;живу в&nbsp;Германии, где нет экспатов»</p>
+    <p class="talk-n">или</p>
+    <p class="bub l">«Я&nbsp;живу в&nbsp;деревне, где вообще никого нет» —</p>
+  </div>
+  <div class="card thesis tg">
+    <p class="thesis-t">это работа с&nbsp;Telegram-чатами.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick">Пошагово</span>
+  <h2 class="h2">Как искать клиентов через Telegram-чаты</h2>
+  <p>Смотрите, как это работает.</p>
+
+  <ol class="steps tgs">
+    <li class="step">
+      <span class="step-n"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+      <div>
+        <p class="step-t"><span class="st-k">Шаг 1.</span> Выбираем тему</p>
+        <p class="step-d">Вы&nbsp;выбираете проблему, которую решаете.</p>
+        <p class="step-d">Например:</p>
+        <p class="step-d eg"><i>проблемы в&nbsp;отношениях с&nbsp;папой.</i></p>
+      </div>
+    </li>
+    <li class="step">
+      <span class="step-n"><svg class="i" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg></span>
+      <div>
+        <p class="step-t"><span class="st-k">Шаг 2.</span> Идем на&nbsp;YouTube</p>
+        <p class="step-d">Вбиваете эту тему в&nbsp;YouTube и&nbsp;смотрите:</p>
+        <ul class="list">
+          <li>кто из&nbsp;экспертов уже вещает на&nbsp;эту тему;</li>
+          <li>у&nbsp;кого есть просмотры;</li>
+          <li>у&nbsp;кого уже собрана аудитория.</li>
+        </ul>
+      </div>
+    </li>
+    <li class="step">
+      <span class="step-n"><svg class="i" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></span>
+      <div>
+        <p class="step-t"><span class="st-k">Шаг 3.</span> Переходите в&nbsp;Telegram</p>
+        <p class="step-d">Находите этого эксперта и&nbsp;переходите в&nbsp;его Telegram-канал.</p>
+        <p class="step-d">Очень часто в&nbsp;таких каналах люди:</p>
+        <ul class="list">
+          <li>задают вопросы;</li>
+          <li>пишут о&nbsp;своих сложностях;</li>
+          <li>комментируют посты;</li>
+          <li>открыто формулируют свои боли.</li>
+        </ul>
+      </div>
+    </li>
+    <li class="step">
+      <span class="step-n"><svg class="i" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span>
+      <div>
+        <p class="step-t"><span class="st-k">Шаг 4.</span> Пишете этим людям</p>
+        <p class="step-d">Дальше вы&nbsp;можете написать человеку примерно в&nbsp;такой логике:</p>
+        <div class="talk"><p class="bub r">«Слушайте, я&nbsp;психолог / коуч / наставник / специалист. Я&nbsp;понимаю, как можно решить вашу проблему. Приходите на&nbsp;бесплатную диагностическую сессию&nbsp;— разберемся, подсвечу, что и&nbsp;как можно сделать».</p></div>
+        <p class="step-d">Более подробно техника разобрана у&nbsp;вас <b>в&nbsp;программе обучения</b>.</p>
+      </div>
+    </li>
+  </ol>
+
+  <p>Так что комментарии в&nbsp;духе:</p>
+  <div class="talk">
+    <p class="bub l">«Ой, Саша, я&nbsp;не&nbsp;знаю, где взять клиентов» —</p>
+    <p class="bub r">не&nbsp;принимаются.</p>
+  </div>
+  <p>Потому что все это у&nbsp;вас уже есть:</p>
+  <ul class="list">
+    <li>как работать по&nbsp;рекомендациям;</li>
+    <li>как приводить клиентов через Telegram-каналы;</li>
+    <li>как искать людей на&nbsp;других площадках;</li>
+    <li>как запускать первые простые касания.</li>
+  </ul>
+  <p class="quote">Варианты решения есть.</p>
+</section>
+
+<section class="sec">
+  <div class="card task">
+    <span class="over">Итак, первая задача недели</span>
+    <p class="task-h">Сделать минимум 3&nbsp;продажи</p>
+    <p>Минимум&nbsp;— три.</p>
+    <p>Больше&nbsp;— пожалуйста. Никто вас не&nbsp;ограничивает.</p>
+    <p>Более того, я&nbsp;думаю, мы&nbsp;еще придумаем <b>какой-нибудь бонус</b> тем, кто сделает больше продаж за&nbsp;эту неделю.</p>
+  </div>
+</section>
+
+<section class="sec" id="z2">
+  <span class="over">Вторая задача недели</span>
+  <h2 class="h2">Повысить средний чек</h2>
+  <p>Если вы&nbsp;всю жизнь продавали за <b>5000&nbsp;рублей</b>, или прямо сейчас продаете за <b>5000&nbsp;рублей</b>, ваша задача&nbsp;— <b class="am">поднять средний чек минимум на&nbsp;30%</b>.</p>
+
+  <div class="card exs">
+    <p class="exs-t"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>Примеры:</p>
+    <div class="ex"><div><span>продавали за</span> <b>5000</b></div><span class="arrow"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span><div class="to"><span>теперь продаете за</span> <b>6500</b>;</div></div>
+    <div class="ex"><div><span>продавали за</span> <b>2000</b></div><span class="arrow"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span><div class="to"><span>теперь продаете за</span> <b>2600</b>.</div></div>
+  </div>
+
+  <p>При этом важно:</p>
+  <div class="note amber"><svg class="i" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Повышаем средний чек на <b>30%</b>, но <b>не&nbsp;меньше, чем на&nbsp;500&nbsp;рублей</b>.</span></div>
+  <p>То&nbsp;есть если вы&nbsp;продавали свои сессии по <b>500&nbsp;рублей</b>, то&nbsp;теперь должны продавать их <b>минимум за&nbsp;1000&nbsp;рублей</b>.</p>
+
+  <h3 class="h3">Как выполнять это задание?</h3>
+  <p>Например:</p>
+  <ul class="list">
+    <li>две продажи вы&nbsp;можете сделать по&nbsp;старой цене;</li>
+    <li>но <b>третью продажу обязательно</b> нужно сделать уже по&nbsp;новой цене.</li>
+  </ul>
+
+  <div class="card kit">
+    <div class="kit-h"><span class="rule-ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span><p class="kit-t">Как поднимать средний чек</p></div>
+    <p>У&nbsp;вас есть отдельная статья, где я&nbsp;рассказываю:</p>
+    <ul class="list">
+      <li>как поднимать средний чек;</li>
+      <li>как объяснить это своему мозгу;</li>
+      <li>как объяснить это своим бывшим клиентам;</li>
+      <li>как сделать это органично;</li>
+      <li>как не&nbsp;выгореть в&nbsp;процессе;</li>
+      <li>как поменять оффер;</li>
+      <li>как поменять предложение;</li>
+      <li>как прийти к&nbsp;более сильным клиентам.</li>
+    </ul>
+    <p>Вся эта информация у&nbsp;вас уже есть.</p>
+  </div>
+</section>
+
+<section class="sec" id="z3">
+  <span class="over">Третья задача недели</span>
+  <h2 class="h2">Выполнить план по&nbsp;доходу</h2>
+  <p>Я&nbsp;хочу, чтобы за&nbsp;эту неделю вы <b class="am">заработали и&nbsp;выполнили свой план по&nbsp;доходу</b>.</p>
+  <p>Я&nbsp;вам настоятельно рекомендую:</p>
+
+  <div class="split">
+    <div class="card must">
+      <div class="split-t"><svg class="i" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><span>На&nbsp;этой неделе:</span></div>
+      <ul class="list">
+        <li>закрыть свой план по&nbsp;доходу;</li>
+        <li>заработать деньги;</li>
+        <li>сделать это быстро;</li>
+        <li>сделать это простыми инструментами;</li>
+        <li><b>не&nbsp;усложнять</b>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="split-t"><svg class="i" viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg><span>А&nbsp;дальше:</span></div>
+      <p>оставшееся время на&nbsp;проекте <b>«План продюсера»</b> посвятить уже фундаментальным, системным вещам:</p>
+      <ul class="list">
+        <li>построению системы;</li>
+        <li>регулярному приходу клиентов;</li>
+        <li>устойчивому росту дохода.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>Сейчас задача не&nbsp;усложнять.</p>
+  <p>Сейчас задача&nbsp;— <b>заработать денег</b>.</p>
+  <div class="will">
+    <p>Быстро.</p>
+    <p>Просто.</p>
+    <p>Рабочими инструментами.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick">Дедлайн</span>
+  <h2 class="h2">Почему я&nbsp;уверен, что у&nbsp;вас получится</h2>
+  <p>Я&nbsp;точно знаю: когда у&nbsp;нас есть <b>четкий дедлайн</b>, когда нужно выполнить план&nbsp;— мы&nbsp;его закрываем.</p>
+  <p>Помните, я&nbsp;рассказывал вам историю, как мне нужно было срочно заплатить за&nbsp;квартиру?</p>
+  <p>Я&nbsp;очень быстро понял:</p>
+  <ul class="card rows">
+    <li><svg class="i" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span>кому мне нужно звонить;</span></li>
+    <li><svg class="i" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg><span>у&nbsp;кого точно есть деньги;</span></li>
+    <li><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>кто может помочь мне решить этот вопрос.</span></li>
+  </ul>
+  <p>И&nbsp;у&nbsp;вас будет точно так же.</p>
+</section>
+
+<section class="sec">
+  <span class="kick">Итог недели</span>
+  <h2 class="h2">Что я&nbsp;хочу от&nbsp;вас по&nbsp;итогу недели</h2>
+  <p>Я&nbsp;хочу, чтобы вы:</p>
+  <ul class="check">
+    <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>закрыли свой план;</span></li>
+    <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>выдохнули;</span></li>
+    <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>кайфанули;</span></li>
+    <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>начали покупать подарки близким;</span></li>
+    <li><span class="box"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span>а&nbsp;оставшееся время посвятили росту дохода и&nbsp;построению системы.</span></li>
+  </ul>
+  <p>Потому что я&nbsp;точно знаю: <b>у&nbsp;вас это получится</b>.</p>
+  <p>Вы&nbsp;уже не&nbsp;раз были уверены, что какие-то вещи для вас недоступны и&nbsp;нереальны.</p>
+  <div class="card thesis">
+    <p>А&nbsp;я&nbsp;точно знаю другое:</p>
+    <p class="thesis-t">все реально. И&nbsp;у&nbsp;вас получится.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="card task">
+    <span class="over">Мы&nbsp;в&nbsp;вас верим</span>
+    <p class="task-h">Пишите. Звоните.</p>
+    <p>В&nbsp;среду разберем:</p>
+    <ul class="list">
+      <li>все ваши вопросы;</li>
+      <li>все сложности;</li>
+      <li>продажи;</li>
+      <li>поиск клиентов;</li>
+      <li>отработку возражений.</li>
+    </ul>
+    <p>Все в&nbsp;среду расскажем и&nbsp;разложим.</p>
+    <p class="task-go">Вперед. Дерзайте! <span class="task-down"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span></p>
+  </div>
+
+  <div class="card how">
+    <div class="card-t"><svg class="i" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span class="upd">В&nbsp;задании три поля</span></div>
+    <ol class="how-l">
+      <li><span class="how-n"><span class="upd">1</span></span><span class="upd">Задача №1. Сделать минимум 3&nbsp;продажи своих услуг.</span></li>
+      <li><span class="how-n"><span class="upd">2</span></span><span class="upd">Задача №2. Поднять стоимость своих услуг на&nbsp;30% (минимум на&nbsp;500&nbsp;рублей, 7$).</span></li>
+      <li><span class="how-n"><span class="upd">3</span></span><span class="upd">Показатели воронки за&nbsp;неделю.</span></li>
+    </ol>
+  </div>
+</section>
+</main>
+</body>
+</html>
