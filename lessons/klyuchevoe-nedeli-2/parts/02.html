@@ -451,6 +451,13 @@ a.rule { color: inherit; text-decoration: none; }
   .hello { font-size: 36px; }
 }
 
+/* ——— кнопки-ссылки ——— */
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; margin-top: 20px; padding: 0 20px; border-radius: 14px; background: linear-gradient(180deg, #DFC880, #C9A84C); color: #2A2008; font-size: 16px; font-weight: 700; line-height: 1.2; text-decoration: none; box-shadow: 0 4px 0 #A07828; }
+.btn svg.i { width: 18px; height: 18px; flex: none; }
+.btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #A07828; }
+.btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.btn.sm { margin: 12px 0 10px; }
+
 </style>
 </head>
 <body>
@@ -513,6 +520,7 @@ a.rule { color: inherit; text-decoration: none; }
         <p class="step-t">Мы&nbsp;написали оффер на&nbsp;КЭВ</p>
         <p class="step-d">Мы&nbsp;с&nbsp;вами написали <b>оффер на&nbsp;КЭВ&nbsp;— на&nbsp;ключевой этап воронки</b>.</p>
         <p class="step-d">И&nbsp;теперь этот оффер у&nbsp;нас есть.</p>
+        <a class="btn sm upd" href="https://wearefree.club/kev/index.html?via=pp" target="_blank" rel="noopener">Сервис «Оффер на&nbsp;КЭВ»<svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
         <p class="step-d">Почему мы&nbsp;делали это именно на&nbsp;первой неделе? Потому что тогда вы&nbsp;могли протестировать его на&nbsp;своей <b>лояльной базе</b>&nbsp;— на&nbsp;людях, которые вас уже знают.</p>
       </div>
     </li>
@@ -771,6 +779,7 @@ a.rule { color: inherit; text-decoration: none; }
       <li>как прийти к&nbsp;более сильным клиентам.</li>
     </ul>
     <p>Вся эта информация у&nbsp;вас уже есть.</p>
+    <a class="btn upd" href="https://wearefree.club/p/price" target="_blank" rel="noopener">Открыть статью<svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
   </div>
 </section>
 
