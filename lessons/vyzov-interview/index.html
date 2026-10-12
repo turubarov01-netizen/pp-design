@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Домашнее задание: «Сила окружения — 2 интервью»</title>
+<style>
+
+:host, :root {
+  --bg: #0D1117; --env: #1B1510; --gold: #F0D080; --gold2: #E3C06A; --line: rgba(255,255,255,.08); --line2: rgba(255,255,255,.14);
+  --gline: rgba(240,208,128,.26); --t1: #F2F4F7; --t2: rgba(242,244,247,.78); --t3: rgba(242,244,247,.56);
+  --or: #FF6A3D; --cream: #FFE7C7; --red: #FF7A6B; --green: #6BCB77; --paper: #F3E9D6; --ink: #2A2017;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg) !important; }
+body { font-family: Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif; color: var(--t2); font-size: 16px; line-height: 1.55;
+  letter-spacing: -.011em; -webkit-font-smoothing: antialiased; text-wrap: pretty; }
+.page { max-width: 720px; margin: 0 auto; padding: 4px 0 8px; }
+b, strong { color: var(--t1); font-weight: 700; }
+svg.i { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* конверт */
+.env { position: relative; overflow: hidden; padding: 22px 20px 22px; border-radius: 22px; border: 1px solid var(--gline);
+  background: radial-gradient(120% 70% at 85% 0%, rgba(240,208,128,.11), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 2px, transparent 2px 5px), var(--env); }
+.kick { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: rgba(240,208,128,.8); }
+.kick .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--or); }
+.ttl { margin-top: 22px; max-width: 15ch; font-size: 34px; font-weight: 900; line-height: 1.02; letter-spacing: -.025em; text-transform: uppercase; color: var(--cream); text-wrap: balance; }
+.ttl em { font-style: normal; color: var(--or); }
+.seal { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 78px; height: 78px; border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #E4564A, #A81E22 62%, #7A1216);
+  box-shadow: 0 8px 24px rgba(168,30,34,.45), inset 0 -5px 12px rgba(0,0,0,.35), inset 0 4px 8px rgba(255,255,255,.18); transform: rotate(-8deg); }
+.seal::before { content: ""; position: absolute; inset: 8px; border-radius: 50%; border: 1.5px dashed rgba(255,220,200,.35); }
+.seal svg.sw { width: 30px; height: 30px; fill: none; stroke: #FFD9CC; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.seal svg.ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 22s linear infinite; }
+.seal svg.ring text { font: 800 8.4px Inter, system-ui, sans-serif; letter-spacing: .22em; fill: rgba(255,225,210,.82); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.kick { padding-right: 84px; }
+.why { margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--gline); }
+.why h2 { font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--gold2); }
+.why p { margin-top: 10px; font-size: 16px; line-height: 1.6; color: var(--t2); }
+.why p + p { margin-top: 10px; color: var(--t1); font-weight: 600; }
+
+/* список заданий */
+.sec { margin-top: 32px; }
+.lbl { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: var(--t3); }
+.lbl::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.h3 { font-size: 22px; font-weight: 800; line-height: 1.18; letter-spacing: -.02em; color: var(--t1); text-wrap: balance; }
+.targets { display: grid; gap: 10px; margin-top: 14px; }
+.tg { position: relative; display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: start; padding: 16px; border-radius: 18px;
+  border: 1px solid var(--gline); background: linear-gradient(180deg, rgba(240,208,128,.07), rgba(240,208,128,.02)); }
+.coin { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; font-size: 28px; font-weight: 900; line-height: 1; letter-spacing: -.04em;
+  color: #3A2A06; background: radial-gradient(circle at 35% 30%, #FFF0B8, #F0D080 45%, #B98F2A); box-shadow: inset 0 -3px 6px rgba(0,0,0,.25), 0 0 0 3px rgba(240,208,128,.18); }
+.coin.rub { font-size: 28px; color: #24303D; background: radial-gradient(circle at 35% 30%, #FFFFFF, #CBD3DC 45%, #7F8B98); box-shadow: inset 0 -3px 6px rgba(0,0,0,.25), 0 0 0 3px rgba(203,211,220,.16); }
+.tg-n { font-size: 12px; font-weight: 800; letter-spacing: .12em; color: var(--gold2); font-variant-numeric: tabular-nums; }
+.tg-t { margin-top: 2px; font-size: 18px; font-weight: 800; line-height: 1.25; color: var(--t1); }
+.tg-d { margin-top: 6px; font-size: 15px; line-height: 1.5; color: var(--t2); }
+.give { display: grid; gap: 8px; margin-top: 10px; }
+.give li { display: flex; gap: 12px; align-items: center; min-height: 52px; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line2); background: rgba(255,255,255,.025); list-style: none; font-size: 15px; line-height: 1.4; }
+.give .n { width: 22px; flex: none; font-size: 12px; font-weight: 800; color: var(--t3); font-variant-numeric: tabular-nums; }
+.give svg.i { color: var(--gold2); }
+
+/* срок */
+.term { display: flex; align-items: center; gap: 16px; margin-top: 12px; padding: 14px 18px; border-radius: 18px; border: 1px solid rgba(255,106,61,.38); background: rgba(255,106,61,.09); }
+.term .big { flex: none; font-size: 54px; font-weight: 900; line-height: .9; letter-spacing: -.04em; color: var(--or); font-variant-numeric: tabular-nums; }
+.term .big small { display: block; margin-top: 4px; font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.term p { font-size: 15px; line-height: 1.45; color: var(--t1); }
+.term .k { display: block; margin-bottom: 2px; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--t3); }
+
+/* части */
+.part { margin-top: 36px; }
+.part-k { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.part-k .coin { width: 40px; height: 40px; font-size: 18px; }
+.part-k .coin.rub { font-size: 18px; }
+.part-k b { font-size: 12px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: var(--gold2); }
+.fmt { margin-top: 14px; }
+.fmt h4, .roles-h { font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); }
+.dots { margin-top: 8px; list-style: none; }
+.dots li { position: relative; padding: 7px 0 7px 22px; border-top: 1px solid var(--line); font-size: 15.5px; line-height: 1.5; }
+.dots li:first-child { border-top: 0; }
+.dots li::before { content: ""; position: absolute; left: 4px; top: 16px; width: 7px; height: 7px; border-radius: 2px; background: var(--gold2); transform: rotate(45deg); }
+.roles-h { margin-top: 22px; }
+.roles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; list-style: none; }
+.role { padding: 14px; border-radius: 16px; border: 1px solid var(--line2); background: rgba(255,255,255,.03); }
+.role .ic { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: rgba(255,106,61,.12); color: var(--or); }
+.role .ic svg.i { width: 20px; height: 20px; }
+.role b { display: block; margin-top: 10px; font-size: 16px; line-height: 1.2; }
+.role span { display: block; margin-top: 4px; font-size: 13.5px; line-height: 1.45; color: var(--t3); }
+
+/* вопросы — карточки интервьюера */
+.qs { display: grid; gap: 14px; margin-top: 16px; list-style: none; }
+.q { position: relative; padding: 18px 18px 18px 64px; border-radius: 6px 18px 18px 18px; background: var(--paper); color: var(--ink);
+  box-shadow: 0 1px 0 rgba(0,0,0,.2), 0 10px 24px rgba(0,0,0,.28);
+  background-image: repeating-linear-gradient(180deg, transparent 0 27px, rgba(42,32,23,.07) 27px 28px); }
+.q:nth-child(1) { transform: rotate(-.6deg); } .q:nth-child(3) { transform: rotate(.5deg); }
+.q-n { position: absolute; left: 16px; top: 14px; font-size: 36px; font-weight: 900; line-height: 1; letter-spacing: -.04em; color: #C0392B; font-variant-numeric: tabular-nums; }
+.q-t { font-size: 19px; font-weight: 800; line-height: 1.28; letter-spacing: -.015em; color: #1C150F; text-wrap: balance; }
+.q-d { margin-top: 6px; font-size: 15px; line-height: 1.5; color: rgba(42,32,23,.78); }
+.q-lead { margin-top: 8px; font-size: 15px; color: var(--t2); }
+.note { margin-top: 14px; font-size: 14.5px; line-height: 1.5; color: var(--t3); }
+
+/* правила */
+.rules { display: grid; gap: 10px; margin-top: 14px; }
+.rule { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 16px; font-size: 15.5px; line-height: 1.5; color: var(--t1); }
+.rule .ic { display: grid; place-items: center; width: 28px; height: 28px; flex: none; border-radius: 50%; }
+.rule .ic svg.i { width: 16px; height: 16px; stroke-width: 2.6; }
+.rule.no { border: 1px solid rgba(255,122,107,.3); background: rgba(255,122,107,.07); }
+.rule.no .ic { background: rgba(255,122,107,.16); color: var(--red); }
+.rule.yes { border: 1px solid rgba(107,203,119,.3); background: rgba(107,203,119,.07); }
+.rule.yes .ic { background: rgba(107,203,119,.16); color: var(--green); }
+.rule.tm { border: 1px solid var(--line2); background: rgba(255,255,255,.025); }
+.rule.tm .ic { background: rgba(255,106,61,.14); color: var(--or); }
+
+/* зачёт */
+.ok { position: relative; margin-top: 36px; padding: 20px 18px 16px; border-radius: 20px; border: 1px solid var(--line2); background: #141E2B; overflow: hidden; }
+.stamp { position: absolute; right: 12px; top: 14px; padding: 4px 10px; border: 2.5px solid rgba(107,203,119,.55); border-radius: 8px; transform: rotate(9deg);
+  font-size: 15px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; color: rgba(107,203,119,.75); }
+.ok .h3 { padding-right: 96px; }
+.oks { margin-top: 12px; list-style: none; }
+.oks li { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--line); font-size: 15.5px; line-height: 1.45; color: var(--t1); }
+.oks li:first-child { border-top: 0; }
+.oks svg.i { margin-top: 2px; color: var(--green); stroke-width: 2.6; }
+
+/* чек-лист */
+.cl { margin-top: 28px; counter-reset: done; }
+.cks { margin-top: 12px; list-style: none; border-radius: 18px; border: 1px solid var(--line2); overflow: hidden; }
+.ck { border-top: 1px solid var(--line); }
+.ck:first-child { border-top: 0; }
+.ck label { display: flex; gap: 12px; align-items: center; min-height: 52px; padding: 10px 16px; cursor: pointer; font-size: 15.5px; line-height: 1.4; color: var(--t1);
+  -webkit-tap-highlight-color: transparent; transition: background .15s ease-out; }
+.ck label:hover { background: rgba(255,255,255,.03); }
+.ck input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.ck .bx { display: grid; place-items: center; width: 24px; height: 24px; flex: none; border-radius: 8px; border: 1.5px solid rgba(255,255,255,.32); color: transparent; transition: background .15s ease-out, border-color .15s ease-out; }
+.ck .bx svg.i { width: 15px; height: 15px; stroke-width: 3; }
+.ck input:checked { counter-increment: done; }
+.ck input:checked + label .bx { background: var(--green); border-color: var(--green); color: #0D1117; }
+.ck input:checked + label .tx { color: var(--t3); text-decoration: line-through; text-decoration-color: rgba(255,255,255,.3); }
+.ck input:focus-visible + label { outline: 2px solid var(--gold); outline-offset: -2px; }
+.cl-sum { margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--t3); }
+.cl-sum::before { content: "Отмечено " counter(done) " из 9"; }
+
+@media (min-width: 640px) {
+  .env { padding: 28px 28px 26px; } .ttl { font-size: 44px; } .seal { top: 20px; right: 22px; width: 108px; height: 108px; }
+  .seal svg.sw { width: 40px; height: 40px; } .env .ttl { padding-right: 120px; } .ttl { margin-top: 14px; }
+  .targets { grid-template-columns: 1fr 1fr; } .tg { grid-template-columns: 1fr; } .h3 { font-size: 26px; }
+  .roles { grid-template-columns: repeat(4, 1fr); } .q-t { font-size: 21px; }
+}
+@media (max-width: 360px) { .roles { grid-template-columns: 1fr; } .ttl { font-size: 30px; } }
+@media (prefers-reduced-motion: reduce) { .seal svg.ring { animation: none; } * { transition: none !important; } }
+
+</style>
+</head>
+<body>
+<main class="page">
+<header class="env"><div class="seal" aria-hidden="true"><svg class="ring upd" viewBox="0 0 92 92" aria-hidden="true"><defs><path id="vi-cp" d="M46,46 m-35,0 a35,35 0 1,1 70,0 a35,35 0 1,1 -70,0"/></defs><text><textPath href="#vi-cp" textLength="214" lengthAdjust="spacing">ВЫЗОВ ФРИМАНА · ВЫЗОВ ФРИМАНА ·</textPath></text></svg><svg class="sw" viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></svg></div><p class="kick">Домашнее задание</p><h1 class="ttl" aria-label="Домашнее задание: «Сила окружения — 2 интервью»">Сила окружения —<br><em>2&nbsp;интервью</em></h1><div class="why"><h2>Зачем это делать</h2><p>На&nbsp;этой неделе вы&nbsp;разбираете влияние окружения и&nbsp;работу с&nbsp;убеждениями. Рост часто приходит не&nbsp;из&nbsp;«ещё одного урока», а&nbsp;из&nbsp;контакта с&nbsp;людьми, у&nbsp;которых другая норма мышления и&nbsp;другая финансовая реальность.</p><p>Задача&nbsp;— разбавить привычное окружение и&nbsp;получить инсайты напрямую от&nbsp;тех, кто уже сделал результат.</p></div></header><section class="sec"><h2 class="lbl">СПИСОК ЗАДАНИЙ</h2><div class="targets"><article class="tg"><span class="coin" aria-hidden="true">$</span><div><p class="tg-n upd">01</p><h3 class="tg-t">Командное интервью с&nbsp;долларовым миллионером</h3><p class="tg-d">Одно интервью на&nbsp;команду. Во&nbsp;время интервью, все участники задают минимум по&nbsp;одному вопросу и&nbsp;все присутствуют на&nbsp;встрече. (видео или аудио запись).</p></div></article><article class="tg"><span class="coin rub" aria-hidden="true">₽</span><div><p class="tg-n upd">02</p><h3 class="tg-t">Личное интервью с&nbsp;рублёвым/гривневым миллионером</h3><p class="tg-d">1&nbsp;запись на&nbsp;каждого участника (видео или аудио).</p></div></article></div><ul class="give"><li><span class="n upd">03</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span>Ссылка/файл с&nbsp;записью (чтобы могли послушать все члены команды и&nbsp;тренинга).</span></li><li><span class="n upd">04</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Транскрибация интервью и&nbsp;приложение текстового файла.</span></li></ul><div class="term"><span class="big upd">48<small>часов</small></span><p><span class="k">Срок</span>48&nbsp;часов на&nbsp;полное выполнение (оба интервью + сдача материалов).</p></div></section><section class="part"><div class="part-k"><span class="coin" aria-hidden="true">$</span><b>Часть 1</b></div><h2 class="h3">Командное интервью с&nbsp;долларовым миллионером</h2><div class="fmt"><h4>Формат</h4><ul class="dots"><li>1&nbsp;интервью на&nbsp;всю команду</li><li>Запись обязательна: Zoom/Meet/телефон, но&nbsp;итог&nbsp;— сохраняемый аудио/видео файл</li><li>Доступ к&nbsp;записи должен быть у&nbsp;всех участников тренинга (через ссылку/файл)</li></ul></div><h4 class="roles-h">Роли внутри команды (чтобы не&nbsp;было хаоса)</h4><ul class="roles"><li class="role"><span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></span><b>Ведущий</b><span>Задаёт вопросы, выбрать кто из&nbsp;команды будет модератором</span></li><li class="role"><span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></span><b>Казначей</b><span>Следит за&nbsp;временем</span></li><li class="role"><span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg></span><b>Хакер</b><span>Запись, проверка звука, сохранение файла</span></li><li class="role"><span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg></span><b>Сенсей или Психолог</b><span>Фиксирует ключевые мысли в&nbsp;конспект</span></li></ul></section><section class="part"><div class="part-k"><span class="coin rub" aria-hidden="true">₽</span><b>Часть 2</b></div><h2 class="h3">Личное интервью с&nbsp;рублёвым/гривневым миллионером (каждому участнику)</h2><div class="fmt"><h4>Формат</h4><ul class="dots"><li>Каждый участник берёт интервью самостоятельно</li><li>Запись обязательна: аудио или видео</li><li>Сдаёте свою ссылку/файл + краткую выжимку</li></ul></div></section><section class="part"><h2 class="lbl">Вопросы (обязательные 3)</h2><p class="q-lead">Задайте эти вопросы в&nbsp;таком порядке:</p><ol class="qs"><li class="q"><span class="q-n">1</span><p class="q-t">«Как у&nbsp;вас получилось это сделать?»</p><p class="q-d">Что было вашей фишкой/технологией/механикой? За&nbsp;счёт чего вы&nbsp;стали тем, кем стали?</p></li><li class="q"><span class="q-n">2</span><p class="q-t">«Главный инсайт/вывод на&nbsp;этом пути?»</p><p class="q-d">Если бы&nbsp;вы&nbsp;могли передать себе в&nbsp;начале пути одну идею, что бы&nbsp;это было?</p></li><li class="q"><span class="q-n">3</span><p class="q-t">«Какой совет вы&nbsp;бы&nbsp;дали мне, как начинающему?»</p><p class="q-d">Что сделать/какой шаг принять, чтобы ускориться в&nbsp;этой сфере?</p></li></ol><p class="note">(Можно уточнять вопросами «почему?», «что было решающим?», «какую ошибку сделали?», но&nbsp;эти три&nbsp;— обязательны.)</p></section><section class="part"><h2 class="lbl">Правила и&nbsp;ограничения (важно)</h2><div class="rules"><p class="rule no"><span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span><span>Нельзя брать интервью у&nbsp;любого участника тренинга, включая организаторов.</span></p><p class="rule no"><span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span><span>Нельзя брать интервью у&nbsp;людей из&nbsp;сетевого бизнеса, инфобизнеса/инфопродуктов (курсы, наставничество как основной бизнес и&nbsp;т.п.).</span></p><p class="rule yes"><span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span>Подходят только люди из&nbsp;классического бизнеса (предприниматели, собственники, управленцы, инвесторы, производственники, торговля, услуги, IT-продукты как бизнес, недвижимость и&nbsp;т.д.).</span></p><p class="rule tm"><span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg></span><span>48&nbsp;часов на&nbsp;выполнение.</span></p></div></section><section class="ok"><span class="stamp upd" aria-hidden="true">Зачёт</span><h2 class="h3">Критерии «зачёт»</h2><ul class="oks"><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Есть 2&nbsp;интервью (командное + личное)</span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Оба записаны и&nbsp;сохранены</span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Записи доступны по&nbsp;ссылке/файлу</span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>По&nbsp;каждому интервью есть короткая выжимка (не&nbsp;«вода», а&nbsp;конкретные мысли)</span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Есть файлы с&nbsp;транскрипцией интервью</span></li></ul></section><section class="cl"><h2 class="lbl">Чек-лист перед сдачей</h2><ul class="cks"><li class="ck"><input type="checkbox" id="ck1"><label for="ck1"><span class="bx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tx">Нашли подходящего миллионера (не&nbsp;из&nbsp;тренинга, не&nbsp;инфобизнес, не&nbsp;сетевой)</span></label></li><li class="ck"><input type="checkbox" id="ck2"><label for="ck2"><span class="bx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tx">Договорились о&nbsp;времени</span></label></li><li class="ck"><input type="checkbox" id="ck3"><label for="ck3"><span class="bx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tx">Проверили звук/запись до&nbsp;начала</span></label></li><li class="ck"><input type="checkbox" id="ck4"><label for="ck4"><span class="bx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tx">Задали 3&nbsp;обязательных вопроса</span></label></li><li class="ck"><input type="checkbox" id="ck5"><label for="ck5"><span class="bx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tx">Убедились, что все участники задали вопросы</span></label></li><li class="ck"><input type="checkbox" id="ck6"><label for="ck6"><span class="bx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tx">Сохранили файл и&nbsp;сделали ссылку для доступа</span></label></li><li class="ck"><input type="checkbox" id="ck7"><label for="ck7"><span class="bx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tx">Написали выжимку (3–7&nbsp;пунктов)</span></label></li><li class="ck"><input type="checkbox" id="ck8"><label for="ck8"><span class="bx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tx">Записи выкладываете в&nbsp;телеграм-канал Экспедиции, вкладка «Общение»</span></label></li><li class="ck"><input type="checkbox" id="ck9"><label for="ck9"><span class="bx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tx">Сделали транскрибацию</span></label></li></ul><p class="cl-sum upd"></p></section>
+</main>
+</body>
+</html>
