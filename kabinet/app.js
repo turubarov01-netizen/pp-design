@@ -96,7 +96,7 @@ const PERSONAS = {
     name: "Мария", last: "Соколова", initials: "МС", level: "Стартовый доступ", city: "Казань", email: "maria@example.com", phone: "+7 900 000-00-01",
     phoenix: 120, phoenixWeek: 40, streak: 4, heat: "00012120332100".split(""),
     products: [
-      { id: "ii", state: "active", until: 54, progress: 0.38, progressLabel: "5 из 13 уроков", next: "Задание к уроку 4 сегодня до 23:59" },
+      { id: "ii", state: "active", until: 54, progress: 0.38, cur: 5, progressLabel: "5 из 13 уроков", next: "Задание к уроку 4 сегодня до 23:59" },
       { id: "fa", state: "trial", trialNote: "Гостевой доступ: лента, участники и одна открытая встреча клуба" },
     ],
     cont: { p: "ii", title: "Урок 5. Тексты для соцсетей с ИИ", meta: "Осталось 12 минут видео и задание", progress: 0.4 },
@@ -129,7 +129,7 @@ const PERSONAS = {
     name: "Ольга", last: "Иванова", initials: "ОИ", level: "Участник Плана Продюсера", city: "Екатеринбург", email: "olga@example.com", phone: "+7 900 000-00-02",
     phoenix: 860, phoenixWeek: 120, streak: 11, lives: 2, heat: "12212312332312".split(""),
     products: [
-      { id: "pp", state: "active", until: 40, progress: 0.23, progressLabel: "Неделя 3 из 13", next: "Групповая встреча сегодня в 19:00" },
+      { id: "pp", state: "active", until: 40, progress: 0.23, cur: 3, progressLabel: "Неделя 3 из 13", next: "Групповая встреча сегодня в 19:00" },
       { id: "fa", state: "trial", trialNote: "Гостевой доступ: лента, участники и одна открытая встреча клуба" },
     ],
     cont: { p: "pp", title: "Неделя 3. Ключевое задание: собрать оффер", meta: "Урок недели просмотрен, задание не сдано", progress: 0.55 },
@@ -185,9 +185,9 @@ const PERSONAS = {
     name: "Наталья", last: "Кузнецова", initials: "НК", level: "Бунтарь", city: "Санкт-Петербург", email: "natalia@example.com", phone: "+7 900 000-00-04",
     phoenix: 3120, phoenixWeek: 340, streak: 9, lives: 3, heat: "33213321133323".split(""),
     products: [
-      { id: "pp", state: "active", until: 62, progress: 0.46, progressLabel: "Неделя 6 из 13", next: "Групповая встреча сегодня в 19:00" },
-      { id: "ii", state: "expiring", until: 6, progress: 0.85, progressLabel: "11 из 13 уроков", next: "Доступ закончится через 6 дней" },
-      { id: "mesto", state: "active", until: 9, progress: 0.57, progressLabel: "День 4 из 7", next: "Отчёт дня до 23:59" },
+      { id: "pp", state: "active", until: 62, progress: 0.46, cur: 6, progressLabel: "Неделя 6 из 13", next: "Групповая встреча сегодня в 19:00" },
+      { id: "ii", state: "expiring", until: 6, progress: 0.85, cur: 12, progressLabel: "11 из 13 уроков", next: "Доступ закончится через 6 дней" },
+      { id: "mesto", state: "active", until: 9, progress: 0.57, cur: 4, progressLabel: "День 4 из 7", next: "Отчёт дня до 23:59" },
       { id: "fa", state: "active", until: 210, progress: null, progressLabel: "Уровень «Бунтарь»", next: "Книжный клуб в среду в 20:00" },
     ],
     cont: { p: "mesto", title: "День 4. Как вести сторис каждый день", meta: "Видео 18 минут и короткий отчёт", progress: 0.2 },
@@ -577,8 +577,9 @@ function inside(id) {
   const u = me(); const d = PRODUCTS[id]; const p = u.products.find(x => x.id === id);
   if (!d) return home();
   const nav = d.nav.length ? d.nav : ["Главная"];
-  const lessons = [1, 2, 3, 4, 5, 6].map(n => {
-    const cut = p && p.progress != null ? Math.round(p.progress * 6) : 2;
+  const cur = p && p.cur ? p.cur : 3; const from = Math.max(1, cur - 2);
+  const lessons = [0, 1, 2, 3, 4, 5].map(k => from + k).map(n => {
+    const cut = cur - 1;
     const st = n <= cut ? "ok" : n === cut + 1 ? "" : "lock";
     return `<li><span class="n ${st}">${st === "ok" ? ic("check") : st === "lock" ? ic("lock") : n}</span><div style="flex:1"><b>${id === "pp" ? `Неделя ${n}` : id === "mesto" ? `День ${n}` : id === "fa" ? ["Лента клуба", "Участники", "Трекер привычек", "Книжный клуб", "Встречи кланов", "Дневник роста"][n - 1] : `Урок ${n}`}</b><div class="small">${st === "ok" ? "Пройдено" : st === "lock" ? (p && p.state === "trial" ? "Откроется с членством" : "Откроется позже") : "Доступно сейчас"}</div></div>${st === "" ? '<button class="btn btn-primary btn-sm" type="button">Открыть</button>' : ""}</li>`;
   }).join("");
