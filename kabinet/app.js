@@ -577,7 +577,7 @@ function inside(id) {
   const u = me(); const d = PRODUCTS[id]; const p = u.products.find(x => x.id === id);
   if (!d) return home();
   const nav = d.nav.length ? d.nav : ["Главная"];
-  const cur = p && p.cur ? p.cur : 3; const from = Math.max(1, cur - 2);
+  const cur = p && p.cur ? p.cur : 3; const total = { ii: 13, pp: 13, mesto: 7 }[id] || 6; const from = Math.max(1, Math.min(cur - 2, total - 5));
   const lessons = [0, 1, 2, 3, 4, 5].map(k => from + k).map(n => {
     const cut = cur - 1;
     const st = n <= cut ? "ok" : n === cut + 1 ? "" : "lock";
