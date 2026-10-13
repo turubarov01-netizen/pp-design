@@ -87,6 +87,18 @@ const untilStart = (t) => {
   const hh = Math.floor(diff / 60), mm = diff % 60;
   return "Через " + (hh ? `${hh} ч ` : "") + (mm ? `${mm} мин` : "");
 };
+/* таймер дедлайна, как в «Плане Продюсера» (DeadlineCountdown) */
+const dlAt = (it) => { const [h, m] = it.t.split(":").map(Number); const d = dAt(it.d); d.setHours(h, m, 59, 0); return d.getTime(); };
+const pad2 = (n) => String(n).padStart(2, "0");
+const cdInner = (ms) => {
+  if (ms <= 0) return `<span class="cd-out">Дедлайн истёк</span>`;
+  const s = Math.floor(ms / 1000), dd = Math.floor(s / 86400), hh = Math.floor(s / 3600) % 24, mm = Math.floor(s / 60) % 60, ss = s % 60;
+  return (dd ? `<b>${pad2(dd)}</b><i>д</i>` : "") + `<b>${pad2(hh)}</b><i>ч</i><b>${pad2(mm)}</b><i>м</i><b>${pad2(ss)}</b><i>с</i>`;
+};
+const countdown = (it) => { const at = dlAt(it), ms = at - Date.now();
+  return `<span class="cd ${ms < 3 * 3600e3 ? "cd-urgent" : ""}" data-dl="${at}"><span class="cd-l">До дедлайна</span><span class="cd-t">${cdInner(ms)}</span>${it.p === "pp" ? `<span class="cd-x" title="После дедлайна баллы и фениксы начисляются вдвое меньше">после: ×½</span>` : ""}</span>`; };
+const tickCountdowns = () => document.querySelectorAll(".cd[data-dl]").forEach(el => { const ms = +el.dataset.dl - Date.now(); el.querySelector(".cd-t").innerHTML = cdInner(ms); el.classList.toggle("cd-urgent", ms < 3 * 3600e3); });
+setInterval(tickCountdowns, 1000);
 const greeting = () => { const h = new Date().getHours(); return h < 5 ? "Доброй ночи" : h < 12 ? "Доброе утро" : h < 18 ? "Добрый день" : "Добрый вечер"; };
 
 /* ---------- демо-люди ---------- */
@@ -375,12 +387,14 @@ function feedItem(it, idx) {
   const showLive = it.live && it.d === 0;
   const past = showLive && untilStart(it.t).startsWith("Прошла");
   if (past) it = { ...it, cta: "Запись", urgent: false };
+  const showCd = it.type === "deadline" && !isDone;
+  const note = showCd && /^(Осталось меньше суток|Сдать до конца дня)$/.test(it.note || "") ? "" : it.note;
   const act = isDone ? `<span class="done-mark" title="Готово">${ic("check")}</span>`
     : it.cta ? `<button class="btn ${it.urgent || (showLive && !past) ? "btn-primary" : "btn-ghost"} btn-sm act" data-done="${idx}">${esc(it.cta)}</button>` : "<span></span>";
   return `<li class="item ${it.urgent && !isDone ? "urgent" : ""} ${isDone ? "done" : ""}">
     <div class="tm">${esc(it.t)}</div>
     <div class="ic ic-${it.type}">${ic(TYPE_IC[it.type])}</div>
-    <div class="tx"><b>${esc(it.title)}</b><div class="row">${chip(it.p)}${showLive ? `<span class="live-dot">${untilStart(it.t)}</span>` : ""}<span class="note">${esc(it.note || "")}</span></div></div>
+    <div class="tx"><b>${esc(it.title)}</b><div class="row">${chip(it.p)}${showLive ? `<span class="live-dot">${untilStart(it.t)}</span>` : ""}${showCd ? countdown(it) : ""}${note ? `<span class="note">${esc(note)}</span>` : ""}</div></div>
     ${act}
   </li>`;
 }

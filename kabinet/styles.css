@@ -672,3 +672,14 @@ body.on-login .orbs { display: none; }
   .ngrid { grid-template-columns: minmax(0,1fr) 60px 60px; }
   .invoice { flex-direction: column; align-items: flex-start; }
 }
+
+/* таймер дедлайна (как DeadlineCountdown в «Плане Продюсера») */
+.cd { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 10px; background: #eef3ff; border: 1px solid #d6e2ff; font-size: 12px; }
+.cd-l { color: var(--muted); font-weight: 500; }
+.cd-t { display: inline-flex; align-items: baseline; gap: 2px; }
+.cd-t b { font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--accent, #2f7bff); }
+.cd-t i { font-style: normal; font-size: 10px; color: var(--muted); margin-right: 4px; }
+.cd-x { font-size: 10px; font-weight: 600; color: #a86a00; background: #fff4dc; border: 1px solid #f3dca6; padding: 1px 6px; border-radius: 6px; }
+.cd.cd-urgent { background: #fff0f0; border-color: #ffd2d2; }
+.cd.cd-urgent .cd-t b { color: var(--bad, #e5484d); }
+.cd-out { color: var(--bad, #e5484d); font-weight: 700; }
