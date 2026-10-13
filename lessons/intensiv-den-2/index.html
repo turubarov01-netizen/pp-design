@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>План Продюсера 5 · Практикум, день 2 — Конспект</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dbg:#0D1117;--dbg2:#111827;--dcard:#141E2B;--dcard2:#1A2535;
+  --dborder:rgba(255,255,255,.07);--dborder2:rgba(255,255,255,.12);
+  --blue:#4B7BFF;--blue2:#6B9FFF;--bluedark:#1E3A8A;
+  --bglow:rgba(75,123,255,.15);
+  --gold-grad:linear-gradient(135deg,#F0D080 0%,#CCA830 100%);
+  --grad-blue:linear-gradient(135deg,#2A4090 0%,#1E2B6E 100%);
+  --yellow-txt:#EAB820;
+  --tw:#FFFFFF;--tdim:rgba(255,255,255,.62);--tfnt:rgba(255,255,255,.32);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dbg);color:var(--tw);font-family:'Inter',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:860px;margin:0 auto;padding:72px 48px 120px;}
+p,.tsec-body,.detail,.qa-atext{text-wrap:pretty;}
+
+/* HEADER */
+.hdr{margin-bottom:56px;padding-bottom:44px;border-bottom:1px solid rgba(75,123,255,.2);}
+.hdr__badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--blue2);background:rgba(75,123,255,.1);border:1px solid rgba(75,123,255,.25);padding:4px 14px;border-radius:100px;margin-bottom:24px;}
+.hdr__title{font-weight:700;font-size:clamp(32px,5vw,50px);line-height:1.1;letter-spacing:-.03em;margin-bottom:14px;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-wrap:balance;}
+.hdr__sub{font-size:17px;color:var(--tdim);line-height:1.55;max-width:680px;}
+.hdr__meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:22px;}
+.hdr__meta-item{font-size:13px;color:var(--tdim);display:flex;align-items:center;gap:6px;}
+.hdr__meta-item strong{color:var(--blue2);}
+
+/* SECTION LABELS */
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue2);opacity:.75;margin-bottom:6px;}
+.sec-title{font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--tw);margin-bottom:20px;}
+
+/* INTRO */
+.intro{background:var(--dcard);border:1px solid var(--dborder);border-radius:16px;padding:28px 32px;margin-bottom:48px;}
+.intro-row{display:flex;gap:18px;padding:13px 0;border-bottom:1px solid var(--dborder);}
+.intro-row:last-child{border-bottom:none;padding-bottom:0;}
+.intro-row:first-child{padding-top:0;}
+.intro-lbl{flex-shrink:0;width:118px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow-txt);padding-top:3px;}
+.intro-body{font-size:15px;color:var(--tdim);line-height:1.6;}
+.intro-body strong{color:var(--tw);font-weight:600;}
+
+/* GLOSSARY */
+.gloss{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:48px;}
+.gloss-item{background:var(--dcard);border:1px solid var(--dborder);border-radius:14px;padding:18px 20px;}
+.gloss-term{font-size:14px;font-weight:700;color:var(--yellow-txt);margin-bottom:6px;}
+.gloss-def{font-size:14px;color:var(--tdim);line-height:1.55;}
+
+/* КАРТА СОЗВОНА */
+.timeline{background:var(--dcard);border:1px solid var(--dborder);border-radius:16px;padding:32px;margin-bottom:48px;}
+.tl-item{display:flex;align-items:flex-start;gap:16px;padding:10px 0;border-bottom:1px solid var(--dborder);}
+.tl-item:last-of-type{border-bottom:none;}
+.tl-badge{font-size:11px;font-weight:700;color:var(--blue2);background:rgba(75,123,255,.1);border:1px solid rgba(75,123,255,.2);padding:3px 10px;border-radius:100px;white-space:nowrap;flex-shrink:0;margin-top:2px;font-variant-numeric:tabular-nums;}
+.tl-text{font-size:14px;color:var(--tdim);line-height:1.5;}
+.tl-duration{margin-top:16px;padding-top:16px;border-top:1px solid var(--dborder);font-size:12px;color:var(--tfnt);letter-spacing:.06em;}
+
+/* ТЕЗИС */
+.thesis{background:var(--grad-blue);border:1px solid rgba(75,123,255,.3);border-radius:16px;padding:32px;margin-bottom:48px;position:relative;overflow:hidden;}
+.thesis::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(75,123,255,.08);border-radius:50%;}
+.thesis-icon{font-size:28px;margin-bottom:12px;}
+.thesis-lbl{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px;}
+.thesis-text{font-size:17px;font-weight:600;line-height:1.7;color:var(--tw);position:relative;}
+
+/* ТЕМА */
+.topic{background:var(--dcard);border:1px solid var(--dborder);border-radius:16px;padding:32px;margin-bottom:20px;}
+.topic-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;}
+.topic-num{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--tfnt);margin-bottom:4px;}
+.topic-title{font-size:20px;font-weight:700;letter-spacing:-.02em;line-height:1.25;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-wrap:balance;}
+.topic-time{font-size:11px;color:var(--blue2);background:rgba(75,123,255,.1);border:1px solid rgba(75,123,255,.2);padding:3px 10px;border-radius:100px;white-space:nowrap;flex-shrink:0;font-variant-numeric:tabular-nums;}
+.tsec{margin-bottom:22px;}
+.tsec-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tfnt);margin-bottom:8px;}
+.tsec-body{font-size:15px;color:var(--tw);line-height:1.7;}
+.tsec-body + .tsec-body{margin-top:10px;}
+.tsec-body strong{color:var(--yellow-txt);font-weight:600;}
+.details{display:flex;flex-direction:column;gap:9px;}
+.detail{display:flex;gap:10px;font-size:14px;color:var(--tdim);line-height:1.55;}
+.detail::before{content:'—';color:var(--blue2);flex-shrink:0;}
+.detail strong{color:var(--tw);font-weight:600;}
+.quote{background:rgba(75,123,255,.06);border-left:3px solid var(--blue);border-radius:0 10px 10px 0;padding:16px 20px;}
+.quote + .quote{margin-top:10px;}
+.quote-text{font-size:14px;font-style:italic;color:var(--tdim);line-height:1.7;margin-bottom:8px;}
+.quote-time{font-size:11px;color:var(--blue2);}
+.why{font-size:14px;color:var(--yellow-txt);font-weight:500;line-height:1.6;}
+
+/* МОДЕЛИ — карточки */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.mcard{background:var(--dcard2);border:1px solid var(--dborder2);border-radius:14px;padding:18px;}
+.mcard-n{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue2);margin-bottom:6px;}
+.mcard-t{font-size:16px;font-weight:700;color:var(--tw);margin-bottom:8px;line-height:1.3;}
+.mcard-d{font-size:13px;color:var(--tdim);line-height:1.55;}
+.mcard-d b{color:var(--yellow-txt);font-weight:600;}
+
+/* РАСЧЁТ */
+.calc{background:rgba(234,184,32,.05);border:1px solid rgba(234,184,32,.2);border-radius:12px;padding:18px 20px;}
+.calc + .calc{margin-top:10px;}
+.calc-t{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow-txt);margin-bottom:10px;}
+.calc-row{display:flex;justify-content:space-between;gap:14px;font-size:14px;color:var(--tdim);padding:6px 0;border-bottom:1px dashed rgba(234,184,32,.15);}
+.calc-row:last-child{border-bottom:none;}
+.calc-row b{color:var(--tw);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.calc-note{font-size:13px;color:var(--tfnt);margin-top:8px;line-height:1.5;}
+
+/* ШАГИ */
+.steps{counter-reset:st;display:flex;flex-direction:column;gap:10px;}
+.step{counter-increment:st;display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--tdim);line-height:1.55;}
+.step::before{content:counter(st);flex-shrink:0;width:26px;height:26px;border-radius:8px;background:rgba(75,123,255,.12);border:1px solid rgba(75,123,255,.25);color:var(--blue2);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.step strong{color:var(--tw);font-weight:600;}
+
+/* ИЛЛЮСТРАЦИИ */
+.fig{margin:4px 0 0;}
+.fig-img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--dborder2);background:var(--dcard2);}
+.fig-cap{font-size:13px;color:var(--tdim);line-height:1.55;margin-top:10px;}
+.fig-cap b{color:var(--tw);}
+.fig2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.diagram{background:var(--dcard2);border:1px solid var(--dborder2);border-radius:14px;padding:18px;}
+.diagram svg{display:block;width:100%;height:auto;}
+
+
+/* КВАДРАНТ */
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.quad-cell{background:var(--dcard2);border:1px solid var(--dborder2);border-radius:14px;padding:18px;}
+.quad-hot{background:rgba(234,184,32,.07);border-color:rgba(234,184,32,.55);}
+.quad-blue{background:rgba(75,123,255,.08);border-color:rgba(75,123,255,.3);}
+.quad-k{font-size:13px;font-weight:700;color:var(--tw);margin-bottom:8px;line-height:1.35;}
+.quad-hot .quad-k{color:var(--yellow-txt);}
+.quad-blue .quad-k{color:var(--blue2);}
+.quad-p{font-size:14px;color:var(--tw);line-height:1.5;}
+.quad-n{font-size:13px;color:var(--tdim);line-height:1.5;margin-top:8px;}
+.quad-tag{margin-top:10px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow-txt);}
+.quad-axes{display:flex;justify-content:space-between;gap:12px;margin-top:10px;font-size:12px;color:var(--tfnt);}
+/* КРУГИ */
+.circles{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:center;background:var(--dcard2);border:1px solid var(--dborder2);border-radius:14px;padding:22px;}
+.circles-pic svg{display:block;width:100%;height:auto;max-width:340px;margin:0 auto;}
+.circles-cap{text-align:center;font-size:12px;color:var(--yellow-txt);margin-top:8px;font-weight:600;}
+.circles-list{display:flex;flex-direction:column;gap:14px;}
+.cl-item{display:flex;gap:12px;align-items:flex-start;}
+.cl-n{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#0D1117;margin-top:1px;}
+.cl-g{background:#EAB820;}.cl-b{background:#6B9FFF;}
+.cl-t{font-size:14px;font-weight:700;color:var(--tw);}
+.cl-d{font-size:13.5px;color:var(--tdim);line-height:1.5;margin-top:2px;}
+.cl-m{font-size:12px;color:var(--blue2);margin-top:3px;font-weight:600;}
+.cl-foot{font-size:13px;color:var(--yellow-txt);font-weight:600;line-height:1.5;padding-top:12px;border-top:1px solid var(--dborder);}
+/* ВОРОНКА */
+.funnel{background:var(--dcard2);border:1px solid var(--dborder2);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;gap:9px;}
+.fn-row{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;}
+.fn-l{font-size:13px;color:var(--tdim);text-align:right;}
+.fn-lg{color:var(--yellow-txt);font-weight:700;}
+.fn-bar{display:flex;align-items:center;gap:10px;}
+.fn-fill{display:block;height:24px;border-radius:6px;background:rgba(75,123,255,.45);}
+.fn-g{background:rgba(234,184,32,.55);}.fn-gg{background:#EAB820;}
+.fn-bar b{font-size:13px;color:var(--tw);font-variant-numeric:tabular-nums;}
+
+/* Q&A */
+.qa-group-lbl{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue2);margin:36px 0 16px;display:flex;align-items:center;gap:12px;}
+.qa-group-lbl::after{content:'';flex:1;height:1px;background:rgba(75,123,255,.15);}
+.qa-item{background:var(--dcard);border:1px solid var(--dborder);border-radius:14px;padding:24px;margin-bottom:14px;}
+.qa-q{display:flex;gap:12px;margin-bottom:16px;align-items:flex-start;}
+.qa-badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue2);background:rgba(75,123,255,.12);border:1px solid rgba(75,123,255,.2);padding:3px 10px;border-radius:100px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.qa-qtime{font-size:11px;color:var(--tfnt);white-space:nowrap;flex-shrink:0;margin-top:4px;font-variant-numeric:tabular-nums;}
+.qa-qtext{font-size:15px;font-weight:600;color:var(--tw);line-height:1.5;}
+.qa-albl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tfnt);margin-bottom:8px;}
+.qa-atext{font-size:14px;color:var(--tdim);line-height:1.7;margin-bottom:14px;}
+.qa-insight{display:flex;gap:10px;align-items:flex-start;background:rgba(234,184,32,.06);border:1px solid rgba(234,184,32,.15);border-radius:10px;padding:12px 16px;}
+.qa-insight-icon{font-size:14px;flex-shrink:0;}
+.qa-insight-text{font-size:13px;color:var(--yellow-txt);font-weight:500;line-height:1.5;}
+
+/* ПРИНЦИПЫ */
+.principles{background:var(--dcard);border:1px solid var(--dborder);border-radius:16px;padding:32px;}
+.principle{display:flex;gap:16px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--dborder);}
+.principle:last-child{border-bottom:none;padding-bottom:0;}
+.principle:first-child{padding-top:0;}
+.p-num{width:28px;height:28px;border-radius:8px;background:rgba(75,123,255,.12);border:1px solid rgba(75,123,255,.25);color:var(--blue2);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.p-text{font-size:15px;color:var(--tw);line-height:1.6;}
+.p-text strong{color:var(--yellow-txt);}
+
+/* ЗАДАНИЕ */
+.task{background:var(--grad-blue);border:1px solid rgba(75,123,255,.3);border-radius:16px;padding:30px 32px;}
+.task-t{font-size:20px;font-weight:700;margin-bottom:12px;letter-spacing:-.01em;}
+.task p{font-size:15px;color:rgba(255,255,255,.8);line-height:1.65;}
+.task p + p{margin-top:10px;}
+.task strong{color:#F0D080;}
+
+.div{height:1px;background:rgba(75,123,255,.12);margin:52px 0;}
+
+/* FOOTER */
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid rgba(75,123,255,.15);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.footer-brand{font-weight:700;font-style:italic;font-size:18px;color:var(--blue2);}
+.footer-meta{font-size:11px;color:var(--tfnt);letter-spacing:.08em;}
+.legal{margin-top:18px;font-size:11px;color:var(--tfnt);line-height:1.55;}
+
+@media (max-width:720px){
+  .page{padding:36px 18px 80px;}
+  .gloss,.cards3,.fig2{grid-template-columns:1fr;}
+  .topic,.timeline,.principles,.intro{padding:22px 20px;}
+  .topic-hdr{flex-direction:column;gap:8px;}
+  .intro-row{flex-direction:column;gap:4px;}
+  .intro-lbl{width:auto;}
+  .quad{grid-template-columns:1fr;}
+  .quad-axes{display:none;}
+  .circles{grid-template-columns:1fr;}
+  .fn-row{grid-template-columns:96px 1fr;}
+}
+
+/* ── оформление урока в кабинете (DAVE, 13.10.2026) */
+.ic{width:1em;height:1em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+.ic.g{color:#F0D080}.ic.b{color:var(--blue2)}.ic.gr{color:#6BCB77}
+.ic+*{margin-left:0}
+.tsec-lbl,.qa-albl,.calc-t{display:flex;align-items:center;gap:8px}
+.sec-title{display:flex;align-items:flex-start;gap:10px}
+.sec-title .ic{margin-top:4px}
+.qa-q{flex-wrap:wrap;gap:8px 10px}
+.qa-qtext{flex:1 1 100%;margin-top:4px}
+.qa-badge{margin-top:0}
+a.qa-qtime{margin-top:0;min-height:24px}
+.tsec-lbl .ic{width:14px;height:14px}
+.sec-title .ic{width:22px;height:22px}
+.hdr__meta-item .ic{width:15px;height:15px;color:var(--blue2)}
+a.hdr__meta-item{text-decoration:none}
+a.hdr__meta-item:hover strong{text-decoration:underline;text-underline-offset:3px}
+.pg>.sec-label:first-child+.qa-group-lbl{margin-top:8px}
+.pg>.sec-label:first-child,.pg>.timeline:first-child{margin-top:0}
+.pg .topic{margin-bottom:0}
+.pg .principles,.pg .task{margin-bottom:20px}
+.footer{margin-top:40px}
+.page{padding:8px 0 0!important;max-width:none!important}
+.pg>:last-child{margin-bottom:0!important}
+.pg .thesis{margin-bottom:0}
+/* таймкоды — ссылки на запись */
+a.tc,a.tl-badge,a.topic-time,a.qa-qtime{display:inline-flex;align-items:center;gap:5px;text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+a.tl-badge,a.topic-time{color:var(--blue2);min-height:28px}
+a.tl-badge:hover,a.topic-time:hover{background:rgba(75,123,255,.22);border-color:rgba(107,159,255,.55);color:#fff}
+a.tc .ic,a.tl-badge .ic,a.topic-time .ic,a.qa-qtime .ic{width:9px;height:9px;fill:currentColor;stroke:none}
+.topic-time-w{flex-shrink:0}
+a.qa-qtime{color:var(--blue2);margin-top:2px;padding:2px 8px;border-radius:100px;border:1px solid rgba(75,123,255,.2);background:rgba(75,123,255,.08)}
+a.qa-qtime:hover{background:rgba(75,123,255,.22)}
+.quote-time{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+a.tc{color:var(--blue2);font-weight:600;font-variant-numeric:tabular-nums}
+a.tc:hover{color:#fff}
+.tl-item{align-items:flex-start}
+.tl-text{display:flex;gap:9px;align-items:flex-start}
+.tl-text .ic{width:15px;height:15px;margin-top:2px}
+a.tl-badge{margin-top:0}
+a:focus-visible{outline:2px solid #F0D080;outline-offset:2px;border-radius:6px}
+a.tref{color:var(--blue2);text-decoration:underline;text-decoration-color:rgba(107,159,255,.4);text-underline-offset:3px}
+/* цитаты: подложка вместо боковой полосы */
+.quote{position:relative;border:1px solid rgba(75,123,255,.18);border-left:1px solid rgba(75,123,255,.18);border-radius:12px;background:rgba(75,123,255,.06);padding:16px 18px 14px 44px}
+.quote::before{content:"";position:absolute;left:16px;top:18px;width:16px;height:16px;background:var(--blue2);opacity:.55;
+ -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z'/%3E%3Cpath d='M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z'/%3E%3C/svg%3E") center/contain no-repeat;
+ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z'/%3E%3Cpath d='M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z'/%3E%3C/svg%3E") center/contain no-repeat}
+.thesis-icon .ic{width:28px;height:28px;color:#F0D080}
+.qa-insight-icon .ic{width:15px;height:15px;color:#F0D080;margin-top:1px}
+/* оглавление на первой странице */
+.toc{display:flex;flex-direction:column;margin:-24px 0 48px;border:1px solid var(--dborder);border-radius:16px;background:var(--dcard);overflow:hidden}
+.toc a{display:flex;align-items:center;gap:14px;min-height:56px;padding:12px 18px;text-decoration:none;color:var(--tw);border-top:1px solid var(--dborder);transition:background .15s}
+.toc a:first-child{border-top:0}
+.toc a:hover{background:rgba(255,255,255,.035)}
+.toc a>.ic{width:20px;height:20px;color:#F0D080}
+.toc span{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.toc b{font-size:15px;font-weight:600}
+.toc i{font-style:normal;font-size:13px;color:var(--tdim);line-height:1.4}
+.toc .go{width:16px;height:16px;color:var(--tfnt)}
+.toc a:hover .go{color:#F0D080}
+/* сервисы и переход к инсайту */
+.svc{margin-top:20px;border:1px solid rgba(240,208,128,.28);border-radius:16px;background:rgba(240,208,128,.05);padding:20px}
+.svc-lbl{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#F0D080;margin-bottom:12px}
+.svc-lbl .ic{width:14px;height:14px}
+.svc-btn{display:flex;align-items:center;gap:12px;min-height:56px;padding:12px 16px;border-radius:12px;background:var(--dcard2);border:1px solid var(--dborder2);text-decoration:none;color:var(--tw);transition:border-color .15s,background .15s}
+.svc-btn+.svc-btn{margin-top:8px}
+.svc-btn:hover{border-color:rgba(240,208,128,.5);background:#1E2A3C}
+.svc-btn span{flex:1;min-width:0;display:flex;flex-direction:column}
+.svc-btn b{font-size:15px;font-weight:600}
+.svc-btn i{font-style:normal;font-size:13px;color:var(--tdim)}
+.svc-btn i a.tref{color:var(--tdim)}
+.svc-btn>.ic{width:18px;height:18px;color:#F0D080}
+.to-insight{display:flex;align-items:center;gap:10px;margin-top:12px;min-height:52px;padding:12px 16px;border-radius:12px;border:1px dashed rgba(107,203,119,.4);color:#6BCB77;font-size:15px;font-weight:600;text-decoration:none}
+.to-insight:hover{background:rgba(107,203,119,.08)}
+.to-insight .ic{width:18px;height:18px}
+.to-insight .go{margin-left:auto;transform:rotate(90deg)}
+@media (max-width:720px){
+  .toc{margin-top:-20px}
+  .quote{padding:14px 16px 12px 40px}
+  .quote::before{left:14px;top:16px}
+  .tl-item{flex-direction:column;align-items:flex-start;gap:6px;padding:12px 0}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="pg" data-pp-page="О встрече" data-pp-short="Встреча">
+<div class="hdr">
+    <div class="hdr__badge">План Продюсера 5 · Практикум, день 2 · Конспект</div>
+    <div class="hdr__title">Деньги, модель и оффер: от расчёта до первой продажи</div>
+    <div class="hdr__sub">Семичасовой практикум: считаем, сколько клиентов и часов нужно для вашей цели, выбираем модель работы, собираем оффер в сервисе «Мой оффер», продаём за один час и строим путь клиента к покупке.</div>
+    <div class="hdr__meta">
+      <div class="hdr__meta-item"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg><strong>27 сентября 2026</strong></div>
+      <div class="hdr__meta-item"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><strong>7 ч 10 мин</strong></div>
+      <div class="hdr__meta-item"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><strong>2 ментора + участники</strong></div>
+      <a class="hdr__meta-item" href="#t1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg><strong>16</strong> тем</a>
+      <a class="hdr__meta-item" href="#qa"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><strong>20</strong> вопросов разобрано</a>
+    </div>
+  </div>
+<nav class="toc" aria-label="Что в конспекте">
+  <a href="#gloss"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span><b>Словарь</b><i>10 терминов встречи</i></span><svg class="ic go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  <a href="#map"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.1 5.9 9.9 3.8a2 2 0 0 0-1.8 0L3.6 6.1A1 1 0 0 0 3 7v12.4a1 1 0 0 0 1.4.9l4.7-2.4a2 2 0 0 1 1.8 0l4.2 2.1a2 2 0 0 0 1.8 0l4.5-2.3a1 1 0 0 0 .6-.9V4.6a1 1 0 0 0-1.4-.9l-4.7 2.4a2 2 0 0 1-1.8 0z"/><path d="M15 5.8v15"/><path d="M9 3.2v15"/></svg><span><b>Карта записи</b><i>34 отметки времени, по клику — на нужную минуту</i></span><svg class="ic go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  <a href="#t1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg><span><b>16 тем</b><i>по одной на страницу</i></span><svg class="ic go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  <a href="#qa"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span><b>Вопросы и ответы</b><i>20 вопросов участников</i></span><svg class="ic go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  <a href="#fin"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg><span><b>Задание и итоги</b><i>что сделать на этой неделе</i></span><svg class="ic go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+</nav>
+<div class="sec-label">Если вас не было на встрече</div>
+  <div class="sec-title">Как была устроена встреча</div>
+  <div class="intro">
+    <div class="intro-row">
+      <div class="intro-lbl">Кто вёл</div>
+      <div class="intro-body">Два ментора. <strong>Ментор по инструментам</strong> отвечает за цифры, модели, оффер и продажи. <strong>Ментор по мышлению</strong> помогает не застревать в страхах и действовать. В конспекте они подписаны так же. Участники названы без имён.</div>
+    </div>
+    <div class="intro-row">
+      <div class="intro-lbl">Формат</div>
+      <div class="intro-body">Практикум: короткая теория, сразу упражнение, потом разбор на примерах участников. Часть упражнений шла в <strong>сессионных залах</strong> — отдельных комнатах Zoom на 2–3 человека.</div>
+    </div>
+    <div class="intro-row">
+      <div class="intro-lbl">Порядок дня</div>
+      <div class="intro-body">Рассказ о себе → точка А в цифрах → три модели заработка → какие продукты вам доступны → в каком порядке искать клиентов → точка Б и цена часа → оффер в сервисе «Мой оффер» → час на продажу → воронка и ключевой этап.</div>
+    </div>
+    <div class="intro-row">
+      <div class="intro-lbl">Как читать</div>
+      <div class="intro-body">Сначала словарь: в нём все термины, которые встречаются дальше. Время у каждой темы и цитаты совпадает с записью на YouTube, по нему можно переслушать нужный кусок.</div>
+    </div>
+  </div>
+<div class="thesis">
+    <div class="thesis-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+    <div class="thesis-lbl">Главный тезис сессии</div>
+    <div class="thesis-text">Доход эксперта сначала считают. Вы записываете, сколько хотите зарабатывать, выбираете модель работы и видите, сколько нужно клиентов, часов и какой должна быть цена. Под эти цифры собираете оффер для одной аудитории и сразу проверяете его разговорами с живыми людьми. Отказы подсказывают, что переделать в следующей версии.</div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Словарь встречи" data-pp-short="Словарь" id="gloss">
+<div class="sec-label">Чтобы всё было понятно</div>
+  <div class="sec-title"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>Словарь встречи</div>
+  <div class="gloss">
+    <div class="gloss-item"><div class="gloss-term">Точка А</div><div class="gloss-def">Где вы сейчас в цифрах: сколько зарабатываете на своём деле, сколько у вас клиентов, какой средний чек.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Точка Б</div><div class="gloss-def">Сколько вы хотите зарабатывать в ближайшие 1–3 месяца и по какой цене продавать.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Средний чек</div><div class="gloss-def">Все деньги, которые пришли за месяц, разделённые на количество продаж. Считается от оборота, без вычета расходов.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Бизнес-модель</div><div class="gloss-def">Способ, которым вы зарабатываете на клиенте: один раз, регулярно или крупной суммой за результат.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Оффер</div><div class="gloss-def">Ваше предложение, сказанное словами: для кого, какую проблему решаете, какой результат и за какой срок, сколько стоит.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Конверсия</div><div class="gloss-def">Какая доля людей сделала следующий шаг. Например, из 10 разговоров купили трое — конверсия 30%.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Воронка продаж</div><div class="gloss-def">Путь человека от первого знакомства с вами до покупки. На каждом шаге людей становится меньше.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Ключевой этап воронки (КЭВ)</div><div class="gloss-def">Событие, после которого человек решает купить: разбор, диагностика, пробный урок, игра, семинар.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Кредиторка и дебиторка</div><div class="gloss-def">Кредиторка — вы взяли деньги и должны отработать. Дебиторка — вы отработали, а вам ещё должны заплатить.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Апселл</div><div class="gloss-def">Предложение взять пакет дороже или следующий продукт.</div></div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Карта записи" data-pp-short="Карта" id="map">
+<div class="sec-label">Навигация по записи</div>
+  <div class="timeline">
+    <div class="sec-title" style="margin-bottom:20px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Карта созвона</div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=0s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:00:00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:00:00</a><span class="tl-text"><svg class="ic gr" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>Открытие: что такое практикум и кто из менторов за что отвечает</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=139s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:02:19"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:02:19</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Бизнес — это решение проблемы клиента за деньги</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=224s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:03:44"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:03:44</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Упражнение: рассказать о себе за минуту в сессионных залах</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=963s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:16:03"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:16:03</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Точка А в цифрах: доход и средний чек</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=1136s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:18:56"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:18:56</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Три бизнес-модели. Первая — «реаниматолог»</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=1799s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:29:59"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:29:59</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Вторая модель — регулярное сопровождение</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=2761s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:46:01"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:46:01</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Третья модель — трансформация под ключ</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=3180s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:53:00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:53:00</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Гарантии в мягких нишах и закон о рекламе</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=4109s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:08:29"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:08:29</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Продавать решение одной проблемы</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=4659s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:17:39"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:17:39</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Какие продукты доступны при вашей аудитории и экспертности</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=4899s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:21:39"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:21:39</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Круги поиска клиентов: от записной книжки до контента</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=5279s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:27:59"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:27:59</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Метафора: коромысло с вёдрами и колодец</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=5986s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:39:46"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:39:46</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Точка Б: сколько клиентов нужно на желаемый доход</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=6744s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:52:24"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:52:24</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>12 часов в неделю — предел, отсюда цена вашего часа</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=7235s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:00:35"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:00:35</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Пять рычагов дохода и групповой формат</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=7846s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:10:46"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:10:46</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Если математика не сходится — меняйте модель</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=8773s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:26:13"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:26:13</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>У любого оффера есть конверсия</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=9850s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:44:10"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:44:10</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>От личной работы к группам, кураторам и курсу</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=10110s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:48:30"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:48:30</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Собираем оффер в сервисе «Мой оффер»</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=11171s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:06:11"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:06:11</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Одна аудитория вместо «всех». Лучший клиент: боль, срочность, деньги</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=12516s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:28:36"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:28:36</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Бюджет на привлечение, местный рынок, демпинг</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=13950s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:52:30"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:52:30</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Разборы офферов участников: срок, цена, язык клиента</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=15190s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:13:10"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:13:10</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Дешёвые и дорогие деньги. Результат вместо времени</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=16369s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:32:49"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:32:49</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Скидки и «бесплатный апселл»</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=17085s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:44:45"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:44:45</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Разбор: цена через выгоду клиента, клуб как следующий продукт</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=17665s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:54:25"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:54:25</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Заменят ли нейросети эксперта</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=18078s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 05:01:18"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>05:01:18</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Задание: сделать продажу за один час</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=18450s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 05:07:30"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>05:07:30</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Итоги часа: почему не продали и кто продал</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=19666s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 05:27:46"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>05:27:46</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Закон цифр в продажах</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=21038s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 05:50:38"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>05:50:38</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Трафик, продажа, продукт. Воронка на примере свидания</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=22158s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 06:09:18"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>06:09:18</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Ключевой этап воронки и как на него пригласить</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=23811s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 06:36:51"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>06:36:51</a><span class="tl-text"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Боль клиента его словами. Проверка приглашения на участниках</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=24864s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 06:54:24"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>06:54:24</a><span class="tl-text"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Оффер переписывают десятки раз</span></div>
+    <div class="tl-item"><a class="tl-badge" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=25504s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 07:05:04"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>07:05:04</a><span class="tl-text"><svg class="ic gr" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>Завершение: четыре недели программы и задание</span></div>
+    <div class="tl-duration">Продолжительность: 7 ч 10 мин. Перерывы: около 02:34–02:39 и 05:06–05:07 (участники продавали)</div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Рассказать о себе за минуту: кто вы, кто клиент, какую проблему решаете" data-pp-short="Тема 1" id="t1">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #1</div><div class="topic-title">Рассказать о себе за минуту: кто вы, кто клиент, какую проблему решаете</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=0s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:00 – 00:16</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Бизнес начинается с проблемы клиента, за решение которой он платит. Поэтому рассказ о себе строится из трёх ответов: кто вы, кто ваш клиент, какую проблему вы решаете. Название метода или курса здесь не нужно. К этой формулировке возвращались весь день: чем точнее вы её понимаете, тем больше зарабатываете.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Контекст и детали</div>
+      <div class="details">
+        <div class="detail"><span><strong>Упражнение.</strong> В сессионных залах по 2–3 человека каждый минуту рассказывает о себе, а потом две минуты слушает, что осталось непонятным.</span></div>
+        <div class="detail"><span>Частая ошибка: «я проводник духовных сил, умею ченнелить». Человек слушает и не понимает, с чем к вам идти.</span></div>
+        <div class="detail"><span>Участники сами заметили, что говорили общими словами и о своих ожиданиях, а о клиенте и его результате почти ничего. Одна ученица сказала о себе: «помогаю людям стать счастливее» — и тут же спросила себя, есть ли у людей такой запрос.</span></div>
+        <div class="detail"><span>Слушать другого мешает то, что в это время обдумываешь своё выступление. Поэтому лучше задавать уточняющие вопросы, чем достраивать смысл за человека.</span></div>
+        <div class="detail"><span>Ментор по мышлению предупредил: если сейчас пожалеть друг друга и сказать «всё понятно», через неделю это превратится в «у меня нет продаж».</span></div>
+        <div class="detail"><span>Если вы ещё не выбрали нишу, это нормально: первая неделя программы посвящена именно этому. Ментор собрал сервис выбора ниши, ссылка в общем чате. На него уходит 2–2,5 часа.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитата ментора</div>
+      <div class="quote"><div class="quote-text">«Бизнес, в принципе, это то, что мы решаем какую-то проблему у клиента за деньги».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=139s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:02:19"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:02:19</a><span> · ментор по инструментам</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Пока проблема клиента не названа одной фразой, из неё не собрать ни оффер, ни продажу. Все следующие упражнения опираются на этот ответ.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Точка А в цифрах: сколько вы зарабатываете сейчас" data-pp-short="Тема 2" id="t2">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #2</div><div class="topic-title">Точка А в цифрах: сколько вы зарабатываете сейчас</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=900s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:15"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:15 – 00:19</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Прежде чем ставить цели, нужно записать, где вы сейчас. Считается доход на своём деле, без зарплаты в найме, количество клиентов и средний чек. Ноль тоже нормальный ответ. Ментор попросил тех, у кого ноль, хотя бы назвать нишу: психолог, таролог, тренер.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Как посчитать средний чек</div>
+      <div class="calc">
+        <div class="calc-t">Пример, который разобрали на встрече</div>
+        <div class="calc-row"><span>Пришло денег за месяц (оборот)</span><b>93 600 ₽</b></div>
+        <div class="calc-row"><span>Сколько было продаж</span><b>7</b></div>
+        <div class="calc-row"><span>Средний чек: 93 600 ÷ 7</span><b>≈ 13 400 ₽</b></div>
+        <div class="calc-note">Считают всё, что пришло, без вычета расходов. Если нужно узнать, сколько в среднем приносит один клиент, делят на количество клиентов. Если у вас школа с преподавателями, считайте оборот всей школы.</div>
+      </div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Без цифр точки А нельзя посчитать, сколько не хватает до цели. Позже её дополнили моделью работы, размером аудитории и уровнем экспертности (<a class="tref" href="#t5">тема #5</a>).</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Три бизнес-модели: реаниматолог, регулярное сопровождение, трансформация под ключ" data-pp-short="Тема 3" id="t3">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #3</div><div class="topic-title">Три бизнес-модели: реаниматолог, регулярное сопровождение, трансформация под ключ</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=1140s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:19"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:19 – 00:58</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Зарабатывать на клиенте можно тремя способами. От того, какой вы выбрали, зависит, сколько клиентов вам нужно каждый месяц. Если вы работаете только разово и за небольшие деньги, клиентов придётся искать бесконечно. Большие деньги дают регулярная работа с одним человеком и крупный результат за срок.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="m16.24 7.76-1.8 5.4a2 2 0 0 1-1.27 1.27l-5.4 1.8 1.8-5.4a2 2 0 0 1 1.27-1.27z"/><circle cx="12" cy="12" r="10"/></svg>Три модели</div>
+      <div class="cards3">
+        <div class="mcard"><div class="mcard-n">Модель 1</div><div class="mcard-t">«Реаниматолог»</div><div class="mcard-d">Пришёл, быстро помог один раз, ушёл. Разовая консультация, трансформационная игра, снятие стресса, расклад, натальная карта, матрица судьбы, профайл за 3–5 тысяч. Годится <b>только как вход</b> в дальнейшую работу.</div></div>
+        <div class="mcard"><div class="mcard-n">Модель 2</div><div class="mcard-t">Регулярное сопровождение</div><div class="mcard-d">Клиент ходит месяцами и платит за каждую встречу или за месяц. Так работают психологи, коучи, репетиторы, мастера. По словам ментора, <b>это самые большие деньги</b> в любом бизнесе.</div></div>
+        <div class="mcard"><div class="mcard-n">Модель 3</div><div class="mcard-t">Трансформация под ключ</div><div class="mcard-d">«Хирург»: решаете крупную задачу за определённый срок и получаете большую сумму сразу. У работы есть конец и понятный результат. Здесь появляется <b>оффер</b>.</div></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Модель 1: почему «реаниматолог» выгорает</div>
+      <div class="details">
+        <div class="detail"><span>Пример с прошлого потока: профайлер продавала разбор за 3 000 ₽. Чтобы выйти на нужный доход, ей пришлось бы каждый месяц находить 50 новых людей.</span></div>
+        <div class="detail"><span>Разовая услуга работает, если она дорогая: игра «Лила» за 50 000 ₽ пять раз в месяц даёт 250 000 ₽.</span></div>
+        <div class="detail"><span>Если разовая услуга дешёвая, из неё делают первую ступень: бесплатная консультация → недорогой разовый продукт → регулярная работа или большая программа.</span></div>
+        <div class="detail"><span>Матрица судьбы или натальная карта становятся диагностикой: посмотрели, что ждёт человека в этом году, и предложили программу, чтобы прожить год спокойнее. Игра «Денежный поток» (CashFlow) показывает, как человек обращается с деньгами, после неё можно предложить курс или встречи раз в месяц.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Модель 2: сколько приносит один постоянный клиент</div>
+      <div class="calc">
+        <div class="calc-t">Репетитор английского</div>
+        <div class="calc-row"><span>Абонемент в месяц (2 занятия в неделю)</span><b>10 500 ₽</b></div>
+        <div class="calc-row"><span>Сколько ходит ученик</span><b>от 12 месяцев</b></div>
+        <div class="calc-row"><span>Один ученик за год: 10 500 × 12</span><b>126 000 ₽</b></div>
+      </div>
+      <div class="calc">
+        <div class="calc-t">Психолог</div>
+        <div class="calc-row"><span>Пакет: 4 сессии в месяц</span><b>25 000 ₽</b></div>
+        <div class="calc-row"><span>Сколько в среднем длится работа</span><b>≈ 4 месяца</b></div>
+        <div class="calc-row"><span>Один клиент: 25 000 × 4</span><b>100 000 ₽</b></div>
+        <div class="calc-note">Мастер по плетению кос: клиентка возвращается раз в 1,5–2 месяца, услуга 11 000 ₽, одна клиентка ходит почти четыре года. Десять таких постоянных клиентов дают, по словам ментора, «несгораемую сумму» около 100 000 ₽, которая остаётся даже в несезон.</div>
+      </div>
+      <div class="details" style="margin-top:12px;">
+        <div class="detail"><span>Когда вы знаете, сколько клиент приносит за всё время, понятно, сколько можно потратить на его привлечение. К этому вернулись в теме о воронке.</span></div>
+        <div class="detail"><span>После первых 2–3 недель у клиента обычно спадает интерес. Как построить занятия, чтобы он продолжал ходить, разбирают на VIP-встречах.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Модель 3: большой результат за срок</div>
+      <div class="details">
+        <div class="detail"><span>Пример со слайда для фитнес-тренера: «Помогаю мамам бережно восстановить тело после родов за 5 месяцев без жёстких диет, опасных скручиваний и вреда для лактации».</span></div>
+        <div class="detail"><span>Три клиента по 100 000 ₽ дают 300 000 ₽ в месяц. Больше ни с кем работать не нужно.</span></div>
+        <div class="detail"><span>Годовое сопровождение, которое клиент оплачивает сразу (у одного участника 250 000 ₽ за 12 встреч), тоже относится к третьей модели.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Как заработать уже сегодня</div>
+      <div class="details">
+        <div class="detail"><span>Ученица-репетитор увидела, что может перевести учеников с помесячной оплаты на абонемент за 3–6 месяцев с небольшой скидкой. Деньги придут сразу, их можно вложить в рекламу или закрыть свои срочные расходы.</span></div>
+        <div class="detail"><span>Второй рычаг — рассрочка через банк: клиент платит частями, а вы получаете всю сумму сразу. Всем, кто продаёт трансформацию под ключ, это открывает путь к людям, которые не готовы заплатить всё целиком.</span></div>
+        <div class="detail"><span>Предоплата создаёт кредиторку: деньги у вас, но работу ещё нужно выполнить. Об этом важно помнить, прежде чем тратить.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Что можно обещать в мягких нишах</div>
+      <div class="details">
+        <div class="detail"><span>В психологии и эзотерике часть работы делает сам клиент, поэтому точный срок результата обещать нельзя. «Найдёшь мужа» — это обман. По закону о рекламе за такое обещание грозит штраф: 20 000 ₽ физлицу и 500 000 ₽ юрлицу.</span></div>
+        <div class="detail"><span>Можно говорить так: «в среднем мои клиенты решают это за 2–3 месяца» или «проведём пять встреч на такую-то тему». Одна участница сказала, что эта формулировка сняла её страх обещать.</span></div>
+        <div class="detail"><span>В твёрдых нишах гарантия усиливает оффер. Репетитор, который обещает 75 баллов на экзамене или возврат денег, выглядит сильнее, чем «просто хороший педагог». Риск возврата вы при этом берёте на себя.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитаты ментора</div>
+      <div class="quote"><div class="quote-text">«В такой конфигурации, окей, можно быть реаниматологом. Но если у вас только вот эта модель, вы, скорее всего, скоро умрете от того, что будете бегать как белка в колесе».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=1680s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:28:00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:28:00</a><span> · ментор по инструментам</span></div></div>
+      <div class="quote"><div class="quote-text">«Когда у нас есть разовая сделка, это не бизнес. А когда клиент к нам приходит несколько раз, вот это уже бизнес».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=1802s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:30:02"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:30:02</a><span> · ментор по инструментам</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Выбор модели решает, сколько людей вам нужно находить каждый месяц: пятьдесят новых или десять постоянных.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Продавать решение одной проблемы, а не набор тем" data-pp-short="Тема 4" id="t4">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #4</div><div class="topic-title">Продавать решение одной проблемы, а не набор тем</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=3600s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:00 – 01:13</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Предложение «первый месяц работаем над отношениями, второй над самооценкой, третий над детьми» описывает процесс. Клиенту приходится сначала поверить, что ему всё это нужно, и холодный человек обычно не верит. Легче продать решение одной проблемы, самой важной для него сейчас, с понятным признаком результата. Когда эта точка достигнута, предлагаете путь к следующей.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Контекст и детали</div>
+      <div class="details">
+        <div class="detail"><span>Спросите клиента, какая проблема для него сейчас важнее всего. Если он отвечает «хочу денег», делаете персональную программу про деньги.</span></div>
+        <div class="detail"><span>Договоритесь, по какому признаку он поймёт, что результат есть: «наконец сделал первую продажу», «не страшно выкладывать сторис».</span></div>
+        <div class="detail"><span>Пример участника: он продаёт селлерам (продавцам на маркетплейсах) таблицу для учёта за 15 000 ₽. Таблица показывает, где в бизнесе плохо, и становится диагностикой. Дальше можно предложить работу в три этапа: собрать больше данных о бизнесе, научить влиять на показатели, автоматизировать это с помощью ИИ.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитата ментора</div>
+      <div class="quote"><div class="quote-text">«Нам нужно менять предложение таким образом, чтобы мы говорили через результаты».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=4164s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:09:24"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:09:24</a><span> · ментор по инструментам</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Короткий путь к одному понятному результату продаётся легче, чем длинная программа. После первого результата клиенту проще купить следующий шаг.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Какие продукты вам сейчас доступны" data-pp-short="Тема 5" id="t5">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #5</div><div class="topic-title">Какие продукты вам сейчас доступны</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=4380s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:13"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:13 – 01:21</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Что продавать, зависит от двух вещей: сколько у вас аудитории и насколько хорошо вы разбираетесь в теме. Эксперт в теме чувствует себя уверенно с любым запросом клиента. Начинающий только что получил диплом, ещё боится клиентов и готов работать бесплатно ради практики. Отметьте себя на схеме: там видно, какие продукты принесут деньги сейчас.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.1 5.9 9.9 3.8a2 2 0 0 0-1.8 0L3.6 6.1A1 1 0 0 0 3 7v12.4a1 1 0 0 0 1.4.9l4.7-2.4a2 2 0 0 1 1.8 0l4.2 2.1a2 2 0 0 0 1.8 0l4.5-2.3a1 1 0 0 0 .6-.9V4.6a1 1 0 0 0-1.4-.9l-4.7 2.4a2 2 0 0 1-1.8 0z"/><path d="M15 5.8v15"/><path d="M9 3.2v15"/></svg>Схема «аудитория × экспертность»</div>
+      <div class="quad">
+        <div class="quad-cell quad-hot"><div class="quad-k">Мало аудитории · сильная экспертность</div><div class="quad-p">Наставничество, консалтинг, менторинг, мини-группы, пакеты за 25–40 тысяч</div><div class="quad-n">Дорогой личный продукт для немногих. Здесь сейчас большинство участников, и этот квадрат даёт больше всего денег.</div><div class="quad-tag"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Фокус на старте</div></div>
+        <div class="quad-cell quad-blue"><div class="quad-k">Много аудитории · сильная экспертность</div><div class="quad-p">Доступны любые продукты: курсы, клубы, программы, группы</div></div>
+        <div class="quad-cell"><div class="quad-k">Мало аудитории · мало опыта</div><div class="quad-p">Разовые консультации, пакеты услуг до 10 тысяч</div><div class="quad-n">Остальное делать можно, но большого дохода сейчас оно не принесёт.</div></div>
+        <div class="quad-cell"><div class="quad-k">Много аудитории · мало опыта</div><div class="quad-p">Гайды, чек-листы, медитации, вебинары, групповые мастер-классы, марафоны</div><div class="quad-n">«Блогерская» модель: недорогие продукты с лёгким решением, 3–10 тысяч.</div></div>
+      </div>
+      <div class="quad-axes"><span>↑ сверху — сильнее экспертность</span><span>справа — больше аудитории →</span></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Контекст и детали</div>
+      <div class="details">
+        <div class="detail"><span>Частая ошибка: придумать клуб, марафон или чек-лист, когда аудитории нет. Время на создание продукта уйдёт, а купить его некому.</span></div>
+        <div class="detail"><span>В точке А теперь записываете ещё три вещи: вашу модель работы сегодня, размер аудитории (например, «50 подписчиков в Telegram») и насколько уверенно вы разбираетесь в теме. Записываете, как есть сейчас, без поправок на то, что узнали на встрече.</span></div>
+      </div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Продукт не из вашего квадрата отнимает месяцы и почти не продаётся. Продукт из вашего квадрата приносит деньги, пока вы растите аудиторию.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="В каком порядке искать клиентов: коромысло и колодец" data-pp-short="Тема 6" id="t6">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #6</div><div class="topic-title">В каком порядке искать клиентов: коромысло и колодец</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=4860s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:21"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:21 – 01:40</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Клиентов ищут по кругам: сначала тех, до кого можно дотянуться рукой, потом тех, до кого можно дойти, потом онлайн, и только в последнюю очередь через контент. Каждый следующий круг даёт деньги позже и покупает реже. Поэтому, пока у вас нет регулярного дохода, снимать Reels рано: сначала продайте тем, кто рядом.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.1 5.9 9.9 3.8a2 2 0 0 0-1.8 0L3.6 6.1A1 1 0 0 0 3 7v12.4a1 1 0 0 0 1.4.9l4.7-2.4a2 2 0 0 1 1.8 0l4.2 2.1a2 2 0 0 0 1.8 0l4.5-2.3a1 1 0 0 0 .6-.9V4.6a1 1 0 0 0-1.4-.9l-4.7 2.4a2 2 0 0 1-1.8 0z"/><path d="M15 5.8v15"/><path d="M9 3.2v15"/></svg>Четыре круга: как двигаться</div>
+      <div class="circles">
+        <div class="circles-pic">
+          <svg viewBox="0 0 480 480" role="img" aria-label="Четыре круга вокруг вас">
+            <circle cx="240" cy="240" r="232" fill="rgba(75,123,255,.06)" stroke="rgba(107,159,255,.5)" stroke-dasharray="6 7" stroke-width="1.5"/>
+            <circle cx="240" cy="240" r="184" fill="rgba(75,123,255,.08)" stroke="rgba(107,159,255,.55)" stroke-width="1.5"/>
+            <circle cx="240" cy="240" r="136" fill="rgba(234,184,32,.07)" stroke="rgba(234,184,32,.5)" stroke-width="1.5"/>
+            <circle cx="240" cy="240" r="88" fill="rgba(234,184,32,.1)" stroke="rgba(234,184,32,.7)" stroke-width="1.5"/>
+            <circle cx="240" cy="240" r="40" fill="#EAB820"/>
+            <text x="240" y="249" fill="#0D1117" font-size="26" font-weight="700" font-family="Inter,system-ui" text-anchor="middle">Вы</text>
+            <g font-family="Inter,system-ui" font-weight="700" font-size="22" text-anchor="middle">
+              <circle cx="240" cy="176" r="19" fill="#EAB820"/><text x="240" y="184" fill="#0D1117">1</text>
+              <circle cx="240" cy="128" r="19" fill="#EAB820"/><text x="240" y="136" fill="#0D1117">2</text>
+              <circle cx="240" cy="80" r="19" fill="#6B9FFF"/><text x="240" y="88" fill="#0D1117">3</text>
+              <circle cx="240" cy="32" r="19" fill="#6B9FFF" opacity=".75"/><text x="240" y="40" fill="#0D1117">4</text>
+            </g>
+            <g stroke="#EAB820" stroke-width="3" fill="none" stroke-linecap="round">
+              <path d="M282 262 L444 356"/><path d="M430 340 L446 357 L424 362"/>
+            </g>
+          </svg>
+          <div class="circles-cap">Движение идёт изнутри наружу</div>
+        </div>
+        <div class="circles-list">
+          <div class="cl-item"><span class="cl-n cl-g">1</span><div><div class="cl-t">Рукой дотянуться</div><div class="cl-d">Знакомые, бывшие клиенты, ваша база контактов.</div><div class="cl-m">Деньги сегодня</div></div></div>
+          <div class="cl-item"><span class="cl-n cl-g">2</span><div><div class="cl-t">Дойти ножками</div><div class="cl-d">Ваш город: бизнес-встречи, клубы, офлайн-курсы, мероприятия. Вы участник или спикер.</div><div class="cl-m">Деньги завтра</div></div></div>
+          <div class="cl-item"><span class="cl-n cl-b">3</span><div><div class="cl-t">Онлайн, но лично</div><div class="cl-d">Онлайн-клубы, сообщества, нетворкинги, курсы. Вы видите человека, он видит вас.</div><div class="cl-m">Деньги послезавтра</div></div></div>
+          <div class="cl-item"><span class="cl-n cl-b" style="opacity:.75">4</span><div><div class="cl-t">Контент</div><div class="cl-d">Соцсети, Reels, реклама. Люди вас не видят и не знают.</div><div class="cl-m">Деньги через месяц, три, полгода</div></div></div>
+          <div class="cl-foot">Чем дальше круг, тем реже покупают и тем сильнее нужен оффер.</div>
+        </div>
+      </div>
+      <div class="fig-cap" style="margin-top:12px;">Идёте изнутри наружу. Круг закрыт, когда из него приходят деньги, только потом переходите к следующему. Перепрыгнуть сразу в контент можно, но ждать денег придётся дольше, а продавать сложнее.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>Метафора: вода с реки и колодец</div>
+      <div class="fig2">
+        <figure class="fig">
+          <img class="fig-img" src="https://wearefree.club/pp/konspekt/pp5-den2-koromyslo.jpg" loading="lazy" width="1092" height="666" alt="Девушка с коромыслом и вёдрами поднимается от реки к дому на холме">
+          <figcaption class="fig-cap"><b>Коромысло — деньги сегодня.</b> Пить хочется каждый день, поэтому каждое утро вы спускаетесь к реке и приносите два ведра. Так работают продажи ближним кругам: звонки знакомым, встречи в городе.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img class="fig-img" src="https://wearefree.club/pp/konspekt/pp5-den2-kolodets.jpg" loading="lazy" width="1092" height="666" alt="Девушка копает колодец рядом с домом на холме">
+          <figcaption class="fig-cap"><b>Колодец — аудитория и контент.</b> Кран у дома удобнее, но колодец копают месяц, и за день-два до воды не дойти. Поэтому за водой ходите каждый день и понемногу копаете параллельно.</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Контекст и детали</div>
+      <div class="details">
+        <div class="detail"><span>Ученице-репетитору быстрее всего предложить абонемент тем, кто уже платит. Реклама и контент тоже дают деньги, но позже.</span></div>
+        <div class="detail"><span>Чем дальше круг, тем ниже конверсия. Знакомый человек знает, какой вы. При встрече вживую вас видят и чувствуют. Через экран вас не видят вовсе. Поэтому для дальних кругов оффер должен быть намного сильнее.</span></div>
+        <div class="detail"><span>Ученица-психолог поделилась выводом: она хотела перепрыгнуть сразу в контент, а ей нужно вживую прийти в клубы и на мероприятия. Как ходить на мероприятия и что там говорить, разбирают на третьей и четвёртой неделях.</span></div>
+        <div class="detail"><span>Соцсетями в программе начинают заниматься на третьей неделе: сначала базовая упаковка, потом масштабирование. Подробно про контент — на программе «Место притяжения»: как писать продающие сценарии, делать хуки, искать темы.</span></div>
+        <div class="detail"><span>Один участник добавил риск: если контент «залетит» раньше, чем вы поработали с живыми клиентами, можно не справиться с их запросами и получить плохие отзывы и возвраты.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитаты ментора</div>
+      <div class="quote"><div class="quote-text">«Сначала вот есть вы такой вот маленький, и вот до кого вы рукой можете дотянуться, это ваши клиенты. Это первый этап. Второй этап — до кого вы можете дойти пешком».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=4933s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:22:13"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:22:13</a><span> · ментор по инструментам</span></div></div>
+      <div class="quote"><div class="quote-text">«Я за то, чтобы сначала мы с вами научились просто ходить вниз за водой, потому что сейчас вы даже спуститься не можете, у вас вёдер нет, в ладошках только».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=5371s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:29:31"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:29:31</a><span> · ментор по инструментам</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Если начать с контента, можно месяцами работать без денег. Ближние круги дают доход сразу и подсказывают, какой оффер понадобится для дальних.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Точка Б: сколько клиентов, часов и какая цена часа" data-pp-short="Тема 7" id="t7">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #7</div><div class="topic-title">Точка Б: сколько клиентов, часов и какая цена часа</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=6000s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:40"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:40 – 02:00</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Цель в деньгах переводится в число клиентов, а число клиентов — в часы работы. Здесь важен предел: работать напрямую с клиентами больше 12 часов в неделю нельзя, иначе выгорите. Разделив желаемый доход на эти часы, вы получаете цену своего часа. Если цифра пугает, значит, нынешняя модель к цели не ведёт.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>Расчёт по шагам</div>
+      <div class="steps">
+        <div class="step"><span><strong>Цель.</strong> Сколько хотите зарабатывать в месяц в ближайшие 1–3 месяца. Горизонт короткий и осязаемый, не «через год».</span></div>
+        <div class="step"><span><strong>Клиенты.</strong> Цель ÷ сколько приносит один клиент в месяц. Пример ученицы: 150 000 ₽ ÷ 20 000 ₽ ≈ 8 клиентов.</span></div>
+        <div class="step"><span><strong>Время.</strong> Сколько длится встреча вместе с подготовкой. Если встреча час и перед ней полтора часа подготовки, пишите два с половиной часа.</span></div>
+        <div class="step"><span><strong>Предел.</strong> В неделе два выходных и пять рабочих дней, из них с клиентами три дня по 3–4 часа. Итого не больше 12 часов в неделю, это 48 часов в месяц. Остальное время — учёба, супервизии, восстановление, семья, продажи и маркетинг.</span></div>
+        <div class="step"><span><strong>Цена часа</strong> = доход в месяц ÷ 48 часов.</span></div>
+      </div>
+      <div class="calc" style="margin-top:14px;">
+        <div class="calc-t">Пример из встречи</div>
+        <div class="calc-row"><span>Цель в месяц</span><b>10 000 €</b></div>
+        <div class="calc-row"><span>Часов с клиентами в месяц: 12 × 4</span><b>48</b></div>
+        <div class="calc-row"><span>Цена часа: 10 000 ÷ 48</span><b>≈ 208 €</b></div>
+        <div class="calc-note">У другой участницы по той же формуле вышло 8 000 ₽ в час при нынешних 3 000 ₽. Ментор сказал, что к этой цифре и нужно прийти, иначе вы просто не выдержите нагрузку.</div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Контекст и детали</div>
+      <div class="details">
+        <div class="detail"><span>Одна ученица посчитала 16 человек в неделю и увидела, что столько не выдержит. Её решение: 10 человек индивидуально, остальных добрать мини-группой.</span></div>
+        <div class="detail"><span>Ученица-репетитор вспомнила, как при 16 часах прямой работы, проверке планов и бухгалтерии уже выгорала до нуля и не хотела идти на работу.</span></div>
+        <div class="detail"><span>Страх «кто мне заплатит 20 тысяч в месяц» ментор попросил отложить: на этом шаге считаются только цифры, про оффер будет дальше.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитата ментора</div>
+      <div class="quote"><div class="quote-text">«Максимум вы можете работать в неделю 12 часов с клиентами, потому что если вы занимаетесь психологией, эзотерикой, у вас должно быть время на обучение, на супервизоров, на восстановление, на время с детьми, со вторыми половинками».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=6784s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:53:04"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:53:04</a><span> · ментор по инструментам</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Расчёт показывает реальную цену вашего часа до того, как вы начали продавать. Если работать дешевле, цель съест ваше время и силы.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Пять рычагов дохода и групповой формат. Что делать, если цифры не сходятся" data-pp-short="Тема 8" id="t8">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #8</div><div class="topic-title">Пять рычагов дохода и групповой формат. Что делать, если цифры не сходятся</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=7200s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:00 – 02:24</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Когда расчёт показывает, что клиентов не хватает, почти все думают только о том, где найти больше людей. Рычагов пять: изменить оффер, поднять чек, поменять модель, снизить цель или привлечь больше клиентов. Сильнее всего работает групповой формат: за тот же час вы работаете с несколькими людьми.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>Как считать группу</div>
+      <div class="calc">
+        <div class="calc-t">Цель 250 000 ₽ в месяц, час стоит 8 000 ₽</div>
+        <div class="calc-row"><span>Клиент ходит раз в неделю: 8 000 × 4</span><b>32 000 ₽ в месяц</b></div>
+        <div class="calc-row"><span>Индивидуально: 250 000 ÷ 32 000</span><b>8 клиентов</b></div>
+        <div class="calc-row"><span>Группа за тот же час: 4 человека по 8 000 ₽</span><b>32 000 ₽ за час</b></div>
+        <div class="calc-row"><span>Та же цель в группах</span><b>32 человека по 8 000 ₽</b></div>
+      </div>
+      <div class="calc">
+        <div class="calc-t">Цель 10 000 € в месяц, час 208 €</div>
+        <div class="calc-row"><span>Индивидуально: 3 часа в неделю × 4 недели × 208 €</span><b>≈ 2 500 € в месяц</b></div>
+        <div class="calc-row"><span>Индивидуально нужно</span><b>4 клиента</b></div>
+        <div class="calc-row"><span>Группа на те же 3 часа, 5 человек</span><b>по 500 €</b></div>
+        <div class="calc-row"><span>Или смешать: 2 индивидуально + 2 группы по 5</span><b>12 человек</b></div>
+        <div class="calc-note">Получается сетка из двух цен: индивидуально 2 500 €, в группе 500 €, группа стартует от пяти человек. Если оставить старую цену (1 500 € индивидуально), людей и часов понадобится больше, и вы выгорите.</div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Если математика не сходится</div>
+      <div class="details">
+        <div class="detail"><span>Ментор по мышлению привёл пример: вы продаёте футболки и зарабатываете на каждой 4 рубля. Чтобы получить свою тысячу долларов, их нужно продавать тысячами каждую неделю. Вывод: либо бросать, либо брать другие футболки, либо продавать оптом.</span></div>
+        <div class="detail"><span>Выбора два: отказаться от цели и остаться при нынешнем доходе или что-то поменять — цену, продукт, способ привлечения.</span></div>
+        <div class="detail"><span>Паника «я не умею по-другому» появляется, когда старую модель пытаются натянуть на новую цель. Научиться упаковывать, продавать дороже и привлекать больше клиентов вы и пришли на программу. В вашей нише есть люди с большими деньгами, значит, это возможно.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитата ментора</div>
+      <div class="quote"><div class="quote-text">«Вначале вы должны увидеть свой бизнес в реальности. И ты понимаешь: окей, получается, чтобы достичь моей цели, мне либо нужно поднять чек до 8 тысяч, либо вообще другой продукт придумать».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=7914s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:11:54"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:11:54</a><span> · ментор по мышлению</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Расчёт экономит годы: он сразу показывает, что поменять, вместо того чтобы годами работать в модели, которая к цели не приведёт.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Оффер решает, соберёте ли вы людей. Путь от личной работы к курсу" data-pp-short="Тема 9" id="t9">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #9</div><div class="topic-title">Оффер решает, соберёте ли вы людей. Путь от личной работы к курсу</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=8640s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:24"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:24 – 02:48</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Одна участница рассказала, что два месяца собирала мини-группу и набрала девять человек. Ментор по мышлению объяснил, что причина обычно не в канале, а в том, что сказано в предложении: у любого оффера есть своя конверсия. Если ценность явно выше цены, люди находят деньги, даже когда их нет. Такой оффер создают, проверяют и дорабатывают.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Контекст и детали</div>
+      <div class="details">
+        <div class="detail"><span><strong>Пример с машиной.</strong> Допустим, у ментора Mercedes, купленный за 220 000 долларов, и ему нужно срочно уехать. Он отдаёт машину за 20 000 долларов прямо сейчас. Денег ни у кого из участников нет, но многие стали бы их искать: звонить знакомым, занимать.</span></div>
+        <div class="detail"><span>Когда говорят «флаеры не работают» или «реклама у блогера не сработала», проблема чаще в тексте предложения, а не в источнике.</span></div>
+        <div class="detail"><span>Если кто-то собирает залы по 2 000 человек с билетом от 500 долларов, группу из 12 человек собрать точно можно. Вопрос в том, какой оффер для этого создать.</span></div>
+        <div class="detail"><span>Вместо списка причин, почему не получится, ищите, как сделать, чтобы получилось. Накануне, в первый день практикума, разбирали убеждения: это набор представлений о мире, и его можно поменять.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Как расти от личной работы к курсу</div>
+      <div class="steps">
+        <div class="step"><span><strong>Индивидуально.</strong> Пока ваш метод не сложился, работаете один на один.</span></div>
+        <div class="step"><span><strong>Мини-группа из 5–10 человек.</strong> Когда понятно, как доводить людей до результата.</span></div>
+        <div class="step"><span><strong>Кураторы и записи.</strong> Появляются повторяющиеся темы и одинаковые ошибки учеников. Их объяснение записываете на видео или в статьи, подключаете кураторов (часто это ваши выпускники) или ИИ, которому ученики задают вопросы.</span></div>
+        <div class="step"><span><strong>Курс.</strong> Часть уроков в записи, ведут кураторы, вы появляетесь в ключевых точках — в начале, в середине, в конце.</span></div>
+      </div>
+      <div class="calc-note" style="margin-top:10px;">На каждую ступень уходит от трёх месяцев до года. Ученица-репетитор прошла быстрее, потому что давно в теме: она решила стать школой и взяла кураторами своих выпускников.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитата ментора</div>
+      <div class="quote"><div class="quote-text">«Если ценность превышает цену, то многие сделают. Не значит, что все из вас найдут, но многие даже хотя бы попытаются».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=8875s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:27:55"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:27:55</a><span> · ментор по мышлению</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Когда люди не приходят, первым делом переписывают предложение.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Сервис «Мой оффер»: рынок, одна аудитория и лучший клиент" data-pp-short="Тема 10" id="t10">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #10</div><div class="topic-title">Сервис «Мой оффер»: рынок, одна аудитория и лучший клиент</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=10080s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:48"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:48 – 03:28</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Оффер собирали вместе в сервисе «Мой оффер». Главный вывод этой части: выбирают одну аудиторию, максимум объединяют две. Лучше всего покупают люди, у которых сходятся три условия: сильная боль, срочность и деньги на решение. Цена при этом зависит не только от дохода клиента, но и от того, насколько большую проблему вы решаете.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Как проходили сервис</div>
+      <div class="steps">
+        <div class="step"><span><strong>Ниша.</strong> Выбираете из списка или пишете свою.</span></div>
+        <div class="step"><span><strong>Рынок.</strong> Сервис показывает, что рынок не растёт, а экспертов становится больше каждый месяц. Раньше хватало сторис и сарафана, теперь клиентов забирает тот, кто учится маркетингу и продажам. Октябрь и ноябрь — сезон, когда покупают активнее. В некоторых нишах, например в английском, клик на Авито дорожает примерно на 150 ₽ в год.</span></div>
+        <div class="step"><span><strong>Аудитория.</strong> Нажимаете на микрофон и наговариваете всё, что думаете о своих клиентах, кусками по 30 секунд. Чем больше материала, тем точнее результат.</span></div>
+        <div class="step"><span><strong>Выбор сегмента.</strong> Сервис показывает группы клиентов от самых близких к покупке к самым далёким. Выбираете одну или просите объединить две.</span></div>
+        <div class="step"><span><strong>Цели, бюджет, опыт, формат.</strong> Дальше сервис считает, сколько нужно клиентов, и собирает текст оффера.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Лучший клиент: боль, срочность, деньги</div>
+      <div class="details">
+        <div class="detail"><span>Пример ментора: 1 января у его жены воспалился зуб, она не могла спать, а клиники не работали. В такой момент готовы идти в любую клинику за любые деньги. Есть сильная боль, срочность и деньги.</span></div>
+        <div class="detail"><span>Кариес тоже болит, но потерпеть можно. Такому клиенту продавать сложнее.</span></div>
+        <div class="detail"><span>Сегменты в сервисе расположены от сильной боли к слабой. Если выбрать из середины или из конца, продавать будет сложнее.</span></div>
+        <div class="detail"><span>Пример выбранной аудитории у ученицы-репетитора: «родители подростка, который готовится к ЕГЭ по английскому для поступления на бюджет; на пробнике 55 баллов, нужно 80, стратегии нет».</span></div>
+        <div class="detail"><span>Сразу спросите себя: есть ли такие люди в моей записной книжке, у моих друзей, в моём городе, в сообществах, где я бываю?</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Почему одна аудитория</div>
+      <div class="details">
+        <div class="detail"><span>Ментор по мышлению жёстко остановил попытки объединить все семь сегментов: это как ремонтировать одновременно Ferrari и «Жигули».</span></div>
+        <div class="detail"><span>На каждую аудиторию нужен свой оффер, свой сайт, свой контент, а для Reels — свой аккаунт. Вести пять направлений сразу на старте не получится.</span></div>
+        <div class="detail"><span>Когда о вас спрашивают, у людей должна быть одна ассоциация: «она для владельцев бизнеса 55 лет».</span></div>
+        <div class="detail"><span>Если вы выбрали стратегию и посчитали для неё цифры, 30 дней проверяете именно её, не отвлекаясь на другие аудитории.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Цена и четыре типа клиентов</div>
+      <div class="details">
+        <div class="detail"><span>Люди с небольшим доходом покупают айфоны и берут ипотеку. Цена определяет уровень проблемы, которую вы решаете. Клиенты, которые сейчас платят вам 3 000 ₽, могут заплатить 8 000 ₽, если оффер другой.</span></div>
+        <div class="detail"><span>Пример ментора с выступления: начинающий фитнес-тренер жаловался, что людям тяжело платить 20 долларов. Когда зал спросили, отдали бы они 500 долларов за гарантированный результат, многие ответили «да». Деньги не главное препятствие: человек боится ими рискнуть.</span></div>
+        <div class="detail"><span><strong>«Дешёвые» клиенты</strong> — около 10%, ради скидки вымотают душу. Их больше всего заметно, поэтому кажется, что таких все.</span></div>
+        <div class="detail"><span><strong>«Цена — ценность»</strong> — около половины рынка: покупают, если ценность примерно втрое выше цены.</span></div>
+        <div class="detail"><span><strong>Срочные</strong> — нужно «на вчера», готовы платить на 30% больше рынка.</span></div>
+        <div class="detail"><span><strong>Кому нужен личный подход</strong> — больше внимания, заботы, статуса.</span></div>
+        <div class="detail"><span>Если оффер учитывает только цену, вы получаете только первую группу.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитаты ментора</div>
+      <div class="quote"><div class="quote-text">«Я объявляю вас банкротом. Вы пролетите в трубу по всем фронтам, бюджеты сольете. Это же фундаментальнейшая ошибка в выборе клиента. Хочу и Феррари ремонтировать, и Жигули».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=11353s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:09:13"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:09:13</a><span> · ментор по мышлению</span></div></div>
+      <div class="quote"><div class="quote-text">«Мы делаем сайт не про компанию. Мы делаем сайт не про продукт. Мы делаем сайт под клиента. Мы делаем оффер не про тебя, не про твой бизнес. Мы делаем оффер под клиента».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=11770s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:16:10"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:16:10</a><span> · ментор по мышлению</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Оффер «для всех» не попадает ни в кого. Одна аудитория с сильной и срочной болью покупает быстрее и дороже.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Бюджет на привлечение, местный рынок и конкуренты, которые демпингуют" data-pp-short="Тема 11" id="t11">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #11</div><div class="topic-title">Бюджет на привлечение, местный рынок и конкуренты, которые демпингуют</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=12480s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:28"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:28 – 03:52</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">На шаге «бюджет на привлечение клиентов» многие пишут ноль. Бюджет — это не только реклама: это любые деньги, которые вы тратите, чтобы оказаться рядом с будущими клиентами. Цену стоит сверять с размером рынка и с выгодой клиента, а с демпингом бороться объяснением, чем вы отличаетесь.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Контекст и детали</div>
+      <div class="details">
+        <div class="detail"><span><strong>Бюджет.</strong> Выпускница-расстановщица заработала 600 000 ₽ за месяц. Она заплатила 30 000 ₽ за место на эзотерическом фестивале, провела там две расстановки, и оттуда пришли клиенты. Ещё двое пришли с поездки на Алтай, куда она поехала участницей. Другая участница купила клуб и просто рассказала там о себе. Ментор с экспертом, которую потом продюсировал, познакомился на трёхдневном тренинге примерно за 100 000 ₽.</span></div>
+        <div class="detail"><span><strong>База.</strong> Ваши контакты в Telegram, почте, CRM тоже пригодятся для продаж.</span></div>
+        <div class="detail"><span><strong>Опыт.</strong> Указывайте то, что повлияет на решение вашей аудитории. Психолог, у которой было три филиала детских центров, для предпринимателей звучит убедительнее: у неё есть свой предпринимательский опыт.</span></div>
+        <div class="detail"><span><strong>Формат.</strong> Сервис предлагает форматы по порядку, от подходящих к рискованным. Главное — не выбрать клуб, если нет аудитории.</span></div>
+        <div class="detail"><span><strong>Местный рынок.</strong> Пример ментора: в Барнауле 600 тысяч жителей, примерно 5% с деньгами, семей с детьми среди них около 15 тысяч. Для этой узкой группы абонемент стоил 72 000 ₽. Если работаете на всю страну, людей больше, но оффер нужен жёстче.</span></div>
+        <div class="detail"><span><strong>Демпинг.</strong> Клиент не разбирается в вашей теме. Если он видит две розы за 100 и 250 рублей и не знает, чем они отличаются, берёт дешёвую. Скажите, что одна простоит две недели, а другая три дня, — и выбор меняется. Отель за 150 долларов и за 550 отличаются, иначе все жили бы в дешёвом.</span></div>
+        <div class="detail"><span><strong>Цена от выгоды.</strong> Участник боялся назвать 150 000 ₽ за таблицу для аналитики. Ментор ответил: всё зависит от того, что таблица делает и сколько приносит. У участника половина прибыли пришла благодаря ей. Для продавца с оборотом в 10–20 миллионов такая сумма небольшая.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитата ментора</div>
+      <div class="quote"><div class="quote-text">«В любой нише клиент по определению некомпетентен. Соответственно, если я вижу две розы, и одна стоит 100 рублей, и другая 250 рублей, зачем мне брать 250, если я не вижу разницу?»</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=13663s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:47:43"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:47:43</a><span> · ментор по мышлению</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Пока вы не объяснили, за что платят больше, клиент сравнивает только цену и уходит к тому, кто дешевле.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Оффер, в который вы верите сами: клиент и цена должны сходиться" data-pp-short="Тема 12" id="t12">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #12</div><div class="topic-title">Оффер, в который вы верите сами: клиент и цена должны сходиться</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=13920s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:52"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:52 – 04:13</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Готовый текст из сервиса — подсказка. Его переписывают под себя, пока он не вдохновит вас самих: вы верите и в предложение, и в цену. Оффер не работает, если в нём не сходятся клиент и цена. Длинный контракт за небольшие деньги в месяц упирает доход в потолок.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Разбор оффера ученицы</div>
+      <div class="details">
+        <div class="detail"><span>Ей понравился блок «Это не для вас, если…»: «вам нужны только тактические советы без работы с собой», «вы не готовы к разговору о своих сомнениях и ошибках». Такие фразы отсеивают неподходящих и цепляют своих.</span></div>
+        <div class="detail"><span>Клиент в оффере — «успешный предприниматель, который чувствует потолок», цена — 45 000 ₽ в месяц. Ментор по мышлению: успешный предприниматель не поверит, что ему помогут за такие деньги, тут неправда в клиенте или в цене. А «выгоревший предприниматель» бывает на любом уровне дохода, это описание ей подошло больше.</span></div>
+        <div class="detail"><span>Когда ученица сказала, что её сильная сторона — работа один на один, ментор возразил: это не сильная сторона, вы этому научились. Научиться вести группу тоже можно, а делать то, что не масштабируется, не стоит (04:06).</span></div>
+        <div class="detail"><span>Оказалось, свою первую крупную продажу она сделала на два года за 600 000 ₽ — с внутренней рассрочкой, первый и последний месяц оплачены сразу.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>Почему длинный контракт ставит потолок</div>
+      <div class="calc">
+        <div class="calc-row"><span>Сколько клиентов она может вести одновременно</span><b>4</b></div>
+        <div class="calc-row"><span>Контракт на 2 года: 4 × 600 000 ₽</span><b>2 400 000 ₽</b></div>
+        <div class="calc-row"><span>В пересчёте на месяц: ÷ 24</span><b>100 000 ₽</b></div>
+        <div class="calc-note">Это до налогов и расходов. Ментор: при такой модели потолок 120–150 тысяч в месяц, 200 — если работать без выходных. Кроме того, деньги получены сегодня, а обязательства тянутся два года. Если клиент уйдёт через год, технически придётся возвращать деньги. Лучше продавать результат со сроком: например, 300 000 ₽ за полгода. Групповую работу — по 30–45 тысяч, индивидуальную — дороже.</div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитата ментора</div>
+      <div class="quote"><div class="quote-text">«Вы врёте либо в клиенте, либо в оффере».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=14240s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:57:20"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:57:20</a><span> · ментор по мышлению</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Если вы сами не верите в оффер, клиент это почувствует. Проверка на «сходится ли клиент с ценой» занимает минуту и спасает от долгих обязательств за маленькие деньги.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Дешёвые и дорогие деньги. Результат вместо времени, дедлайн, скидки, апселл" data-pp-short="Тема 13" id="t13">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #13</div><div class="topic-title">Дешёвые и дорогие деньги. Результат вместо времени, дедлайн, скидки, апселл</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=15180s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:13"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:13 – 04:39</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Деньги бывают дешёвыми и дорогими. Скидка, демпинг, кредит дают деньги сразу, но потом за них приходится долго расплачиваться работой. Оффер усиливают тем, что для клиента ценно, а вам почти ничего не стоит. Продают результат, за который платят независимо от числа встреч. В договоре ставят срок. Скидки используют, чтобы человек решил быстрее.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Контекст и детали</div>
+      <div class="details">
+        <div class="detail"><span><strong>Дорогие деньги.</strong> Если продать группу вместо 45 000 за 5 000 ₽, может прийти сто человек и 5 миллионов сразу. Но с этими людьми потом год работать за очень маленькие деньги. Ипотека устроена так же: квартира сейчас, переплата потом.</span></div>
+        <div class="detail"><span><strong>Как усилить оффер без скидки.</strong> Кондитер может продавать торт дешевле и печь больше. А может оставить цену и добавить то, что для клиента ценно, а ему почти ничего не стоит. Ментор привёл пример: к личной работе добавить сессию с коллегой-экспертом, пару массажей, свой лендинг (одностраничный сайт), контакты нужных специалистов, накопленные за 20 лет инструкции.</span></div>
+        <div class="detail"><span><strong>Продавайте результат, а не время.</strong> Помесячная оплата — это продажа времени. Если вы решили задачу за три встречи, результат стоит столько же. Бизнесмен думает так: решишь за одну встречу — гений. Пример ментора: клиентка купила одну консультацию за 100 000 ₽, после неё сделала продаж на 20 000 долларов, потом взяла три месяца работы за миллион, затем ещё на 5 миллионов и выросла с 3 000 до 200 000 евро.</span></div>
+        <div class="detail"><span><strong>Дедлайн.</strong> У подарочного сертификата есть срок, и у вашего договора он тоже нужен. Иначе клиент пропадёт на год и вернётся, когда вы уже стоите в разы дороже. По словам ментора, 90% конфликтов возникают из-за ожиданий, о которых не договорились заранее.</span></div>
+        <div class="detail"><span><strong>Скидки.</strong> Они не влияют на решение работать с вами, только на скорость решения. Им нужна причина «почему сегодня». Пример: «работать хочу, но сейчас трудно с деньгами» — «тогда рассрочка по 30 000 в месяц, в сумме выйдет 120 000 вместо 100 000, но начать можно сегодня».</span></div>
+        <div class="detail"><span><strong>Бесплатный апселл.</strong> Есть три пакета: 30, 45 и 80 тысяч. Кто покупает сегодня, получает следующий пакет: берёт за 30 — получает за 45. Работает безотказно, но увеличивает нагрузку, поэтому ментор делает так нечасто.</span></div>
+        <div class="detail"><span>Если срок у клиента сгорел, ему можно продать новую работу по новой цене и с бонусом за то, что он уже ваш клиент.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Говорить на языке клиента</div>
+      <div class="details">
+        <div class="detail"><span>Ученица предложила оффер про «вдохновение». Ментор несколько раз спросил: зачем оно клиенту? Большинство живёт без вдохновения и не понимает, что это. Нужно назвать, к чему оно приводит на его языке: снова зарабатывать много денег.</span></div>
+        <div class="detail"><span>Формула любого оффера: кто я, что делаю, для кого, зачем им это.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитаты ментора</div>
+      <div class="quote"><div class="quote-text">«Хороший предприниматель делает дешевые деньги. Как получить доллар за 90 центов? Это выгодно. Поэтому мы свои офферы усиливаем не демпингуя свою внутреннюю маржинальность, а добавляя надбавочную ценность».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=15281s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:14:41"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:14:41</a><span> · ментор по мышлению</span></div></div>
+      <div class="quote"><div class="quote-text">«Помесячно ты продаешь время, а тебе надо продавать не время».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=15836s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:23:56"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:23:56</a><span> · ментор по мышлению</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Снизить цену легко, поднять обратно трудно. Добавленная ценность и продажа результата сохраняют ваш доход и время.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Разбор оффера: цена через выгоду клиента и клуб как следующий продукт" data-pp-short="Тема 14" id="t14">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #14</div><div class="topic-title">Разбор оффера: цена через выгоду клиента и клуб как следующий продукт</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=16740s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:39"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:39 – 05:00</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Разобрали оффер участника, который помогает топ-менеджерам. Цену проверяют через выгоду клиента: окупится ли она, если результат будет. Результат формулируют как событие в жизни клиента: что изменится после вашей работы. После результата можно продать следующий продукт, например клуб.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Контекст и детали</div>
+      <div class="details">
+        <div class="detail"><span>Клиент: топ-менеджер компании с оборотом от 1 до 10 миллиардов рублей, которого повысили на новое направление. Акционеры давят, в новом направлении он пока разбирается слабо. Доход — около 1,5 миллиона в месяц.</span></div>
+        <div class="detail"><span>Сначала участник сказал «сопровождаю три месяца». Ментор спросил про результат. Итог: «помогаю защитить стратегию перед советом директоров и получить одобрение бюджета за три месяца».</span></div>
+        <div class="detail"><span>Цена 600 000 ₽ за три месяца — около 40% его месячного дохода. Она окупится, если благодаря работе он продержится на должности хотя бы на месяц дольше. Про бонусы и бюджет можно даже не говорить.</span></div>
+        <div class="detail"><span>Следующий продукт: встречи раз в квартал. Если таких клиентов 50, их можно собирать вместе — клуб топ-менеджеров с продлением членства раз в год.</span></div>
+        <div class="detail"><span><strong>Когда писать «без…».</strong> Когда убираете действия, которые клиенту неприятны: «вырасти в доходе без съёмки новых Reels и без новой аудитории».</span></div>
+        <div class="detail"><span><strong>Когда объяснять механику.</strong> Когда обещание звучит подозрительно сладко: «доход ×3 за 30 дней» вызывает недоверие, а «…купив малоизвестные акции» вызывает интерес — появляется, на чём держится обещание.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Заменят ли нейросети эксперта</div>
+      <div class="details">
+        <div class="detail"><span>Участник боялся, что люди получат советы от нейросети без живого специалиста. Ментор по мышлению вспомнил, как десять лет учил собирать лендинг за день на готовых конструкторах. Инструменты были у всех, но почти никто не справлялся: ошибались в дизайне, шрифтах, смыслах и структуре.</span></div>
+        <div class="detail"><span>С нейросетями то же самое. Задача состоит из трёх частей: понять проблему, выполнить, проверить результат. Нейросети можно поручить только выполнение. Если вы не понимаете, что хотите получить, вы не заметите, что результат плохой.</span></div>
+        <div class="detail"><span>Вам кажется, что ваш навык доступен всем, потому что для вас он обычный. Это искажение: большинство людей в вашей теме не разбирается, за это вам и платят.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитата ментора</div>
+      <div class="quote"><div class="quote-text">«Нейронкам можно делегировать только руки, исполнение. Вместо того, чтобы самому сидеть рисовать, пусть нарисуют за меня, но я знаю, что хочу».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=17827s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:57:07"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:57:07</a><span> · ментор по мышлению</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Когда цена сравнивается с тем, что клиент получает или теряет, большая сумма перестаёт казаться большой и вам, и ему.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Продажа за один час и закон цифр" data-pp-short="Тема 15" id="t15">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #15</div><div class="topic-title">Продажа за один час и закон цифр</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=18060s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 05:01"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>05:01 – 05:50</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Главное задание дня: за 60 минут получить деньги на счёт, лучше всего — протестировав новый оффер. Кто продал, увидел, что продавать можно. Кто не продал, получил обратную связь о своём предложении. Разбор показал: чаще всего не продают, потому что разрешили себе остановиться. Продажи подчиняются закону цифр: результат зависит от количества попыток.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Задание</div>
+      <div class="details">
+        <div class="detail"><span>60 минут. Можно звонить и писать в Telegram, отправлять СМС, публиковать сторис, делать рассылку по базе, продавать любой продукт, даже старый.</span></div>
+        <div class="detail"><span>Подтверждение — скриншот из банка или фото с деньгами. Кто продаст на самую большую сумму, получает шесть месяцев клуба в подарок.</span></div>
+        <div class="detail"><span>Сделали одну продажу — не останавливайтесь. Самые сильные выводы приходят, когда думаешь, что ещё можно продать.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Почему не получилось и что с этим делать</div>
+      <div class="details">
+        <div class="detail"><span>Одна участница провела 12 разговоров и не продала. Она предлагала сессию и в подарок дорогой курс. Вывод: курс не дал причины купить именно сейчас. После первых трёх отказов нужно было менять оффер.</span></div>
+        <div class="detail"><span>Ментор по мышлению: не продаёт тот, кто разрешил себе этот вариант. Фразы «не умею», «не знаю» он попросил заменить на «научусь»: «не умею» становится оправданием, почему это не для вас.</span></div>
+        <div class="detail"><span>Не романтизируйте своё положение. Многим кажется, что они давно заслужили успех, но их обычный день не похож на день успешного человека. Великие спортсмены тренируются между играми больше всех.</span></div>
+        <div class="detail"><span>Пример: у человека, который видит маму раз в год, при средней продолжительности жизни осталось около 12 встреч. Времени меньше, чем кажется.</span></div>
+        <div class="detail"><span>Ментор напомнил, что даже у него 70 разговоров из 100 заканчиваются отказом, а из 20 новых проектов 15 оказываются убыточными.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>Закон цифр</div>
+      <div class="calc">
+        <div class="calc-row"><span>Закрываете каждую третью сделку, нужно 10 продаж</span><b>30 звонков</b></div>
+        <div class="calc-row"><span>Закрываете каждую десятую, нужно 10 продаж</span><b>100 звонков</b></div>
+        <div class="calc-note">История из книги Роберта Кийосаки «Богатый папа, бедный папа»: мальчик продавал зубную пасту по квартирам, и его часто прогоняли. Он посчитал, что каждый стук в дверь в среднем приносит 14 центов, неважно, откроют или нет. После этого отказы перестали его ранить: оставалось просто стучать.</div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Даже бесплатное проходит воронку</div>
+      <div class="details">
+        <div class="detail"><span>Ментор по мышлению однажды искал на улице человека, чтобы бесплатно свозить его в Париж на два дня. Час подходил к людям — никто не согласился. Потом ещё три часа стоял с плакатом «Везу бесплатно в Париж», пока не нашёлся один человек. Люди боятся даже бесплатного предложения.</span></div>
+        <div class="detail"><span>Первое правило любого старта — сообщить всем. В вашем телефоне тысячи контактов, которые не знают, чем вы теперь занимаетесь. Среди них и их друзей есть те, кому это нужно.</span></div>
+        <div class="detail"><span>Если трудно звонить малознакомым: худшее, что вы услышите, — «неинтересно» или «неудобно». Ваш звонок может оказаться тем знаком, которого человек ждал. Не решайте за людей, нужно им или нет.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Что получилось у участников</div>
+      <div class="details">
+        <div class="detail"><span>Одна участница за 30 минут разговора продала трёхмесячное сопровождение проекта на 3 000 франков, пришла предоплата 10%.</span></div>
+        <div class="detail"><span>Ученица-репетитор заработала 37 000 ₽: продала абонемент клиенту, который сам предлагал так заплатить, и подготовку к международному экзамену IELTS бывшей ученице. Этих денег хватило, чтобы в тот же день снять квартиру.</span></div>
+        <div class="detail"><span>Участница, которая утром говорила, что за 8 000 ₽ продать невозможно, прислала чек на 8 000 ₽. Участница с целью 300 000 ₽ в месяц заработала 14 500 ₽ — 5% цели в первый же день.</span></div>
+        <div class="detail"><span>Ещё одна участница продала мужу, который раньше говорил, что за её практики платить не будет. Ему понравился новый оффер.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитаты ментора</div>
+      <div class="quote"><div class="quote-text">«Не продать можно только в том случае, если у тебя эта функция разрешена».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=18504s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 05:08:24"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>05:08:24</a><span> · ментор по мышлению</span></div></div>
+      <div class="quote"><div class="quote-text">«И мне понадобилось еще три часа стоять с плакатом, чтобы найти одного человека, кто согласился полететь. Вот у меня бесплатная услуга, и все равно есть воронка».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=19981s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 05:33:01"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>05:33:01</a><span> · ментор по мышлению</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Час живых продаж показывает, как рынок реагирует на ваш оффер. Каждый отказ подсказывает, что поменять в следующей версии.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Воронка продаж и ключевой этап: на какое «свидание» позвать клиента" data-pp-short="Тема 16" id="t16">
+<div class="topic">
+    <div class="topic-hdr">
+      <div><div class="topic-num">Тема #16</div><div class="topic-title">Воронка продаж и ключевой этап: на какое «свидание» позвать клиента</div></div>
+      <div class="topic-time-w"><a class="topic-time" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=21000s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 05:50"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>05:50 – 06:57</a></div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Суть</div>
+      <div class="tsec-body">Любой бизнес держится на трёх частях: продукт, продажа и трафик. Трафик — поток людей, которые о вас узнают. Предложение «купите» сразу работает только на тёплых, кто вас давно знает. Остальным нужен шаг перед покупкой — ключевой этап воронки: событие, на котором человек получает пользу и решает купить следующий шаг. Приглашение на него должно быть таким, чтобы за него хотелось заплатить.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Стрелочка, кружочек, квадратик</div>
+      <div class="details">
+        <div class="detail"><span><strong>Квадратик — продукт.</strong> Кто вы, с кем работаете, что предлагаете. Большую часть дня занимались именно им.</span></div>
+        <div class="detail"><span><strong>Кружочек — продажа.</strong> То, что пробовали сделать за час.</span></div>
+        <div class="detail"><span><strong>Стрелочка — трафик.</strong> Откуда приходят люди: записная книжка, город, интернет.</span></div>
+        <div class="detail"><span>Если нет хотя бы одной части, денег нет.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.1 5.9 9.9 3.8a2 2 0 0 0-1.8 0L3.6 6.1A1 1 0 0 0 3 7v12.4a1 1 0 0 0 1.4.9l4.7-2.4a2 2 0 0 1 1.8 0l4.2 2.1a2 2 0 0 0 1.8 0l4.5-2.3a1 1 0 0 0 .6-.9V4.6a1 1 0 0 0-1.4-.9l-4.7 2.4a2 2 0 0 1-1.8 0z"/><path d="M15 5.8v15"/><path d="M9 3.2v15"/></svg>Воронка на примере свадьбы</div>
+      <div class="funnel"><div class="fn-row"><div class="fn-l">Знакомство</div><div class="fn-bar"><span class="fn-fill" style="width:100%"></span><b>50</b></div></div><div class="fn-row"><div class="fn-l">Свидание</div><div class="fn-bar"><span class="fn-fill" style="width:60%"></span><b>30</b></div></div><div class="fn-row"><div class="fn-l">С друзьями</div><div class="fn-bar"><span class="fn-fill" style="width:30%"></span><b>15</b></div></div><div class="fn-row"><div class="fn-l">С родителями</div><div class="fn-bar"><span class="fn-fill" style="width:12%"></span><b>6</b></div></div><div class="fn-row"><div class="fn-l">Жить вместе</div><div class="fn-bar"><span class="fn-fill fn-g" style="width:8%"></span><b>4</b></div></div><div class="fn-row"><div class="fn-l">Предложение</div><div class="fn-bar"><span class="fn-fill fn-g" style="width:4%"></span><b>2</b></div></div><div class="fn-row"><div class="fn-l fn-lg">Свадьба</div><div class="fn-bar"><span class="fn-fill fn-gg" style="width:3%"></span><b>1</b></div></div></div>
+      <div class="fig-cap" style="margin-top:10px;">Ментор нарисовал путь от знакомства до свадьбы и показал, что на каждом шаге людей становится меньше. Это и есть воронка. Цифры условные. Продажа устроена так же: сначала знакомство, потом событие, которое вызывает доверие, и только потом предложение.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Ключевой этап воронки</div>
+      <div class="details">
+        <div class="detail"><span><strong>Пример с гитарой.</strong> Ментор увидел объявление: «Приходите на первое бесплатное занятие, на котором мы сыграем вашу любимую песню». Преподаватель показал три аккорда и подыгрывал, и возникло ощущение: «у меня получается». После этого продал абонемент. Такое событие нужно продумать как сценарий.</span></div>
+        <div class="detail"><span><strong>Какими бывают КЭВ:</strong> разбор, диагностика, звонок, закрытый Zoom, встреча, киноклуб, медитация, расстановка, трансформационная игра, стратегическая сессия, пробный урок, бесплатный семинар, демонстрация «до и после».</span></div>
+        <div class="detail"><span>На КЭВ вы продаёте следующий шаг. Энергосеанс, после которого ничего не предлагают, ключевым этапом не становится.</span></div>
+        <div class="detail"><span>Массажистке, которая обучает других массажистов, подойдёт бесплатный семинар: показать часть техники, а полностью — на платном мастер-классе, дальше большой продукт.</span></div>
+        <div class="detail"><span>Сетевой бизнес давно использует демонстрацию: половину грязной монеты протирают средством, и она сразу чистая. Покажите своё «до и после»: было непонятно и тяжело, стало понятно и легко.</span></div>
+      </div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.44 7.85c-.49.49-.49 1.27 0 1.76l.42.42a2.4 2.4 0 0 1 0 3.4l-1.62 1.6c-.47.48-1.2.48-1.68 0a2.31 2.31 0 1 0-3.26 3.27c.48.48.48 1.2 0 1.68l-1.6 1.62a2.4 2.4 0 0 1-3.4 0l-1.6-1.62a1.17 1.17 0 0 0-1.69 0 2.31 2.31 0 1 1-3.27-3.27c.48-.47.48-1.2 0-1.68l-1.6-1.6a2.4 2.4 0 0 1 0-3.4l1.6-1.6c.48-.48 1.2-.48 1.69 0a2.31 2.31 0 1 0 3.26-3.27 1.17 1.17 0 0 1 0-1.68l1.6-1.62a2.4 2.4 0 0 1 3.4 0l1.62 1.62c.47.47 1.25.47 1.73 0a2.31 2.31 0 1 1 3.27 3.27z"/></svg>Как собрать приглашение на КЭВ</div>
+      <div class="steps">
+        <div class="step"><span><strong>Назовите событие.</strong> «Приглашаю на 30-минутный разбор», «на часовую стратегическую сессию», «на бесплатный пробный урок».</span></div>
+        <div class="step"><span><strong>Скажите, что человек получит.</strong> Результат или план («поймёшь, как за два месяца избавиться от прыщей»), эмоции («почувствуешь облегчение, что с этим можно работать») или знакомство с вашей технологией.</span></div>
+        <div class="step"><span><strong>Говорите о боли словами клиента.</strong> Ученица-психосоматолог написала: «устранить первопричину болезни». Ментор предложил по-другому: «сходил к десяти врачам, мне не объяснили, что происходит, дают аспирин, а становится хуже». Не упрекайте клиента («он выбирает болеть»), иначе он решит, что вы считаете его глупым.</span></div>
+        <div class="step"><span><strong>Проверьте на людях.</strong> Одна участница прочитала группе приглашение на трансформационную игру. Поставили плюсы и минусы, спросили, кто что услышал, и одна участница была готова заплатить 1 000 ₽ прямо сейчас. Если вы живёте за рубежом и работаете с русскоязычными клиентами, заранее настройте приём оплат из России.</span></div>
+      </div>
+      <div class="calc-note" style="margin-top:10px;">Пример самого «Моего оффера» как КЭВ: сервис обещает упаковать оффер за 15 минут. Внутри вы получаете результат (оффер и план на 30, 60, 90 дней), эмоции (мысли наконец разложены по полочкам) и знакомство с технологией. После этого предлагают реализовать план вместе.</div>
+    </div>
+    <div class="tsec">
+      <div class="tsec-lbl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Цитаты ментора</div>
+      <div class="quote"><div class="quote-text">«Ключевой этап воронки — то есть событие, после которого происходит продажа. Яркое событие, которое приводит к сделке и сильнее всего влияет на конечный результат».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=22236s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 06:10:36"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>06:10:36</a><span> · ментор по инструментам</span></div></div>
+      <div class="quote"><div class="quote-text">«Мы приглашали людей и тестировали разные офферы, чтобы люди у нас купили. Из 47 раза мы записали такой вебинар, после которого люди начали покупать, и мы полтора года больше вообще ничего не делали».</div><div class="quote-time"><a class="tc" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=24898s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 06:54:58"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>06:54:58</a><span> · ментор по инструментам</span></div></div>
+    </div>
+    <div class="tsec" style="margin-bottom:0;">
+      <div class="tsec-lbl"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Почему это важно</div>
+      <div class="why">Оффер складывается после многих попыток. По словам ментора, сильное предложение появляется примерно после 30 откликов от вашей целевой аудитории.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Вопросы: модели, гарантии, контент" data-pp-short="Вопросы 1" id="qa">
+<div class="sec-label">Разбор вопросов</div>
+  <div class="sec-title"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Вопросы и ответы</div>
+  <div style="font-size:13px;color:var(--tfnt);margin-bottom:4px;">Сгруппировано по темам, а не по порядку в записи</div>
+
+  
+<div class="qa-group-lbl">Тема: модели и гарантии</div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=3180s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:53"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:53</a><span class="qa-qtext">Я духовный проводник и психолог, результат у меня мягкий. Мне тогда подходит только регулярное сопровождение, а не трансформация под ключ?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Подходят обе модели. В мягких нишах нельзя обещать точный срок, потому что часть работы делает клиент. Можно сказать, за сколько в среднем справляются ваши клиенты, и описать программу из определённого числа встреч. Обещание вроде «выйдешь замуж» нарушает закон о рекламе.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Называйте срок, за который в среднем справляются ваши клиенты.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученик</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=3300s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:55"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:55</a><span class="qa-qtext">Можно ли в третьей модели обещать результат и не ограничивать число встреч?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Можно. Гарантия результата — ваш риск как предпринимателя: если не получится, придётся вернуть деньги или работать дольше. Это нужно заложить в цену. Зато такой оффер привлекает тех, кто сомневается. Можно добавить и обратную мотивацию: быстрее дошли до результата — возвращаете часть денег. Главное — не уйти в минус.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Гарантия усиливает оффер, но её стоимость нужно заранее посчитать.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученик</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=3660s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:01"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:01</a><span class="qa-qtext">Я продаю таблицу для селлеров разово. Как выйти из модели «реаниматолога»?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Таблица — это диагностика, как натальная карта: показывает, где в бизнесе хорошо и где плохо. После неё предлагаете путь к результату: всё зелёное, а работать меньше. Три этапа: добавить данные о бизнесе, научить влиять на показатели, автоматизировать это с помощью ИИ. Можно идти через регулярное сопровождение к трансформации под ключ или к подписке на сервис.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Разовая услуга становится первым шагом, если после неё предлагают путь к результату.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=4020s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:07"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:07</a><span class="qa-qtext">Я продаю три месяца: месяц на отношения, месяц на самооценку, месяц на детей. Это уже третья модель?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Это продажа процесса. Холодному клиенту сначала нужно поверить, что ему всё это нужно. Легче определить с ним самую важную проблему, сделать под неё программу и договориться, по какому признаку он поймёт, что результат есть. Потом предложить следующий шаг.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Короткий путь к одному результату продаётся легче, чем длинный маршрут по многим темам.</span></div>
+  </div>
+
+  <div class="qa-group-lbl">Тема: контент и живые встречи</div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=5220s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:27"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:27</a><span class="qa-qtext">Сколько нужно подписчиков, чтобы начинать делать контент?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Ментор ответил метафорой про коромысло и колодец. Контент — это колодец, его копают долго. Сначала научитесь продавать ближним кругам, чтобы деньги были каждый день, и параллельно понемногу копайте. Соцсетями в программе начинают заниматься на третьей неделе.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Контент начинают, когда уже есть продажи ближнему кругу.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=5640s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:34"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:34</a><span class="qa-qtext">По семейным обстоятельствам мне трудно выходить из дома. Можно пропустить живые встречи и сразу работать онлайн?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Можно, но конверсия будет ниже: чем меньше человек вас знает и видит, тем реже покупает. Значит, понадобится более сильный оффер и больше времени с каждым человеком. Сначала проверьте, действительно ли это препятствие. Одна участница прошлого потока наняла няню на три часа, заработала за это время на няню и потом начала расти. С причинами внутри себя ментор предложил поработать с ментором по мышлению.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Перескочить круг можно, но за это платят более низкой конверсией.</span></div>
+  </div>
+
+  
+</div>
+
+<div class="pg" data-pp-page="Вопросы: расчёты и цена" data-pp-short="Вопросы 2" id="qa2">
+<div class="sec-label">Вопросы и ответы · 2 из 3</div>
+<div class="qa-group-lbl">Тема: расчёты и цена</div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=1080s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 00:18"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>00:18</a><span class="qa-qtext">Как считать средний чек: по доходу или по обороту?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">По обороту: всё, что пришло, делите на количество чеков. Если нужно понять, сколько приносит один клиент, делите на количество клиентов.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Средний чек — оборот, делённый на число продаж.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=6600s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 01:50"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>01:50</a><span class="qa-qtext">Кто мне будет платить 20 тысяч в месяц за консультации? Скажут, что дорого.</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">На этом шаге об этом не думаем: сначала считаем цифры, как в любом бизнесе. Кто заплатит и за что — вопрос оффера, к нему перешли позже.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Сначала расчёт, потом поиск клиентов под эту цену.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=7620s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:07"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:07</a><span class="qa-qtext">У меня нет клиентов по 8 000 ₽, максимум по 3 000 ₽. Где их взять?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Это второй вопрос, и он решается оффером. Сначала признайте, что при 3 000 ₽ за час до цели не дойти без выгорания. Значит, нужно найти проблему, за решение которой платят 32 000 ₽ в месяц, и людей с этой проблемой. Или поменять формат на групповой, или снизить цель.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Если нынешний чек не ведёт к цели, ищут другую проблему или формат. Часов больше не станет.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=8460s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:21"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:21</a><span class="qa-qtext">Можно оставить нынешнюю цену 1 500 € за индивидуальную работу и добрать доход группами?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Можно, но тогда людей нужно больше и в индивидуальной работе, и в группах, а часов станет не 12, а около 16 — это выгорание. Оптимально поднять индивидуальную цену до 2 500 € и держать две цены: индивидуально 2 500 €, в группе 500 €.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Дешёвая индивидуальная работа съедает время, которое нужно группам.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=9780s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 02:43"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>02:43</a><span class="qa-qtext">Моя сильная сторона — работа один на один. Как это делегировать?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">К этому идут постепенно: индивидуальная работа, потом мини-группа, потом кураторы и записи, потом курс. На каждую ступень уходит от трёх месяцев до года, пока вы не уверены в своём методе. Кураторы ведут часть занятий, а вы остаётесь в ключевых точках программы.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Делегировать начинают с повторяющихся тем.</span></div>
+  </div>
+
+  
+</div>
+
+<div class="pg" data-pp-page="Вопросы: аудитория, оффер, продажи" data-pp-short="Вопросы 3" id="qa3">
+<div class="sec-label">Вопросы и ответы · 3 из 3</div>
+<div class="qa-group-lbl">Тема: аудитория и оффер</div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=11580s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:13"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:13</a><span class="qa-qtext">Мне ближе пятый и седьмой сегменты, их больше по количеству. Почему не взять их?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Вернитесь к расчёту: сколько клиентов вам нужно в месяц? Для личной работы нужны единицы. Зачем идти туда, где тысячи людей, но боль слабее? Для мини-групп и курсов большая аудитория пригодится позже. Сейчас выбирайте один сегмент, на каждый нужен свой оффер.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Аудиторию выбирают под свой расчёт: сколько клиентов вам нужно.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=12480s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:28"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:28</a><span class="qa-qtext">Бюджета на привлечение нет. Писать ноль?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Ноль ментор советовал оставить только на крайний случай. Бюджет — это и участие в фестивале, и поездка, и купленный курс или клуб, где вы знакомитесь с людьми. Подробнее об этом говорили в теме о воронке.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Деньги, чтобы оказаться рядом с клиентами, — тоже бюджет на привлечение.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=13620s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 03:47"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>03:47</a><span class="qa-qtext">Частные преподаватели сильно демпингуют. Как с ними конкурировать?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Клиент не разбирается в теме и сравнивает только цену, пока ему не объяснили разницу. Расскажите о свойствах вашей услуги, и появится причина платить больше. Кто ставит 500 рублей, работает с теми, для кого и 500 уже дорого.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Объясните, за что платят больше, иначе выберут по цене.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученик</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=16140s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:29"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:29</a><span class="qa-qtext">Клиент не выполнил свою часть, срок прошёл, деньги сгорели. Можно ли продать ему снова?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Да. Предложите новую работу по новой цене и с бонусом за то, что он уже ваш клиент. Ментор привёл пример: предприниматель потерял деньги инвесторов, предложил им вложиться в новый проект, чтобы вернуть прежнее, и многие соглашаются.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Клиенту со сгоревшим сроком можно продать заново.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученик</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=16260s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:31"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:31</a><span class="qa-qtext">А скидку давать можно?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Можно. Скидка ускоряет решение, но не убеждает работать с вами. Поэтому у неё должна быть причина «почему сегодня»: оплата сегодня, рассрочка, бонус до определённой даты. Снижать цену на просьбу «давай за 80 вместо 100» бессмысленно.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Скидка помогает человеку решить сегодня.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученик</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=17640s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 04:54"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>04:54</a><span class="qa-qtext">Я сам пользуюсь топовыми нейросетями и боюсь, что клиенты получат советы без живого человека.</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Инструменты доступны всем, но пользоваться ими умеют немногие. Нейросеть выполняет, но не понимает задачу и не проверяет результат. По оценке ментора, нейросетями пользуется меньше 5% людей, и большинство из них — как поиском. Ваш опыт позволяет понять, где нейросеть ошиблась, у клиентов такого опыта нет.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">Нейросеть выполняет. Понять задачу и проверить результат может только специалист.</span></div>
+  </div>
+
+  <div class="qa-group-lbl">Тема: продажи</div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученик</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=20220s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 05:37"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>05:37</a><span class="qa-qtext">Мой оффер точно не продаётся за час. Полчаса думал, что вообще можно продать, и ничего не продал.</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Мешает излишнее обдумывание. Когда ментор впервые делал такое упражнение, он заработал за ночь 43 000 долларов. Другой участник за ночь привлёк 10 000 долларов инвестиций в проект, который давно откладывал: он просто обзвонил знакомых и приехал к одному предпринимателю домой. Безумцев любят.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">В таком задании мешают размышления. Помогают звонки.</span></div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-badge">Ученица</span><a class="qa-qtime" href="https://www.youtube.com/watch?v=ECNe0G7qjso&amp;t=23700s" target="_blank" rel="noopener noreferrer" title="Открыть запись с 06:35"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>06:35</a><span class="qa-qtext">Можно ещё раз: что такое КЭВ?</span></div>
+    <div class="qa-albl"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Ответ ментора</div>
+    <div class="qa-atext">Ключевой этап воронки — событие, после которого происходит продажа: диагностика, разбор, мероприятие. На нём человек получает пользу и решает купить следующий шаг.</div>
+    <div class="qa-insight"><span class="qa-insight-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="qa-insight-text">КЭВ — это место, где вы продаёте следующий шаг.</span></div>
+  </div>
+</div>
+
+<div class="pg" data-pp-page="Задание и итоги" data-pp-short="Итоги" id="fin">
+<div class="sec-label">Что дальше</div>
+  <div class="sec-title"><svg class="ic b" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/></svg>Задание недели и план программы</div>
+  <div class="task">
+    <div class="task-t">Задание первой недели</div>
+    <p>Провести созвоны с потенциальными клиентами без цели продать (ментор назвал около десяти). Задача — понять, чего люди хотят, чего боятся и что им мешает, чтобы потом легко говорить свой оффер и приглашение на КЭВ. Подробности, аудио от ментора и подсказки к созвонам — на платформе.</p>
+    <p><strong>Четыре недели — четыре задания.</strong> 1-я: позиционирование и оффер. 2-я: продажи. 3-я: соцсети. 4-я: источники трафика. Задание недели открывается в воскресенье, дополнительные задания — каждый день.</p>
+    <p><strong>Встречи</strong> — по средам вечером, примерно в 18:00, около двух часов. <strong>VIP</strong> — ещё и по пятницам в 16:00: каждого разбирают лично 30–60 минут, приносить можно всё — страхи, оффер, структуру группы, скрипт продажи. Вопросы по платформе — куратору в общий чат.</p>
+    <p>Под конец ментор по мышлению напомнил: предприниматели бывают идейными, системными и продающими, и на старте придётся научиться всем трём ролям. Делегировать их можно, когда появится бюджет.</p>
+  </div>
+<div class="sec-label">Запомнить и применять</div>
+  <div class="sec-title"><svg class="ic g" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>Итоговые принципы сессии</div>
+  <div class="principles">
+    <div class="principle"><div class="p-num">1</div><div class="p-text"><strong>Сначала считайте.</strong> Точка А, точка Б, число клиентов, часы и цена часа показывают, подходит ли ваша модель для цели.</div></div>
+    <div class="principle"><div class="p-num">2</div><div class="p-text">Разовая помощь — только <strong>вход</strong>. Деньги приносят регулярное сопровождение и результат под ключ.</div></div>
+    <div class="principle"><div class="p-num">3</div><div class="p-text">Работайте с клиентами не больше <strong>12 часов в неделю</strong>. Если цифры не сходятся, меняйте модель, цену или формат.</div></div>
+    <div class="principle"><div class="p-num">4</div><div class="p-text">Ищите клиентов <strong>по кругам</strong>: записная книжка, город, онлайн-сообщества и только потом контент.</div></div>
+    <div class="principle"><div class="p-num">5</div><div class="p-text"><strong>Одна аудитория — один оффер</strong>, словами клиента. Лучше всего покупают те, у кого сильная боль, срочность и деньги.</div></div>
+    <div class="principle"><div class="p-num">6</div><div class="p-text">Добавляйте ценность вместо скидки и продавайте <strong>результат со сроком</strong>.</div></div>
+    <div class="principle"><div class="p-num">7</div><div class="p-text">Оффер проверяют <strong>разговорами с людьми</strong>. Отказ показывает, что поменять в следующей версии.</div></div>
+  </div>
+<div class="svc">
+  <div class="svc-lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Сервисы с практикума</div>
+  <a class="svc-btn" href="https://telegram.me/freemen_alliance_bot?start=test_expert_turubarov_tg" target="_blank" rel="noopener noreferrer"><span><b>Сервис «Мой оффер»</b><i>соберите оффер, как в теме #10</i></span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3"/></svg></a>
+  <a class="svc-btn" href="https://wearefree.club/vybor-nishi" target="_blank" rel="noopener noreferrer"><span><b>Сервис «Выбор ниши»</b><i>если ниша ещё не выбрана</i></span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3"/></svg></a>
+</div>
+<a class="to-insight" href="#blk-283825d6-d0ee-4d35-a671-94cb2b49ae74"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg>Поделитесь инсайтом о двух днях — поле ниже<svg class="ic go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+<div class="footer">
+    <div class="footer-brand">План Продюсера</div>
+    <div class="footer-meta">Конспект практикума · Поток 5 · 27 сентября 2026</div>
+  </div>
+  <div class="legal">Reels — формат соцсети Instagram*. *Meta Platforms Inc. (Instagram, Facebook, Threads, WhatsApp) признана экстремистской организацией и запрещена на территории РФ.</div>
+</div>
+</div>
+</body>
+</html>
