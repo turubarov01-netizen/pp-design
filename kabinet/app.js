@@ -593,7 +593,7 @@ function inside(id) {
     <div class="main">
       <div class="inside-top"><a class="back-btn" href="#/home">${ic("arrow")}В кабинет</a><b style="margin-left:4px">${esc(d.name)}</b></div>
       <main class="content fade-in">
-        <div class="inside-note"><b>Здесь откроется текущий кабинет продукта.</b> Слева только навигация этого продукта и кнопка «В кабинет». Меню клуба внутри продукта больше не показывается. Как продукт выглядит сейчас: <a class="link" href="${d.live}" target="_blank" rel="noopener">открыть на wearefree.club</a>.</div>
+        <div class="inside-note"><b>Здесь откроется текущий кабинет продукта.</b> В меню только навигация этого продукта и кнопка «В кабинет». Меню клуба внутри продукта больше не показывается. Как продукт выглядит сейчас: <a class="link" href="${d.live}" target="_blank" rel="noopener">открыть на wearefree.club</a>.</div>
         <h2 class="h-xl">${esc(d.name)}</h2>
         ${p && p.state === "trial" ? `<p class="sub">Гостевой доступ. Часть разделов открыта, остальные откроются с членством.</p>` : `<p class="sub">${p ? esc(p.progressLabel || "") : ""}</p>`}
         <section class="panel" style="margin-top:20px"><ul class="lesson-list">${lessons}</ul></section>
