@@ -359,9 +359,6 @@ function shell(active, title, body) {
     <aside class="side" aria-label="Меню кабинета">
       <a class="brand" href="#/home"><img src="img/context-alliance.png" alt=""><span><span class="brand-t">Личный кабинет</span><br><span class="brand-s">wearefree.club</span></span></a>
       ${items.map(([k, h, l, i, c]) => `<a class="nav-item" href="${h}" ${k === active ? 'aria-current="page"' : ""}>${ic(i)}<span>${l}</span>${c ? `<span class="count">${c}</span>` : ""}</a>`).join("")}
-      <div class="nav-sep"></div>
-      <div class="nav-label">Перейти в продукт</div>
-      ${u.products.map(p => `<a class="side-prod" href="#/p/${p.id}"><span class="dot" style="background:${PRODUCTS[p.id].color}"></span>${esc(PRODUCTS[p.id].name)}${p.state === "trial" ? '<span class="small" style="margin-left:auto">гость</span>' : ""}</a>`).join("")}
       <div class="side-foot"><a class="nav-item" href="#/login" data-logout>${ic("logout")}<span>Выйти</span></a></div>
     </aside>
     <div class="main">
@@ -454,10 +451,6 @@ function home() {
       </section>
     </div>
     <div class="home-col aside">
-      <section class="panel pad" aria-label="Мои продукты">
-        <div class="sec-head"><h2 class="h-md">Мои продукты</h2><a href="#/products">Все</a></div>
-        ${u.products.map(p => `<a class="mini-prod" href="#/p/${p.id}">${logo(p.id)}<span><span class="nm">${esc(PRODUCTS[p.id].name)}</span><br><span class="st ${p.state === "expiring" ? "st-warn" : p.state === "trial" ? "st-trial" : ""}">${p.state === "trial" ? "Гостевой доступ" : p.state === "expiring" ? `Осталось ${p.until} ${plural(p.until, "день", "дня", "дней")}` : `До ${until(p.until)}`}</span></span>${ic("chev", "chev")}</a>`).join("")}
-      </section>
       ${actPanel()}
       ${setupBlock("home")}
       <section class="panel pad" aria-label="Мой рост">
