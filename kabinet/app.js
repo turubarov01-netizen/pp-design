@@ -39,25 +39,27 @@ const P = {
   award: '<circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 7 5-3 5 3-1.5-7"/>',
   tool: '<path d="M14.7 6.3a4 4 0 0 0 5 5L21 13l-8 8-3-3 .5-2.5L8 13l-2.5.5-3-3 8-8z"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
   tg: '<path d="m21.5 4.5-19 7.3c-.9.4-.9 1.6 0 1.9l4.7 1.6 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.4 4.8 3.6c.6.4 1.4.1 1.5-.6L22.8 5.8c.2-.9-.6-1.6-1.3-1.3zM9 15.2l9-8.1"/>',
 };
 const ic = (n, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
 
 /* ---------- реестр продуктов: одна таблица, на неё опирается всё ---------- */
 const PRODUCTS = {
-  ii: { name: "ИИнструменты", kind: "Курс", color: "#f0542a", logo: "img/ii-mark.png",
+  ii: { name: "ИИнструменты", dat: "ИИнструментам", kind: "Курс", color: "#f0542a", logo: "img/ii-mark.png",
         about: "Курс: ИИ-инструменты для экспертов, два месяца доступа",
         landing: "https://wearefree.club/iinstrumenti/", live: "https://wearefree.club/campaigns/ii-instrumenty",
         nav: ["Программа", "Уроки", "Задания", "Рейтинг", "Магазин"] },
-  pp: { name: "План Продюсера", kind: "Программа", color: "#6d4bd8", logo: "img/context-producer.png",
+  pp: { name: "План Продюсера", dat: "Плану Продюсера", kind: "Программа", color: "#6d4bd8", logo: "img/context-producer.png",
         about: "Программа на 90 дней с Сашей и Игорем: от точки А к точке Б",
         landing: "https://wearefree.club/plan4", live: "https://wearefree.club/producer-plan",
         nav: ["Главная", "Маршрут", "Встречи", "Домашние задания", "Рюкзак", "Лагерь", "Магазин", "Чат потока"] },
-  mesto: { name: "Место притяжения", kind: "Челлендж", color: "#f07a2a", logo: "img/mesto-logo.webp",
+  mesto: { name: "Место притяжения", dat: "Месту притяжения", kind: "Челлендж", color: "#f07a2a", logo: "img/mesto-logo.webp",
         about: "Челлендж про соцсети: знания каждый день и практика",
         landing: "https://wearefree.club/mesto", live: "https://wearefree.club/campaigns",
         nav: ["Сегодня", "Отчёт", "Разборы", "Рейтинг"] },
-  fa: { name: "Freeman's Alliance", kind: "Клуб", color: "#c9a227", logo: "img/context-alliance.png",
+  fa: { name: "Freeman's Alliance", dat: "Freeman's Alliance", kind: "Клуб", color: "#c9a227", logo: "img/context-alliance.png",
         about: "Клуб предпринимателей: лента, участники, встречи, трекер и книжный клуб",
         landing: "https://wearefree.club/intro", live: "https://wearefree.club/",
         nav: ["Лента", "Участники", "Трекер", "Дневник роста", "Книжный клуб", "Календарь", "Кланы"] },
@@ -211,7 +213,7 @@ const PERSONAS = {
     products: [
       { id: "pp", state: "active", until: 62, progress: 0.46, cur: 6, progressLabel: "Неделя 6 из 13", next: "Групповая встреча сегодня в 19:00" },
       { id: "ii", state: "expiring", until: 6, progress: 0.85, cur: 12, progressLabel: "11 из 13 уроков", next: "Доступ закончится через 6 дней" },
-      { id: "mesto", state: "active", until: 9, progress: 0.57, cur: 4, progressLabel: "День 4 из 7", next: "Отчёт дня до 23:59" },
+      { id: "mesto", state: "expiring", until: 3, progress: 0.57, cur: 4, progressLabel: "День 4 из 7", next: "Отчёт дня до 23:59" },
       { id: "fa", state: "active", until: 210, progress: null, progressLabel: "Уровень «Бунтарь»", next: "Книжный клуб в среду в 20:00" },
     ],
     cont: { p: "mesto", title: "День 4. Как вести сторис каждый день", meta: "Видео 18 минут и короткий отчёт", progress: 0.2 },
@@ -489,19 +491,36 @@ const oracleBlock = () => { const o = ORACLE[S.persona]; if (!o || !o.on) return
     ? `<button class="oracle" type="button" title="На платформе откроется полная карта" aria-label="Карта дня: ${esc(o.card[1])}"><span class="or-sym" aria-hidden="true">${o.card[0]}</span><span class="or-t"><small>${ic("spark")}Карта дня</small><b>«${esc(o.card[1])}»</b><span>${esc(o.card[2])}</span></span>${ic("chev")}</button>`
     : `<button class="oracle fresh" type="button" data-oracle-draw><span class="or-sym" aria-hidden="true">${ic("spark")}</span><span class="or-t"><small>Оракул Фриманов</small><b>Ваше предсказание ждёт</b></span><span class="or-btn">Открыть</span></button>`; };
 
+// Конец доступа: за 7 дней — отдельная плашка над «Моим днём» по каждой программе (вместо строки в ленте).
+const accHidden = new Set();
+const accBanners = (u) => u.products.filter(x => (x.state === "active" || x.state === "expiring") && x.until != null && x.until <= 7 && !accHidden.has(S.persona + x.id)).sort((a, b) => a.until - b.until).map(x => {
+  const d = PRODUCTS[x.id], hot = x.until <= 3;
+  return `<div class="acc-ban ${hot ? "hot" : ""}" role="status">${pmark(x.id)}<div class="ab-t"><b>Доступ к ${esc(d.dat || d.name)} закончится ${x.until === 1 ? "завтра" : `через ${x.until} ${plural(x.until, "день", "дня", "дней")}`}</b><span>${until(x.until)} · ${esc(x.progressLabel)}</span></div>
+    <a class="btn ${hot ? "btn-primary" : "btn-soft"} btn-sm" href="${d.landing}" target="_blank" rel="noopener">Продлить</a><button class="icon-x" type="button" data-acc-hide="${x.id}" aria-label="Скрыть до завтра">${ic("x")}</button></div>`; }).join("").replace(/^(.+)$/s, '<div class="acc-bans">$1</div>');
+// Порядок внутри дня: сначала встречи сегодня и срочные сроки, потом остальные сроки, события и уроки; сделанное — вниз.
+const feedPrio = (x) => { if (x.done || doneSet.has(S.persona + x.i)) return 9;
+  if (x.type === "meeting") return x.d === 0 ? 0 : 2;
+  if (x.type === "deadline") return (x.urgent || dlAt(x) - Date.now() < HOT_MS) ? 1 : 3;
+  return x.type === "event" ? 4 : 5; };
+const hm = (t) => { const [h, m] = t.split(":"); return +h * 60 + +m; };
+
 function home() {
   const u = me();
   const now = new Date();
-  const list = u.feed.map((it, i) => ({ ...it, i }));
+  const list = u.feed.map((it, i) => ({ ...it, i })).filter(x => x.type !== "access");
   const shown = feedTab === "today" ? list.filter(x => x.d === 0) : list;
   const groups = {};
   shown.forEach(x => (groups[x.d] ||= []).push(x));
   const todayCount = list.filter(x => x.d === 0 && !x.done && !doneSet.has(S.persona + x.i)).length;
   const urgentCount = list.filter(x => x.urgent && !doneSet.has(S.persona + x.i)).length;
 
-  const feedHtml = Object.keys(groups).length ? Object.entries(groups).map(([d, arr]) => `
-    <div class="day-group"><p class="day-name">${dayTitle(+d)} <span>${dm(dAt(+d))}</span></p>
-      <ul class="feed">${arr.map(x => feedItem(x, x.i)).join("")}</ul></div>`).join("")
+  const feedHtml = Object.keys(groups).length ? Object.entries(groups).map(([d, arr]) => {
+    arr.sort((a, b) => feedPrio(a) - feedPrio(b) || hm(a.t) - hm(b.t));
+    const top = +d === 0 ? arr.filter(x => feedPrio(x) <= 1) : [], rest = arr.filter(x => !top.includes(x));
+    const split = top.length && rest.length;
+    return `<div class="day-group"><p class="day-name">${dayTitle(+d)} <span>${dm(dAt(+d))}</span></p>
+      ${split ? `<p class="feed-sub">Сначала важное</p>` : ""}<ul class="feed">${(split ? top : arr).map(x => feedItem(x, x.i)).join("")}</ul>
+      ${split ? `<p class="feed-sub">Ещё на сегодня</p><ul class="feed">${rest.map(x => feedItem(x, x.i)).join("")}</ul>` : ""}</div>`; }).join("")
     : `<div class="feed-empty"><b>На сегодня всё сделано</b>Загляните во вкладку «Неделя», чтобы подготовиться заранее.</div>`;
 
   const lives = u.lives != null ? `<div class="stat-line"><span class="ic2 wide" style="background:rgba(229,72,77,.1)"><span class="lives">${[0, 1, 2].map(i => `<svg viewBox="0 0 24 24" class="${i < u.lives ? "" : "off"}" stroke="currentColor" stroke-width="1.8">${P.heart}</svg>`).join("")}</span></span><div><div class="v">${u.lives} из 3</div><div class="l">жизни в Плане Продюсера</div></div></div>` : "";
@@ -511,6 +530,7 @@ function home() {
     <p class="small">${todayCount ? `На сегодня ${todayCount} ${plural(todayCount, "дело", "дела", "дел")}${urgentCount ? `, срочных ${urgentCount}` : ""}` : "На сегодня всё сделано"}</p></div>
   <div class="home" style="margin-top:20px">
     <div class="home-col">
+      ${accBanners(u)}
       <section class="panel pad" aria-label="Мой день">
         <div class="sec-head" style="align-items:center">
           <h2 class="h-lg">Мой день</h2>
@@ -551,10 +571,31 @@ const SETUP = {
   natalia: { miss: [], zveryok: true, wish: true },
 };
 const setupHidden = new Set();
+// Почта и Telegram: как на платформе (auth email_confirmed_at, повторная отправка не чаще раза в минуту; Telegram — только через бота).
+// Демо: у Марии почта не подтверждена и Telegram не подключён.
+const ACC = { maria: { mailOk: false, sent: "вчера в 18:40", tg: "none" }, olga: { mailOk: true, tg: "ok" }, andrey: { mailOk: true, tg: "ok" }, natalia: { mailOk: true, tg: "ok" } };
+const acc = () => ACC[S.persona] || { mailOk: true, tg: "ok" };
+let mailCool = 0, mailEdit = false, mailMsg = "";
+const DEMO_TG = { maria: "maria_sokolova" };
+const mailBlock = (u) => { const a = acc();
+  if (a.mailOk) return `<div class="conn">${ic("check")}<div style="flex:1"><b>${esc(u.email)}</b><div class="small">Подтверждена</div></div><button class="btn btn-ghost btn-sm" type="button" data-mail-edit>Поменять</button></div>${mailEdit ? mailEditForm(u) : ""}`;
+  const wait = mailCool > Date.now() ? Math.ceil((mailCool - Date.now()) / 1000) : 0;
+  return `<div class="mail-warn" role="status"><span class="mw-ic">${ic("mail")}</span><div style="flex:1;min-width:0"><b>${esc(u.email)}</b><span class="mw-st">Не подтверждена</span>
+      <p class="small">${mailMsg ? esc(mailMsg) : `Письмо со ссылкой отправили ${esc(a.sent)}. Откройте его — статус обновится сам. Нет письма — проверьте «Спам» и «Промоакции».`}</p>
+      <div class="mw-btns"><button class="btn btn-primary btn-sm" type="button" data-mail-resend ${wait ? "disabled" : ""}>${wait ? `Ещё раз через ${wait} с` : "Отправить ещё раз"}</button><button class="btn btn-ghost btn-sm" type="button" data-mail-edit>Поменять почту</button><button class="link-btn" type="button" data-mail-ok>Демо: я открыл письмо</button></div></div></div>${mailEdit ? mailEditForm(u) : ""}`; };
+const mailEditForm = (u) => `<form class="mail-edit" data-mail-form><div class="field"><label for="nm">Новая почта для входа</label><input id="nm" type="email" required placeholder="name@mail.ru" autocomplete="email"><div class="hint">Пришлём письмо на новый адрес. Пока не подтвердите, входить можно по старому.</div></div><div class="mw-btns"><button class="btn btn-primary btn-sm" type="submit">Отправить письмо</button><button class="btn btn-ghost btn-sm" type="button" data-mail-edit>Отмена</button></div></form>`;
+const tgBlock = (e) => { const a = acc(), nick = e.tgUser || DEMO_TG[S.persona];
+  if (a.tg === "ok") return `<div class="conn">${ic("check")}<div style="flex:1"><b>Подключён @${esc(nick)}</b><div class="small">Сюда приходят уведомления и вход по Telegram</div></div><button class="btn btn-ghost btn-sm" type="button" data-tg-off>Отключить</button></div>`;
+  if (a.tg === "wait") return `<div class="tg-wait"><span class="mw-ic tg">${ic("tg")}</span><div style="flex:1;min-width:0"><b>Нажмите «Старт» в боте</b><p class="small">Бот @freemen_alliance_bot откроется в Telegram. После «Старт» ник появится здесь сам — вписывать его не нужно.</p>
+      <div class="mw-btns"><a class="btn btn-primary btn-sm" href="https://t.me/freemen_alliance_bot" target="_blank" rel="noopener">${ic("tg")}Открыть бота</a><button class="link-btn" type="button" data-tg-done>Демо: я нажал «Старт»</button></div></div></div>`;
+  return `<div class="tg-wait"><span class="mw-ic tg">${ic("tg")}</span><div style="flex:1;min-width:0"><b>Telegram не подключён</b><p class="small">Подключите через бота: так ник не перепутается, а уведомления о встречах и дедлайнах будут приходить в Telegram.</p>
+      <div class="mw-btns"><a class="btn btn-primary btn-sm" href="https://t.me/freemen_alliance_bot" target="_blank" rel="noopener" data-tg-go>${ic("tg")}Подключить Telegram</a></div></div></div>`; };
+
 function setupSteps() {
   const s = SETUP[S.persona]; if (!s) return [];
   return [
-    { ok: !s.miss.length, t: "Заполнить профиль", h: s.miss.length ? `Не хватает: ${s.miss.join(", ")}` : "Готово", href: "#/profile" },
+    ...(acc().mailOk ? [] : [{ ok: false, t: "Подтвердить почту", h: `Письмо на ${me().email}`, href: "#/profile/security" }]),
+    { ok: !s.miss.filter(x => x !== "Telegram" || acc().tg !== "ok").length, t: "Заполнить профиль", h: s.miss.filter(x => x !== "Telegram" || acc().tg !== "ok").length ? `Не хватает: ${s.miss.filter(x => x !== "Telegram" || acc().tg !== "ok").join(", ")}` : "Готово", href: "#/profile" },
     { ok: s.zveryok, t: "Поставить цель Зверька", h: s.zveryok ? "Готово" : "Цель для мотивации на ближайшие недели", href: "https://wearefree.club/zveryok", ext: true },
     { ok: s.wish, t: "Добавить желание в список", h: s.wish ? "Готово" : "То, к чему вы стремитесь", href: "https://wearefree.club/wishlist", ext: true },
   ];
@@ -869,7 +910,7 @@ function profile() {
         <div class="field"><label>Позывной</label><input value="${e.callsign ? esc(e.callsign) : ""}" placeholder="Позывной назначит наставник" disabled></div>
         <div class="field"><label>Дата рождения</label><input value="${esc(e.birth)}" disabled><div class="hint">Указывается один раз. Изменить можно через поддержку</div></div>
         <div class="field"><label for="f6">Телефон</label><input id="f6" type="tel" value="${esc(u.phone)}"></div>
-        <div class="field"><label for="f7">Telegram</label><input id="f7" value="${e.tgUser ? "@" + esc(e.tgUser) : ""}" placeholder="@username"></div>
+        <div class="field full"><label>Telegram</label>${tgBlock(e)}</div>
         <div class="field full"><label for="f5">О себе</label><textarea id="f5" maxlength="2000" placeholder="Чем вы занимаетесь, с кем работаете">${e.biz[0] ? esc(e.biz[0][0] + ". " + e.biz[0][2] + ".") : ""}</textarea><div class="hint">До 2000 символов</div></div>
       </div>${saveRow}</form>
     <section class="panel form-sec"><h3>Навыки</h3><p class="small">До 30 навыков. Участники клуба могут их подтверждать.</p>
@@ -898,10 +939,10 @@ function profile() {
   }
   if (tab === "security") pane = `
     <section class="panel form-sec"><h3>Почта для входа</h3><p class="small">На неё приходят чеки и восстановление пароля.</p>
-      <div class="conn">${ic("check")}<div style="flex:1"><b>${esc(u.email)}</b><div class="small">Подтверждена</div></div></div>
-      <div class="field" style="margin-top:14px"><label for="ce">Контактная почта, если отличается</label><input id="ce" type="email" placeholder="Для писем от наставника"></div></section>
+      ${mailBlock(u)}
+      <div class="field" style="margin-top:16px"><label for="ce">Контактная почта, если отличается</label><input id="ce" type="email" placeholder="Например, рабочая"><div class="hint">Сюда пишут наставник и рассылки. Входить по ней нельзя, чеки и пароль — только на почту для входа.</div></div></section>
     <section class="panel form-sec"><h3>Способы входа</h3><p class="small">Привяжите несколько, чтобы не потерять доступ.</p>
-      ${[["Почта и пароль", 1], ["Telegram", 1], ["Apple", 0], ["Google", 0]].map(([n, on]) => `<div class="tg-row"><div class="t"><b>${n}</b><span class="small">${on ? "Привязан" : "Не привязан"}</span></div>${on ? `<button class="btn btn-ghost btn-sm" type="button">Отвязать</button>` : `<button class="btn btn-soft btn-sm" type="button">Привязать</button>`}</div>`).join("")}
+      ${[["Почта и пароль", 1], ["Telegram", acc().tg === "ok" ? 1 : 0], ["Apple", 0], ["Google", 0]].map(([n, on]) => `<div class="tg-row"><div class="t"><b>${n}</b><span class="small">${on ? "Привязан" : "Не привязан"}</span></div>${on ? `<button class="btn btn-ghost btn-sm" type="button">Отвязать</button>` : `<button class="btn btn-soft btn-sm" type="button">Привязать</button>`}</div>`).join("")}
       <p class="small" style="margin:10px 0 0">Apple и Google недоступны пользователям из России.</p></section>
     <form class="panel form-sec" data-form><h3>Сменить пароль</h3><p class="small">Не короче 8 символов: заглавная и строчная буквы, цифра и знак.</p>
       <div class="fgrid"><div class="field"><label for="p1">Текущий пароль</label><input id="p1" type="password" autocomplete="current-password"></div>
@@ -910,10 +951,9 @@ function profile() {
       <div class="tg-row"><div class="t"><b>Этот браузер</b><span class="small">${esc(u.city)} · сейчас</span></div></div>
       <div class="tg-row"><div class="t"><b>iPhone · Telegram</b><span class="small">${esc(u.city)} · вчера</span></div><button class="btn btn-ghost btn-sm" type="button">Выйти</button></div></section>`;
   if (tab === "view") pane = `
-    <form class="panel form-sec" data-form><h3>Внешний вид</h3><p class="small">Тема и язык платформы.</p>
-      <div class="fgrid">
-        <div class="field"><label>Тема</label><select><option>Светлая</option><option>Тёмная</option><option>Как в системе</option></select></div>
-        <div class="field"><label>Язык</label><select><option>Русский</option><option>English</option></select></div>
+    <form class="panel form-sec" data-form><h3>Внешний вид</h3><p class="small">Язык, часовой пояс и валюта.</p>
+      <div class="fgrid fgrid-3">
+        <div class="field"><label>Язык</label><select><option>Русский</option><option>English</option></select><div class="hint">Меню, письма и уведомления</div></div>
         <div class="field"><label>Часовой пояс</label><select><option>Москва (UTC+3)</option><option>Екатеринбург (UTC+5)</option><option>Алматы (UTC+5)</option><option>Тбилиси (UTC+4)</option><option>Бали (UTC+8)</option></select><div class="hint">Время встреч показываем по нему</div></div>
         <div class="field"><label>Валюта</label><select><option>Рубли, ₽</option><option>Доллары, $</option><option>Тенге, ₸</option><option>Евро, €</option></select><div class="hint">В ней показываем суммы и доход</div></div>
       </div>${saveRow}</form>
@@ -1060,6 +1100,7 @@ function render() {
   if (a === "login") startParticles();
   document.title = (document.querySelector(".topbar h1")?.textContent || "Вход") + " · Личный кабинет";
   bind();
+  if (tourI < 0 && typeof tourMaybe === "function") tourMaybe();
 }
 function route(a, b) {
   if (a === "services") return products();
@@ -1075,6 +1116,14 @@ function route(a, b) {
 function bind() {
   root.querySelectorAll("[data-tab]").forEach(el => el.onclick = () => { feedTab = el.dataset.tab; render(); });
   root.querySelectorAll("[data-setup-hide]").forEach(el => el.onclick = () => { setupHidden.add(S.persona); render(); });
+  root.querySelectorAll("[data-acc-hide]").forEach(el => el.onclick = () => { accHidden.add(S.persona + el.dataset.accHide); render(); });
+  root.querySelectorAll("[data-mail-resend]").forEach(el => el.onclick = () => { mailCool = Date.now() + 60000; mailMsg = `Письмо отправлено на ${me().email}. Проверьте почту и папку «Спам».`; render(); const t = setInterval(() => { if (mailCool <= Date.now()) clearInterval(t); if (location.hash.startsWith("#/profile/security")) render(); else clearInterval(t); }, 1000); });
+  root.querySelectorAll("[data-mail-edit]").forEach(el => el.onclick = () => { mailEdit = !mailEdit; render(); if (mailEdit) document.getElementById("nm")?.focus(); });
+  root.querySelectorAll("[data-mail-form]").forEach(el => el.onsubmit = (ev) => { ev.preventDefault(); const v = el.querySelector("input").value.trim(); mailEdit = false; acc().mailOk = false; acc().sent = "только что"; mailMsg = `Письмо отправлено на ${v}. Пока не подтвердите, входить можно по ${me().email}.`; render(); });
+  root.querySelectorAll("[data-mail-ok]").forEach(el => el.onclick = () => { acc().mailOk = true; mailMsg = ""; render(); });
+  root.querySelectorAll("[data-tg-go]").forEach(el => el.addEventListener("click", () => { acc().tg = "wait"; setTimeout(render, 50); }));
+  root.querySelectorAll("[data-tg-done]").forEach(el => el.onclick = () => { acc().tg = "ok"; render(); });
+  root.querySelectorAll("[data-tg-off]").forEach(el => el.onclick = () => { acc().tg = "none"; render(); });
   root.querySelectorAll("[data-vip]").forEach(el => el.onclick = () => { const k = S.persona + el.dataset.vip; vipDone.has(k) ? vipDone.delete(k) : vipDone.add(k); render(); });
   root.querySelectorAll("[data-near]").forEach(el => el.onclick = () => { const k = S.persona + el.dataset.near; nearOpen.has(k) ? nearOpen.delete(k) : nearOpen.add(k); render(); });
   root.querySelectorAll("[data-friend]").forEach(el => el.onclick = () => { nearReq.add(S.persona + el.dataset.friend); render(); });
@@ -1131,6 +1180,44 @@ sel.innerHTML = Object.entries(PERSONAS).map(([k, v]) => `<option value="${k}">$
 sel.value = S.persona;
 sel.onchange = () => { S.persona = sel.value; ticketSel = 0; loginMode = "login"; feedTab = "today"; render(); };
 document.getElementById("showNew").onchange = (e) => document.body.classList.toggle("show-new", e.target.checked);
+/* ---------- подсказки при первом входе: 5 шагов по главной, один раз на устройстве ---------- */
+const TOUR = [
+  ['section[aria-label="Мой день"]', "Мой день", "Встречи, задания и уроки из всех ваших программ. Сверху — встречи и срочные сроки, ниже — остальное."],
+  ['section[aria-label="Мои результаты"]', "Мои результаты", "Фениксы, жизни и место в рейтинге каждой программы. Нажмите на программу — откроется её рейтинг."],
+  ['NAV:#/products', "Мои продукты", "Все ваши программы: сроки доступа и вход в каждую. Ниже — что ещё есть в школе."],
+  ['NAV:#/support', "Поддержка", "Вопрос по платформе или программе пишите сюда. Ответ придёт в этот же чат."],
+  ['#bell', "Уведомления", "Встречи, проверенные задания и отклики. Красная точка — есть новое."]];
+var tourI = -1;
+const tourTarget = (sel) => { if (sel.startsWith("NAV:")) { const h = sel.slice(4); return innerWidth <= 960 ? document.querySelector(`.mnav a[href="${h}"]`) : document.querySelector(`.side a[href="${h}"]`); } return document.querySelector(sel); };
+function tourClose() { tourI = -1; try { localStorage.setItem("cab.tour", "1"); } catch {} document.getElementById("tour")?.remove(); removeEventListener("resize", tourPlace); removeEventListener("scroll", tourPlace); }
+function tourPlace() {
+  const box = document.getElementById("tour"); if (!box || tourI < 0) return; const el = tourTarget(TOUR[tourI][0]); if (!el) return;
+  const r = el.getBoundingClientRect(), pad = 8, spot = box.querySelector(".tour-spot"), card = box.querySelector(".tour-card");
+  Object.assign(spot.style, { left: r.left - pad + "px", top: r.top - pad + "px", width: r.width + pad * 2 + "px", height: r.height + pad * 2 + "px" });
+  const cw = Math.min(340, innerWidth - 24); card.style.width = cw + "px"; const ch = card.offsetHeight;
+  let top = r.bottom + 16; if (top + ch > innerHeight - 12) top = r.top - ch - 16; if (top < 12) top = Math.max(12, Math.min(innerHeight - ch - 12, r.top + 24));
+  if (r.height > innerHeight * .5) top = innerHeight - ch - (innerWidth <= 960 ? 104 : 24);
+  const left = Math.max(12, Math.min(r.left, innerWidth - cw - 12));
+  Object.assign(card.style, { top: top + "px", left: left + "px" }); }
+function tourShow(i) {
+  tourI = i; if (i >= TOUR.length) return tourClose();
+  let box = document.getElementById("tour");
+  if (!box) { box = document.createElement("div"); box.id = "tour"; box.innerHTML = `<div class="tour-spot"></div><div class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourH"></div>`; document.body.appendChild(box); addEventListener("resize", tourPlace); addEventListener("scroll", tourPlace, { passive: true }); }
+  const el = tourTarget(TOUR[i][0]); if (!el) return tourShow(i + 1);
+  const big = el.getBoundingClientRect().height > innerHeight * .6;
+  el.scrollIntoView({ block: big ? "start" : "center", behavior: "instant" });
+  if (big) scrollBy(0, -90);
+  const [, h, t] = TOUR[i], last = i === TOUR.length - 1;
+  box.querySelector(".tour-card").innerHTML = `<p class="tour-n">${i + 1} из ${TOUR.length}</p><h3 id="tourH">${h}</h3><p>${t}</p>
+    <div class="tour-btns"><button type="button" class="link-btn" data-tour-skip>Пропустить</button><button type="button" class="btn btn-primary btn-sm" data-tour-next>${last ? "Понятно" : "Далее"}</button></div>`;
+  box.querySelector("[data-tour-next]").onclick = () => tourShow(i + 1);
+  box.querySelector("[data-tour-skip]").onclick = tourClose;
+  requestAnimationFrame(() => { tourPlace(); box.querySelector("[data-tour-next]").focus({ preventScroll: true }); }); }
+addEventListener("keydown", (ev) => { if (tourI >= 0 && ev.key === "Escape") tourClose(); });
+addEventListener("hashchange", () => { if (tourI >= 0) tourClose(); });
+var tourMaybe = () => { let seen = true; try { seen = localStorage.getItem("cab.tour") === "1"; } catch {} if (!seen && S.logged && document.querySelector('section[aria-label="Мой день"]')) setTimeout(() => { if (tourI < 0) tourShow(0); }, 400); };
+document.getElementById("tourBtn").onclick = () => { if (!/^#\/home/.test(location.hash)) location.hash = "#/home"; setTimeout(() => tourShow(0), 300); };
+
 document.getElementById("toLogin").onclick = () => { S.logged = false; location.hash = "#/login"; };
 
 render();

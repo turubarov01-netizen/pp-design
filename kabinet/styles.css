@@ -1086,3 +1086,55 @@ li.act:not(.unread) .act-tx > a.act-h { font-weight: 600; color: var(--ink-2); }
 .rank-list a:hover .rk-go { color: var(--blue); transform: translateX(3px); }
 .rank-list a:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
 @media (prefers-reduced-motion: reduce) { .rank-list .rk-go { transition: none; } }
+
+/* v28 — списки: своя стрелка с отступом */
+.field select { appearance: none; -webkit-appearance: none; padding-right: 42px; cursor: pointer;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364708a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center / 18px 18px; }
+.fgrid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+@media (max-width: 1100px) { .fgrid-3 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) { .fgrid-3 { grid-template-columns: 1fr; } }
+
+/* v28 — конец доступа: плашка над «Моим днём» по каждой программе */
+.acc-ban { display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 14px; margin-bottom: 12px; border-radius: 18px; background: #fff8eb; border: 1px solid rgba(217,119,6,.28); }
+.acc-ban.hot { background: #fff1f1; border-color: rgba(229,72,77,.32); }
+.acc-ban .pmark, .acc-ban .pmark img, .acc-ban .pmark .pm-l { width: 38px; height: 38px; border-radius: 11px; flex: none; }
+.ab-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ab-t b { font-size: 15px; line-height: 1.3; }
+.ab-t span { font-size: 13px; color: var(--muted); }
+.acc-ban.hot .ab-t b { color: #b42318; }
+.icon-x { flex: none; width: 36px; height: 36px; border: 0; border-radius: 10px; background: none; color: var(--faint); display: grid; place-items: center; cursor: pointer; }
+.icon-x:hover { background: rgba(16,24,48,.06); color: var(--ink-2); }
+.icon-x svg { width: 16px; height: 16px; }
+@media (max-width: 600px) { .acc-ban { flex-wrap: wrap; } .ab-t { flex-basis: calc(100% - 100px); } .acc-ban .btn { margin-left: 50px; } }
+
+/* v28 — порядок в «Моём дне» */
+.feed-sub { margin: 4px 0 8px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.feed + .feed-sub { margin-top: 18px; }
+
+/* v28 — почта и Telegram */
+.mail-warn, .tg-wait { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; background: #fff8eb; border: 1px solid rgba(217,119,6,.28); }
+.tg-wait { background: rgba(42,171,238,.07); border-color: rgba(42,171,238,.25); }
+.mw-ic { flex: none; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: rgba(217,119,6,.14); color: #b45309; }
+.mw-ic.tg { background: rgba(42,171,238,.15); color: #229ed9; }
+.mw-ic svg { width: 18px; height: 18px; }
+.mail-warn b, .tg-wait b { display: block; font-size: 15px; overflow-wrap: anywhere; }
+.mw-st { display: inline-block; margin-top: 4px; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; background: rgba(217,119,6,.16); color: #92400e; }
+.mail-warn p, .tg-wait p { margin: 8px 0 0; }
+.mw-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; }
+.mw-btns .btn[disabled] { opacity: .55; cursor: default; }
+.mail-edit { margin-top: 12px; padding: 14px; border-radius: 14px; background: rgba(47,123,255,.05); border: 1px solid var(--line); }
+.field.full > .conn, .field.full > .tg-wait { margin-top: 2px; }
+
+/* v28 — подсказки при первом входе */
+#tour { position: fixed; inset: 0; z-index: 200; }
+.tour-spot { position: fixed; border-radius: 22px; box-shadow: 0 0 0 9999px rgba(10,14,30,.58); pointer-events: none; transition: all .3s var(--ease); }
+.tour-card { position: fixed; padding: 18px 18px 14px; border-radius: 18px; background: #fff; box-shadow: 0 18px 50px rgba(10,14,30,.3); transition: top .3s var(--ease), left .3s var(--ease); }
+.tour-card h3 { margin: 2px 0 6px; font-size: 18px; }
+.tour-card p { margin: 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+.tour-card .tour-n { font-size: 12px; font-weight: 700; color: var(--blue); }
+.tour-btns { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+@media (prefers-reduced-motion: reduce) { .tour-spot, .tour-card { transition: none; } }
+.acc-bans { display: grid; gap: 10px; }
+.acc-bans .acc-ban { margin: 0; }
+.tour-btns .link-btn { margin-left: 0; font-size: 14px; min-height: 44px; }
+.mw-btns .link-btn { font-size: 13px; min-height: 36px; }
