@@ -612,9 +612,8 @@ function activity() {
 /* ---------- мои продукты ---------- */
 function prodTabs(active) {
   return `<nav class="tabs" aria-label="Разделы">
-    <a href="#/products" ${active === "mine" ? 'aria-current="page"' : ""}>Мои продукты</a>
-    <a href="#/products/pay" ${active === "pay" ? 'aria-current="page"' : ""}>Покупки и оплаты</a>
-    <a href="#/products/catalog" ${active === "cat" ? 'aria-current="page"' : ""}>Программы школы</a></nav>`;
+    <a href="#/products" ${active === "mine" ? 'aria-current="page"' : ""}>Программы</a>
+    <a href="#/products/pay" ${active === "pay" ? 'aria-current="page"' : ""}>Покупки и оплаты</a></nav>`;
 }
 
 function products() {
@@ -636,21 +635,16 @@ function products() {
       <div><div style="display:flex;gap:10px;align-items:center"><span class="kind">${esc(d.kind)}</span>${st}</div><h3>${esc(d.name)}</h3><div class="facts">${facts}</div>${bar}</div>
       <div class="acts">${acts}</div></article>`;
   }).join("");
-  const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">Нажмите «Открыть», чтобы перейти внутрь продукта. Вернуться в кабинет можно кнопкой «В кабинет».</p>
-    ${prodTabs("mine")}${svcGroup("svc-m panel")}${rows}`;
-  return shell("products", "Мои продукты", body);
-}
-
-function catalog() {
-  const u = me();
-  const mine = owned(u);
-  const items = CATALOG_ORDER.map(id => {
-    const d = PRODUCTS[id]; const has = mine.includes(id); const trial = u.products.find(p => p.id === id && p.state === "trial");
-    const btn = has && !trial ? `<a class="btn btn-ghost btn-sm" href="#/p/${id}">Уже у вас</a>` : `<a class="btn btn-soft btn-sm" href="${d.landing}" target="_blank" rel="noopener">Подробнее ${ic("ext")}</a>`;
-    return `<li class="cat-item">${logo(id)}<div><b>${esc(d.name)}</b><p>${esc(d.about)}</p></div>${btn}</li>`;
+  const mine = u.products.map(p => p.id);
+  const rest = CATALOG_ORDER.filter(id => !mine.includes(id)).map(id => {
+    const d = PRODUCTS[id];
+    return `<li class="cat-item">${logo(id)}<div><b>${esc(d.name)}</b><p>${esc(d.about)}</p></div><a class="btn btn-soft btn-sm" href="${d.landing}" target="_blank" rel="noopener">Подробнее ${ic("ext")}</a></li>`;
   }).join("");
-  const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">Все программы школы. «Подробнее» открывает страницу программы.</p>${prodTabs("cat")}
-    <section class="panel pad"><ul class="cat-list">${items}</ul></section>`;
+  const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">Нажмите «Открыть», чтобы перейти внутрь продукта. Вернуться в кабинет можно кнопкой «В кабинет».</p>
+    ${prodTabs("mine")}${svcGroup("svc-m panel")}
+    <div class="prod-sec"><h2 class="h-md">Доступно вам</h2><span class="prod-n">${u.products.length}</span></div>${rows}
+    ${rest ? `<div class="prod-sec" id="school"><h2 class="h-md">Программы школы</h2><span class="prod-sub">Можно подключить. «Подробнее» открывает страницу программы.</span></div>
+    <section class="panel pad"><ul class="cat-list">${rest}</ul></section>` : ""}`;
   return shell("products", "Мои продукты", body);
 }
 
@@ -983,7 +977,7 @@ function render() {
 }
 function route(a, b) {
   if (a === "services") return products();
-  if (a === "products") return b === "services" ? products() : b === "catalog" ? catalog() : b === "pay" ? purchases() : products();
+  if (a === "products") return b === "pay" ? purchases() : products();
   if (a === "progress") { growTab = b || "path"; return progress(); }
   if (a === "activity") return activity();
   if (a === "support") return support();

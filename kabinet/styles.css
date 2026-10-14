@@ -866,3 +866,25 @@ li.act.compact .act-quote span { display: -webkit-box; -webkit-line-clamp: 2; -w
   .svc-m .svc-toggle { min-height: 48px; }
   .svc-m .svc-item { min-height: 44px; }
 }
+
+/* v18: «Мои продукты» + «Программы школы» в одном разделе */
+.prod-sec { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin: 28px 2px 12px; }
+.prod-sec:first-of-type { margin-top: 8px; }
+.prod-sec .prod-n { min-width: 24px; height: 24px; padding: 0 8px; border-radius: 12px; background: rgba(47,123,255,.1); color: var(--blue); font-size: 13px; font-weight: 700; display: inline-grid; place-items: center; }
+.prod-sec .prod-sub { font-size: 14px; color: var(--muted); }
+
+/* v18: подпункты «Сервисов» — вложенный уровень, не равный пунктам меню */
+.svc-nav.open .svc-toggle { color: var(--ink); font-weight: 600; }
+.svc-nav.open .svc-toggle > svg:first-child { color: var(--blue); }
+.svc-list { position: relative; margin: 2px 0 8px 22px; padding: 4px 0 4px 10px; }
+.svc-list::before { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 1px; background: var(--line-2); }
+.svc-item { gap: 10px; padding: 7px 10px; font-size: 14px; font-weight: 400; color: var(--muted); border-radius: 10px; }
+.svc-item > svg:first-child { width: 16px; height: 16px; margin-left: 0; color: var(--faint); }
+.svc-item .svc-ext { width: 13px; height: 13px; opacity: 0; transition: opacity .15s var(--ease); }
+.svc-item:hover .svc-ext, .svc-item:focus-visible .svc-ext { opacity: .8; }
+.svc-item:hover { color: var(--ink); }
+@media (hover: none) { .svc-item .svc-ext { opacity: .6; } }
+@media (max-width: 960px) {
+  .svc-m .svc-list { margin-left: 22px; }
+  .svc-m .svc-item { min-height: 44px; font-size: 15px; }
+}
