@@ -1168,3 +1168,13 @@ li.act:not(.unread) .act-tx > a.act-h { font-weight: 600; color: var(--ink-2); }
 li.act .act-tx > a.act-h::after { content: ""; position: absolute; inset: 0; border-radius: 14px; }
 li.act .act-tx .btn, li.act .act-tx button, li.act .act-tx .act-quote { position: relative; z-index: 1; }
 @media (max-width: 600px) { .act-tabs button { min-width: 44px; } }
+.hint.err { color: var(--bad); }
+.or-need { display: block; margin-top: 4px; color: #b45309; }
+.or-need a { color: var(--blue); font-weight: 600; }
+.or-t span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ch-off { color: #b45309 !important; }
+.ch-off a, .or-need a { color: var(--blue); font-weight: 600; }
+.link-btn.inl { margin-left: 0; font-size: inherit; min-height: 0; }
+.ngrid { grid-template-columns: minmax(0,1fr) 72px 72px 80px; }
+.sw-na { justify-self: center; color: var(--faint); }
+@media (max-width: 960px) { .ngrid { grid-template-columns: minmax(0,1fr) 52px 52px 66px; gap: 12px 4px; } .ngrid > .small { font-size: 11.5px; } }

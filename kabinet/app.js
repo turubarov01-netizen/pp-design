@@ -289,7 +289,7 @@ PERSONAS.natalia.tickets = [
 ];
 
 const EXTRA = {
-  maria:   { callsign: null, birth: "14.03.1981", tgUser: "", karma: 40, rank: 812, xp: [120, 500], rep: "Новичок", friends: 3, followers: 5, recs: 0, member: "Стартовый доступ", memberFrom: "покупка ИИнструментов", memberUntil: 54, pointA: null, record: null,
+  maria:   { callsign: null, birth: "", tgUser: "", karma: 40, rank: 812, xp: [120, 500], rep: "Новичок", friends: 3, followers: 5, recs: 0, member: "Стартовый доступ", memberFrom: "покупка ИИнструментов", memberUntil: 54, pointA: null, record: null,
              bases: ["Казань"], biz: [], skills: ["Психология", "Консультирование"], invoices: [],
              pays: [["ИИнструменты, 2 месяца", "9 900 ₽", 6, "Карта •• 4421"]] },
   olga:    { callsign: "Ласточка", birth: "02.11.1979", tgUser: "olga_iv", karma: 180, rank: 241, xp: [860, 1000], rep: "Активист", friends: 12, followers: 18, recs: 2, member: "Стартовый доступ", memberFrom: "покупка Плана Продюсера", memberUntil: 40, pointA: 60000, record: 110000,
@@ -317,6 +317,11 @@ const S = {
 };
 let feedTab = "today";
 let ticketSel = 0;
+// «Платформа» в «Что присылать»: выключенная категория пропадает с главной (и из колокольчика).
+const platOff = new Set();
+const platOn = (cat) => cat === "Оракул" ? !!ORACLE[S.persona]?.on : !platOff.has(S.persona + "|" + cat);
+const FEED_CAT = { meeting: "Встречи и эфиры", event: "Встречи и эфиры", deadline: "Дедлайны заданий", lesson: "Новые уроки" };
+const ACT_CAT = { like: "Лента и комментарии", comment: "Лента и комментарии", reply: "Лента и комментарии", friend: "Сообщения и друзья", diary: "Сообщения и друзья" };
 function supFocus() { if (!matchMedia("(max-width: 960px)").matches) return; const el = document.querySelector(".sup"); if (el) el.scrollIntoView({ block: "start", behavior: "smooth" }); }
 var lastA = "";
 let notifOpen = false;
@@ -477,7 +482,9 @@ const NEAR = {
   andrey: [["СЛ", "Сергей Лебедев", "Архитектор", 1, "Бизнес-тренер, корпоративные программы", "Freeman's Alliance"], ["ОН", "Ольга Новикова", "Бунтарь", 3, "Психотерапевт, курс по тревоге", "План Продюсера"], ["ПК", "Павел Козлов", "Мечтатель", 4, "Продюсер подкастов", "ИИнструменты"], ["ТР", "Татьяна Руденко", "Бунтарь", 7, "Нумеролог, консультации и мини-курс", "Место притяжения"], ["ВГ", "Виктор Гусев", "Архитектор", 12, "Фитнес-наставник, онлайн-сопровождение", "Freeman's Alliance"]],
   natalia: [["АС", "Анна Смирнова", "Бунтарь", 2, "Психолог, курс по отношениям", "План Продюсера"], ["КЖ", "Кирилл Жуков", "Мечтатель", 4, "Видеограф, съёмка для экспертов", "Freeman's Alliance"], ["СТ", "Светлана Титова", "Бунтарь", 6, "Энерготерапевт, группы медитаций", "Место притяжения"], ["ДО", "Денис Орлов", "Архитектор", 9, "Юрист для онлайн-школ", "Freeman's Alliance"], ["ЮП", "Юлия Попова", "Бунтарь", 15, "Карьерный консультант", "ИИнструменты"]] };
 const nearOpen = new Set(), nearReq = new Set();
-const nearBlock = (u) => { const l = (NEAR[S.persona] || []).slice(0, 5); if (!l.length) return "";
+// «Фримены рядом» — только членам Альянса (гостевой доступ не считается).
+const isFreeman = (u) => u.products.some(p => p.id === "fa" && (p.state === "active" || p.state === "expiring"));
+const nearBlock = (u) => { if (!isFreeman(u)) return ""; const l = (NEAR[S.persona] || []).slice(0, 5); if (!l.length) return "";
   return `<section class="panel pad" aria-label="Фримены рядом"><div class="sec-head"><h2 class="h-md">Фримены рядом</h2><a href="https://wearefree.club/members" target="_blank" rel="noopener">Все</a></div>
     <p class="small near-sub">${esc(u.city)} · до&nbsp;${l[l.length - 1][3]}&nbsp;км от вас</p>
     <ul class="near-list">${l.map(([ini, n, lvl, km, bio, common], i) => { const k = S.persona + i, op = nearOpen.has(k), rq = nearReq.has(k);
@@ -488,14 +495,14 @@ const nearBlock = (u) => { const l = (NEAR[S.persona] || []).slice(0, 5); if (!l
 // Демо: Андрей Оракула выключил, Мария сегодня карту ещё не открывала.
 const ORACLE = { maria: { on: true, card: null }, olga: { on: true, card: ["🗝️", "Ключ", "доступ, ясность, точный вопрос"] }, andrey: { on: false, card: null }, natalia: { on: true, card: ["🜂", "Мост", "соединение, люди, быстрые обходные пути"] } };
 const ORACLE_DECK = ["🪙", "Монета", "обмен, ценность, реальность"];
-const oracleBlock = () => { const o = ORACLE[S.persona]; if (!o || !o.on) return "";
+const oracleBlock = () => { const o = ORACLE[S.persona]; if (!o || !o.on || !ex().birth) return "";
   return o.card
     ? `<button class="oracle" type="button" title="На платформе откроется полная карта" aria-label="Карта дня: ${esc(o.card[1])}"><span class="or-sym" aria-hidden="true">${o.card[0]}</span><span class="or-t"><small>${ic("spark")}Карта дня</small><b>«${esc(o.card[1])}»</b><span>${esc(o.card[2])}</span></span>${ic("chev")}</button>`
     : `<button class="oracle fresh" type="button" data-oracle-draw><span class="or-sym" aria-hidden="true">${ic("spark")}</span><span class="or-t"><small>Оракул Фриманов</small><b>Ваше предсказание ждёт</b></span><span class="or-btn">Открыть</span></button>`; };
 
 // Конец доступа: за 7 дней — отдельная плашка над «Моим днём» по каждой программе (вместо строки в ленте).
 const accHidden = new Set();
-const accBanners = (u) => u.products.filter(x => (x.state === "active" || x.state === "expiring") && x.until != null && x.until <= 7 && !accHidden.has(S.persona + x.id)).sort((a, b) => a.until - b.until).map(x => {
+const accBanners = (u) => !platOn("Окончание доступа") ? "" : u.products.filter(x => (x.state === "active" || x.state === "expiring") && x.until != null && x.until <= 7 && !accHidden.has(S.persona + x.id)).sort((a, b) => a.until - b.until).map(x => {
   const d = PRODUCTS[x.id], hot = x.until <= 3;
   return `<div class="acc-ban ${hot ? "hot" : ""}" role="status">${pmark(x.id)}<div class="ab-t"><b>Доступ к ${esc(d.dat || d.name)} закончится ${x.until === 1 ? "завтра" : `через ${x.until} ${plural(x.until, "день", "дня", "дней")}`}</b><span>${until(x.until)} · ${esc(x.progressLabel)}</span></div>
     <a class="btn ${hot ? "btn-primary" : "btn-soft"} btn-sm" href="${d.landing}" target="_blank" rel="noopener">Продлить</a><button class="icon-x" type="button" data-acc-hide="${x.id}" aria-label="Скрыть до завтра">${ic("x")}</button></div>`; }).join("").replace(/^(.+)$/s, '<div class="acc-bans">$1</div>');
@@ -509,7 +516,7 @@ const hm = (t) => { const [h, m] = t.split(":"); return +h * 60 + +m; };
 function home() {
   const u = me();
   const now = new Date();
-  const list = u.feed.map((it, i) => ({ ...it, i })).filter(x => x.type !== "access");
+  const list = u.feed.map((it, i) => ({ ...it, i })).filter(x => x.type !== "access" && (!FEED_CAT[x.type] || platOn(FEED_CAT[x.type])));
   const shown = feedTab === "today" ? list.filter(x => x.d === 0) : list;
   const groups = {};
   shown.forEach(x => (groups[x.d] ||= []).push(x));
@@ -597,7 +604,8 @@ function setupSteps() {
   const s = SETUP[S.persona]; if (!s) return [];
   return [
     ...(acc().mailOk ? [] : [{ ok: false, t: "Подтвердить почту", h: `Письмо на ${me().email}`, href: "#/profile/security" }]),
-    { ok: !s.miss.filter(x => x !== "Telegram" || acc().tg !== "ok").length, t: "Заполнить профиль", h: s.miss.filter(x => x !== "Telegram" || acc().tg !== "ok").length ? `Не хватает: ${s.miss.filter(x => x !== "Telegram" || acc().tg !== "ok").join(", ")}` : "Готово", href: "#/profile" },
+    ...(acc().tg === "ok" ? [] : [{ ok: false, t: "Подключить Telegram", h: "Через бота, за минуту", href: "#/profile/security" }]),
+    (() => { const m = [...s.miss.filter(x => x !== "Telegram"), ...(ex().birth ? [] : ["дата рождения"])]; return { ok: !m.length, t: "Заполнить профиль", h: m.length ? `Не хватает: ${m.join(", ")}` : "Готово", href: "#/profile/about" }; })(),
     { ok: s.zveryok, t: "Поставить цель Зверька", h: s.zveryok ? "Готово" : "Цель для мотивации на ближайшие недели", href: "https://wearefree.club/zveryok", ext: true },
     { ok: s.wish, t: "Добавить желание в список", h: s.wish ? "Готово" : "То, к чему вы стремитесь", href: "https://wearefree.club/wishlist", ext: true },
   ];
@@ -695,7 +703,7 @@ function actRow(a, i, compact) {
 }
 
 function actPanel() {
-  const L = actList().map((a, i) => ({ ...a, i })); if (!L.length) return "";
+  const L = actList().map((a, i) => ({ ...a, i })).filter(a => !ACT_CAT[a.k] || platOn(ACT_CAT[a.k])); if (!L.length) return "";
   const hw = L.filter(isHw), soc = L.filter(a => !isHw(a));
   // сначала то, что ждёт действия: возврат на доработку, затем новое, затем по времени
   const prio = (a) => (a.k === "hw_rev" && !a.done ? 0 : a.unread ? 1 : 2);
@@ -900,7 +908,7 @@ function support() {
 function profile() {
   const u = me(); const e = ex();
   const tab = profTab;
-  const tabs = [["about", "О себе"], ["loc", "Локация и бизнес"], ["notify", "Уведомления"], ["security", "Вход и безопасность"], ["view", "Внешний вид"], ["account", "Аккаунт"]];
+  const tabs = [["about", "О себе"], ["security", "Вход и безопасность"], ["notify", "Уведомления"], ["account", "Аккаунт"]];
   const sw = (on, label) => `<label class="switch"><input type="checkbox" ${on ? "checked" : ""} aria-label="${esc(label)}"><span></span></label>`;
   const saveRow = `<div style="display:flex;align-items:center;gap:14px;margin-top:18px"><button class="btn btn-primary" type="submit">Сохранить</button><span class="saved">${ic("check")}Сохранено</span></div>`;
   let pane = "";
@@ -910,32 +918,38 @@ function profile() {
         <div class="field"><label for="f1">Имя</label><input id="f1" value="${esc(u.name)}"></div>
         <div class="field"><label for="f2">Фамилия</label><input id="f2" value="${esc(u.last)}"></div>
         <div class="field"><label>Позывной</label><input value="${e.callsign ? esc(e.callsign) : ""}" placeholder="Позывной назначит наставник" disabled></div>
-        <div class="field"><label>Дата рождения</label><input value="${esc(e.birth)}" disabled><div class="hint">Указывается один раз. Изменить можно через поддержку</div></div>
+        <div class="field"><label for="fbirth">Дата рождения</label>${e.birth ? `<input id="fbirth" value="${esc(e.birth)}" disabled><div class="hint">Указывается один раз. Изменить можно через поддержку</div>` : `<input id="fbirth" inputmode="numeric" autocomplete="bday" placeholder="ДД.ММ.ГГГГ" maxlength="10" aria-describedby="fbirth-h"><div class="hint" id="fbirth-h">Нужна для Оракула. Указывается один раз</div>`}</div>
         <div class="field"><label for="f6">Телефон</label><input id="f6" type="tel" value="${esc(u.phone)}"></div>
-        <div class="field full"><label>Telegram</label>${tgBlock(e)}</div>
         <div class="field full"><label for="f5">О себе</label><textarea id="f5" maxlength="2000" placeholder="Чем вы занимаетесь, с кем работаете">${e.biz[0] ? esc(e.biz[0][0] + ". " + e.biz[0][2] + ".") : ""}</textarea><div class="hint">До 2000 символов</div></div>
       </div>${saveRow}</form>
-    <section class="panel form-sec"><h3>Навыки</h3><p class="small">До 30 навыков. Участники клуба могут их подтверждать.</p>
-      <div class="chips">${e.skills.map(s => `<span class="chip">${esc(s)}</span>`).join("")}<button class="chip add" type="button">${ic("plus")}Добавить</button></div></section>`;
-  if (tab === "loc") pane = `
-    <form class="panel form-sec" data-form><h3>Где вы сейчас</h3><p class="small">По городу показываем участников рядом и время встреч.</p>
+
+    <form class="panel form-sec" data-form><h3>Где вы сейчас</h3><p class="small">${isFreeman(u) ? "По городу показываем участников рядом и время встреч." : "По городу показываем время встреч."}</p>
       <div class="fgrid"><div class="field"><label for="l1">Город</label><input id="l1" value="${esc(u.city)}"></div>
         <div class="field" style="align-self:end"><button class="btn btn-ghost" type="button">${ic("spark")}Определить по геолокации</button></div></div>
       <h3 style="margin-top:22px">Базы Фримена</h3><p class="small">Города, где вы бываете. До 4.</p>
       <div class="chips">${e.bases.map(b => `<span class="chip">${esc(b)}</span>`).join("")}<button class="chip add" type="button">${ic("plus")}Добавить базу</button></div>${saveRow}</form>
     <section class="panel form-sec"><h3>Бизнесы</h3><p class="small">Чем вы занимаетесь. Видно в вашем профиле в клубе.</p>
       ${e.biz.length ? e.biz.map(b => `<div class="tg-row"><div class="t"><b>${esc(b[0])}</b><span class="small">${esc(b[1])} · ${esc(b[2])} · ${esc(b[3])}</span></div><button class="btn btn-ghost btn-sm" type="button">Изменить</button></div>`).join("") : '<p class="small" style="margin:0 0 12px">Пока не добавлено.</p>'}
-      <button class="btn btn-soft btn-sm" type="button" style="margin-top:8px">${ic("plus")}Добавить бизнес</button></section>`;
+      <button class="btn btn-soft btn-sm" type="button" style="margin-top:8px">${ic("plus")}Добавить бизнес</button></section>
+    <section class="panel form-sec"><h3>Навыки</h3><p class="small">До 30 навыков. Участники клуба могут их подтверждать.</p>
+      <div class="chips">${e.skills.map(s => `<span class="chip">${esc(s)}</span>`).join("")}<button class="chip add" type="button">${ic("plus")}Добавить</button></div></section>
+    <form class="panel form-sec" data-form><h3>Язык, время и валюта</h3><p class="small">Как показывать кабинет, встречи и суммы.</p>
+      <div class="fgrid fgrid-3">
+        <div class="field"><label>Язык</label><select><option>Русский</option><option>English</option></select><div class="hint">Меню, письма и уведомления</div></div>
+        <div class="field"><label>Часовой пояс</label><select><option>Москва (UTC+3)</option><option>Екатеринбург (UTC+5)</option><option>Алматы (UTC+5)</option><option>Тбилиси (UTC+4)</option><option>Бали (UTC+8)</option></select><div class="hint">Время встреч показываем по нему</div></div>
+        <div class="field"><label>Валюта</label><select><option>Рубли, ₽</option><option>Доллары, $</option><option>Тенге, ₸</option><option>Евро, €</option></select><div class="hint">В ней показываем суммы и доход</div></div>
+      </div>${saveRow}</form>`;
   if (tab === "notify") {
     const cats = [["Встречи и эфиры", "За день и за 15 минут до начала", 1, 1, 1], ["Дедлайны заданий", "За сутки и утром в день сдачи", 1, 1, 1], ["Новые уроки", "Когда открывается урок", 1, 0, 1], ["Окончание доступа", "За 14 и за 3 дня", 1, 1, 1], ["Ответы поддержки", "Когда ответили на обращение", 1, 1, 0],
       ["Лента и комментарии", "Посты, лайки, комментарии", 0, 0, 0], ["Сообщения и друзья", "Личные сообщения, заявки в друзья", 1, 0, 0], ["Трекер", "Напоминания, план и отчёт дня, серия", 1, 0, 0], ["Дайджесты", "Еженедельный, книжный клуб", 0, 1, 0], ["Оракул", "Ежедневная подсказка", 0, 0, 0]];
     pane = `
     <section class="panel form-sec"><h3>Куда присылать</h3><p class="small">Telegram, почта и уведомления в браузере.</p>
-      <div class="conn">${ic("check")}<div style="flex:1"><b>Telegram-бот подключён</b><div class="small">@freemen_alliance_bot · <button class="link-btn" type="button">Отправить тестовое</button></div></div><button class="btn btn-ghost btn-sm" type="button">Отключить</button></div>
-      <div class="tg-row" style="margin-top:8px"><div class="t"><b>Push в браузере</b><span class="small">Уведомления на этом устройстве</span></div>${sw(false, "Push")}</div></section>
-    <section class="panel form-sec"><h3>Что присылать</h3><p class="small">Первые пять пунктов новые: про учёбу во всех продуктах. Остальные уже есть на платформе.</p>
-      <div class="ngrid"><span></span><span class="small">Telegram</span><span class="small">Почта</span>
-      ${cats.map(([t, s, tg, em, isNew]) => `<div class="t"><b>${t}${isNew ? ' <span class="is-new">новое</span>' : ""}</b><span class="small">${s}</span></div>${sw(tg, t + " Telegram")}${sw(em, t + " почта")}`).join("")}</div></section>
+      <div class="tg-row"><div class="t"><b>Telegram</b>${acc().tg === "ok" ? `<span class="small">@${esc(ex().tgUser || DEMO_TG[S.persona])} через @freemen_alliance_bot · <button class="link-btn inl" type="button">Отправить тестовое</button></span>` : `<span class="small ch-off">Не подключён. <a href="#/profile/security">Подключить</a></span>`}</div>${acc().tg === "ok" ? sw(true, "Уведомления в Telegram") : ""}</div>
+      <div class="tg-row"><div class="t"><b>Почта</b>${acc().mailOk ? `<span class="small">${esc(u.email)}</span>` : `<span class="small ch-off">${esc(u.email)} не подтверждена, письма не дойдут. <a href="#/profile/security">Подтвердить</a></span>`}</div>${acc().mailOk ? sw(true, "Уведомления на почту") : ""}</div>
+      <div class="tg-row"><div class="t"><b>Push в браузере</b><span class="small">Уведомления на этом устройстве</span></div>${sw(false, "Push")}</div></section>
+    <section class="panel form-sec"><h3>Что присылать</h3><p class="small">Первые пять пунктов новые: про учёбу во всех продуктах. Остальные уже есть на платформе. «Платформа»: колокольчик и главная кабинета. Выключите, и это уберётся с главной.</p>
+      <div class="ngrid"><span></span><span class="small">Telegram</span><span class="small">Почта</span><span class="small">Платформа</span>
+      ${cats.map(([t, s, tg, em, isNew]) => { const orNo = t === "Оракул" && !ex().birth; return `<div class="t"><b>${t}${isNew ? ' <span class="is-new">новое</span>' : ""}</b><span class="small">${s}</span>${orNo ? `<span class="small or-need">Нужна дата рождения. <a href="#/profile/about">Указать</a></span>` : ""}</div>${orNo ? `<span class="sw-na" aria-hidden="true">—</span><span class="sw-na" aria-hidden="true">—</span><span class="sw-na" aria-hidden="true">—</span>` : `${sw(tg, t + " Telegram")}${sw(em, t + " почта")}`}${orNo ? "" : `<label class="switch"><input type="checkbox" data-plat="${t}" ${platOn(t) ? "checked" : ""} aria-label="${t}: показывать в кабинете"><span></span></label>`}`; }).join("")}</div></section>
     <section class="panel form-sec"><h3>Календарь в телефоне</h3><p class="small">Встречи всех ваших продуктов сами появятся в календаре.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" type="button">Apple</button><button class="btn btn-ghost btn-sm" type="button">Google</button><button class="btn btn-ghost btn-sm" type="button">Яндекс</button></div></section>`;
   }
@@ -943,8 +957,10 @@ function profile() {
     <section class="panel form-sec"><h3>Почта для входа</h3><p class="small">На неё приходят чеки и восстановление пароля.</p>
       ${mailBlock(u)}
       <div class="field" style="margin-top:16px"><label for="ce">Контактная почта, если отличается</label><input id="ce" type="email" placeholder="Например, рабочая"><div class="hint">Сюда пишут наставник и рассылки. Входить по ней нельзя, чеки и пароль — только на почту для входа.</div></div></section>
-    <section class="panel form-sec"><h3>Способы входа</h3><p class="small">Привяжите несколько, чтобы не потерять доступ.</p>
-      ${[["Почта и пароль", 1], ["Telegram", acc().tg === "ok" ? 1 : 0], ["Apple", 0], ["Google", 0]].map(([n, on]) => `<div class="tg-row"><div class="t"><b>${n}</b><span class="small">${on ? "Привязан" : "Не привязан"}</span></div>${on ? `<button class="btn btn-ghost btn-sm" type="button">Отвязать</button>` : `<button class="btn btn-soft btn-sm" type="button">Привязать</button>`}</div>`).join("")}
+    <section class="panel form-sec" id="sec-tg"><h3>Telegram</h3><p class="small">Вход в кабинет и уведомления от @freemen_alliance_bot.</p>
+      ${tgBlock(ex())}</section>
+    <section class="panel form-sec"><h3>Способы входа</h3><p class="small">Привяжите несколько, чтобы не потерять доступ. Telegram подключается выше.</p>
+      ${[["Почта и пароль", 1], ["Apple", 0], ["Google", 0]].map(([n, on]) => `<div class="tg-row"><div class="t"><b>${n}</b><span class="small">${on ? "Привязан" : "Не привязан"}</span></div>${on ? `<button class="btn btn-ghost btn-sm" type="button">Отвязать</button>` : `<button class="btn btn-soft btn-sm" type="button">Привязать</button>`}</div>`).join("")}
       <p class="small" style="margin:10px 0 0">Apple и Google недоступны пользователям из России.</p></section>
     <form class="panel form-sec" data-form><h3>Сменить пароль</h3><p class="small">Не короче 8 символов: заглавная и строчная буквы, цифра и знак.</p>
       <div class="fgrid"><div class="field"><label for="p1">Текущий пароль</label><input id="p1" type="password" autocomplete="current-password"></div>
@@ -952,15 +968,6 @@ function profile() {
     <section class="panel form-sec"><h3>Устройства</h3><p class="small">Где вы сейчас вошли. <span class="is-new">новое</span></p>
       <div class="tg-row"><div class="t"><b>Этот браузер</b><span class="small">${esc(u.city)} · сейчас</span></div></div>
       <div class="tg-row"><div class="t"><b>iPhone · Telegram</b><span class="small">${esc(u.city)} · вчера</span></div><button class="btn btn-ghost btn-sm" type="button">Выйти</button></div></section>`;
-  if (tab === "view") pane = `
-    <form class="panel form-sec" data-form><h3>Внешний вид</h3><p class="small">Язык, часовой пояс и валюта.</p>
-      <div class="fgrid fgrid-3">
-        <div class="field"><label>Язык</label><select><option>Русский</option><option>English</option></select><div class="hint">Меню, письма и уведомления</div></div>
-        <div class="field"><label>Часовой пояс</label><select><option>Москва (UTC+3)</option><option>Екатеринбург (UTC+5)</option><option>Алматы (UTC+5)</option><option>Тбилиси (UTC+4)</option><option>Бали (UTC+8)</option></select><div class="hint">Время встреч показываем по нему</div></div>
-        <div class="field"><label>Валюта</label><select><option>Рубли, ₽</option><option>Доллары, $</option><option>Тенге, ₸</option><option>Евро, €</option></select><div class="hint">В ней показываем суммы и доход</div></div>
-      </div>${saveRow}</form>
-    <section class="panel form-sec"><h3>Оракул</h3><p class="small">Ежедневная карта по дате рождения.</p>
-      <div class="tg-row"><div class="t"><b>Показывать Оракула</b><span class="small">Карта дня на главной справа и напоминание в Telegram</span></div><label class="switch"><input type="checkbox" data-oracle-toggle ${ORACLE[S.persona]?.on ? "checked" : ""} aria-label="Показывать Оракула"><span></span></label></div></section>`;
   if (tab === "account") pane = `
     <section class="panel form-sec"><h3>Пауза</h3><p class="small">Если нужен перерыв: заморозим аккаунт до выбранной даты, решение принимает наставник.</p><button class="btn btn-ghost" type="button">Запросить заморозку</button></section>
     <section class="panel form-sec"><h3>Выход из сообщества</h3><p class="small">Заявку рассмотрит администрация. Покупки и сертификаты останутся у вас.</p><button class="btn btn-ghost" type="button" style="color:var(--bad)">Подать заявку на выход</button></section>`;
@@ -1111,7 +1118,7 @@ function route(a, b) {
   if (a === "progress") { growTab = b || "path"; return progress(); }
   if (a === "activity") return activity();
   if (a === "support") { if (lastA !== "support" && ticketSel >= 0 && matchMedia("(max-width: 960px)").matches) ticketSel = -2; lastA = a; return support(); }
-  if (a === "profile") { profTab = b || "about"; return profile(); }
+  if (a === "profile") { profTab = (b === "view" || b === "loc") ? "about" : (b || "about"); return profile(); }
   if (a === "p") return inside(b);
   return home();
 }
@@ -1131,6 +1138,7 @@ function bind() {
   root.querySelectorAll("[data-near]").forEach(el => el.onclick = () => { const k = S.persona + el.dataset.near; nearOpen.has(k) ? nearOpen.delete(k) : nearOpen.add(k); render(); });
   root.querySelectorAll("[data-friend]").forEach(el => el.onclick = () => { nearReq.add(S.persona + el.dataset.friend); render(); });
   root.querySelectorAll("[data-oracle-toggle]").forEach(el => el.onchange = () => { const o = ORACLE[S.persona]; if (o) o.on = el.checked; });
+  root.querySelectorAll("[data-plat]").forEach(el => el.onchange = () => { const c = el.dataset.plat; if (c === "Оракул") { const o = ORACLE[S.persona]; if (o) o.on = el.checked; } else if (el.checked) platOff.delete(S.persona + "|" + c); else platOff.add(S.persona + "|" + c); });
   root.querySelectorAll("[data-oracle-draw]").forEach(el => el.onclick = () => { const o = ORACLE[S.persona]; if (o) { o.card = ORACLE_DECK; render(); } });
   root.querySelectorAll("[data-ptab]").forEach(el => el.onclick = () => { panelTab = el.dataset.ptab; render(); });
   root.querySelectorAll("[data-hwgo]").forEach(el => el.addEventListener("click", () => { const a = actList()[+el.dataset.hwgo]; if (a) a.unread = false; }));
@@ -1164,7 +1172,10 @@ function bind() {
   const ra = document.getElementById("readall"); if (ra) ra.onclick = (e) => { e.stopPropagation(); me().notifs.forEach(n => n.unread = false); render(); };
   root.querySelectorAll("[data-logout]").forEach(el => el.onclick = () => { S.logged = false; });
   const lf = document.getElementById("loginForm"); if (lf) lf.onsubmit = (e) => { e.preventDefault(); S.logged = true; location.hash = "#/home"; };
-  root.querySelectorAll("[data-form]").forEach(f => f.onsubmit = (e) => { e.preventDefault(); const s = f.querySelector(".saved"); s.classList.add("on"); setTimeout(() => s.classList.remove("on"), 1800); });
+  root.querySelectorAll("[data-form]").forEach(f => f.onsubmit = (e) => { e.preventDefault();
+    const b = f.querySelector("#fbirth:not([disabled])"), bh = f.querySelector("#fbirth-h");
+    if (b && b.value.trim()) { if (!/^\d{2}\.\d{2}\.\d{4}$/.test(b.value.trim())) { bh.textContent = "Дата в формате ДД.ММ.ГГГГ, например 14.03.1981"; bh.classList.add("err"); b.setAttribute("aria-invalid", "true"); b.focus(); return; } ex().birth = b.value.trim(); render(); const s2 = document.querySelector("[data-form] .saved"); if (s2) { s2.classList.add("on"); setTimeout(() => s2.classList.remove("on"), 1800); } return; }
+    const s = f.querySelector(".saved"); s.classList.add("on"); setTimeout(() => s.classList.remove("on"), 1800); });
   const comp = document.getElementById("composer");
   if (comp) comp.onsubmit = (e) => { e.preventDefault(); const ta = comp.querySelector("textarea"); const v = ta.value.trim(); if (!v) return; const u = me();
     u.tickets[ticketSel].msgs.push(["me", v, "сейчас"]);
