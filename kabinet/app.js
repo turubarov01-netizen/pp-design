@@ -18,6 +18,11 @@ const P = {
   lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   book: '<path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',
   check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  calplus: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M12 14v6M9 17h6"/>',
+  compass: '<circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/>',
+  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  layout: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
+  present: '<path d="M2 3h20M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3M7 21l5-5 5 5"/>',
   star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/>',
   task: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 12l2 2 4-4"/>',
   flame: '<path d="M12 22c4.4 0 7-2.9 7-6.6 0-3.7-2.6-5.4-3.9-8.4-.9 1.9-2 2.9-3.6 3.1.1-2.6-.9-5.1-3.1-7.1.2 3.9-4.4 6.1-4.4 11.9C4 19.1 7.6 22 12 22z"/>',
@@ -66,10 +71,12 @@ const PRODUCTS = {
 };
 const CATALOG_ORDER = ["pp", "ii", "mesto", "ts", "proryv", "fa", "focus"];
 
-const SERVICES = [
-  { id: "offer", name: "Мой оффер", about: "Соберите оффер за 12 шагов: кому, какой результат, почему вам верят.", url: "https://wearefree.club/my-offer", big: true },
-  { id: "niche", name: "Выбор ниши", about: "Подберите нишу под свой опыт и рынок.", url: "https://wearefree.club/vybor-nishi" },
-  { id: "kev", name: "Оффер на КЭВ", about: "Оффер для эфира с продажей. Для участников Плана Продюсера.", url: "https://wearefree.club/kev", needs: "pp" },
+const SERVICES = [ // как «Полезные сервисы Альянса» на платформе (ProducerPlanLayout.tsx)
+  { name: "Регистратор 24/7", icon: "calplus", sub: "запись ваших клиентов и Zoom", url: "https://wearefree.club/booking" },
+  { name: "Выбор ниши", icon: "compass", sub: "подбор ниши под вас", url: "https://wearefree.club/vybor-nishi" },
+  { name: "Мой оффер", icon: "target", sub: "упаковка оффера", url: "https://wearefree.club/my-offer" },
+  { name: "Мой лендинг", icon: "layout", sub: "ваша страница: оффер и запись", url: "https://wearefree.club/tools/landing" },
+  { name: "Мой КЭВ", icon: "present", sub: "ключевой этап воронки и приглашение", url: "https://wearefree.club/kev" },
 ];
 
 /* ---------- даты: всё считается от сегодняшнего дня ---------- */
@@ -343,13 +350,18 @@ function navItems(u) {
   return [
     ["home", "#/home", "Главная", "home", 0],
     ["products", "#/products", "Мои продукты", "grid", 0],
-    ["services", "#/services", "Сервисы", "tool", 0],
     ["progress", "#/progress", "Мой рост", "trophy", 0],
     ["support", "#/support", "Поддержка", "chat", openT],
     ["profile", "#/profile", "Профиль", "user", 0],
   ];
 }
 
+/* «Сервисы»: выпадающий список, по умолчанию свёрнут; выбор помним на устройстве */
+let svcOpen = (() => { try { return localStorage.getItem("cab.svc") === "1"; } catch { return false; } })();
+const svcGroup = (cls = "") => `<div class="svc-nav ${cls} ${svcOpen ? "open" : ""}">
+  <button type="button" class="nav-item svc-toggle" data-svc-toggle aria-expanded="${svcOpen}">${ic("tool")}<span>Сервисы</span>${ic("chev", "svc-chev")}</button>
+  <div class="svc-list">${SERVICES.map(x => `<a class="svc-item" href="${x.url}" target="_blank" rel="noopener">${ic(x.icon)}<span>${esc(x.name)}</span>${ic("ext", "svc-ext")}</a>`).join("")}</div>
+</div>`;
 function shell(active, title, body) {
   const u = me();
   const items = navItems(u);
@@ -359,6 +371,7 @@ function shell(active, title, body) {
     <aside class="side" aria-label="Меню кабинета">
       <a class="brand" href="#/home"><img src="img/context-alliance.png" alt=""><span><span class="brand-t">Личный кабинет</span><br><span class="brand-s">wearefree.club</span></span></a>
       ${items.map(([k, h, l, i, c]) => `<a class="nav-item" href="${h}" ${k === active ? 'aria-current="page"' : ""}>${ic(i)}<span>${l}</span>${c ? `<span class="count">${c}</span>` : ""}</a>`).join("")}
+      ${svcGroup()}
       <div class="side-foot"><a class="nav-item" href="#/login" data-logout>${ic("logout")}<span>Выйти</span></a></div>
     </aside>
     <div class="main">
@@ -378,7 +391,7 @@ function shell(active, title, body) {
       <main class="content fade-in">${body}</main>
     </div>
     <nav class="mnav" aria-label="Меню кабинета">
-      ${items.filter(x => x[0] !== "services").map(([k, h, l, i, c]) => `<a href="${h}" ${k === active || (k === "products" && active === "services") ? 'aria-current="page"' : ""}>${ic(i)}<span>${l === "Мои продукты" ? "Продукты" : l === "Мой рост" ? "Рост" : l}</span>${c ? '<i class="dotc"></i>' : ""}</a>`).join("")}
+      ${items.map(([k, h, l, i, c]) => `<a href="${h}" ${k === active || (k === "products" && active === "services") ? 'aria-current="page"' : ""}>${ic(i)}<span>${l === "Мои продукты" ? "Продукты" : l === "Мой рост" ? "Рост" : l}</span>${c ? '<i class="dotc"></i>' : ""}</a>`).join("")}
     </nav>
   </div>`;
 }
@@ -600,7 +613,6 @@ function activity() {
 function prodTabs(active) {
   return `<nav class="tabs" aria-label="Разделы">
     <a href="#/products" ${active === "mine" ? 'aria-current="page"' : ""}>Мои продукты</a>
-    <a class="m-only" href="#/services" ${active === "svc" ? 'aria-current="page"' : ""}>Сервисы</a>
     <a href="#/products/pay" ${active === "pay" ? 'aria-current="page"' : ""}>Покупки и оплаты</a>
     <a href="#/products/catalog" ${active === "cat" ? 'aria-current="page"' : ""}>Программы школы</a></nav>`;
 }
@@ -625,22 +637,8 @@ function products() {
       <div class="acts">${acts}</div></article>`;
   }).join("");
   const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">Нажмите «Открыть», чтобы перейти внутрь продукта. Вернуться в кабинет можно кнопкой «В кабинет».</p>
-    ${prodTabs("mine")}${rows}`;
+    ${prodTabs("mine")}${svcGroup("svc-m panel")}${rows}`;
   return shell("products", "Мои продукты", body);
-}
-
-function services() {
-  const u = me();
-  const body = `<h2 class="h-xl">Сервисы</h2><p class="sub">Сервисы школы, которые помогают в работе. Открываются бесплатно.</p><div class="m-only">${prodTabs("svc")}</div><div class="d-gap"></div>
-  <div class="svc-grid">${SERVICES.map(s => {
-    const ok = !s.needs || owned(u).includes(s.needs);
-    const status = s.id === "offer" ? (u.name === "Ольга" ? "Пройдено 7 из 12 шагов" : u.name === "Наталья" || u.name === "Андрей" ? "Оффер собран" : "Не начат") : ok ? "Доступен" : "Откроется с Планом Продюсера";
-    return `<a class="panel svc ${s.big ? "big" : ""}" href="${ok ? s.url : PRODUCTS.pp.landing}" target="_blank" rel="noopener">
-      <span class="ic2" style="width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:${ok ? "rgba(47,123,255,.12)" : "rgba(16,24,48,.06)"};color:${ok ? "var(--blue)" : "var(--faint)"}">${ic(ok ? "tool" : "lock")}</span>
-      <span class="n">${esc(s.name)}</span><p>${esc(s.about)}</p>
-      <span class="st"><span class="num" style="${ok ? "" : "color:var(--faint)"}">${esc(status)}</span>${ic("ext", "chev")}</span></a>`;
-  }).join("")}</div>`;
-  return shell("services", "Сервисы", body);
 }
 
 function catalog() {
@@ -984,8 +982,8 @@ function render() {
   bind();
 }
 function route(a, b) {
-  if (a === "services") return services();
-  if (a === "products") return b === "services" ? services() : b === "catalog" ? catalog() : b === "pay" ? purchases() : products();
+  if (a === "services") return products();
+  if (a === "products") return b === "services" ? products() : b === "catalog" ? catalog() : b === "pay" ? purchases() : products();
   if (a === "progress") { growTab = b || "path"; return progress(); }
   if (a === "activity") return activity();
   if (a === "support") return support();
@@ -1007,6 +1005,7 @@ function bind() {
   root.querySelectorAll("[data-t]").forEach(el => el.onclick = () => { ticketSel = +el.dataset.t; me().tickets[ticketSel].unread = 0; render(); });
   const nt = document.getElementById("newT"); if (nt) nt.onclick = () => { ticketSel = -1; render(); };
   root.querySelectorAll("[data-back]").forEach(el => el.onclick = () => { ticketSel = -2; render(); });
+  root.querySelectorAll("[data-svc-toggle]").forEach(el => el.onclick = () => { svcOpen = !svcOpen; try { localStorage.setItem("cab.svc", svcOpen ? "1" : "0"); } catch {} root.querySelectorAll(".svc-nav").forEach(n => { n.classList.toggle("open", svcOpen); n.querySelector("[data-svc-toggle]").setAttribute("aria-expanded", svcOpen); }); });
   root.querySelectorAll("[data-rate]").forEach(el => el.onclick = () => { me().tickets[ticketSel].rated = +el.dataset.rate; render(); });
   root.querySelectorAll("[data-reopen]").forEach(el => el.onclick = () => { const t = me().tickets[ticketSel]; t.status = "open"; t.msgs.push(["system", "Обращение открыто снова", "сейчас"]); render(); });
   root.querySelectorAll("[data-close]").forEach(el => el.onclick = () => { const t = me().tickets[ticketSel]; t.status = "closed"; t.msgs.push(["system", "Вы закрыли обращение", "сейчас"]); render(); });

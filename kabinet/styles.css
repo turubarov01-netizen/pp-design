@@ -848,3 +848,21 @@ li.act.compact .act-quote span { display: -webkit-box; -webkit-line-clamp: 2; -w
 .d-gap { height: 22px; }
 @media (min-width: 961px) { .m-only { display: none !important; } }
 @media (max-width: 960px) { .d-gap { display: none; } }
+
+/* ---------- «Сервисы»: выпадающий список в боковом меню ---------- */
+.svc-toggle { width: 100%; border: 0; background: none; font: inherit; cursor: pointer; text-align: left; }
+.svc-toggle .svc-chev { margin-left: auto; width: 16px; height: 16px; transition: transform .2s var(--ease); }
+.svc-nav.open .svc-chev { transform: rotate(90deg); }
+.svc-list { display: none; padding: 2px 0 6px; }
+.svc-nav.open .svc-list { display: block; }
+.svc-item { display: flex; align-items: center; gap: 12px; padding: 9px 12px 9px 44px; border-radius: 12px; text-decoration: none; color: var(--ink-2); font-size: 14.5px; font-weight: 500; }
+.svc-item > svg:first-child { width: 18px; height: 18px; color: var(--faint); flex: none; margin-left: -28px; }
+.svc-item .svc-ext { margin-left: auto; width: 14px; height: 14px; color: var(--faint); opacity: .7; }
+.svc-item:hover { background: rgba(47,123,255,.07); color: var(--ink); }
+.svc-item:hover svg { color: var(--blue); }
+.svc-m { display: none; }
+@media (max-width: 960px) {
+  .svc-m { display: block; margin: 0 0 16px; padding: 6px; }
+  .svc-m .svc-toggle { min-height: 48px; }
+  .svc-m .svc-item { min-height: 44px; }
+}
