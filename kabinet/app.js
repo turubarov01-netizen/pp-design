@@ -461,7 +461,7 @@ function deadlineItem(it, idx) {
 }
 // Фрими, маскот платформы, у приветствия. Сейчас одна анимация для всех (машет лапкой);
 // для сгорающего дедлайна Саша пришлёт отдельную, тогда выбор будет здесь.
-const frimiHtml = () => `<span class="frimi" tabindex="0" role="img" aria-label="Фрими, ваш помощник" data-tip="Я Фрими, ваш помощник"><img src="img/frimi.webp" alt="" width="160" height="160"></span>`;
+const frimiHtml = () => `<span class="frimi" tabindex="0" role="img" aria-label="Фрими, ваш помощник" data-tip="Я Фрими, ваш помощник"><img src="img/frimi.webp" alt="" width="176" height="176"></span>`;
 // Тем, кто ничего не купил (решение Саши 14.10): на главной вместо пустого «Моего дня» три входа в школу
 // в фирменном стиле каждого продукта: 1) «Мой оффер», 2) Точка Сборки с таймером до потока, 3) Прорыв.
 // Тексты взяты с живых страниц: wearefree.club/my-offer, /tochka-sborki, /proryv-30.

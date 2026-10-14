@@ -1307,9 +1307,9 @@ button.svc-item { width: 100%; border: 0; background: none; font: inherit; text-
 .g-mob { display: none; }
 .greet-l { align-items: flex-end; }
 .greet-l > div { padding-bottom: 2px; }
-.frimi { width: 132px; height: 132px; margin: -30px 0 -35px -14px; z-index: 2; }
+.frimi { width: 132px; height: 132px; margin: -30px 0 -24px -10px; z-index: 2; }
 @media (max-width: 960px) { .g-desk { display: none; } .g-mob { display: block; margin: 4px 0 0; } }
 @media (max-width: 640px) {
-  .frimi { width: 92px; height: 92px; margin: -20px 0 -31px -10px; }
+  .frimi { width: 92px; height: 92px; margin: -20px 0 -23px -6px; }
   .greet-l { gap: 8px; }
 }
