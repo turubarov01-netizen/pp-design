@@ -458,7 +458,7 @@ const VIP = { natalia: { date: "9 октября", meet: "VIP-встреча №
     ["Продажа.", "Цель трёх продаж остаётся, в идеале — хотя бы одна на этой неделе."]] } };
 const vipDone = new Set();
 const vipBlock = () => { const v = VIP[S.persona]; if (!v) return ""; const n = v.tasks.filter((_, i) => vipDone.has(S.persona + i)).length;
-  return `<section class="panel pad vip-blk" aria-label="Задачи от наставника"><div class="sec-head"><h2 class="h-md">Задачи от наставника</h2><span class="vip-tag">VIP</span></div>
+  return `<section class="panel pad vip-blk" aria-label="Задачи от наставника"><p class="vip-kick">Договорились на встрече</p><div class="sec-head"><h2 class="h-md">Задачи от наставника</h2><span class="vip-tag">VIP</span></div>
     <p class="small vip-src">С разбора ${v.date} · ${v.meet} · <span style="white-space:nowrap">сделано ${n} из ${v.tasks.length}</span></p>
     <ol class="vip-list">${v.tasks.map(([b, t], i) => { const d = vipDone.has(S.persona + i); return `<li class="${d ? "done" : ""}"><button type="button" class="vip-ck" data-vip="${i}" aria-pressed="${d}" aria-label="${d ? "Снять отметку" : "Отметить сделанным"}: ${esc(b.replace(/[:,.]$/, ""))}">${d ? ic("check") : i + 1}</button><p><b>${esc(b)}</b> ${esc(t)}</p></li>`; }).join("")}</ol>
     <a class="btn btn-ghost btn-sm vip-go" href="${v.lesson}" target="_blank" rel="noopener">${ic("play")}Открыть последний разбор</a></section>`; };

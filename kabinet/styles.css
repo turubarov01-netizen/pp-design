@@ -1060,3 +1060,23 @@ li.act:not(.unread) .act-tx > a.act-h { font-weight: 600; color: var(--ink-2); }
 .near-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 @media (prefers-reduced-motion: reduce) { .near-chev, .vip-ck { transition: none; } }
 @media (max-width: 960px) { .near-card { padding-left: 0; } .near-btns > * { flex: 1; justify-content: center; } }
+
+/* v25 — Задачи от наставника в стиле Плана Продюсера: тёмная тема, синие шаги, золотая CTA */
+.panel.vip-blk { background: linear-gradient(165deg, #141E2B 0%, #0D1117 100%); border: 1px solid rgba(255,255,255,.08); box-shadow: 0 14px 36px rgba(13,17,23,.28); color: #E5E7EB; }
+.vip-kick { margin: 0 0 6px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #6B9FFF; }
+.vip-blk .sec-head h2 { color: #fff; }
+.vip-blk .vip-src { color: rgba(229,231,235,.55); }
+.vip-blk .vip-list p { color: rgba(229,231,235,.72); }
+.vip-blk .vip-list b { color: #fff; }
+.vip-blk .vip-ck { background: rgba(75,123,255,.14); border-color: rgba(75,123,255,.38); color: #6B9FFF; border-radius: 7px; }
+.vip-blk .vip-ck:hover { background: rgba(75,123,255,.24); border-color: #6B9FFF; color: #fff; }
+.vip-blk .vip-ck:focus-visible { outline: 2px solid #6B9FFF; outline-offset: 2px; }
+.vip-blk .vip-list li.done .vip-ck { background: #6BCB77; border-color: #6BCB77; color: #0D1117; }
+.vip-blk .vip-list li.done p, .vip-blk .vip-list li.done b { color: rgba(229,231,235,.4); }
+.vip-blk .vip-list li.done b { text-decoration-color: rgba(229,231,235,.4); }
+.vip-blk .vip-go { position: relative; top: 0; margin-top: 18px; min-height: 44px; border: 0; border-radius: 14px; background: linear-gradient(180deg, #DFC880 0%, #C9A84C 100%); color: #3A2E18; font-weight: 700; box-shadow: 0 4px 0 #A07828, 0 8px 16px rgba(0,0,0,.35); transition: top .15s var(--ease), box-shadow .15s var(--ease); }
+.vip-blk .vip-go svg { color: #3A2E18; }
+.vip-blk .vip-go:hover { top: 2px; box-shadow: 0 2px 0 #A07828, 0 5px 12px rgba(0,0,0,.3); background: linear-gradient(180deg, #E6D18F 0%, #CFAF55 100%); }
+.vip-blk .vip-go:active { top: 4px; box-shadow: 0 0 0 #A07828, 0 3px 8px rgba(0,0,0,.3); }
+.vip-blk .vip-go:focus-visible { outline: 2px solid #DFC880; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .vip-blk .vip-go { transition: none; } }
