@@ -435,6 +435,15 @@ const rankBlock = (u) => { const r = Object.entries(u.rank || {}); if (!r.length
   return `<div class="rank-blk"><p class="rank-h">Рейтинг в программах</p><ul class="rank-list">${r.map(([id, [pos, of, pts]]) =>
     `<li><a href="#/p/${id}" title="Открыть рейтинг потока">${pmark(id)}<span class="rk-n">${esc(PRODUCTS[id].name)}<small>${pts.toLocaleString("ru-RU")} ${plural(pts, "балл", "балла", "баллов")}</small></span><span class="rk-p"><b>${pos}</b>&nbsp;место<small>из&nbsp;${of}</small></span></a></li>`).join("")}</ul></div>`; };
 
+// Оракул: карта дня, как на платформе (user_settings.oracle_disabled + oracle_draws). Карты взяты из oracle_cards.
+// Демо: Андрей Оракула выключил, Мария сегодня карту ещё не открывала.
+const ORACLE = { maria: { on: true, card: null }, olga: { on: true, card: ["🗝️", "Ключ", "доступ, ясность, точный вопрос"] }, andrey: { on: false, card: null }, natalia: { on: true, card: ["🜂", "Мост", "соединение, люди, быстрые обходные пути"] } };
+const ORACLE_DECK = ["🪙", "Монета", "обмен, ценность, реальность"];
+const oracleBlock = () => { const o = ORACLE[S.persona]; if (!o || !o.on) return "";
+  return o.card
+    ? `<button class="oracle" type="button" title="На платформе откроется полная карта" aria-label="Карта дня: ${esc(o.card[1])}"><span class="or-sym" aria-hidden="true">${o.card[0]}</span><span class="or-t"><small>${ic("spark")}Карта дня</small><b>«${esc(o.card[1])}»</b><span>${esc(o.card[2])}</span></span>${ic("chev")}</button>`
+    : `<button class="oracle fresh" type="button" data-oracle-draw><span class="or-sym" aria-hidden="true">${ic("spark")}</span><span class="or-t"><small>Оракул Фриманов</small><b>Ваше предсказание ждёт</b></span><span class="or-btn">Открыть</span></button>`; };
+
 function home() {
   const u = me();
   const now = new Date();
@@ -478,6 +487,7 @@ function home() {
         ${lives}
         ${rankBlock(u)}
       </section>
+      ${oracleBlock()}
       ${setupBlock("home")}
     </div>
   </div>`;
@@ -858,7 +868,9 @@ function profile() {
         <div class="field"><label>Язык</label><select><option>Русский</option><option>English</option></select></div>
         <div class="field"><label>Часовой пояс</label><select><option>Москва (UTC+3)</option><option>Екатеринбург (UTC+5)</option><option>Алматы (UTC+5)</option><option>Тбилиси (UTC+4)</option><option>Бали (UTC+8)</option></select><div class="hint">Время встреч показываем по нему</div></div>
         <div class="field"><label>Валюта</label><select><option>Рубли, ₽</option><option>Доллары, $</option><option>Тенге, ₸</option><option>Евро, €</option></select><div class="hint">В ней показываем суммы и доход</div></div>
-      </div>${saveRow}</form>`;
+      </div>${saveRow}</form>
+    <section class="panel form-sec"><h3>Оракул</h3><p class="small">Ежедневная карта по дате рождения.</p>
+      <div class="tg-row"><div class="t"><b>Показывать Оракула</b><span class="small">Карта дня на главной справа и напоминание в Telegram</span></div><label class="switch"><input type="checkbox" data-oracle-toggle ${ORACLE[S.persona]?.on ? "checked" : ""} aria-label="Показывать Оракула"><span></span></label></div></section>`;
   if (tab === "account") pane = `
     <section class="panel form-sec"><h3>Пауза</h3><p class="small">Если нужен перерыв: заморозим аккаунт до выбранной даты, решение принимает наставник.</p><button class="btn btn-ghost" type="button">Запросить заморозку</button></section>
     <section class="panel form-sec"><h3>Выход из сообщества</h3><p class="small">Заявку рассмотрит администрация. Покупки и сертификаты останутся у вас.</p><button class="btn btn-ghost" type="button" style="color:var(--bad)">Подать заявку на выход</button></section>`;
@@ -1015,6 +1027,8 @@ function route(a, b) {
 function bind() {
   root.querySelectorAll("[data-tab]").forEach(el => el.onclick = () => { feedTab = el.dataset.tab; render(); });
   root.querySelectorAll("[data-setup-hide]").forEach(el => el.onclick = () => { setupHidden.add(S.persona); render(); });
+  root.querySelectorAll("[data-oracle-toggle]").forEach(el => el.onchange = () => { const o = ORACLE[S.persona]; if (o) o.on = el.checked; });
+  root.querySelectorAll("[data-oracle-draw]").forEach(el => el.onclick = () => { const o = ORACLE[S.persona]; if (o) { o.card = ORACLE_DECK; render(); } });
   root.querySelectorAll("[data-ptab]").forEach(el => el.onclick = () => { panelTab = el.dataset.ptab; render(); });
   root.querySelectorAll("[data-hwgo]").forEach(el => el.addEventListener("click", () => { const a = actList()[+el.dataset.hwgo]; if (a) a.unread = false; }));
   root.querySelectorAll("[data-atab]").forEach(el => el.onclick = () => { actTab = el.dataset.atab; actReply = -1; render(); });
