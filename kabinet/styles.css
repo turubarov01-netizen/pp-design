@@ -1020,3 +1020,43 @@ li.act:not(.unread) .act-tx > a.act-h { font-weight: 600; color: var(--ink-2); }
 @media (prefers-reduced-motion: reduce) { .oracle, .oracle > svg { transition: none; } }
 .oracle.fresh .or-t b { font-size: 15px; line-height: 1.3; }
 .oracle.fresh { gap: 12px; padding-right: 14px; }
+
+/* v24 — Чаты в правой колонке */
+.chat-list { margin-top: -4px; }
+.chat-go { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: rgba(42,171,238,.12); color: #229ed9; transition: background-color .2s var(--ease); }
+.chat-go svg { width: 17px; height: 17px; }
+.chat-list a:hover .chat-go { background: rgba(42,171,238,.22); }
+.chat-list .rk-n { font-weight: 600; }
+
+/* v24 — Задачи от наставника (VIP) */
+.vip-tag { font-size: 11px; font-weight: 800; letter-spacing: .08em; padding: 4px 9px; border-radius: 999px; color: #3a2e18; background: linear-gradient(180deg, #dfc880, #c9a84c); }
+.vip-src { margin: -6px 0 12px; }
+.vip-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.vip-list li { display: flex; gap: 12px; align-items: flex-start; }
+.vip-list p { margin: 0; font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+.vip-list b { color: var(--ink); font-weight: 650; }
+.vip-ck { flex: none; width: 28px; height: 28px; margin-top: -3px; border-radius: 8px; border: 1px solid var(--line); background: #fff; display: grid; place-items: center; font: 700 13px/1 inherit; color: var(--muted); cursor: pointer; position: relative; transition: background-color .2s var(--ease), border-color .2s var(--ease); }
+.vip-ck::before { content: ""; position: absolute; inset: -8px; }
+.vip-ck:hover { border-color: var(--blue); color: var(--blue); }
+.vip-ck svg { width: 16px; height: 16px; }
+.vip-list li.done .vip-ck { background: #16a34a; border-color: #16a34a; color: #fff; }
+.vip-list li.done p { color: var(--muted); }
+.vip-list li.done b { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(0,0,0,.25); }
+.vip-go { margin-top: 14px; width: 100%; justify-content: center; }
+
+/* v24 — Фримены рядом */
+.near-sub { margin: -6px 0 8px; }
+.near-list { list-style: none; margin: 0; padding: 0; }
+.near-list li + li { border-top: 1px solid var(--line-2); }
+.near-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 9px 6px; margin: 0 -6px; width: calc(100% + 12px); min-height: 52px; background: none; border: 0; border-radius: 12px; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.near-row:hover { background: rgba(47,123,255,.06); }
+.near-row:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+.near-av { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #fff; }
+.av-c0 { background: #2f7bff; } .av-c1 { background: #7b61ff; } .av-c2 { background: #0f9fa8; } .av-c3 { background: #e5484d; } .av-c4 { background: #d97706; }
+.near-chev { flex: none; width: 18px; height: 18px; color: var(--faint); transition: transform .2s var(--ease); transform: rotate(90deg); }
+.near-list li.open .near-chev { transform: rotate(-90deg); }
+.near-card { padding: 2px 0 14px 48px; }
+.near-card p { margin: 0 0 4px; font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+.near-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+@media (prefers-reduced-motion: reduce) { .near-chev, .vip-ck { transition: none; } }
+@media (max-width: 960px) { .near-card { padding-left: 0; } .near-btns > * { flex: 1; justify-content: center; } }

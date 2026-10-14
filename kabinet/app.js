@@ -435,6 +435,49 @@ const rankBlock = (u) => { const r = Object.entries(u.rank || {}); if (!r.length
   return `<div class="rank-blk"><p class="rank-h">Рейтинг в программах</p><ul class="rank-list">${r.map(([id, [pos, of, pts]]) =>
     `<li><a href="#/p/${id}" title="Открыть рейтинг потока">${pmark(id)}<span class="rk-n">${esc(PRODUCTS[id].name)}<small>${pts.toLocaleString("ru-RU")} ${plural(pts, "балл", "балла", "баллов")}</small></span><span class="rk-p"><b>${pos}</b>&nbsp;место<small>из&nbsp;${of}</small></span></a></li>`).join("")}</ul></div>`; };
 
+// Чаты в Telegram по действующим продуктам — те же, что на платформе: в ПП «Чат потока» и «Чат отряда»,
+// в Месте притяжения чат потока, в ИИнструментах «Q&A», в Альянсе «Чат Альянса» (только по уровню, не в гостевом доступе).
+const SQUAD = { olga: "Восход" };
+const chatList = (u) => { const out = [];
+  u.products.filter(x => x.state === "active" || x.state === "expiring").forEach(x => {
+    if (x.id === "pp") { out.push([x.id, "Чат потока", "https://wearefree.club/producer-plan/chat"]); out.push([x.id, SQUAD[S.persona] ? `Чат отряда «${SQUAD[S.persona]}»` : "Чат отряда", "https://wearefree.club/producer-plan/team-chat"]); }
+    if (x.id === "mesto") out.push([x.id, "Чат потока", PRODUCTS.mesto.live]);
+    if (x.id === "ii") out.push([x.id, "Чат Q&A", PRODUCTS.ii.live]);
+    if (x.id === "fa") out.push([x.id, "Чат Альянса", "https://wearefree.club/"]);
+  }); return out; };
+const chatsBlock = (u) => { const l = chatList(u); if (!l.length) return "";
+  return `<section class="panel pad" aria-label="Чаты"><div class="sec-head"><h2 class="h-md">Чаты</h2><span class="small">в&nbsp;Telegram</span></div>
+    <ul class="rank-list chat-list">${l.map(([id, t, href]) => `<li><a href="${href}" target="_blank" rel="noopener">${pmark(id)}<span class="rk-n">${esc(t)}<small>${esc(PRODUCTS[id].name)}</small></span><span class="chat-go">${ic("tg")}</span></a></li>`).join("")}</ul></section>`; };
+
+// Задачи от наставника — только у VIP «Плана Продюсера». Берутся из блока «Договорились на встрече» последнего VIP-разбора.
+// Демо: задачи из разбора ПП5 VIP, встреча №2 (9 октября); «Открыть разбор» ведёт в урок этого разбора на платформе.
+const VIP = { natalia: { date: "9 октября", meet: "VIP-встреча №2", lesson: "https://wearefree.club/producer-plan/lesson/2242359a-9d12-49d8-9d4a-5337b909415a",
+  tasks: [["Таблица конкурентов:", "продукты, боли, страхи, решения и офферы, с колонкой «беру / не беру». Прислать в общий VIP-чат."],
+    ["Эфир или видео", "на тему, которая есть у целевой аудитории. Минимум — анонс и проверка, записываются ли люди."],
+    ["Два рилса,", "которые приглашают на этот эфир."],
+    ["Продажа.", "Цель трёх продаж остаётся, в идеале — хотя бы одна на этой неделе."]] } };
+const vipDone = new Set();
+const vipBlock = () => { const v = VIP[S.persona]; if (!v) return ""; const n = v.tasks.filter((_, i) => vipDone.has(S.persona + i)).length;
+  return `<section class="panel pad vip-blk" aria-label="Задачи от наставника"><div class="sec-head"><h2 class="h-md">Задачи от наставника</h2><span class="vip-tag">VIP</span></div>
+    <p class="small vip-src">С разбора ${v.date} · ${v.meet} · <span style="white-space:nowrap">сделано ${n} из ${v.tasks.length}</span></p>
+    <ol class="vip-list">${v.tasks.map(([b, t], i) => { const d = vipDone.has(S.persona + i); return `<li class="${d ? "done" : ""}"><button type="button" class="vip-ck" data-vip="${i}" aria-pressed="${d}" aria-label="${d ? "Снять отметку" : "Отметить сделанным"}: ${esc(b.replace(/[:,.]$/, ""))}">${d ? ic("check") : i + 1}</button><p><b>${esc(b)}</b> ${esc(t)}</p></li>`; }).join("")}</ol>
+    <a class="btn btn-ghost btn-sm vip-go" href="${v.lesson}" target="_blank" rel="noopener">${ic("play")}Открыть последний разбор</a></section>`; };
+
+// Фримены рядом — как фильтр «Рядом со мной» в разделе «Участники» (по координатам города), не больше 5.
+// Контакты видны только друзьям, поэтому здесь — кто это, чем занят и заявка в друзья. Люди демо.
+const NEAR = {
+  maria: [["ЛГ", "Лейла Гарипова", "Бунтарь", 3, "Психолог, ведёт группы поддержки для мам", "Freeman's Alliance"], ["РС", "Ринат Сафин", "Мечтатель", 6, "Продюсер онлайн-школ, запуски экспертов", "ИИнструменты"], ["ЕМ", "Елена Морозова", "Бунтарь", 11, "Нутрициолог, марафоны по питанию", "Freeman's Alliance"]],
+  olga: [["ДК", "Дарья Котова", "Бунтарь", 2, "Таролог, личные консультации и курс", "План Продюсера"], ["АШ", "Артём Шестаков", "Архитектор", 5, "Маркетолог, воронки для экспертов", "Freeman's Alliance"], ["ИВ", "Ирина Власова", "Мечтатель", 9, "Коуч, программа по выходу из выгорания", "План Продюсера"], ["МБ", "Марина Белова", "Бунтарь", 14, "Астролог, разборы натальных карт", "Место притяжения"]],
+  andrey: [["СЛ", "Сергей Лебедев", "Архитектор", 1, "Бизнес-тренер, корпоративные программы", "Freeman's Alliance"], ["ОН", "Ольга Новикова", "Бунтарь", 3, "Психотерапевт, курс по тревоге", "План Продюсера"], ["ПК", "Павел Козлов", "Мечтатель", 4, "Продюсер подкастов", "ИИнструменты"], ["ТР", "Татьяна Руденко", "Бунтарь", 7, "Нумеролог, консультации и мини-курс", "Место притяжения"], ["ВГ", "Виктор Гусев", "Архитектор", 12, "Фитнес-наставник, онлайн-сопровождение", "Freeman's Alliance"]],
+  natalia: [["АС", "Анна Смирнова", "Бунтарь", 2, "Психолог, курс по отношениям", "План Продюсера"], ["КЖ", "Кирилл Жуков", "Мечтатель", 4, "Видеограф, съёмка для экспертов", "Freeman's Alliance"], ["СТ", "Светлана Титова", "Бунтарь", 6, "Энерготерапевт, группы медитаций", "Место притяжения"], ["ДО", "Денис Орлов", "Архитектор", 9, "Юрист для онлайн-школ", "Freeman's Alliance"], ["ЮП", "Юлия Попова", "Бунтарь", 15, "Карьерный консультант", "ИИнструменты"]] };
+const nearOpen = new Set(), nearReq = new Set();
+const nearBlock = (u) => { const l = (NEAR[S.persona] || []).slice(0, 5); if (!l.length) return "";
+  return `<section class="panel pad" aria-label="Фримены рядом"><div class="sec-head"><h2 class="h-md">Фримены рядом</h2><a href="https://wearefree.club/members" target="_blank" rel="noopener">Все</a></div>
+    <p class="small near-sub">${esc(u.city)} · до&nbsp;${l[l.length - 1][3]}&nbsp;км от вас</p>
+    <ul class="near-list">${l.map(([ini, n, lvl, km, bio, common], i) => { const k = S.persona + i, op = nearOpen.has(k), rq = nearReq.has(k);
+      return `<li class="${op ? "open" : ""}"><button type="button" class="near-row" data-near="${i}" aria-expanded="${op}"><span class="near-av av-c${i % 5}">${ini}</span><span class="rk-n">${esc(n)}<small>${esc(lvl)} · ${km}&nbsp;км</small></span>${ic("chev", "near-chev")}</button>
+        ${op ? `<div class="near-card"><p>${esc(bio)}</p><p class="small">Общее: ${esc(common)}</p><div class="near-btns">${rq ? `<span class="btn btn-soft btn-sm" aria-live="polite">${ic("check")}Заявка отправлена</span>` : `<button type="button" class="btn btn-primary btn-sm" data-friend="${i}">${ic("plus")}Добавить в друзья</button>`}<a class="btn btn-ghost btn-sm" href="https://wearefree.club/members" target="_blank" rel="noopener">Профиль</a></div></div>` : ""}</li>`; }).join("")}</ul></section>`; };
+
 // Оракул: карта дня, как на платформе (user_settings.oracle_disabled + oracle_draws). Карты взяты из oracle_cards.
 // Демо: Андрей Оракула выключил, Мария сегодня карту ещё не открывала.
 const ORACLE = { maria: { on: true, card: null }, olga: { on: true, card: ["🗝️", "Ключ", "доступ, ясность, точный вопрос"] }, andrey: { on: false, card: null }, natalia: { on: true, card: ["🜂", "Мост", "соединение, люди, быстрые обходные пути"] } };
@@ -487,6 +530,9 @@ function home() {
         ${lives}
         ${rankBlock(u)}
       </section>
+      ${vipBlock()}
+      ${chatsBlock(u)}
+      ${nearBlock(u)}
       ${oracleBlock()}
       ${setupBlock("home")}
     </div>
@@ -1027,6 +1073,9 @@ function route(a, b) {
 function bind() {
   root.querySelectorAll("[data-tab]").forEach(el => el.onclick = () => { feedTab = el.dataset.tab; render(); });
   root.querySelectorAll("[data-setup-hide]").forEach(el => el.onclick = () => { setupHidden.add(S.persona); render(); });
+  root.querySelectorAll("[data-vip]").forEach(el => el.onclick = () => { const k = S.persona + el.dataset.vip; vipDone.has(k) ? vipDone.delete(k) : vipDone.add(k); render(); });
+  root.querySelectorAll("[data-near]").forEach(el => el.onclick = () => { const k = S.persona + el.dataset.near; nearOpen.has(k) ? nearOpen.delete(k) : nearOpen.add(k); render(); });
+  root.querySelectorAll("[data-friend]").forEach(el => el.onclick = () => { nearReq.add(S.persona + el.dataset.friend); render(); });
   root.querySelectorAll("[data-oracle-toggle]").forEach(el => el.onchange = () => { const o = ORACLE[S.persona]; if (o) o.on = el.checked; });
   root.querySelectorAll("[data-oracle-draw]").forEach(el => el.onclick = () => { const o = ORACLE[S.persona]; if (o) { o.card = ORACLE_DECK; render(); } });
   root.querySelectorAll("[data-ptab]").forEach(el => el.onclick = () => { panelTab = el.dataset.ptab; render(); });
