@@ -674,7 +674,7 @@ body.on-login .orbs { display: none; }
 }
 
 /* таймер дедлайна (как DeadlineCountdown в «Плане Продюсера») */
-.cd { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 10px; background: #eef3ff; border: 1px solid #d6e2ff; font-size: 12px; }
+.cd { display: inline-flex; flex-wrap: wrap; max-width: 100%; row-gap: 2px; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 10px; background: #eef3ff; border: 1px solid #d6e2ff; font-size: 12px; }
 .cd-l { color: var(--muted); font-weight: 500; }
 .cd-t { display: inline-flex; align-items: baseline; gap: 2px; }
 .cd-t b { font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--accent, #2f7bff); }
@@ -734,3 +734,21 @@ body.on-login .orbs { display: none; }
   .act-tabs button { flex: 1; padding: 6px 4px; white-space: nowrap; font-size: 12.5px; }
   .act-tabs .n { display: none; }
 }
+
+/* ---------- настройка профиля ---------- */
+.setup-top { display: flex; align-items: center; gap: 10px; margin: -2px 0 8px; }
+.setup-top .small { white-space: nowrap; font-weight: 600; }
+.setup-top .progress { flex: 1; }
+.setup { list-style: none; margin: 0; padding: 0; }
+.setup li > a, .setup li.ok { display: grid; grid-template-columns: 24px 1fr auto; gap: 10px; align-items: center; padding: 10px 6px; border-radius: 12px; text-decoration: none; color: inherit; }
+.setup li > a:hover { background: rgba(47,123,255,.06); }
+.setup li + li { border-top: 1px solid var(--line-2); }
+.setup b { display: block; font-size: 14px; }
+.setup .small { display: block; font-size: 12px; margin-top: 2px; }
+.setup .sc { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(47,123,255,.35); display: grid; place-items: center; }
+.setup li.ok .sc { background: #16a37a; border-color: #16a37a; color: #fff; }
+.setup li.ok .sc svg { width: 14px; height: 14px; }
+.setup li.ok b { color: var(--muted); font-weight: 500; text-decoration: line-through; text-decoration-color: rgba(91,100,122,.4); }
+.setup .chev { width: 16px; height: 16px; color: var(--muted); }
+.setup-card { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-2); text-align: left; }
+.setup-h { margin: 0 0 8px; font-weight: 700; font-size: 14px; }

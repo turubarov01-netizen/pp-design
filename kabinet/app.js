@@ -275,7 +275,7 @@ PERSONAS.natalia.tickets = [
 ];
 
 const EXTRA = {
-  maria:   { callsign: null, birth: "14.03.1981", tgUser: "maria_sokol", karma: 40, rank: 812, xp: [120, 500], rep: "Новичок", friends: 3, followers: 5, recs: 0, member: "Стартовый доступ", memberFrom: "покупка ИИнструментов", memberUntil: 54, pointA: null, record: null,
+  maria:   { callsign: null, birth: "14.03.1981", tgUser: "", karma: 40, rank: 812, xp: [120, 500], rep: "Новичок", friends: 3, followers: 5, recs: 0, member: "Стартовый доступ", memberFrom: "покупка ИИнструментов", memberUntil: 54, pointA: null, record: null,
              bases: ["Казань"], biz: [], skills: ["Психология", "Консультирование"], invoices: [],
              pays: [["ИИнструменты, 2 месяца", "9 900 ₽", 6, "Карта •• 4421"]] },
   olga:    { callsign: "Ласточка", birth: "02.11.1979", tgUser: "olga_iv", karma: 180, rank: 241, xp: [860, 1000], rep: "Активист", friends: 12, followers: 18, recs: 2, member: "Стартовый доступ", memberFrom: "покупка Плана Продюсера", memberUntil: 40, pointA: 60000, record: 110000,
@@ -449,6 +449,7 @@ function home() {
         ${u.products.map(p => `<a class="mini-prod" href="#/p/${p.id}">${logo(p.id)}<span><span class="nm">${esc(PRODUCTS[p.id].name)}</span><br><span class="st ${p.state === "expiring" ? "st-warn" : p.state === "trial" ? "st-trial" : ""}">${p.state === "trial" ? "Гостевой доступ" : p.state === "expiring" ? `Осталось ${p.until} ${plural(p.until, "день", "дня", "дней")}` : `До ${until(p.until)}`}</span></span>${ic("chev", "chev")}</a>`).join("")}
       </section>
       ${actPanel()}
+      ${setupBlock("home")}
       <section class="panel pad" aria-label="Мой рост">
         <div class="sec-head"><h2 class="h-md">Мой рост</h2><a href="#/progress">Подробнее</a></div>
         <div class="stat-line"><span class="ic2" style="background:rgba(240,138,40,.12)"><img src="img/freecoin.png" alt=""></span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div><span class="tail">+${u.phoenixWeek} за неделю</span></div>
@@ -460,6 +461,35 @@ function home() {
     </div>
   </div>`;
   return shell("home", "Главная", body);
+}
+
+/* ---------- настройка профиля (вместо 3 еженедельных напоминаний) ---------- */
+// Те же проверки, что в базе: профиль = имя, фамилия, город, телефон, Telegram; активная цель Зверька; непустой список желаний.
+const SETUP = {
+  maria: { miss: ["Telegram"], zveryok: false, wish: false },
+  olga: { miss: [], zveryok: false, wish: true },
+  andrey: { miss: [], zveryok: true, wish: true },
+  natalia: { miss: [], zveryok: true, wish: true },
+};
+const setupHidden = new Set();
+function setupSteps() {
+  const s = SETUP[S.persona]; if (!s) return [];
+  return [
+    { ok: !s.miss.length, t: "Заполнить профиль", h: s.miss.length ? `Не хватает: ${s.miss.join(", ")}` : "Готово", href: "#/profile" },
+    { ok: s.zveryok, t: "Поставить цель Зверька", h: s.zveryok ? "Готово" : "Цель для мотивации на ближайшие недели", href: "https://wearefree.club/zveryok", ext: true },
+    { ok: s.wish, t: "Добавить желание в список", h: s.wish ? "Готово" : "То, к чему вы стремитесь", href: "https://wearefree.club/wishlist", ext: true },
+  ];
+}
+function setupBlock(where) {
+  const st = setupSteps(); const done = st.filter(x => x.ok).length;
+  if (!st.length || done === st.length || (where === "home" && setupHidden.has(S.persona))) return "";
+  const body = `<div class="setup-top"><span class="small">${done} из ${st.length}</span><div class="progress"><span style="width:${Math.round(done / st.length * 100)}%"></span></div></div>
+    <ul class="setup">${st.map(x => x.ok
+      ? `<li class="ok"><span class="sc">${ic("check")}</span><span><b>${x.t}</b></span></li>`
+      : `<li><a href="${x.href}" ${x.ext ? 'target="_blank" rel="noopener"' : ""}><span class="sc"></span><span><b>${x.t}</b><span class="small">${esc(x.h)}</span></span>${ic(x.ext ? "ext" : "chev", "chev")}</a></li>`).join("")}</ul>`;
+  return where === "home"
+    ? `<section class="panel pad" aria-label="Настройка профиля"><div class="sec-head"><h2 class="h-md">Закончите настройку <span class="is-new">новое</span></h2><button class="link-btn" data-setup-hide>Скрыть</button></div>${body}</section>`
+    : `<div class="setup-card"><p class="setup-h">Закончите настройку <span class="is-new">новое</span></p>${body}</div>`;
 }
 
 /* ---------- отклики (бывшая страница /activity) ---------- */
@@ -759,7 +789,7 @@ function profile() {
         <div class="field"><label>Позывной</label><input value="${e.callsign ? esc(e.callsign) : ""}" placeholder="Позывной назначит наставник" disabled></div>
         <div class="field"><label>Дата рождения</label><input value="${esc(e.birth)}" disabled><div class="hint">Указывается один раз. Изменить можно через поддержку</div></div>
         <div class="field"><label for="f6">Телефон</label><input id="f6" type="tel" value="${esc(u.phone)}"></div>
-        <div class="field"><label for="f7">Telegram</label><input id="f7" value="@${esc(e.tgUser)}"></div>
+        <div class="field"><label for="f7">Telegram</label><input id="f7" value="${e.tgUser ? "@" + esc(e.tgUser) : ""}" placeholder="@username"></div>
         <div class="field full"><label for="f5">О себе</label><textarea id="f5" maxlength="2000" placeholder="Чем вы занимаетесь, с кем работаете">${e.biz[0] ? esc(e.biz[0][0] + ". " + e.biz[0][2] + ".") : ""}</textarea><div class="hint">До 2000 символов</div></div>
       </div>${saveRow}</form>
     <section class="panel form-sec"><h3>Навыки</h3><p class="small">До 30 навыков. Участники клуба могут их подтверждать.</p>
@@ -821,6 +851,7 @@ function profile() {
         <div class="stat-line"><span class="ic2" style="background:rgba(47,123,255,.1);color:var(--blue)">${ic("user")}</span><div><div class="v">${e.friends} · ${e.followers}</div><div class="l">друзей · подписчиков</div></div></div>
       </div>
       <a class="btn btn-ghost btn-sm" style="width:100%;margin-top:12px" href="https://wearefree.club/members" target="_blank" rel="noopener">Как меня видят в клубе ${ic("ext")}</a>
+      ${setupBlock("profile")}
     </section>
     <div>
       <nav class="tabs" style="margin-top:0" aria-label="Разделы профиля">${tabs.map(([k, l]) => `<a href="#/profile/${k}" ${k === tab ? 'aria-current="page"' : ""}>${l}</a>`).join("")}</nav>
@@ -959,6 +990,7 @@ function route(a, b) {
 
 function bind() {
   root.querySelectorAll("[data-tab]").forEach(el => el.onclick = () => { feedTab = el.dataset.tab; render(); });
+  root.querySelectorAll("[data-setup-hide]").forEach(el => el.onclick = () => { setupHidden.add(S.persona); render(); });
   root.querySelectorAll("[data-atab]").forEach(el => el.onclick = () => { actTab = el.dataset.atab; actReply = -1; render(); });
   root.querySelectorAll("[data-aopen]").forEach(el => el.onclick = () => { actReply = +el.dataset.aopen; actList()[actReply].unread = false; render(); root.querySelector(".act-reply input")?.focus(); });
   root.querySelectorAll("[data-acancel]").forEach(el => el.onclick = () => { actReply = -1; render(); });
