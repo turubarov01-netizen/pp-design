@@ -293,7 +293,7 @@ PERSONAS.valeriy = {
   phoenix: 18117, phoenixWeek: 0, streak: 0, rank: {},
   products: [
     { id: "pp", state: "ended", ended: "19 июня 2026" },
-    { id: "ts", state: "ended", ended: "пройдена" },
+    { id: "ts", state: "ended", ended: null },
   ],
   feed: [], notifs: [], path: null,
   badges: { got: [], wait: ["badge-50pct", "badge-100pct", "badge-top3", "badge-5k", "badge-pp"] }, diplomas: [],
@@ -430,22 +430,8 @@ const svcGroup = (cls = "") => { const u = me(); if (!u.products.length) return 
       ? `<button type="button" class="svc-item locked" aria-disabled="true" data-tip="${tip}">${ic(x.icon)}<span class="svc-n">${esc(x.name)}<small class="svc-d">${esc(x.desc)}</small></span>${ic("lock", "svc-ext")}</button>`
       : `<a class="svc-item" href="${x.url}" target="_blank" rel="noopener" data-tip="${tip}">${ic(x.icon)}<span class="svc-n">${esc(x.name)}${st === "free" ? '<i class="svc-free">2 бесплатных прохода</i>' : ""}<small class="svc-d">${esc(x.desc)}</small></span>${ic("ext", "svc-ext")}</a>`; }).join("")}${SERVICES.some(x => svcState(u, x) === "locked") ? `<p class="svc-lock-note">${ic("lock")}<span>${LOCK_NOTE}</span></p>` : ""}</div>
 </div>`; };
-function lockShell(body) {
-  const u = me();
-  return `
-  <div class="app locked">
-    <header class="lk-top">
-      <a class="brand" href="#/home"><img src="img/context-alliance.png" alt=""><span><span class="brand-t">Личный кабинет</span><br><span class="brand-s">wearefree.club</span></span></a>
-      <div class="spacer"></div>
-      <a class="me-chip" href="#/profile">${avatarHtml(u)}<span class="nm">${esc(u.name)} ${esc(u.last)}</span></a>
-      <a class="icon-btn" href="#/login" data-logout aria-label="Выйти" title="Выйти">${ic("logout")}</a>
-    </header>
-    <main class="content lk-main fade-in">${body}</main>
-  </div>`;
-}
 function shell(active, title, body) {
   const u = me();
-  if (!isClient(u)) return lockShell(body);
   const items = navItems(u);
   const unread = u.notifs.filter(n => n.unread).length;
   return `
@@ -639,7 +625,7 @@ const hm = (t) => { const [h, m] = t.split(":"); return +h * 60 + +m; };
 function home() {
   const u = me();
   const now = new Date();
-  if (!isClient(u)) return lockShell(`
+  if (!isClient(u)) return shell("home", "Главная", `
   <div class="greet"><div class="greet-l">${frimiHtml()}<div><p class="date">${DAYS[now.getDay()].replace(/^./, s => s.toUpperCase())}, ${dm(now)}</p><h2 class="h-xl">${greeting()}, ${esc(u.name)}</h2><p class="small g-sum">${u.products.length ? "Выберите, с чего продолжить" : "С чего начать в школе"}</p></div></div></div>
   <div class="lk-promos">${promoOffer() + promoTs() + promoProryv()}</div>`);
   const list = u.feed.map((it, i) => ({ ...it, i })).filter(x => x.type !== "access" && (!FEED_CAT[x.type] || platOn(FEED_CAT[x.type])));
@@ -886,11 +872,15 @@ function products() {
   const rows = u.products.map(p => {
     const d = PRODUCTS[p.id];
     const st = `<span class="state state-${p.state}">${STATE_TX[p.state]}</span>`;
-    const facts = p.state === "trial"
+    const facts = p.state === "ended"
+      ? `<span>${ic("cal")}${p.ended ? `Доступ закончился ${esc(p.ended)}` : "Пройдена"}</span>`
+      : p.state === "trial"
       ? `<span>${ic("spark")}${esc(p.trialNote)}</span>`
       : `<span>${ic("cal")}До ${until(p.until)}</span>${p.next ? `<span>${ic("clock")}${esc(p.next)}</span>` : ""}`;
     const bar = p.progress != null ? `<div class="bar"><div class="progress"><span style="width:${Math.round(p.progress * 100)}%"></span></div><small>${esc(p.progressLabel)}</small></div>` : p.progressLabel ? `<div class="bar small">${esc(p.progressLabel)}</div>` : "";
-    const acts = p.state === "trial"
+    const acts = p.state === "ended"
+      ? `<a class="btn btn-primary" href="${d.landing}" target="_blank" rel="noopener">Подробнее</a><a class="btn btn-ghost" href="#/products/pay">Оплата и чеки</a>`
+      : p.state === "trial"
       ? `<a class="btn btn-primary" href="#/p/${p.id}">Посмотреть клуб</a><a class="btn btn-ghost" href="${d.landing}" target="_blank" rel="noopener">Что даёт членство</a>`
       : p.state === "expiring"
       ? `<a class="btn btn-primary" href="#/p/${p.id}">Открыть</a><a class="btn btn-soft" href="${d.landing}" target="_blank" rel="noopener">Продлить</a>`
@@ -905,9 +895,9 @@ function products() {
     const d = PRODUCTS[id];
     return `<li class="cat-item">${logo(id)}<div><b>${esc(d.name)}</b><p>${esc(d.about)}</p></div><a class="btn btn-soft btn-sm" href="${d.landing}" target="_blank" rel="noopener">Подробнее ${ic("ext")}</a></li>`;
   }).join("");
-  const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">${u.products.length ? "Нажмите «Открыть», чтобы перейти внутрь продукта. Вернуться в кабинет можно кнопкой «В кабинет»." : "Купленных программ пока нет. Ниже всё, что есть в школе."}</p>
+  const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">${!isClient(u) && u.products.length ? "Доступ к вашим программам закончился. Ниже всё, что есть в школе." : u.products.length ? "Нажмите «Открыть», чтобы перейти внутрь продукта. Вернуться в кабинет можно кнопкой «В кабинет»." : "Купленных программ пока нет. Ниже всё, что есть в школе."}</p>
     ${prodTabs("mine")}${svcGroup("svc-m panel")}
-    ${u.products.length ? `<div class="prod-sec"><h2 class="h-md">Доступно вам</h2><span class="prod-n">${u.products.length}</span></div>${rows}` : ""}
+    ${u.products.length ? `<div class="prod-sec"><h2 class="h-md">${isClient(u) ? "Доступно вам" : "Ваши программы"}</h2><span class="prod-n">${u.products.length}</span></div>${rows}` : ""}
     ${rest ? `<div class="prod-sec" id="school"><h2 class="h-md">Программы школы</h2><span class="prod-sub">Можно подключить. «Подробнее» открывает страницу программы.</span></div>
     <section class="panel pad"><ul class="cat-list">${rest}</ul></section>` : ""}`;
   return shell("products", "Мои продукты", body);
@@ -1242,7 +1232,7 @@ function render() {
   if (tourI < 0 && typeof tourMaybe === "function") tourMaybe();
 }
 function route(a, b) {
-  if (!isClient(me()) && a !== "profile") { if (a && a !== "home") history.replaceState(null, "", "#/home"); return home(); }
+  if (!isClient(me()) && !["profile", "products", "services", "support"].includes(a)) { if (a && a !== "home") history.replaceState(null, "", "#/home"); return home(); }
   if (a !== "support") lastA = a;
   if (a === "services") return products();
   if (a === "products") return b === "pay" ? purchases() : products();
