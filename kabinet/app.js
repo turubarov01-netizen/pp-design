@@ -69,10 +69,10 @@ const PRODUCTS = {
   focus: { name: "Фокус", kind: "Мастермайнд", color: "#2f7bff", logo: "img/context-focus.png",
         about: "Мастермайнд для Мечтателей: полгода работы в малой группе",
         landing: "https://wearefree.club/focus-invite", live: "https://wearefree.club/focus-training", nav: [] },
-  ts: { name: "Точка Сборки", kind: "Игра", color: "#2e8b6e", letter: "ТС",
+  ts: { name: "Точка Сборки", kind: "Игра", color: "#2e8b6e", letter: "ТС", logo: "img/ts-logo.png",
         about: "Пятидневная игра: собрать свою точку А и план",
         landing: "https://wearefree.club/tochka-sborki", nav: [] },
-  proryv: { name: "Прорыв за 30 дней", kind: "Программа", color: "#1f2a44", letter: "30",
+  proryv: { name: "Прорыв за 30 дней", kind: "Программа", color: "#1f2a44", letter: "30", logo: "img/proryv-logo.png",
         about: "Тридцатидневная программа Игоря Графа",
         landing: "https://wearefree.club/proryv-30", nav: [] },
 };
