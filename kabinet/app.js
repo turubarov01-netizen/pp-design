@@ -600,6 +600,7 @@ function activity() {
   const byDay = {}; shown.forEach(a => (byDay[a.d === 0 ? "Сегодня" : a.d === 1 ? "Вчера" : "Раньше"] ||= []).push(a));
   const tab = (k, l) => `<button role="tab" data-atab="${k}" aria-selected="${actTab === k}">${l}${groups[k].length ? ` <span class="n">${groups[k].length}</span>` : ""}</button>`;
   const body = `
+  <a class="back-btn act-back" href="#/home">${ic("arrow")}На главную</a>
   <div class="page-head"><div><h2 class="h-xl">Отклики</h2><p class="sub">Лайки, комментарии и заявки на ваши посты, ответы и цели во всех продуктах.</p></div>
     ${actUnread() ? `<button class="btn btn-ghost btn-sm" id="actRead">Прочитать все</button>` : ""}</div>
   <section class="panel pad" style="margin-top:20px">
@@ -607,7 +608,7 @@ function activity() {
     ${shown.length ? Object.entries(byDay).map(([d, arr]) => `<p class="day-name" style="margin-top:18px">${d}</p><ul class="acts">${arr.map(a => actRow(a, a.i)).join("")}</ul>`).join("")
       : `<div class="feed-empty"><b>Пока пусто</b>Здесь появятся отклики на ваши посты, ответы в уроках и цели.</div>`}
   </section>`;
-  return shell("activity", "Отклики", body);
+  return shell("home", "Отклики", body);
 }
 
 /* ---------- мои продукты ---------- */

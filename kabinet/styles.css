@@ -817,3 +817,6 @@ li.act.compact .act-quote span { display: -webkit-box; -webkit-line-clamp: 2; -w
   .item.done { grid-template-columns: 44px 32px minmax(0,1fr) 28px; }
   .item.done .done-mark { width: 28px; height: 28px; border-radius: 9px; }
 }
+
+.act-back { display: inline-flex; margin: 0 0 14px; }
+@media (max-width: 600px) { .act-back { min-height: 44px; } }
