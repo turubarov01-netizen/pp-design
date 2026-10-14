@@ -1207,3 +1207,82 @@ button.svc-item { width: 100%; border: 0; background: none; font: inherit; text-
 .stat-line .ic2 .phx { width: 22px; height: 22px; }
 .phx-big { width: 52px; height: 52px; border-radius: 14px; background: rgba(240,162,11,.13); display: grid; place-items: center; flex: none; }
 .phx-big .phx { width: 30px; height: 30px; }
+
+/* v38: ничего не купил — три входа в школу в фирменном стиле продуктов */
+@font-face { font-family: "Bebas Neue"; src: url(fonts/bebasneue-bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+.promo { position: relative; overflow: hidden; isolation: isolate; border-radius: var(--radius); padding: 30px 32px; }
+.promo .po-h { margin: 0; }
+.po-eye { margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.po-sub { margin: 14px 0 0; max-width: 58ch; font-size: 15.5px; line-height: 1.55; }
+.po-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 24px; margin-top: 22px; text-decoration: none; font-weight: 700; transition: transform .15s var(--ease), filter .2s var(--ease), box-shadow .15s var(--ease); }
+.po-btn svg { width: 18px; height: 18px; }
+.po-btn:hover { filter: brightness(1.06); }
+.po-btn:active { transform: translateY(2px); }
+.po-btn:focus-visible { outline: 3px solid #6B9FFF; outline-offset: 3px; }
+
+/* «Мой оффер» — как wearefree.club/my-offer: ночной синий, золото и голубой курсив */
+.po-offer { background: radial-gradient(110% 120% at 0% 0%, #1a2b52 0%, #111a2c 45%, #0D1117 100%); color: #E5E7EB; }
+.po-offer .po-eye { color: #6B9FFF; }
+.po-offer .po-h { font-size: 38px; line-height: 1.04; font-weight: 800; letter-spacing: -.02em; color: #fff; }
+.po-offer .po-h em { font-style: normal; }
+.po-offer .po-h .g { color: #E5C062; }
+.po-offer .po-h .b { color: #6B9FFF; font-style: italic; display: block; }
+.po-offer .po-sub { color: #A6B1C0; }
+.po-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; font-size: 15px; color: #E5E7EB; }
+.po-list li { display: flex; align-items: flex-start; gap: 10px; }
+.po-list svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: #E5C062; }
+.po-offer .po-btn { border-radius: 999px; color: #1c1606; background: linear-gradient(180deg, #F0D483 0%, #D9B354 100%); box-shadow: 0 4px 0 #a9852f, 0 10px 24px rgba(217,179,84,.25); }
+.po-offer .po-btn:active { box-shadow: 0 2px 0 #a9852f; }
+
+/* Точка Сборки — как wearefree.club/tochka-sborki: ночной лес с сиянием, золото, стеклянный таймер */
+.po-ts { text-align: center; color: #E8ECF2; background: linear-gradient(180deg, rgba(4,9,14,.25) 0%, rgba(4,9,14,.55) 45%, rgba(4,9,14,.9) 100%), url(img/ts-bg.webp) center 30% / cover, #0b1418; }
+.po-pill { display: inline-block; margin: 0 0 12px; padding: 5px 14px; border-radius: 999px; border: 1px solid rgba(107,140,255,.55); background: rgba(24,40,96,.55); color: #A9C0FF; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.po-ts .po-eye { color: #8FB0FF; margin-bottom: 8px; }
+.po-ts .po-h { font-size: 56px; line-height: .95; font-weight: 900; letter-spacing: -.03em; text-transform: uppercase; color: #F0D080;
+  background: linear-gradient(135deg, #FFE9B0 0%, #F0D080 35%, #CC9F3A 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.po-ts .po-sub { margin-left: auto; margin-right: auto; color: #E8ECF2; }
+.po-ts .po-sub b { color: #F0C85A; font-weight: 700; }
+.po-cdl { margin: 18px 0 8px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #9aa7b6; }
+.po-cd { display: flex; justify-content: center; gap: 10px; }
+.po-cd span { width: 66px; padding: 8px 0 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,.16); background: rgba(10,16,24,.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); display: grid; }
+.po-cd b { font-size: 26px; line-height: 1.1; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
+.po-cd small { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #9aa7b6; }
+.po-ts .po-btn { border-radius: 20px; padding: 0 30px; color: #2a2008; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; background: linear-gradient(180deg, #CBAF72 0%, #B08E40 50%, #A07828 100%); box-shadow: 0 4px 0 #6f5418, 0 12px 28px rgba(160,120,40,.35); }
+.po-ts .po-btn svg { display: none; }
+
+/* Прорыв — как wearefree.club/proryv-30: жёлтый, чёрный Bebas, Игорь справа */
+.po-pr { --pr-y: oklch(0.918 0.185 104); background: var(--pr-y); color: #111; display: grid; grid-template-columns: 1fr 230px; gap: 12px; padding-bottom: 0; }
+.po-pr .po-txt { padding-bottom: 30px; }
+.po-pr .po-eye { font-family: "Bebas Neue", Inter, sans-serif; font-size: 17px; font-weight: 700; letter-spacing: .12em; color: #111; margin-bottom: 6px; }
+.po-pr .po-h { font-family: "Bebas Neue", Inter, sans-serif; font-weight: 700; font-size: 76px; line-height: .86; text-transform: uppercase; color: #111; }
+.po-pr .po-h span { display: block; font-size: 48px; }
+.po-pr .po-sub { color: #222; max-width: 44ch; }
+.po-pr .po-btn { border-radius: 0; background: #111; color: #fff; font-family: "Bebas Neue", Inter, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 4px 22px 0; }
+.po-pr .po-btn:focus-visible { outline-color: #111; }
+.po-note { margin: 10px 0 0; font-size: 13px; color: #3a3a1a; }
+.po-img { align-self: end; width: 100%; height: auto; display: block; }
+
+@media (max-width: 640px) {
+  .promo { padding: 24px 20px; }
+  .po-offer .po-h { font-size: 30px; }
+  .po-ts .po-h { font-size: 40px; }
+  .po-cd { gap: 6px; }
+  .po-cd span { width: 58px; }
+  .po-cd b { font-size: 22px; }
+  .po-btn { width: 100%; }
+  .po-pr { grid-template-columns: 1fr; padding-bottom: 0; }
+  .po-pr .po-txt { padding-bottom: 0; position: relative; z-index: 1; }
+  .po-pr .po-h { font-size: 60px; }
+  .po-pr .po-h span { font-size: 40px; }
+  .po-pr .po-img { width: 62%; margin: -10px -20px 0 auto; }
+}
+@media (prefers-reduced-motion: reduce) { .po-btn { transition: none; } }
+/* плашка уровня: значок фиксированного размера, текст в одну строку */
+.lvl svg { width: 14px; height: 14px; flex: none; }
+.lvl { white-space: nowrap; max-width: 100%; }
+@media (max-width: 640px) {
+  .po-pr { padding-bottom: 24px; }
+  .po-pr .po-img { position: absolute; top: 18px; right: -14px; width: 46%; max-width: 190px; margin: 0; z-index: 0; }
+  .po-pr .po-eye, .po-pr .po-h { max-width: 60%; }
+}
+@media (max-width: 640px) { .po-pr .po-img { -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); } }

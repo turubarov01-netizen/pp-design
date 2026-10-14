@@ -41,7 +41,9 @@ const P = {
   plus: '<path d="M12 5v14M5 12h14"/>',
   mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>',
   x: '<path d="M6 6l12 12M18 6 6 18"/>',
-  flame: '<path d="M12 3c.6 3 2.4 4.9 4.1 6.6A6.5 6.5 0 0 1 18.5 14.5a6.5 6.5 0 0 1-13 0c0-1.9.8-3.5 1.9-4.6.2 1.6 1 2.7 2.2 3.1C9 10 10 6.4 12 3z"/><path d="M12 20.5a2.6 2.6 0 0 1-2.6-2.6c0-1.6 1.3-2.4 2.6-4 1.3 1.6 2.6 2.4 2.6 4a2.6 2.6 0 0 1-2.6 2.6z"/>',
+  arrr: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  trend: '<path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/>',
+  fire: '<path d="M12 3c.6 3 2.4 4.9 4.1 6.6A6.5 6.5 0 0 1 18.5 14.5a6.5 6.5 0 0 1-13 0c0-1.9.8-3.5 1.9-4.6.2 1.6 1 2.7 2.2 3.1C9 10 10 6.4 12 3z"/><path d="M12 20.5a2.6 2.6 0 0 1-2.6-2.6c0-1.6 1.3-2.4 2.6-4 1.3 1.6 2.6 2.4 2.6 4a2.6 2.6 0 0 1-2.6 2.6z"/>',
   tg: '<path d="m21.5 4.5-19 7.3c-.9.4-.9 1.6 0 1.9l4.7 1.6 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.4 4.8 3.6c.6.4 1.4.1 1.5-.6L22.8 5.8c.2-.9-.6-1.6-1.3-1.3zM9 15.2l9-8.1"/>',
 };
 const ic = (n, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
@@ -399,7 +401,8 @@ const svcState = (u, x) => { const live = p => p.state === "active" || p.state =
   if (isFreeman(u) || u.products.some(p => p.id === "pp" && live(p))) return "open";
   if (x.key !== "offer") return "locked";
   return u.products.some(live) ? "open" : "free"; };
-const svcGroup = (cls = "") => { const u = me(); return `<div class="svc-nav ${cls} ${svcOpen ? "open" : ""}">
+const svcGroup = (cls = "") => { const u = me(); if (!u.products.length) return ""; // ничего не купил: «Сервисы» не показываем, «Мой оффер» на главной
+  return `<div class="svc-nav ${cls} ${svcOpen ? "open" : ""}">
   <button type="button" class="nav-item svc-toggle" data-svc-toggle aria-expanded="${svcOpen}">${ic("tool")}<span>Сервисы</span>${ic("chev", "svc-chev")}</button>
   <div class="svc-list">${SERVICES.map(x => { const st = svcState(u, x), note = st === "locked" ? LOCK_NOTE : st === "free" ? "Бесплатно 2 прохода." : "";
     const tip = esc(x.desc + (note ? " " + note : ""));
@@ -431,7 +434,7 @@ function shell(active, title, body) {
             <a class="nt-all" href="#/activity">Отклики: лайки, комментарии, друзья${actUnread() ? ` · ${actUnread()} новых` : ""}</a>
           </div>
         </div>
-        <a class="me-chip" href="#/profile">${avatarHtml(u)}<span><span class="nm">${esc(u.name)} ${esc(u.last)}</span><br><span class="ph">${ic("flame", "phx")} ${u.phoenix.toLocaleString("ru-RU")} фениксов</span></span></a>
+        <a class="me-chip" href="#/profile">${avatarHtml(u)}<span><span class="nm">${esc(u.name)} ${esc(u.last)}</span><br><span class="ph">${ic("fire", "phx")} ${u.phoenix.toLocaleString("ru-RU")} фениксов</span></span></a>
       </header>
       <main class="content fade-in">${body}</main>
     </div>
@@ -456,22 +459,38 @@ function deadlineItem(it, idx) {
     ${it.cta ? `<button class="btn ${hot ? "btn-primary" : "btn-ghost"} btn-sm act" data-done="${idx}">${esc(it.cta)}</button>` : ""}
   </li>`;
 }
-// Тем, кто ничего не купил: главное дело — записаться на ближайший поток Точки Сборки.
-// Потоки стартуют каждый понедельник в 10:00, как таймер на лендинге (next_start_date + T10:00).
+// Тем, кто ничего не купил (решение Саши 14.10): на главной вместо пустого «Моего дня» три входа в школу
+// в фирменном стиле каждого продукта: 1) «Мой оффер», 2) Точка Сборки с таймером до потока, 3) Прорыв.
+// Тексты взяты с живых страниц: wearefree.club/my-offer, /tochka-sborki, /proryv-30.
+const promoOffer = () => `<section class="promo po-offer" aria-labelledby="po1">
+  <p class="po-eye">ИИ-сервис · 2&nbsp;бесплатных прохода</p>
+  <h2 class="po-h" id="po1">Упакуйте свой <em class="g">оффер</em> <em class="b">за&nbsp;15&nbsp;минут</em></h2>
+  <p class="po-sub">Сервис подберёт вам идеального клиента, соберёт позиционирование и&nbsp;оффер для вашей услуги или продукта, предложит, где искать клиентов и&nbsp;как им продавать.</p>
+  <ul class="po-list"><li>${ic("target")}Собран на сотнях реальных кейсов</li><li>${ic("trend")}Подходит экспертам с&nbsp;оборотом от&nbsp;нуля до&nbsp;5&nbsp;млн в&nbsp;месяц</li><li>${ic("check")}В&nbsp;конце получите подробный план внедрения на&nbsp;30&nbsp;дней</li></ul>
+  <a class="po-btn" href="https://wearefree.club/my-offer" target="_blank" rel="noopener">Собрать мой оффер ${ic("arrr")}</a>
+</section>`;
+// Потоки Точки Сборки стартуют каждый понедельник в 10:00, как таймер на лендинге (next_start_date + T10:00).
 const tsStart = () => { const d = new Date(); d.setHours(10, 0, 0, 0); let add = (8 - d.getDay()) % 7; if (add === 0 && Date.now() >= d.getTime()) add = 7; d.setDate(d.getDate() + add); return d; };
-function tsInvite() {
-  const d = tsStart(), at = d.getTime(), ms = at - Date.now();
-  return `<li class="item dl brand ts-inv" data-p="ts" data-dl="${at}" style="--pc:${PRODUCTS.ts.color}">
-    <div class="tm"></div>
-    <div class="dl-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle class="dl-arc" cx="24" cy="24" r="21" stroke-dasharray="${ringDash(ms)}"/></svg>${ic("spark")}</div>
-    <span class="dl-kind">Ближайший поток</span>
-    <div class="dl-left" role="timer" aria-label="До старта потока"><span class="dl-t">${fmtTick(ms)}</span><span class="dl-l">до старта</span></div>
-    <div class="tx"><b>Записаться на Точку Сборки</b>
-      <div class="row">${chip("ts")}<span class="note">Старт ${WDS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]}, 10:00</span></div>
-      <span class="note dl-note">Бесплатная игра на 5 дней, от 15 минут в день</span></div>
-    <a class="btn btn-primary btn-sm act" href="${PRODUCTS.ts.landing}" target="_blank" rel="noopener">Записаться</a>
-  </li>`;
-}
+const cdCells = (ms) => { const t = Math.max(0, Math.floor(ms / 1000)); return [[Math.floor(t / 86400), "дн"], [Math.floor(t % 86400 / 3600), "ч"], [Math.floor(t % 3600 / 60), "мин"], [t % 60, "сек"]]; };
+const promoTs = () => { const d = tsStart(), at = d.getTime();
+  return `<section class="promo po-ts" aria-labelledby="po2">
+  <p class="po-pill">Старт потока: ${WDS[d.getDay()]}, ${d.getDate()}&nbsp;${MONTHS[d.getMonth()]}, 10:00</p>
+  <p class="po-eye">5-дневная бесплатная игра для экспертов</p>
+  <h2 class="po-h" id="po2">Точка Сборки</h2>
+  <p class="po-sub">За&nbsp;5&nbsp;дней создадите <b>позиционирование, оффер, воронку и&nbsp;продающий контент</b>. От&nbsp;15&nbsp;минут в&nbsp;день.</p>
+  <p class="po-cdl">До старта</p>
+  <div class="po-cd" role="timer" aria-label="До старта потока" data-cd="${at}">${cdCells(at - Date.now()).map(([v, l]) => `<span><b>${pad2(v)}</b><small>${l}</small></span>`).join("")}</div>
+  <a class="po-btn" href="${PRODUCTS.ts.landing}" target="_blank" rel="noopener">Записаться бесплатно ${ic("arrr")}</a>
+</section>`; };
+const promoProryv = () => `<section class="promo po-pr" aria-labelledby="po3">
+  <div class="po-txt"><p class="po-eye">Трансформационная онлайн-игра Игоря Графа</p>
+  <h2 class="po-h" id="po3">Прорыв <span>за&nbsp;30&nbsp;дней</span></h2>
+  <p class="po-sub">Достигните за&nbsp;месяц то, на&nbsp;что обычно уходит 6–12 месяцев: доход, тело, привычки, окружение, бизнес.</p>
+  <a class="po-btn" href="${PRODUCTS.proryv.landing}" target="_blank" rel="noopener">Записаться на ближайший поток</a>
+  <p class="po-note">Заполните анкету, пришлём дату старта</p></div>
+  <img class="po-img" src="img/proryv-igor.webp" alt="" width="986" height="1060">
+</section>`;
+setInterval(() => document.querySelectorAll("[data-cd]").forEach(el => { const c = cdCells(+el.dataset.cd - Date.now()); el.querySelectorAll("b").forEach((b, i) => b.textContent = pad2(c[i][0])); }), 1000);
 function feedItem(it, idx) {
   if (it.type === "deadline" && !(it.done || doneSet.has(S.persona + idx))) return deadlineItem(it, idx);
   const isDone = it.done || doneSet.has(S.persona + idx);
@@ -581,18 +600,17 @@ function home() {
     return `<div class="day-group"><p class="day-name">${dayTitle(+d)} <span>${dm(dAt(+d))}</span></p>
       ${split ? `<p class="feed-sub">Сначала важное</p>` : ""}<ul class="feed">${(split ? top : arr).map(x => feedItem(x, x.i)).join("")}</ul>
       ${split ? `<p class="feed-sub">Ещё на сегодня</p><ul class="feed">${rest.map(x => feedItem(x, x.i)).join("")}</ul>` : ""}</div>`; }).join("")
-    : !u.products.length ? `<div class="day-group"><p class="day-name">Сегодня <span>${dm(now)}</span></p><ul class="feed">${tsInvite()}</ul></div>`
     : `<div class="feed-empty"><b>На сегодня всё сделано</b>Загляните во вкладку «Неделя», чтобы подготовиться заранее.</div>`;
 
   const lives = u.lives != null ? `<div class="stat-line"><span class="ic2 wide" style="background:rgba(229,72,77,.1)"><span class="lives">${[0, 1, 2].map(i => `<svg viewBox="0 0 24 24" class="${i < u.lives ? "" : "off"}" stroke="currentColor" stroke-width="1.8">${P.heart}</svg>`).join("")}</span></span><div><div class="v">${u.lives} из 3</div><div class="l">жизни в Плане Продюсера</div></div></div>` : "";
 
   const body = `
   <div class="greet"><div><p class="date">${DAYS[now.getDay()].replace(/^./, s => s.toUpperCase())}, ${dm(now)}</p><h2 class="h-xl">${greeting()}, ${esc(u.name)}</h2></div>
-    <p class="small">${todayCount ? `На сегодня ${todayCount} ${plural(todayCount, "дело", "дела", "дел")}${urgentCount ? `, срочных ${urgentCount}` : ""}` : u.products.length ? "На сегодня всё сделано" : "На сегодня 1 дело"}</p></div>
+    <p class="small">${todayCount ? `На сегодня ${todayCount} ${plural(todayCount, "дело", "дела", "дел")}${urgentCount ? `, срочных ${urgentCount}` : ""}` : u.products.length ? "На сегодня всё сделано" : "С чего начать в школе"}</p></div>
   <div class="home" style="margin-top:20px">
     <div class="home-col">
       ${accBanners(u)}
-      <section class="panel pad" aria-label="Мой день">
+      ${!u.products.length ? promoOffer() + promoTs() + promoProryv() : `<section class="panel pad" aria-label="Мой день">
         <div class="sec-head" style="align-items:center">
           <h2 class="h-lg">Мой день</h2>
           <div class="day-tabs" role="tablist">
@@ -602,13 +620,13 @@ function home() {
         </div>
         <p class="small" style="margin:-4px 0 14px">Встречи, задания и новые уроки из всех ваших продуктов в одном списке</p>
         ${feedHtml}
-      </section>
+      </section>`}
       ${actPanel()}
     </div>
     <div class="home-col aside">
       <section class="panel pad" aria-label="Мои результаты">
         <div class="sec-head"><h2 class="h-md">Мои результаты</h2><a href="#/progress">Подробнее</a></div>
-        <div class="stat-line"><span class="ic2 phx-bg">${ic("flame", "phx")}</span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div><span class="tail">+${u.phoenixWeek} за неделю</span></div>
+        <div class="stat-line"><span class="ic2 phx-bg">${ic("fire", "phx")}</span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div><span class="tail">+${u.phoenixWeek} за неделю</span></div>
         
         ${lives}
         ${rankBlock(u)}
@@ -873,7 +891,7 @@ function progress() {
     })() : `<section class="panel pad"><h2 class="h-lg">Путь к цели</h2><p class="sub" style="margin-bottom:16px">Запишите, сколько вы зарабатываете сейчас. Это ваша точка А: от неё будем показывать рост. Фиксируется один раз.</p><button class="btn btn-primary" type="button">${ic("plus")}Указать точку А</button></section>`;
   }
   if (tab === "phoenix") pane = `
-    <section class="panel pad"><div class="ph-top"><span class="phx-big">${ic("flame", "phx")}</span><div><div class="v" style="font-size:24px;font-weight:800">${u.phoenix.toLocaleString("ru-RU")} фениксов</div><span class="small">≈ ${u.phoenix.toLocaleString("ru-RU")} ₽ · +${u.phoenixWeek} за неделю</span></div></div>
+    <section class="panel pad"><div class="ph-top"><span class="phx-big">${ic("fire", "phx")}</span><div><div class="v" style="font-size:24px;font-weight:800">${u.phoenix.toLocaleString("ru-RU")} фениксов</div><span class="small">≈ ${u.phoenix.toLocaleString("ru-RU")} ₽ · +${u.phoenixWeek} за неделю</span></div></div>
       <div class="ph-acts"><button class="btn btn-primary btn-sm" type="button">Пополнить</button><button class="btn btn-ghost btn-sm" type="button">Перевести участнику</button><a class="btn btn-ghost btn-sm" href="https://wearefree.club/shop" target="_blank" rel="noopener">Магазин ${ic("ext")}</a></div>
       <div class="ph-note"><span>Скоро начислим: кэшбэк 10% за покупку, через 7 дней</span><b>+${Math.round(u.phoenixWeek / 2)}</b></div>
       <div class="ph-note warn"><span>1-го числа спишется 1% баланса. Чтобы не терять, тратьте или переводите фениксы</span><b>−${Math.round(u.phoenix / 100)}</b></div></section>
@@ -1033,7 +1051,7 @@ function profile() {
       <h3 class="h-lg">${esc(u.name)} ${esc(u.last)}</h3><p class="small" style="margin:4px 0 0">${e.callsign ? `Позывной «${esc(e.callsign)}» · ` : ""}${esc(u.city)}</p>
       <span class="lvl">${ic("spark")}${e.member === "Стартовый доступ" && e.memberUntil != null ? `Уровень в клубе · ещё ${e.memberUntil}&nbsp;${plural(e.memberUntil, "день", "дня", "дней")}` : esc(e.member)}</span>
       <div style="margin-top:16px;text-align:left">
-        <div class="stat-line"><span class="ic2 phx-bg">${ic("flame", "phx")}</span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div></div>
+        <div class="stat-line"><span class="ic2 phx-bg">${ic("fire", "phx")}</span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div></div>
         <div class="stat-line"><span class="ic2" style="background:rgba(47,123,255,.1);color:var(--blue)">${ic("user")}</span><div><div class="v">${e.friends} · ${e.followers}</div><div class="l">друзей · подписчиков</div></div></div>
       </div>
       <a class="btn btn-ghost btn-sm" style="width:100%;margin-top:12px" href="https://wearefree.club/members" target="_blank" rel="noopener">Как меня видят в клубе ${ic("ext")}</a>
@@ -1252,7 +1270,8 @@ sel.onchange = () => { S.persona = sel.value; ticketSel = 0; loginMode = "login"
 document.getElementById("showNew").onchange = (e) => document.body.classList.toggle("show-new", e.target.checked);
 /* ---------- подсказки при первом входе: 5 шагов по главной, один раз на устройстве ---------- */
 const TOUR = [
-  ['section[aria-label="Мой день"]', "Мой день", "Встречи, задания и уроки из всех ваших программ. Сверху — встречи и срочные сроки, ниже — остальное."],
+  ['section[aria-label="Мой день"], section.po-offer', "Мой день", "Встречи, задания и уроки из всех ваших программ. Сверху — встречи и срочные сроки, ниже — остальное.",
+    ["С чего начать", "Бесплатный сервис «Мой оффер», игра Точка Сборки с таймером до ближайшего потока и Прорыв за 30 дней."]],
   ['section[aria-label="Мои результаты"]', "Мои результаты", "Фениксы, жизни и место в рейтинге каждой программы. Нажмите на программу — откроется её рейтинг."],
   ['NAV:#/products', "Мои продукты", "Все ваши программы: сроки доступа и вход в каждую. Ниже — что ещё есть в школе."],
   ['NAV:#/support', "Поддержка", "Вопрос по платформе или программе пишите сюда. Ответ придёт в этот же чат."],
@@ -1277,7 +1296,8 @@ function tourShow(i) {
   const big = el.getBoundingClientRect().height > innerHeight * .6;
   el.scrollIntoView({ block: big ? "start" : "center", behavior: "instant" });
   if (big) scrollBy(0, -90);
-  const [, h, t] = TOUR[i], last = i === TOUR.length - 1;
+  let [, h, t, alt] = TOUR[i]; const last = i === TOUR.length - 1;
+  if (alt && el.matches(".po-offer")) [h, t] = alt; // ничего не купил: вместо «Моего дня» три входа в школу
   box.querySelector(".tour-card").innerHTML = `<p class="tour-n">${i + 1} из ${TOUR.length}</p><h3 id="tourH">${h}</h3><p>${t}</p>
     <div class="tour-btns"><button type="button" class="link-btn" data-tour-skip>Пропустить</button><button type="button" class="btn btn-primary btn-sm" data-tour-next>${last ? "Понятно" : "Далее"}</button></div>`;
   box.querySelector("[data-tour-next]").onclick = () => tourShow(i + 1);
@@ -1285,7 +1305,7 @@ function tourShow(i) {
   requestAnimationFrame(() => { tourPlace(); box.querySelector("[data-tour-next]").focus({ preventScroll: true }); }); }
 addEventListener("keydown", (ev) => { if (tourI >= 0 && ev.key === "Escape") tourClose(); });
 addEventListener("hashchange", () => { if (tourI >= 0) tourClose(); });
-var tourMaybe = () => { let seen = true; try { seen = localStorage.getItem("cab.tour") === "1"; } catch {} if (!seen && S.logged && document.querySelector('section[aria-label="Мой день"]')) setTimeout(() => { if (tourI < 0) tourShow(0); }, 400); };
+var tourMaybe = () => { let seen = true; try { seen = localStorage.getItem("cab.tour") === "1"; } catch {} if (!seen && S.logged && document.querySelector('section[aria-label="Мой день"], section.po-offer')) setTimeout(() => { if (tourI < 0) tourShow(0); }, 400); };
 document.getElementById("tourBtn").onclick = () => { if (!/^#\/home/.test(location.hash)) location.hash = "#/home"; setTimeout(() => tourShow(0), 300); };
 
 document.getElementById("toLogin").onclick = () => { S.logged = false; location.hash = "#/login"; };
