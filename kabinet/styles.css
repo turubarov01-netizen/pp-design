@@ -1035,7 +1035,7 @@ li.act:not(.unread) .act-tx > a.act-h { font-weight: 600; color: var(--ink-2); }
 .vip-list li { display: flex; gap: 12px; align-items: flex-start; }
 .vip-list p { margin: 0; font-size: 14px; line-height: 1.45; color: var(--ink-2); }
 .vip-list b { color: var(--ink); font-weight: 650; }
-.vip-ck { flex: none; width: 28px; height: 28px; margin-top: -3px; border-radius: 8px; border: 1px solid var(--line); background: #fff; display: grid; place-items: center; font: 700 13px/1 inherit; color: var(--muted); cursor: pointer; position: relative; transition: background-color .2s var(--ease), border-color .2s var(--ease); }
+.vip-ck { flex: none; width: 28px; height: 28px; margin-top: -3px; border-radius: 8px; border: 1px solid var(--line); background: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; line-height: 1; color: var(--muted); cursor: pointer; position: relative; transition: background-color .2s var(--ease), border-color .2s var(--ease); }
 .vip-ck::before { content: ""; position: absolute; inset: -8px; }
 .vip-ck:hover { border-color: var(--blue); color: var(--blue); }
 .vip-ck svg { width: 16px; height: 16px; }
@@ -1190,7 +1190,7 @@ button.svc-item { width: 100%; border: 0; background: none; font: inherit; text-
 .svc-item.locked:hover { background: rgba(16,24,48,.04); color: var(--muted); }
 .svc-item.locked:hover svg { color: var(--faint); }
 .svc-item.locked .svc-ext { opacity: 1; }
-.svc-free { display: inline-block; align-self: flex-start; margin-top: 3px; padding: 1px 7px; border-radius: 6px; background: rgba(22,163,122,.12); color: #12805f; font: 600 11px/1.5 inherit; font-style: normal; }
+.svc-free { display: inline-block; align-self: flex-start; margin-top: 3px; padding: 1px 7px; border-radius: 6px; background: rgba(22,163,122,.12); color: #12805f; font-size: 11.5px; font-weight: 600; line-height: 1.5; font-style: normal; white-space: nowrap; }
 #svcTip { position: fixed; z-index: 120; max-width: 280px; padding: 10px 12px; border-radius: 12px; background: #141a2e; color: #eef1f8; font-size: 13px; line-height: 1.45; box-shadow: 0 12px 32px rgba(16,24,48,.22); pointer-events: none; opacity: 0; transform: translateY(2px); transition: opacity .15s var(--ease), transform .15s var(--ease); }
 #svcTip.on { opacity: 1; transform: none; }
 @media (hover: none) { .svc-item .svc-d { display: block; } .svc-item { align-items: flex-start; } .svc-item > svg:first-child { margin-top: 2px; } }

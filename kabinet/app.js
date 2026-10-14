@@ -456,6 +456,22 @@ function deadlineItem(it, idx) {
     ${it.cta ? `<button class="btn ${hot ? "btn-primary" : "btn-ghost"} btn-sm act" data-done="${idx}">${esc(it.cta)}</button>` : ""}
   </li>`;
 }
+// Тем, кто ничего не купил: главное дело — записаться на ближайший поток Точки Сборки.
+// Потоки стартуют каждый понедельник в 10:00, как таймер на лендинге (next_start_date + T10:00).
+const tsStart = () => { const d = new Date(); d.setHours(10, 0, 0, 0); let add = (8 - d.getDay()) % 7; if (add === 0 && Date.now() >= d.getTime()) add = 7; d.setDate(d.getDate() + add); return d; };
+function tsInvite() {
+  const d = tsStart(), at = d.getTime(), ms = at - Date.now();
+  return `<li class="item dl brand ts-inv" data-p="ts" data-dl="${at}" style="--pc:${PRODUCTS.ts.color}">
+    <div class="tm"></div>
+    <div class="dl-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle class="dl-arc" cx="24" cy="24" r="21" stroke-dasharray="${ringDash(ms)}"/></svg>${ic("spark")}</div>
+    <span class="dl-kind">Ближайший поток</span>
+    <div class="dl-left" role="timer" aria-label="До старта потока"><span class="dl-t">${fmtTick(ms)}</span><span class="dl-l">до старта</span></div>
+    <div class="tx"><b>Записаться на Точку Сборки</b>
+      <div class="row">${chip("ts")}<span class="note">Старт ${WDS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]}, 10:00</span></div>
+      <span class="note dl-note">Бесплатная игра на 5 дней, от 15 минут в день</span></div>
+    <a class="btn btn-primary btn-sm act" href="${PRODUCTS.ts.landing}" target="_blank" rel="noopener">Записаться</a>
+  </li>`;
+}
 function feedItem(it, idx) {
   if (it.type === "deadline" && !(it.done || doneSet.has(S.persona + idx))) return deadlineItem(it, idx);
   const isDone = it.done || doneSet.has(S.persona + idx);
@@ -565,13 +581,14 @@ function home() {
     return `<div class="day-group"><p class="day-name">${dayTitle(+d)} <span>${dm(dAt(+d))}</span></p>
       ${split ? `<p class="feed-sub">Сначала важное</p>` : ""}<ul class="feed">${(split ? top : arr).map(x => feedItem(x, x.i)).join("")}</ul>
       ${split ? `<p class="feed-sub">Ещё на сегодня</p><ul class="feed">${rest.map(x => feedItem(x, x.i)).join("")}</ul>` : ""}</div>`; }).join("")
+    : !u.products.length ? `<div class="day-group"><p class="day-name">Сегодня <span>${dm(now)}</span></p><ul class="feed">${tsInvite()}</ul></div>`
     : `<div class="feed-empty"><b>На сегодня всё сделано</b>Загляните во вкладку «Неделя», чтобы подготовиться заранее.</div>`;
 
   const lives = u.lives != null ? `<div class="stat-line"><span class="ic2 wide" style="background:rgba(229,72,77,.1)"><span class="lives">${[0, 1, 2].map(i => `<svg viewBox="0 0 24 24" class="${i < u.lives ? "" : "off"}" stroke="currentColor" stroke-width="1.8">${P.heart}</svg>`).join("")}</span></span><div><div class="v">${u.lives} из 3</div><div class="l">жизни в Плане Продюсера</div></div></div>` : "";
 
   const body = `
   <div class="greet"><div><p class="date">${DAYS[now.getDay()].replace(/^./, s => s.toUpperCase())}, ${dm(now)}</p><h2 class="h-xl">${greeting()}, ${esc(u.name)}</h2></div>
-    <p class="small">${todayCount ? `На сегодня ${todayCount} ${plural(todayCount, "дело", "дела", "дел")}${urgentCount ? `, срочных ${urgentCount}` : ""}` : "На сегодня всё сделано"}</p></div>
+    <p class="small">${todayCount ? `На сегодня ${todayCount} ${plural(todayCount, "дело", "дела", "дел")}${urgentCount ? `, срочных ${urgentCount}` : ""}` : u.products.length ? "На сегодня всё сделано" : "На сегодня 1 дело"}</p></div>
   <div class="home" style="margin-top:20px">
     <div class="home-col">
       ${accBanners(u)}
@@ -813,9 +830,9 @@ function products() {
     const d = PRODUCTS[id];
     return `<li class="cat-item">${logo(id)}<div><b>${esc(d.name)}</b><p>${esc(d.about)}</p></div><a class="btn btn-soft btn-sm" href="${d.landing}" target="_blank" rel="noopener">Подробнее ${ic("ext")}</a></li>`;
   }).join("");
-  const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">Нажмите «Открыть», чтобы перейти внутрь продукта. Вернуться в кабинет можно кнопкой «В кабинет».</p>
+  const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">${u.products.length ? "Нажмите «Открыть», чтобы перейти внутрь продукта. Вернуться в кабинет можно кнопкой «В кабинет»." : "Купленных программ пока нет. Ниже всё, что есть в школе."}</p>
     ${prodTabs("mine")}${svcGroup("svc-m panel")}
-    <div class="prod-sec"><h2 class="h-md">Доступно вам</h2><span class="prod-n">${u.products.length}</span></div>${rows}
+    ${u.products.length ? `<div class="prod-sec"><h2 class="h-md">Доступно вам</h2><span class="prod-n">${u.products.length}</span></div>${rows}` : ""}
     ${rest ? `<div class="prod-sec" id="school"><h2 class="h-md">Программы школы</h2><span class="prod-sub">Можно подключить. «Подробнее» открывает страницу программы.</span></div>
     <section class="panel pad"><ul class="cat-list">${rest}</ul></section>` : ""}`;
   return shell("products", "Мои продукты", body);
@@ -827,11 +844,11 @@ function purchases() {
   const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">Доступы, членство, счета и оплаты.</p>${prodTabs("pay")}
   ${e.invoices.length ? e.invoices.map(([t, s, d]) => `<section class="panel pad invoice"><div><span class="eyebrow">Вам выставлен счёт</span><b>${esc(t)}</b><span class="small">${esc(s)} · оплатить до ${until(d)}</span></div><button class="btn btn-primary" type="button">Оплатить счёт</button></section>`).join("") : ""}
   <section class="panel pad" style="margin-bottom:18px"><div class="sec-head"><h2 class="h-md">Членство в клубе</h2><a href="https://wearefree.club/upgrade" target="_blank" rel="noopener">Уровни</a></div>
-    <div class="tg-row acc" style="border:0;padding-top:0"><div class="t"><b>${esc(e.member)}</b><span class="small">Откуда: ${esc(e.memberFrom)}${e.memberUntil != null ? ` · до ${until(e.memberUntil)} · осталось ${e.memberUntil} ${plural(e.memberUntil, "день", "дня", "дней")}` : ""}</span></div><a class="btn btn-soft btn-sm" href="https://wearefree.club/upgrade" target="_blank" rel="noopener">Продлить</a></div></section>
-  <section class="panel pad" style="margin-bottom:18px"><h2 class="h-md" style="margin-bottom:8px">Активные доступы</h2>
-    ${act.map(p => `<div class="tg-row acc"><div class="t"><b>${esc(PRODUCTS[p.id].name)}</b><span class="small">${esc(PRODUCTS[p.id].kind)} · доступ до ${until(p.until)}</span></div><span class="${p.until <= 14 ? "st-warn" : "small"}" style="font-size:13px">осталось ${p.until} ${plural(p.until, "день", "дня", "дней")}</span></div>`).join("")}</section>
+    <div class="tg-row acc" style="border:0;padding-top:0"><div class="t"><b>${esc(e.member)}</b><span class="small">Откуда: ${esc(e.memberFrom)}${e.memberUntil != null ? ` · до ${until(e.memberUntil)} · осталось ${e.memberUntil} ${plural(e.memberUntil, "день", "дня", "дней")}` : ""}</span></div><a class="btn btn-soft btn-sm" href="https://wearefree.club/upgrade" target="_blank" rel="noopener">${e.memberUntil != null ? "Продлить" : "Повысить уровень"}</a></div></section>
+  ${act.length ? `<section class="panel pad" style="margin-bottom:18px"><h2 class="h-md" style="margin-bottom:8px">Активные доступы</h2>
+    ${act.map(p => `<div class="tg-row acc"><div class="t"><b>${esc(PRODUCTS[p.id].name)}</b><span class="small">${esc(PRODUCTS[p.id].kind)} · доступ до ${until(p.until)}</span></div><span class="${p.until <= 14 ? "st-warn" : "small"}" style="font-size:13px">осталось ${p.until} ${plural(p.until, "день", "дня", "дней")}</span></div>`).join("")}</section>` : ""}
   <section class="panel pad"><div class="sec-head"><h2 class="h-md">История оплат</h2><span class="is-new">новое</span></div>
-    <ul class="ph-list">${e.pays.map(([t, s, d, how]) => `<li><span><b style="font-weight:600">${esc(t)}</b><br><span class="small">${dm(dAt(-d))} · ${esc(how)}</span></span><span style="display:flex;gap:10px;align-items:center"><b style="font-variant-numeric:tabular-nums">${esc(s)}</b><button class="btn btn-ghost btn-sm" type="button">Чек</button></span></li>`).join("")}</ul></section>`;
+    ${e.pays.length ? "" : `<p class="small" style="margin:6px 0 0">Оплат пока не было.</p>`}<ul class="ph-list">${e.pays.map(([t, s, d, how]) => `<li><span><b style="font-weight:600">${esc(t)}</b><br><span class="small">${dm(dAt(-d))} · ${esc(how)}</span></span><span style="display:flex;gap:10px;align-items:center"><b style="font-variant-numeric:tabular-nums">${esc(s)}</b><button class="btn btn-ghost btn-sm" type="button">Чек</button></span></li>`).join("")}</ul></section>`;
   return shell("products", "Мои продукты", body);
 }
 
