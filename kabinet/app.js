@@ -285,6 +285,20 @@ PERSONAS.irina = {
   badges: { got: [], wait: ["badge-50pct", "badge-100pct", "badge-top3", "badge-5k", "badge-pp"] }, diplomas: [],
   phHistory: [["Первый вход", "+30"]], tickets: [],
 };
+// Реальный ученик из базы (14.10.2026): План Продюсера, поток 21.03–19.06.2026, завершил; Точка Сборки пройдена;
+// активных доступов нет. Фамилия сокращена, контакты не показываем: демо публичное.
+PERSONAS.valeriy = {
+  label: "Валерий · бывший ученик ПП, доступ закончился (данные из базы)",
+  name: "Валерий", last: "К.", initials: "ВК", level: "Раб", city: "", email: "скрыто в демо", phone: "скрыто в демо",
+  phoenix: 18117, phoenixWeek: 0, streak: 0, rank: {},
+  products: [
+    { id: "pp", state: "ended", ended: "19 июня 2026" },
+    { id: "ts", state: "ended", ended: "пройдена" },
+  ],
+  feed: [], notifs: [], path: null,
+  badges: { got: [], wait: ["badge-50pct", "badge-100pct", "badge-top3", "badge-5k", "badge-pp"] }, diplomas: [],
+  phHistory: [], tickets: [],
+};
 PERSONAS.maria.tickets = [
   { num: 1482, title: "Не открывается видео урока 3", cat: "Техническая проблема", p: "ii", status: "resolved", when: "9 октября", rated: 5, msgs: [
     ["system", RECEIPT, "12:04"], ["me", "Здравствуйте! Урок 3 не грузится, крутится колесо.", "12:04", { img: true }],
@@ -310,6 +324,8 @@ PERSONAS.natalia.tickets = [
 
 const EXTRA = {
   irina:   { callsign: null, birth: "", tgUser: "irina_b", karma: 0, rank: 0, xp: [30, 500], rep: "Новичок", friends: 0, followers: 0, recs: 0, member: "Пешка", memberFrom: "регистрация", memberUntil: null, pointA: null, record: null,
+             bases: [], biz: [], skills: [], invoices: [], pays: [] },
+  valeriy: { callsign: null, birth: "", tgUser: "", karma: 150, rank: 0, xp: [215, 500], rep: "Активист", friends: 0, followers: 0, recs: 0, member: "Раб", memberFrom: "оплата Плана Продюсера", memberUntil: null, pointA: null, record: null,
              bases: [], biz: [], skills: [], invoices: [], pays: [] },
   maria:   { callsign: null, birth: "", tgUser: "", karma: 40, rank: 812, xp: [120, 500], rep: "Новичок", friends: 3, followers: 5, recs: 0, member: "Стартовый доступ", memberFrom: "покупка ИИнструментов", memberUntil: 54, pointA: null, record: null,
              bases: ["Казань"], biz: [], skills: ["Психология", "Консультирование"], invoices: [],
@@ -414,8 +430,22 @@ const svcGroup = (cls = "") => { const u = me(); if (!u.products.length) return 
       ? `<button type="button" class="svc-item locked" aria-disabled="true" data-tip="${tip}">${ic(x.icon)}<span class="svc-n">${esc(x.name)}<small class="svc-d">${esc(x.desc)}</small></span>${ic("lock", "svc-ext")}</button>`
       : `<a class="svc-item" href="${x.url}" target="_blank" rel="noopener" data-tip="${tip}">${ic(x.icon)}<span class="svc-n">${esc(x.name)}${st === "free" ? '<i class="svc-free">2 бесплатных прохода</i>' : ""}<small class="svc-d">${esc(x.desc)}</small></span>${ic("ext", "svc-ext")}</a>`; }).join("")}${SERVICES.some(x => svcState(u, x) === "locked") ? `<p class="svc-lock-note">${ic("lock")}<span>${LOCK_NOTE}</span></p>` : ""}</div>
 </div>`; };
+function lockShell(body) {
+  const u = me();
+  return `
+  <div class="app locked">
+    <header class="lk-top">
+      <a class="brand" href="#/home"><img src="img/context-alliance.png" alt=""><span><span class="brand-t">Личный кабинет</span><br><span class="brand-s">wearefree.club</span></span></a>
+      <div class="spacer"></div>
+      <a class="me-chip" href="#/profile">${avatarHtml(u)}<span class="nm">${esc(u.name)} ${esc(u.last)}</span></a>
+      <a class="icon-btn" href="#/login" data-logout aria-label="Выйти" title="Выйти">${ic("logout")}</a>
+    </header>
+    <main class="content lk-main fade-in">${body}</main>
+  </div>`;
+}
 function shell(active, title, body) {
   const u = me();
+  if (!isClient(u)) return lockShell(body);
   const items = navItems(u);
   const unread = u.notifs.filter(n => n.unread).length;
   return `
@@ -566,6 +596,9 @@ const NEAR = {
   natalia: [["АС", "Анна Смирнова", "Бунтарь", 2, "Психолог, курс по отношениям", "План Продюсера"], ["КЖ", "Кирилл Жуков", "Мечтатель", 4, "Видеограф, съёмка для экспертов", "Freeman's Alliance"], ["СТ", "Светлана Титова", "Бунтарь", 6, "Энерготерапевт, группы медитаций", "Место притяжения"], ["ДО", "Денис Орлов", "Архитектор", 9, "Юрист для онлайн-школ", "Freeman's Alliance"], ["ЮП", "Юлия Попова", "Бунтарь", 15, "Карьерный консультант", "ИИнструменты"]] };
 const nearOpen = new Set(), nearReq = new Set();
 // «Фримены рядом» — только членам Альянса (гостевой доступ не считается).
+// Клиент = есть активный или истекающий доступ хоть к одному продукту. Остальные (ничего не купили
+// или доступ закончился) видят кабинет-заглушку без меню и выходят только в выбранный продукт (Саша 14.10).
+const isClient = (u) => u.products.some(p => p.state === "active" || p.state === "expiring");
 const isFreeman = (u) => u.products.some(p => p.id === "fa" && (p.state === "active" || p.state === "expiring"));
 const nearBlock = (u) => { if (!isFreeman(u)) return ""; const l = (NEAR[S.persona] || []).slice(0, 5); if (!l.length) return "";
   return `<section class="panel pad" aria-label="Фримены рядом"><div class="sec-head"><h2 class="h-md">Фримены рядом</h2><a href="https://wearefree.club/members" target="_blank" rel="noopener">Все</a></div>
@@ -599,6 +632,9 @@ const hm = (t) => { const [h, m] = t.split(":"); return +h * 60 + +m; };
 function home() {
   const u = me();
   const now = new Date();
+  if (!isClient(u)) return lockShell(`
+  <div class="greet"><div class="greet-l">${frimiHtml()}<div><p class="date">${DAYS[now.getDay()].replace(/^./, s => s.toUpperCase())}, ${dm(now)}</p><h2 class="h-xl">${greeting()}, ${esc(u.name)}</h2><p class="small g-sum">${u.products.length ? "Выберите, с чего продолжить" : "С чего начать в школе"}</p></div></div></div>
+  <div class="lk-promos">${promoOffer() + promoTs() + promoProryv()}</div>`);
   const list = u.feed.map((it, i) => ({ ...it, i })).filter(x => x.type !== "access" && (!FEED_CAT[x.type] || platOn(FEED_CAT[x.type])));
   const shown = feedTab === "today" ? list.filter(x => x.d === 0) : list;
   const groups = {};
@@ -658,6 +694,7 @@ function home() {
 // Те же проверки, что в базе: профиль = имя, фамилия, город, телефон, Telegram; активная цель Зверька; непустой список желаний.
 const SETUP = {
   irina: { miss: [], zveryok: false, wish: false },
+  valeriy: { miss: [], zveryok: false, wish: false },
   maria: { miss: ["Telegram"], zveryok: false, wish: false },
   olga: { miss: [], zveryok: false, wish: true },
   andrey: { miss: [], zveryok: true, wish: true },
@@ -1198,6 +1235,7 @@ function render() {
   if (tourI < 0 && typeof tourMaybe === "function") tourMaybe();
 }
 function route(a, b) {
+  if (!isClient(me()) && a !== "profile") { if (a && a !== "home") history.replaceState(null, "", "#/home"); return home(); }
   if (a !== "support") lastA = a;
   if (a === "services") return products();
   if (a === "products") return b === "pay" ? purchases() : products();
@@ -1318,8 +1356,8 @@ function tourShow(i) {
   requestAnimationFrame(() => { tourPlace(); box.querySelector("[data-tour-next]").focus({ preventScroll: true }); }); }
 addEventListener("keydown", (ev) => { if (tourI >= 0 && ev.key === "Escape") tourClose(); });
 addEventListener("hashchange", () => { if (tourI >= 0) tourClose(); });
-var tourMaybe = () => { let seen = true; try { seen = localStorage.getItem("cab.tour") === "1"; } catch {} if (!seen && S.logged && document.querySelector('section[aria-label="Мой день"], section.po-offer')) setTimeout(() => { if (tourI < 0) tourShow(0); }, 400); };
-document.getElementById("tourBtn").onclick = () => { if (!/^#\/home/.test(location.hash)) location.hash = "#/home"; setTimeout(() => tourShow(0), 300); };
+var tourMaybe = () => { if (!isClient(me())) return; let seen = true; try { seen = localStorage.getItem("cab.tour") === "1"; } catch {} if (!seen && S.logged && document.querySelector('section[aria-label="Мой день"], section.po-offer')) setTimeout(() => { if (tourI < 0) tourShow(0); }, 400); };
+document.getElementById("tourBtn").onclick = () => { if (!isClient(me())) return; if (!/^#\/home/.test(location.hash)) location.hash = "#/home"; setTimeout(() => tourShow(0), 300); };
 
 document.getElementById("toLogin").onclick = () => { S.logged = false; location.hash = "#/login"; };
 
