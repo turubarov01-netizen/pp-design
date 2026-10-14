@@ -352,7 +352,6 @@ function navItems(u) {
   return [
     ["home", "#/home", "Главная", "home", 0],
     ["products", "#/products", "Мои продукты", "grid", 0],
-    ["progress", "#/progress", "Мой рост", "trophy", 0],
     ["support", "#/support", "Поддержка", "chat", openT],
     ["profile", "#/profile", "Профиль", "user", 0],
   ];
@@ -393,7 +392,7 @@ function shell(active, title, body) {
       <main class="content fade-in">${body}</main>
     </div>
     <nav class="mnav" aria-label="Меню кабинета">
-      ${items.map(([k, h, l, i, c]) => `<a href="${h}" ${k === active || (k === "products" && active === "services") ? 'aria-current="page"' : ""}>${ic(i)}<span>${l === "Мои продукты" ? "Продукты" : l === "Мой рост" ? "Рост" : l}</span>${c ? '<i class="dotc"></i>' : ""}</a>`).join("")}
+      ${items.map(([k, h, l, i, c]) => `<a href="${h}" ${k === active || (k === "products" && active === "services") ? 'aria-current="page"' : ""}>${ic(i)}<span>${l === "Мои продукты" ? "Продукты" : l}</span>${c ? '<i class="dotc"></i>' : ""}</a>`).join("")}
     </nav>
   </div>`;
 }
@@ -472,10 +471,10 @@ function home() {
       ${actPanel()}
     </div>
     <div class="home-col aside">
-      <section class="panel pad" aria-label="Мой рост">
-        <div class="sec-head"><h2 class="h-md">Мой рост</h2><a href="#/progress">Подробнее</a></div>
+      <section class="panel pad" aria-label="Мои результаты">
+        <div class="sec-head"><h2 class="h-md">Мои результаты</h2><a href="#/progress">Подробнее</a></div>
         <div class="stat-line"><span class="ic2" style="background:rgba(240,138,40,.12)"><img src="img/freecoin.png" alt=""></span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div><span class="tail">+${u.phoenixWeek} за неделю</span></div>
-        <div class="stat-line"><span class="ic2" style="background:rgba(229,72,77,.1);color:#e5484d">${ic("flame")}</span><div><div class="v">${u.streak} ${plural(u.streak, "день", "дня", "дней")}</div><div class="l">подряд без пропусков</div></div></div>
+        
         ${lives}
         ${rankBlock(u)}
       </section>
@@ -735,9 +734,9 @@ function progress() {
         ${u.diplomas.length ? u.diplomas.map(([t, s]) => { const lk = s.startsWith("Откроется"); return `<div class="dipl"><span class="ic2 ${lk ? "off" : ""}">${ic(lk ? "lock" : "award")}</span><div><b>${esc(t)}</b><div class="small">${esc(s)}</div></div>${lk ? `<span class="locked-note">Ещё не получен</span>` : `<button class="btn btn-ghost btn-sm" style="margin-left:auto" type="button">Скачать</button>`}</div>`; }).join("")
           : `<p class="small" style="margin:0">Сертификат появится здесь, когда вы закончите первую программу.</p>`}</section>`;
   }
-  const body = `<h2 class="h-xl">Мой рост</h2><p class="sub">Результаты, фениксы, репутация и награды во всех продуктах.</p>
+  const body = `<a class="back-btn act-back" href="#/home">${ic("arrow")}На главную</a><h2 class="h-xl">Мои результаты</h2><p class="sub">Результаты, фениксы, репутация и награды во всех продуктах.</p>
     <nav class="tabs" aria-label="Разделы">${tabs.map(([k, l]) => `<a href="#/progress/${k}" ${k === tab ? 'aria-current="page"' : ""}>${l}</a>`).join("")}</nav>${pane}`;
-  return shell("progress", "Мой рост", body);
+  return shell("home", "Мои результаты", body);
 }
 
 /* ---------- поддержка ---------- */
