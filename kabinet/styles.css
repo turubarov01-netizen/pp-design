@@ -820,3 +820,31 @@ li.act.compact .act-quote span { display: -webkit-box; -webkit-line-clamp: 2; -w
 
 .act-back { display: inline-flex; margin: 0 0 14px; }
 @media (max-width: 600px) { .act-back { min-height: 44px; } }
+
+/* ---------- строки «Моего дня» в фирменном цвете продукта ---------- */
+.item.brand { margin: 6px 0; padding: 12px 12px 12px 0; border: 1px solid color-mix(in oklab, var(--pc) 22%, transparent); border-radius: 16px;
+  background: linear-gradient(90deg, color-mix(in oklab, var(--pc) 10%, transparent), rgba(255,255,255,.5) 72%); }
+.day-group .item.brand:first-of-type, .item.brand + .item { border-top-color: color-mix(in oklab, var(--pc) 22%, transparent); }
+.item.brand.done { background: rgba(255,255,255,.45); border-color: var(--line-2); }
+.item.brand.done .pmark { filter: grayscale(.6); opacity: .7; }
+.item.brand .btn-primary { background: var(--pc); box-shadow: 0 6px 16px color-mix(in oklab, var(--pc) 32%, transparent); }
+.item.brand .btn-ghost { border-color: color-mix(in oklab, var(--pc) 30%, transparent); color: color-mix(in oklab, var(--pc) 70%, #101830); }
+.item.brand .btn-ghost:hover { background: color-mix(in oklab, var(--pc) 8%, #fff); }
+.pmark { position: relative; width: 36px; height: 36px; flex: none; }
+.pmark img, .pmark .pm-l { width: 36px; height: 36px; border-radius: 11px; object-fit: cover; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 13px; box-shadow: 0 2px 8px rgba(16,24,48,.12); }
+.pm-b { position: absolute; right: -5px; bottom: -5px; width: 18px; height: 18px; border-radius: 6px; display: grid; place-items: center; background: #fff; color: var(--pc); box-shadow: 0 1px 4px rgba(16,24,48,.18); }
+.pm-b svg { width: 11px; height: 11px; }
+/* карточка срока: цвет продукта, пока не горит */
+.item.dl.brand:not(.hot) { --dl: var(--pc); border-color: color-mix(in oklab, var(--pc) 28%, transparent); background: linear-gradient(90deg, color-mix(in oklab, var(--pc) 11%, transparent), rgba(255,255,255,.55) 70%); }
+.item.dl.brand { padding: 14px 14px 14px 0; }
+.item.dl .act.btn-primary { background: var(--dl); box-shadow: 0 6px 16px color-mix(in oklab, var(--dl) 32%, transparent); }
+@media (max-width: 600px) {
+  .item.brand { padding: 12px 12px 12px 0; }
+  .pmark, .pmark img, .pmark .pm-l { width: 32px; height: 32px; border-radius: 10px; }
+  .item.dl.brand { padding: 14px; }
+}
+
+/* ---------- «Сервисы» в боковом меню; на телефоне остаются вкладкой «Продуктов» ---------- */
+.d-gap { height: 22px; }
+@media (min-width: 961px) { .m-only { display: none !important; } }
+@media (max-width: 960px) { .d-gap { display: none; } }

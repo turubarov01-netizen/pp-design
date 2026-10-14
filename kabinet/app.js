@@ -320,6 +320,7 @@ const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 &
 const avatarHtml = (u, cls = "avatar") => { const a = S.avatar(S.persona); return `<span class="${cls}">${a ? `<img src="${a}" alt="">` : esc(u.initials)}</span>`; };
 const logo = (id, cls = "lg") => { const p = PRODUCTS[id]; return p.logo ? `<span class="${cls}${p.wide ? " wide" : ""}"><img src="${p.logo}" alt=""></span>` : `<span class="${cls}" style="background:${p.color}">${p.letter}</span>`; };
 const chip = (id) => `<span class="pchip"><i style="background:${PRODUCTS[id].color}"></i>${esc(PRODUCTS[id].name)}</span>`;
+const pmark = (id, badge) => { const P_ = PRODUCTS[id]; return `<div class="pmark">${P_.logo ? `<img src="${P_.logo}" alt="">` : `<span class="pm-l" style="background:${P_.color}">${esc(P_.letter || "")}</span>`}${badge ? `<span class="pm-b">${ic(badge)}</span>` : ""}</div>`; };
 const TYPE_IC = { meeting: "video", deadline: "clock", lesson: "book", access: "lock", event: "cal" };
 const STATE_TX = { active: "Активен", expiring: "Заканчивается", trial: "Гостевой доступ", ended: "Закончился" };
 
@@ -342,6 +343,7 @@ function navItems(u) {
   return [
     ["home", "#/home", "Главная", "home", 0],
     ["products", "#/products", "Мои продукты", "grid", 0],
+    ["services", "#/services", "Сервисы", "tool", 0],
     ["progress", "#/progress", "Мой рост", "trophy", 0],
     ["support", "#/support", "Поддержка", "chat", openT],
     ["profile", "#/profile", "Профиль", "user", 0],
@@ -379,7 +381,7 @@ function shell(active, title, body) {
       <main class="content fade-in">${body}</main>
     </div>
     <nav class="mnav" aria-label="Меню кабинета">
-      ${items.map(([k, h, l, i, c]) => `<a href="${h}" ${k === active ? 'aria-current="page"' : ""}>${ic(i)}<span>${l === "Мои продукты" ? "Продукты" : l === "Мой рост" ? "Рост" : l}</span>${c ? '<i class="dotc"></i>' : ""}</a>`).join("")}
+      ${items.filter(x => x[0] !== "services").map(([k, h, l, i, c]) => `<a href="${h}" ${k === active || (k === "products" && active === "services") ? 'aria-current="page"' : ""}>${ic(i)}<span>${l === "Мои продукты" ? "Продукты" : l === "Мой рост" ? "Рост" : l}</span>${c ? '<i class="dotc"></i>' : ""}</a>`).join("")}
     </nav>
   </div>`;
 }
@@ -388,7 +390,7 @@ function shell(active, title, body) {
 function deadlineItem(it, idx) {
   const at = dlAt(it), ms = at - Date.now(), [kind, kic] = dlKind(it), pen = dlPen(it), hot = ms < HOT_MS;
   const note = pen || /^(Осталось меньше суток|Сдать до конца дня)$/.test(it.note || "") ? "" : it.note;
-  return `<li class="item dl ${hot ? "hot" : ""}" data-dl="${at}">
+  return `<li class="item dl brand ${hot ? "hot" : ""}" data-dl="${at}" style="--pc:${PRODUCTS[it.p].color}">
     <div class="tm">${esc(it.t)}</div>
     <div class="dl-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle class="dl-arc" cx="24" cy="24" r="21" stroke-dasharray="${ringDash(ms)}"/></svg>${ic(kic)}</div>
     <span class="dl-kind">${kind}</span>
@@ -409,9 +411,9 @@ function feedItem(it, idx) {
   const note = showCd && /^(Осталось меньше суток|Сдать до конца дня)$/.test(it.note || "") ? "" : it.note;
   const act = isDone ? `<span class="done-mark" title="Готово">${ic("check")}</span>`
     : it.cta ? `<button class="btn ${it.urgent || (showLive && !past) ? "btn-primary" : "btn-ghost"} btn-sm act" data-done="${idx}">${esc(it.cta)}</button>` : "<span></span>";
-  return `<li class="item ${it.urgent && !isDone ? "urgent" : ""} ${isDone ? "done" : ""}">
+  return `<li class="item brand ${it.urgent && !isDone ? "urgent" : ""} ${isDone ? "done" : ""}" style="--pc:${PRODUCTS[it.p].color}">
     <div class="tm">${esc(it.t)}</div>
-    <div class="ic ic-${it.type}">${ic(TYPE_IC[it.type])}</div>
+    ${pmark(it.p, TYPE_IC[it.type])}
     <div class="tx"><b>${esc(it.title)}</b><div class="row">${chip(it.p)}${showLive ? `<span class="live-dot">${untilStart(it.t)}</span>` : ""}${note ? `<span class="note">${esc(note)}</span>` : ""}</div></div>
     ${act}
   </li>`;
@@ -420,7 +422,6 @@ function feedItem(it, idx) {
 function home() {
   const u = me();
   const now = new Date();
-  const c = u.cont;
   const list = u.feed.map((it, i) => ({ ...it, i }));
   const shown = feedTab === "today" ? list.filter(x => x.d === 0) : list;
   const groups = {};
@@ -440,15 +441,6 @@ function home() {
     <p class="small">${todayCount ? `На сегодня ${todayCount} ${plural(todayCount, "дело", "дела", "дел")}${urgentCount ? `, срочных ${urgentCount}` : ""}` : "На сегодня всё сделано"}</p></div>
   <div class="home" style="margin-top:20px">
     <div class="home-col">
-      <section class="continue" aria-label="Продолжить">
-        <div>
-          <div class="ctx"><span class="eyebrow">Продолжить</span>${chip(c.p)}</div>
-          <p class="title">${esc(c.title)}</p>
-          <p class="meta">${esc(c.meta)}</p>
-          <div class="bar"><div class="progress"><span style="width:${Math.round(c.progress * 100)}%"></span></div></div>
-        </div>
-        <a class="btn btn-primary" href="#/p/${c.p}">${ic("play")}Продолжить</a>
-      </section>
       <section class="panel pad" aria-label="Мой день">
         <div class="sec-head" style="align-items:center">
           <h2 class="h-lg">Мой день</h2>
@@ -615,7 +607,7 @@ function activity() {
 function prodTabs(active) {
   return `<nav class="tabs" aria-label="Разделы">
     <a href="#/products" ${active === "mine" ? 'aria-current="page"' : ""}>Мои продукты</a>
-    <a href="#/products/services" ${active === "svc" ? 'aria-current="page"' : ""}>Сервисы</a>
+    <a class="m-only" href="#/services" ${active === "svc" ? 'aria-current="page"' : ""}>Сервисы</a>
     <a href="#/products/pay" ${active === "pay" ? 'aria-current="page"' : ""}>Покупки и оплаты</a>
     <a href="#/products/catalog" ${active === "cat" ? 'aria-current="page"' : ""}>Программы школы</a></nav>`;
 }
@@ -646,7 +638,7 @@ function products() {
 
 function services() {
   const u = me();
-  const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">Сервисы школы, которые помогают в работе. Открываются бесплатно.</p>${prodTabs("svc")}
+  const body = `<h2 class="h-xl">Сервисы</h2><p class="sub">Сервисы школы, которые помогают в работе. Открываются бесплатно.</p><div class="m-only">${prodTabs("svc")}</div><div class="d-gap"></div>
   <div class="svc-grid">${SERVICES.map(s => {
     const ok = !s.needs || owned(u).includes(s.needs);
     const status = s.id === "offer" ? (u.name === "Ольга" ? "Пройдено 7 из 12 шагов" : u.name === "Наталья" || u.name === "Андрей" ? "Оффер собран" : "Не начат") : ok ? "Доступен" : "Откроется с Планом Продюсера";
@@ -655,7 +647,7 @@ function services() {
       <span class="n">${esc(s.name)}</span><p>${esc(s.about)}</p>
       <span class="st"><span class="num" style="${ok ? "" : "color:var(--faint)"}">${esc(status)}</span>${ic("ext", "chev")}</span></a>`;
   }).join("")}</div>`;
-  return shell("products", "Мои продукты", body);
+  return shell("services", "Сервисы", body);
 }
 
 function catalog() {
@@ -999,6 +991,7 @@ function render() {
   bind();
 }
 function route(a, b) {
+  if (a === "services") return services();
   if (a === "products") return b === "services" ? services() : b === "catalog" ? catalog() : b === "pay" ? purchases() : products();
   if (a === "progress") { growTab = b || "path"; return progress(); }
   if (a === "activity") return activity();
