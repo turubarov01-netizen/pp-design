@@ -1341,3 +1341,18 @@ button.svc-item { width: 100%; border: 0; background: none; font: inherit; text-
 /* v46: Фрими за ноутбуком вечером; ножки стола стоят на первой карточке */
 .frimi.laptop { width: 170px; height: 170px; margin: -52px 0 -24px -14px; }
 @media (max-width: 640px) { .frimi.laptop { width: 118px; height: 118px; margin: -36px 0 -23px -10px; } }
+
+/* v47: на телефоне все карточки «Мой день» на одной сетке с дедлайнами:
+   слева значок 46px, справа время → заголовок → кнопка. Раньше время стояло отдельной колонкой у края,
+   и текст встречи начинался на 24px правее, чем у дедлайна. */
+@media (max-width: 600px) {
+  .item.brand.brand:not(.dl) { grid-template-columns: 46px minmax(0,1fr); grid-template-areas: "pm tm" "pm tx" ". act";
+    column-gap: 12px; row-gap: 2px; align-items: start; padding: 14px; }
+  .item.brand.brand:not(.dl) .tm { grid-area: tm; text-align: left; font-size: 12.5px; font-weight: 700; letter-spacing: .04em; line-height: 1.4; }
+  .item.brand.brand:not(.dl) .pmark { grid-area: pm; }
+  .item.brand.brand:not(.dl) .pmark, .item.brand.brand:not(.dl) .pmark img, .item.brand.brand:not(.dl) .pmark .pm-l { width: 46px; height: 46px; border-radius: 13px; }
+  .item.brand.brand:not(.dl) .tx { grid-area: tx; }
+  .item.brand.brand:not(.dl) .act { grid-area: act; justify-self: start; margin-top: 10px; }
+  .item.brand.brand:not(.dl) .done-mark { grid-area: act; justify-self: start; margin-top: 8px; }
+}
+@media (min-width: 601px) { .item.brand.brand:not(.dl) { grid-template-columns: 56px 48px minmax(0,1fr) auto; } .item.brand.brand:not(.dl) .pmark { justify-self: center; } }
