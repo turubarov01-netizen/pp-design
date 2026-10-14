@@ -498,10 +498,17 @@ function deadlineItem(it, idx) {
 // Если до срока любого несданного задания 2 часа или меньше, Фрими с будильником (Саша 14.10).
 const FRIMI_HOT_MS = 2 * 36e5;
 const frimiHot = () => me().feed.some((it, i) => { if (it.type !== "deadline" || it.done || doneSet.has(S.persona + i)) return false; const ms = dlAt(it) - Date.now(); return ms > 0 && ms <= FRIMI_HOT_MS; });
-const frimiHtml = () => frimiHot()
-  ? `<span class="frimi clock" data-mode="clock" tabindex="0" role="img" aria-label="Фрими: до сдачи задания меньше 2 часов" data-tip="До сдачи задания меньше 2 часов!"><img src="img/frimi-clock.webp" alt="" width="190" height="190"></span>`
-  : `<span class="frimi" data-mode="wave" tabindex="0" role="img" aria-label="Фрими, ваш помощник" data-tip="Я Фрими, ваш помощник"><img src="img/frimi.webp" alt="" width="176" height="176"></span>`;
-setInterval(() => { const el = document.querySelector(".frimi"); if (el && el.dataset.mode !== (frimiHot() ? "clock" : "wave")) el.outerHTML = frimiHtml(); }, 5000);
+// По времени ученика в браузере (Саша 14.10): с 6:00 до 17:00 машет лапкой, с 17:00 до 6:00 сидит за ноутбуком.
+// Будильник за 2 часа до несданного дедлайна важнее времени суток.
+const frimiMode = () => frimiHot() ? "clock" : (h => h >= 17 || h < 6)(new Date().getHours()) ? "laptop" : "wave";
+const FRIMI = {
+  clock: ["clock", "frimi-clock.webp", 190, "Фрими: до сдачи задания меньше 2 часов", "До сдачи задания меньше 2 часов!"],
+  laptop: ["laptop", "frimi-laptop.webp", 210, "Фрими, ваш помощник", "Я Фрими, ваш помощник"],
+  wave: ["", "frimi.webp", 176, "Фрими, ваш помощник", "Я Фрими, ваш помощник"],
+};
+const frimiHtml = () => { const m = frimiMode(), [cls, src, px, label, tip] = FRIMI[m];
+  return `<span class="frimi ${cls}" data-mode="${m}" tabindex="0" role="img" aria-label="${label}" data-tip="${tip}"><img src="img/${src}" alt="" width="${px}" height="${px}"></span>`; };
+setInterval(() => { const el = document.querySelector(".frimi"); if (el && el.dataset.mode !== frimiMode()) el.outerHTML = frimiHtml(); }, 5000);
 // Тем, кто ничего не купил (решение Саши 14.10): на главной вместо пустого «Моего дня» три входа в школу
 // в фирменном стиле каждого продукта: 1) «Мой оффер», 2) Точка Сборки с таймером до потока, 3) Прорыв.
 // Тексты взяты с живых страниц: wearefree.club/my-offer, /tochka-sborki, /proryv-30.
