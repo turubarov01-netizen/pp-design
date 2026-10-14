@@ -1080,3 +1080,9 @@ li.act:not(.unread) .act-tx > a.act-h { font-weight: 600; color: var(--ink-2); }
 .vip-blk .vip-go:active { top: 4px; box-shadow: 0 0 0 #A07828, 0 3px 8px rgba(0,0,0,.3); }
 .vip-blk .vip-go:focus-visible { outline: 2px solid #DFC880; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .vip-blk .vip-go { transition: none; } }
+
+/* v27 — строка рейтинга ведёт в рейтинг потока программы */
+.rank-list .rk-go { flex: none; width: 18px; height: 18px; margin-left: -4px; color: var(--faint); transition: transform .2s var(--ease), color .2s var(--ease); }
+.rank-list a:hover .rk-go { color: var(--blue); transform: translateX(3px); }
+.rank-list a:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+@media (prefers-reduced-motion: reduce) { .rank-list .rk-go { transition: none; } }

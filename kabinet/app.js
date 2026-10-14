@@ -431,9 +431,11 @@ function feedItem(it, idx) {
 }
 
 // Рейтинг потока в каждой программе: место по баллам, как в «Рейтинге» ПП, ИИнструментов и Места притяжения
+// Рейтинг потока на платформе: в ПП — «Лагерь», в кампаниях (ИИнструменты, Место притяжения) — вкладка «Рейтинг».
+const RATING_URL = { pp: "https://wearefree.club/producer-plan/camp", ii: "https://wearefree.club/campaigns/ii-instrumenty?tab=sprint-rating", mesto: "https://wearefree.club/campaigns/mesto?tab=sprint-rating" };
 const rankBlock = (u) => { const r = Object.entries(u.rank || {}); if (!r.length) return "";
   return `<div class="rank-blk"><p class="rank-h">Рейтинг в программах</p><ul class="rank-list">${r.map(([id, [pos, of, pts]]) =>
-    `<li><a href="#/p/${id}" title="Открыть рейтинг потока">${pmark(id)}<span class="rk-n">${esc(PRODUCTS[id].name)}<small>${pts.toLocaleString("ru-RU")} ${plural(pts, "балл", "балла", "баллов")}</small></span><span class="rk-p"><b>${pos}</b>&nbsp;место<small>из&nbsp;${of}</small></span></a></li>`).join("")}</ul></div>`; };
+    `<li><a href="${RATING_URL[id] || "#/p/" + id}" target="_blank" rel="noopener" aria-label="Рейтинг потока: ${esc(PRODUCTS[id].name)}, ${pos} место из ${of}">${pmark(id)}<span class="rk-n">${esc(PRODUCTS[id].name)}<small>${pts.toLocaleString("ru-RU")} ${plural(pts, "балл", "балла", "баллов")}</small></span><span class="rk-p"><b>${pos}</b>&nbsp;место<small>из&nbsp;${of}</small></span>${ic("chev", "rk-go")}</a></li>`).join("")}</ul></div>`; };
 
 // Чаты в Telegram по действующим продуктам — те же, что на платформе: в ПП «Чат потока» и «Чат отряда»,
 // в Месте притяжения чат потока, в ИИнструментах «Q&A», в Альянсе «Чат Альянса» (только по уровню, не в гостевом доступе).
