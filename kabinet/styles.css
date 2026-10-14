@@ -1138,3 +1138,33 @@ li.act:not(.unread) .act-tx > a.act-h { font-weight: 600; color: var(--ink-2); }
 .acc-bans .acc-ban { margin: 0; }
 .tour-btns .link-btn { margin-left: 0; font-size: 14px; min-height: 44px; }
 .mw-btns .link-btn { font-size: 13px; min-height: 36px; }
+
+/* v29 — мобильный аудит */
+.notif { visibility: hidden; transition: opacity .18s var(--ease), transform .18s var(--ease), visibility 0s linear .18s; }
+.notif.open { visibility: visible; transition-delay: 0s; }
+.composer textarea { line-height: 20px; }
+@media (max-width: 960px) {
+  input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]), select, textarea { font-size: 16px; }
+  .mnav a { font-size: 11px; }
+  .notif h4 button { min-height: 44px; padding: 0 8px; margin: -12px -8px; }
+  .day-tabs button { min-height: 44px; }
+  .sup-back, .icon-x { width: 44px; height: 44px; }
+  .sec-head > a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; margin: -10px -8px; }
+  .link-btn, .chip.add { min-height: 44px; }
+  .prod-row .acts { flex-wrap: wrap; }
+  .prod-row .acts .btn { flex: 1 1 140px; }
+  .sup { overflow: clip; }
+  .composer { position: sticky; bottom: calc(max(12px, env(safe-area-inset-bottom)) + 66px); z-index: 5; background: #fff; box-shadow: 0 -8px 20px rgba(16,24,48,.06); }
+  .sup { min-height: 0; }
+}
+@media (max-width: 600px) {
+  .act-tabs { overflow-x: auto; scrollbar-width: none; }
+  .act-tabs::-webkit-scrollbar { display: none; }
+  .act-tabs button { flex: 1 0 auto; }
+}
+@media (max-width: 960px) { .sup { scroll-margin-top: 84px; } }
+@media (max-width: 600px) { .fgrid, .fgrid-3 { grid-template-columns: minmax(0, 1fr); } .field { min-width: 0; } }
+@media (max-width: 960px) { .or-t span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; } }
+li.act .act-tx > a.act-h::after { content: ""; position: absolute; inset: 0; border-radius: 14px; }
+li.act .act-tx .btn, li.act .act-tx button, li.act .act-tx .act-quote { position: relative; z-index: 1; }
+@media (max-width: 600px) { .act-tabs button { min-width: 44px; } }

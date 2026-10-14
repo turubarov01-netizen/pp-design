@@ -52,7 +52,7 @@ const PRODUCTS = {
         landing: "https://wearefree.club/iinstrumenti/", live: "https://wearefree.club/campaigns/ii-instrumenty",
         nav: ["Программа", "Уроки", "Задания", "Рейтинг", "Магазин"] },
   pp: { name: "План Продюсера", dat: "Плану Продюсера", kind: "Программа", color: "#6d4bd8", logo: "img/context-producer.png",
-        about: "Программа на 90 дней с Сашей и Игорем: от точки А к точке Б",
+        about: "Программа на 90 дней с Сашей и Игорем: от точки А к точке Б",
         landing: "https://wearefree.club/plan4", live: "https://wearefree.club/producer-plan",
         nav: ["Главная", "Маршрут", "Встречи", "Домашние задания", "Рюкзак", "Лагерь", "Магазин", "Чат потока"] },
   mesto: { name: "Место притяжения", dat: "Месту притяжения", kind: "Челлендж", color: "#f07a2a", logo: "img/mesto-logo.webp",
@@ -317,6 +317,8 @@ const S = {
 };
 let feedTab = "today";
 let ticketSel = 0;
+function supFocus() { if (!matchMedia("(max-width: 960px)").matches) return; const el = document.querySelector(".sup"); if (el) el.scrollIntoView({ block: "start", behavior: "smooth" }); }
+var lastA = "";
 let notifOpen = false;
 let profTab = "about", growTab = "path", loginMode = "login";
 let doneSet = new Set();
@@ -882,7 +884,7 @@ function support() {
     <a class="btn btn-ghost" href="https://t.me/freemen_alliance_bot?start=support" target="_blank" rel="noopener">${ic("tg")}Написать в Telegram</a>
     <span class="small">Отвечаем в течение часа с 10:00 до 22:00 МСК</span>
   </div>
-  <section class="panel sup ${t || ticketSel < 0 ? "has-chat" : ""}" style="margin-top:18px">
+  <section class="panel sup ${t || ticketSel === -1 ? "has-chat" : ""}" style="margin-top:18px">
     <div class="sup-list" role="tablist">
       <p class="eyebrow" style="padding:6px 12px 4px">Мои обращения</p>
       ${list || '<p class="small" style="padding:10px 12px">Обращений пока не было. Если что-то не получается, напишите, разберёмся.</p>'}
@@ -1103,11 +1105,12 @@ function render() {
   if (tourI < 0 && typeof tourMaybe === "function") tourMaybe();
 }
 function route(a, b) {
+  if (a !== "support") lastA = a;
   if (a === "services") return products();
   if (a === "products") return b === "pay" ? purchases() : products();
   if (a === "progress") { growTab = b || "path"; return progress(); }
   if (a === "activity") return activity();
-  if (a === "support") return support();
+  if (a === "support") { if (lastA !== "support" && ticketSel >= 0 && matchMedia("(max-width: 960px)").matches) ticketSel = -2; lastA = a; return support(); }
   if (a === "profile") { profTab = b || "about"; return profile(); }
   if (a === "p") return inside(b);
   return home();
@@ -1138,8 +1141,8 @@ function bind() {
   root.querySelectorAll("[data-ado]").forEach(el => el.onclick = () => { const a = actList()[+el.dataset.ado]; a.done = el.dataset.msg; a.unread = false; render(); });
   const ar = document.getElementById("actRead"); if (ar) ar.onclick = () => { actList().forEach(a => a.unread = false); render(); };
   root.querySelectorAll("[data-done]").forEach(el => el.onclick = () => { doneSet.add(S.persona + el.dataset.done); render(); });
-  root.querySelectorAll("[data-t]").forEach(el => el.onclick = () => { ticketSel = +el.dataset.t; me().tickets[ticketSel].unread = 0; render(); });
-  const nt = document.getElementById("newT"); if (nt) nt.onclick = () => { ticketSel = -1; render(); };
+  root.querySelectorAll("[data-t]").forEach(el => el.onclick = () => { ticketSel = +el.dataset.t; me().tickets[ticketSel].unread = 0; render(); supFocus(); });
+  const nt = document.getElementById("newT"); if (nt) nt.onclick = () => { ticketSel = -1; render(); supFocus(); };
   root.querySelectorAll("[data-back]").forEach(el => el.onclick = () => { ticketSel = -2; render(); });
   root.querySelectorAll("[data-svc-toggle]").forEach(el => el.onclick = () => { svcOpen = !svcOpen; try { localStorage.setItem("cab.svc", svcOpen ? "1" : "0"); } catch {} root.querySelectorAll(".svc-nav").forEach(n => { n.classList.toggle("open", svcOpen); n.querySelector("[data-svc-toggle]").setAttribute("aria-expanded", svcOpen); }); });
   root.querySelectorAll("[data-rate]").forEach(el => el.onclick = () => { me().tickets[ticketSel].rated = +el.dataset.rate; render(); });
