@@ -1303,3 +1303,13 @@ button.svc-item { width: 100%; border: 0; background: none; font: inherit; text-
 .frimi:focus-visible { box-shadow: 0 0 0 3px rgba(47,123,255,.45); }
 @media (max-width: 640px) { .frimi { width: 60px; height: 60px; margin: -4px 0 -4px -6px; } .greet-l { gap: 10px; } .frimi::after { left: 0; transform: translate(0, -4px); } .frimi:hover::after, .frimi:focus-visible::after { transform: none; } }
 @media (prefers-reduced-motion: reduce) { .frimi::after { transition: none; } }
+/* Фрими крупно, стоит лапками на верхнем краю первой плашки (Саша 14.10) */
+.g-mob { display: none; }
+.greet-l { align-items: flex-end; }
+.greet-l > div { padding-bottom: 2px; }
+.frimi { width: 132px; height: 132px; margin: -30px 0 -35px -14px; z-index: 2; }
+@media (max-width: 960px) { .g-desk { display: none; } .g-mob { display: block; margin: 4px 0 0; } }
+@media (max-width: 640px) {
+  .frimi { width: 92px; height: 92px; margin: -20px 0 -31px -10px; }
+  .greet-l { gap: 8px; }
+}

@@ -608,8 +608,8 @@ function home() {
   const lives = u.lives != null ? `<div class="stat-line"><span class="ic2 wide" style="background:rgba(229,72,77,.1)"><span class="lives">${[0, 1, 2].map(i => `<svg viewBox="0 0 24 24" class="${i < u.lives ? "" : "off"}" stroke="currentColor" stroke-width="1.8">${P.heart}</svg>`).join("")}</span></span><div><div class="v">${u.lives} из 3</div><div class="l">жизни в Плане Продюсера</div></div></div>` : "";
 
   const body = `
-  <div class="greet"><div class="greet-l">${frimiHtml()}<div><p class="date">${DAYS[now.getDay()].replace(/^./, s => s.toUpperCase())}, ${dm(now)}</p><h2 class="h-xl">${greeting()}, ${esc(u.name)}</h2></div></div>
-    <p class="small">${todayCount ? `На сегодня ${todayCount} ${plural(todayCount, "дело", "дела", "дел")}${urgentCount ? `, срочных ${urgentCount}` : ""}` : u.products.length ? "На сегодня всё сделано" : "С чего начать в школе"}</p></div>
+  <div class="greet"><div class="greet-l">${frimiHtml()}<div><p class="date">${DAYS[now.getDay()].replace(/^./, s => s.toUpperCase())}, ${dm(now)}</p><h2 class="h-xl">${greeting()}, ${esc(u.name)}</h2><p class="small g-sum g-mob">${todayCount ? `На сегодня ${todayCount} ${plural(todayCount, "дело", "дела", "дел")}${urgentCount ? `, срочных ${urgentCount}` : ""}` : u.products.length ? "На сегодня всё сделано" : "С чего начать в школе"}</p></div></div>
+    <p class="small g-sum g-desk">${todayCount ? `На сегодня ${todayCount} ${plural(todayCount, "дело", "дела", "дел")}${urgentCount ? `, срочных ${urgentCount}` : ""}` : u.products.length ? "На сегодня всё сделано" : "С чего начать в школе"}</p></div>
   <div class="home" style="margin-top:20px">
     <div class="home-col">
       ${accBanners(u)}
