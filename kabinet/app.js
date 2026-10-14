@@ -18,6 +18,8 @@ const P = {
   lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   book: '<path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',
   check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/>',
+  task: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 12l2 2 4-4"/>',
   flame: '<path d="M12 22c4.4 0 7-2.9 7-6.6 0-3.7-2.6-5.4-3.9-8.4-.9 1.9-2 2.9-3.6 3.1.1-2.6-.9-5.1-3.1-7.1.2 3.9-4.4 6.1-4.4 11.9C4 19.1 7.6 22 12 22z"/>',
   spark: '<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
   logout: '<path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/>',
@@ -87,17 +89,18 @@ const untilStart = (t) => {
   const hh = Math.floor(diff / 60), mm = diff % 60;
   return "Через " + (hh ? `${hh} ч ` : "") + (mm ? `${mm} мин` : "");
 };
-/* таймер дедлайна, как в «Плане Продюсера» (DeadlineCountdown) */
+/* таймер дедлайна, как карточка срока в «Плане Продюсера» (LessonDeadlineCard) */
+const WEEK_MS = 7 * 864e5, HOT_MS = 12 * 36e5;
+const WDS = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"];
 const dlAt = (it) => { const [h, m] = it.t.split(":").map(Number); const d = dAt(it.d); d.setHours(h, m, 59, 0); return d.getTime(); };
 const pad2 = (n) => String(n).padStart(2, "0");
-const cdInner = (ms) => {
-  if (ms <= 0) return `<span class="cd-out">Дедлайн истёк</span>`;
-  const s = Math.floor(ms / 1000), dd = Math.floor(s / 86400), hh = Math.floor(s / 3600) % 24, mm = Math.floor(s / 60) % 60, ss = s % 60;
-  return (dd ? `<b>${pad2(dd)}</b><i>д</i>` : "") + `<b>${pad2(hh)}</b><i>ч</i><b>${pad2(mm)}</b><i>м</i><b>${pad2(ss)}</b><i>с</i>`;
-};
-const countdown = (it) => { const at = dlAt(it), ms = at - Date.now();
-  return `<span class="cd ${ms < 3 * 3600e3 ? "cd-urgent" : ""}" data-dl="${at}"><span class="cd-l">До дедлайна</span><span class="cd-t">${cdInner(ms)}</span>${it.p === "pp" ? `<span class="cd-x" title="После дедлайна баллы и фениксы начисляются вдвое меньше">после: ×½</span>` : ""}</span>`; };
-const tickCountdowns = () => document.querySelectorAll(".cd[data-dl]").forEach(el => { const ms = +el.dataset.dl - Date.now(); el.querySelector(".cd-t").innerHTML = cdInner(ms); el.classList.toggle("cd-urgent", ms < 3 * 3600e3); });
+const fmtTick = (ms) => { const s = Math.max(0, Math.floor(ms / 1000)), d = Math.floor(s / 86400); return `${d > 0 ? d + "\u00a0д " : ""}${pad2(Math.floor(s % 86400 / 3600))}:${pad2(Math.floor(s % 3600 / 60))}:${pad2(s % 60)}`; };
+const untilTxt = (it) => { const d = dAt(it.d); return `до ${WDS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]}, ${it.t}`; };
+const RING_C = 2 * Math.PI * 21;
+const ringDash = (ms) => `${(Math.max(0, Math.min(1, ms / WEEK_MS)) * RING_C).toFixed(1)} ${RING_C.toFixed(1)}`;
+const dlKind = (it) => /ключев/i.test(it.title) ? ["Ключевое задание", "star"] : /отч[её]т/i.test(it.title) ? ["Отчёт", "task"] : ["Срок задания", "task"];
+const dlPen = (it) => it.p === "pp" ? "−1 жизнь, если не сдать" : "";
+const tickCountdowns = () => document.querySelectorAll("[data-dl]").forEach(el => { const ms = +el.dataset.dl - Date.now(); el.querySelector(".dl-t").textContent = ms > 0 ? fmtTick(ms) : "Срок прошёл"; el.querySelector(".dl-l").hidden = ms <= 0; const r = el.querySelector(".dl-arc"); if (r) r.setAttribute("stroke-dasharray", ringDash(ms)); el.classList.toggle("hot", ms < HOT_MS); });
 setInterval(tickCountdowns, 1000);
 const greeting = () => { const h = new Date().getHours(); return h < 5 ? "Доброй ночи" : h < 12 ? "Доброе утро" : h < 18 ? "Добрый день" : "Добрый вечер"; };
 
@@ -382,7 +385,22 @@ function shell(active, title, body) {
 }
 
 /* ---------- главная: мой день ---------- */
+function deadlineItem(it, idx) {
+  const at = dlAt(it), ms = at - Date.now(), [kind, kic] = dlKind(it), pen = dlPen(it), hot = ms < HOT_MS;
+  const note = pen || /^(Осталось меньше суток|Сдать до конца дня)$/.test(it.note || "") ? "" : it.note;
+  return `<li class="item dl ${hot ? "hot" : ""}" data-dl="${at}">
+    <div class="tm">${esc(it.t)}</div>
+    <div class="dl-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle class="dl-arc" cx="24" cy="24" r="21" stroke-dasharray="${ringDash(ms)}"/></svg>${ic(kic)}</div>
+    <span class="dl-kind">${kind}</span>
+    <div class="dl-left" role="timer" aria-label="До срока"><span class="dl-t">${ms > 0 ? fmtTick(ms) : "Срок прошёл"}</span><span class="dl-l">осталось</span></div>
+    <div class="tx"><b>${esc(it.title)}</b>
+      <div class="row">${chip(it.p)}<span class="note">Сдать ${untilTxt(it)}</span></div>
+      ${pen ? `<span class="dl-pen">${ic("heart")}${pen}</span>` : note ? `<span class="note dl-note">${esc(note)}</span>` : ""}</div>
+    ${it.cta ? `<button class="btn ${hot ? "btn-primary" : "btn-ghost"} btn-sm act" data-done="${idx}">${esc(it.cta)}</button>` : ""}
+  </li>`;
+}
 function feedItem(it, idx) {
+  if (it.type === "deadline" && !(it.done || doneSet.has(S.persona + idx))) return deadlineItem(it, idx);
   const isDone = it.done || doneSet.has(S.persona + idx);
   const showLive = it.live && it.d === 0;
   const past = showLive && untilStart(it.t).startsWith("Прошла");
@@ -394,7 +412,7 @@ function feedItem(it, idx) {
   return `<li class="item ${it.urgent && !isDone ? "urgent" : ""} ${isDone ? "done" : ""}">
     <div class="tm">${esc(it.t)}</div>
     <div class="ic ic-${it.type}">${ic(TYPE_IC[it.type])}</div>
-    <div class="tx"><b>${esc(it.title)}</b><div class="row">${chip(it.p)}${showLive ? `<span class="live-dot">${untilStart(it.t)}</span>` : ""}${showCd ? countdown(it) : ""}${note ? `<span class="note">${esc(note)}</span>` : ""}</div></div>
+    <div class="tx"><b>${esc(it.title)}</b><div class="row">${chip(it.p)}${showLive ? `<span class="live-dot">${untilStart(it.t)}</span>` : ""}${note ? `<span class="note">${esc(note)}</span>` : ""}</div></div>
     ${act}
   </li>`;
 }
@@ -658,9 +676,9 @@ function purchases() {
   const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">Доступы, членство, счета и оплаты.</p>${prodTabs("pay")}
   ${e.invoices.length ? e.invoices.map(([t, s, d]) => `<section class="panel pad invoice"><div><span class="eyebrow">Вам выставлен счёт</span><b>${esc(t)}</b><span class="small">${esc(s)} · оплатить до ${until(d)}</span></div><button class="btn btn-primary" type="button">Оплатить счёт</button></section>`).join("") : ""}
   <section class="panel pad" style="margin-bottom:18px"><div class="sec-head"><h2 class="h-md">Членство в клубе</h2><a href="https://wearefree.club/upgrade" target="_blank" rel="noopener">Уровни</a></div>
-    <div class="tg-row" style="border:0;padding-top:0"><div class="t"><b>${esc(e.member)}</b><span class="small">Откуда: ${esc(e.memberFrom)} · до ${until(e.memberUntil)} · осталось ${e.memberUntil} ${plural(e.memberUntil, "день", "дня", "дней")}</span></div><a class="btn btn-soft btn-sm" href="https://wearefree.club/upgrade" target="_blank" rel="noopener">Продлить</a></div></section>
+    <div class="tg-row acc" style="border:0;padding-top:0"><div class="t"><b>${esc(e.member)}</b><span class="small">Откуда: ${esc(e.memberFrom)} · до ${until(e.memberUntil)} · осталось ${e.memberUntil} ${plural(e.memberUntil, "день", "дня", "дней")}</span></div><a class="btn btn-soft btn-sm" href="https://wearefree.club/upgrade" target="_blank" rel="noopener">Продлить</a></div></section>
   <section class="panel pad" style="margin-bottom:18px"><h2 class="h-md" style="margin-bottom:8px">Активные доступы</h2>
-    ${act.map(p => `<div class="tg-row"><div class="t"><b>${esc(PRODUCTS[p.id].name)}</b><span class="small">${esc(PRODUCTS[p.id].kind)} · доступ до ${until(p.until)}</span></div><span class="${p.until <= 14 ? "st-warn" : "small"}" style="font-size:13px">осталось ${p.until} ${plural(p.until, "день", "дня", "дней")}</span></div>`).join("")}</section>
+    ${act.map(p => `<div class="tg-row acc"><div class="t"><b>${esc(PRODUCTS[p.id].name)}</b><span class="small">${esc(PRODUCTS[p.id].kind)} · доступ до ${until(p.until)}</span></div><span class="${p.until <= 14 ? "st-warn" : "small"}" style="font-size:13px">осталось ${p.until} ${plural(p.until, "день", "дня", "дней")}</span></div>`).join("")}</section>
   <section class="panel pad"><div class="sec-head"><h2 class="h-md">История оплат</h2><span class="is-new">новое</span></div>
     <ul class="ph-list">${e.pays.map(([t, s, d, how]) => `<li><span><b style="font-weight:600">${esc(t)}</b><br><span class="small">${dm(dAt(-d))} · ${esc(how)}</span></span><span style="display:flex;gap:10px;align-items:center"><b style="font-variant-numeric:tabular-nums">${esc(s)}</b><button class="btn btn-ghost btn-sm" type="button">Чек</button></span></li>`).join("")}</ul></section>`;
   return shell("products", "Мои продукты", body);
@@ -739,7 +757,7 @@ function support() {
             <label class="icon-btn" title="Прикрепить скриншот">${ic("camera")}<input type="file" accept="image/*" hidden id="att"></label>
             <textarea placeholder="Написать сообщение" aria-label="Сообщение"></textarea>
             <button class="btn btn-primary" type="submit" aria-label="Отправить">${ic("send")}</button></form>
-          <div class="composer-foot"><span>Enter — отправить, Shift+Enter — новая строка</span><button class="link-btn" data-close type="button">Закрыть обращение</button><span class="is-new">новое</span></div>`}`;
+          <div class="composer-foot"><span class="kbd-hint">Enter — отправить, Shift+Enter — новая строка</span><button class="link-btn" data-close type="button">Закрыть обращение</button><span class="is-new">новое</span></div>`}`;
   } else {
     chat = `${head("Новое обращение", "Отвечаем в течение часа с 10:00 до 22:00 МСК")}
       <form class="new-ticket" id="newForm">
@@ -974,6 +992,7 @@ function render() {
   root.innerHTML = html;
   document.body.classList.toggle("on-login", a === "login");
   typo(root);
+  root.querySelectorAll(".tabs").forEach(n => { const t = n.querySelector('[aria-current="page"]'); if (t && n.scrollWidth > n.clientWidth) n.scrollLeft = t.offsetLeft - (n.clientWidth - t.offsetWidth) / 2; });
   if (a === "login") startParticles();
   document.title = (document.querySelector(".topbar h1")?.textContent || "Вход") + " · Личный кабинет";
   bind();
