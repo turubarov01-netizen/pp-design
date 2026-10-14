@@ -469,10 +469,9 @@ function home() {
         <p class="small" style="margin:-4px 0 14px">Встречи, задания и новые уроки из всех ваших продуктов в одном списке</p>
         ${feedHtml}
       </section>
+      ${actPanel()}
     </div>
     <div class="home-col aside">
-      ${actPanel()}
-      ${setupBlock("home")}
       <section class="panel pad" aria-label="Мой рост">
         <div class="sec-head"><h2 class="h-md">Мой рост</h2><a href="#/progress">Подробнее</a></div>
         <div class="stat-line"><span class="ic2" style="background:rgba(240,138,40,.12)"><img src="img/freecoin.png" alt=""></span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div><span class="tail">+${u.phoenixWeek} за неделю</span></div>
@@ -480,6 +479,7 @@ function home() {
         ${lives}
         ${rankBlock(u)}
       </section>
+      ${setupBlock("home")}
     </div>
   </div>`;
   return shell("home", "Главная", body);
