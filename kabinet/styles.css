@@ -1313,3 +1313,6 @@ button.svc-item { width: 100%; border: 0; background: none; font: inherit; text-
   .frimi { width: 92px; height: 92px; margin: -20px 0 -23px -6px; }
   .greet-l { gap: 8px; }
 }
+/* Фрими с будильником: кадр шире (будильник выходит за край), рост тела как у приветственного */
+.frimi.clock { width: 142px; height: 142px; margin: -40px 0 -24px -20px; }
+@media (max-width: 640px) { .frimi.clock { width: 99px; height: 99px; margin: -27px 0 -23px -13px; } }

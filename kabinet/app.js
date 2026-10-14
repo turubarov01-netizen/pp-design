@@ -124,6 +124,10 @@ setInterval(tickCountdowns, 1000);
 const greeting = () => { const h = new Date().getHours(); return h < 5 ? "Доброй ночи" : h < 12 ? "Доброе утро" : h < 18 ? "Добрый день" : "Добрый вечер"; };
 
 /* ---------- демо-люди ---------- */
+// Демо: у Ольги отчёт по фокусу сгорает через ~1 ч 40 мин от момента открытия, чтобы был виден Фрими с будильником.
+const SOON = (() => { const t = new Date(Date.now() + 100 * 60000); t.setMinutes(Math.floor(t.getMinutes() / 5) * 5, 0, 0);
+  const day = new Date(t); day.setHours(0, 0, 0, 0); const base = new Date(); base.setHours(0, 0, 0, 0);
+  return { d: Math.round((day - base) / 864e5), t: `${t.getHours()}:${String(t.getMinutes()).padStart(2, "0")}` }; })();
 const PERSONAS = {
   maria: {
     label: "Мария · купила только ИИнструменты",
@@ -170,14 +174,14 @@ const PERSONAS = {
     feed: [
       { d: 0, t: "09:00", type: "lesson", p: "pp", title: "Фокус дня отмечен", note: "Выполнено", done: true },
       { d: 0, t: "19:00", type: "meeting", p: "pp", title: "Групповая встреча потока", note: "Zoom · ведут Саша и Игорь", live: true, cta: "Войти" },
-      { d: 0, t: "23:59", type: "deadline", p: "pp", title: "Отчёт по фокусу недели", note: "Без отчёта сгорит жизнь", urgent: true, cta: "Сдать" },
+      { d: SOON.d, t: SOON.t, type: "deadline", p: "pp", title: "Отчёт по фокусу недели", note: "Без отчёта сгорит жизнь", urgent: true, cta: "Сдать" },
       { d: 2, t: "12:00", type: "event", p: "pp", title: "Разбор домашних заданий", note: "Запись появится в Рюкзаке" },
       { d: 4, t: "10:00", type: "lesson", p: "pp", title: "Откроется урок недели 4", note: "Напомним в Telegram" },
       { d: 5, t: "23:59", type: "deadline", p: "pp", title: "Ключевое задание недели 3", note: "Собрать оффер в сервисе «Мой оффер»", cta: "Открыть" },
     ],
     notifs: [
       { type: "meeting", p: "pp", title: "Сегодня в 19:00 групповая встреча", when: "сегодня, 12:00", unread: true },
-      { type: "deadline", p: "pp", title: "Отчёт по фокусу недели до 23:59", when: "сегодня, 9:00", unread: true },
+      { type: "deadline", p: "pp", title: `Отчёт по фокусу недели до ${SOON.t}`, when: "сегодня, 9:00", unread: true },
       { type: "lesson", p: "pp", title: "Наставник проверил задание недели 2", when: "вчера" },
     ],
     path: { a: ["Точка А", 60000, "сентябрь"], now: ["Сейчас", 95000, "октябрь"], goal: ["Цель потока", 300000, "декабрь"] },
@@ -461,7 +465,13 @@ function deadlineItem(it, idx) {
 }
 // Фрими, маскот платформы, у приветствия. Сейчас одна анимация для всех (машет лапкой);
 // для сгорающего дедлайна Саша пришлёт отдельную, тогда выбор будет здесь.
-const frimiHtml = () => `<span class="frimi" tabindex="0" role="img" aria-label="Фрими, ваш помощник" data-tip="Я Фрими, ваш помощник"><img src="img/frimi.webp" alt="" width="176" height="176"></span>`;
+// Если до срока любого несданного задания 2 часа или меньше, Фрими с будильником (Саша 14.10).
+const FRIMI_HOT_MS = 2 * 36e5;
+const frimiHot = () => me().feed.some((it, i) => { if (it.type !== "deadline" || it.done || doneSet.has(S.persona + i)) return false; const ms = dlAt(it) - Date.now(); return ms > 0 && ms <= FRIMI_HOT_MS; });
+const frimiHtml = () => frimiHot()
+  ? `<span class="frimi clock" data-mode="clock" tabindex="0" role="img" aria-label="Фрими: до сдачи задания меньше 2 часов" data-tip="До сдачи задания меньше 2 часов!"><img src="img/frimi-clock.webp" alt="" width="190" height="190"></span>`
+  : `<span class="frimi" data-mode="wave" tabindex="0" role="img" aria-label="Фрими, ваш помощник" data-tip="Я Фрими, ваш помощник"><img src="img/frimi.webp" alt="" width="176" height="176"></span>`;
+setInterval(() => { const el = document.querySelector(".frimi"); if (el && el.dataset.mode !== (frimiHot() ? "clock" : "wave")) el.outerHTML = frimiHtml(); }, 5000);
 // Тем, кто ничего не купил (решение Саши 14.10): на главной вместо пустого «Моего дня» три входа в школу
 // в фирменном стиле каждого продукта: 1) «Мой оффер», 2) Точка Сборки с таймером до потока, 3) Прорыв.
 // Тексты взяты с живых страниц: wearefree.club/my-offer, /tochka-sborki, /proryv-30.
