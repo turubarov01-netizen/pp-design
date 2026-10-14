@@ -334,7 +334,7 @@ function typo(root) {
 
 /* ---------- оболочка кабинета ---------- */
 function navItems(u) {
-  const unread = u.notifs.filter(n => n.unread).length;
+  const unread = u.notifs.filter(n => n.unread).length + actUnread();
   const openT = u.tickets.reduce((s, t) => s + (t.unread || 0), 0);
   return [
     ["home", "#/home", "Главная", "home", 0],
@@ -368,7 +368,7 @@ function shell(active, title, body) {
           <div class="notif ${notifOpen ? "open" : ""}" id="notif" role="dialog" aria-label="Уведомления">
             <h4>Уведомления <button id="readall">Прочитать все</button></h4>
             ${u.notifs.map(n => `<a class="nt ${n.unread ? "unread" : ""}" href="#/home"><span class="ic ic-${n.type}">${ic(TYPE_IC[n.type])}</span><span><b>${esc(n.title)}</b><span>${esc(PRODUCTS[n.p].name)} · ${esc(n.when)}</span></span></a>`).join("")}
-            <a class="nt-all" href="https://wearefree.club/activity" target="_blank" rel="noopener">Вся активность: лайки и комментарии</a>
+            <a class="nt-all" href="#/activity">Отклики: лайки, комментарии, друзья${actUnread() ? ` · ${actUnread()} новых` : ""}</a>
           </div>
         </div>
         <a class="me-chip" href="#/profile">${avatarHtml(u)}<span><span class="nm">${esc(u.name)} ${esc(u.last)}</span><br><span class="ph"><img src="img/freecoin.png" alt="" width="14" height="14"> ${u.phoenix.toLocaleString("ru-RU")} фениксов</span></span></a>
@@ -448,6 +448,7 @@ function home() {
         <div class="sec-head"><h2 class="h-md">Мои продукты</h2><a href="#/products">Все</a></div>
         ${u.products.map(p => `<a class="mini-prod" href="#/p/${p.id}">${logo(p.id)}<span><span class="nm">${esc(PRODUCTS[p.id].name)}</span><br><span class="st ${p.state === "expiring" ? "st-warn" : p.state === "trial" ? "st-trial" : ""}">${p.state === "trial" ? "Гостевой доступ" : p.state === "expiring" ? `Осталось ${p.until} ${plural(p.until, "день", "дня", "дней")}` : `До ${until(p.until)}`}</span></span>${ic("chev", "chev")}</a>`).join("")}
       </section>
+      ${actPanel()}
       <section class="panel pad" aria-label="Мой рост">
         <div class="sec-head"><h2 class="h-md">Мой рост</h2><a href="#/progress">Подробнее</a></div>
         <div class="stat-line"><span class="ic2" style="background:rgba(240,138,40,.12)"><img src="img/freecoin.png" alt=""></span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div><span class="tail">+${u.phoenixWeek} за неделю</span></div>
@@ -459,6 +460,106 @@ function home() {
     </div>
   </div>`;
   return shell("home", "Главная", body);
+}
+
+/* ---------- отклики (бывшая страница /activity) ---------- */
+// k: like | comment | reply | friend | diary. d — сколько дней назад.
+const ACT = {
+  maria: [
+    { k: "comment", who: ["Светлана М."], obj: "Ваш ответ к уроку 3", p: "ii", text: "Сохранила ваш промпт для постов, спасибо! А вы его потом правите руками?", d: 0, t: "09:40", unread: true },
+    { k: "like", who: ["Ирина С.", "Олег Р.", "Елена В."], more: 2, obj: "Ваш ответ к уроку 3", p: "ii", d: 0, t: "08:15", unread: true },
+    { k: "friend", who: ["Елена В."], obj: "Тоже проходит ИИнструменты", p: "fa", d: 1, t: "21:02" },
+    { k: "like", who: ["Дмитрий П."], obj: "Ваш инсайт к уроку 2", p: "ii", d: 3, t: "14:30" },
+  ],
+  olga: [
+    { k: "reply", who: ["Ирина С."], obj: "Пост «Как я нашла первых клиентов»", p: "fa", text: "Да, через разборы в сторис. Напишите мне, расскажу подробнее", d: 0, t: "11:05", unread: true },
+    { k: "like", who: ["Марина Л.", "Дмитрий П.", "Артём Н.", "Елена В."], more: 5, obj: "Ваш инсайт к неделе 3", p: "pp", d: 0, t: "10:20", unread: true },
+    { k: "diary", who: ["Марина Л."], obj: "Просит доступ к вашему дневнику успеха", p: "fa", d: 1, t: "18:44", unread: true },
+    { k: "like", who: ["Олег Р.", "Светлана М."], obj: "Ваша цель «Поездка в Грузию»", p: "fa", d: 2, t: "12:10" },
+    { k: "comment", who: ["Артём Н."], obj: "Ваш ответ к ключевому заданию недели 2", p: "pp", text: "Сильный оффер. Я бы ещё добавил срок результата", d: 4, t: "16:00" },
+  ],
+  andrey: [
+    { k: "like", who: ["Ирина С.", "Олег Р.", "Марина Л.", "Елена В."], more: 8, obj: "Ваш пост «Три ошибки в первом запуске»", p: "fa", d: 0, t: "12:30", unread: true },
+    { k: "comment", who: ["Дмитрий П."], obj: "Ваш пост «Три ошибки в первом запуске»", p: "fa", text: "Про вторую ошибку прямо в точку. Сам так потерял месяц", d: 0, t: "12:02", unread: true },
+    { k: "friend", who: ["Артём Н."], obj: "Из вашего клана", p: "fa", d: 1, t: "20:15", unread: true },
+    { k: "friend", who: ["Светлана М."], obj: "Была с вами на книжном клубе", p: "fa", d: 2, t: "09:00" },
+    { k: "like", who: ["Елена В."], obj: "Ваша рецензия на книгу «Атомные привычки»", p: "fa", d: 5, t: "19:20" },
+  ],
+  natalia: [
+    { k: "comment", who: ["Ирина С."], obj: "Ваш отчёт дня 3 в «Месте притяжения»", p: "mesto", text: "Классная идея со сторис-опросом, заберу себе", d: 0, t: "10:50", unread: true },
+    { k: "like", who: ["Марина Л.", "Олег Р.", "Дмитрий П."], more: 3, obj: "Ваш инсайт к неделе 6", p: "pp", d: 0, t: "09:30", unread: true },
+    { k: "friend", who: ["Елена В."], obj: "Тоже в Плане Продюсера", p: "fa", d: 0, t: "08:05", unread: true },
+    { k: "like", who: ["Артём Н.", "Светлана М."], obj: "Ваш ответ к уроку 11", p: "ii", d: 1, t: "17:40" },
+    { k: "reply", who: ["Олег Р."], obj: "Пост в ленте клана", p: "fa", text: "Спасибо! Пришлю шаблон в личку", d: 2, t: "13:15" },
+    { k: "like", who: ["Ирина С."], obj: "Ваша цель «Студия в центре»", p: "fa", d: 6, t: "11:00" },
+  ],
+};
+let actTab = "all", actReply = -1;
+const ACT_KIND = { like: ["heart", "Лайки"], comment: ["chat", "Комментарии"], reply: ["chat", "Комментарии"], friend: ["user", "Друзья"], diary: ["lock", "Друзья"] };
+const AV_COL = ["#2f7bff", "#7b61ff", "#f08a28", "#16a37a", "#e5484d", "#0aa2c0", "#c2410c"];
+const initials = (n) => n[0].toUpperCase();
+const avCol = (n) => AV_COL[[...n].reduce((a, c) => a + c.charCodeAt(0), 0) % AV_COL.length];
+const avStack = (names, more = 0, max = 3) => `<span class="av-stack">${names.slice(0, max).map(n => `<i style="background:${avCol(n)}" title="${esc(n)}">${esc(initials(n))}</i>`).join("")}${more + Math.max(0, names.length - max) ? `<i class="more">+${more + Math.max(0, names.length - max)}</i>` : ""}</span>`;
+const actList = () => ACT[S.persona] || [];
+const actUnread = () => actList().filter(a => a.unread).length;
+const actWho = (a) => { const n = a.who.length + (a.more || 0); return a.k === "like" ? (n === 1 ? a.who[0] : `${a.who.slice(0, 2).join(", ")}${n > 2 ? ` и ещё ${n - 2}` : ""}`) : a.who[0]; };
+const actHead = (a) => a.k === "like" ? a.obj : a.k === "comment" ? "Новый комментарий" : a.k === "reply" ? "Ответ на ваш комментарий" : a.k === "friend" ? "Заявка в друзья" : "Запрос доступа к дневнику успеха";
+const actSub = (a) => a.k === "like" ? `${a.who.length + (a.more || 0)} ${plural(a.who.length + (a.more || 0), "лайк", "лайка", "лайков")} · ${actWho(a)}` : a.k === "reply" || a.k === "comment" ? `${a.who[0]} · ${a.obj}` : `${a.who[0]} · ${a.obj}`;
+const actWhen = (a) => `${a.d === 0 ? "сегодня" : a.d === 1 ? "вчера" : dm(dAt(-a.d))}, ${a.t}`;
+
+function actRow(a, i, compact) {
+  const [icn] = ACT_KIND[a.k];
+  let act = "";
+  if (!compact) {
+    if (a.done) act = `<p class="act-done">${ic("check")}${esc(a.done)}</p>`;
+    else if (a.k === "comment" || a.k === "reply") act = actReply === i
+      ? `<form class="act-reply" data-areply="${i}"><input type="text" placeholder="Ваш ответ" aria-label="Ваш ответ" autofocus><button class="btn btn-primary btn-sm">Отправить</button><button type="button" class="btn btn-ghost btn-sm" data-acancel>Отмена</button></form>`
+      : `<div class="act-btns"><button class="btn btn-ghost btn-sm" data-aopen="${i}">${ic("chat")}Ответить</button><span class="is-new">новое</span></div>`;
+    else if (a.k === "friend") act = `<div class="act-btns"><button class="btn btn-primary btn-sm" data-ado="${i}" data-msg="Теперь вы друзья">Принять</button><button class="btn btn-ghost btn-sm" data-ado="${i}" data-msg="Заявка отклонена">Отклонить</button><span class="is-new">новое</span></div>`;
+    else if (a.k === "diary") act = `<div class="act-btns"><button class="btn btn-primary btn-sm" data-ado="${i}" data-msg="Доступ к дневнику открыт">Открыть доступ</button><button class="btn btn-ghost btn-sm" data-ado="${i}" data-msg="Вы отказали в доступе">Отказать</button><span class="is-new">новое</span></div>`;
+  }
+  return `<li class="act ${a.unread ? "unread" : ""} ${compact ? "compact" : ""}">
+    <span class="act-ic act-${a.k}">${ic(icn)}</span>
+    <div class="act-tx">
+      <b>${esc(actHead(a))}</b>
+      <div class="act-meta">${a.k === "like" && !compact ? avStack(a.who, a.more) : ""}<span>${esc(actSub(a))}</span></div>
+      ${a.text ? `<p class="act-quote"><span>${esc(a.text)}</span></p>` : ""}
+      ${act}
+    </div>
+    <div class="act-side">${compact ? "" : chip(a.p)}<span class="small">${esc(actWhen(a))}</span></div>
+  </li>`;
+}
+
+function actPanel() {
+  const L = actList(); if (!L.length) return "";
+  const week = L.filter(a => a.d <= 7);
+  const likes = week.filter(a => a.k === "like").reduce((s, a) => s + a.who.length + (a.more || 0), 0);
+  const coms = week.filter(a => a.k === "comment" || a.k === "reply").length;
+  const fr = week.filter(a => a.k === "friend" || a.k === "diary").length;
+  const people = [...new Set(week.flatMap(a => a.who))];
+  const un = actUnread();
+  return `<section class="panel pad" aria-label="Отклики">
+    <div class="sec-head"><h2 class="h-md">Отклики${un ? ` <span class="count-pill">${un}</span>` : ""}</h2><a href="#/activity">Все</a></div>
+    <div class="act-sum">${avStack(people, 0, 3)}<div><div class="v">${likes} ${plural(likes, "лайк", "лайка", "лайков")}${coms ? `, ${coms} ${plural(coms, "комментарий", "комментария", "комментариев")}` : ""}</div><div class="l">за неделю${fr ? ` · ${fr} ${plural(fr, "заявка ждёт", "заявки ждут", "заявок ждут")} ответа` : ""}</div></div></div>
+    <ul class="acts">${L.slice(0, 2).map((a, i) => actRow(a, i, true)).join("")}</ul>
+  </section>`;
+}
+
+function activity() {
+  const L = actList().map((a, i) => ({ ...a, i }));
+  const groups = { all: L, com: L.filter(a => a.k === "comment" || a.k === "reply"), like: L.filter(a => a.k === "like"), fr: L.filter(a => a.k === "friend" || a.k === "diary") };
+  const shown = groups[actTab] || L;
+  const byDay = {}; shown.forEach(a => (byDay[a.d === 0 ? "Сегодня" : a.d === 1 ? "Вчера" : "Раньше"] ||= []).push(a));
+  const tab = (k, l) => `<button role="tab" data-atab="${k}" aria-selected="${actTab === k}">${l}${groups[k].length ? ` <span class="n">${groups[k].length}</span>` : ""}</button>`;
+  const body = `
+  <div class="page-head"><div><h2 class="h-xl">Отклики</h2><p class="sub">Лайки, комментарии и заявки на ваши посты, ответы и цели во всех продуктах.</p></div>
+    ${actUnread() ? `<button class="btn btn-ghost btn-sm" id="actRead">Прочитать все</button>` : ""}</div>
+  <section class="panel pad" style="margin-top:20px">
+    <div class="day-tabs act-tabs" role="tablist">${tab("all", "Все")}${tab("com", "Комментарии")}${tab("like", "Лайки")}${tab("fr", "Друзья")}</div>
+    ${shown.length ? Object.entries(byDay).map(([d, arr]) => `<p class="day-name" style="margin-top:18px">${d}</p><ul class="acts">${arr.map(a => actRow(a, a.i)).join("")}</ul>`).join("")
+      : `<div class="feed-empty"><b>Пока пусто</b>Здесь появятся отклики на ваши посты, ответы в уроках и цели.</div>`}
+  </section>`;
+  return shell("activity", "Отклики", body);
 }
 
 /* ---------- мои продукты ---------- */
@@ -849,6 +950,7 @@ function render() {
 function route(a, b) {
   if (a === "products") return b === "services" ? services() : b === "catalog" ? catalog() : b === "pay" ? purchases() : products();
   if (a === "progress") { growTab = b || "path"; return progress(); }
+  if (a === "activity") return activity();
   if (a === "support") return support();
   if (a === "profile") { profTab = b || "about"; return profile(); }
   if (a === "p") return inside(b);
@@ -857,6 +959,12 @@ function route(a, b) {
 
 function bind() {
   root.querySelectorAll("[data-tab]").forEach(el => el.onclick = () => { feedTab = el.dataset.tab; render(); });
+  root.querySelectorAll("[data-atab]").forEach(el => el.onclick = () => { actTab = el.dataset.atab; actReply = -1; render(); });
+  root.querySelectorAll("[data-aopen]").forEach(el => el.onclick = () => { actReply = +el.dataset.aopen; actList()[actReply].unread = false; render(); root.querySelector(".act-reply input")?.focus(); });
+  root.querySelectorAll("[data-acancel]").forEach(el => el.onclick = () => { actReply = -1; render(); });
+  root.querySelectorAll("[data-areply]").forEach(f => f.onsubmit = (e) => { e.preventDefault(); const v = f.querySelector("input").value.trim(); if (!v) return; actList()[+f.dataset.areply].done = "Вы ответили: " + v; actReply = -1; render(); });
+  root.querySelectorAll("[data-ado]").forEach(el => el.onclick = () => { const a = actList()[+el.dataset.ado]; a.done = el.dataset.msg; a.unread = false; render(); });
+  const ar = document.getElementById("actRead"); if (ar) ar.onclick = () => { actList().forEach(a => a.unread = false); render(); };
   root.querySelectorAll("[data-done]").forEach(el => el.onclick = () => { doneSet.add(S.persona + el.dataset.done); render(); });
   root.querySelectorAll("[data-t]").forEach(el => el.onclick = () => { ticketSel = +el.dataset.t; me().tickets[ticketSel].unread = 0; render(); });
   const nt = document.getElementById("newT"); if (nt) nt.onclick = () => { ticketSel = -1; render(); };
