@@ -950,3 +950,52 @@ li.act.compact .act-quote span { display: -webkit-box; -webkit-line-clamp: 2; -w
 /* сделано: фирменная строка уходит на второй план */
 .item.brand.brand.done:is([data-p]) { opacity: .62; box-shadow: none; }
 .item.brand.brand.done:is([data-p]) .done-mark { color: var(--th-acc, var(--good)); }
+
+/* v20: «Отклики» — ровный список без слипшихся плашек, точка «новое» на иконке */
+li.act { margin: 0; border-radius: 0; background: none; }
+li.act.unread { background: none; }
+li.act.unread::before { content: none; }
+li.act + li.act { border-top: 1px solid var(--line-2); }
+.act-ic { position: relative; }
+.act-ic svg { color: currentColor; }
+.act-dot { position: absolute; top: -3px; right: -3px; width: 11px; height: 11px; border-radius: 50%; background: #2f7bff; box-shadow: 0 0 0 2px #fff; }
+li.act:not(.unread) .act-tx > b { font-weight: 600; color: var(--ink-2); }
+li.act.unread .act-tx > b { font-weight: 700; color: var(--ink); }
+.act-meta .act-when { color: var(--faint); white-space: nowrap; }
+.act-meta .act-when::before { content: "·"; margin-right: 8px; color: var(--faint); }
+li.act.compact { grid-template-columns: 34px minmax(0,1fr); padding: 12px 2px; }
+li.act.compact .act-meta { margin-top: 2px; font-size: 12.5px; gap: 0 8px; }
+li.act.compact .act-quote { margin-top: 6px; padding: 7px 10px; }
+li.act.compact .act-meta .act-when { flex-basis: 100%; margin-top: 2px; }
+li.act.compact .act-meta .act-when::before { content: none; }
+
+/* v20: проверка заданий в «Откликах» */
+.act-hw_ok { background: rgba(22,163,122,.12); color: #12805f; }
+.act-hw_rev { background: rgba(234,140,20,.14); color: #b45309; }
+.act-hw_rej { background: rgba(229,72,77,.1); color: #c42b30; }
+li.act.hw .act-quote { background: #f6f4ee; }
+li.act.hw_rev .act-quote, li.act.hw .act-quote { border: 0; }
+.hw-rew { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; background: rgba(22,163,122,.1); color: #0f7356; font-size: 12.5px; font-weight: 650; white-space: nowrap; }
+.act-btns .btn svg { width: 15px; height: 15px; }
+li.act.compact .act-btns { margin-top: 8px; gap: 6px; }
+li.act.compact .act-btns .btn { min-height: 34px; padding: 6px 12px; font-size: 13px; }
+li.act.compact .hw-rew { font-size: 12px; padding: 3px 8px; }
+.ptabs { margin: 0 0 6px; width: 100%; }
+.ptabs button { flex: 1; padding: 6px 4px; font-size: 13px; white-space: nowrap; }
+.ptabs .n { font-weight: 700; color: var(--blue); margin-left: 2px; }
+.hw-alert { display: flex; align-items: center; gap: 8px; margin: 8px 0 2px; padding: 9px 12px; border-radius: 12px; background: rgba(234,140,20,.1); color: #92400e; font-size: 13px; font-weight: 600; }
+.hw-alert svg { width: 16px; height: 16px; flex: none; }
+/* рейтинг в программах вместо полоски активности */
+.rank-blk { margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--line-2); }
+.rank-h { margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.rank-list { list-style: none; margin: 0; padding: 0; }
+.rank-list a { display: flex; align-items: center; gap: 12px; padding: 8px 6px; margin: 0 -6px; border-radius: 12px; text-decoration: none; color: inherit; min-height: 44px; }
+.rank-list a:hover { background: rgba(47,123,255,.06); }
+.rank-list .pmark, .rank-list .pmark img, .rank-list .pmark .pm-l { width: 32px; height: 32px; border-radius: 10px; }
+.rk-n { flex: 1; min-width: 0; font-size: 14px; font-weight: 600; line-height: 1.25; }
+.rk-n small, .rk-p small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
+.rk-p { text-align: right; font-size: 13px; color: var(--ink-2); white-space: nowrap; line-height: 1.25; }
+.rk-p b { font-size: 18px; font-weight: 750; color: var(--ink); font-variant-numeric: tabular-nums; }
+.act-tx > a.act-h { display: block; font-size: 14px; font-weight: 700; line-height: 1.35; color: var(--ink); text-decoration: none; }
+.act-tx > a.act-h:hover { color: var(--blue); text-decoration: underline; }
+li.act:not(.unread) .act-tx > a.act-h { font-weight: 600; color: var(--ink-2); }

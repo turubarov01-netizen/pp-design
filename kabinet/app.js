@@ -18,6 +18,8 @@ const P = {
   lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   book: '<path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',
   check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  redo: '<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
+  xmark: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
   calplus: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M12 14v6M9 17h6"/>',
   compass: '<circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/>',
   target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
@@ -116,7 +118,7 @@ const PERSONAS = {
   maria: {
     label: "Мария · купила только ИИнструменты",
     name: "Мария", last: "Соколова", initials: "МС", level: "Стартовый доступ", city: "Казань", email: "maria@example.com", phone: "+7 900 000-00-01",
-    phoenix: 120, phoenixWeek: 40, streak: 4, heat: "00012120332100".split(""),
+    phoenix: 120, phoenixWeek: 40, streak: 4, rank: { ii: [31, 112, 240] },
     products: [
       { id: "ii", state: "active", until: 54, progress: 0.38, cur: 5, progressLabel: "5 из 13 уроков", next: "Задание к уроку 4 сегодня до 23:59" },
       { id: "fa", state: "trial", trialNote: "Гостевой доступ: лента, участники и одна открытая встреча клуба" },
@@ -149,7 +151,7 @@ const PERSONAS = {
   olga: {
     label: "Ольга · купила только План Продюсера",
     name: "Ольга", last: "Иванова", initials: "ОИ", level: "Участник Плана Продюсера", city: "Екатеринбург", email: "olga@example.com", phone: "+7 900 000-00-02",
-    phoenix: 860, phoenixWeek: 120, streak: 11, lives: 2, heat: "12212312332312".split(""),
+    phoenix: 860, phoenixWeek: 120, streak: 11, lives: 2, rank: { pp: [12, 46, 410] },
     products: [
       { id: "pp", state: "active", until: 40, progress: 0.23, cur: 3, progressLabel: "Неделя 3 из 13", next: "Групповая встреча сегодня в 19:00" },
       { id: "fa", state: "trial", trialNote: "Гостевой доступ: лента, участники и одна открытая встреча клуба" },
@@ -181,7 +183,7 @@ const PERSONAS = {
   andrey: {
     label: "Андрей · купил только Альянс",
     name: "Андрей", last: "Петров", initials: "АП", level: "Бунтарь", city: "Москва", email: "andrey@example.com", phone: "+7 900 000-00-03",
-    phoenix: 2450, phoenixWeek: 210, streak: 21, heat: "23323333232333".split(""),
+    phoenix: 2450, phoenixWeek: 210, streak: 21, rank: {},
     products: [
       { id: "fa", state: "active", until: 118, progress: null, progressLabel: "Уровень «Бунтарь»", next: "Книжный клуб в среду в 20:00" },
     ],
@@ -205,7 +207,7 @@ const PERSONAS = {
   natalia: {
     label: "Наталья · купила всё сразу",
     name: "Наталья", last: "Кузнецова", initials: "НК", level: "Бунтарь", city: "Санкт-Петербург", email: "natalia@example.com", phone: "+7 900 000-00-04",
-    phoenix: 3120, phoenixWeek: 340, streak: 9, lives: 3, heat: "33213321133323".split(""),
+    phoenix: 3120, phoenixWeek: 340, streak: 9, lives: 3, rank: { pp: [4, 46, 1240], ii: [9, 112, 860], mesto: [2, 38, 520] },
     products: [
       { id: "pp", state: "active", until: 62, progress: 0.46, cur: 6, progressLabel: "Неделя 6 из 13", next: "Групповая встреча сегодня в 19:00" },
       { id: "ii", state: "expiring", until: 6, progress: 0.85, cur: 12, progressLabel: "11 из 13 уроков", next: "Доступ закончится через 6 дней" },
@@ -429,6 +431,11 @@ function feedItem(it, idx) {
   </li>`;
 }
 
+// Рейтинг потока в каждой программе: место по баллам, как в «Рейтинге» ПП, ИИнструментов и Места притяжения
+const rankBlock = (u) => { const r = Object.entries(u.rank || {}); if (!r.length) return "";
+  return `<div class="rank-blk"><p class="rank-h">Рейтинг в программах</p><ul class="rank-list">${r.map(([id, [pos, of, pts]]) =>
+    `<li><a href="#/p/${id}" title="Открыть рейтинг потока">${pmark(id)}<span class="rk-n">${esc(PRODUCTS[id].name)}<small>${pts.toLocaleString("ru-RU")} ${plural(pts, "балл", "балла", "баллов")}</small></span><span class="rk-p"><b>${pos}</b>&nbsp;место<small>из&nbsp;${of}</small></span></a></li>`).join("")}</ul></div>`; };
+
 function home() {
   const u = me();
   const now = new Date();
@@ -471,8 +478,7 @@ function home() {
         <div class="stat-line"><span class="ic2" style="background:rgba(240,138,40,.12)"><img src="img/freecoin.png" alt=""></span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div><span class="tail">+${u.phoenixWeek} за неделю</span></div>
         <div class="stat-line"><span class="ic2" style="background:rgba(229,72,77,.1);color:#e5484d">${ic("flame")}</span><div><div class="v">${u.streak} ${plural(u.streak, "день", "дня", "дней")}</div><div class="l">подряд без пропусков</div></div></div>
         ${lives}
-        <div class="heat" aria-label="Активность за 14 дней">${u.heat.map(h => `<i class="l${h}"></i>`).join("")}</div>
-        <p class="small" style="margin:6px 0 0">Активность за 14 дней</p>
+        ${rankBlock(u)}
       </section>
     </div>
   </div>`;
@@ -512,12 +518,15 @@ function setupBlock(where) {
 // k: like | comment | reply | friend | diary. d — сколько дней назад.
 const ACT = {
   maria: [
+    { k: "hw_ok", who: ["Куратор Анна К."], obj: "Задание к уроку 4", p: "ii", text: "Хороший промпт. Попробуйте ещё задать роль в первой строке", pts: 20, coins: 5, d: 0, t: "11:10", unread: true },
     { k: "comment", who: ["Светлана М."], obj: "Ваш ответ к уроку 3", p: "ii", text: "Сохранила ваш промпт для постов, спасибо! А вы его потом правите руками?", d: 0, t: "09:40", unread: true },
     { k: "like", who: ["Ирина С.", "Олег Р.", "Елена В."], more: 2, obj: "Ваш ответ к уроку 3", p: "ii", d: 0, t: "08:15", unread: true },
     { k: "friend", who: ["Елена В."], obj: "Тоже проходит ИИнструменты", p: "fa", d: 1, t: "21:02" },
     { k: "like", who: ["Дмитрий П."], obj: "Ваш инсайт к уроку 2", p: "ii", d: 3, t: "14:30" },
   ],
   olga: [
+    { k: "hw_rev", who: ["Проводник Анна К."], obj: "Ключевое задание недели 2", p: "pp", text: "Оффер сильный, но нет срока результата. Допишите, за сколько недель клиент его получит, и отправьте снова", d: 0, t: "12:40", unread: true },
+    { k: "hw_ok", who: ["Проводник Анна К."], obj: "Фокус недели 3", p: "pp", pts: 10, coins: 5, d: 1, t: "20:10", unread: true },
     { k: "reply", who: ["Ирина С."], obj: "Пост «Как я нашла первых клиентов»", p: "fa", text: "Да, через разборы в сторис. Напишите мне, расскажу подробнее", d: 0, t: "11:05", unread: true },
     { k: "like", who: ["Марина Л.", "Дмитрий П.", "Артём Н.", "Елена В."], more: 5, obj: "Ваш инсайт к неделе 3", p: "pp", d: 0, t: "10:20", unread: true },
     { k: "diary", who: ["Марина Л."], obj: "Просит доступ к вашему дневнику успеха", p: "fa", d: 1, t: "18:44", unread: true },
@@ -532,6 +541,9 @@ const ACT = {
     { k: "like", who: ["Елена В."], obj: "Ваша рецензия на книгу «Атомные привычки»", p: "fa", d: 5, t: "19:20" },
   ],
   natalia: [
+    { k: "hw_rev", who: ["Проводник Игорь Г."], obj: "Фокус недели 6", p: "pp", text: "Не хватает цифр: сколько было разговоров и заявок за неделю", d: 0, t: "13:05", unread: true },
+    { k: "hw_ok", who: ["Проводник Игорь Г."], obj: "Ключевое задание недели 5", p: "pp", text: "Сильная работа с воронкой", pts: 30, coins: 10, d: 0, t: "11:20", unread: true },
+    { k: "hw_rej", who: ["Куратор Ольга Т."], obj: "Отчёт дня 2", p: "mesto", text: "Отчёт пришёл без скриншота сторис", d: 1, t: "19:00" },
     { k: "comment", who: ["Ирина С."], obj: "Ваш отчёт дня 3 в «Месте притяжения»", p: "mesto", text: "Классная идея со сторис-опросом, заберу себе", d: 0, t: "10:50", unread: true },
     { k: "like", who: ["Марина Л.", "Олег Р.", "Дмитрий П."], more: 3, obj: "Ваш инсайт к неделе 6", p: "pp", d: 0, t: "09:30", unread: true },
     { k: "friend", who: ["Елена В."], obj: "Тоже в Плане Продюсера", p: "fa", d: 0, t: "08:05", unread: true },
@@ -540,8 +552,8 @@ const ACT = {
     { k: "like", who: ["Ирина С."], obj: "Ваша цель «Студия в центре»", p: "fa", d: 6, t: "11:00" },
   ],
 };
-let actTab = "all", actReply = -1;
-const ACT_KIND = { like: ["heart", "Лайки"], comment: ["chat", "Комментарии"], reply: ["chat", "Комментарии"], friend: ["user", "Друзья"], diary: ["lock", "Друзья"] };
+let actTab = "all", actReply = -1, panelTab = "all";
+const ACT_KIND = { hw_rev: ["redo", "Задания"], hw_rej: ["xmark", "Задания"], hw_ok: ["check", "Задания"], like: ["heart", "Лайки"], comment: ["chat", "Комментарии"], reply: ["chat", "Комментарии"], friend: ["user", "Друзья"], diary: ["lock", "Друзья"] };
 const AV_COL = ["#2f7bff", "#7b61ff", "#f08a28", "#16a37a", "#e5484d", "#0aa2c0", "#c2410c"];
 const initials = (n) => n[0].toUpperCase();
 const avCol = (n) => AV_COL[[...n].reduce((a, c) => a + c.charCodeAt(0), 0) % AV_COL.length];
@@ -549,14 +561,20 @@ const avStack = (names, more = 0, max = 3) => `<span class="av-stack">${names.sl
 const actList = () => ACT[S.persona] || [];
 const actUnread = () => actList().filter(a => a.unread).length;
 const actWho = (a) => { const n = a.who.length + (a.more || 0); return a.k === "like" ? (n === 1 ? a.who[0] : `${a.who.slice(0, 2).join(", ")}${n > 2 ? ` и ещё ${n - 2}` : ""}`) : a.who[0]; };
-const actHead = (a) => a.k === "like" ? a.obj : a.k === "comment" ? "Новый комментарий" : a.k === "reply" ? "Ответ на ваш комментарий" : a.k === "friend" ? "Заявка в друзья" : "Запрос доступа к дневнику успеха";
-const actSub = (a) => a.k === "like" ? `${a.who.length + (a.more || 0)} ${plural(a.who.length + (a.more || 0), "лайк", "лайка", "лайков")} · ${actWho(a)}` : a.k === "reply" || a.k === "comment" ? `${a.who[0]} · ${a.obj}` : `${a.who[0]} · ${a.obj}`;
+const isHw = (a) => a.k.startsWith("hw_");
+const HW_HEAD = { hw_rev: "Вернули на доработку", hw_rej: "Задание отклонено", hw_ok: "Задание принято" };
+const actHead = (a) => isHw(a) ? HW_HEAD[a.k] : a.k === "like" ? a.obj : a.k === "comment" ? "Новый комментарий" : a.k === "reply" ? "Ответ на ваш комментарий" : a.k === "friend" ? "Заявка в друзья" : "Запрос доступа к дневнику успеха";
+const actSub = (a) => isHw(a) ? `${a.obj} · ${a.who[0]}` : a.k === "like" ? `${a.who.length + (a.more || 0)} ${plural(a.who.length + (a.more || 0), "лайк", "лайка", "лайков")} · ${actWho(a)}` : a.k === "reply" || a.k === "comment" ? `${a.who[0]} · ${a.obj}` : `${a.who[0]} · ${a.obj}`;
 const actWhen = (a) => `${a.d === 0 ? "сегодня" : a.d === 1 ? "вчера" : dm(dAt(-a.d))}, ${a.t}`;
 
 function actRow(a, i, compact) {
   const [icn] = ACT_KIND[a.k];
   let act = "";
-  if (!compact) {
+  const rew = a.k === "hw_ok" && (a.pts || a.coins) ? `<span class="hw-rew">${a.pts ? `+${a.pts} ${plural(a.pts, "балл", "балла", "баллов")}` : ""}${a.pts && a.coins ? " · " : ""}${a.coins ? `+${a.coins} ${plural(a.coins, "феникс", "феникса", "фениксов")}` : ""}</span>` : "";
+  if (isHw(a)) act = compact
+    ? (a.k === "hw_rev" ? `<div class="act-btns"><a class="btn btn-primary btn-sm" href="#/p/${a.p}" data-hwgo="${i}">${ic("redo")}Исправить</a></div>` : rew ? `<div class="act-btns">${rew}</div>` : "")
+    : `<div class="act-btns">${rew}${a.k === "hw_rev" ? `<a class="btn btn-primary btn-sm" href="#/p/${a.p}" data-hwgo="${i}">${ic("redo")}Исправить и отправить</a>` : `<a class="btn btn-ghost btn-sm" href="#/p/${a.p}" data-hwgo="${i}">Открыть задание</a>`}</div>`;
+  else if (!compact) {
     if (a.done) act = `<p class="act-done">${ic("check")}${esc(a.done)}</p>`;
     else if (a.k === "comment" || a.k === "reply") act = actReply === i
       ? `<form class="act-reply" data-areply="${i}"><input type="text" placeholder="Ваш ответ" aria-label="Ваш ответ" autofocus><button class="btn btn-primary btn-sm">Отправить</button><button type="button" class="btn btn-ghost btn-sm" data-acancel>Отмена</button></form>`
@@ -564,45 +582,54 @@ function actRow(a, i, compact) {
     else if (a.k === "friend") act = `<div class="act-btns"><button class="btn btn-primary btn-sm" data-ado="${i}" data-msg="Теперь вы друзья">Принять</button><button class="btn btn-ghost btn-sm" data-ado="${i}" data-msg="Заявка отклонена">Отклонить</button><span class="is-new">новое</span></div>`;
     else if (a.k === "diary") act = `<div class="act-btns"><button class="btn btn-primary btn-sm" data-ado="${i}" data-msg="Доступ к дневнику открыт">Открыть доступ</button><button class="btn btn-ghost btn-sm" data-ado="${i}" data-msg="Вы отказали в доступе">Отказать</button><span class="is-new">новое</span></div>`;
   }
-  return `<li class="act ${a.unread ? "unread" : ""} ${compact ? "compact" : ""}">
-    <span class="act-ic act-${a.k}">${ic(icn)}</span>
+  return `<li class="act ${a.unread ? "unread" : ""} ${compact ? "compact" : ""} ${isHw(a) ? "hw" : ""}">
+    <span class="act-ic act-${a.k}">${ic(icn)}${a.unread ? `<i class="act-dot" aria-label="Новое"></i>` : ""}</span>
     <div class="act-tx">
-      <b>${esc(actHead(a))}</b>
-      <div class="act-meta">${a.k === "like" && !compact ? avStack(a.who, a.more) : ""}<span>${esc(actSub(a))}</span></div>
+      ${isHw(a) && compact ? `<a class="act-h" href="#/p/${a.p}" data-hwgo="${i}">${esc(actHead(a))}</a>` : `<b>${esc(actHead(a))}</b>`}
+      <div class="act-meta">${a.k === "like" && !compact ? avStack(a.who, a.more) : ""}<span>${esc(actSub(a))}</span>${compact ? `<span class="act-when">${esc(actWhen(a))}</span>` : ""}</div>
       ${a.text ? `<p class="act-quote"><span>${esc(a.text)}</span></p>` : ""}
       ${act}
     </div>
-    <div class="act-side">${compact ? "" : chip(a.p)}<span class="small">${esc(actWhen(a))}</span></div>
+    ${compact ? "" : `<div class="act-side">${chip(a.p)}<span class="small">${esc(actWhen(a))}</span></div>`}
   </li>`;
 }
 
 function actPanel() {
-  const L = actList(); if (!L.length) return "";
-  const week = L.filter(a => a.d <= 7);
-  const likes = week.filter(a => a.k === "like").reduce((s, a) => s + a.who.length + (a.more || 0), 0);
+  const L = actList().map((a, i) => ({ ...a, i })); if (!L.length) return "";
+  const hw = L.filter(isHw), soc = L.filter(a => !isHw(a));
+  // сначала то, что ждёт действия: возврат на доработку, затем новое, затем по времени
+  const prio = (a) => (a.k === "hw_rev" && !a.done ? 0 : a.unread ? 1 : 2);
+  const pick = (panelTab === "hw" ? hw : panelTab === "soc" ? soc : L).slice().sort((x, y) => prio(x) - prio(y) || x.i - y.i);
+  const rev = hw.filter(a => a.k === "hw_rev").length;
+  const week = soc.filter(a => a.d <= 7);
+  const likes = week.filter(a => a.k === "like").reduce((t, a) => t + a.who.length + (a.more || 0), 0);
   const coms = week.filter(a => a.k === "comment" || a.k === "reply").length;
   const fr = week.filter(a => a.k === "friend" || a.k === "diary").length;
   const people = [...new Set(week.flatMap(a => a.who))];
+  const sum = panelTab !== "hw" && (likes || coms) ? `<div class="act-sum">${avStack(people, 0, 3)}<div><div class="v">${likes} ${plural(likes, "лайк", "лайка", "лайков")}${coms ? `, ${coms} ${plural(coms, "комментарий", "комментария", "комментариев")}` : ""}</div><div class="l">за неделю${fr ? ` · ${fr} ${plural(fr, "заявка ждёт", "заявки ждут", "заявок ждут")} ответа` : ""}</div></div></div>` : "";
   const un = actUnread();
-  return `<section class="panel pad" aria-label="Отклики">
+  const tab = (k, l, n) => `<button role="tab" data-ptab="${k}" aria-selected="${panelTab === k}">${l}${n ? ` <span class="n">${n}</span>` : ""}</button>`;
+  return `<section class="panel pad act-panel" aria-label="Отклики и проверка заданий">
     <div class="sec-head"><h2 class="h-md">Отклики${un ? ` <span class="count-pill">${un}</span>` : ""}</h2><a href="#/activity">Все</a></div>
-    <div class="act-sum">${avStack(people, 0, 3)}<div><div class="v">${likes} ${plural(likes, "лайк", "лайка", "лайков")}${coms ? `, ${coms} ${plural(coms, "комментарий", "комментария", "комментариев")}` : ""}</div><div class="l">за неделю${fr ? ` · ${fr} ${plural(fr, "заявка ждёт", "заявки ждут", "заявок ждут")} ответа` : ""}</div></div></div>
-    <ul class="acts">${L.slice(0, 2).map((a, i) => actRow(a, i, true)).join("")}</ul>
+    ${hw.length ? `<div class="day-tabs ptabs" role="tablist">${tab("all", "Всё")}${tab("hw", "Задания", hw.filter(a => a.unread).length)}${tab("soc", "Отклики", soc.filter(a => a.unread).length)}</div>` : ""}
+    ${sum}
+    ${rev && panelTab !== "soc" ? `<p class="hw-alert">${ic("redo")}${rev} ${plural(rev, "задание ждёт", "задания ждут", "заданий ждут")} доработки</p>` : ""}
+    ${pick.length ? `<ul class="acts">${pick.slice(0, 3).map(a => actRow(a, a.i, true)).join("")}</ul>` : `<p class="small" style="margin:12px 0 0">Здесь появятся результаты проверки ваших заданий.</p>`}
   </section>`;
 }
 
 function activity() {
   const L = actList().map((a, i) => ({ ...a, i }));
-  const groups = { all: L, com: L.filter(a => a.k === "comment" || a.k === "reply"), like: L.filter(a => a.k === "like"), fr: L.filter(a => a.k === "friend" || a.k === "diary") };
+  const groups = { all: L, hw: L.filter(isHw), com: L.filter(a => a.k === "comment" || a.k === "reply"), like: L.filter(a => a.k === "like"), fr: L.filter(a => a.k === "friend" || a.k === "diary") };
   const shown = groups[actTab] || L;
   const byDay = {}; shown.forEach(a => (byDay[a.d === 0 ? "Сегодня" : a.d === 1 ? "Вчера" : "Раньше"] ||= []).push(a));
   const tab = (k, l) => `<button role="tab" data-atab="${k}" aria-selected="${actTab === k}">${l}${groups[k].length ? ` <span class="n">${groups[k].length}</span>` : ""}</button>`;
   const body = `
   <a class="back-btn act-back" href="#/home">${ic("arrow")}На главную</a>
-  <div class="page-head"><div><h2 class="h-xl">Отклики</h2><p class="sub">Лайки, комментарии и заявки на ваши посты, ответы и цели во всех продуктах.</p></div>
+  <div class="page-head"><div><h2 class="h-xl">Отклики</h2><p class="sub">Проверка ваших заданий, лайки, комментарии и заявки во всех продуктах.</p></div>
     ${actUnread() ? `<button class="btn btn-ghost btn-sm" id="actRead">Прочитать все</button>` : ""}</div>
   <section class="panel pad" style="margin-top:20px">
-    <div class="day-tabs act-tabs" role="tablist">${tab("all", "Все")}${tab("com", "Комментарии")}${tab("like", "Лайки")}${tab("fr", "Друзья")}</div>
+    <div class="day-tabs act-tabs" role="tablist">${tab("all", "Все")}${tab("hw", "Задания")}${tab("com", "Комментарии")}${tab("like", "Лайки")}${tab("fr", "Друзья")}</div>
     ${shown.length ? Object.entries(byDay).map(([d, arr]) => `<p class="day-name" style="margin-top:18px">${d}</p><ul class="acts">${arr.map(a => actRow(a, a.i)).join("")}</ul>`).join("")
       : `<div class="feed-empty"><b>Пока пусто</b>Здесь появятся отклики на ваши посты, ответы в уроках и цели.</div>`}
   </section>`;
@@ -989,6 +1016,8 @@ function route(a, b) {
 function bind() {
   root.querySelectorAll("[data-tab]").forEach(el => el.onclick = () => { feedTab = el.dataset.tab; render(); });
   root.querySelectorAll("[data-setup-hide]").forEach(el => el.onclick = () => { setupHidden.add(S.persona); render(); });
+  root.querySelectorAll("[data-ptab]").forEach(el => el.onclick = () => { panelTab = el.dataset.ptab; render(); });
+  root.querySelectorAll("[data-hwgo]").forEach(el => el.addEventListener("click", () => { const a = actList()[+el.dataset.hwgo]; if (a) a.unread = false; }));
   root.querySelectorAll("[data-atab]").forEach(el => el.onclick = () => { actTab = el.dataset.atab; actReply = -1; render(); });
   root.querySelectorAll("[data-aopen]").forEach(el => el.onclick = () => { actReply = +el.dataset.aopen; actList()[actReply].unread = false; render(); root.querySelector(".act-reply input")?.focus(); });
   root.querySelectorAll("[data-acancel]").forEach(el => el.onclick = () => { actReply = -1; render(); });
