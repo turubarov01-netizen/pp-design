@@ -1181,3 +1181,29 @@ li.act .act-tx .btn, li.act .act-tx button, li.act .act-tx .act-quote { position
 a.act-obj { color: inherit; text-decoration: underline; text-decoration-color: rgba(47,123,255,.35); text-underline-offset: 3px; }
 a.act-obj:hover { color: var(--blue); text-decoration-color: currentColor; }
 li.act .act-tx a.act-obj::after { content: ""; position: absolute; inset: 0; border-radius: 14px; }
+/* v36 — доступ к сервисам и подсказки */
+button.svc-item { width: 100%; border: 0; background: none; font: inherit; text-align: left; cursor: default; }
+.svc-item .svc-n { display: flex; flex-direction: column; min-width: 0; }
+.svc-item .svc-d { display: none; font-size: 12.5px; font-weight: 400; line-height: 1.4; color: var(--muted); margin-top: 2px; }
+.svc-item .svc-d b { font-weight: 600; color: #b45309; }
+.svc-item.locked { color: var(--faint); }
+.svc-item.locked:hover { background: rgba(16,24,48,.04); color: var(--muted); }
+.svc-item.locked:hover svg { color: var(--faint); }
+.svc-item.locked .svc-ext { opacity: 1; }
+.svc-free { display: inline-block; align-self: flex-start; margin-top: 3px; padding: 1px 7px; border-radius: 6px; background: rgba(22,163,122,.12); color: #12805f; font: 600 11px/1.5 inherit; font-style: normal; }
+#svcTip { position: fixed; z-index: 120; max-width: 280px; padding: 10px 12px; border-radius: 12px; background: #141a2e; color: #eef1f8; font-size: 13px; line-height: 1.45; box-shadow: 0 12px 32px rgba(16,24,48,.22); pointer-events: none; opacity: 0; transform: translateY(2px); transition: opacity .15s var(--ease), transform .15s var(--ease); }
+#svcTip.on { opacity: 1; transform: none; }
+@media (hover: none) { .svc-item .svc-d { display: block; } .svc-item { align-items: flex-start; } .svc-item > svg:first-child { margin-top: 2px; } }
+@media (prefers-reduced-motion: reduce) { #svcTip { transition: none; } }
+.svc-item .svc-ext { flex: none; }
+.svc-lock-note { display: none; align-items: flex-start; gap: 8px; margin: 6px 0 2px; padding: 10px 12px; border-radius: 12px; background: rgba(234,140,20,.1); color: #9a4a08; font-size: 12.5px; line-height: 1.4; }
+.svc-lock-note svg { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+@media (hover: none) { .svc-lock-note { display: flex; } }
+
+/* v37: фениксы — огонёк вместо монеты */
+.phx { color: #F0A20B; flex: none; }
+.me-chip .ph .phx { width: 15px; height: 15px; stroke-width: 2.2; }
+.ic2.phx-bg { background: rgba(240,162,11,.13); }
+.stat-line .ic2 .phx { width: 22px; height: 22px; }
+.phx-big { width: 52px; height: 52px; border-radius: 14px; background: rgba(240,162,11,.13); display: grid; place-items: center; flex: none; }
+.phx-big .phx { width: 30px; height: 30px; }

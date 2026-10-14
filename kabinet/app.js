@@ -41,6 +41,7 @@ const P = {
   plus: '<path d="M12 5v14M5 12h14"/>',
   mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>',
   x: '<path d="M6 6l12 12M18 6 6 18"/>',
+  flame: '<path d="M12 3c.6 3 2.4 4.9 4.1 6.6A6.5 6.5 0 0 1 18.5 14.5a6.5 6.5 0 0 1-13 0c0-1.9.8-3.5 1.9-4.6.2 1.6 1 2.7 2.2 3.1C9 10 10 6.4 12 3z"/><path d="M12 20.5a2.6 2.6 0 0 1-2.6-2.6c0-1.6 1.3-2.4 2.6-4 1.3 1.6 2.6 2.4 2.6 4a2.6 2.6 0 0 1-2.6 2.6z"/>',
   tg: '<path d="m21.5 4.5-19 7.3c-.9.4-.9 1.6 0 1.9l4.7 1.6 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.4 4.8 3.6c.6.4 1.4.1 1.5-.6L22.8 5.8c.2-.9-.6-1.6-1.3-1.3zM9 15.2l9-8.1"/>',
 };
 const ic = (n, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
@@ -76,11 +77,16 @@ const PRODUCTS = {
 const CATALOG_ORDER = ["pp", "ii", "mesto", "ts", "proryv", "fa"]; // «Фокус» пока не продаётся
 
 const SERVICES = [ // как «Полезные сервисы Альянса» на платформе (ProducerPlanLayout.tsx)
-  { name: "Регистратор 24/7", icon: "calplus", sub: "запись ваших клиентов и Zoom", url: "https://wearefree.club/booking" },
-  { name: "Выбор ниши", icon: "compass", sub: "подбор ниши под вас", url: "https://wearefree.club/vybor-nishi" },
-  { name: "Мой оффер", icon: "target", sub: "упаковка оффера", url: "https://wearefree.club/my-offer" },
-  { name: "Мой лендинг", icon: "layout", sub: "ваша страница: оффер и запись", url: "https://wearefree.club/tools/landing" },
-  { name: "Мой КЭВ", icon: "present", sub: "ключевой этап воронки и приглашение", url: "https://wearefree.club/kev" },
+  { key: "booking", name: "Регистратор 24/7", icon: "calplus", sub: "запись ваших клиентов и Zoom", url: "https://wearefree.club/booking",
+    desc: "Ваша ссылка для записи: клиенты сами выбирают время встречи в Zoom. Не нужно согласовывать время в переписке." },
+  { key: "niche", name: "Выбор ниши", icon: "compass", sub: "подбор ниши под вас", url: "https://wearefree.club/vybor-nishi",
+    desc: "Помогает выбрать нишу по вашему опыту и тому, что вам нравится делать. Нужен, если пока непонятно, с чем выходить к клиентам." },
+  { key: "offer", name: "Мой оффер", icon: "target", sub: "упаковка оффера", url: "https://wearefree.club/my-offer",
+    desc: "Собирает ваше предложение клиенту: для кого, какой результат и за сколько. Нужен, чтобы людям было понятно, что вы продаёте." },
+  { key: "landing", name: "Мой лендинг", icon: "layout", sub: "ваша страница: оффер и запись", url: "https://wearefree.club/tools/landing",
+    desc: "Ваша страница в интернете с оффером и записью на встречу. Одна ссылка, которую можно давать клиентам." },
+  { key: "kev", name: "Мой КЭВ", icon: "present", sub: "ключевой этап воронки и приглашение", url: "https://wearefree.club/kev",
+    desc: "Придумывает ключевой этап воронки, например разбор или пробную встречу, и пишет приглашение на него. На этом этапе человек решает купить." },
 ];
 
 /* ---------- даты: всё считается от сегодняшнего дня ---------- */
@@ -265,6 +271,14 @@ const SUP_CATS = ["Техническая проблема", "Оплата и п
 const ST_SUP = { new: ["Новый", "st-new"], open: ["В работе", "st-work"], pending: ["Ожидание", "st-wait"], answered: ["Есть ответ", "st-ans"], resolved: ["Решено", "st-ok"], closed: ["Закрыт", "st-off"] };
 const RECEIPT = "📩 Мы получили ваше обращение. Пока ждёте ответа, опишите задачу как можно подробнее и приложите скриншот, так мы разберёмся быстрее.";
 
+PERSONAS.irina = {
+  label: "Ирина · ничего не купила",
+  name: "Ирина", last: "Белова", initials: "ИБ", level: "Пешка", city: "Новосибирск", email: "irina@example.com", phone: "+7 900 000-00-05",
+  phoenix: 30, phoenixWeek: 30, streak: 1, rank: {},
+  products: [], feed: [], notifs: [], path: null,
+  badges: { got: [], wait: ["badge-50pct", "badge-100pct", "badge-top3", "badge-5k", "badge-pp"] }, diplomas: [],
+  phHistory: [["Первый вход", "+30"]], tickets: [],
+};
 PERSONAS.maria.tickets = [
   { num: 1482, title: "Не открывается видео урока 3", cat: "Техническая проблема", p: "ii", status: "resolved", when: "9 октября", rated: 5, msgs: [
     ["system", RECEIPT, "12:04"], ["me", "Здравствуйте! Урок 3 не грузится, крутится колесо.", "12:04", { img: true }],
@@ -289,6 +303,8 @@ PERSONAS.natalia.tickets = [
 ];
 
 const EXTRA = {
+  irina:   { callsign: null, birth: "", tgUser: "irina_b", karma: 0, rank: 0, xp: [30, 500], rep: "Новичок", friends: 0, followers: 0, recs: 0, member: "Пешка", memberFrom: "регистрация", memberUntil: null, pointA: null, record: null,
+             bases: [], biz: [], skills: [], invoices: [], pays: [] },
   maria:   { callsign: null, birth: "", tgUser: "", karma: 40, rank: 812, xp: [120, 500], rep: "Новичок", friends: 3, followers: 5, recs: 0, member: "Стартовый доступ", memberFrom: "покупка ИИнструментов", memberUntil: 54, pointA: null, record: null,
              bases: ["Казань"], biz: [], skills: ["Психология", "Консультирование"], invoices: [],
              pays: [["ИИнструменты, 2 месяца", "9 900 ₽", 6, "Карта •• 4421"]] },
@@ -367,11 +383,30 @@ function navItems(u) {
 }
 
 /* «Сервисы»: выпадающий список, по умолчанию свёрнут; выбор помним на устройстве */
+function svcTipBind(root) { if (!matchMedia("(hover: hover)").matches) return;
+  let tip = document.getElementById("svcTip"); if (!tip) { tip = document.createElement("div"); tip.id = "svcTip"; tip.setAttribute("role", "tooltip"); document.body.appendChild(tip); }
+  const hide = () => tip.classList.remove("on");
+  root.querySelectorAll(".svc-item[data-tip]").forEach(el => { const show = () => { tip.textContent = el.dataset.tip; const r = el.getBoundingClientRect(); tip.classList.add("on");
+      const w = tip.offsetWidth, h = tip.offsetHeight; let x = r.right + 12, y = r.top + r.height / 2 - h / 2;
+      if (x + w > innerWidth - 12) { x = Math.max(12, r.left); y = r.bottom + 8; } tip.style.left = x + "px"; tip.style.top = Math.max(12, Math.min(y, innerHeight - h - 12)) + "px"; };
+    el.addEventListener("mouseenter", show); el.addEventListener("focus", show); el.addEventListener("mouseleave", hide); el.addEventListener("blur", hide); });
+  addEventListener("scroll", hide, { passive: true }); }
 let svcOpen = (() => { try { return localStorage.getItem("cab.svc") === "1"; } catch { return false; } })();
-const svcGroup = (cls = "") => `<div class="svc-nav ${cls} ${svcOpen ? "open" : ""}">
+// Доступ к сервисам: все — у Плана Продюсера и платного членства в Альянсе; остальным только «Мой оффер»,
+// а тем, кто ничего не купил, — «Мой оффер» на 2 бесплатных прохода.
+const LOCK_NOTE = "Откроется с Планом Продюсера или платным членством в Альянсе.";
+const svcState = (u, x) => { const live = p => p.state === "active" || p.state === "expiring";
+  if (isFreeman(u) || u.products.some(p => p.id === "pp" && live(p))) return "open";
+  if (x.key !== "offer") return "locked";
+  return u.products.some(live) ? "open" : "free"; };
+const svcGroup = (cls = "") => { const u = me(); return `<div class="svc-nav ${cls} ${svcOpen ? "open" : ""}">
   <button type="button" class="nav-item svc-toggle" data-svc-toggle aria-expanded="${svcOpen}">${ic("tool")}<span>Сервисы</span>${ic("chev", "svc-chev")}</button>
-  <div class="svc-list">${SERVICES.map(x => `<a class="svc-item" href="${x.url}" target="_blank" rel="noopener">${ic(x.icon)}<span>${esc(x.name)}</span>${ic("ext", "svc-ext")}</a>`).join("")}</div>
-</div>`;
+  <div class="svc-list">${SERVICES.map(x => { const st = svcState(u, x), note = st === "locked" ? LOCK_NOTE : st === "free" ? "Бесплатно 2 прохода." : "";
+    const tip = esc(x.desc + (note ? " " + note : ""));
+    return st === "locked"
+      ? `<button type="button" class="svc-item locked" aria-disabled="true" data-tip="${tip}">${ic(x.icon)}<span class="svc-n">${esc(x.name)}<small class="svc-d">${esc(x.desc)}</small></span>${ic("lock", "svc-ext")}</button>`
+      : `<a class="svc-item" href="${x.url}" target="_blank" rel="noopener" data-tip="${tip}">${ic(x.icon)}<span class="svc-n">${esc(x.name)}${st === "free" ? '<i class="svc-free">2 бесплатных прохода</i>' : ""}<small class="svc-d">${esc(x.desc)}</small></span>${ic("ext", "svc-ext")}</a>`; }).join("")}${SERVICES.some(x => svcState(u, x) === "locked") ? `<p class="svc-lock-note">${ic("lock")}<span>${LOCK_NOTE}</span></p>` : ""}</div>
+</div>`; };
 function shell(active, title, body) {
   const u = me();
   const items = navItems(u);
@@ -396,7 +431,7 @@ function shell(active, title, body) {
             <a class="nt-all" href="#/activity">Отклики: лайки, комментарии, друзья${actUnread() ? ` · ${actUnread()} новых` : ""}</a>
           </div>
         </div>
-        <a class="me-chip" href="#/profile">${avatarHtml(u)}<span><span class="nm">${esc(u.name)} ${esc(u.last)}</span><br><span class="ph"><img src="img/freecoin.png" alt="" width="14" height="14"> ${u.phoenix.toLocaleString("ru-RU")} фениксов</span></span></a>
+        <a class="me-chip" href="#/profile">${avatarHtml(u)}<span><span class="nm">${esc(u.name)} ${esc(u.last)}</span><br><span class="ph">${ic("flame", "phx")} ${u.phoenix.toLocaleString("ru-RU")} фениксов</span></span></a>
       </header>
       <main class="content fade-in">${body}</main>
     </div>
@@ -493,7 +528,7 @@ const nearBlock = (u) => { if (!isFreeman(u)) return ""; const l = (NEAR[S.perso
 
 // Оракул: карта дня, как на платформе (user_settings.oracle_disabled + oracle_draws). Карты взяты из oracle_cards.
 // Демо: Андрей Оракула выключил, Мария сегодня карту ещё не открывала.
-const ORACLE = { maria: { on: true, card: null }, olga: { on: true, card: ["🗝️", "Ключ", "доступ, ясность, точный вопрос"] }, andrey: { on: false, card: null }, natalia: { on: true, card: ["🜂", "Мост", "соединение, люди, быстрые обходные пути"] } };
+const ORACLE = { irina: { on: true, card: null }, maria: { on: true, card: null }, olga: { on: true, card: ["🗝️", "Ключ", "доступ, ясность, точный вопрос"] }, andrey: { on: false, card: null }, natalia: { on: true, card: ["🜂", "Мост", "соединение, люди, быстрые обходные пути"] } };
 const ORACLE_DECK = ["🪙", "Монета", "обмен, ценность, реальность"];
 const oracleBlock = () => { const o = ORACLE[S.persona]; if (!o || !o.on || !ex().birth) return "";
   return o.card
@@ -556,7 +591,7 @@ function home() {
     <div class="home-col aside">
       <section class="panel pad" aria-label="Мои результаты">
         <div class="sec-head"><h2 class="h-md">Мои результаты</h2><a href="#/progress">Подробнее</a></div>
-        <div class="stat-line"><span class="ic2" style="background:rgba(240,138,40,.12)"><img src="img/freecoin.png" alt=""></span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div><span class="tail">+${u.phoenixWeek} за неделю</span></div>
+        <div class="stat-line"><span class="ic2 phx-bg">${ic("flame", "phx")}</span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div><span class="tail">+${u.phoenixWeek} за неделю</span></div>
         
         ${lives}
         ${rankBlock(u)}
@@ -574,6 +609,7 @@ function home() {
 /* ---------- настройка профиля (вместо 3 еженедельных напоминаний) ---------- */
 // Те же проверки, что в базе: профиль = имя, фамилия, город, телефон, Telegram; активная цель Зверька; непустой список желаний.
 const SETUP = {
+  irina: { miss: [], zveryok: false, wish: false },
   maria: { miss: ["Telegram"], zveryok: false, wish: false },
   olga: { miss: [], zveryok: false, wish: true },
   andrey: { miss: [], zveryok: true, wish: true },
@@ -582,7 +618,7 @@ const SETUP = {
 const setupHidden = new Set();
 // Почта и Telegram: как на платформе (auth email_confirmed_at, повторная отправка не чаще раза в минуту; Telegram — только через бота).
 // Демо: у Марии почта не подтверждена и Telegram не подключён.
-const ACC = { maria: { mailOk: false, sent: "вчера в 18:40", tg: "none" }, olga: { mailOk: true, tg: "ok" }, andrey: { mailOk: true, tg: "ok" }, natalia: { mailOk: true, tg: "ok" } };
+const ACC = { irina: { mailOk: true, tg: "ok" }, maria: { mailOk: false, sent: "вчера в 18:40", tg: "none" }, olga: { mailOk: true, tg: "ok" }, andrey: { mailOk: true, tg: "ok" }, natalia: { mailOk: true, tg: "ok" } };
 const acc = () => ACC[S.persona] || { mailOk: true, tg: "ok" };
 let mailCool = 0, mailEdit = false, mailMsg = "";
 const DEMO_TG = { maria: "maria_sokolova" };
@@ -791,7 +827,7 @@ function purchases() {
   const body = `<h2 class="h-xl">Мои продукты</h2><p class="sub">Доступы, членство, счета и оплаты.</p>${prodTabs("pay")}
   ${e.invoices.length ? e.invoices.map(([t, s, d]) => `<section class="panel pad invoice"><div><span class="eyebrow">Вам выставлен счёт</span><b>${esc(t)}</b><span class="small">${esc(s)} · оплатить до ${until(d)}</span></div><button class="btn btn-primary" type="button">Оплатить счёт</button></section>`).join("") : ""}
   <section class="panel pad" style="margin-bottom:18px"><div class="sec-head"><h2 class="h-md">Членство в клубе</h2><a href="https://wearefree.club/upgrade" target="_blank" rel="noopener">Уровни</a></div>
-    <div class="tg-row acc" style="border:0;padding-top:0"><div class="t"><b>${esc(e.member)}</b><span class="small">Откуда: ${esc(e.memberFrom)} · до ${until(e.memberUntil)} · осталось ${e.memberUntil} ${plural(e.memberUntil, "день", "дня", "дней")}</span></div><a class="btn btn-soft btn-sm" href="https://wearefree.club/upgrade" target="_blank" rel="noopener">Продлить</a></div></section>
+    <div class="tg-row acc" style="border:0;padding-top:0"><div class="t"><b>${esc(e.member)}</b><span class="small">Откуда: ${esc(e.memberFrom)}${e.memberUntil != null ? ` · до ${until(e.memberUntil)} · осталось ${e.memberUntil} ${plural(e.memberUntil, "день", "дня", "дней")}` : ""}</span></div><a class="btn btn-soft btn-sm" href="https://wearefree.club/upgrade" target="_blank" rel="noopener">Продлить</a></div></section>
   <section class="panel pad" style="margin-bottom:18px"><h2 class="h-md" style="margin-bottom:8px">Активные доступы</h2>
     ${act.map(p => `<div class="tg-row acc"><div class="t"><b>${esc(PRODUCTS[p.id].name)}</b><span class="small">${esc(PRODUCTS[p.id].kind)} · доступ до ${until(p.until)}</span></div><span class="${p.until <= 14 ? "st-warn" : "small"}" style="font-size:13px">осталось ${p.until} ${plural(p.until, "день", "дня", "дней")}</span></div>`).join("")}</section>
   <section class="panel pad"><div class="sec-head"><h2 class="h-md">История оплат</h2><span class="is-new">новое</span></div>
@@ -820,7 +856,7 @@ function progress() {
     })() : `<section class="panel pad"><h2 class="h-lg">Путь к цели</h2><p class="sub" style="margin-bottom:16px">Запишите, сколько вы зарабатываете сейчас. Это ваша точка А: от неё будем показывать рост. Фиксируется один раз.</p><button class="btn btn-primary" type="button">${ic("plus")}Указать точку А</button></section>`;
   }
   if (tab === "phoenix") pane = `
-    <section class="panel pad"><div class="ph-top"><img src="img/freecoin.png" alt="" width="44" height="44"><div><div class="v" style="font-size:24px;font-weight:800">${u.phoenix.toLocaleString("ru-RU")} фениксов</div><span class="small">≈ ${u.phoenix.toLocaleString("ru-RU")} ₽ · +${u.phoenixWeek} за неделю</span></div></div>
+    <section class="panel pad"><div class="ph-top"><span class="phx-big">${ic("flame", "phx")}</span><div><div class="v" style="font-size:24px;font-weight:800">${u.phoenix.toLocaleString("ru-RU")} фениксов</div><span class="small">≈ ${u.phoenix.toLocaleString("ru-RU")} ₽ · +${u.phoenixWeek} за неделю</span></div></div>
       <div class="ph-acts"><button class="btn btn-primary btn-sm" type="button">Пополнить</button><button class="btn btn-ghost btn-sm" type="button">Перевести участнику</button><a class="btn btn-ghost btn-sm" href="https://wearefree.club/shop" target="_blank" rel="noopener">Магазин ${ic("ext")}</a></div>
       <div class="ph-note"><span>Скоро начислим: кэшбэк 10% за покупку, через 7 дней</span><b>+${Math.round(u.phoenixWeek / 2)}</b></div>
       <div class="ph-note warn"><span>1-го числа спишется 1% баланса. Чтобы не терять, тратьте или переводите фениксы</span><b>−${Math.round(u.phoenix / 100)}</b></div></section>
@@ -978,9 +1014,9 @@ function profile() {
     <section class="panel prof-card">
       <div class="big-av">${avatarHtml(u)}<label class="cam" title="Сменить фото">${ic("camera")}<input type="file" accept="image/*" id="avIn" hidden></label></div>
       <h3 class="h-lg">${esc(u.name)} ${esc(u.last)}</h3><p class="small" style="margin:4px 0 0">${e.callsign ? `Позывной «${esc(e.callsign)}» · ` : ""}${esc(u.city)}</p>
-      <span class="lvl">${ic("spark")}${esc(e.member)}</span>
+      <span class="lvl">${ic("spark")}${e.member === "Стартовый доступ" && e.memberUntil != null ? `Уровень в клубе · ещё ${e.memberUntil}&nbsp;${plural(e.memberUntil, "день", "дня", "дней")}` : esc(e.member)}</span>
       <div style="margin-top:16px;text-align:left">
-        <div class="stat-line"><span class="ic2" style="background:rgba(240,138,40,.12)"><img src="img/freecoin.png" alt=""></span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div></div>
+        <div class="stat-line"><span class="ic2 phx-bg">${ic("flame", "phx")}</span><div><div class="v">${u.phoenix.toLocaleString("ru-RU")}</div><div class="l">фениксов</div></div></div>
         <div class="stat-line"><span class="ic2" style="background:rgba(47,123,255,.1);color:var(--blue)">${ic("user")}</span><div><div class="v">${e.friends} · ${e.followers}</div><div class="l">друзей · подписчиков</div></div></div>
       </div>
       <a class="btn btn-ghost btn-sm" style="width:100%;margin-top:12px" href="https://wearefree.club/members" target="_blank" rel="noopener">Как меня видят в клубе ${ic("ext")}</a>
@@ -1154,6 +1190,7 @@ function bind() {
   root.querySelectorAll("[data-t]").forEach(el => el.onclick = () => { ticketSel = +el.dataset.t; me().tickets[ticketSel].unread = 0; render(); supFocus(); });
   const nt = document.getElementById("newT"); if (nt) nt.onclick = () => { ticketSel = -1; render(); supFocus(); };
   root.querySelectorAll("[data-back]").forEach(el => el.onclick = () => { ticketSel = -2; render(); });
+  svcTipBind(root);
   root.querySelectorAll("[data-svc-toggle]").forEach(el => el.onclick = () => { svcOpen = !svcOpen; try { localStorage.setItem("cab.svc", svcOpen ? "1" : "0"); } catch {} root.querySelectorAll(".svc-nav").forEach(n => { n.classList.toggle("open", svcOpen); n.querySelector("[data-svc-toggle]").setAttribute("aria-expanded", svcOpen); }); });
   root.querySelectorAll("[data-rate]").forEach(el => el.onclick = () => { me().tickets[ticketSel].rated = +el.dataset.rate; render(); });
   root.querySelectorAll("[data-reopen]").forEach(el => el.onclick = () => { const t = me().tickets[ticketSel]; t.status = "open"; t.msgs.push(["system", "Обращение открыто снова", "сейчас"]); render(); });
