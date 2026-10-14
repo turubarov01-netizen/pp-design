@@ -69,7 +69,7 @@ const PRODUCTS = {
         about: "Тридцатидневная программа Игоря Графа",
         landing: "https://wearefree.club/proryv-30", nav: [] },
 };
-const CATALOG_ORDER = ["pp", "ii", "mesto", "ts", "proryv", "fa", "focus"];
+const CATALOG_ORDER = ["pp", "ii", "mesto", "ts", "proryv", "fa"]; // «Фокус» пока не продаётся
 
 const SERVICES = [ // как «Полезные сервисы Альянса» на платформе (ProducerPlanLayout.tsx)
   { name: "Регистратор 24/7", icon: "calplus", sub: "запись ваших клиентов и Zoom", url: "https://wearefree.club/booking" },
@@ -400,7 +400,7 @@ function shell(active, title, body) {
 function deadlineItem(it, idx) {
   const at = dlAt(it), ms = at - Date.now(), [kind, kic] = dlKind(it), pen = dlPen(it), hot = ms < HOT_MS;
   const note = pen || /^(Осталось меньше суток|Сдать до конца дня)$/.test(it.note || "") ? "" : it.note;
-  return `<li class="item dl brand ${hot ? "hot" : ""}" data-dl="${at}" style="--pc:${PRODUCTS[it.p].color}">
+  return `<li class="item dl brand ${hot ? "hot" : ""}" data-p="${it.p}" data-dl="${at}" style="--pc:${PRODUCTS[it.p].color}">
     <div class="tm">${esc(it.t)}</div>
     <div class="dl-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle class="dl-arc" cx="24" cy="24" r="21" stroke-dasharray="${ringDash(ms)}"/></svg>${ic(kic)}</div>
     <span class="dl-kind">${kind}</span>
@@ -421,7 +421,7 @@ function feedItem(it, idx) {
   const note = showCd && /^(Осталось меньше суток|Сдать до конца дня)$/.test(it.note || "") ? "" : it.note;
   const act = isDone ? `<span class="done-mark" title="Готово">${ic("check")}</span>`
     : it.cta ? `<button class="btn ${it.urgent || (showLive && !past) ? "btn-primary" : "btn-ghost"} btn-sm act" data-done="${idx}">${esc(it.cta)}</button>` : "<span></span>";
-  return `<li class="item brand ${it.urgent && !isDone ? "urgent" : ""} ${isDone ? "done" : ""}" style="--pc:${PRODUCTS[it.p].color}">
+  return `<li class="item brand ${it.urgent && !isDone ? "urgent" : ""} ${isDone ? "done" : ""}" data-p="${it.p}" style="--pc:${PRODUCTS[it.p].color}">
     <div class="tm">${esc(it.t)}</div>
     ${pmark(it.p, TYPE_IC[it.type])}
     <div class="tx"><b>${esc(it.title)}</b><div class="row">${chip(it.p)}${showLive ? `<span class="live-dot">${untilStart(it.t)}</span>` : ""}${note ? `<span class="note">${esc(note)}</span>` : ""}</div></div>
@@ -636,7 +636,7 @@ function products() {
       <div class="acts">${acts}</div></article>`;
   }).join("");
   const mine = u.products.map(p => p.id);
-  const rest = CATALOG_ORDER.filter(id => !mine.includes(id)).map(id => {
+  const rest = CATALOG_ORDER.filter(id => !mine.includes(id) && !(id === "ts" && mine.includes("pp"))).map(id => { // ТС ведёт в ПП: купившим ПП не показываем
     const d = PRODUCTS[id];
     return `<li class="cat-item">${logo(id)}<div><b>${esc(d.name)}</b><p>${esc(d.about)}</p></div><a class="btn btn-soft btn-sm" href="${d.landing}" target="_blank" rel="noopener">Подробнее ${ic("ext")}</a></li>`;
   }).join("");

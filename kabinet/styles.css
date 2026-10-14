@@ -888,3 +888,65 @@ li.act.compact .act-quote span { display: -webkit-box; -webkit-line-clamp: 2; -w
   .svc-m .svc-list { margin-left: 22px; }
   .svc-m .svc-item { min-height: 44px; font-size: 15px; }
 }
+
+/* v19: строки ленты в фирменном стиле продукта (палитры из гайдлайнов продуктов) */
+.item[data-p="pp"] {           /* План Продюсера: тёмно-синий, золото, белый */
+  --th-bg: radial-gradient(70% 140% at 100% 0%, rgba(75,123,255,.22), transparent 60%), linear-gradient(135deg, #141E2B, #0D1117);
+  --th-bd: rgba(223,200,128,.30); --th-ink: #FFFFFF; --th-mute: rgba(255,255,255,.64);
+  --th-chip-bg: rgba(75,123,255,.16); --th-chip-bd: rgba(107,159,255,.34); --th-chip-ink: #9DBDFF; --th-dot: #6B9FFF;
+  --th-cta: linear-gradient(180deg, #DFC880, #C9A84C); --th-cta-ink: #3A2E18; --th-cta-sh: 0 4px 0 #A07828, 0 8px 18px rgba(0,0,0,.35);
+  --th-gh-bd: rgba(223,200,128,.5); --th-gh-ink: #E9D79E; --th-acc: #EAB820; --th-ring: #DFC880; --th-trk: rgba(255,255,255,.12); --th-bad: #FF6B6B;
+}
+.item[data-p="ii"] {           /* ИИнструменты: чёрный, оранжевый, белый */
+  --th-bg: radial-gradient(60% 150% at 100% 0%, rgba(232,116,60,.34), transparent 62%), linear-gradient(135deg, #262724, #141513);
+  --th-bd: rgba(232,116,60,.34); --th-ink: #F2EFE6; --th-mute: rgba(242,239,230,.62);
+  --th-chip-bg: rgba(232,116,60,.16); --th-chip-bd: rgba(232,116,60,.4); --th-chip-ink: #F3B090; --th-dot: #E8743C;
+  --th-cta: #E8743C; --th-cta-ink: #141513; --th-cta-sh: 0 6px 18px rgba(232,116,60,.35);
+  --th-gh-bd: rgba(232,116,60,.55); --th-gh-ink: #F3986C; --th-acc: #F3986C; --th-ring: #E8743C; --th-trk: rgba(255,255,255,.12); --th-bad: #FF6B6B;
+}
+.item[data-p="mesto"] {        /* Место притяжения: тёплый mesh, розово-оранжевый градиент */
+  --th-bg: radial-gradient(48% 90% at 4% 10%, rgba(242,132,60,.26), transparent 70%), radial-gradient(40% 90% at 70% 0%, rgba(61,90,241,.14), transparent 70%), radial-gradient(50% 110% at 98% 100%, rgba(221,90,140,.26), transparent 70%), radial-gradient(40% 90% at 40% 110%, rgba(139,92,246,.14), transparent 70%), #F1EEEC;
+  --th-bd: rgba(221,90,140,.26); --th-ink: #1A1B1D; --th-mute: #6E6C6E;
+  --th-chip-bg: rgba(255,255,255,.8); --th-chip-bd: rgba(221,90,140,.28); --th-chip-ink: #1A1B1D; --th-dot: #D7125D;
+  --th-cta: linear-gradient(135deg, #DD5CB3 -20%, #D62D7F 20%, #D7125D 55%, #E1622B 100%); --th-cta-ink: #FFFFFF; --th-cta-sh: 0 6px 18px rgba(215,18,93,.28);
+  --th-gh-bd: rgba(215,18,93,.35); --th-gh-ink: #A8134C; --th-acc: #C2185B; --th-ring: #D7125D; --th-trk: rgba(26,27,29,.08); --th-bad: #D92D20;
+}
+.item[data-p="fa"] {           /* Freeman's Alliance: тёмный, золото */
+  --th-bg: radial-gradient(60% 150% at 100% 0%, rgba(201,162,39,.24), transparent 62%), linear-gradient(135deg, #24211A, #121110);
+  --th-bd: rgba(201,162,39,.36); --th-ink: #F6F0DF; --th-mute: rgba(246,240,223,.62);
+  --th-chip-bg: rgba(201,162,39,.14); --th-chip-bd: rgba(201,162,39,.42); --th-chip-ink: #E6CC77; --th-dot: #C9A227;
+  --th-cta: linear-gradient(180deg, #E4C766, #B8901F); --th-cta-ink: #221A05; --th-cta-sh: 0 6px 18px rgba(201,162,39,.3);
+  --th-gh-bd: rgba(201,162,39,.55); --th-gh-ink: #E6CC77; --th-acc: #E6CC77; --th-ring: #C9A227; --th-trk: rgba(255,255,255,.12); --th-bad: #FF6B6B;
+}
+.item[data-p="focus"] {        /* Фокус: светлое стекло, сине-фиолетовый */
+  --th-bg: radial-gradient(60% 140% at 100% 0%, rgba(123,97,255,.18), transparent 62%), linear-gradient(120deg, rgba(42,111,227,.12), rgba(255,255,255,.7) 70%);
+  --th-bd: rgba(42,111,227,.26); --th-ink: #16263D; --th-mute: #5B6B7E;
+  --th-chip-bg: rgba(255,255,255,.85); --th-chip-bd: rgba(42,111,227,.25); --th-chip-ink: #16263D; --th-dot: #2A6FE3;
+  --th-cta: linear-gradient(135deg, #2A6FE3, #7B61FF); --th-cta-ink: #FFFFFF; --th-cta-sh: 0 6px 18px rgba(42,111,227,.3);
+  --th-gh-bd: rgba(42,111,227,.35); --th-gh-ink: #1F5BC4; --th-acc: #2A6FE3; --th-ring: #2A6FE3; --th-trk: rgba(22,38,61,.08); --th-bad: #D92D20;
+}
+.item.brand.brand:is([data-p="pp"],[data-p="ii"],[data-p="mesto"],[data-p="fa"],[data-p="focus"]) {
+  --dl: var(--th-ring); background: var(--th-bg); border-color: var(--th-bd); color: var(--th-ink);
+  box-shadow: 0 8px 24px rgba(16,24,48,.08);
+}
+.item.brand.brand:is([data-p="pp"],[data-p="ii"],[data-p="fa"]) { box-shadow: 0 10px 28px rgba(8,12,24,.22); }
+.item.brand.brand:is([data-p]) .tx b { color: var(--th-ink, inherit); }
+.item.brand.brand:is([data-p]) .tm, .item.brand.brand:is([data-p]) .note, .item.brand.brand:is([data-p]) .dl-l, .item.brand.brand:is([data-p]) .dl-pen { color: var(--th-mute, var(--muted)); }
+.item.brand.brand:is([data-p]) .dl-t { color: var(--th-ink, var(--ink)); }
+.item.brand.brand:is([data-p]) .dl-kind { color: var(--th-acc, var(--dl)); }
+.item.brand.brand:is([data-p]) .dl-ring .trk { stroke: var(--th-trk, rgba(16,24,48,.08)); }
+.item.brand.brand:is([data-p]) .pchip { background: var(--th-chip-bg, rgba(255,255,255,.85)); border-color: var(--th-chip-bd, var(--line-2)); color: var(--th-chip-ink, var(--ink-2)); }
+.item.brand.brand:is([data-p]) .pchip i { background: var(--th-dot, var(--pc)) !important; }
+.item.brand.brand:is([data-p]) .live-dot { color: var(--th-bad, var(--bad)); }
+.item.brand.brand:is([data-p]) .live-dot::before { background: var(--th-bad, var(--bad)); }
+.item.brand.brand:is([data-p]) .btn-primary { background: var(--th-cta, var(--pc)); color: var(--th-cta-ink, #fff); box-shadow: var(--th-cta-sh, none); border: 0; }
+.item.brand.brand:is([data-p]) .btn-ghost { background: transparent; border-color: var(--th-gh-bd, var(--line-2)); color: var(--th-gh-ink, var(--ink)); }
+.item.brand.brand:is([data-p]) .btn-ghost:hover { background: color-mix(in oklab, var(--th-gh-ink, var(--pc)) 10%, transparent); }
+.item.brand.brand:is([data-p]) .pm-b { color: var(--th-dot, var(--pc)); }
+/* срок горит: фирменный фон остаётся, тревога красным */
+.item.brand.brand.hot:is([data-p]) { --dl: var(--th-bad, #e5484d); border-color: color-mix(in oklab, var(--th-bad, #e5484d) 60%, transparent); box-shadow: 0 0 0 1px color-mix(in oklab, var(--th-bad, #e5484d) 30%, transparent), 0 10px 28px rgba(16,24,48,.14); }
+.item.brand.brand.hot:is([data-p]) .dl-kind, .item.brand.brand.hot:is([data-p]) .dl-t { color: var(--th-bad, #e5484d); }
+.item.brand.brand.hot:is([data-p]) .act.btn-primary { background: var(--th-bad, #e5484d); color: #fff; box-shadow: none; }
+/* сделано: фирменная строка уходит на второй план */
+.item.brand.brand.done:is([data-p]) { opacity: .62; box-shadow: none; }
+.item.brand.brand.done:is([data-p]) .done-mark { color: var(--th-acc, var(--good)); }
