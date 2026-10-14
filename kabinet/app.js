@@ -600,14 +600,16 @@ const tgBlock = (e) => { const a = acc(), nick = e.tgUser || DEMO_TG[S.persona];
   return `<div class="tg-wait"><span class="mw-ic tg">${ic("tg")}</span><div style="flex:1;min-width:0"><b>Telegram не подключён</b><p class="small">Подключите через бота: так ник не перепутается, а уведомления о встречах и дедлайнах будут приходить в Telegram.</p>
       <div class="mw-btns"><a class="btn btn-primary btn-sm" href="https://t.me/freemen_alliance_bot" target="_blank" rel="noopener" data-tg-go>${ic("tg")}Подключить Telegram</a></div></div></div>`; };
 
+// Зверёк и желания живут в трекере Фримана: он есть в ПП и у членов Альянса, в ИИнструментах и Месте притяжения его нет.
+const trackerOk = () => { const u = me(); return isFreeman(u) || u.products.some(p => p.id === "pp" && (p.state === "active" || p.state === "expiring")); };
 function setupSteps() {
   const s = SETUP[S.persona]; if (!s) return [];
   return [
     ...(acc().mailOk ? [] : [{ ok: false, t: "Подтвердить почту", h: `Письмо на ${me().email}`, href: "#/profile/security" }]),
     ...(acc().tg === "ok" ? [] : [{ ok: false, t: "Подключить Telegram", h: "Через бота, за минуту", href: "#/profile/security" }]),
     (() => { const m = [...s.miss.filter(x => x !== "Telegram"), ...(ex().birth ? [] : ["дата рождения"])]; return { ok: !m.length, t: "Заполнить профиль", h: m.length ? `Не хватает: ${m.join(", ")}` : "Готово", href: "#/profile/about" }; })(),
-    { ok: s.zveryok, t: "Поставить цель Зверька", h: s.zveryok ? "Готово" : "Цель для мотивации на ближайшие недели", href: "https://wearefree.club/zveryok", ext: true },
-    { ok: s.wish, t: "Добавить желание в список", h: s.wish ? "Готово" : "То, к чему вы стремитесь", href: "https://wearefree.club/wishlist", ext: true },
+    ...(trackerOk() ? [{ ok: s.zveryok, t: "Поставить цель Зверька", h: s.zveryok ? "Готово" : "Цель для мотивации на ближайшие недели", href: "https://wearefree.club/zveryok", ext: true },
+    { ok: s.wish, t: "Добавить желание в список", h: s.wish ? "Готово" : "То, к чему вы стремитесь", href: "https://wearefree.club/wishlist", ext: true }] : []),
   ];
 }
 function setupBlock(where) {
@@ -693,8 +695,8 @@ function actRow(a, i, compact) {
   return `<li class="act ${a.unread ? "unread" : ""} ${compact ? "compact" : ""} ${isHw(a) ? "hw" : ""}">
     <span class="act-ic act-${a.k}">${ic(icn)}${a.unread ? `<i class="act-dot" aria-label="Новое"></i>` : ""}</span>
     <div class="act-tx">
-      ${isHw(a) && compact ? `<a class="act-h" href="#/p/${a.p}" data-hwgo="${i}">${esc(actHead(a))}</a>` : `<b>${esc(actHead(a))}</b>`}
-      <div class="act-meta">${a.k === "like" && !compact ? avStack(a.who, a.more) : ""}<span>${esc(actSub(a))}</span>${compact ? `<span class="act-when">${esc(actWhen(a))}</span>` : ""}</div>
+      ${isHw(a) && compact ? `<a class="act-h" href="#/p/${a.p}" data-hwgo="${i}">${esc(actHead(a))}</a>` : a.k === "like" && a.p ? `<b><a class="act-obj" href="#/p/${a.p}">${esc(actHead(a))}</a></b>` : `<b>${esc(actHead(a))}</b>`}
+      <div class="act-meta">${a.k === "like" && !compact ? avStack(a.who, a.more) : ""}<span>${(a.k === "comment" || a.k === "reply") && a.p ? `${esc(a.who[0])} · <a class="act-obj" href="#/p/${a.p}">${esc(a.obj)}</a>` : isHw(a) && !compact && a.p ? `<a class="act-obj" href="#/p/${a.p}" data-hwgo="${i}">${esc(a.obj)}</a> · ${esc(a.who[0])}` : esc(actSub(a))}</span>${compact ? `<span class="act-when">${esc(actWhen(a))}</span>` : ""}</div>
       ${a.text ? `<p class="act-quote"><span>${esc(a.text)}</span></p>` : ""}
       ${act}
     </div>
