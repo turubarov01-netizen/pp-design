@@ -925,6 +925,12 @@ function profile() {
         <div class="field full"><label for="f5">О себе</label><textarea id="f5" maxlength="2000" placeholder="Чем вы занимаетесь, с кем работаете">${e.biz[0] ? esc(e.biz[0][0] + ". " + e.biz[0][2] + ".") : ""}</textarea><div class="hint">До 2000 символов</div></div>
       </div>${saveRow}</form>
 
+    <form class="panel form-sec" data-form><h3>Язык, время и валюта</h3><p class="small">Как показывать кабинет, встречи и суммы.</p>
+      <div class="fgrid fgrid-3">
+        <div class="field"><label>Язык</label><select><option>Русский</option><option>English</option></select><div class="hint">Меню, письма и уведомления</div></div>
+        <div class="field"><label>Часовой пояс</label><select><option>Москва (UTC+3)</option><option>Екатеринбург (UTC+5)</option><option>Алматы (UTC+5)</option><option>Тбилиси (UTC+4)</option><option>Бали (UTC+8)</option></select><div class="hint">Время встреч показываем по нему</div></div>
+        <div class="field"><label>Валюта</label><select><option>Рубли, ₽</option><option>Доллары, $</option><option>Тенге, ₸</option><option>Евро, €</option></select><div class="hint">В ней показываем суммы и доход</div></div>
+      </div>${saveRow}</form>
     <form class="panel form-sec" data-form><h3>Где вы сейчас</h3><p class="small">${isFreeman(u) ? "По городу показываем участников рядом и время встреч." : "По городу показываем время встреч."}</p>
       <div class="fgrid"><div class="field"><label for="l1">Город</label><input id="l1" value="${esc(u.city)}"></div>
         <div class="field" style="align-self:end"><button class="btn btn-ghost" type="button">${ic("spark")}Определить по геолокации</button></div></div>
@@ -934,13 +940,7 @@ function profile() {
       ${e.biz.length ? e.biz.map(b => `<div class="tg-row"><div class="t"><b>${esc(b[0])}</b><span class="small">${esc(b[1])} · ${esc(b[2])} · ${esc(b[3])}</span></div><button class="btn btn-ghost btn-sm" type="button">Изменить</button></div>`).join("") : '<p class="small" style="margin:0 0 12px">Пока не добавлено.</p>'}
       <button class="btn btn-soft btn-sm" type="button" style="margin-top:8px">${ic("plus")}Добавить бизнес</button></section>
     <section class="panel form-sec"><h3>Навыки</h3><p class="small">До 30 навыков. Участники клуба могут их подтверждать.</p>
-      <div class="chips">${e.skills.map(s => `<span class="chip">${esc(s)}</span>`).join("")}<button class="chip add" type="button">${ic("plus")}Добавить</button></div></section>
-    <form class="panel form-sec" data-form><h3>Язык, время и валюта</h3><p class="small">Как показывать кабинет, встречи и суммы.</p>
-      <div class="fgrid fgrid-3">
-        <div class="field"><label>Язык</label><select><option>Русский</option><option>English</option></select><div class="hint">Меню, письма и уведомления</div></div>
-        <div class="field"><label>Часовой пояс</label><select><option>Москва (UTC+3)</option><option>Екатеринбург (UTC+5)</option><option>Алматы (UTC+5)</option><option>Тбилиси (UTC+4)</option><option>Бали (UTC+8)</option></select><div class="hint">Время встреч показываем по нему</div></div>
-        <div class="field"><label>Валюта</label><select><option>Рубли, ₽</option><option>Доллары, $</option><option>Тенге, ₸</option><option>Евро, €</option></select><div class="hint">В ней показываем суммы и доход</div></div>
-      </div>${saveRow}</form>`;
+      <div class="chips">${e.skills.map(s => `<span class="chip">${esc(s)}</span>`).join("")}<button class="chip add" type="button">${ic("plus")}Добавить</button></div></section>`;
   if (tab === "notify") {
     const cats = [["Встречи и эфиры", "За день и за 15 минут до начала", 1, 1, 1], ["Дедлайны заданий", "За сутки и утром в день сдачи", 1, 1, 1], ["Новые уроки", "Когда открывается урок", 1, 0, 1], ["Окончание доступа", "За 14 и за 3 дня", 1, 1, 1], ["Ответы поддержки", "Когда ответили на обращение", 1, 1, 0],
       ["Лента и комментарии", "Посты, лайки, комментарии", 0, 0, 0], ["Сообщения и друзья", "Личные сообщения, заявки в друзья", 1, 0, 0], ["Трекер", "Напоминания, план и отчёт дня, серия", 1, 0, 0], ["Дайджесты", "Еженедельный, книжный клуб", 0, 1, 0], ["Оракул", "Ежедневная подсказка", 0, 0, 0]];
