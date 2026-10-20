@@ -1009,3 +1009,13 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .vdlg iframe{display:block;width:min(1100px,92vw);aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
 .vdlg video[hidden]{display:none}
 .vl h3{margin:26px 0 18px;padding-bottom:0}
+/* v8.12 встречи: одно видео вместо коллажа */
+.mvid{position:relative;margin:0;border-radius:24px;overflow:hidden;aspect-ratio:16/9;background:#0c0c10}
+.mvid video{width:100%;height:100%;object-fit:cover;display:block}
+.mvid-snd{position:absolute;right:18px;bottom:18px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;border:1px solid rgba(255,255,255,.35);border-radius:99px;background:rgba(8,10,30,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font:600 14px/1 var(--body);cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease)}
+.mvid-snd:hover{background:rgba(8,10,30,.78);border-color:rgba(255,255,255,.6)}
+.mvid-snd:focus-visible{outline:2px solid var(--y);outline-offset:3px}
+.mvid-snd svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mvid-snd svg path:first-child{fill:currentColor;stroke:none}
+.mvid-snd .on{display:none}.mvid-snd[aria-pressed="true"] .on{display:inline}.mvid-snd[aria-pressed="true"] .off{display:none}
+@media (max-width:640px){.mvid{border-radius:16px}.mvid-snd{right:10px;bottom:10px;width:40px;min-height:40px;padding:0;justify-content:center}.mvid-snd span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
