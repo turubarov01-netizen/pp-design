@@ -161,3 +161,37 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
 
 // v4: заглушка видео во всплывающем окне
 (()=>{const d=document.getElementById('pdlg');if(!d)return;const t=document.getElementById('pdlg-t');document.querySelectorAll('[data-pvid]').forEach(b=>b.addEventListener('click',()=>{t.textContent=b.dataset.pvid;d.showModal()}));d.querySelector('.vclose').addEventListener('click',()=>d.close());d.addEventListener('click',e=>{if(e.target===d)d.close()})})();
+
+/* v5: стопка направлений — следующая карточка наезжает, предыдущая уменьшается и темнеет */
+(function(){
+  var sec=document.querySelector('.pw'); if(!sec) return;
+  var cards=[].slice.call(sec.querySelectorAll('.pw-card'));
+  var rm=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var wide=window.matchMedia('(min-width: 1025px)');
+  var tick=false;
+  function fits(){
+    var ok=wide.matches&&cards.every(function(c){return c.offsetHeight<=window.innerHeight-130});
+    sec.classList.toggle('pw-static',!ok);
+    return ok;
+  }
+  function paint(){
+    tick=false;
+    var on=!sec.classList.contains('pw-static')&&!rm.matches;
+    for(var i=0;i<cards.length;i++){
+      var c=cards[i],n=cards[i+1];
+      if(!on||!n){c.style.transform='';c.style.filter='';continue}
+      var top=parseFloat(getComputedStyle(n).top)||88;
+      var start=window.innerHeight, r=n.getBoundingClientRect().top;
+      var p=Math.min(1,Math.max(0,(start-r)/(start-top)));
+      c.style.transform='scale('+(1-.06*p).toFixed(4)+')';
+      c.style.filter='brightness('+(1-.45*p).toFixed(3)+')';
+    }
+  }
+  function req(){if(!tick){tick=true;requestAnimationFrame(paint)}}
+  function setup(){fits();req()}
+  window.addEventListener('scroll',req,{passive:true});
+  window.addEventListener('resize',setup);
+  if(wide.addEventListener) wide.addEventListener('change',setup);
+  window.addEventListener('load',setup);
+  setup();
+})();
