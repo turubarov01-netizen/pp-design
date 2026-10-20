@@ -63,7 +63,7 @@ mark{background:var(--y);color:var(--ink);padding:0 .12em;box-decoration-break:c
 /* hero */
 .hero{position:relative;padding:clamp(28px,5vw,64px) 0 0;overflow:hidden}
 .hero > .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:24px;align-items:end;min-height:min(760px,calc(100svh - 110px))}
-.hero-copy{padding-bottom:clamp(32px,6vw,88px);align-self:center}
+.hero-copy{position:relative;z-index:2;padding-bottom:clamp(32px,6vw,88px);align-self:center}
 .hero-copy .d1{margin:18px 0 22px}
 .hero-copy .lead{margin-bottom:30px}
 .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px}
@@ -287,7 +287,16 @@ form .btn{width:100%;margin-top:4px}
   .brand span{font-size:11px;letter-spacing:.18em}
   .invite{width:auto}
   .cta-row .btn{width:100%}
-  .hero-art{height:118vw}
+  .hero{padding-top:8px}
+  .hero-art{order:-1;height:64vw;margin:0 -16px 6px;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,#000 82%,transparent);mask-image:linear-gradient(to bottom,#000 82%,transparent)}
+  .hero-art .swirl{width:88%;left:6%;top:-4%}
+  .hero-art .p-igor{right:2%;width:62%}
+  .hero-art .p-kris{left:6%;width:42%}
+  .hero-art .tag{display:none}
+  .hero-copy .kick{display:none}
+  .hero-copy .d1{margin:6px 0 14px;font-size:clamp(46px,13.4vw,60px)}
+  .hero-copy .lead{margin-bottom:20px;font-size:17px}
+  .invite{margin-top:18px}
   .tag{font-size:12px;padding:8px 10px}
   .tag b{font-size:14px}
   .tag-igor{top:16%}
