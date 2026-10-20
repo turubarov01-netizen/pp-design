@@ -1,0 +1,30 @@
+:root{--paper:#f4efe6;--ink:#0a0f5c;--night:#060a26;--navy:#0d1450;--y:#ffc306;--gold:#d8b25a;
+--display:'Sofia Sans Extra Condensed',Impact,sans-serif;--body:'Golos Text',system-ui,sans-serif;--wrap:min(1240px,calc(100% - 56px));--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:400 17px/1.55 var(--body);-webkit-text-size-adjust:100%;overflow-x:hidden}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0}
+.vbar{background:#000;color:#cfd0e6;font-size:13px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;justify-content:center;padding:4px 12px;position:relative;z-index:50}
+.vbar b{color:var(--y);font-weight:600;margin-right:6px}
+.vbar a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:99px;border:1px solid rgba(255,255,255,.18)}
+.vbar a[aria-current]{background:#fff;color:#000;border-color:#fff}
+.hero{position:relative;min-height:calc(100svh - 48px);overflow:hidden;display:flex;flex-direction:column}
+.top{position:relative;z-index:5;width:var(--wrap);margin:0 auto;display:flex;align-items:center;gap:20px;padding:22px 0}
+.brand{display:flex;align-items:center;gap:12px;min-height:44px}
+.brand img{width:34px;height:34px;object-fit:contain}
+.brand span{font:600 12px/1 var(--body);letter-spacing:.32em;text-transform:uppercase}
+.top .clan{margin-left:auto;font-size:14px;opacity:.75}
+.top .reg{min-height:44px;display:inline-flex;align-items:center;padding:0 20px;border-radius:99px;font-weight:600;font-size:15px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;white-space:nowrap;min-height:58px;padding:0 30px;border-radius:99px;font-weight:600;font-size:17px;transition:transform .25s var(--ease),background .25s}
+.btn:hover{transform:translateY(-2px)}
+.btn svg{width:18px;height:18px}
+.btn:focus-visible,.reg:focus-visible,.vbar a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.note{font-size:14px;opacity:.7}
+.invite{display:flex;align-items:center;gap:12px;font-size:14px;line-height:1.35}
+.invite img{width:42px;height:42px;border-radius:50%;object-fit:cover}
+.people{position:absolute;right:0;bottom:0;pointer-events:none}
+.people img{position:absolute;bottom:0;-webkit-mask-image:linear-gradient(to bottom,#000 74%,transparent 98%);mask-image:linear-gradient(to bottom,#000 74%,transparent 98%)}
+.cap{position:absolute;z-index:3;font-size:13px;line-height:1.3;opacity:.85}
+.cap b{display:block;font-size:15px;font-weight:600;opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}

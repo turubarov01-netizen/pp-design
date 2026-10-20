@@ -1,0 +1,50 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Вариант 2 · первый экран · Freeman's Alliance</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Sofia+Sans+Extra+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="v.css"><style>
+.v2{background:var(--paper);color:var(--ink)}
+.v2 .reg{background:var(--ink);color:var(--paper)}
+.v2 .stage{position:relative;flex:1;width:var(--wrap);margin:0 auto;min-height:620px}
+.v2 .kick{position:relative;z-index:1;text-align:center;font-size:13px;letter-spacing:.3em;text-transform:uppercase;opacity:.7;margin-top:2vh}
+.v2 h1{position:relative;z-index:1;text-align:center;font:900 clamp(72px,11.2vw,176px)/.84 var(--display);text-transform:uppercase;letter-spacing:-.005em;margin-top:1.2vh;color:var(--ink)}
+.v2 h1 span{display:block}
+.v2 .people{left:50%;transform:translateX(-50%);width:min(100%,1080px);height:100%;z-index:2}
+.v2 .pi{right:16%;height:min(54vh,540px);width:auto}
+.v2 .pk{left:26%;height:min(40vh,400px);width:auto;z-index:2}
+.v2 .panel{position:absolute;z-index:4;left:0;bottom:6vh;max-width:330px;background:rgba(244,239,230,.92);padding:22px 24px;border-radius:22px;box-shadow:0 30px 60px -30px rgba(10,15,92,.35)}
+.v2 .panel p{font-size:16px;line-height:1.45;color:#2b3070}
+.v2 .panel .btn{background:var(--ink);color:var(--paper);margin:18px 0 10px;width:100%}
+.v2 .side{position:absolute;z-index:4;right:0;bottom:6vh;width:240px}
+.v2 .cap{position:static;margin-bottom:14px;padding-top:12px;border-top:1px solid rgba(10,15,92,.25)}
+.v2 .invite{margin-top:4px}
+
+@media (max-width:860px){
+ .top .clan{display:none}
+ .hero{min-height:0}
+ .people{position:relative;width:100%!important;height:96vw!important;left:auto!important;transform:none!important;order:1}
+ .pi{height:auto!important;width:68%!important;right:0!important}
+ .pk{height:auto!important;width:44%!important;left:4%!important;right:auto!important}
+ .cap,.side .cap{display:none}
+ .copy{order:2;padding:6px 0 40px!important;margin:0 auto!important}
+ .top{order:0;padding:12px 0}
+ .brand span{letter-spacing:.2em}
+ .swirl{width:110vw!important;top:60px!important}
+ .v2 .stage{display:flex;flex-direction:column;min-height:0}
+ .v2 .kick{order:0}.v2 h1{order:1;font-size:17.5vw}
+ .v2 .people{order:2;margin-top:-30vw;height:96vw!important}
+ .v2 .panel{order:3;position:static;max-width:none;margin:-8px 0 0;box-shadow:none;padding:0;background:none}
+ .v2 .side{order:4;position:static;width:auto;margin:20px 0 40px}
+ .btn{width:100%}
+ .v3 .proof{gap:22px}
+}</style></head><body class="v2">
+<nav class="vbar" aria-label="Варианты"><b>Первый экран</b><a href="v1.html">1 · Ночь</a><a href="v2.html" aria-current="page">2 · Обложка</a><a href="v3.html">3 · Клуб</a><a href="../">Весь сайт</a></nav>
+<section class="hero"><header class="top"><a class="brand" href="#"><img src="../img/logo-blue.webp" alt="" width="34" height="34"><span>Freeman's Alliance</span></a><span class="clan">Клан Кристины Барикянц</span><a class="reg" href="#">Регистрация</a></header>
+<div class="stage"><p class="kick">Freeman's Alliance · клуб предпринимателей и экспертов</p>
+<h1><span>Ваш путь</span><span>к миллиону</span></h1>
+<div class="people" aria-hidden="true"><img class="pi" src="../img/igor-cut.webp" alt="" width="900" height="881"><img class="pk" src="../img/kristina-cut.webp" alt="" width="430" height="484"></div>
+<div class="panel"><p>Понятный маршрут роста: знания и инструменты по маркетингу, продажам и управлению. И наставники, прошедшие этот путь.</p>
+<a class="btn" href="#">Начать бесплатно <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span class="note">Без оплаты и без карты</span></div>
+<div class="side"><p class="cap"><b>Игорь Граф</b>основатель Альянса</p><p class="invite"><img src="../img/kristina.webp" alt="" width="42" height="42"><span>Вас приглашает <b>Кристина Барикянц</b>,<br>директор клана в Альянсе</span></p></div>
+</div></section><script>(()=>{const w=n=>{if(n.nodeType===3){n.nodeValue=n.nodeValue.replace(/(^|[\s(«])([А-Яа-яЁё]{1,3})\s(?=\S)/g,'$1$2\u00a0').replace(/(\d)\s(?=[А-Яа-яЁё$×])/g,'$1\u00a0');return}if(n.nodeType===1&&!/^(SCRIPT|STYLE)$/.test(n.tagName))n.childNodes.forEach(w)};w(document.body)})()</script>
+</body></html>

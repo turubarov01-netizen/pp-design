@@ -1,0 +1,53 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Вариант 3 · первый экран · Freeman's Alliance</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Sofia+Sans+Extra+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="v.css"><style>
+.v3{background:var(--night);color:#fff}
+.v3 .bg{position:absolute;inset:-30px;background:url(../img/club-1.webp) center 40%/cover;filter:blur(14px) saturate(.7)}
+.v3 .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,10,38,.96) 0%,rgba(6,10,38,.86) 38%,rgba(6,10,38,.72) 70%,rgba(6,10,38,.78) 100%),linear-gradient(0deg,rgba(6,10,38,.95) 0%,transparent 30%)}
+.v3 .reg{background:var(--y);color:var(--ink)}
+.v3 .copy{position:relative;z-index:4;width:var(--wrap);margin:auto auto;padding:2vh 0 7vh}
+.v3 .kick{display:inline-flex;gap:10px;align-items:center;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#d9dbf2}
+.v3 .kick i{width:8px;height:8px;border-radius:50%;background:var(--y)}
+.v3 h1{font:800 clamp(50px,5.4vw,88px)/.92 var(--display);text-transform:uppercase;margin:18px 0 22px;max-width:13ch}
+.v3 .lead{max-width:42ch;color:#d4d6ee;font-size:clamp(17px,1.35vw,20px)}
+.v3 .act{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin:32px 0 34px}
+.v3 .btn{background:var(--y);color:var(--ink)}
+.v3 .proof{display:flex;gap:34px;margin-bottom:28px}
+.v3 .proof b{display:block;font:800 40px/1 var(--display)}
+.v3 .proof span{font-size:13px;color:#b9bce0}
+.v3 .people{width:54%;height:100%}
+.v3 .pi{right:0;height:min(84vh,820px);width:auto}
+.v3 .pk{right:45%;height:min(60vh,580px);width:auto;z-index:2}
+.v3 .cap{bottom:6%}.v3 .ck{right:47%}.v3 .ci{right:3%}
+
+@media (max-width:860px){
+ .top .clan{display:none}
+ .hero{min-height:0}
+ .people{position:relative;width:100%!important;height:96vw!important;left:auto!important;transform:none!important;order:1}
+ .pi{height:auto!important;width:68%!important;right:0!important}
+ .pk{height:auto!important;width:44%!important;left:4%!important;right:auto!important}
+ .cap,.side .cap{display:none}
+ .copy{order:2;padding:6px 0 40px!important;margin:0 auto!important}
+ .top{order:0;padding:12px 0}
+ .brand span{letter-spacing:.2em}
+ .swirl{width:110vw!important;top:60px!important}
+ .v2 .stage{display:flex;flex-direction:column;min-height:0}
+ .v2 .kick{order:0}.v2 h1{order:1;font-size:17.5vw}
+ .v2 .people{order:2;margin-top:-30vw;height:96vw!important}
+ .v2 .panel{order:3;position:static;max-width:none;margin:-8px 0 0;box-shadow:none;padding:0;background:none}
+ .v2 .side{order:4;position:static;width:auto;margin:20px 0 40px}
+ .btn{width:100%}
+ .v3 .proof{gap:22px}
+}</style></head><body class="v3">
+<nav class="vbar" aria-label="Варианты"><b>Первый экран</b><a href="v1.html">1 · Ночь</a><a href="v2.html">2 · Обложка</a><a href="v3.html" aria-current="page">3 · Клуб</a><a href="../">Весь сайт</a></nav>
+<section class="hero"><div class="bg" aria-hidden="true"></div><header class="top"><a class="brand" href="#"><img src="../img/logo-yellow.svg" alt="" width="34" height="34"><span>Freeman's Alliance</span></a><span class="clan">Клан Кристины Барикянц</span><a class="reg" href="#">Регистрация</a></header>
+<div class="people" aria-hidden="true"><img class="pi" src="../img/igor-cut.webp" alt="" width="900" height="881"><img class="pk" src="../img/kristina-cut.webp" alt="" width="430" height="484"></div><p class="cap ck"><b>Кристина Барикянц</b>директор клана</p><p class="cap ci"><b>Игорь Граф</b>основатель Альянса</p>
+<div class="copy"><p class="kick"><i></i>Международный клуб предпринимателей</p>
+<h1>Окружение для тех, кто хочет большего</h1>
+<p class="lead">Встречи, бизнес-челленджи и совместные проекты с людьми, которые создают богатство и делают <span style="white-space:nowrap">что-то</span> великое.</p>
+<div class="act"><a class="btn" href="#">Вступить бесплатно <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span class="note">Без оплаты и без карты</span></div>
+<div class="proof"><p><b>1 078</b><span>участников</span></p><p><b>3×</b><span>лучший тренер Mindvalley · Игорь</span></p></div>
+<p class="invite"><img src="../img/kristina.webp" alt="" width="42" height="42"><span>Вас приглашает <b>Кристина Барикянц</b>,<br>директор клана в Альянсе</span></p></div></section><script>(()=>{const w=n=>{if(n.nodeType===3){n.nodeValue=n.nodeValue.replace(/(^|[\s(«])([А-Яа-яЁё]{1,3})\s(?=\S)/g,'$1$2\u00a0').replace(/(\d)\s(?=[А-Яа-яЁё$×])/g,'$1\u00a0');return}if(n.nodeType===1&&!/^(SCRIPT|STYLE)$/.test(n.tagName))n.childNodes.forEach(w)};w(document.body)})()</script>
+</body></html>
