@@ -228,3 +228,15 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
 })();
 
 (()=>{const v=document.querySelector('.pw-bgv');if(!v)return;if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause()}})();
+
+/* v8.4: «Личный маршрут» — проход по дереву навыков */
+(function(){
+  var tr=document.querySelector('.tr'); if(!tr) return;
+  var els=[].slice.call(tr.querySelectorAll('[data-s]')), rail=[].slice.call(tr.querySelectorAll('.tr-rail li'));
+  var t=null, st=0, vis=false, rm=matchMedia('(prefers-reduced-motion: reduce)');
+  function paint(n){els.forEach(function(e){e.classList.toggle('on',+e.getAttribute('data-s')<n)});tr.classList.toggle('won',n>11);rail.forEach(function(l,i){l.classList.toggle('cur',i===(n>11?1:0))})}
+  function tick(){if(!vis||document.hidden) return; st=st>=15?0:st+1; paint(st>12?12:st)}
+  if(rm.matches){paint(12);return}
+  paint(0);
+  if('IntersectionObserver' in window){new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis&&!t)t=setInterval(tick,520);if(!vis&&t){clearInterval(t);t=null}},{threshold:.35}).observe(tr)}else{vis=true;t=setInterval(tick,520)}
+})();
