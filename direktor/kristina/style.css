@@ -920,3 +920,7 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .pwl-t{border-radius:clamp(10px,.9vw,14px);box-shadow:0 8px 20px -12px rgba(10,15,92,.45)}
 .pwl-row{animation-duration:70s}.pwl-r2{animation-duration:80s}.pwl-r3{animation-duration:62s}
 .pwl-t i{left:5px;right:5px;top:5px;font-size:clamp(8px,.62vw,10px);padding:4px 5px}
+
+/* v8.9: 22 обложки, по 13 в ряду — скорость под длину ряда */
+.pwl-row{animation-duration:83s}.pwl-r2{animation-duration:94s}.pwl-r3{animation-duration:73s}
+.hw-col>div{animation-duration:46s}.hw-col2>div{animation-duration:54s}.hw-col3>div{animation-duration:40s}
