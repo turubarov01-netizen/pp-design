@@ -397,8 +397,8 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 /* ===== Блок 2 «Что такое Альянс фрименов» (по образцу Mindvalley) ===== */
 .about2{background:#f3f4fa;color:var(--ink);padding:clamp(72px,9vw,128px) 0;text-align:center}
 .a2-kick{font:600 14px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:#2b3070}
-.a2-h{font:700 clamp(32px,3.6vw,52px)/1.12 var(--body);letter-spacing:-.015em;max-width:20ch;margin:22px auto 22px;color:#0b0f2e}
-.a2-lead{font-size:clamp(17px,1.4vw,20px);line-height:1.55;color:#3a3f66;max-width:52ch;margin:0 auto}
+.a2-h{font:600 clamp(32px,3.3vw,48px)/1.14 var(--body);letter-spacing:-.015em;max-width:24ch;margin:22px auto 22px;color:#0b0f2e}
+.a2-lead{font-size:clamp(17px,1.35vw,19px);line-height:1.5;color:#3a3f66;max-width:56ch;margin:0 auto}
 .a2-stats{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:980px;margin:clamp(40px,5vw,60px) auto clamp(44px,5vw,64px)}
 .a2-stats b{display:block;font:800 clamp(44px,4.4vw,64px)/1 var(--display);color:var(--ink);letter-spacing:.01em}
 .a2-stats span{display:block;margin-top:10px;font:600 13px/1.35 var(--body);letter-spacing:.08em;text-transform:uppercase;color:#2b3070}
@@ -411,8 +411,13 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .a2-play:focus-visible{outline:3px solid var(--ink);outline-offset:-6px}
 .a2-video.playing .a2-play{opacity:0;pointer-events:none}
 @media (max-width:860px){
-  .a2-h{font-size:29px}
-  .a2-stats{grid-template-columns:repeat(2,1fr);gap:28px 12px}
+  .about2{padding:56px 0 64px}
+  .a2-kick{font-size:13px}
+  .a2-h{font-size:clamp(19px,6.1vw,24px);line-height:1.22;margin:16px auto 14px;max-width:none}
+  .a2-lead{font-size:clamp(13.5px,3.95vw,15.5px);line-height:1.45;color:#2f345c;max-width:none}
+  .a2-stats{grid-template-columns:repeat(2,1fr);gap:22px 10px;margin:34px auto 36px}
+  .a2-stats b{font-size:40px}
+  .a2-stats span{margin-top:6px;font-size:11px;letter-spacing:.06em}
   .a2-video{border-radius:18px}
   .a2-play span{width:96px;height:68px;border-radius:16px}.a2-play svg{width:36px;height:36px}
 }
