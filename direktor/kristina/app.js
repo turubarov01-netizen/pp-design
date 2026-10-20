@@ -125,8 +125,14 @@ const d=document.getElementById('vdlg'),v=document.getElementById('vfull');if(!d
 // Блок 2: видео Игоря с YouTube, плеер грузится по нажатию
 (()=>{const box=document.getElementById('a2v');if(!box)return;box.querySelector('.a2-play').addEventListener('click',()=>{const f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+box.dataset.yt+'?autoplay=1&rel=0&playsinline=1';f.title='Freeman’s Alliance: путь предпринимателя от $0 до $1 000 000';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;box.appendChild(f);box.classList.add('playing')})})();
 
+/* v8.21: «Как устроен Альянс» — копии карточек, чтобы на широком экране лента не кончалась */
+(()=>{const tr=document.querySelector('.hw-track');if(!tr)return;const orig=[...tr.children],n=orig.length;if(!n)return;
+const s=orig[0].getBoundingClientRect().width+(parseFloat(getComputedStyle(tr).columnGap)||24);if(!s)return;
+const W=Math.max(innerWidth,screen.width||0,1440),need=Math.ceil(W/s)*2+3;let copies=0;
+while(n*(copies+1)<need&&copies<4){orig.forEach(c=>{const k=c.cloneNode(true);k.setAttribute('aria-hidden','true');k.inert=true;tr.appendChild(k)});copies++}})();
+
 // v4: живой трекер
-(()=>{const t=document.querySelector('.trk');if(!t)return;const ring=t.querySelector('.trk-ring .on'),pc=t.querySelector('.trk-pc'),items=[...t.querySelectorAll('.trk-list li')],toast=t.querySelector('.trk-toast');const red=matchMedia('(prefers-reduced-motion:reduce)').matches;let timers=[];
+document.querySelectorAll('.trk').forEach(t=>{const ring=t.querySelector('.trk-ring .on'),pc=t.querySelector('.trk-pc'),items=[...t.querySelectorAll('.trk-list li')],toast=t.querySelector('.trk-toast');const red=matchMedia('(prefers-reduced-motion:reduce)').matches;let timers=[];
 const setPc=v=>{ring.style.strokeDashoffset=314-314*v/100;const s=+pc.textContent,st=performance.now();const f=n=>{const k=Math.min(1,(n-st)/900);pc.textContent=Math.round(s+(v-s)*k);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
 const run=()=>{timers.forEach(clearTimeout);timers=[];items.forEach(i=>i.classList.remove('done'));toast.classList.remove('show');t.classList.remove('go');setPc(0);
  timers.push(setTimeout(()=>t.classList.add('go'),300));
@@ -134,7 +140,7 @@ const run=()=>{timers.forEach(clearTimeout);timers=[];items.forEach(i=>i.classLi
  timers.push(setTimeout(()=>toast.classList.remove('show'),900+5*1100));
  if(!red)timers.push(setTimeout(run,9000))};
 if(red){t.classList.add('go');items.forEach(i=>i.classList.add('done'));ring.style.strokeDashoffset=0;pc.textContent=100;return}
-let vis=false;new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!vis){vis=true;run()}else if(!e.isIntersecting&&vis){vis=false;timers.forEach(clearTimeout)}}),{threshold:.35}).observe(t)})();
+let vis=false;new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!vis){vis=true;run()}else if(!e.isIntersecting&&vis){vis=false;timers.forEach(clearTimeout)}}),{threshold:.35}).observe(t)});
 
 // v4: глобус с городами участников
 (()=>{const c=document.getElementById('globe');if(!c)return;const x=c.getContext('2d');const red=matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -216,6 +222,13 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
       setTimeout(function(){busy=false},dur+20);
     }
   }
+  /* v8.21: слева сразу видна последняя карточка, без пустого места */
+  var pre=0;
+  function layout(){var s=step(),p=parseFloat(getComputedStyle(track).paddingLeft)||0,k=Math.ceil(p/s);
+    while(pre<k){track.insertBefore(track.lastElementChild,track.firstElementChild);pre++}
+    while(pre>k){track.appendChild(track.firstElementChild);pre--}
+    track.style.marginLeft=(-k*s)+'px'}
+  layout();var rz=null;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){if(!busy)layout()},150)});
   function tick(){if(visible&&!hover&&!rm.matches&&!document.hidden) go(1)}
   function start(){clearInterval(timer);timer=setInterval(tick,5000)}
   sec.querySelectorAll('[data-hw]').forEach(function(b){b.addEventListener('click',function(){go(+b.getAttribute('data-hw'));start()})});
@@ -231,8 +244,7 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
 (()=>{const v=document.querySelector('.pw-bgv');if(!v)return;if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause()}})();
 
 /* v8.4: «Личный маршрут» — проход по дереву навыков */
-(function(){
-  var tr=document.querySelector('.tr'); if(!tr) return;
+document.querySelectorAll('.tr').forEach(function(tr){
   var els=[].slice.call(tr.querySelectorAll('[data-s]')), rail=[].slice.call(tr.querySelectorAll('.tr-rail li'));
   var t=null, st=0, vis=false, rm=matchMedia('(prefers-reduced-motion: reduce)');
   function paint(n){els.forEach(function(e){e.classList.toggle('on',+e.getAttribute('data-s')<n)});tr.classList.toggle('won',n>11);rail.forEach(function(l,i){l.classList.toggle('cur',i===(n>11?1:0))})}
@@ -240,7 +252,7 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
   if(rm.matches){paint(12);return}
   paint(0);
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis&&!t)t=setInterval(tick,520);if(!vis&&t){clearInterval(t);t=null}},{threshold:.35}).observe(tr)}else{vis=true;t=setInterval(tick,520)}
-})();
+});
 
 /* v8.7: клик по обложке направления открывает видео (как кнопка в углу) */
 document.querySelectorAll('.pw-cover-v').forEach(function(c){c.addEventListener('click',function(e){if(e.target.closest('.pw-play'))return;var b=c.querySelector('.pw-play');if(b)b.click()})});
