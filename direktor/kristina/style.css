@@ -1073,3 +1073,10 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 @media (max-width:640px){.pwl-t.pwl-hit i{left:auto;right:6px}.pwl-t.pwl-hit-b i{top:auto;bottom:6px;left:6px;right:auto}.pwl-t.pwl-hit::after{border-width:1.5px}}
 .pwl-t.pwl-hit-br i{top:auto;bottom:10px}
 @media (max-width:640px){.pwl-t.pwl-hit-br i{top:auto;bottom:6px}}
+
+/* v8.25: вместо плашки «Хит» — золотой кружок со звездой, выходит за правый верхний угол */
+.pwl-t.pwl-hit{overflow:visible;z-index:1}
+.pwl-t.pwl-hit>img{border-radius:inherit}
+.pwl-t i.pwl-star{position:absolute;top:-8px;right:-8px;left:auto;bottom:auto;width:30px;height:30px;padding:0;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 32% 28%,#f3dc9c,#d8b25a 55%,#a9822f);box-shadow:0 0 0 2px #fff,0 6px 14px -4px rgba(11,15,46,.55);letter-spacing:0;font-size:0;z-index:2}
+.pwl-t i.pwl-star svg{width:16px;height:16px;fill:#0b0f2e}
+@media (max-width:640px){.pwl-t i.pwl-star{top:-6px;right:-6px;width:22px;height:22px;box-shadow:0 0 0 1.5px #fff,0 4px 10px -3px rgba(11,15,46,.5)}.pwl-t i.pwl-star svg{width:12px;height:12px}}
