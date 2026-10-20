@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skiplink" href="#main">Перейти к содержанию</a>
 
 <div class="proto"><div class="wrap">
   <span><b>Прототип</b> · сайт директора клана · пример: Кристина</span>
@@ -21,12 +22,12 @@
 </div></div>
 
 <header class="hdr" id="hdr"><div class="wrap">
-  <a class="brand" href="#top"><img src="img/logo-blue.svg" alt="" width="34" height="34"><span>Freeman's Alliance</span></a>
+  <a class="brand" href="#top"><img src="img/logo-blue.webp" alt="" width="34" height="34"><span>Freeman's Alliance</span></a>
   <p class="clan">Клан <b>Кристины Барикянц</b></p>
   <button class="btn btn-y btn-sm" data-open>Регистрация</button>
 </div></header>
 
-<main id="top">
+<main id="top"><span id="main" tabindex="-1"></span>
 
 <!-- 1. Первый экран -->
 <section class="hero">
@@ -46,9 +47,9 @@
       </div>
     </div>
     <div class="hero-art" aria-hidden="true">
-      <img class="swirl" src="img/logo-yellow.svg" alt="">
-      <img class="p p-igor" src="img/igor-cut.webp" alt="">
-      <img class="p p-kris" src="img/kristina-cut.webp" alt="">
+      <img class="swirl" src="img/logo-yellow.svg" alt="" width="100" height="105">
+      <img class="p p-igor" src="img/igor-cut.webp" alt="" width="900" height="881">
+      <img class="p p-kris" src="img/kristina-cut.webp" alt="" width="430" height="484">
       <div class="tag tag-kris"><b>Кристина Барикянц</b>директор клана</div>
       <div class="tag tag-igor"><b>Игорь Граф</b>основатель Альянса</div>
     </div>
@@ -93,7 +94,7 @@
           <h3 class="d3">Все программы в одном кабинете</h3>
           <p>Тренинги, уроки, встречи и задания собраны в одном месте. Каждый день кабинет показывает, что важно сегодня.</p>
         </div>
-        <div class="row-media"><div class="bg"></div><div class="phone"><img src="img/kab-products-m.webp" alt="Экран «Мои продукты» в личном кабинете" loading="lazy"></div></div>
+        <div class="row-media"><div class="bg"></div><div class="phone"><img src="img/kab-products-m.webp" alt="Экран «Мои продукты» в личном кабинете" loading="lazy" width="780" height="1688"></div></div>
       </article>
       <article class="row rv">
         <div class="row-copy">
@@ -102,7 +103,7 @@
           <p>Вы фиксируете точку А, отмечаете доход и видите, сколько пройдено до цели.</p>
           <ul><li>Точка А и доход по месяцам</li><li>Трекер: фокус дня и привычки</li><li>Рейтинг и награды в программах</li></ul>
         </div>
-        <div class="row-media"><div class="bg"></div><div class="phone"><img src="img/kab-progress-m.webp" alt="Экран «Мои результаты»: точка А и доход" loading="lazy"></div></div>
+        <div class="row-media"><div class="bg"></div><div class="phone"><img src="img/kab-progress-m.webp" alt="Экран «Мои результаты»: точка А и доход" loading="lazy" width="780" height="1688"></div></div>
       </article>
       <article class="row rv">
         <div class="row-copy">
@@ -110,7 +111,7 @@
           <h3 class="d3">Окружение, которое держит темп</h3>
           <p>Кланы, круглые столы, встречи в городах, поездки и челленджи. Рядом люди, которые делают.</p>
         </div>
-        <div class="row-media"><figure class="photo"><img src="img/club-2.webp" alt="Участники Альянса на встрече" loading="lazy"></figure></div>
+        <div class="row-media"><figure class="photo"><img src="img/club-2.webp" alt="Участники Альянса на встрече" loading="lazy" width="1400" height="787"></figure></div>
       </article>
       <article class="row rv">
         <div class="row-copy">
@@ -167,12 +168,12 @@
       <p class="lead">После регистрации открыт бесплатный тренинг. Остальные программы можно выбрать позже, внутри платформы.</p>
     </div>
     <div class="progs rv">
-      <div class="prog"><img src="img/ts-logo.png" alt="" loading="lazy"><div><h3>Точка Сборки</h3><p class="k">Бизнес-игра · 5 дней</p></div><p>Пересборка от того, кто вы, до первых инструментов продаж.</p><span class="pill free">Бесплатно</span></div>
-      <div class="prog"><img src="img/badge-pp.png" alt="" loading="lazy"><div><h3>План Продюсера</h3><p class="k">Программа · с наставниками</p></div><p>Основная программа Саши Турубарова и Игоря Графа.</p><span class="pill">Внутри платформы</span></div>
-      <div class="prog"><img class="ct" src="img/focus-logo.png" alt="" loading="lazy"><div><h3>Фокус</h3><p class="k">Программа · 6 месяцев</p></div><p>Малые группы и еженедельные встречи с ментором.</p><span class="pill">Внутри платформы</span></div>
-      <div class="prog"><img src="img/ii-mark.png" alt="" loading="lazy"><div><h3>ИИнструменты</h3><p class="k">Курс · 2 месяца</p></div><p>Нейросети в работе эксперта.</p><span class="pill">Внутри платформы</span></div>
-      <div class="prog"><img src="img/mesto-logo.webp" alt="" loading="lazy"><div><h3>Место притяжения</h3><p class="k">Челлендж</p></div><p>Блог и контент, который приводит клиентов.</p><span class="pill">Внутри платформы</span></div>
-      <div class="prog"><img src="img/proryv-logo.png" alt="" loading="lazy"><div><h3>Прорыв</h3><p class="k">Программа Игоря Графа · 30 дней</p></div><p>Тридцать дней на рывок в доходе.</p><span class="pill">Внутри платформы</span></div>
+      <div class="prog"><img src="img/ts-logo.webp" alt="" loading="lazy" width="160" height="160"><div><h3>Точка Сборки</h3><p class="k">Бизнес-игра · 5 дней</p></div><p>Пересборка от того, кто вы, до первых инструментов продаж.</p><span class="pill free">Бесплатно</span></div>
+      <div class="prog"><img src="img/badge-pp.webp" alt="" loading="lazy" width="160" height="107"><div><h3>План Продюсера</h3><p class="k">Программа · с наставниками</p></div><p>Основная программа Саши Турубарова и Игоря Графа.</p><span class="pill">Внутри платформы</span></div>
+      <div class="prog"><img class="ct" src="img/focus-logo.webp" alt="" loading="lazy" width="160" height="137"><div><h3>Фокус</h3><p class="k">Программа · 6 месяцев</p></div><p>Малые группы и еженедельные встречи с ментором.</p><span class="pill">Внутри платформы</span></div>
+      <div class="prog"><img src="img/ii-mark.webp" alt="" loading="lazy" width="160" height="160"><div><h3>ИИнструменты</h3><p class="k">Курс · 2 месяца</p></div><p>Нейросети в работе эксперта.</p><span class="pill">Внутри платформы</span></div>
+      <div class="prog"><img src="img/mesto-logo.webp" alt="" loading="lazy" width="400" height="419"><div><h3>Место притяжения</h3><p class="k">Челлендж</p></div><p>Блог и контент, который приводит клиентов.</p><span class="pill">Внутри платформы</span></div>
+      <div class="prog"><img src="img/proryv-logo.webp" alt="" loading="lazy" width="160" height="160"><div><h3>Прорыв</h3><p class="k">Программа Игоря Графа · 30 дней</p></div><p>Тридцать дней на рывок в доходе.</p><span class="pill">Внутри платформы</span></div>
     </div>
     <p class="proto-note" style="margin-top:20px">Описания программ временные. Возьмём с первых экранов их сайтов.</p>
   </div>
@@ -187,17 +188,17 @@
     </div>
     <div class="people">
       <article class="person main rv">
-        <img src="img/kristina.webp" alt="Кристина Барикянц" loading="lazy">
+        <img src="img/kristina.webp" alt="Кристина Барикянц" loading="lazy" width="512" height="512">
         <div class="cap"><p class="role">Директор вашего клана</p><h3>Кристина Барикянц</h3>
           <q>Помогаю обрести финансовую независимость и самореализацию. Иду к жизни мечты, делаю этот мир добрее и счастливее и ищу друзей, кому с нами по пути.</q></div>
       </article>
       <article class="person rv">
-        <img src="img/igor.webp" alt="Игорь Граф" loading="lazy">
+        <img src="img/igor.webp" alt="Игорь Граф" loading="lazy" width="853" height="1280">
         <div class="cap"><p class="role">Основатель Альянса</p><h3>Игорь Граф</h3>
           <ul><li>Трижды лучший тренер Mindvalley по версии студентов</li><li>Более 13&nbsp;600 часов выступлений</li><li>С 2020 года в кругосветке, 60+ стран</li></ul></div>
       </article>
       <article class="person rv">
-        <img src="img/sasha.webp" alt="Александр Турубаров" loading="lazy">
+        <img src="img/sasha.webp" alt="Александр Турубаров" loading="lazy" width="900" height="1200">
         <div class="cap"><p class="role">Сооснователь</p><h3>Александр Турубаров</h3>
           <ul><li>«Продюсер года» по версии GetCourse 2023</li><li>Сооснователь школы английского HENG</li><li>Школа под его управлением вошла в ТОП-100 GetCourse</li></ul></div>
       </article>
@@ -213,10 +214,10 @@
       <h2 class="d2">Учимся, путешествуем, <mark>дружим</mark></h2>
     </div>
     <div class="mosaic rv">
-      <figure class="a"><img src="img/club-1.webp" alt="Фримены в пустыне" loading="lazy"><figcaption>Поездка фрименов</figcaption></figure>
-      <figure class="b"><img src="img/club-5.webp" alt="Багги в дюнах" loading="lazy"></figure>
-      <figure class="c"><img src="img/club-3.webp" alt="Участницы Альянса в поездке" loading="lazy"></figure>
-            <figure class="e"><img src="img/club-4.webp" alt="Вечерний город" loading="lazy"></figure>
+      <figure class="a"><img src="img/club-1.webp" alt="Фримены в пустыне" loading="lazy" width="1400" height="787"><figcaption>Поездка фрименов</figcaption></figure>
+      <figure class="b"><img src="img/club-5.webp" alt="Багги в дюнах" loading="lazy" width="1400" height="787"></figure>
+      <figure class="c"><img src="img/club-3.webp" alt="Участницы Альянса в поездке" loading="lazy" width="1400" height="787"></figure>
+            <figure class="e"><img src="img/club-4.webp" alt="Вечерний город" loading="lazy" width="1400" height="787"></figure>
     </div>
     <p class="proto-note" style="margin-top:20px">Кадры из видео «Встречи фрименов». Добавим фото встреч клана Кристины.</p>
   </div>
@@ -253,15 +254,15 @@
 
 <section class="wrap" style="padding-bottom:clamp(48px,8vw,96px)">
   <div class="final rv">
-    <img class="swirl" src="img/logo-yellow.svg" alt="" aria-hidden="true">
+    <img class="swirl" src="img/logo-yellow.svg" alt="" aria-hidden="true" width="100" height="105">
     <div>
       <h2 class="d2">Начните сегодня</h2>
       <p class="lead">Регистрация займёт минуту. Дальше вы в клане Кристины, внутри Альянса.</p>
       <button class="btn btn-y" data-open>Получить доступ бесплатно</button>
     </div>
     <div class="faces" aria-hidden="true">
-      <img class="fi" src="img/igor-cut.webp" alt="" loading="lazy">
-      <img class="fk" src="img/kristina-cut.webp" alt="" loading="lazy">
+      <img class="fi" src="img/igor-cut.webp" alt="" loading="lazy" width="900" height="881">
+      <img class="fk" src="img/kristina-cut.webp" alt="" loading="lazy" width="430" height="484">
     </div>
   </div>
 </section>
@@ -278,16 +279,16 @@
 <dialog id="reg" aria-labelledby="reg-t">
   <div class="m-head">
     <button class="m-close" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-    <div class="m-who"><img src="img/kristina.webp" alt=""><p>Приглашение от <b>Кристины Барикянц</b><br>директора клана</p></div>
+    <div class="m-who"><img src="img/kristina.webp" alt="" width="512" height="512"><p>Приглашение от <b>Кристины Барикянц</b><br>директора клана</p></div>
     <h2 class="d3" id="reg-t">Бесплатный доступ</h2>
     <p class="m-goal" id="m-goal"></p>
   </div>
   <form id="f" novalidate>
-    <label>Имя<input type="text" name="name" autocomplete="given-name" required></label>
-    <label>Почта<input type="email" name="email" autocomplete="email" inputmode="email" required></label>
-    <label>Пароль<input type="password" name="pw" autocomplete="new-password" minlength="6" required></label>
-    <label class="consent"><input type="checkbox" name="ok" required> <span>Согласен с условиями и обработкой персональных данных</span></label>
-    <p class="err" id="err" role="alert">Заполните все поля и отметьте согласие.</p>
+    <label>Имя<input type="text" name="name" autocomplete="given-name" required aria-describedby="e-name"><span class="f-err" id="e-name"></span></label>
+    <label>Почта<input type="email" name="email" autocomplete="email" inputmode="email" required aria-describedby="e-email"><span class="f-err" id="e-email"></span></label>
+    <label>Пароль<span class="pw"><input type="password" name="pw" autocomplete="new-password" minlength="6" required aria-describedby="e-pw"><button type="button" class="pw-t" aria-label="Показать пароль" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></span><span class="f-err" id="e-pw"></span></label>
+    <label class="consent"><input type="checkbox" name="ok" required aria-describedby="e-ok"> <span>Согласен с условиями и обработкой персональных данных</span></label>
+    <span class="f-err" id="e-ok"></span>
     <button class="btn btn-y" type="submit">Зарегистрироваться</button>
     <p class="m-foot">Уже есть аккаунт? <a href="#">Войти</a></p>
   </form>

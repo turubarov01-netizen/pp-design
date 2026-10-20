@@ -50,7 +50,7 @@
   const path = document.getElementById('path');
   const draw = () => {
     if (!path) return;
-    path.innerHTML = ROUTES[goal].s.map((s, i) => `<div class="step"><div class="sn">0${i + 1}</div><h4>${s[0]}</h4><p>${s[1]}</p><span class="where">${s[2]}</span></div>`).join('');
+    path.innerHTML = ROUTES[goal].s.map((s, i) => `<div class="step"><div class="sn" aria-hidden="true">0${i + 1}</div><h3>${s[0]}</h3><p>${s[1]}</p><span class="where">${s[2]}</span></div>`).join('');
     walk(path);
   };
   document.querySelectorAll('.goal').forEach((b) => b.addEventListener('click', () => {
@@ -76,12 +76,44 @@
   dlg?.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
   dlg?.addEventListener('close', onScroll);
   const f = document.getElementById('f');
-  f?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const ok = f.name.value.trim() && /\S+@\S+\.\S+/.test(f.email.value) && f.pw.value.length >= 6 && f.ok.checked;
-    document.getElementById('err').classList.toggle('on', !ok);
-    if (!ok) return;
-    // Прототип: настоящей регистрации нет, переходим на страницу разового предложения
-    location.href = 'oto.html?name=' + encodeURIComponent(f.name.value.trim()) + '&email=' + encodeURIComponent(f.email.value.trim());
-  });
+  const RULES = {
+    name: (v) => v.trim() ? '' : 'Напишите, как к вам обращаться.',
+    email: (v) => /^\S+@\S+\.\S+$/.test(v.trim()) ? '' : 'Проверьте почту: нужен адрес вида name@mail.ru.',
+    pw: (v) => v.length >= 6 ? '' : 'Пароль от 6 символов.',
+  };
+  const check = (el) => {
+    const msg = el.type === 'checkbox' ? (el.checked ? '' : 'Отметьте согласие, чтобы продолжить.') : RULES[el.name](el.value);
+    const box = document.getElementById('e-' + el.name);
+    if (box) box.textContent = msg;
+    el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    el.closest('.consent')?.classList.toggle('bad', !!msg);
+    return !msg;
+  };
+  if (f) {
+    const fields = [f.name, f.email, f.pw, f.ok];
+    // Проверяем поле, когда человек из него ушёл, и снимаем ошибку, как только её исправили
+    fields.forEach((el) => {
+      el.addEventListener('blur', () => { if (el.value || el.type === 'checkbox') check(el); });
+      el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', () => { if (el.getAttribute('aria-invalid') === 'true') check(el); });
+    });
+    const pt = f.querySelector('.pw-t');
+    pt?.addEventListener('click', () => {
+      const show = f.pw.type === 'password';
+      f.pw.type = show ? 'text' : 'password';
+      pt.setAttribute('aria-pressed', String(show));
+      pt.setAttribute('aria-label', show ? 'Скрыть пароль' : 'Показать пароль');
+    });
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const bad = fields.filter((el) => !check(el));
+      if (bad.length) { bad[0].focus(); return; }
+      const btn = f.querySelector('[type=submit]');
+      btn.setAttribute('aria-busy', 'true');
+      btn.textContent = 'Регистрируем';
+      // Прототип: настоящей регистрации нет, переходим на страницу разового предложения
+      setTimeout(() => {
+        location.href = 'oto.html?name=' + encodeURIComponent(f.name.value.trim()) + '&email=' + encodeURIComponent(f.email.value.trim());
+      }, 700);
+    });
+  }
 })();

@@ -24,7 +24,7 @@
 .price b{font:900 clamp(72px,9vw,112px)/.85 var(--display);color:var(--y)}
 .price span{font-size:15px;color:#c8cae6;line-height:1.35}
 .oto .btn-y{width:100%;max-width:420px;margin-top:22px;min-height:60px;font-size:18px}
-.skip{display:inline-block;margin-top:18px;font-size:15px;color:#c8cae6}
+.skip{display:inline-flex;align-items:center;min-height:44px;margin-top:10px;font-size:15px;color:#c8cae6}
 .skip:hover{color:var(--paper)}
 .oto-r{background:var(--paper);color:var(--ink);padding:clamp(28px,5vw,56px)}
 .cmp h3{font:800 26px/1 var(--display);text-transform:uppercase;margin-bottom:6px}
@@ -43,6 +43,7 @@
 </style>
 </head>
 <body>
+<a class="skiplink" href="#main">Перейти к содержанию</a>
 
 <div class="proto"><div class="wrap">
   <span><b>Прототип</b> · сайт директора клана · пример: Кристина</span>
@@ -53,11 +54,11 @@
 </div></div>
 
 <header class="hdr" id="hdr"><div class="wrap">
-  <a class="brand" href="./"><img src="img/logo-blue.svg" alt="" width="34" height="34"><span>Freeman's Alliance</span></a>
+  <a class="brand" href="./"><img src="img/logo-blue.webp" alt="" width="34" height="34"><span>Freeman's Alliance</span></a>
   <p class="clan">Клан <b>Кристины Барикянц</b></p>
 </div></header>
 
-<main class="wrap" style="padding-bottom:clamp(56px,8vw,110px)">
+<main id="main" tabindex="-1" class="wrap" style="padding-bottom:clamp(56px,8vw,110px)">
   <div class="done" role="status">
     <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
     <div><h1 id="hi">Почти готово!</h1><p id="mail">Мы отправили письмо на вашу почту. Подтвердите её, чтобы войти в кабинет.</p></div>
