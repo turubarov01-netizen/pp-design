@@ -855,8 +855,8 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 /* v8.4: фото в «Обучение и практика» и «Мастер-майнды» */
 .hw-c3 .hw-vis{position:absolute;inset:0;margin:0}
 .hw-c3 .hw-vis::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(7,11,42,.9) 0%,rgba(7,11,42,.3) 34%,rgba(7,11,42,0) 60%)}
-.hw-c3 .hw-photo{object-position:50% 70%}
-.hw-c4 .hw-photo{object-position:50% 80%}
+.hw-c3 .hw-photo{object-position:50% 60%}
+.hw-c4 .hw-photo{object-position:50% 50%}
 
 /* v8.4: «Личный маршрут» — карта развития как дерево навыков (по виду «Дерево» в ПЭРЛ) + Фрими */
 .hw-tree{margin-top:12px}
