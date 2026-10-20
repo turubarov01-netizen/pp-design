@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Почти готово · Freeman's Alliance</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Sofia+Sans+Extra+Condensed:wght@800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.done{display:flex;gap:16px;align-items:flex-start;padding:20px 22px;border-radius:20px;background:var(--card);border:1px solid var(--line);margin:clamp(24px,4vw,44px) 0 clamp(28px,4vw,48px)}
+.done .ic{flex:none;width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--y);display:grid;place-items:center}
+.done .ic svg{width:22px;height:22px}
+.done h1{font-size:20px;line-height:1.3;font-weight:700}
+.done p{color:var(--ink-2);font-size:15px;margin-top:4px}
+.oto{display:grid;grid-template-columns:1.1fr .9fr;gap:0;border-radius:var(--r-l);overflow:hidden;background:var(--ink);color:var(--paper);box-shadow:0 50px 90px -40px rgba(7,11,42,.7)}
+.oto-l{padding:clamp(28px,5vw,64px)}
+.flag{display:inline-flex;gap:8px;align-items:center;background:var(--y);color:var(--ink);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:8px 14px}
+.oto h2{color:var(--paper);margin:22px 0 16px}
+.oto h2 mark{color:var(--ink)}
+.oto .lead{color:#c8cae6}
+.price{display:flex;align-items:baseline;gap:14px;margin:30px 0 8px}
+.price b{font:900 clamp(72px,9vw,112px)/.85 var(--display);color:var(--y)}
+.price span{font-size:15px;color:#c8cae6;line-height:1.35}
+.oto .btn-y{width:100%;max-width:420px;margin-top:22px;min-height:60px;font-size:18px}
+.skip{display:inline-block;margin-top:18px;font-size:15px;color:#c8cae6}
+.skip:hover{color:var(--paper)}
+.oto-r{background:var(--paper);color:var(--ink);padding:clamp(28px,5vw,56px)}
+.cmp h3{font:800 26px/1 var(--display);text-transform:uppercase;margin-bottom:6px}
+.cmp .sub{font-size:14px;color:var(--ink-3);margin-bottom:18px}
+.cmp ul{list-style:none;display:grid;gap:12px}
+.cmp li{display:flex;gap:12px;align-items:flex-start;font-size:16px;line-height:1.4}
+.cmp li svg{flex:none;width:22px;height:22px;margin-top:1px}
+.cmp .yes svg{color:var(--ink)}
+.cmp .now{margin-top:26px;padding-top:20px;border-top:1px solid var(--line-2)}
+.cmp .now li{color:var(--ink-3)}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:clamp(40px,6vw,72px) 0 0}
+.why div{padding:22px;border-radius:20px;border:1px solid var(--line)}
+.why b{display:block;font:800 22px/1.05 var(--display);text-transform:uppercase;margin-bottom:8px}
+.why p{font-size:15px;color:var(--ink-2)}
+@media (max-width:900px){.oto{grid-template-columns:1fr}.why{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="proto"><div class="wrap">
+  <span><b>Прототип</b> · сайт директора клана · пример: Кристина</span>
+  <nav aria-label="Страницы прототипа">
+    <a href="./">1. Регистрация</a>
+    <a href="oto.html" aria-current="page">2. Разовое предложение</a>
+  </nav>
+</div></div>
+
+<header class="hdr" id="hdr"><div class="wrap">
+  <a class="brand" href="./"><img src="img/logo-blue.svg" alt="" width="34" height="34"><span>Freeman's Alliance</span></a>
+  <p class="clan">Клан <b>Кристины Барикянц</b></p>
+</div></header>
+
+<main class="wrap" style="padding-bottom:clamp(56px,8vw,110px)">
+  <div class="done" role="status">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+    <div><h1 id="hi">Почти готово!</h1><p id="mail">Мы отправили письмо на вашу почту. Подтвердите её, чтобы войти в кабинет.</p></div>
+  </div>
+
+  <section class="oto">
+    <div class="oto-l">
+      <span class="flag">Только сейчас, один раз</span>
+      <h2 class="d2">Стартовый доступ <mark>за&nbsp;$10</mark></h2>
+      <p class="lead">Пока письмо идёт, откройте больше, чем у Гостя. Это предложение показывается только сразу после регистрации.</p>
+      <div class="price"><b>$10</b><span>разовый платёж<br>доступ на 12 месяцев</span></div>
+      <button class="btn btn-y" id="buy">Получить за $10</button><br>
+      <a class="skip" href="#" id="skip">Нет, спасибо, перейти в кабинет</a>
+    </div>
+    <div class="oto-r cmp">
+      <h3>Стартовый доступ</h3>
+      <p class="sub">Всё, что у Гостя, и ещё:</p>
+      <ul class="yes">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Дневник доходов, мечты и колесо баланса (10 сфер)</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Видеть участников, писать сообщения, заявки в друзья</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Чтение общего чата Альянса</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Разборы как участник, а не зритель</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>ПЭРЛ: самодиагностика уровней</li>
+      </ul>
+      <div class="now">
+        <p class="sub" style="margin-bottom:12px">Сейчас у вас уровень «Гость»:</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg>Бесплатная игра «Точка Сборки», открытые вебинары, календарь событий</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <p class="proto-note" style="margin-top:20px">Срок 12 месяцев: так система сейчас выдаёт Стартовый доступ за любую покупку. Ждёт решения Саши. Кнопка оплаты в прототипе не работает.</p>
+
+  <div class="why">
+    <div><b>Один платёж</b><p>Без подписки и автосписаний.</p></div>
+    <div><b>Сразу после оплаты</b><p>Уровень откроется в кабинете сам.</p></div>
+    <div><b>Клан Кристины</b><p>Вы остаётесь в её клане и на этом уровне.</p></div>
+  </div>
+</main>
+
+<script>
+  const q = new URLSearchParams(location.search);
+  const n = q.get('name'), e = q.get('email');
+  if (n) document.getElementById('hi').textContent = n + ', почти готово!';
+  if (e) document.getElementById('mail').textContent = 'Мы отправили письмо на ' + e + '. Подтвердите почту, чтобы войти в кабинет.';
+  document.getElementById('buy').addEventListener('click', () => alert('Прототип: здесь откроется оплата $10.'));
+  document.getElementById('skip').addEventListener('click', (ev) => { ev.preventDefault(); alert('Прототип: здесь переход в кабинет.'); });
+</script>
+<script src="app.js"></script>
+</body>
+</html>
