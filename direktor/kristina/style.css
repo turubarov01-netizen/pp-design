@@ -1035,3 +1035,30 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 
 /* v8.22: 35 обложек, в каждой строке 4 копии набора (на 2560 лента не кончается), скорость прежняя */
 .pwl-row{animation-duration:153s}.pwl-r2{animation-duration:174s}.pwl-r3{animation-duration:124s}
+
+/* v8.23: одна система заголовков (как на первом экране) + золото как акцент */
+:root{--gold-ink:#94701c}
+/* надзаголовки: один стиль везде */
+.n-kick,.a2-kick,.vals-k,.h3-kick{font:600 13px/1.3 var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-ink)}
+.on-dark .n-kick,.vals .vals-k,.hero3 .h3-kick,.pw .n-kick{color:var(--gold)}
+/* заголовки секций: шрифт первого экрана */
+.n-h,.a2-h,.pw-h,.vals-h,.final .d2{font:800 clamp(40px,4.6vw,72px)/.98 var(--display);text-transform:uppercase;letter-spacing:.005em;text-wrap:balance}
+.n-h,.a2-h{max-width:26ch}
+.a2-h{color:#0b0f2e}
+.n-h em,.a2-h em,.pw-h em,.final .d2 em{font-style:normal;color:var(--gold-ink)}
+.on-dark .n-h em,.pw-h em,.final .d2 em,.vals-h em{color:var(--gold)}
+/* золотая черта под заголовком, как на первом экране */
+.n-h::after,.a2-h::after,.pw-h::after,.vals-h::after{content:"";display:block;width:64px;height:1px;background:var(--gold);margin:22px auto 0}
+.n-h-l,.n-head-row .n-h,.world4 .n-h{text-align:left;margin-left:0}
+.n-h-l::after,.n-head-row .n-h::after,.world4 .n-h::after,.pw-h::after,.vals-h::after{margin-left:0}
+/* номера принципов: без Georgia, шрифтом заголовков */
+.vl-m i{font:800 30px/1 var(--display);font-style:normal;color:var(--gold)}
+/* ключевые цифры — золотом */
+.wstats b{color:var(--gold)}
+.pfacts b{color:var(--gold-ink)}
+@media (max-width:640px){
+  .n-h,.a2-h,.pw-h,.vals-h{font-size:clamp(32px,9.6vw,42px);line-height:1}
+  .final .d2{font-size:clamp(40px,12vw,52px)}
+  .n-kick,.a2-kick,.vals-k,.h3-kick{font-size:12px;letter-spacing:.2em}
+  .n-h::after,.a2-h::after,.pw-h::after,.vals-h::after{margin-top:16px}
+}
