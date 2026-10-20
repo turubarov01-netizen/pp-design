@@ -1032,3 +1032,6 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .sec-cta{display:flex;justify-content:center;margin-top:clamp(32px,4vw,48px)}
 /* v8.20 */
 .pfacts li{flex:1 1 0;min-width:120px}
+
+/* v8.22: 35 обложек, в каждой строке 4 копии набора (на 2560 лента не кончается), скорость прежняя */
+.pwl-row{animation-duration:153s}.pwl-r2{animation-duration:174s}.pwl-r3{animation-duration:124s}
