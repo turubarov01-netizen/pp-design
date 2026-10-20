@@ -120,7 +120,7 @@
 
 // Первый экран: фоновое видео только на компьютере, видео Альянса во всплывающем окне
 (()=>{const bv=document.querySelector('.h3-bg video');if(bv&&matchMedia('(min-width:861px)').matches){bv.src=bv.dataset.src;bv.autoplay=true;bv.play().catch(()=>{})}
-const d=document.getElementById('vdlg'),v=document.getElementById('vfull');if(!d)return;document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{d.showModal();v.currentTime=0;v.play().catch(()=>{})}));const c=()=>{v.pause();d.close()};d.querySelector('.vclose').addEventListener('click',c);d.addEventListener('click',e=>{if(e.target===d)c()});d.addEventListener('cancel',()=>v.pause())})();
+const d=document.getElementById('vdlg'),v=document.getElementById('vfull');if(!d)return;const dv=v.getAttribute('src'),dp=v.getAttribute('poster');document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const s=b.dataset.src||dv;if(v.getAttribute('src')!==s){v.src=s;v.poster=b.dataset.poster||dp}d.showModal();v.currentTime=0;v.play().catch(()=>{})}));const c=()=>{v.pause();d.close()};d.querySelector('.vclose').addEventListener('click',c);d.addEventListener('click',e=>{if(e.target===d)c()});d.addEventListener('cancel',()=>v.pause())})();
 
 // Блок 2: видео Игоря с YouTube, плеер грузится по нажатию
 (()=>{const box=document.getElementById('a2v');if(!box)return;box.querySelector('.a2-play').addEventListener('click',()=>{const f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+box.dataset.yt+'?autoplay=1&rel=0&playsinline=1';f.title='Freeman’s Alliance: путь предпринимателя от $0 до $1 000 000';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;box.appendChild(f);box.classList.add('playing')})})();
@@ -226,3 +226,5 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){visible=es[0].isIntersecting},{threshold:.3}).observe(sec)}else visible=true;
   start();
 })();
+
+(()=>{const v=document.querySelector('.pw-bgv');if(!v)return;if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause()}})();
