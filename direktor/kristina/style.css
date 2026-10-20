@@ -839,3 +839,15 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 /* v8.1: обложки курсов в карточке «110+ курсах» */
 .hw-covers img{aspect-ratio:1;object-fit:cover;padding:0;border-radius:14px;border:0;background:none;box-shadow:0 10px 24px -12px rgba(0,0,0,.6)}
 .hw-logos.hw-covers{grid-template-columns:repeat(3,1fr);gap:10px}
+
+/* v8.3: директор филиала впереди, основатель сбоку (голосовое Саши 20.10, 22:49) */
+.h3-pk{right:30%;height:min(72vh,680px);z-index:2}
+.h3-pi{right:-2%;height:min(62vh,580px);z-index:1;filter:brightness(.92)}
+.h3-ck{right:auto;left:8%;bottom:6%}.h3-ci{right:3%;bottom:6%}
+.h3-ck b{font-size:17px}
+@media (max-width:860px){
+  .h3-pk{width:62%;height:auto;left:0;right:auto}
+  .h3-pi{width:54%;height:auto;right:0}
+  .h3-ck{left:4%}
+  .h3-chest{left:76%;bottom:23vw}
+}
