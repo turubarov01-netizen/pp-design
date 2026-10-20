@@ -164,7 +164,7 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
 
 /* v5: стопка направлений — следующая карточка наезжает, предыдущая уменьшается и темнеет */
 (function(){
-  var sec=document.querySelector('.pw'); if(!sec) return;
+  var sec=document.querySelector('#paths'); if(!sec) return;
   var cards=[].slice.call(sec.querySelectorAll('.pw-card'));
   var rm=window.matchMedia('(prefers-reduced-motion: reduce)');
   var wide=window.matchMedia('(min-width: 1025px)');

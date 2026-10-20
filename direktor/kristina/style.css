@@ -255,8 +255,8 @@ form .btn{width:100%;margin-top:4px}
 .f-err:empty{display:none}
 input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35,24,.12)}
 .consent.bad span{color:#b42318}
-.pw{position:relative;display:block}
-.pw input{width:100%;padding-right:56px}
+.f-pw{position:relative;display:block}
+.f-pw input{width:100%;padding-right:56px}
 .pw-t{position:absolute;right:5px;top:5px;width:44px;height:44px;border-radius:10px;display:grid;place-items:center;color:var(--ink-3)}
 .pw-t:hover{color:var(--ink);background:var(--paper-2)}
 .pw-t svg{width:22px;height:22px}
@@ -1020,3 +1020,10 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .mvid-snd .on{display:none}.mvid-snd[aria-pressed="true"] .on{display:inline}.mvid-snd[aria-pressed="true"] .off{display:none}
 @media (max-width:640px){.mvid{border-radius:16px}.mvid-snd{right:10px;bottom:10px;width:40px;min-height:40px;padding:0;justify-content:center}.mvid-snd span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 .cs-np b{font-size:clamp(24px,2.3vw,32px);line-height:1.08;max-width:22ch}
+/* v8.15 видео-отзывы отдельной секцией между направлениями и ценностями */
+.vrev .n-sub{margin-top:0}
+/* v8.15 «185+» отдельной секцией перед «Начните сегодня» */
+.allr-sec .allr{margin-top:0}
+.allr-sec{padding-top:0;padding-bottom:0}
+.allr-sec{padding-bottom:clamp(28px,4vw,56px)}
+.m-sub{margin-top:10px;font-size:15px;line-height:1.45;color:#4a4f7a}
