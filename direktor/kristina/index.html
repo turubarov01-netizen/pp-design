@@ -24,42 +24,34 @@
 <header class="hdr" id="hdr"><div class="wrap">
   <a class="brand" href="#top"><img src="img/logo-blue.webp" alt="" width="34" height="34"><span>Freeman's Alliance</span></a>
   <p class="clan">Клан <b>Кристины Барикянц</b></p>
-  <button class="btn btn-y btn-sm" data-open>Регистрация</button>
+  <button class="btn btn-ink btn-sm" data-open>Регистрация</button>
 </div></header>
 
 <main id="top"><span id="main" tabindex="-1"></span>
 
 <!-- 1. Первый экран -->
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-copy">
-      <p class="kick">Альянс предпринимателей и экспертов</p>
-      <h1 class="d1">Окружение, которое <mark>верит в&nbsp;вас</mark></h1>
-      <p class="lead">Зарегистрируйтесь и получите бесплатный доступ к платформе Альянса: тренинг, уроки и встречи клуба.</p>
-      <div class="cta-row">
-        <button class="btn btn-y" data-open>Получить доступ бесплатно
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-        <span class="cta-note">Без оплаты и без карты</span>
-      </div>
-      <div class="invite">
-        <img src="img/kristina.webp" alt="" width="44" height="44">
-        <p>Вас приглашает <b>Кристина Барикянц</b><br>директор филиала Альянса фрименов</p>
-      </div>
-    </div>
-    <div class="hero-art" aria-hidden="true">
-      <img class="swirl" src="img/logo-yellow.svg" alt="" width="100" height="105">
-      <img class="p p-igor" src="img/igor2-cut.webp" alt="" width="670" height="703">
-      <img class="p p-kris" src="img/kristina-cut.webp" alt="" width="430" height="484">
-      <div class="tag tag-kris"><b>Кристина Барикянц</b>директор филиала</div>
-      <div class="tag tag-igor"><b>Игорь Граф</b>основатель Альянса</div>
+<section class="hero3">
+  <div class="h3-bg" aria-hidden="true"><video data-src="img/intro-bg.mp4" poster="img/intro-bg-poster.jpg" muted loop playsinline preload="none"></video></div>
+  <div class="h3-people">
+    <span class="h3-swirl" aria-hidden="true"></span>
+    <img class="h3-pi" src="img/igor2-cut.webp" alt="" width="670" height="703">
+    <img class="h3-pk" src="img/kristina-cut.webp" alt="" width="430" height="484">
+    <p class="h3-cap h3-ck"><b>Кристина Барикянц</b>директор филиала</p>
+    <p class="h3-cap h3-ci"><b>Игорь Граф</b>основатель Альянса</p>
+    <button class="h3-chest" type="button" data-video aria-label="Смотреть видео об Альянсе"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 7.6v8.8a1.2 1.2 0 0 0 1.8 1.03l7.2-4.4a1.2 1.2 0 0 0 0-2.06l-7.2-4.4A1.2 1.2 0 0 0 9 7.6Z"/></svg></button>
+  </div>
+  <div class="wrap h3-copy">
+    <p class="h3-kick">Закрытый клуб предпринимателей</p>
+    <h1 class="h3-h1">Станьте тем, кем вы <em>рождены</em> быть</h1>
+    <div class="h3-rule"></div>
+    <p class="h3-lead">Встречи, бизнес-челленджи и совместные проекты с&nbsp;людьми, которые создают богатство и делают <span class="nw">что-то</span> великое.</p>
+    <div class="h3-act">
+      <button class="btn btn-y" data-open>Зарегистрироваться <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button class="h3-vcard" type="button" data-video aria-label="Смотреть видео об Альянсе"><span class="h3-vthumb"><img src="img/poster.webp" alt="" width="1600" height="680"><i><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 7.6v8.8a1.2 1.2 0 0 0 1.8 1.03l7.2-4.4a1.2 1.2 0 0 0 0-2.06l-7.2-4.4A1.2 1.2 0 0 0 9 7.6Z"/></svg></span></i></span><span class="h3-vtxt"><b>Смотреть видео</b>Альянс за&nbsp;1&nbsp;минуту</span></button>
     </div>
   </div>
-  <div class="stat-strip"><div class="wrap">
-    <div class="s"><span class="n">1 078</span><p>участников на платформе</p></div>
-    <div class="s"><span class="n">60+</span><p>стран посетил Игорь Граф с 2020 года</p></div>
-    <div class="s"><span class="n">3&times;</span><p>Игорь признан лучшим тренером Mindvalley по версии студентов</p></div>
-  </div></div>
 </section>
+<dialog class="vdlg" id="vdlg" aria-label="Видео об Альянсе"><button class="vclose" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><video id="vfull" src="img/intro.mp4" poster="img/poster.webp" controls playsinline preload="none"></video></dialog>
 
 <!-- 2. Об Альянсе: видео -->
 <section class="block v-sec on-dark" id="about">
@@ -273,7 +265,7 @@
 <div class="sticky" id="sticky">
   <img src="img/kristina.webp" alt="" width="38" height="38">
   <p><b>Доступ бесплатно</b>по приглашению Кристины</p>
-  <button class="btn btn-y btn-sm" data-open>Регистрация</button>
+  <button class="btn btn-ink btn-sm" data-open>Регистрация</button>
 </div>
 
 <dialog id="reg" aria-labelledby="reg-t">
