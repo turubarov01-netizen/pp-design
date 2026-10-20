@@ -806,9 +806,9 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .pwl-head .n-h{margin-left:auto;margin-right:auto}
 .pwl-head .btn{margin-top:28px}
 .pwl-wall{--t:clamp(132px,18.6vw,290px);--g:clamp(12px,1.2vw,18px);margin-top:clamp(40px,5vw,64px);display:grid;gap:var(--g)}
-.pwl-row{display:flex;gap:0;width:max-content;list-style:none;margin:0;padding:0;animation:pwl-r 80s linear infinite;will-change:transform}
-.pwl-r2{animation-name:pwl-l;animation-duration:90s;margin-left:calc(var(--t)*-.55)}
-.pwl-r3{animation-duration:72s;margin-left:calc(var(--t)*-.25)}
+.pwl-row{display:flex;gap:0;width:max-content;list-style:none;margin:0;padding:0;animation:pwl-r 88s linear infinite;will-change:transform}
+.pwl-r2{animation-name:pwl-l;animation-duration:99s;margin-left:calc(var(--t)*-.55)}
+.pwl-r3{animation-duration:79s;margin-left:calc(var(--t)*-.25)}
 .pwl-wall:hover .pwl-row{animation-play-state:paused}
 @keyframes pwl-l{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 @keyframes pwl-r{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
