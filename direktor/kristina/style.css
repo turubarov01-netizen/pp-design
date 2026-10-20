@@ -799,3 +799,24 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .hw-c2 .hw-photo{object-position:52% 50%}
 .hw-vis.vph::after{bottom:16px;left:16px}
 .hw-c4 .hw-photo{object-position:38% 0}
+
+/* v7: Программы — стена обложек (по мотивам Mindvalley Meditations) */
+.pwl{background:linear-gradient(180deg,#f6f7fd 0%,#e4e7fa 55%,#d6dbf7 100%);overflow:hidden}
+.pwl-head{text-align:center;display:flex;flex-direction:column;align-items:center}
+.pwl-head .n-h{margin-left:auto;margin-right:auto}
+.pwl-head .btn{margin-top:28px}
+.pwl-wall{--t:clamp(132px,18.6vw,290px);--g:clamp(12px,1.2vw,18px);margin-top:clamp(40px,5vw,64px);display:grid;gap:var(--g)}
+.pwl-row{display:flex;gap:0;width:max-content;list-style:none;margin:0;padding:0;animation:pwl-r 64s linear infinite;will-change:transform}
+.pwl-r2{animation-name:pwl-l;animation-duration:72s;margin-left:calc(var(--t)*-.55)}
+.pwl-r3{animation-duration:58s;margin-left:calc(var(--t)*-.25)}
+.pwl-wall:hover .pwl-row{animation-play-state:paused}
+@keyframes pwl-l{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@keyframes pwl-r{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
+.pwl-t{flex:0 0 var(--t);width:var(--t);min-width:0;margin-right:var(--g);aspect-ratio:1/1;border-radius:clamp(14px,1.4vw,20px);overflow:hidden;position:relative;background:#0b1150;box-shadow:0 10px 28px -14px rgba(10,15,92,.45);transition:transform .4s var(--ease)}
+.pwl-t:hover{transform:translateY(-4px)}
+.pwl-t>img{width:100%;max-width:100%;height:100%;object-fit:cover;display:block}
+.pwl-t i{position:absolute;left:8px;right:8px;top:8px;font:700 clamp(10px,.8vw,12px)/1.15 var(--body);font-style:normal;text-align:center;background:var(--y);color:var(--ink);border-radius:99px;padding:6px 8px}
+.pw-lg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10%;background:radial-gradient(80% 80% at 50% 25%,#1f2a8a 0%,#0b1150 55%,#060a2c 100%)}
+.pw-lg img{width:44%;height:auto}
+.pw-lg b{font:800 clamp(18px,1.9vw,28px)/.95 var(--display);text-transform:uppercase;color:#fff;letter-spacing:.01em}
+@media (prefers-reduced-motion:reduce){.pwl-row{animation:none}.pwl-wall{overflow-x:auto}}
