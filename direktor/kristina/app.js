@@ -121,3 +121,6 @@
 // Первый экран: фоновое видео только на компьютере, видео Альянса во всплывающем окне
 (()=>{const bv=document.querySelector('.h3-bg video');if(bv&&matchMedia('(min-width:861px)').matches){bv.src=bv.dataset.src;bv.autoplay=true;bv.play().catch(()=>{})}
 const d=document.getElementById('vdlg'),v=document.getElementById('vfull');if(!d)return;document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{d.showModal();v.currentTime=0;v.play().catch(()=>{})}));const c=()=>{v.pause();d.close()};d.querySelector('.vclose').addEventListener('click',c);d.addEventListener('click',e=>{if(e.target===d)c()});d.addEventListener('cancel',()=>v.pause())})();
+
+// Блок 2: видео встреч без звука, играет, пока блок на экране
+(()=>{const v=document.querySelector('.a2-auto');if(!v)return;const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){if(!v.src)v.src=v.dataset.src;v.play().catch(()=>{})}else v.pause()}),{threshold:.25});io.observe(v)})();
