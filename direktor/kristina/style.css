@@ -1019,3 +1019,4 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .mvid-snd svg path:first-child{fill:currentColor;stroke:none}
 .mvid-snd .on{display:none}.mvid-snd[aria-pressed="true"] .on{display:inline}.mvid-snd[aria-pressed="true"] .off{display:none}
 @media (max-width:640px){.mvid{border-radius:16px}.mvid-snd{right:10px;bottom:10px;width:40px;min-height:40px;padding:0;justify-content:center}.mvid-snd span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+.cs-np b{font-size:clamp(24px,2.3vw,32px);line-height:1.08;max-width:22ch}
