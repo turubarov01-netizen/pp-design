@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Sofia+Sans+Extra+Condensed:wght@800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=827">
+<link rel="stylesheet" href="style.css?v=828">
 </head>
 <body>
 <a class="skiplink" href="#main">Перейти к содержанию</a>
@@ -404,10 +404,11 @@
     <label>Имя<input type="text" name="name" autocomplete="given-name" required aria-describedby="e-name"><span class="f-err" id="e-name"></span></label>
     <label>Почта<input type="email" name="email" autocomplete="email" inputmode="email" required aria-describedby="e-email"><span class="f-err" id="e-email"></span></label>
     <label>Пароль<span class="f-pw"><input type="password" name="pw" autocomplete="new-password" minlength="6" required aria-describedby="e-pw"><button type="button" class="pw-t" aria-label="Показать пароль" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></span><span class="f-err" id="e-pw"></span></label>
-    <label class="consent"><input type="checkbox" name="ok" required aria-describedby="e-ok"> <span>Согласен с условиями и обработкой персональных данных</span></label>
+    <label class="consent"><input type="checkbox" name="ok" required aria-describedby="e-ok"> <span>Согласен с <a href="https://wearefree.club/p/oferta" target="_blank" rel="noopener">условиями</a> и <a href="https://wearefree.club/p/soglasie" target="_blank" rel="noopener">обработкой персональных данных</a></span></label>
     <span class="f-err" id="e-ok"></span>
+    <p class="f-err" id="e-form" role="alert"></p>
     <button class="btn btn-y" type="submit">Зарегистрироваться</button>
-    <p class="m-foot">Уже есть аккаунт? <a href="#">Войти</a></p>
+    <p class="m-foot">Уже есть аккаунт? <a href="https://wearefree.club/auth">Войти</a></p>
   </form>
 </dialog>
 
@@ -416,6 +417,6 @@
   <div class="pdlg-b"><span>Прототип</span><p id="pdlg-t"></p><small>Здесь будет видео во всплывающем окне</small></div>
 </dialog>
 
-<script src="app.js?v=827"></script>
+<script src="app.js?v=828"></script>
 </body>
 </html>

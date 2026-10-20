@@ -69,6 +69,7 @@
     mg.textContent = withGoal ? 'Ваша цель: ' + ROUTES[goal].t : '';
     mg.classList.toggle('on', withGoal);
     dlg.showModal();
+    window.dirGoal?.('dir_reg_open');
     document.getElementById('sticky')?.classList.remove('show');
     setTimeout(() => dlg.querySelector('input')?.focus(), 60);
   }));
@@ -108,11 +109,25 @@
       const bad = fields.filter((el) => !check(el));
       if (bad.length) { bad[0].focus(); return; }
       const btn = f.querySelector('[type=submit]');
+      const label = btn.textContent;
+      const formErr = document.getElementById('e-form');
+      if (formErr) formErr.textContent = '';
       btn.setAttribute('aria-busy', 'true');
       btn.textContent = 'Регистрируем';
+      const name = f.name.value.trim(), email = f.email.value.trim();
+      // На платформе подключён /_d/reg.js: настоящая регистрация и привязка к клану директора
+      if (window.dirRegister) {
+        window.dirRegister({ name, email, password: f.pw.value }).then((r) => {
+          if (r.ok) { location.href = r.next; return; }
+          btn.removeAttribute('aria-busy');
+          btn.textContent = label;
+          if (formErr) formErr.textContent = r.message;
+        });
+        return;
+      }
       // Прототип: настоящей регистрации нет, переходим на страницу разового предложения
       setTimeout(() => {
-        location.href = 'oto.html?name=' + encodeURIComponent(f.name.value.trim()) + '&email=' + encodeURIComponent(f.email.value.trim());
+        location.href = 'oto.html?name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email);
       }, 700);
     });
   }

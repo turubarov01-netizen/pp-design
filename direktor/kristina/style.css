@@ -1089,3 +1089,8 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 /* v8.27: ряды шире, чтобы язычок «Популярное» читался с запасом */
 .pwl-wall{row-gap:calc(var(--g) + 30px)}
 @media (max-width:640px){.pwl-wall{row-gap:calc(var(--g) + 22px)}}
+
+/* v8.28: ссылки в согласии и общая ошибка формы */
+.consent a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.consent a:hover{color:var(--ink)}
+#e-form{text-align:center}
