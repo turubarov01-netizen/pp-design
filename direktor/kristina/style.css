@@ -393,3 +393,27 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
   .h3-vcard{display:none}
 }
 @media (prefers-reduced-motion:reduce){.h3-bg video,.h3-swirl,.h3-chest,.h3-vthumb i span{animation:none}}
+
+/* ===== Блок 2 «Что такое Альянс фрименов» (по образцу Mindvalley) ===== */
+.about2{background:#f3f4fa;color:var(--ink);padding:clamp(72px,9vw,128px) 0;text-align:center}
+.a2-kick{font:600 14px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:#2b3070}
+.a2-h{font:700 clamp(32px,3.6vw,52px)/1.12 var(--body);letter-spacing:-.015em;max-width:20ch;margin:22px auto 22px;color:#0b0f2e}
+.a2-lead{font-size:clamp(17px,1.4vw,20px);line-height:1.55;color:#3a3f66;max-width:52ch;margin:0 auto}
+.a2-stats{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:980px;margin:clamp(40px,5vw,60px) auto clamp(44px,5vw,64px)}
+.a2-stats b{display:block;font:800 clamp(44px,4.4vw,64px)/1 var(--display);color:var(--ink);letter-spacing:.01em}
+.a2-stats span{display:block;margin-top:10px;font:600 13px/1.35 var(--body);letter-spacing:.08em;text-transform:uppercase;color:#2b3070}
+.a2-video{position:relative;aspect-ratio:2.35/1;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 40px 80px -40px rgba(10,15,92,.45)}
+.a2-video video{width:100%;height:100%;object-fit:cover}
+.a2-play{position:absolute;inset:0;display:grid;place-items:center;background:rgba(6,10,38,.18);transition:opacity .4s var(--ease)}
+.a2-play span{display:grid;place-items:center;width:120px;height:84px;border-radius:18px;background:rgba(8,10,30,.34);border:2px solid rgba(255,255,255,.9);-webkit-backdrop-filter:blur(12px) saturate(1.3);backdrop-filter:blur(12px) saturate(1.3);color:#fff;animation:h3ring 2.4s ease-out infinite;transition:transform .3s var(--ease)}
+.a2-play:hover span{transform:scale(1.05)}
+.a2-play svg{width:44px;height:44px}
+.a2-play:focus-visible{outline:3px solid var(--ink);outline-offset:-6px}
+.a2-video.playing .a2-play{opacity:0;pointer-events:none}
+@media (max-width:860px){
+  .a2-h{font-size:29px}
+  .a2-stats{grid-template-columns:repeat(2,1fr);gap:28px 12px}
+  .a2-video{aspect-ratio:16/10;border-radius:18px}
+  .a2-play span{width:96px;height:68px;border-radius:16px}.a2-play svg{width:36px;height:36px}
+}
+@media (prefers-reduced-motion:reduce){.a2-play span{animation:none}}
