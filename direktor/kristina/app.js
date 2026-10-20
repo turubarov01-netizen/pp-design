@@ -124,3 +124,40 @@ const d=document.getElementById('vdlg'),v=document.getElementById('vfull');if(!d
 
 // Блок 2: видео Игоря с YouTube, плеер грузится по нажатию
 (()=>{const box=document.getElementById('a2v');if(!box)return;box.querySelector('.a2-play').addEventListener('click',()=>{const f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+box.dataset.yt+'?autoplay=1&rel=0&playsinline=1';f.title='Freeman’s Alliance: путь предпринимателя от $0 до $1 000 000';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;box.appendChild(f);box.classList.add('playing')})})();
+
+// v4: живой трекер
+(()=>{const t=document.querySelector('.trk');if(!t)return;const ring=t.querySelector('.trk-ring .on'),pc=t.querySelector('.trk-pc'),items=[...t.querySelectorAll('.trk-list li')],toast=t.querySelector('.trk-toast');const red=matchMedia('(prefers-reduced-motion:reduce)').matches;let timers=[];
+const setPc=v=>{ring.style.strokeDashoffset=314-314*v/100;const s=+pc.textContent,st=performance.now();const f=n=>{const k=Math.min(1,(n-st)/900);pc.textContent=Math.round(s+(v-s)*k);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
+const run=()=>{timers.forEach(clearTimeout);timers=[];items.forEach(i=>i.classList.remove('done'));toast.classList.remove('show');t.classList.remove('go');setPc(0);
+ timers.push(setTimeout(()=>t.classList.add('go'),300));
+ items.forEach((it,i)=>timers.push(setTimeout(()=>{it.classList.add('done');setPc(Math.round((i+1)/items.length*100));if(i===2)toast.classList.add('show')},900+i*1100)));
+ timers.push(setTimeout(()=>toast.classList.remove('show'),900+5*1100));
+ if(!red)timers.push(setTimeout(run,9000))};
+if(red){t.classList.add('go');items.forEach(i=>i.classList.add('done'));ring.style.strokeDashoffset=0;pc.textContent=100;return}
+let vis=false;new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!vis){vis=true;run()}else if(!e.isIntersecting&&vis){vis=false;timers.forEach(clearTimeout)}}),{threshold:.35}).observe(t)})();
+
+// v4: глобус с городами участников
+(()=>{const c=document.getElementById('globe');if(!c)return;const x=c.getContext('2d');const red=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const C=[[25.2,55.3],[25.8,-80.2],[55.75,37.6],[40.7,-74],[38.7,-9.1],[41,29],[52.5,13.4],[43.2,76.9],[41.7,44.8],[-8.4,115.2],[13.7,100.5],[-33.9,18.4],[9.9,-84.1],[-22.9,-43.2],[56.8,60.6],[59.9,30.3],[34,-118.2],[51.5,-0.1],[43,44.7],[57.15,65.5]];
+const L=[[0,2],[0,4],[2,6],[6,3],[3,1],[0,9],[2,7],[7,8],[5,0],[4,3],[9,10],[0,11],[1,12],[12,13],[2,14],[2,15],[1,16],[17,4],[18,2],[19,14]];
+const N=1100,P=[];const g=Math.PI*(3-Math.sqrt(5));for(let i=0;i<N;i++){const y=1-i/(N-1)*2,r=Math.sqrt(1-y*y),t=g*i;P.push([Math.cos(t)*r,y,Math.sin(t)*r])}
+const v3=(la,lo)=>{la*=Math.PI/180;lo*=Math.PI/180;return[Math.cos(la)*Math.sin(lo),Math.sin(la),Math.cos(la)*Math.cos(lo)]};
+const CV=C.map(a=>v3(a[0],a[1]));let W=0,R=0,dpr=1;
+const size=()=>{dpr=Math.min(2,devicePixelRatio||1);const b=c.getBoundingClientRect();W=b.width;c.width=W*dpr;c.height=W*dpr;R=W*.42};size();addEventListener('resize',size);
+const tilt=.42;let rot=-0.9;
+const pr=p=>{const cy=Math.cos(rot),sy=Math.sin(rot);let X=p[0]*cy-p[2]*sy,Z=p[0]*sy+p[2]*cy,Y=p[1];const ct=Math.cos(tilt),st=Math.sin(tilt);const Y2=Y*ct-Z*st,Z2=Y*st+Z*ct;return[W/2+X*R,W/2-Y2*R,Z2]};
+const slerp=(a,b,t)=>{const d=Math.acos(Math.max(-1,Math.min(1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2])));if(d<1e-4)return a;const s=Math.sin(d),k1=Math.sin((1-t)*d)/s,k2=Math.sin(t*d)/s,h=1+Math.sin(Math.PI*t)*d*.22;return[(a[0]*k1+b[0]*k2)*h,(a[1]*k1+b[1]*k2)*h,(a[2]*k1+b[2]*k2)*h]};
+let t0=performance.now(),on=true;
+const draw=n=>{const T=(n-t0)/1000;if(!red)rot=-0.9+T*0.09;x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,W);
+ for(const p of P){const q=pr(p);if(q[2]<-.05)continue;x.fillStyle=`rgba(180,190,250,${.18+q[2]*.6})`;x.fillRect(q[0]-.9,q[1]-.9,1.8,1.8)}
+ L.forEach((l,i)=>{const a=CV[l[0]],b=CV[l[1]];x.beginPath();let vis=0;for(let k=0;k<=40;k++){const q=pr(slerp(a,b,k/40));if(q[2]>-.02){vis++;k&&vis>1?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1])}else vis=0}x.strokeStyle='rgba(216,178,90,.32)';x.lineWidth=1;x.stroke();
+  const ph=((T*.35+i*.37)%1);const q=pr(slerp(a,b,ph));if(q[2]>0){x.fillStyle='#ffd447';x.shadowColor='#ffc306';x.shadowBlur=10;x.beginPath();x.arc(q[0],q[1],2.2,0,7);x.fill();x.shadowBlur=0}});
+ CV.forEach((p,i)=>{const q=pr(p);if(q[2]<0)return;const pu=(T*.8+i*.23)%1;x.strokeStyle=`rgba(255,195,6,${(1-pu)*.7*q[2]})`;x.lineWidth=1.2;x.beginPath();x.arc(q[0],q[1],3+pu*12,0,7);x.stroke();x.fillStyle=`rgba(255,212,71,${.5+q[2]*.5})`;x.beginPath();x.arc(q[0],q[1],3,0,7);x.fill()});
+ if(on&&!red)requestAnimationFrame(draw)};
+new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(on&&!was)requestAnimationFrame(draw)}),{}).observe(c);requestAnimationFrame(draw)})();
+
+// v4: карусель программ
+(()=>{const car=document.getElementById('car');if(!car)return;document.querySelectorAll('[data-car]').forEach(b=>b.addEventListener('click',()=>{const w=car.querySelector('.pg').getBoundingClientRect().width+16;car.scrollBy({left:w*+b.dataset.car,behavior:'smooth'})}))})();
+
+// v4: заглушка видео во всплывающем окне
+(()=>{const d=document.getElementById('pdlg');if(!d)return;const t=document.getElementById('pdlg-t');document.querySelectorAll('[data-pvid]').forEach(b=>b.addEventListener('click',()=>{t.textContent=b.dataset.pvid;d.showModal()}));d.querySelector('.vclose').addEventListener('click',()=>d.close());d.addEventListener('click',e=>{if(e.target===d)d.close()})})();
