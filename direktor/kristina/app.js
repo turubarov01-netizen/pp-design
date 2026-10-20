@@ -202,15 +202,16 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
   var track=sec.querySelector('.hw-track'), busy=false, timer=null, visible=false, hover=false;
   var rm=window.matchMedia('(prefers-reduced-motion: reduce)');
   function step(){var c=track.children[0];return c.getBoundingClientRect().width+parseFloat(getComputedStyle(track).columnGap||getComputedStyle(track).gap||24)}
+  function rp(el){el.querySelectorAll('video[autoplay]').forEach(function(v){v.play().catch(function(){})})}
   function go(dir){
     if(busy) return; busy=true;
     var s=step(), dur=rm.matches?0:700;
     if(dir>0){
       track.style.transition='transform '+dur+'ms cubic-bezier(.22,1,.36,1)';
       track.style.transform='translateX('+(-s)+'px)';
-      setTimeout(function(){track.style.transition='none';track.appendChild(track.children[0]);track.style.transform='translateX(0)';void track.offsetWidth;busy=false},dur+20);
+      setTimeout(function(){track.style.transition='none';var m=track.children[0];track.appendChild(m);rp(m);track.style.transform='translateX(0)';void track.offsetWidth;busy=false},dur+20);
     }else{
-      track.style.transition='none';track.insertBefore(track.lastElementChild,track.children[0]);track.style.transform='translateX('+(-s)+'px)';void track.offsetWidth;
+      track.style.transition='none';var m2=track.lastElementChild;track.insertBefore(m2,track.children[0]);rp(m2);track.style.transform='translateX('+(-s)+'px)';void track.offsetWidth;
       track.style.transition='transform '+dur+'ms cubic-bezier(.22,1,.36,1)';track.style.transform='translateX(0)';
       setTimeout(function(){busy=false},dur+20);
     }
@@ -240,3 +241,7 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
   paint(0);
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis&&!t)t=setInterval(tick,520);if(!vis&&t){clearInterval(t);t=null}},{threshold:.35}).observe(tr)}else{vis=true;t=setInterval(tick,520)}
 })();
+
+/* v8.7: клик по обложке направления открывает видео (как кнопка в углу) */
+document.querySelectorAll('.pw-cover-v').forEach(function(c){c.addEventListener('click',function(e){if(e.target.closest('.pw-play'))return;var b=c.querySelector('.pw-play');if(b)b.click()})});
+document.querySelectorAll('.pw-cv').forEach(function(v){if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause()}});
