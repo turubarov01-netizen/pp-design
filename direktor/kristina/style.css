@@ -1062,3 +1062,14 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
   .n-kick,.a2-kick,.vals-k,.h3-kick{font-size:12px;letter-spacing:.2em}
   .n-h::after,.a2-h::after,.pw-h::after,.vals-h::after{margin-top:16px}
 }
+
+/* v8.24: 43 обложки (15/14/14, без повторов между рядами), значок «Хит» на топовых программах */
+.pwl-row{animation-duration:191s}.pwl-r2{animation-duration:203s}.pwl-r3{animation-duration:158s}
+.pwl-t.pwl-hit i{left:10px;right:auto;top:10px;background:var(--gold);color:#0b0f2e;font:700 11px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;padding:6px 10px 5px;box-shadow:0 4px 12px -4px rgba(0,0,0,.5)}
+@media (max-width:640px){.pwl-t.pwl-hit i{left:6px;top:6px;font-size:9px;letter-spacing:.1em;padding:4px 7px 3px}}
+.pwl-t.pwl-hit i{left:auto;right:10px}
+.pwl-t.pwl-hit-b i{top:auto;bottom:10px;left:10px;right:auto}
+.pwl-t.pwl-hit::after{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid var(--gold);pointer-events:none}
+@media (max-width:640px){.pwl-t.pwl-hit i{left:auto;right:6px}.pwl-t.pwl-hit-b i{top:auto;bottom:6px;left:6px;right:auto}.pwl-t.pwl-hit::after{border-width:1.5px}}
+.pwl-t.pwl-hit-br i{top:auto;bottom:10px}
+@media (max-width:640px){.pwl-t.pwl-hit-br i{top:auto;bottom:6px}}
