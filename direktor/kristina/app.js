@@ -245,3 +245,8 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
 /* v8.7: клик по обложке направления открывает видео (как кнопка в углу) */
 document.querySelectorAll('.pw-cover-v').forEach(function(c){c.addEventListener('click',function(e){if(e.target.closest('.pw-play'))return;var b=c.querySelector('.pw-play');if(b)b.click()})});
 document.querySelectorAll('.pw-cv').forEach(function(v){if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause()}});
+/* v8.11: кейсы — стрелки карусели; видео-кейсы с YouTube в общем окне */
+(()=>{const t=document.querySelector('.csr-t');if(t)document.querySelectorAll('.csr-b').forEach(b=>b.addEventListener('click',()=>{const c=t.querySelector('.cs');t.scrollBy({left:(+b.dataset.dir)*((c?c.offsetWidth:500)+18),behavior:'smooth'})}));
+const d=document.getElementById('vdlg'),v=document.getElementById('vfull');if(!d)return;let f=null;const off=()=>{if(f){f.remove();f=null;v.hidden=false}};
+document.querySelectorAll('[data-yt]').forEach(b=>b.addEventListener('click',()=>{v.pause();v.hidden=true;off();v.hidden=true;f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+b.dataset.yt+'?autoplay=1&rel=0';f.allow='autoplay; fullscreen; picture-in-picture';f.allowFullscreen=true;f.title=b.getAttribute('aria-label')||'Видео';d.appendChild(f);d.showModal()}));
+document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',off,true));d.addEventListener('close',off)})();
