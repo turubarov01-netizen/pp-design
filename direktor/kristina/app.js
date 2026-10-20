@@ -195,3 +195,34 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
   window.addEventListener('load',setup);
   setup();
 })();
+
+/* v6: «Как устроен Альянс» — бесконечная карусель, сдвиг на одну карточку каждые 3,5 с */
+(function(){
+  var sec=document.querySelector('.hw'); if(!sec) return;
+  var track=sec.querySelector('.hw-track'), busy=false, timer=null, visible=false, hover=false;
+  var rm=window.matchMedia('(prefers-reduced-motion: reduce)');
+  function step(){var c=track.children[0];return c.getBoundingClientRect().width+parseFloat(getComputedStyle(track).columnGap||getComputedStyle(track).gap||24)}
+  function go(dir){
+    if(busy) return; busy=true;
+    var s=step(), dur=rm.matches?0:700;
+    if(dir>0){
+      track.style.transition='transform '+dur+'ms cubic-bezier(.22,1,.36,1)';
+      track.style.transform='translateX('+(-s)+'px)';
+      setTimeout(function(){track.style.transition='none';track.appendChild(track.children[0]);track.style.transform='translateX(0)';void track.offsetWidth;busy=false},dur+20);
+    }else{
+      track.style.transition='none';track.insertBefore(track.lastElementChild,track.children[0]);track.style.transform='translateX('+(-s)+'px)';void track.offsetWidth;
+      track.style.transition='transform '+dur+'ms cubic-bezier(.22,1,.36,1)';track.style.transform='translateX(0)';
+      setTimeout(function(){busy=false},dur+20);
+    }
+  }
+  function tick(){if(visible&&!hover&&!rm.matches&&!document.hidden) go(1)}
+  function start(){clearInterval(timer);timer=setInterval(tick,3500)}
+  sec.querySelectorAll('[data-hw]').forEach(function(b){b.addEventListener('click',function(){go(+b.getAttribute('data-hw'));start()})});
+  sec.addEventListener('mouseenter',function(){hover=true});sec.addEventListener('mouseleave',function(){hover=false});
+  sec.addEventListener('focusin',function(){hover=true});sec.addEventListener('focusout',function(){hover=false});
+  var x0=null;
+  track.addEventListener('pointerdown',function(e){x0=e.clientX});
+  track.addEventListener('pointerup',function(e){if(x0===null)return;var dx=e.clientX-x0;x0=null;if(Math.abs(dx)>40){go(dx<0?1:-1);start()}});
+  if('IntersectionObserver' in window){new IntersectionObserver(function(es){visible=es[0].isIntersecting},{threshold:.3}).observe(sec)}else visible=true;
+  start();
+})();
