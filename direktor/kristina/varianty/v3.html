@@ -4,29 +4,45 @@
 <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Sofia+Sans+Extra+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="v.css"><style>
 .v3{background:var(--night);color:#fff}
-.v3 .bg{position:absolute;inset:-30px;background:url(../img/club-1.webp) center 40%/cover;filter:blur(14px) saturate(.7)}
-.v3 .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,10,38,.96) 0%,rgba(6,10,38,.86) 38%,rgba(6,10,38,.72) 70%,rgba(6,10,38,.78) 100%),linear-gradient(0deg,rgba(6,10,38,.95) 0%,transparent 30%)}
+.v3 .bg{position:absolute;inset:0;overflow:hidden;background:#0b1040 url(../img/intro-bg-poster.jpg) center/cover}
+.v3 .bg video{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;filter:saturate(.75)}
+.v3 .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,10,38,.94) 0%,rgba(6,10,38,.8) 38%,rgba(6,10,38,.42) 72%,rgba(6,10,38,.5) 100%),linear-gradient(0deg,rgba(6,10,38,.95) 0%,transparent 30%)}
 .v3 .reg{background:var(--y);color:var(--ink)}
 .v3 .copy{position:relative;z-index:4;width:var(--wrap);margin:auto auto;padding:2vh 0 7vh}
-.v3 .kick{display:inline-flex;gap:10px;align-items:center;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#d9dbf2}
+.v3 .kick{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
 .v3 .kick i{width:8px;height:8px;border-radius:50%;background:var(--y)}
-.v3 h1{font:800 clamp(50px,5.4vw,88px)/.92 var(--display);text-transform:uppercase;margin:18px 0 22px;max-width:13ch}
-.v3 .lead{max-width:42ch;color:#d4d6ee;font-size:clamp(17px,1.35vw,20px)}
+.v3 h1{font:800 clamp(52px,5.6vw,92px)/.92 var(--display);text-transform:uppercase;letter-spacing:.005em;margin:20px 0 24px;max-width:13ch;color:#fff}
+.v3 h1 em{font-style:normal;color:var(--gold)}
+.v3 .rule{width:64px;height:1px;background:var(--gold);margin:0 0 22px}
+.v3 .lead{max-width:40ch;color:#c9cbe6;font-size:clamp(17px,1.35vw,20px)}
 .v3 .act{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin:32px 0 34px}
 .v3 .btn{background:var(--y);color:var(--ink)}
+.v3 .vcard{display:flex;align-items:center;gap:14px;min-height:58px;padding:6px 18px 6px 6px;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;text-align:left;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .25s}
+.v3 .vcard:hover{background:rgba(255,255,255,.18)}
+.v3 .vcard:focus-visible{outline:3px solid var(--y);outline-offset:3px}
+.v3 .vthumb{position:relative;width:96px;height:56px;border-radius:12px;overflow:hidden;flex:none}
+.v3 .vthumb img{width:100%;height:100%;object-fit:cover}
+.v3 .vthumb i{position:absolute;inset:0;display:grid;place-items:center;background:rgba(6,10,38,.35)}
+.v3 .vthumb svg{width:26px;height:26px;color:#fff}
+.v3 .vtxt{font-size:13px;line-height:1.3;color:#c9cbe6}.v3 .vtxt b{display:block;font-size:16px;color:#fff;font-weight:600}
+.vdlg{margin:auto;border:0;padding:0;background:#000;border-radius:20px;width:min(1100px,calc(100% - 24px));overflow:visible}
+.vdlg::backdrop{background:rgba(3,5,20,.86)}
+.vdlg video{display:block;width:100%;aspect-ratio:16/9;border-radius:20px;background:#000}
+.vclose{position:absolute;right:0;top:-54px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center}
+.vclose svg{width:20px;height:20px}
 .v3 .proof{display:flex;gap:34px;margin-bottom:28px}
 .v3 .proof b{display:block;font:800 40px/1 var(--display)}
 .v3 .proof span{font-size:13px;color:#b9bce0}
 .v3 .people{width:54%;height:100%}
 .v3 .pi{right:0;height:min(84vh,820px);width:auto}
-.v3 .pk{right:45%;height:min(60vh,580px);width:auto;z-index:2}
+.v3 .pk{right:44%;height:min(64vh,620px);width:auto;z-index:2}
 .v3 .cap{bottom:6%}.v3 .ck{right:47%}.v3 .ci{right:3%}
 
 @media (max-width:860px){
  .top .clan{display:none}
  .hero{min-height:0}
- .people{position:relative;width:100%!important;height:96vw!important;left:auto!important;transform:none!important;order:1}
- .pi{height:auto!important;width:68%!important;right:0!important}
+ .people{position:relative;width:100%!important;height:82vw!important;left:auto!important;transform:none!important;order:1}
+ .pi{height:auto!important;width:74%!important;right:0!important}
  .pk{height:auto!important;width:44%!important;left:4%!important;right:auto!important}
  .cap,.side .cap{display:none}
  .copy{order:2;padding:6px 0 40px!important;margin:0 auto!important}
@@ -39,15 +55,18 @@
  .v2 .panel{order:3;position:static;max-width:none;margin:-8px 0 0;box-shadow:none;padding:0;background:none}
  .v2 .side{order:4;position:static;width:auto;margin:20px 0 40px}
  .btn{width:100%}
+ .v3 .vcard{width:100%}
  .v3 .proof{gap:22px}
 }</style></head><body class="v3">
 <nav class="vbar" aria-label="Варианты"><b>Первый экран</b><a href="v1.html">1 · Ночь</a><a href="v2.html">2 · Обложка</a><a href="v3.html" aria-current="page">3 · Клуб</a><a href="../">Весь сайт</a></nav>
-<section class="hero"><div class="bg" aria-hidden="true"></div><header class="top"><a class="brand" href="#"><img src="../img/logo-yellow.svg" alt="" width="34" height="34"><span>Freeman's Alliance</span></a><span class="clan">Клан Кристины Барикянц</span><a class="reg" href="#">Регистрация</a></header>
-<div class="people" aria-hidden="true"><img class="pi" src="../img/igor-cut.webp" alt="" width="900" height="881"><img class="pk" src="../img/kristina-cut.webp" alt="" width="430" height="484"></div><p class="cap ck"><b>Кристина Барикянц</b>директор клана</p><p class="cap ci"><b>Игорь Граф</b>основатель Альянса</p>
-<div class="copy"><p class="kick"><i></i>Международный клуб предпринимателей</p>
-<h1>Окружение для тех, кто хочет большего</h1>
+<section class="hero"><div class="bg" aria-hidden="true"><video src="../img/intro-bg.mp4" poster="../img/intro-bg-poster.jpg" autoplay muted loop playsinline preload="auto"></video></div><header class="top"><a class="brand" href="#"><img src="../img/logo-yellow.svg" alt="" width="34" height="34"><span>Freeman's Alliance</span></a><span class="clan">Клан Кристины Барикянц</span><a class="reg" href="#">Регистрация</a></header>
+<div class="people" aria-hidden="true"><img class="pi" src="../img/igor2-cut.webp" alt="" width="670" height="703"><img class="pk" src="../img/kristina-cut.webp" alt="" width="430" height="484"></div><p class="cap ck"><b>Кристина Барикянц</b>директор филиала</p><p class="cap ci"><b>Игорь Граф</b>основатель Альянса</p>
+<div class="copy"><p class="kick">Закрытый клуб предпринимателей</p>
+<h1>Станьте тем, кем вы <em>рождены</em> быть</h1>
+<div class="rule"></div>
 <p class="lead">Встречи, бизнес-челленджи и совместные проекты с людьми, которые создают богатство и делают <span style="white-space:nowrap">что-то</span> великое.</p>
-<div class="act"><a class="btn" href="#">Вступить бесплатно <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span class="note">Без оплаты и без карты</span></div>
-<div class="proof"><p><b>1 078</b><span>участников</span></p><p><b>3×</b><span>лучший тренер Mindvalley · Игорь</span></p></div>
-<p class="invite"><img src="../img/kristina.webp" alt="" width="42" height="42"><span>Вас приглашает <b>Кристина Барикянц</b>,<br>директор клана в Альянсе</span></p></div></section><script>(()=>{const w=n=>{if(n.nodeType===3){n.nodeValue=n.nodeValue.replace(/(^|[\s(«])([А-Яа-яЁё]{1,3})\s(?=\S)/g,'$1$2\u00a0').replace(/(\d)\s(?=[А-Яа-яЁё$×])/g,'$1\u00a0');return}if(n.nodeType===1&&!/^(SCRIPT|STYLE)$/.test(n.tagName))n.childNodes.forEach(w)};w(document.body)})()</script>
+<div class="act"><a class="btn" href="#">Зарегистрироваться <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><button class="vcard" type="button" data-video aria-label="Смотреть видео об Альянсе"><span class="vthumb"><img src="../img/poster.webp" alt="" width="1600" height="680"><i><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5Z"/></svg></i></span><span class="vtxt"><b>Смотреть видео</b>Альянс за 1 минуту</span></button></div>
+<p class="invite"><img src="../img/kristina.webp" alt="" width="42" height="42"><span>Вас приглашает <b>Кристина Барикянц</b>,<br>директор филиала Альянса фрименов</span></p></div></section>
+<dialog class="vdlg" id="vdlg" aria-label="Видео об Альянсе"><button class="vclose" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><video id="vfull" src="../img/intro.mp4" poster="../img/poster.webp" controls playsinline preload="none"></video></dialog>
+<script src="v3.js"></script><script>(()=>{const w=n=>{if(n.nodeType===3){n.nodeValue=n.nodeValue.replace(/(^|[\s(«])([А-Яа-яЁё]{1,3})\s(?=\S)/g,'$1$2\u00a0').replace(/(\d)\s(?=[А-Яа-яЁё$×])/g,'$1\u00a0');return}if(n.nodeType===1&&!/^(SCRIPT|STYLE)$/.test(n.tagName))n.childNodes.forEach(w)};w(document.body)})()</script>
 </body></html>

@@ -1,0 +1,1 @@
+(()=>{const d=document.getElementById('vdlg'),v=document.getElementById('vfull');document.querySelector('[data-video]').addEventListener('click',()=>{d.showModal();v.currentTime=0;v.play()});const c=()=>{v.pause();d.close()};d.querySelector('.vclose').addEventListener('click',c);d.addEventListener('click',e=>{if(e.target===d)c()});d.addEventListener('cancel',()=>v.pause())})()
