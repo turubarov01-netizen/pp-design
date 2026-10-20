@@ -196,7 +196,7 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
   setup();
 })();
 
-/* v6: «Как устроен Альянс» — бесконечная карусель, сдвиг на одну карточку каждые 3,5 с */
+/* v6: «Как устроен Альянс» — бесконечная карусель, сдвиг на одну карточку каждые 5 с (v8.8) */
 (function(){
   var sec=document.querySelector('.hw'); if(!sec) return;
   var track=sec.querySelector('.hw-track'), busy=false, timer=null, visible=false, hover=false;
@@ -217,10 +217,10 @@ new IntersectionObserver(es=>es.forEach(e=>{const was=on;on=e.isIntersecting;if(
     }
   }
   function tick(){if(visible&&!hover&&!rm.matches&&!document.hidden) go(1)}
-  function start(){clearInterval(timer);timer=setInterval(tick,3500)}
+  function start(){clearInterval(timer);timer=setInterval(tick,5000)}
   sec.querySelectorAll('[data-hw]').forEach(function(b){b.addEventListener('click',function(){go(+b.getAttribute('data-hw'));start()})});
-  sec.addEventListener('mouseenter',function(){hover=true});sec.addEventListener('mouseleave',function(){hover=false});
-  sec.addEventListener('focusin',function(){hover=true});sec.addEventListener('focusout',function(){hover=false});
+  /* v8.8: автопрокрутка не встаёт от наведения мышью или касания; пауза только пока клавиатурный фокус внутри */
+  sec.addEventListener('focusin',function(e){hover=!!(e.target.matches&&e.target.matches(':focus-visible'))});sec.addEventListener('focusout',function(){hover=false});
   var x0=null;
   track.addEventListener('pointerdown',function(e){x0=e.clientX});
   track.addEventListener('pointerup',function(e){if(x0===null)return;var dx=e.clientX-x0;x0=null;if(Math.abs(dx)>40){go(dx<0?1:-1);start()}});
