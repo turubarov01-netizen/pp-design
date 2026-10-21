@@ -181,4 +181,7 @@
   .kab .ap-t th:first-child, .kab .ap-t td:first-child { padding-left: 16px; }
   .kab .ap-rep { grid-template-columns: 1fr; gap: 2px; }
   .kab .ap-rep dd { margin-bottom: 8px; }
+  .kab .ap-card-h { flex-wrap: wrap; }
+  .kab .ap-card-h .r { margin-left: 0; max-width: 100%; overflow-x: auto; }
+  .kab .ap-seg button { flex: none; }
 }
