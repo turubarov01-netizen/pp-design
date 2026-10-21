@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Sofia+Sans+Extra+Condensed:wght@800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=829">
+<link rel="stylesheet" href="style.css?v=830">
 </head>
 <body>
 <a class="skiplink" href="#main">Перейти к содержанию</a>
@@ -384,7 +384,7 @@
 </main>
 
 
-<footer><div class="wrap"><span>© Freeman's Alliance · wearefree.club</span><span>Клан Кристины Барикянц</span></div></footer>
+<footer class="lgl" data-clan="barikyants"><div class="wrap"><nav class="lgl-d" aria-label="Документы"><a href="https://wearefree.club/c/barikyants/legal/privacy" target="_blank" rel="noopener">Политика конфиденциальности</a><a href="https://wearefree.club/c/barikyants/legal/offer" target="_blank" rel="noopener">Публичная оферта</a><a href="https://wearefree.club/c/barikyants/legal/consent" target="_blank" rel="noopener">Согласие на обработку персональных данных</a></nav><p class="lgl-r"><span>ИП Барикянц Кристина Георгиевна</span><span>ИНН 151500740602</span><span>ОГРНИП 318151300018588</span><span>г. Владикавказ, проспект Коста, 80.</span><span>E-mail <a href="mailto:kristinital@mail.ru">kristinital@mail.ru</a></span><span>Телефон <a href="tel:+79188288982">+79188288982</a></span></p><p class="lgl-x">Страница ведётся самостоятельным партнёром (франчайзи), работающим по договору коммерческой концессии (франшизы) с правообладателем платформы. Партнёр является независимым хозяйствующим субъектом, действует от своего имени и за свой счёт, самостоятельно заключает договоры с клиентами, самостоятельно ведёт учёт и уплачивает налоги. Партнёр не является обособленным подразделением, филиалом или взаимозависимым лицом правообладателя; отношения сторон не направлены на дробление бизнеса и не влекут перераспределения выручки в целях налоговой оптимизации.</p><p class="lgl-c"><span>© Freeman's Alliance · wearefree.club</span><span>Клан Кристины</span></p></div></footer>
 
 <div class="sticky" id="sticky">
   <img src="img/kristina.webp" alt="" width="38" height="38">
@@ -404,7 +404,7 @@
     <label>Имя<input type="text" name="name" autocomplete="given-name" required aria-describedby="e-name"><span class="f-err" id="e-name"></span></label>
     <label>Почта<input type="email" name="email" autocomplete="email" inputmode="email" required aria-describedby="e-email"><span class="f-err" id="e-email"></span></label>
     <label>Пароль<span class="f-pw"><input type="password" name="pw" autocomplete="new-password" minlength="6" required aria-describedby="e-pw"><button type="button" class="pw-t" aria-label="Показать пароль" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></span><span class="f-err" id="e-pw"></span></label>
-    <label class="consent"><input type="checkbox" name="ok" required aria-describedby="e-ok"> <span>Согласен с <a href="https://wearefree.club/p/oferta" target="_blank" rel="noopener">условиями</a> и <a href="https://wearefree.club/p/soglasie" target="_blank" rel="noopener">обработкой персональных данных</a></span></label>
+    <label class="consent"><input type="checkbox" name="ok" required aria-describedby="e-ok"> <span>Согласен с <a href="https://wearefree.club/c/barikyants/legal/offer" data-legal="offer" target="_blank" rel="noopener">условиями</a> и <a href="https://wearefree.club/c/barikyants/legal/consent" data-legal="consent" target="_blank" rel="noopener">обработкой персональных данных</a></span></label>
     <span class="f-err" id="e-ok"></span>
     <p class="f-err" id="e-form" role="alert"></p>
     <button class="btn btn-y" type="submit">Зарегистрироваться</button>
@@ -417,6 +417,6 @@
   <div class="pdlg-b"><span>Прототип</span><p id="pdlg-t"></p><small>Здесь будет видео во всплывающем окне</small></div>
 </dialog>
 
-<script src="app.js?v=829"></script>
+<script src="app.js?v=830"></script>
 </body>
 </html>

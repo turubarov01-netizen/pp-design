@@ -20,9 +20,15 @@
 .oto h2{color:var(--paper);margin:22px 0 16px}
 .oto h2 mark{color:var(--ink)}
 .oto .lead{color:#c8cae6}
-.price{display:flex;align-items:baseline;gap:14px;margin:30px 0 8px}
+.price{display:flex;align-items:baseline;gap:14px;margin:24px 0 8px}
 .price b{font:900 clamp(72px,9vw,112px)/.85 var(--display);color:var(--y)}
 .price span{font-size:15px;color:#c8cae6;line-height:1.35}
+.cur{display:inline-flex;gap:4px;padding:4px;margin-top:26px;border-radius:99px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.cur button{min-height:44px;padding:0 20px;border:0;border-radius:99px;background:none;color:#c8cae6;font:600 15px/1 var(--body);cursor:pointer;transition:background .2s,color .2s}
+.cur button:hover{color:var(--paper)}
+.cur button[aria-checked="true"]{background:var(--paper);color:var(--ink)}
+.cur button:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+.cur-note{font-size:15px;line-height:1.45;color:#c8cae6;max-width:420px;margin-top:14px}
 .oto .btn-y{width:100%;max-width:420px;margin-top:22px;min-height:60px;font-size:18px}
 .skip{display:inline-flex;align-items:center;min-height:44px;margin-top:10px;font-size:15px;color:#c8cae6}
 .skip:hover{color:var(--paper)}
@@ -67,10 +73,12 @@
   <section class="oto">
     <div class="oto-l">
       <span class="flag">Только сейчас, один раз</span>
-      <h2 class="d2">Стартовый доступ <mark>за&nbsp;$10</mark></h2>
+      <h2 class="d2">Стартовый доступ <mark>за&nbsp;<span data-cur-t>890&nbsp;₽</span></mark></h2>
       <p class="lead">Пока письмо идёт, откройте больше, чем у Гостя. Это предложение показывается только сразу после регистрации.</p>
-      <div class="price"><b>$10</b><span>разовый платёж<br>доступ на 12 месяцев</span></div>
-      <button class="btn btn-y" id="buy">Получить за $10</button><br>
+      <div class="cur" role="radiogroup" aria-label="Валюта оплаты"><button type="button" role="radio" aria-checked="true" data-cur="rub">В&nbsp;рублях</button><button type="button" role="radio" aria-checked="false" data-cur="usd" tabindex="-1">В&nbsp;долларах</button></div>
+      <div class="price"><b data-cur-t>890&nbsp;₽</b><span>разовый платёж<br>доступ на 12 месяцев</span></div>
+      <p class="cur-note" id="cur-note" hidden>Счёт в&nbsp;долларах выставит менеджер: ссылку на&nbsp;оплату пришлём на&nbsp;вашу почту.</p>
+      <button class="btn btn-y" id="buy">Получить за 890 ₽</button><br>
       <a class="skip" href="#" id="skip">Нет, спасибо, перейти в кабинет</a>
     </div>
     <div class="oto-r cmp">
@@ -101,12 +109,36 @@
   </div>
 </main>
 
+<footer class="lgl" data-clan="barikyants"><div class="wrap"><nav class="lgl-d" aria-label="Документы"><a href="https://wearefree.club/c/barikyants/legal/privacy" target="_blank" rel="noopener">Политика конфиденциальности</a><a href="https://wearefree.club/c/barikyants/legal/offer" target="_blank" rel="noopener">Публичная оферта</a><a href="https://wearefree.club/c/barikyants/legal/consent" target="_blank" rel="noopener">Согласие на обработку персональных данных</a></nav><p class="lgl-r"><span>ИП Барикянц Кристина Георгиевна</span><span>ИНН 151500740602</span><span>ОГРНИП 318151300018588</span><span>г. Владикавказ, проспект Коста, 80.</span><span>E-mail <a href="mailto:kristinital@mail.ru">kristinital@mail.ru</a></span><span>Телефон <a href="tel:+79188288982">+79188288982</a></span></p><p class="lgl-x">Страница ведётся самостоятельным партнёром (франчайзи), работающим по договору коммерческой концессии (франшизы) с правообладателем платформы. Партнёр является независимым хозяйствующим субъектом, действует от своего имени и за свой счёт, самостоятельно заключает договоры с клиентами, самостоятельно ведёт учёт и уплачивает налоги. Партнёр не является обособленным подразделением, филиалом или взаимозависимым лицом правообладателя; отношения сторон не направлены на дробление бизнеса и не влекут перераспределения выручки в целях налоговой оптимизации.</p><p class="lgl-c"><span>© Freeman's Alliance · wearefree.club</span><span>Клан Кристины</span></p></div></footer>
+
+<script>
+/* Валюта оплаты: рубли через CloudPayments, доллары через заявку на счёт */
+(function () {
+  var bs = [].slice.call(document.querySelectorAll('.cur button'));
+  var P = { rub: { t: '890\u00a0₽', b: 'Получить за 890 ₽' }, usd: { t: '$10', b: 'Запросить счёт на $10' } };
+  function set(c, focus) {
+    document.body.dataset.cur = c;
+    bs.forEach(function (x) { var on = x.dataset.cur === c; x.setAttribute('aria-checked', on); x.tabIndex = on ? 0 : -1; if (on && focus) x.focus(); });
+    [].forEach.call(document.querySelectorAll('[data-cur-t]'), function (e) { e.textContent = P[c].t; });
+    document.getElementById('buy').textContent = P[c].b;
+    document.getElementById('cur-note').hidden = c !== 'usd';
+  }
+  bs.forEach(function (b, i) {
+    b.addEventListener('click', function () { set(b.dataset.cur); });
+    b.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault(); set(bs[(i + 1) % bs.length].dataset.cur, true);
+    });
+  });
+  set('rub');
+})();
+</script>
 <script>
   const q = new URLSearchParams(location.search);
   const n = q.get('name'), e = q.get('email');
   if (n) document.getElementById('hi').textContent = n + ', почти готово!';
   if (e) document.getElementById('mail').textContent = 'Мы отправили письмо на ' + e + '. Подтвердите почту, чтобы войти в кабинет.';
-  document.getElementById('buy').addEventListener('click', () => alert('Прототип: здесь откроется оплата $10.'));
+  document.getElementById('buy').addEventListener('click', () => alert(document.body.dataset.cur === 'usd' ? 'Прототип: здесь уйдёт заявка на счёт в долларах.' : 'Прототип: здесь откроется оплата 890 ₽.'));
   document.getElementById('skip').addEventListener('click', (ev) => { ev.preventDefault(); alert('Прототип: здесь переход в кабинет.'); });
 </script>
 <script src="app.js"></script>

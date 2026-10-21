@@ -1129,3 +1129,13 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 @media (prefers-reduced-motion:reduce){.pwl-wall{pointer-events:auto}}
 .swh.swh-top{margin:0 0 14px}
 @media (max-width:860px){.csr-t{align-items:flex-start}}
+/* v8.30: юридический подвал из данных клана директора */
+footer.lgl{border-top:1px solid var(--line);padding:40px 0 120px}
+footer.lgl .wrap{display:grid;gap:16px;justify-content:stretch}
+.lgl-d{display:flex;flex-wrap:wrap;gap:4px 24px}
+.lgl-d a{display:inline-flex;align-items:center;min-height:44px;color:var(--ink-2);font-weight:500;text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:4px}
+.lgl-d a:hover{color:var(--ink);text-decoration-color:currentColor}
+.lgl-r{display:flex;flex-wrap:wrap;gap:4px 20px;color:var(--ink-2)}
+.lgl-r a{color:inherit}
+.lgl-x{font-size:12px;line-height:1.5;color:var(--ink-3);max-width:110ch}
+.lgl-c{display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between;padding-top:16px;border-top:1px solid var(--line)}
