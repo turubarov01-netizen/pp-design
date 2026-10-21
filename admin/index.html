@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700;750;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="kabinet.css?v=2">
-<link rel="stylesheet" href="admin.css?v=9">
+<link rel="stylesheet" href="admin.css?v=11">
 <style>body{margin:0}</style>
 </head>
 <body>
@@ -167,18 +167,34 @@
             </div>
             <div class="kab-panel">
               <h4>Просрочено<span class="n">1</span></h4>
-              <div class="ap-ri2"><b>Встреча в Дубае</b><span class="bad">монтаж · срок был 20 окт</span></div>
+              <div class="ap-ri2" data-card="4:1" role="button" tabindex="0"><b>Встреча в Дубае</b><span class="bad">монтаж · срок был 20 окт</span></div>
             </div>
             <div class="kab-panel">
               <h4>Залежались<span class="n">2</span></h4>
-              <div class="ap-ri2"><b>Почему клубы проваливаются</b><span class="warn">снято, ждёт монтажа 6 дней</span></div>
-              <div class="ap-ri2"><b>Продукт за выходные</b><span class="warn">монтаж стоит 4 дня</span></div>
+              <div class="ap-ri2" data-card="3:0" role="button" tabindex="0"><b>Почему клубы проваливаются</b><span class="warn">снято, ждёт монтажа 6 дней</span></div>
+              <div class="ap-ri2" data-card="4:2" role="button" tabindex="0"><b>Продукт за выходные</b><span class="warn">монтаж стоит 4 дня</span></div>
             </div>
           </div>
         </div>
       </section>
     </main>
   </div>
+
+  <!-- карточка ролика в продакшне -->
+  <aside class="ap-drawer ap-dr" id="kcDrawer" aria-label="Карточка ролика">
+    <div class="ap-dr-h"><h3 id="kcT">Ролик</h3><button class="ap-ibtn" id="kcX" aria-label="Закрыть"><i data-lucide="x"></i></button></div>
+    <div class="ap-dr-b" id="kcB"></div>
+  </aside>
+
+  <!-- сторис за день -->
+  <aside class="ap-drawer ap-dr" id="stDrawer" aria-label="Сторис за день">
+    <div class="ap-dr-h"><h3 id="stT">Сторис · @sasha_turubarov</h3><button class="ap-ibtn" id="stX" aria-label="Закрыть"><i data-lucide="x"></i></button></div>
+    <div class="ap-dr-b">
+      <div class="ap-st-sum" id="stSum"></div>
+      <div class="ap-eyebrow">Все сторис дня по порядку</div>
+      <div class="ap-st-list" id="stList"></div>
+    </div>
+  </aside>
 
   <!-- карточка публикации -->
   <div class="ap-scrim" id="scrim"></div>
@@ -398,7 +414,7 @@ PLAN.forEach(r => {
       let c = '';
       if (cells.stories) {
         const s = cells.stories[i];
-        if (s) c = `<div class="ap-story"><span class="ring"><i></i></span><div><b>${s[0]} сторис</b><span>до ${s[1]}</span></div></div>`;
+        if (s) c = `<button class="ap-story" data-stories="${i}" data-n="${s[0]}" data-last="${s[1]}" data-acc="${a.name}"><span class="ring"><i></i></span><span class="tx"><b>${s[0]} сторис</b><span>до ${s[1]}</span></span></button>`;
         else if (i === 0 && cells.stories.every(x => !x)) c = '<span class="ap-none">нет на неделе</span>';
       } else {
         const cl = cells[i];
@@ -421,7 +437,28 @@ document.addEventListener('click', e => {
   const st = ST[b.dataset.st]; const chip = $('#drSt'); chip.className = `ap-chip ${st[0]}`; chip.textContent = st[1];
   kab.classList.add('ap-dr-open');
 });
-const closeDr = () => kab.classList.remove('ap-dr-open');
+// сторис за день
+const ST_TXT = ['Утро: кофе и план дня', 'Опрос: что мешает запуску?', 'Кусок эфира про оффер', 'Ответы на опрос', 'Скрин отзыва ученицы', 'Ссылка на урок «база»', 'Анонс эфира в четверг', 'Вечер: итоги дня'];
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-stories]'); if (!b) return;
+  const n = +b.dataset.n, day = 19 + +b.dataset.stories, [lh, lm] = b.dataset.last.split(':').map(Number);
+  seed = 300 + day;
+  const items = Array.from({ length: n }, (_, k) => {
+    const mins = lh * 60 + lm - (n - 1 - k) * Math.round(70 + rnd() * 60);
+    const tm = `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(((mins % 60) + 60) % 60).padStart(2, '0')}`;
+    const views = Math.round(2600 - k * 140 + rnd() * 400);
+    const ix = k === n - 1 ? 7 : k;
+    return { tm, t: ST_TXT[ix], views, rep: Math.round(rnd() * 14), link: ix === 5 ? Math.round(20 + rnd() * 60) : 0, code: ix === 2 || ix === 5 ? Math.round(2 + rnd() * 9) : 0 };
+  });
+  const sum = (f) => items.reduce((a, x) => a + x[f], 0), fmtn = x => x.toLocaleString('ru-RU');
+  $('#stT').textContent = `Сторис · ${b.dataset.acc}`;
+  $('#stSum').innerHTML = `<div class="d">${day} октября · ${n} сторис</div><div class="ap-st-kpi"><div><b>${fmtn(Math.round(sum('views') / n))}</b><span>просмотров в среднем</span></div><div><b>${sum('rep')}</b><span>ответов</span></div><div><b>${sum('link')}</b><span>переходов по ссылке</span></div><div><b>${sum('code')}</b><span>кодовых слов</span></div></div>`;
+  $('#stList').innerHTML = items.map((x, k) => `<div class="ap-st-row"><span class="ap-thumb" style="--h:${(day * 40 + k * 47) % 360}"></span><div class="tx"><b>${x.t}</b><span class="mt">${x.tm}</span><span class="nums"><span><i data-lucide="eye"></i>${fmtn(x.views)}</span><span><i data-lucide="message-circle"></i>${x.rep}</span>${x.link ? `<span><i data-lucide="link"></i>${x.link}</span>` : ''}${x.code ? `<span class="ap-chip q">«база» ×${x.code}</span>` : ''}</span></div></div>`).join('');
+  lucide.createIcons();
+  kab.classList.add('ap-st-open');
+});
+const closeDr = () => kab.classList.remove('ap-dr-open', 'ap-st-open', 'ap-kc-open');
+$('#stX').onclick = closeDr;
 $('#scrim').onclick = closeDr; $('#drX').onclick = closeDr;
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDr(); });
 
@@ -457,11 +494,41 @@ const COLS = [
     { eb: 'Готово 19 окт', t: 'Первый клиент за неделю', chips: [['ok', '<i data-lucide="check"></i>вышло 3'], ['mute', '<i data-lucide="eye"></i>12 тыс. просм.']], who: 's' },
   ], 'Показать ещё 18'],
 ];
-$('#board').innerHTML = COLS.map(([name, dot, empty, cards, more]) => `<div class="ap-col"><div class="ap-col-h"><span class="d" style="background:${dot}"></span>${name}<span class="n">${cards.length + (more ? 18 : 0)}</span></div>` +
+$('#board').innerHTML = COLS.map(([name, dot, empty, cards, more], ci) => `<div class="ap-col"><div class="ap-col-h"><span class="d" style="background:${dot}"></span>${name}<span class="n">${cards.length + (more ? 18 : 0)}</span></div>` +
   (empty === 'idea' ? '<div class="ap-newidea"><button class="add"><i data-lucide="plus"></i>Идея</button><button class="ap-ibtn" aria-label="Надиктовать идею"><i data-lucide="mic"></i></button></div>' : '') +
-  (cards.length ? cards.map(c => `<div class="ap-kc"><div class="eb">${c.eb}</div><div class="t">${c.t}</div>${c.why ? `<div class="m"><b>Основание:</b> ${c.why}</div>` : ''}${c.m ? `<div class="m">${c.m}</div>` : ''}${c.prog ? `<div class="ap-prog"><i style="width:${c.prog}%"></i></div>` : ''}${c.chips ? `<div class="chips">${c.chips.map(([k, t]) => `<span class="ap-chip ${k}">${t}</span>`).join('')}</div>` : ''}<div class="f">${pa(c.who)}${c.w ? `<span class="ap-w">${[1, 2, 3, 4, 5].map(n => `<i class="${n <= c.w ? 'on' : ''}"></i>`).join('')}</span>` : ''}${c.date ? `<span class="dt">${c.date}</span>` : ''}</div>${c.why ? '<button class="ap-link">В сценарий<i data-lucide="chevron-right"></i></button>' : ''}</div>`).join('') : `<div class="ap-empty">${empty}</div>`) +
+  (cards.length ? cards.map((c, ki) => `<div class="ap-kc" data-card="${ci}:${ki}" role="button" tabindex="0"><div class="eb">${c.eb}</div><div class="t">${c.t}</div>${c.why ? `<div class="m"><b>Основание:</b> ${c.why}</div>` : ''}${c.m ? `<div class="m">${c.m}</div>` : ''}${c.prog ? `<div class="ap-prog"><i style="width:${c.prog}%"></i></div>` : ''}${c.chips ? `<div class="chips">${c.chips.map(([k, t]) => `<span class="ap-chip ${k}">${t}</span>`).join('')}</div>` : ''}<div class="f">${pa(c.who)}${c.w ? `<span class="ap-w">${[1, 2, 3, 4, 5].map(n => `<i class="${n <= c.w ? 'on' : ''}"></i>`).join('')}</span>` : ''}${c.date ? `<span class="dt">${c.date}</span>` : ''}</div>${c.why ? '<button class="ap-link">В сценарий<i data-lucide="chevron-right"></i></button>' : ''}</div>`).join('') : `<div class="ap-empty">${empty}</div>`) +
   (more ? `<button class="ap-more">${more}</button>` : '') + '</div>').join('');
 $('#load').innerHTML = [['s', 5, ''], ['i', 3, ''], ['d', 3, ''], ['x', 1, 'warn']].map(([k, n, c]) => `<div class="ap-load">${pa(k)}<span class="nm">${PPL[k][2]}</span><span class="bar"><i class="${c}" style="width:${n / 5 * 100}%"></i></span><b>${n}</b></div>`).join('');
+
+// карточка ролика
+const STAGES = ['Идея', 'Сценарий', 'В съёмку', 'Снято', 'Монтаж', 'Выкладка', 'Готово'];
+const MONT = ['Хук и первые 3 секунды', 'Монтаж и темп', 'Титры', 'Обложка', 'Описание и хештеги', 'Версии под площадки'];
+const PUBS = { 'Три вопроса перед запуском': [[0, 'ok', 'Вышло 18 окт, 19:00', '11 400 просм.'], [2, 'ok', 'Вышло 19 окт, 18:00', '6 600 просм.'], [1, 'q', 'В очереди · 24 окт, 12:00', ''], [4, 'q', 'В очереди · 25 окт, 10:00', '']],
+  'Семь ошибок оффера, которые съедают продажи': [[0, 'q', 'В очереди · 21 окт, 12:00', '']],
+  'Что такое Альянс': [[1, 'bad', 'Не вышло 20 окт: Instagram отклонил публикацию', ''], [0, 'warn', 'Не поставлено', '']],
+  'Почему эксперт без продукта теряет клиентов': [[0, 'ok', 'Вышло 12 окт', '24 тыс. просм.'], [2, 'ok', 'Вышло 13 окт', '9 тыс. просм.'], [1, 'ok', 'Вышло 14 окт', '5 тыс. просм.'], [4, 'ok', 'Вышло 14 окт', '3 тыс. просм.']],
+  'Первый клиент за неделю': [[0, 'ok', 'Вышло 19 окт', '7 тыс. просм.'], [2, 'ok', 'Вышло 19 окт', '4 тыс. просм.'], [4, 'ok', 'Вышло 20 окт', '1 тыс. просм.']] };
+const sec = (title, body) => `<div class="ap-eyebrow">${title}</div>${body}`;
+function openCard(key) {
+  const [ci, ki] = key.split(':').map(Number), c = COLS[ci][3][ki], stage = COLS[ci][0];
+  const who = PPL[c.who];
+  let body = `<div class="ap-kc-top"><div class="eb">${c.eb}</div><h4>${c.t}</h4><div class="mt">${pa(c.who)}<span>${who[2]}</span>${(c.chips || []).filter(x => /срок|просроч|стоит|ждёт/.test(x[1])).map(([k, t]) => `<span class="ap-chip ${k}">${t}</span>`).join('')}</div></div>`;
+  body += `<ol class="ap-steps">${STAGES.map((s, i) => `<li class="${i < ci ? 'done' : i === ci ? 'now' : ''}"><i></i><span>${s}</span></li>`).join('')}</ol>`;
+  if (ci === 0) body += sec('Почему стоит снять', `<div class="ap-desc">${c.why}</div>`) + sec('Вес идеи', `<div class="ap-kc-w"><span class="ap-w">${[1, 2, 3, 4, 5].map(n => `<i class="${n <= c.w ? 'on' : ''}"></i>`).join('')}</span>${c.w} из 5 · добавлена ${c.date}</div>`);
+  if (ci === 1) body += sec('Сценарий', `<div class="ap-desc">Хук: «Первый запуск проваливается не из-за продукта».\n\n1. Запуск на холодную аудиторию.\n2. Цена без лестницы.\n3. Нет призыва в каждом касании.\n\nПризыв: напишите «база» в комментариях.</div><div class="ap-kc-note">140 слов, около 56 секунд</div>`);
+  if (ci === 3) body += sec('Отснятые материалы', `<div class="ap-files">${['Общий план, 14:20', 'Крупный план, 9:45', 'Перебивки в клубе, 12 файлов'].map(f => `<div><i data-lucide="film"></i>${f}</div>`).join('')}</div>`) + `<div class="ap-kc-alert warn">Лежит без монтажа 6 дней. Назначьте монтаж или отдайте в чат DAVE.</div>`;
+  if (ci === 4) { const ok = Math.round(c.prog / 100 * 6); body += sec(`Утверждено ${ok} из 6`, `<ul class="ap-check">${MONT.map((m, i) => `<li class="${i < ok ? 'on' : ''}"><i data-lucide="${i < ok ? 'circle-check' : 'circle'}"></i>${m}</li>`).join('')}</ul>`) + `<div class="ap-kc-chat"><i data-lucide="message-square"></i><div><b>Монтаж идёт в чате DAVE</b><span>Последняя версия 20 окт, 18:40 · правки отправляются туда же</span></div><button class="kab-btn kab-btn-ghost kab-btn-sm">Открыть чат</button></div>`; }
+  if (ci >= 5) { const p = PUBS[c.t] || []; body += sec('Где выходит', p.map(([a, k, t, v]) => { const A = ACC[a]; return `<div class="ap-other">${av(A.p, A.pf, A.t, 'sm')}<span><b>${A.name}</b><span class="sub">${t}</span></span>${v ? `<span class="when">${v}</span>` : ''}<span class="ap-chip ${k}">${k === 'ok' ? 'Вышло' : k === 'q' ? 'В очереди' : k === 'bad' ? 'Ошибка' : 'Нет'}</span></div>`; }).join('')); }
+  const next = STAGES[ci + 1];
+  body += `<div class="ap-dr-act">${next ? `<button class="kab-btn kab-btn-primary"><i data-lucide="arrow-right"></i>${ci === 0 ? 'В сценарий' : 'Дальше: ' + next}</button>` : ''}<button class="kab-btn kab-btn-ghost"><i data-lucide="user-round"></i>Назначить</button><button class="kab-btn kab-btn-ghost"><i data-lucide="calendar"></i>Срок</button><button class="danger">В архив</button></div>`;
+  $('#kcT').textContent = stage;
+  $('#kcB').innerHTML = body;
+  lucide.createIcons();
+  kab.classList.add('ap-kc-open');
+}
+document.addEventListener('click', e => { if (e.target.closest('.ap-link, .ap-more, .ap-newidea')) return; const c = e.target.closest('[data-card]'); if (c) openCard(c.dataset.card); });
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches && e.target.matches('[data-card]')) openCard(e.target.dataset.card); });
+$('#kcX').onclick = closeDr;
 
 drawGrowth(0);
 lucide.createIcons();
