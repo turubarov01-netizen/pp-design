@@ -1094,3 +1094,38 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .consent a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .consent a:hover{color:var(--ink)}
 #e-form{text-align:center}
+
+/* v8.29: телефон — принципы лентой, подсказки «листайте», имя спикера над фото, стена программ без остановки */
+@media (max-width:620px){
+  .vals-g{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:28px -24px 0;padding:0 24px 4px;scroll-padding-inline:24px;border-top:0}
+  .vals-g::-webkit-scrollbar{display:none}
+  .vl,.vl:nth-child(n),.vl-hi{flex:0 0 82%;scroll-snap-align:start;border:1px solid rgba(216,178,90,.2);border-radius:16px;padding:24px 20px 26px;min-height:0}
+}
+@media (max-width:860px){
+  .pr,.pr:nth-child(even){display:flex;flex-direction:column;align-items:stretch;gap:0}
+  .pr .pt{display:contents}
+  .pr .prole{order:1}
+  .pr .pt h3{order:2;margin:10px 0 18px}
+  .pr .pp,.pr:nth-child(even) .pp{order:3}
+  .pr .pt>:not(.prole):not(h3){order:4}
+  .pr .pt q{margin-top:20px}
+  .ppl4{gap:64px}
+}
+.swh{display:none;align-items:center;justify-content:space-between;gap:16px;margin-top:16px;color:inherit}
+.swh-d{display:flex;gap:6px;align-items:center}
+.swh-d i{width:6px;height:6px;border-radius:3px;background:currentColor;opacity:.22;transition:width .3s var(--ease),opacity .3s}
+.swh-d i.on{width:20px;opacity:.85}
+.swh-l{display:inline-flex;align-items:center;gap:6px;font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.swh-l svg{width:16px;height:16px;animation:swh-a 1.6s var(--ease) infinite}
+@keyframes swh-a{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.swh-on>*{animation:swh-n 1.1s var(--ease) .2s 1 both}
+@keyframes swh-n{0%,100%{transform:translateX(0)}45%{transform:translateX(-36px)}}
+@media (max-width:860px){.swh.show{display:flex}}
+@media (prefers-reduced-motion:reduce){.swh-l svg,.swh-on>*{animation:none}}
+.pw-right .swh{padding:0 16px}
+.pwl-wall{pointer-events:none;-webkit-tap-highlight-color:transparent}
+.pwl-wall:hover .pwl-row{animation-play-state:running}
+.pwl-t:hover{transform:none}
+@media (prefers-reduced-motion:reduce){.pwl-wall{pointer-events:auto}}
+.swh.swh-top{margin:0 0 14px}
+@media (max-width:860px){.csr-t{align-items:flex-start}}
