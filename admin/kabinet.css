@@ -1,0 +1,810 @@
+/* Новый личный кабинет (входная группа, волна 1). Перенос из прототипа
+   https://turubarov01-netizen.github.io/pp-design/kabinet/ (v48). Всё внутри .kab, чтобы не задеть платформу. */
+
+@font-face { font-family: "Bebas Neue"; src: url(/kabinet/fonts/bebasneue-bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+
+.kab {
+  --blue: #2f7bff; --violet: #7b61ff;
+  --ink: #0b1020; --ink-2: #39425a; --muted: #5b647a; --faint: #8a93a8;
+  --line: rgba(47, 123, 255, 0.12); --line-2: rgba(16, 24, 48, 0.08);
+  --surface: rgba(255, 255, 255, 0.78);
+  --bad: #e5484d;
+  --radius: 20px; --ease: cubic-bezier(0.22, 1, 0.36, 1); --side-w: 264px;
+  position: relative; display: flex; width: 100%; min-height: 100vh; min-width: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px; line-height: 1.5; color: var(--ink);
+  background: linear-gradient(135deg, #f0f5ff 0%, #e8effc 50%, #f5f0ff 100%);
+  -webkit-font-smoothing: antialiased;
+}
+/* под кабинетом не должен просвечивать бежевый фон платформы */
+body:has(.kab) { background: #eef2fc; }
+/* #root и body платформы держат overflow-x: hidden, а это делает их контейнером прокрутки:
+   меню и верхняя полоса кабинета (position: sticky) уезжали вместе со страницей (Саша 15.10).
+   clip так же обрезает лишнее по горизонтали, но контейнером прокрутки не становится */
+body:has(.kab), #root:has(.kab) { overflow-x: clip; }
+/* Курс ИИнструменты в кабинете: на весь экран, без меню кабинета */
+body:has(.kab-bare) { background: #09090a; }
+/* обёртка — элемент flex-ряда SidebarProvider: без flex: 1 она сжималась по содержимому, пока курс грузится */
+.kab-bare { flex: 1 1 auto; width: 100%; min-width: 0; min-height: 100vh; min-height: 100dvh; padding-top: env(safe-area-inset-top); }
+.kab-bare .ii-theme { border-radius: 0; min-height: 100vh; min-height: 100dvh; }
+/* курс на всю ширину экрана, как окно урока (Саша 14.10) */
+@media (min-width: 768px) { .kab-bare .ii-theme { padding: 28px 40px 48px; } }
+.kab *, .kab *::before, .kab *::after { box-sizing: border-box; }
+.kab a { color: inherit; }
+.kab :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* ---------- меню ---------- */
+.kab-side {
+  position: sticky; top: 0; height: 100vh; width: var(--side-w); flex: none;
+  padding: 20px 14px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto;
+  background: linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(249,251,255,.8) 55%, rgba(255,255,255,.88) 100%);
+  backdrop-filter: saturate(190%) blur(26px); -webkit-backdrop-filter: saturate(190%) blur(26px);
+  border-right: 1px solid rgba(47,123,255,.14);
+}
+.kab-brand { display: flex; align-items: center; gap: 10px; padding: 4px 10px 18px; text-decoration: none; }
+.kab-brand img { width: 34px; height: 34px; border-radius: 10px; }
+.kab-brand-t { font-weight: 800; font-size: 15px; letter-spacing: -.01em; line-height: 1.15; display: block; }
+.kab-brand-s { font-size: 12px; color: var(--muted); display: block; }
+.kab-nav {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 10px 12px; border-radius: 14px; border: 0; background: none; cursor: pointer; text-align: left;
+  color: var(--ink-2); text-decoration: none; font-weight: 500; font-size: 15px;
+  transition: background-color .18s var(--ease), color .18s var(--ease);
+}
+.kab-nav svg { width: 20px; height: 20px; flex: none; color: var(--faint); transition: color .18s var(--ease); }
+.kab-nav:hover { background: rgba(47,123,255,.07); color: var(--ink); }
+.kab-nav:hover svg { color: var(--blue); }
+.kab-nav[aria-current="page"] {
+  background: linear-gradient(90deg, rgba(47,123,255,.14), rgba(123,97,255,.12));
+  color: var(--ink); font-weight: 600; box-shadow: inset 0 0 0 1px rgba(47,123,255,.18);
+}
+.kab-nav[aria-current="page"] svg { color: var(--blue); }
+.kab-count { margin-left: auto; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 11px; background: var(--blue); color: #fff; font-size: 12px; font-weight: 700; display: grid; place-items: center; }
+.kab-side-foot { margin-top: auto; }
+
+/* «Сервисы» */
+.kab-svc-chev { margin-left: auto; width: 16px !important; height: 16px !important; transition: transform .2s var(--ease); }
+.kab-svc.open > .kab-nav { color: var(--ink); font-weight: 600; }
+.kab-svc.open > .kab-nav > svg:first-child { color: var(--blue); }
+.kab-svc.open .kab-svc-chev { transform: rotate(90deg); }
+/* подпункты «Сервисов» — вложенный уровень с линией слева, как в прототипе */
+.kab-svc-list { display: none; position: relative; flex-direction: column; gap: 0; margin: 2px 0 8px 22px; padding: 4px 0 4px 10px; }
+.kab-svc-list::before { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 1px; background: var(--line-2); }
+.kab-svc.open .kab-svc-list { display: flex; }
+.kab-svc-item { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 10px; text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 400; cursor: pointer; }
+.kab-svc-item:hover, .kab-svc-item:focus-visible { background: rgba(47,123,255,.07); color: var(--ink); }
+.kab-svc-item > svg:first-child { width: 16px; height: 16px; flex: none; color: var(--faint); }
+.kab-svc-item:hover > svg:first-child { color: var(--blue); }
+.kab-svc-item.locked { cursor: default; }
+.kab-svc-item.locked:hover, .kab-svc-item.locked:focus-visible { background: rgba(234,140,20,.09); }
+.kab-svc-item.locked:hover > svg:first-child, .kab-svc-item.locked:focus-visible > svg:first-child { color: #c46a0c; }
+.kab-svc-item.locked:hover .kab-svc-ext, .kab-svc-item.locked:focus-visible .kab-svc-ext { opacity: 1; color: #c46a0c; }
+.kab-svc-n { display: flex; flex-direction: column; min-width: 0; }
+.kab-svc-d { display: none; font-size: 12.5px; font-weight: 400; line-height: 1.4; color: var(--muted); margin-top: 2px; }
+.kab-svc-ext { margin-left: auto; width: 13px !important; height: 13px !important; flex: none; color: var(--faint); opacity: 0; transition: opacity .15s var(--ease); }
+.kab-svc-item:hover .kab-svc-ext, .kab-svc-item:focus-visible .kab-svc-ext { opacity: .8; }
+.kab-svc-free { display: inline-block; align-self: flex-start; margin-top: 3px; padding: 1px 7px; border-radius: 6px; background: rgba(22,163,122,.12); color: #12805f; font-size: 11.5px; font-weight: 600; line-height: 1.5; font-style: normal; white-space: nowrap; }
+.kab-svc-note { display: none; align-items: flex-start; gap: 8px; margin: 6px 0 2px; padding: 10px 12px; border-radius: 12px; background: rgba(234,140,20,.1); color: #9a4a08; font-size: 12.5px; line-height: 1.4; }
+.kab-svc-note svg { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+.kab-svc-m { display: none; }
+.kab-old-m { display: none; }
+.kab-nav.kab-old { color: var(--muted); }
+@media (max-width: 960px) {
+  .kab-svc-m { display: block; margin: 16px 0; padding: 6px; }
+  .kab-old-m { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 4px; color: var(--muted); font-size: 14px; font-weight: 500; }
+  .kab-old-m svg { width: 18px; height: 18px; }
+  .kab-svc-m > .kab-nav { min-height: 48px; }
+  .kab-svc-m .kab-svc-item { min-height: 44px; font-size: 15px; }
+}
+.kab-svc-tip { position: fixed; z-index: 120; width: max-content; max-width: 280px; padding: 11px 14px; border-radius: 14px;
+  background: #fff; border: 1px solid rgba(47,123,255,.16); color: #39425a;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; font-size: 13px; line-height: 1.45; -webkit-font-smoothing: antialiased;
+  box-shadow: 0 14px 36px rgba(16,24,48,.12), 0 2px 6px rgba(16,24,48,.05); pointer-events: none; transform: translateY(-50%);
+  animation: kab-tip-in .16s cubic-bezier(0.22, 1, 0.36, 1); }
+.kab-svc-tip::before { content: ""; position: absolute; left: -6px; top: 50%; width: 10px; height: 10px; margin-top: -5px;
+  background: inherit; border-left: 1px solid rgba(47,123,255,.16); border-bottom: 1px solid rgba(47,123,255,.16); transform: rotate(45deg); }
+.kab-svc-tip.lock { max-width: 300px; }
+.kab-svc-tip-lock { display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; padding: 9px 11px; border-radius: 10px;
+  background: rgba(234,140,20,.12); color: #9a4a08; font-weight: 600; line-height: 1.4; }
+.kab-svc-tip-lock svg { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+@keyframes kab-tip-in { from { opacity: 0; transform: translate(-4px, -50%); } to { opacity: 1; transform: translateY(-50%); } }
+@media (prefers-reduced-motion: reduce) { .kab-svc-tip { animation: none; } }
+@media (hover: none) {
+  .kab-svc-d { display: block; }
+  .kab-svc-item { align-items: flex-start; }
+  .kab-svc-item > svg:first-child { margin-top: 2px; }
+  .kab-svc-ext { opacity: .6; }
+  .kab-svc-note { display: flex; }
+}
+
+/* ---------- верх ---------- */
+.kab-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.kab-top {
+  position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 12px;
+  padding: 14px 32px; padding-top: max(14px, env(safe-area-inset-top));
+  background: rgba(244, 247, 255, 0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line-2);
+}
+.kab-top h1 { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: -.01em; }
+.kab-spacer { flex: 1; }
+.kab-me { display: flex; align-items: center; gap: 10px; padding: 4px 12px 4px 4px; border-radius: 14px; background: rgba(255,255,255,.8); border: 1px solid var(--line); text-decoration: none; }
+.kab-me:hover { background: #fff; }
+.kab-me .nm { display: block; font-size: 14px; font-weight: 600; line-height: 1.25; }
+.kab-me .ph { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); line-height: 1.25; }
+.kab-me .ph svg { width: 13px; height: 13px; color: #f07a2a; }
+.kab-ava { width: 32px; height: 32px; border-radius: 10px; flex: none; overflow: hidden; display: grid; place-items: center; background: linear-gradient(135deg, var(--blue), var(--violet)); color: #fff; font-weight: 700; font-size: 14px; }
+.kab-ava img { width: 100%; height: 100%; object-fit: cover; }
+.kab-content { padding: 28px 32px 64px; width: 100%; max-width: 1180px; min-width: 0; }
+.kab-content.narrow { max-width: 920px; }
+/* Старые страницы платформы внутри кабинета: у .kab-content уже есть свои поля, второй отступ от .container съедал ширину телефона */
+.kab-content .container { padding-left: 0; padding-right: 0; }
+
+/* ---------- общие ---------- */
+.kab-h-xl { font-size: 28px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; margin: 0; }
+.kab-h-md { font-size: 16px; font-weight: 650; line-height: 1.35; margin: 0; }
+.kab-sub { color: var(--muted); margin: 4px 0 0; }
+.kab-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(47,123,255,.08), 0 2px 8px rgba(0,0,0,.03), inset 0 1px 0 rgba(255,255,255,.8); }
+.kab-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 42px; padding: 0 18px; border-radius: 12px; font-weight: 600; font-size: 14px; text-decoration: none; cursor: pointer; white-space: nowrap; border: 1px solid transparent; transition: transform .15s var(--ease), box-shadow .18s var(--ease), background-color .18s var(--ease); }
+.kab-btn svg { width: 16px; height: 16px; }
+.kab-btn-primary { background: linear-gradient(135deg, #2f7bff 0%, #5a6dff 55%, #7b61ff 100%); color: #fff !important; box-shadow: 0 6px 18px rgba(47,123,255,.32); }
+.kab-btn-primary:hover { box-shadow: 0 10px 26px rgba(47,123,255,.42); }
+.kab-btn-ghost { background: rgba(255,255,255,.85); border-color: var(--line); color: var(--ink); }
+.kab-btn-ghost:hover { background: #fff; border-color: rgba(47,123,255,.32); }
+.kab-btn-soft { background: rgba(47,123,255,.1); color: #1d5fd6 !important; }
+.kab-btn-soft:hover { background: rgba(47,123,255,.16); }
+.kab-btn-sm { height: 34px; padding: 0 12px; font-size: 13px; border-radius: 10px; }
+.kab-widgets:empty { display: none; }
+.kab-day { margin-top: 20px; }
+.kab-widgets { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+
+/* ---------- приветствие и Фрими ---------- */
+.kab-greet { display: flex; align-items: flex-end; gap: 14px; min-width: 0; }
+.kab-greet > div { padding-bottom: 2px; min-width: 0; }
+.kab-frimi { position: relative; flex: none; width: 132px; height: 132px; margin: -26px 0 -24px -10px; z-index: 2; border-radius: 50%; outline: none; }
+.kab-frimi img { width: 100%; height: 100%; display: block; }
+/* сцены сна и завтрака шире: в кадре кровать и тумба, поэтому окно больше, а поля отрицательные */
+.kab-frimi.scene { width: 220px; height: 220px; margin: -26px -2px -52px -22px; }
+.kab-frimi video { width: 100%; height: 100%; display: block; object-fit: contain; pointer-events: none; }
+.kab-frimi.laptop { width: 170px; height: 170px; margin: -40px 0 -24px -14px; }
+.kab-frimi::after { content: attr(data-tip); position: absolute; left: 50%; top: calc(100% + 4px); transform: translate(-50%, -4px); white-space: nowrap; padding: 7px 11px; border-radius: 10px; background: #141a2e; color: #fff; font-size: 13px; font-weight: 600; box-shadow: 0 8px 24px rgba(20,26,46,.25); opacity: 0; pointer-events: none; transition: opacity .18s var(--ease), transform .18s var(--ease); z-index: 30; }
+.kab-frimi:hover::after, .kab-frimi:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+
+/* дверь в купленный продукт на главной */
+.kab-door { margin: 20px 0 0; position: relative; z-index: 1; }
+
+/* ---------- три входа ---------- */
+.kab-promos { display: flex; flex-direction: column; gap: 24px; margin-top: 20px; }
+.kab .promo { position: relative; overflow: hidden; isolation: isolate; border-radius: var(--radius); padding: 30px 32px; }
+.kab .po-h { margin: 0; }
+.kab .po-eye { margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.kab .po-sub { margin: 14px 0 0; max-width: 58ch; font-size: 15.5px; line-height: 1.55; }
+.kab .po-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 24px; margin-top: 22px; text-decoration: none; font-weight: 700; transition: transform .15s var(--ease), filter .2s var(--ease), box-shadow .15s var(--ease); }
+.kab .po-btn svg { width: 18px; height: 18px; }
+.kab .po-btn:hover { filter: brightness(1.06); }
+.kab .po-btn:active { transform: translateY(2px); }
+.kab .po-btn:focus-visible { outline: 3px solid #6B9FFF; outline-offset: 3px; }
+.kab .po-offer { background: radial-gradient(110% 120% at 0% 0%, #1a2b52 0%, #111a2c 45%, #0D1117 100%); color: #E5E7EB; }
+.kab .po-offer .po-eye { color: #6B9FFF; }
+.kab .po-offer .po-h { font-size: 38px; line-height: 1.04; font-weight: 800; letter-spacing: -.02em; color: #fff; }
+.kab .po-offer .po-h em { font-style: normal; }
+.kab .po-offer .po-h .g { color: #E5C062; }
+.kab .po-offer .po-h .b { color: #6B9FFF; font-style: italic; display: block; }
+.kab .po-offer .po-sub { color: #A6B1C0; }
+.kab .po-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; font-size: 15px; color: #E5E7EB; }
+.kab .po-list li { display: flex; align-items: flex-start; gap: 10px; }
+.kab .po-list svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: #E5C062; }
+.kab .po-offer .po-btn { border-radius: 999px; color: #1c1606; background: linear-gradient(180deg, #F0D483 0%, #D9B354 100%); box-shadow: 0 4px 0 #a9852f, 0 10px 24px rgba(217,179,84,.25); }
+.kab .po-offer .po-btn:active { box-shadow: 0 2px 0 #a9852f; }
+.kab .po-ts { text-align: center; color: #E8ECF2; background: linear-gradient(180deg, rgba(4,9,14,.25) 0%, rgba(4,9,14,.55) 45%, rgba(4,9,14,.9) 100%), url(/kabinet/ts-bg.webp) center 30% / cover, #0b1418; }
+.kab .po-pill { display: inline-block; margin: 0 0 12px; padding: 5px 14px; border-radius: 999px; border: 1px solid rgba(107,140,255,.55); background: rgba(24,40,96,.55); color: #A9C0FF; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.kab .po-ts .po-eye { color: #8FB0FF; margin-bottom: 8px; }
+.kab .po-ts .po-h { font-size: 56px; line-height: .95; font-weight: 900; letter-spacing: -.03em; text-transform: uppercase; color: #F0D080;
+  background: linear-gradient(135deg, #FFE9B0 0%, #F0D080 35%, #CC9F3A 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.kab .po-ts .po-sub { margin-left: auto; margin-right: auto; color: #E8ECF2; }
+.kab .po-ts .po-sub b { color: #F0C85A; font-weight: 700; }
+.kab .po-cdl { margin: 18px 0 8px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #9aa7b6; }
+.kab .po-cd { display: flex; justify-content: center; gap: 10px; }
+.kab .po-cd span { width: 66px; padding: 8px 0 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,.16); background: rgba(10,16,24,.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); display: grid; }
+.kab .po-cd b { font-size: 26px; line-height: 1.1; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
+.kab .po-cd small { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #9aa7b6; }
+.kab .po-ts .po-btn { border-radius: 20px; padding: 0 30px; color: #2a2008; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; background: linear-gradient(180deg, #CBAF72 0%, #B08E40 50%, #A07828 100%); box-shadow: 0 4px 0 #6f5418, 0 12px 28px rgba(160,120,40,.35); }
+.kab .po-pr { background: oklch(0.918 0.185 104); color: #111; display: block; min-height: 380px; padding-bottom: 30px; }
+.kab .po-pr .po-txt { position: relative; z-index: 1; max-width: 54%; }
+.kab .po-pr .po-eye { font-family: "Bebas Neue", Inter, sans-serif; font-size: 17px; font-weight: 700; letter-spacing: .12em; color: #111; margin-bottom: 6px; }
+.kab .po-pr .po-h { font-family: "Bebas Neue", Inter, sans-serif; font-weight: 700; font-size: 76px; line-height: .86; text-transform: uppercase; color: #111; }
+.kab .po-pr .po-h span { display: block; font-size: 48px; }
+.kab .po-pr .po-sub { color: #222; max-width: 44ch; }
+.kab .po-pr .po-btn { border-radius: 0; background: #111; color: #fff; font-family: "Bebas Neue", Inter, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 4px 22px 0; }
+.kab .po-pr .po-btn:focus-visible { outline-color: #111; }
+.kab .po-note { margin: 10px 0 0; font-size: 13px; color: #3a3a1a; }
+.kab .po-img { position: absolute; right: -24px; bottom: 0; height: 128%; width: auto; max-width: none; display: block;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 5%); mask-image: linear-gradient(to right, transparent 0, #000 5%); }
+
+/* ---------- мои продукты ---------- */
+.kab-sec { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin: 28px 2px 12px; }
+.kab-sec .n { min-width: 24px; height: 24px; padding: 0 8px; border-radius: 12px; background: rgba(47,123,255,.1); color: var(--blue); font-size: 13px; font-weight: 700; display: inline-grid; place-items: center; }
+.kab-sec .s { font-size: 14px; color: var(--muted); }
+.kab-prod { display: grid; grid-template-columns: 112px minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 18px; margin-bottom: 14px; }
+.kab-prod .cover { width: 112px; height: 112px; border-radius: 18px; overflow: hidden; background: #fff; border: 1px solid var(--line-2); display: grid; place-items: center; }
+.kab-prod .cover img { width: 100%; height: 100%; object-fit: cover; }
+.kab-prod .cover .ltr { font-size: 26px; font-weight: 800; color: var(--blue); }
+.kab-prod .kind { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); }
+.kab-prod h3 { margin: 2px 0 6px; font-size: 19px; font-weight: 750; letter-spacing: -.01em; }
+.kab-prod .facts { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; color: var(--ink-2); }
+.kab-prod .facts span { display: inline-flex; align-items: center; gap: 6px; }
+.kab-prod .facts svg { width: 16px; height: 16px; color: var(--faint); }
+.kab-prod .acts { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+.kab-state { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 8px; }
+.kab-state.ended { background: rgba(16,24,48,.07); color: var(--muted); }
+.kab-state.active { background: rgba(22,163,106,.12); color: #0e7c50; }
+.kab-cat { list-style: none; margin: 0; padding: 6px 20px; }
+.kab-cat li { display: grid; grid-template-columns: 56px minmax(0,1fr) auto; gap: 16px; align-items: center; padding: 14px 4px; border-top: 1px solid var(--line-2); }
+.kab-cat li:first-child { border-top: 0; }
+.kab-cat .lg { width: 56px; height: 56px; border-radius: 14px; overflow: hidden; background: #fff; border: 1px solid var(--line-2); display: grid; place-items: center; }
+.kab-cat .lg img { width: 100%; height: 100%; object-fit: cover; }
+.kab-cat b { font-size: 16px; }
+.kab-cat p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+
+/* ---------- нижнее меню на телефоне ---------- */
+.kab-mnav { display: none; }
+
+@media (max-width: 960px) {
+  .kab-side { display: none; }
+  .kab-top { padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top)); }
+  .kab-content { padding: 18px 16px 120px; }
+  .kab-me .t { display: none; }
+  .kab-me { padding: 4px; }
+  .kab-mnav {
+    display: flex; position: fixed; z-index: 50; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom));
+    justify-content: space-around; padding: 8px 6px; border-radius: 26px;
+    background: rgba(255,255,255,.82); backdrop-filter: saturate(180%) blur(22px); -webkit-backdrop-filter: saturate(180%) blur(22px);
+    border: 1px solid rgba(255,255,255,.7); box-shadow: 0 12px 40px rgba(16,24,48,.16), inset 0 1px 0 rgba(255,255,255,.9);
+  }
+  .kab-mnav a, .kab-mnav button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 2px; border-radius: 18px; border: 0; background: none; cursor: pointer; text-decoration: none; font-size: 10.5px; font-weight: 600; color: var(--muted); position: relative; }
+  .kab-mnav svg { width: 22px; height: 22px; }
+  .kab-mnav [aria-current="page"] { color: var(--blue); background: linear-gradient(135deg, rgba(47,123,255,.14), rgba(123,97,255,.12)); }
+  .kab-mnav .dotc { position: absolute; top: 4px; right: calc(50% - 16px); width: 8px; height: 8px; border-radius: 50%; background: var(--bad); }
+}
+@media (max-width: 640px) {
+  .kab-h-xl { font-size: 24px; }
+  .kab-frimi { width: 92px; height: 92px; margin: -14px 0 -23px -6px; }
+  .kab-frimi.laptop { width: 118px; height: 118px; margin: -24px 0 -23px -10px; }
+  .kab-frimi.scene { width: 150px; height: 150px; margin: -16px -12px -38px -14px; }
+  .kab-frimi::after { left: 0; transform: translate(0, -4px); }
+  .kab-frimi:hover::after, .kab-frimi:focus-visible::after { transform: none; }
+  .kab-greet { gap: 8px; }
+  .kab .promo { padding: 24px 20px; }
+  .kab .po-offer .po-h { font-size: 30px; }
+  .kab .po-ts .po-h { font-size: 40px; }
+  .kab .po-cd { gap: 6px; }
+  .kab .po-cd span { width: 58px; }
+  .kab .po-cd b { font-size: 22px; }
+  .kab .po-btn { width: 100%; }
+  .kab .po-pr { min-height: 0; padding-bottom: 24px; }
+  .kab .po-pr .po-txt { max-width: none; }
+  .kab .po-pr .po-eye, .kab .po-pr .po-h { max-width: 60%; }
+  .kab .po-pr .po-h { font-size: 60px; }
+  .kab .po-pr .po-h span { font-size: 40px; }
+  .kab .po-img { top: 18px; right: -14px; bottom: auto; height: auto; width: 46%; max-width: 190px; z-index: 0;
+    -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
+  .kab-prod { grid-template-columns: 72px minmax(0,1fr); gap: 14px; }
+  .kab-prod .cover { width: 72px; height: 72px; border-radius: 14px; }
+  .kab-prod .acts { grid-column: 1 / -1; flex-direction: row; }
+  .kab-prod .acts .kab-btn { flex: 1; }
+  .kab-cat { padding: 4px 14px; }
+  .kab-cat li { grid-template-columns: 48px minmax(0,1fr); }
+  .kab-cat .lg { width: 48px; height: 48px; }
+  .kab-cat .kab-btn { grid-column: 2; justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) { .kab-frimi::after, .kab .po-btn { transition: none; } }
+
+/* ---------- Профиль в кабинете (прототип: #/profile) ---------- */
+.kab .kp-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 22px; }
+.kab .kp-small { font-size: 13px; color: var(--muted); }
+.kab .kp-card { text-align: center; padding: 28px 22px; }
+.kab .kp-av { width: 112px; height: 112px; border-radius: 32px; margin: 0 auto 14px; position: relative; display: grid; place-items: center; background: linear-gradient(135deg, var(--blue), var(--violet)); color: #fff; font-size: 40px; font-weight: 700; }
+.kab .kp-av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 32px; }
+.kab .kp-av-busy { position: absolute; inset: 0; border-radius: 32px; display: grid; place-items: center; background: rgba(11,16,32,.45); }
+.kab .kp-cam { position: absolute; right: -6px; bottom: -6px; width: 40px; height: 40px; border-radius: 12px; background: #fff; border: 1px solid var(--line); display: grid; place-items: center; cursor: pointer; color: var(--blue); box-shadow: 0 4px 12px rgba(16,24,48,.1); transition: border-color .18s var(--ease), transform .15s var(--ease); }
+.kab .kp-cam:hover { border-color: rgba(47,123,255,.4); }
+.kab .kp-cam:active { transform: translateY(1px); }
+.kab .kp-cam svg { width: 18px; height: 18px; }
+.kab .kp-name { font-size: 20px; font-weight: 700; letter-spacing: -.01em; line-height: 1.3; margin: 0; overflow-wrap: anywhere; }
+.kab .kp-meta { margin: 4px 0 0; }
+.kab .kp-stat { display: flex; align-items: center; gap: 14px; margin-top: 18px; padding: 12px; border-radius: 14px; text-align: left; text-decoration: none; color: var(--ink); background: rgba(255,255,255,.6); border: 1px solid var(--line-2); transition: border-color .18s var(--ease), background-color .18s var(--ease); }
+.kab .kp-stat:hover { border-color: rgba(47,123,255,.3); background: #fff; }
+.kab .kp-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex: none; background: rgba(240,120,40,.12); color: #e0701c; }
+.kab .kp-ic svg { width: 20px; height: 20px; }
+.kab .kp-stat-t { display: flex; flex-direction: column; min-width: 0; }
+.kab .kp-stat-t b { font-size: 18px; font-weight: 750; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.kab .kp-chev { margin-left: auto; width: 18px; height: 18px; color: var(--faint); }
+.kab .kp-tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line-2); margin: 0 0 18px; overflow-x: auto; scrollbar-width: none; }
+.kab .kp-tabs::-webkit-scrollbar { display: none; }
+.kab .kp-tabs button { padding: 10px 4px; margin-right: 18px; margin-bottom: -1px; font: inherit; font-weight: 600; color: var(--muted); background: none; border: 0; border-bottom: 2px solid transparent; white-space: nowrap; cursor: pointer; transition: color .18s; }
+.kab .kp-tabs button:hover { color: var(--ink); }
+.kab .kp-tabs button[aria-current="page"] { color: var(--ink); border-bottom-color: var(--blue); }
+.kab .kp-sec { padding: 22px 24px; margin-bottom: 16px; scroll-margin-top: 96px; }
+.kab .kp-sec h3 { margin: 0 0 4px; font-size: 16px; font-weight: 700; }
+.kab .kp-sec .kp-h2 { margin-top: 24px; display: flex; align-items: baseline; gap: 8px; }
+.kab .kp-lead { margin: 0 0 16px; }
+.kab .kp-fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.kab .kp-field { min-width: 0; }
+.kab .kp-field.kp-full { grid-column: 1 / -1; }
+.kab .kp-field > label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
+.kab .kp-field input, .kab .kp-phone button[role="combobox"], .kab .kp-city-in input { width: 100%; height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid rgba(16,24,48,.14); background: #fff; color: var(--ink); font: inherit; font-size: 15px; transition: border-color .18s, box-shadow .18s; }
+.kab .kp-field input:focus, .kab .kp-city-in input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,123,255,.15); }
+.kab .kp-field input:disabled { background: rgba(16,24,48,.04); color: var(--muted); cursor: not-allowed; }
+.kab .kp-field input[aria-invalid="true"] { border-color: var(--bad); }
+.kab .kp-hint { font-size: 12px; color: var(--muted); margin-top: 5px; }
+.kab .kp-bad { color: var(--bad); }
+.kab .kp-warn { color: #b26a00; }
+.kab .kp-ok { color: #0e7c50; font-weight: 600; }
+.kab .kp-phone { display: flex; gap: 8px; }
+.kab .kp-phone > :first-child { flex: none; }
+.kab .kp-phone button[role="combobox"] { width: auto; display: inline-flex; align-items: center; gap: 6px; }
+.kab .kp-phone input { flex: 1; min-width: 0; }
+.kab .kp-rte > * { border-radius: 12px; }
+.kab .kp-rte .ProseMirror, .kab .kp-rte [contenteditable] { background: #fff; }
+.kab .kp-save { display: flex; align-items: center; gap: 14px; margin-top: 18px; }
+.kab .kp-save .kab-btn[disabled], .kab .kp-sec .kab-btn[disabled] { opacity: .5; cursor: not-allowed; box-shadow: none; }
+.kab .kp-city { display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
+.kab .kp-city-in { flex: 1 1 260px; min-width: 0; }
+.kab .kp-bases { display: grid; gap: 10px; }
+.kab .kp-base { display: flex; gap: 8px; align-items: flex-start; }
+.kab .kp-x { width: 44px; height: 44px; flex: none; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.85); color: var(--muted); display: grid; place-items: center; cursor: pointer; }
+.kab .kp-x:hover { color: var(--bad); border-color: rgba(229,72,77,.35); }
+.kab .kp-x svg { width: 18px; height: 18px; }
+.kab .kp-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+.kab .kp-chip-add { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: 10px; background: none; border: 1px dashed rgba(47,123,255,.45); color: var(--blue); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.kab .kp-chip-add:hover { background: rgba(47,123,255,.06); }
+.kab .kp-chip-add svg { width: 15px; height: 15px; }
+.kab .kp-tg { display: flex; flex-direction: column; gap: 4px; }
+.kab .kp-tg-t b { display: block; font-weight: 600; font-size: 14px; }
+.kab .kp-tg .kp-row { margin-top: 10px; }
+.kab .kp-tg-next { padding: 14px 16px; border-radius: 12px; background: rgba(47,123,255,.06); border: 1px solid rgba(47,123,255,.22); }
+.kab .kp-tg-next .kp-small { color: var(--ink-2); }
+.kab .kp-howto { margin-top: 14px; font-size: 14px; color: var(--ink-2); }
+.kab .kp-howto summary { display: inline-flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--blue); font-weight: 600; }
+.kab .kp-howto summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 6px; }
+.kab .kp-howto ol { margin: 4px 0 0; padding-left: 20px; display: grid; gap: 6px; list-style: decimal; }
+.kab .kp-howto a { color: var(--blue); }
+.kab .kp-zoom > .rounded-lg { border: 0; box-shadow: none; background: none; padding: 0; }
+.kab .kp-zoom > .rounded-lg > div:first-child:has(> h2) { display: none; }
+.kab .kp-zoom button.bg-primary { background: linear-gradient(135deg, #2f7bff 0%, #5a6dff 55%, #7b61ff 100%); color: #fff; min-height: 44px; border-radius: 12px; box-shadow: 0 6px 18px rgba(47,123,255,.32); transition: box-shadow .18s var(--ease); }
+.kab .kp-zoom button.bg-primary:hover { box-shadow: 0 10px 26px rgba(47,123,255,.42); }
+.kab .kp-embed-in fieldset label { background: #fff; border-color: var(--line-2); }
+.kab .kp-embed-in fieldset label:hover { border-color: rgba(47,123,255,.3); }
+.kab .kp-embed-in fieldset label:has(input:checked) { background: rgba(47,123,255,.06); border-color: rgba(47,123,255,.45); }
+.kab .kp-embed-in fieldset input[type="radio"] { accent-color: var(--blue); }
+.kab .kp-embed-in fieldset label:has(input:focus-visible) { outline: 2px solid var(--blue); outline-offset: 2px; }
+/* Встроенные блоки платформы (бизнесы, навыки, статус почты) в стиле панелей кабинета */
+.kab .kp-embed { margin-bottom: 16px; scroll-margin-top: 96px; }
+.kab .kp-embed > .rounded-lg.border, .kab .kp-embed > div > .rounded-lg.border:first-child { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(47,123,255,.08), 0 2px 8px rgba(0,0,0,.03); }
+@media (max-width: 960px) {
+  .kab .kp-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+  .kab .kp-card { position: static; }
+  .kab .kp-tabs { gap: 8px; border-bottom: 0; }
+  .kab .kp-tabs button { margin: 0; padding: 0 16px; min-height: 40px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.7); font-size: 14px; }
+  .kab .kp-tabs button[aria-current="page"] { color: #1d5fd6; background: rgba(47,123,255,.1); border-color: rgba(47,123,255,.32); }
+}
+@media (max-width: 640px) {
+  .kab .kp-sec { padding: 18px 16px; }
+  .kab .kp-fgrid { grid-template-columns: 1fr; }
+  .kab .kp-city > .kab-btn { width: 100%; }
+}
+.kab .kp-field select, .kab .kp-field textarea { width: 100%; height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid rgba(16,24,48,.14); background: #fff; color: var(--ink); font: inherit; font-size: 15px; transition: border-color .18s, box-shadow .18s; }
+.kab .kp-field textarea { height: 104px; padding: 11px 14px; resize: vertical; }
+.kab .kp-field select:focus, .kab .kp-field textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,123,255,.15); }
+
+/* ---------- Поддержка (прототип: #/support) ---------- */
+.kab .ks-hero { display: flex; align-items: center; gap: 18px; min-width: 0; }
+.kab .ks-hero > div { min-width: 0; }
+.kab .ks-hero .kab-sub { margin-bottom: 0; max-width: 54ch; text-wrap: pretty; }
+.kab .ks-hero { gap: 6px; }
+/* Фрими крупно и без плашки: у ролика прозрачный фон, поля кадра съедаем отрицательными отступами (Саша 15.10) */
+.kab .ks-frimi { flex: none; width: 176px; height: 176px; margin: -8px -8px -30px -24px; pointer-events: none; }
+.kab .ks-frimi video, .kab .ks-frimi img { width: 100%; height: 100%; display: block; object-fit: contain; background: transparent; }
+@media (max-width: 640px) { .kab .ks-hero { gap: 2px; } .kab .ks-frimi { width: 124px; height: 124px; margin: -6px -6px -22px -16px; } }
+.kab .ks-ways { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.kab .ks-ways .kab-btn svg { width: 18px; height: 18px; }
+.kab .ks-box { display: grid; grid-template-columns: 300px minmax(0, 1fr); overflow: hidden; min-height: 560px; margin-top: 18px; }
+.kab .ks-list { border-right: 1px solid var(--line-2); padding: 14px; display: flex; flex-direction: column; gap: 4px; background: rgba(255,255,255,.5); }
+.kab .ks-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); padding: 6px 12px 4px; margin: 0; }
+.kab .ks-empty { padding: 10px 12px; margin: 0; }
+.kab .ks-tk { text-align: left; border: 0; background: none; padding: 12px; border-radius: 14px; cursor: pointer; font: inherit; color: var(--ink); transition: background-color .18s; }
+.kab .ks-tk:hover { background: rgba(47,123,255,.06); }
+.kab .ks-tk[aria-selected="true"] { background: #fff; box-shadow: 0 2px 10px rgba(16,24,48,.06), inset 0 0 0 1px var(--line); }
+.kab .ks-tk b { display: block; font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.kab .ks-tk .m { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); }
+.kab .st-new { color: var(--bad); font-weight: 700; } .kab .st-work { color: var(--blue); font-weight: 700; } .kab .st-wait { color: #b86c00; font-weight: 700; }
+.kab .st-ok { color: #16a36a; font-weight: 700; } .kab .st-off { color: var(--faint); font-weight: 700; }
+.kab .ks-chat { display: flex; flex-direction: column; min-width: 0; }
+.kab .ks-head { padding: 16px 22px; border-bottom: 1px solid var(--line-2); display: flex; align-items: center; gap: 12px; }
+.kab .ks-head-t { min-width: 0; flex: 1; }
+.kab .ks-head-t b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kab .ks-av { width: 38px; height: 38px; border-radius: 12px; flex: none; display: grid; place-items: center; background: linear-gradient(135deg, #16a36a, #2f7bff); color: #fff; font-weight: 700; font-size: 14px; }
+.kab .ks-back { display: none; width: 36px; height: 36px; flex: none; border-radius: 12px; place-items: center; background: rgba(255,255,255,.8); border: 1px solid var(--line); color: var(--ink-2); cursor: pointer; }
+.kab .ks-back svg { width: 18px; height: 18px; }
+.kab .ks-msgs { flex: 1; padding: 22px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 560px; }
+.kab .ks-msg { max-width: 76%; padding: 10px 14px; border-radius: 16px; font-size: 14.5px; line-height: 1.45; overflow-wrap: anywhere; }
+.kab .ks-msg .tx { white-space: pre-wrap; }
+.kab .ks-msg small { display: block; font-size: 11px; opacity: .6; margin-top: 4px; }
+.kab .ks-msg.them { align-self: flex-start; background: #fff; border: 1px solid var(--line-2); border-bottom-left-radius: 6px; }
+.kab .ks-msg.me { align-self: flex-end; background: linear-gradient(135deg, #2f7bff, #6466ff); color: #fff; border-bottom-right-radius: 6px; }
+.kab .ks-msg.ai { background: linear-gradient(135deg, rgba(123,97,255,.08), rgba(47,123,255,.06)); border-color: rgba(123,97,255,.22); }
+.kab .ks-msg .who { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 3px; }
+.kab .ks-msg .who svg { width: 13px; height: 13px; }
+.kab .ks-msg img { border-radius: 10px; max-width: 100%; margin-bottom: 6px; }
+.kab .ks-sys { align-self: center; max-width: 86%; text-align: center; font-size: 12.5px; color: var(--muted); background: rgba(16,24,48,.05); padding: 8px 14px; border-radius: 14px; }
+.kab .ks-composer { display: flex; flex-direction: column; gap: 10px; padding: 14px 18px; border-top: 1px solid var(--line-2); transition: background-color .18s; }
+.kab .ks-composer.closed { flex-direction: row; align-items: center; justify-content: space-between; }
+.kab .ks-composer.drag { background: rgba(47,123,255,.06); box-shadow: inset 0 0 0 2px rgba(47,123,255,.35); }
+.kab .ks-line { display: flex; align-items: flex-end; gap: 10px; }
+.kab .ks-composer textarea { flex: 1; min-width: 0; resize: none; height: 44px; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font: inherit; font-size: 15px; color: var(--ink); }
+.kab .ks-composer textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,123,255,.15); }
+.kab .ks-icon { width: 44px; height: 44px; flex: none; border-radius: 12px; display: grid; place-items: center; background: rgba(255,255,255,.8); border: 1px solid var(--line); color: var(--ink-2); cursor: pointer; transition: border-color .18s; }
+.kab .ks-icon:hover { border-color: rgba(47,123,255,.3); color: var(--blue); }
+.kab .ks-icon:focus-within { outline: 2px solid var(--blue); outline-offset: 2px; }
+.kab .ks-icon.off, .kab .ks-attach.off { opacity: .45; cursor: not-allowed; }
+.kab .ks-icon svg { width: 20px; height: 20px; }
+.kab .ks-send { width: 48px; height: 44px; padding: 0; flex: none; }
+.kab .ks-send svg { width: 18px; height: 18px; }
+.kab .ks-send[disabled] { opacity: .5; cursor: not-allowed; box-shadow: none; }
+.kab .ks-foot { padding: 0 18px 12px; font-size: 12px; color: var(--faint); }
+.kab .ks-new { padding: 20px 22px; display: flex; flex-direction: column; gap: 16px; }
+.kab .ks-lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px; }
+/* Темы обращения: плашки вместо выпадающего списка */
+.kab .ks-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.kab .ks-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(16,24,48,.14); background: #fff; color: var(--ink); font: inherit; font-size: 15px; font-weight: 500; cursor: pointer; touch-action: manipulation; transition: background-color .18s, border-color .18s, color .18s, box-shadow .18s; }
+@media (hover: hover) { .kab .ks-chip:not([aria-pressed="true"]):hover { border-color: rgba(47,123,255,.4); background: rgba(47,123,255,.05); } }
+.kab .ks-chip:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.kab .ks-chip[aria-pressed="true"] { background: linear-gradient(135deg, #2f7bff 0%, #5a6dff 55%, #7b61ff 100%); border-color: transparent; color: #fff; box-shadow: 0 6px 16px rgba(47,123,255,.28); }
+.kab .ks-chip svg { width: 16px; height: 16px; flex: none; }
+/* На телефоне плашки ниже, зона касания добирается невидимым краем до 44 px */
+@media (max-width: 640px) {
+  .kab .ks-chips { gap: 8px 6px; }
+  .kab .ks-chip { position: relative; min-height: 38px; padding: 0 13px; font-size: 14px; gap: 5px; }
+  .kab .ks-chip::after { content: ''; position: absolute; inset: -3px 0; }
+  .kab .ks-chip svg { width: 14px; height: 14px; }
+}
+/* Поле нового обращения: текст, картинки и кнопки в одной рамке, как в мессенджере */
+.kab .ks-compose { border: 1px solid rgba(16,24,48,.14); border-radius: 16px; background: #fff; transition: border-color .18s, box-shadow .18s, background-color .18s; }
+.kab .ks-compose:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,123,255,.15); }
+.kab .ks-compose.drag { border-color: var(--blue); border-style: dashed; background: rgba(47,123,255,.04); }
+.kab .kp-field .ks-compose textarea { display: block; height: auto; min-height: 104px; border: 0; border-radius: 16px; background: transparent; padding: 14px 16px 6px; resize: vertical; box-shadow: none; }
+.kab .kp-field .ks-compose textarea:focus { box-shadow: none; }
+.kab .ks-compose .ks-thumbs { padding: 12px 14px 0; }
+.kab .ks-bar { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 8px; border-top: 1px solid var(--line-2); }
+.kab .ks-attach { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border-radius: 12px; color: var(--ink-2); font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color .18s, color .18s; }
+.kab .ks-attach:hover { background: rgba(47,123,255,.07); color: var(--blue); }
+.kab .ks-attach:focus-within { outline: 2px solid var(--blue); outline-offset: 2px; }
+.kab .ks-attach svg { width: 20px; height: 20px; flex: none; }
+.kab .ks-attach-s { display: none; }
+.kab .ks-attach span { white-space: nowrap; }
+.kab .ks-n { white-space: nowrap; font-size: 13px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.kab .ks-go { margin-left: auto; min-height: 44px; }
+.kab .ks-go svg { width: 18px; height: 18px; }
+.kab .ks-go[disabled] { opacity: .5; cursor: not-allowed; box-shadow: none; }
+.kab .ks-tip { margin: 8px 2px 0; }
+.kab .ks-cancel { align-self: flex-start; }
+@media (max-width: 560px) {
+  .kab .ks-attach-l, .kab .ks-n, .kab .ks-tip-d { display: none; }
+  .kab .ks-attach-s { display: inline; }
+  .kab .ks-bar { gap: 6px; }
+}
+@media (max-width: 380px) { .kab .ks-go-t { display: none; } .kab .ks-go { width: 48px; padding: 0; justify-content: center; } }
+/* Миниатюры картинок к отправке */
+.kab .ks-thumbs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.kab .ks-thumbs li { position: relative; width: 72px; height: 72px; }
+.kab .ks-thumbs img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; border: 1px solid var(--line-2); display: block; }
+.kab .ks-thumbs button { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; border: 2px solid #fff; background: var(--ink); color: #fff; cursor: pointer; padding: 0; transition: background-color .18s; }
+.kab .ks-thumbs button::before { content: ''; position: absolute; inset: -9px; }
+.kab .ks-thumbs button:hover { background: var(--bad); }
+.kab .ks-thumbs button svg { width: 14px; height: 14px; }
+.kab .ks-none { flex: 1; display: grid; place-items: center; padding: 22px; }
+.kab .ks-faq { padding: 22px 24px; margin-top: 24px; }
+.kab .ks-faq-h { margin-bottom: 8px; font-size: 20px; font-weight: 700; }
+.kab .ks-faq details { border-top: 1px solid var(--line-2); padding: 4px 0; }
+.kab .ks-faq details:first-of-type { border-top: 0; }
+.kab .ks-faq summary { cursor: pointer; list-style: none; padding: 12px 0; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; }
+.kab .ks-faq summary::-webkit-details-marker { display: none; }
+.kab .ks-faq summary::after { content: "+"; color: var(--blue); font-size: 20px; line-height: 1; font-weight: 400; transition: transform .2s var(--ease); }
+.kab .ks-faq details[open] summary::after { transform: rotate(45deg); }
+.kab .ks-faq details p { margin: 0 0 12px; color: var(--ink-2); font-size: 14px; }
+@media (max-width: 960px) {
+  .kab .ks-box { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .kab .ks-list { border-right: 0; }
+  .kab .ks-box.has-chat .ks-list { display: none; }
+  .kab .ks-box:not(.has-chat) .ks-chat { display: none; }
+  .kab .ks-back { display: grid; }
+  .kab .ks-msgs { max-height: none; padding: 16px; }
+  .kab .ks-msg { max-width: 88%; }
+  .kab .ks-foot { display: none; }
+  .kab .ks-head { padding: 12px 14px; }
+  .kab .ks-new { padding: 16px; }
+  .kab .ks-faq { padding: 18px 16px; }
+}
+
+/* ---------- «Мои продукты»: вкладки, прогресс, «Покупки и оплаты» (прототип: #/products, #/products/pay) ---------- */
+.kab .kab-prod-tabs { margin: 20px 0 22px; }
+.kab .kp-tabs a { padding: 10px 4px; margin-right: 18px; margin-bottom: -1px; font-weight: 600; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .18s; }
+.kab .kp-tabs a:hover { color: var(--ink); }
+.kab .kp-tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--blue); }
+.kab .kab-bar { margin-top: 12px; max-width: 360px; display: flex; align-items: center; gap: 10px; }
+.kab .kab-bar small { font-size: 13px; color: var(--muted); white-space: nowrap; }
+.kab .kab-progress { flex: 1; height: 6px; border-radius: 99px; background: rgba(47,123,255,.14); overflow: hidden; }
+.kab .kab-progress > span { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #2f7bff, #7b61ff); }
+.kab .kab-pay-sec { padding: 22px 24px; margin-bottom: 18px; }
+.kab .kab-pay-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.kab .kab-pay-head a { color: var(--blue); font-weight: 600; font-size: 14px; text-decoration: none; }
+.kab .kab-acc-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line-2); }
+.kab .kab-acc-row:first-of-type, .kab .kab-pay-head + .kab-acc-row { border-top: 0; }
+.kab .kab-acc-row .t { flex: 1; min-width: 0; }
+.kab .kab-acc-row .t b { display: block; font-weight: 600; font-size: 14px; }
+.kab .st-warn { color: #b86c00; font-weight: 600; font-size: 13px; white-space: nowrap; }
+@media (max-width: 960px) {
+  .kab .kp-tabs a { margin: 0; padding: 0 16px; min-height: 40px; display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.7); font-size: 14px; }
+  .kab .kp-tabs a[aria-current="page"] { color: #1d5fd6; background: rgba(47,123,255,.1); border-color: rgba(47,123,255,.32); }
+  .kab .kab-acc-row { flex-wrap: wrap; row-gap: 6px; }
+  .kab .kab-acc-row .t { flex-basis: 100%; }
+}
+@media (max-width: 640px) { .kab .kab-pay-sec { padding: 18px 16px; } }
+
+/* ---------- профиль по прототипу (Саша 15.10): карточка, четыре вкладки ---------- */
+.kab .kp-stats { margin-top: 16px; text-align: left; }
+.kab .kp-stat-line { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-top: 1px solid var(--line-2); color: var(--ink); text-decoration: none; }
+.kab .kp-stats > .kp-stat-line:first-child { border-top: 0; padding-top: 0; }
+.kab .kp-stat-line .v { font-size: 18px; font-weight: 750; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.kab .kp-stat-line .l { font-size: 13px; color: var(--muted); }
+.kab .kp-stat-link { border-radius: 12px; transition: color .18s var(--ease); }
+.kab .kp-stat-link:hover .kp-chev { color: var(--blue); }
+.kab .kp-ic-blue { background: rgba(47,123,255,.1); color: var(--blue); }
+.kab .kp-club { width: 100%; margin-top: 12px; }
+.kab .kp-club svg { width: 15px; height: 15px; }
+.kab .kp-setup { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line-2); }
+.kab .kp-setup-h { margin: 0 0 8px; font-weight: 700; font-size: 15px; }
+.kab .kp-setup-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.kab .kp-setup-top .kp-small { white-space: nowrap; font-weight: 600; }
+.kab .kp-setup ul { list-style: none; margin: 0; padding: 0; }
+.kab .kp-setup li > a, .kab .kp-setup li.ok { display: grid; grid-template-columns: 24px 1fr auto; gap: 10px; align-items: center; padding: 10px 6px; border-radius: 12px; text-decoration: none; color: inherit; }
+.kab .kp-setup li > a:hover { background: rgba(47,123,255,.06); }
+.kab .kp-setup li + li { border-top: 1px solid var(--line-2); }
+.kab .kp-setup b { display: block; font-size: 14px; }
+.kab .kp-setup .kp-small { display: block; font-size: 12px; margin-top: 2px; }
+.kab .kp-setup .sc { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(47,123,255,.35); display: grid; place-items: center; }
+.kab .kp-setup li.ok .sc { background: #16a37a; border-color: #16a37a; color: #fff; }
+.kab .kp-setup li.ok .sc svg { width: 14px; height: 14px; }
+.kab .kp-setup .chev { width: 16px; height: 16px; color: var(--faint); }
+.kab .kp-fgrid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.kab .kp-row-line { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line-2); }
+.kab .kp-sec > .kp-lead + .kp-row-line { border-top: 0; padding-top: 0; }
+.kab .kp-row-line .t { flex: 1; min-width: 0; }
+.kab .kp-row-line .t b { display: block; font-weight: 600; font-size: 14px; }
+.kab .kp-row-line .t .kp-small { display: block; overflow-wrap: anywhere; }
+.kab .kp-link { padding: 0; border: 0; background: none; font: inherit; color: var(--blue); font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.kab .kp-switch { position: relative; width: 44px; height: 26px; flex: none; }
+.kab .kp-switch input { position: absolute; inset: -9px -2px; opacity: 0; margin: 0; cursor: pointer; z-index: 1; }
+.kab .kp-switch span { position: absolute; inset: 0; border-radius: 13px; background: #d4d9e6; transition: background-color .2s var(--ease); }
+.kab .kp-switch span::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform .2s var(--ease); }
+.kab .kp-switch input:checked + span { background: var(--blue); }
+.kab .kp-switch input:checked + span::after { transform: translateX(18px); }
+.kab .kp-switch input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+.kab .kp-switch.off { opacity: .45; }
+.kab .kp-switch.off input { cursor: not-allowed; }
+.kab .kp-ngrid { display: grid; grid-template-columns: minmax(0, 1fr) 72px 72px; gap: 14px 8px; align-items: center; }
+.kab .kp-ngrid > .kp-small { text-align: center; font-weight: 600; }
+.kab .kp-ngrid > .kp-switch, .kab .kp-ngrid > .kp-na { justify-self: center; }
+.kab .kp-ngrid .t b { display: block; font-size: 14px; font-weight: 600; }
+.kab .kp-ngrid .t .kp-small { display: block; font-size: 12.5px; }
+.kab .kp-na { color: var(--faint); }
+.kab .kp-btn-bad { background: var(--bad); color: #fff; }
+.kab .kp-btn-bad:hover { background: #d23c41; }
+.kab .kab-btn-ghost.kp-bad { color: var(--bad) !important; }
+.kab .kp-sec form .kp-field textarea { height: 96px; }
+@media (max-width: 1100px) { .kab .kp-fgrid-3 { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .kab .kp-ngrid { grid-template-columns: minmax(0, 1fr) 56px 56px; } }
+/* «Бизнесы» и «Навыки» в профиле: заголовок как у остальных разделов */
+.kab .kp-embed .rounded-lg.border > div:first-child [class*="text-2xl"] { font-size: 16px; font-weight: 700; letter-spacing: 0; line-height: 1.4; }
+.kab .kp-embed .rounded-lg.border > div:first-child [class*="text-2xl"] > svg { display: none; }
+.kab .kp-embed .rounded-lg.border > div:first-child { padding: 22px 24px 12px; }
+.kab .kp-embed .rounded-lg.border > div:first-child + div { padding: 0 24px 22px; }
+@media (max-width: 700px) { .kab .kp-embed .rounded-lg.border > div:first-child { padding: 18px 16px 10px; } .kab .kp-embed .rounded-lg.border > div:first-child + div { padding: 0 16px 18px; } }
+
+/* ---------- Фрими за аватаркой в профиле (FrimiLove.tsx) ----------
+   Холст кадра 1019×1142 при росте 1125, ступни в точке 579,1135.
+   --h — рост Фрими, --p — какая доля холста уходит за фото. */
+.kab .kp-av-wrap { position: relative; width: 112px; margin: 0 auto 14px; --h: 110px; --p: .94;
+  left: calc(var(--h) * .906 * var(--p) / 2 - 6px); } /* пара «Фрими + фото» по центру карточки */
+.kab .kp-av-wrap .kp-av { margin: 0; z-index: 1; }
+.kab .kp-fl { position: absolute; z-index: 0; bottom: calc(var(--h) * -.006); left: calc(var(--h) * -.906 * var(--p));
+  height: calc(var(--h) * 1.015); aspect-ratio: 1019 / 1142; padding: 0; border: 0; background: none; cursor: pointer;
+  transform-origin: 56.9% 99.4%; transition: transform .45s cubic-bezier(.34, 1.4, .6, 1); -webkit-tap-highlight-color: transparent; }
+.kab .kp-fl.out { transform: translateX(calc(var(--h) * .6)); transition-duration: 0s; }
+.kab .kp-fl.half { transform: translateX(calc(var(--h) * .03)); transition-duration: .8s; }
+.kab .kp-fl-in { position: absolute; inset: 0; transform-origin: inherit; animation: kp-fl-sway 3.4s ease-in-out infinite; }
+.kab .kp-fl img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; user-select: none; }
+.kab .kp-fl img.on { opacity: 1; animation: kp-fl-pop .28s ease-out; }
+.kab .kp-fl.jump .kp-fl-in { animation: kp-fl-jump .62s cubic-bezier(.3, .7, .4, 1) 2; }
+.kab .kp-fl.nod .kp-fl-in { animation: kp-fl-nod .5s ease-in-out 2; }
+.kab .kp-fl-fx { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.kab .kp-fl-heart { position: absolute; top: 30%; width: 22px; height: auto; opacity: 0; animation: kp-fl-heart 1.5s ease-out forwards; }
+.kab .kp-fl-say { position: absolute; bottom: calc(100% + 6px); left: calc(var(--h) * -.36); transform: translateX(-50%); white-space: nowrap;
+  padding: 7px 12px; border-radius: 14px; background: #fff; border: 1px solid var(--line); color: var(--ink); font-size: 13px; font-weight: 600; line-height: 1.3;
+  box-shadow: 0 6px 18px rgba(16, 24, 48, .12); animation: kp-fl-say .3s cubic-bezier(.34, 1.5, .6, 1); }
+.kab .kp-fl-say::after { content: ''; position: absolute; top: 100%; left: 50%; margin-left: -6px; border: 6px solid transparent; border-top-color: #fff; filter: drop-shadow(0 1px 0 var(--line)); }
+@keyframes kp-fl-sway { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
+@keyframes kp-fl-pop { 0% { transform: scale(.96, 1.04); } 100% { transform: none; } }
+@keyframes kp-fl-jump { 0%, 100% { transform: none; } 15% { transform: scale(1.06, .92); } 45% { transform: translateY(-26%) scale(.96, 1.05); } 80% { transform: scale(1.04, .95); } }
+@keyframes kp-fl-nod { 0%, 100% { transform: none; } 50% { transform: rotate(5deg) translateX(3%); } }
+@keyframes kp-fl-heart { 0% { opacity: 0; transform: translate(0, 0) scale(calc(var(--s) * .4)); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--d), -64px) scale(var(--s)); } }
+@keyframes kp-fl-say { from { opacity: 0; transform: translate(-50%, 6px) scale(.9); } to { opacity: 1; transform: translateX(-50%); } }
+@media (max-width: 640px) { .kab .kp-av-wrap { --h: 96px; } }
+@media (prefers-reduced-motion: reduce) {
+  .kab .kp-fl, .kab .kp-fl-in, .kab .kp-fl img.on { transition: none; animation: none; }
+  .kab .kp-fl-fx { display: none; }
+}
+
+/* ---------- Главная: «Закончите настройку» сбоку (почта, Telegram, профиль, кто пригласил) ---------- */
+.kab-home-main { min-width: 0; }
+.kab-home-aside:empty { display: none; }
+@media (min-width: 1321px) {
+  .kab-content.narrow:has(.kab-home.has-aside) { max-width: 1240px; }
+  .kab-home.has-aside { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+  .kab-home.has-aside .kab-home-aside { position: sticky; top: 96px; margin-top: 20px; }
+}
+@media (max-width: 1320px) { .kab-home-aside { margin-top: 24px; } }
+.kab .ksp { padding: 22px 24px; }
+.kab .ksp-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
+.kab .ksp-head h2 { font-size: 16px; font-weight: 650; line-height: 1.35; margin: 0; }
+.kab .ksp-hide { border: 0; background: none; padding: 0; color: var(--blue); font: inherit; font-weight: 600; font-size: 12px; cursor: pointer; }
+.kab .ksp-hide:hover { text-decoration: underline; }
+.kab .ksp-hide:focus-visible, .kab .ksp-row:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 8px; }
+.kab .ksp-top { display: flex; align-items: center; gap: 10px; margin: -2px 0 8px; }
+.kab .ksp-top > span { white-space: nowrap; font-weight: 600; font-size: 13px; color: var(--muted); }
+.kab .ksp-list { list-style: none; margin: 0; padding: 0; }
+.kab .ksp-list > li + li { border-top: 1px solid var(--line-2, rgba(15,23,42,.06)); }
+.kab .ksp-row, .kab .ksp-list > li.ok { display: grid; grid-template-columns: 24px 1fr auto; gap: 10px; align-items: center; width: 100%; padding: 10px 6px; border: 0; background: none; border-radius: 12px; text-decoration: none; color: inherit; text-align: left; font: inherit; cursor: pointer; }
+.kab .ksp-list > li.ok { cursor: default; }
+@media (hover: hover) { .kab .ksp-row:hover { background: rgba(47,123,255,.06); } }
+.kab .ksp-list b { display: block; font-size: 14px; font-weight: 600; }
+.kab .ksp-list small { display: block; font-size: 12px; margin-top: 2px; color: var(--muted); line-height: 1.4; }
+.kab .ksp-list .sc { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(47,123,255,.35); display: grid; place-items: center; }
+.kab .ksp-list li.ok .sc { background: #16a37a; border-color: #16a37a; color: #fff; }
+.kab .ksp-list li.ok .sc svg { width: 14px; height: 14px; }
+.kab .ksp-list li.ok b { color: var(--muted); font-weight: 500; text-decoration: line-through; text-decoration-color: rgba(91,100,122,.4); }
+.kab .ksp-list .chev { width: 16px; height: 16px; color: var(--muted); transition: transform .2s var(--ease, ease); }
+.kab .ksp-list li.open .chev { transform: rotate(180deg); }
+.kab .ksp-inv { padding: 2px 6px 12px 40px; display: flex; flex-direction: column; gap: 8px; }
+.kab .ksp-search { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); }
+.kab .ksp-search:focus-within { border-color: rgba(47,123,255,.55); box-shadow: 0 0 0 3px rgba(47,123,255,.14); }
+.kab .ksp-search svg { width: 15px; height: 15px; color: var(--muted); flex: none; }
+.kab .ksp-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: inherit; font-size: 16px; color: inherit; }
+.kab .ksp-cands { list-style: none; margin: 0; padding: 0; max-height: 192px; overflow-y: auto; }
+.kab .ksp-cands button { width: 100%; text-align: left; padding: 9px 10px; border: 0; background: none; border-radius: 10px; font: inherit; font-size: 14px; color: inherit; cursor: pointer; }
+@media (hover: hover) { .kab .ksp-cands button:hover { background: rgba(47,123,255,.06); } }
+.kab .ksp-cands small, .kab .ksp-picked small { color: var(--muted); margin-left: 6px; font-size: 13px; }
+.kab .ksp-picked { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.kab .ksp-picked .nm { flex: 1; min-width: 0; font-weight: 600; font-size: 14px; }
+.kab .ksp-none { margin: 0; font-size: 12px; color: var(--muted); }
+@media (max-width: 640px) { .kab .ksp { padding: 18px 16px; } .kab .ksp-hide { padding: 10px 6px; margin: -10px -6px; font-size: 13px; } .kab .ksp-inv { padding-left: 6px; } }
+
+/* ---------- тур «Как устроен кабинет» ---------- */
+.kab-help { width: 40px; height: 40px; flex: none; display: grid; place-items: center; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.8); color: var(--muted); cursor: pointer; transition: color .18s var(--ease), background-color .18s var(--ease); }
+.kab-help svg { width: 20px; height: 20px; }
+.kab-help:hover { color: var(--blue); background: #fff; }
+.kab-help:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+/* Светлая кожа поверх тёмного тура ИИнструментов: стекло кабинета, сине-фиолетовый акцент */
+.kab-tour { color: #141a2e; }
+.kab-tour .iit-full { background: rgba(20, 28, 56, .6); }
+.kab-tour .iit-hole { box-shadow: 0 0 0 2px #2f7bff, 0 0 0 6px rgba(47,123,255,.22), 0 0 0 9999px rgba(20, 28, 56, .6); }
+.kab-tour .iit-tip, .kab-tour .iit-sheet { background: #fff; border-color: rgba(47,123,255,.16); box-shadow: 0 24px 60px rgba(16,24,48,.22), 0 2px 8px rgba(16,24,48,.06); }
+.kab-tour .iit-arrow { background: #fff; border-color: rgba(47,123,255,.16); }
+.kab-tour .iit-ey { font-family: Inter, system-ui, sans-serif; font-weight: 700; letter-spacing: .12em; color: #2f7bff; }
+.kab-tour .iit-ey span + span { color: #8a93a8; }
+.kab-tour .iit-tip h3, .kab-tour .iit-sheet h2 { font-family: Inter, system-ui, sans-serif; font-style: normal; font-weight: 800; letter-spacing: -.02em; color: #141a2e; }
+.kab-tour .iit-tip h3 { font-size: 21px; line-height: 1.2; }
+.kab-tour .iit-sheet h2 { font-size: 28px; line-height: 1.15; }
+.kab-tour .iit-sheet h2.iit-final-title { font-size: 26px; }
+.kab-tour .iit-tip p, .kab-tour .iit-sheet p { color: #4a5470; }
+.kab-tour .iit-tip p b, .kab-tour .iit-sheet p b { color: #141a2e; }
+.kab-tour .iit-seg i { background: #e3e8f5; }
+.kab-tour .iit-seg i.on { background: linear-gradient(90deg, #2f7bff, #7b61ff); }
+.kab-tour .iit-next { background: linear-gradient(135deg, #2f7bff, #7b61ff); color: #fff; box-shadow: 0 10px 28px -8px rgba(47,123,255,.55); }
+.kab-tour .iit-next:hover { background: linear-gradient(135deg, #1f6bf0, #6a50f0); }
+.kab-tour .iit-skip { color: #6b7590; }
+.kab-tour .iit-skip:hover { color: #141a2e; }
+.kab-tour .iit-next:focus-visible, .kab-tour .iit-skip:focus-visible { outline-color: #2f7bff; }
+/* Свечение за Фрими нужно на тёмной странице курса; на светлом кабинете оно лишнее */
+.kab-tour .iit-g-glow { display: none; }
+.kab-tour .iit-g-prop { filter: drop-shadow(0 6px 14px rgba(16,24,48,.2)); }
+.kab-tour .iit-arrow.kab-arrow-left { transform: rotate(-45deg); }
+.kab-touring .kab-frimi { visibility: hidden; }
+
+/* Меню профиля в шапке: профиль и настройки, рюкзак, магазин фениксов (Игорь 17.10) */
+.kab-me-wrap { position: relative; }
+.kab button.kab-me { cursor: pointer; font: inherit; color: inherit; text-align: left; }
+.kab-me-menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 70; min-width: 230px; padding: 6px; border-radius: 16px;
+  background: #fff; border: 1px solid var(--line); box-shadow: 0 18px 50px rgba(16, 24, 48, .16); display: flex; flex-direction: column; }
+.kab-me-menu a, .kab-me-menu button { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 0; background: none;
+  font: inherit; font-size: 14px; color: var(--ink); text-decoration: none; cursor: pointer; text-align: left; }
+.kab-me-menu a:hover, .kab-me-menu button:hover { background: rgba(47, 123, 255, .07); }
+.kab-me-menu svg { width: 16px; height: 16px; color: var(--faint); flex: none; }
+.kab-me-menu button { color: var(--muted); border-top: 1px solid var(--line-2); border-radius: 0 0 10px 10px; margin-top: 4px; }
+
+/* Тестовая версия дашборда (/dashboard-test) */
+.kab-test-badge { padding: 3px 10px; border-radius: 999px; background: rgba(240, 122, 42, .12); color: #b4560f; font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+/* Страницы платформы внутри кабинета (Регистратор, Мой лендинг, тесты, колесо, гид, Кругосветка, рюкзак, магазин):
+   палитра кабинета вместо бежевой темы платформы — как в разделе Альянса (alliance.css). Переменные на body,
+   чтобы их получали и всплывающие окна Radix. */
+body:has(.kab-plat) {
+  --background: 222 70% 97%;
+  --foreground: 228 49% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 228 49% 8%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 228 49% 8%;
+  --primary: 218 100% 59%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 222 100% 96%;
+  --secondary-foreground: 222 60% 25%;
+  --muted: 222 60% 96%;
+  --muted-foreground: 223 15% 42%;
+  --accent: 222 100% 96%;
+  --accent-foreground: 222 60% 25%;
+  --destructive: 358 75% 59%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 60% 91%;
+  --input: 220 50% 90%;
+  --ring: 218 100% 59%;
+  --radius: 1rem;
+  color-scheme: light;
+}
+.kab-plat [class*="rounded-"][class*="border"][class*="bg-card"]:not([class*="bg-gradient"]):not([class*="from-"]) {
+  background-color: rgba(255, 255, 255, 0.82);
+  border-color: rgba(47, 123, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(47, 123, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+.kab-plat > .container { padding-left: 0; padding-right: 0; }
+
+/* «Вступить в Альянс» (KabinetUpgrade) — вместо кнопки Upgrade старого меню */
+.kab-up { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; padding: 12px; border-radius: 16px; text-decoration: none; color: var(--ink);
+  background: linear-gradient(135deg, rgba(47,123,255,.12), rgba(123,97,255,.12)); box-shadow: inset 0 0 0 1px rgba(47,123,255,.18);
+  transition: box-shadow .18s var(--ease), transform .15s var(--ease); }
+.kab-up:hover { box-shadow: inset 0 0 0 1px rgba(47,123,255,.32), 0 8px 24px rgba(47,123,255,.14); }
+.kab-up-ic { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; background: linear-gradient(135deg, #2f7bff, #7b61ff); color: #fff; flex: none; }
+.kab-up-ic svg { width: 18px; height: 18px; }
+.kab-up-t { min-width: 0; flex: 1; }
+.kab-up-t b { display: block; font-size: 14px; font-weight: 700; line-height: 1.25; }
+.kab-up-t small { display: block; font-size: 12px; color: var(--muted); line-height: 1.3; }
+.kab-up-arr { width: 16px; height: 16px; color: var(--blue); flex: none; }
+.kab-up-m { display: none; }
+@media (max-width: 960px) { .kab-up-m { display: flex; margin: 16px 0; } }
+
+/* «Мои продукты»: у команды «Открыть» и «Подробнее» рядом; ссылка на купленный урок */
+.kab-cat-acts { display: inline-flex; gap: 8px; flex-wrap: wrap; }
+.kab-acc-link { color: inherit; text-decoration: none; }
+.kab-acc-link:hover b { color: var(--blue); text-decoration: underline; }
+
+/* Телефон: «Меню» в нижней панели — лист снизу с остальными пунктами и «Сервисами» */
+.kab-msheet-scrim { display: none; }
+@media (max-width: 960px) {
+  .kab-msheet-scrim { display: block; position: fixed; inset: 0; z-index: 70; background: rgba(11,16,32,.35); }
+  .kab-msheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 80dvh; overflow-y: auto; padding: 14px 14px max(18px, env(safe-area-inset-bottom));
+    border-radius: 24px 24px 0 0; background: #fff; box-shadow: 0 -12px 40px rgba(16,24,48,.2); display: grid; gap: 2px; animation: kab-sheet-up .2s cubic-bezier(0.22, 1, 0.36, 1); }
+  .kab-msheet-h { display: flex; align-items: center; justify-content: space-between; padding: 2px 6px 8px; }
+  .kab-msheet-h b { font-size: 17px; }
+  .kab-msheet-h button { width: 40px; height: 40px; border: 0; border-radius: 12px; background: none; display: grid; place-items: center; color: var(--muted); }
+  .kab-msheet .kab-nav { min-height: 48px; }
+  .kab-msheet .kab-svc-sheet { margin: 4px 0; }
+}
+@keyframes kab-sheet-up { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+/* Лист в body: токены кабинета (они заданы на .kab) и без повтора заголовка «Сервисы» */
+.kab-msheet-scrim { --blue: #2f7bff; --violet: #7b61ff; --ink: #0b1020; --ink-2: #39425a; --muted: #5b647a; --faint: #8a93a8;
+  --line: rgba(47, 123, 255, 0.12); --line-2: rgba(16, 24, 48, 0.08); --surface: rgba(255, 255, 255, 0.78); --bad: #e5484d;
+  --radius: 20px; --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.5; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.kab-msheet .kab-svc-sheet > .kab-nav { display: none; }
+.kab-msheet .kab-svc-sheet .kab-svc-list { display: flex; margin: 0; padding: 0; }
+.kab-msheet .kab-svc-sheet .kab-svc-list::before { display: none; }
+.kab-msheet .kab-svc-sheet .kab-svc-item { min-height: 52px; font-size: 15px; padding: 8px 10px; }
