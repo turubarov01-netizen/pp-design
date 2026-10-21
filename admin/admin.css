@@ -126,7 +126,7 @@
 .kab .ap-pg .today-col { background: rgba(47,123,255,.035); }
 .kab .ap-pi { display: block; border-radius: 9px; padding: 6px 8px; margin-bottom: 6px; font-size: 12px; line-height: 1.3; background: #fff; border: 1px solid var(--line-2); cursor: pointer; }
 .kab .ap-pi:hover { border-color: rgba(47,123,255,.4); }
-.kab .ap-pi .m { display: flex; gap: 6px; align-items: center; font-size: 11px; color: var(--faint); }
+.kab .ap-pi .m { display: block; font-size: 11px; color: var(--faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .kab .ap-pi .ttl { color: var(--ink); font-weight: 500; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .kab .ap-st { font-weight: 600; }
 .kab .ap-st.done { color: #0e7c50; } .kab .ap-st.q { color: var(--blue); } .kab .ap-st.err { color: #c4302b; } .kab .ap-st.man { color: var(--muted); }
@@ -144,11 +144,11 @@
 .kab .ap-pill { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 8px; }
 .kab .ap-pill.bad { background: rgba(229,72,77,.12); color: #c4302b; }
 .kab .ap-pill.warn { background: rgba(234,140,20,.14); color: #a3570a; }
-.kab .ap-board { display: grid; grid-template-columns: repeat(7, minmax(196px, 1fr)); gap: 12px; overflow-x: auto; padding-bottom: 8px; }
-.kab .ap-col { background: rgba(255,255,255,.5); border: 1px solid var(--line-2); border-radius: 16px; padding: 10px; min-height: 420px; }
+.kab .ap-board { display: grid; grid-template-columns: repeat(7, minmax(148px, 1fr)); gap: 10px; overflow-x: auto; padding-bottom: 8px; }
+.kab .ap-col { background: rgba(255,255,255,.5); border: 1px solid var(--line-2); border-radius: 16px; padding: 8px; min-height: 420px; }
 .kab .ap-col-h { display: flex; align-items: center; gap: 8px; padding: 4px 4px 10px; font-size: 13px; font-weight: 650; }
 .kab .ap-col-h .n { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--faint); }
-.kab .ap-kc { background: #fff; border: 1px solid var(--line-2); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(16,24,48,.04); cursor: grab; }
+.kab .ap-kc { background: #fff; border: 1px solid var(--line-2); border-radius: 12px; padding: 10px 11px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(16,24,48,.04); cursor: grab; }
 .kab .ap-kc:hover { border-color: rgba(47,123,255,.35); }
 .kab .ap-kc .t { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.35; }
 .kab .ap-kc .m { font-size: 12px; color: var(--muted); margin-top: 4px; }

@@ -6,8 +6,8 @@
 <title>Админ-панель — макет</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700;750;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="kabinet.css?v=1">
-<link rel="stylesheet" href="admin.css?v=1">
+<link rel="stylesheet" href="kabinet.css?v=2">
+<link rel="stylesheet" href="admin.css?v=2">
 <style>body{margin:0}</style>
 </head>
 <body>
@@ -162,6 +162,7 @@ function go(v) {
   document.querySelectorAll('[data-view]').forEach(b => { if (b.dataset.view === v) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
   panes.forEach(p => p.hidden = p.dataset.pane !== v);
   document.getElementById('periodBar').style.visibility = v === 'overview' ? 'visible' : 'hidden';
+  document.getElementById('accs').hidden = v === 'prod';
   history.replaceState(null, '', '#' + v);
 }
 document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => go(b.dataset.view));
