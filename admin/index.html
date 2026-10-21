@@ -7,28 +7,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700;750;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="kabinet.css?v=2">
-<link rel="stylesheet" href="admin.css?v=4">
+<link rel="stylesheet" href="admin.css?v=5">
 <style>body{margin:0}</style>
 </head>
 <body>
 <div class="kab">
-  <aside class="kab-side" aria-label="Меню кабинета">
+  <aside class="kab-side" aria-label="Меню админ-панели">
     <a class="kab-brand" href="#"><img src="context-alliance.png" alt="" width="34" height="34"><span><span class="kab-brand-t">Личный кабинет</span><span class="kab-brand-s">wearefree.club</span></span></a>
-    <a class="kab-nav" href="#"><i data-lucide="house"></i><span>Главная</span></a>
-    <a class="kab-nav" href="#"><i data-lucide="layout-grid"></i><span>Мои продукты</span></a>
-    <a class="kab-nav" href="#"><i data-lucide="rocket"></i><span>План Продюсера</span></a>
-    <a class="kab-nav" href="#"><i data-lucide="users"></i><span>Альянс</span></a>
-    <a class="kab-nav" href="#"><i data-lucide="shield"></i><span>Мой клан</span></a>
-    <a class="kab-nav" href="#"><i data-lucide="briefcase"></i><span>CRM</span></a>
-    <a class="kab-nav" href="#" aria-current="page"><i data-lucide="settings"></i><span>Админ-панель</span></a>
-    <a class="kab-nav" href="#"><i data-lucide="message-circle"></i><span>Служба заботы</span></a>
-    <a class="kab-nav" href="#"><i data-lucide="user"></i><span>Профиль</span></a>
-    <a class="kab-nav" href="#"><i data-lucide="wrench"></i><span>Сервисы</span><i data-lucide="chevron-right" class="kab-svc-chev"></i></a>
+    <a class="kab-nav ap-back" href="#"><i data-lucide="arrow-left"></i><span>Главное меню</span></a>
+    <div class="ap-side-t"><i data-lucide="settings"></i>Админ-панель</div>
+    <a class="kab-nav" href="#" aria-current="page"><i data-lucide="clapperboard"></i><span>Отдел контента</span></a>
+    <a class="kab-nav ap-soon" href="#"><i data-lucide="megaphone"></i><span>Отдел маркетинга</span><span class="ap-soon-b">скоро</span></a>
+    <a class="kab-nav ap-soon" href="#"><i data-lucide="chart-line"></i><span>Аналитика</span><span class="ap-soon-b">скоро</span></a>
+    <a class="kab-nav ap-soon" href="#"><i data-lucide="handshake"></i><span>Отдел продаж</span><span class="ap-soon-b">скоро</span></a>
+    <a class="kab-nav ap-soon" href="#"><i data-lucide="life-buoy"></i><span>Отдел поддержки</span><span class="ap-soon-b">скоро</span></a>
+    <div class="kab-side-foot">
+      <a class="kab-nav kab-old" href="#"><i data-lucide="history"></i><span>Старая админ-панель</span></a>
+    </div>
   </aside>
 
   <div class="kab-main">
     <header class="kab-top">
-      <h1>Админ-панель</h1>
+      <h1>Отдел контента</h1>
       <div class="kab-spacer"></div>
       <button class="kab-help" aria-label="Уведомления"><i data-lucide="bell"></i></button>
       <div class="kab-me-wrap"><button class="kab-me" type="button"><span class="kab-ava">АТ</span><span class="t"><span class="nm">Александр Турубаров</span><span class="ph"><i data-lucide="flame"></i>2 140 фениксов</span></span></button></div>
@@ -37,13 +37,13 @@
     <main class="kab-content">
       <div class="ap-demo"><i data-lucide="flask-conical"></i>Макет. Цифры, ролики и задачи условные: настоящие данные подключим на следующем шаге.</div>
 
-      <!-- вкладки управления школой -->
-      <nav class="kab-panel ap-tabs" aria-label="Разделы админ-панели">
-        <button class="ap-tab" aria-current="page"><i data-lucide="clapperboard"></i>Контент</button>
-        <a class="ap-tab ap-old" href="#"><i data-lucide="external-link"></i><span>Старая админ-панель</span></a>
+      <!-- телефон: меню админки полосой (боковое меню на телефоне скрыто) -->
+      <nav class="ap-mdeps" aria-label="Отделы">
+        <a href="#" class="back"><i data-lucide="arrow-left"></i></a>
+        <a href="#" aria-current="page">Контент</a><a href="#">Маркетинг</a><a href="#">Аналитика</a><a href="#">Продажи</a><a href="#">Поддержка</a>
       </nav>
 
-      <!-- раздел «Контент» -->
+      <!-- отдел контента -->
       <div class="ap-bar">
         <div class="ap-sub" role="tablist">
           <button data-view="overview" aria-current="page">Обзор</button>
