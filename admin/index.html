@@ -7,11 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700;750;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="kabinet.css?v=2">
-<link rel="stylesheet" href="admin.css?v=8">
+<link rel="stylesheet" href="admin.css?v=9">
 <style>body{margin:0}</style>
 </head>
 <body>
-<div class="kab">
+<div class="kab" id="kab">
   <aside class="kab-side" aria-label="Меню админ-панели">
     <a class="kab-brand" href="#"><img src="context-alliance.png" alt="" width="34" height="34"><span><span class="kab-brand-t">Личный кабинет</span><span class="kab-brand-s">wearefree.club</span></span></a>
     <a class="kab-nav ap-back" href="#"><i data-lucide="arrow-left"></i><span>Главное меню</span></a>
@@ -39,11 +39,10 @@
 
       <!-- телефон: меню админки полосой (боковое меню на телефоне скрыто) -->
       <nav class="ap-mdeps" aria-label="Отделы">
-        <a href="#" class="back"><i data-lucide="arrow-left"></i></a>
+        <a href="#" class="back" aria-label="Главное меню"><i data-lucide="arrow-left"></i></a>
         <a href="#" aria-current="page">Контент</a><a href="#">Маркетинг</a><a href="#">Аналитика</a><a href="#">Продажи</a><a href="#">Поддержка</a>
       </nav>
 
-      <!-- отдел контента -->
       <div class="ap-bar">
         <div class="ap-sub" role="tablist">
           <button data-view="overview" aria-current="page">Обзор</button>
@@ -51,76 +50,86 @@
           <button data-view="prod">Продакшн</button>
         </div>
         <div class="ap-bar-r" id="periodBar">
-          <div class="ap-seg"><button>7 дней</button><button aria-pressed="true">30 дней</button><button>90 дней</button></div>
           <span class="ap-upd">обновлено в 14:20</span>
+          <div class="ap-seg"><button>7 дней</button><button aria-pressed="true">30 дней</button><button>90 дней</button></div>
+          <button class="kab-btn kab-btn-ghost kab-btn-sm"><i data-lucide="refresh-cw"></i>Обновить</button>
         </div>
       </div>
 
-      <div class="ap-accs" id="accs">
-        <button class="ap-acc all" aria-pressed="true">Все аккаунты</button>
-        <button class="ap-acc"><span class="ap-av ig">СТ</span>@sasha_turubarov <span class="n">31,4K</span></button>
-        <button class="ap-acc"><span class="ap-av ig">FA</span>@graf.freeman <span class="n">4 256</span></button>
-        <button class="ap-acc"><span class="ap-av yt">СТ</span>YouTube · Саша <span class="n">9,8K</span></button>
-        <button class="ap-acc"><span class="ap-av yt">ИГ</span>YouTube · Игорь <span class="n">12,1K</span></button>
-        <button class="ap-acc"><span class="ap-av tg">TG</span>@turubarov_prodoxod <span class="n">3 640</span></button>
-      </div>
+      <div class="ap-accs" id="accs"></div>
 
       <!-- ============ ОБЗОР ============ -->
       <section data-pane="overview">
-        <div class="ap-grid">
-          <div class="kab-panel ap-card">
-            <div class="ap-card-h"><h3>Сторож</h3><span class="s">проверено в 14:20</span></div>
-            <div class="ap-alert"><span class="ap-dot ok"></span><div><div class="g">Доступ к аккаунтам</div><div class="t">Всё работает</div><div class="d">Статистика Instagram собрана 18 минут назад, YouTube 2 часа назад.</div></div></div>
-            <div class="ap-alert"><span class="ap-dot warn"></span><div><div class="g">Очередь публикаций</div><div class="t">@graf.freeman: роликов хватит до 23 октября</div><div class="d">Готово к выкладке ещё 3 ролика, в план не поставлены.</div></div><a class="kab-btn kab-btn-soft kab-btn-sm" href="#" data-go="plan">В план</a></div>
-            <div class="ap-alert"><span class="ap-dot warn"></span><div><div class="g">Кодовые слова</div><div class="t">@sasha_turubarov: «база» не приходила 26 часов</div><div class="d">Обычно срабатывает каждый день. Проверьте призыв в последних роликах.</div></div><a class="kab-btn kab-btn-ghost kab-btn-sm" href="#">Ролики</a></div>
+
+        <!-- сторож -->
+        <div class="ap-watch">
+          <div class="ap-h">
+            <span class="ico"><i data-lucide="triangle-alert"></i></span>
+            <div><h3>Сторож: 1 тревога и 3 предупреждения</h3><p>Проверяет доступ к аккаунтам, очередь роликов, публикации и кодовые слова. Проверено в 14:20.</p></div>
           </div>
-          <div class="kab-panel ap-card">
-            <div class="ap-card-h"><h3>Отчёт за вчера</h3><span class="s">20 октября · написан в 08:20</span></div>
-            <dl class="ap-rep">
-              <dt>Итог</dt><dd class="lead">Контент привёл в бота 41 человека и 2 оплаты на 24 800 ₽, на уровне средней недели.</dd>
-              <dt>Победа</dt><dd>Reels у @sasha_turubarov: 18 400 просмотров и 14 человек в бота, лучший за неделю.</dd>
-              <dt>Проблема</dt><dd>У @graf.freeman вышел 1 ролик из 2, вечерний слот пустой.</dd>
-              <dt>Сделать</dt><dd>Поставить в план 3 готовых ролика для @graf.freeman.</dd>
-              <dt>Следим</dt><dd>Кодовое слово у @sasha_turubarov: последнее срабатывание сутки назад.</dd>
-            </dl>
-          </div>
+          <div id="watch"></div>
         </div>
 
-        <div class="kab-panel ap-stats">
-          <div class="ap-stat"><div class="l">Подписчики Instagram</div><div class="v">35 656</div><div class="f">2 аккаунта, сейчас</div></div>
-          <div class="ap-stat"><div class="l">Написали в директ</div><div class="v">312</div><div class="f">ждут ответа: 9</div></div>
-          <div class="ap-stat"><div class="l">Пришли в бота</div><div class="v">1 184</div><div class="f"><span class="ap-up">↑ 18%</span> к прошлым 30 дням</div></div>
-          <div class="ap-stat"><div class="l">Оплаты</div><div class="v">37<small>412 600 ₽</small></div><div class="f"><span class="ap-up">↑ 6%</span> по выручке</div></div>
-        </div>
-
-        <div class="kab-panel ap-card" style="margin-bottom:16px">
-          <div class="ap-card-h"><h3>Какой контент привёл людей и деньги</h3><span class="s">новые люди за 30 дней</span></div>
-          <div class="ap-tw"><table class="ap-t">
-            <thead><tr><th>Источник</th><th>Подписались</th><th>Кодовое слово</th><th>В боте</th><th>Смотрели урок</th><th>Купили</th><th>Конверсия</th><th>Деньги</th></tr></thead>
-            <tbody>
-              <tr class="plat"><td><div class="src"><span class="ap-av ig sm">СТ</span>@sasha_turubarov <span class="sub">14 источников · 612 пришли</span></div></td><td>+1 840</td><td>486</td><td>612</td><td>244</td><td>21</td><td>3,4%</td><td class="money">268 900 ₽</td></tr>
-              <tr><td><div class="pub"><span class="thumb"></span><div><b>Почему эксперт без продукта теряет клиентов</b><span>Reels · 12 окт</span></div></div></td><td>—</td><td>142</td><td>171</td><td>68</td><td>7</td><td>7 из 171</td><td class="money">94 300 ₽</td></tr>
-              <tr><td><div class="pub"><span class="thumb"></span><div><b>Три вопроса перед запуском курса</b><span>Reels · 6 окт</span></div></div></td><td>—</td><td>98</td><td>120</td><td>51</td><td>5</td><td>5 из 120</td><td class="money">62 000 ₽</td></tr>
-              <tr><td><div class="pub"><span class="thumb"></span><div><b>Сторис</b><span>все сторис за период</span></div></div></td><td>—</td><td>77</td><td>90</td><td>33</td><td>4</td><td>4 из 90</td><td class="money">48 600 ₽</td></tr>
-              <tr class="more"><td colspan="8">Показать все 14</td></tr>
-              <tr class="plat"><td><div class="src"><span class="ap-av yt sm">ИГ</span>YouTube · Игорь <span class="sub">9 источников · 288 пришли</span></div></td><td>+410</td><td>—</td><td>288</td><td>131</td><td>11</td><td>3,8%</td><td class="money">121 400 ₽</td></tr>
-              <tr class="plat"><td><div class="src"><span class="ap-av ig sm">FA</span>@graf.freeman <span class="sub">6 источников · 117 пришли</span></div></td><td>+212</td><td>84</td><td>117</td><td>40</td><td>3</td><td>2,6%</td><td class="money">16 700 ₽</td></tr>
-              <tr class="plat"><td><div class="src"><span class="ap-av tg sm">TG</span>@turubarov_prodoxod <span class="sub">5 источников · 96 пришли</span></div></td><td>+64</td><td>—</td><td>96</td><td>29</td><td>2</td><td>2,1%</td><td class="money">5 600 ₽</td></tr>
-            </tbody>
-          </table></div>
-        </div>
-
+        <!-- отчёт -->
         <div class="kab-panel ap-card">
-          <div class="ap-card-h"><h3>Какая площадка растёт</h3>
-            <div class="r ap-seg"><button aria-pressed="true">Пришли в бота</button><button>Охват</button><button>Подписчики</button><button>Продажи</button></div>
+          <div class="ap-h"><div><h3>Отчёт за вчера</h3><p>за 20 октября · написан 21 октября в 08:20</p></div></div>
+          <p class="ap-lead"><span class="ap-chip q"><i data-lucide="chart-no-axes-column"></i>Итог дня</span>Вчера контент принёс <em>24 800 ₽</em>, на уровне среднего дня прошлой недели. В бота пришёл <em>41</em> человек, на <em>12%</em> больше обычного.</p>
+          <div class="ap-rt">
+            <div class="ap-ri win"><span class="i"><i data-lucide="trophy"></i></span><div><div class="k">Победа</div><div class="v">Reels «Сколько стоит первый клиент» у @sasha_turubarov: <b>18 400 просмотров</b> и <b>14 человек</b> в бота, лучший ролик недели.</div></div></div>
+            <div class="ap-ri prob"><span class="i"><i data-lucide="trending-down"></i></span><div><div class="k">Проблема</div><div class="v">У @graf.freeman вышел 1 ролик из 2: «Что такое Альянс» не опубликовался. Из аккаунта пришло <b>2 человека</b> вместо обычных 6.</div></div></div>
+            <div class="ap-ri todo"><span class="i"><i data-lucide="target"></i></span><div><div class="k">Что сделать сегодня</div><div class="v">Поставить в план 3 готовых ролика для @graf.freeman и заполнить Shorts Саши на неделю: за прошлую неделю Shorts дали <b>21 человека</b> в бота.</div></div></div>
+            <div class="ap-ri watch"><span class="i"><i data-lucide="eye"></i></span><div><div class="k">Следим</div><div class="v">Кодовое слово «база» у @sasha_turubarov не приходило <b>26 часов</b>. YouTube Игоря не обновлялся с 19 октября, рост за вчера ещё досчитывается.</div></div></div>
           </div>
-          <div class="ap-gh"><div class="ap-legend"><span><i style="background:#2f7bff"></i>@sasha_turubarov</span><span><i style="background:#9b87ff"></i>@graf.freeman</span><span><i style="background:#e5484d"></i>YouTube</span><span><i style="background:#2aabee"></i>Telegram</span></div></div>
-          <svg class="ap-chart" id="chart" viewBox="0 0 900 190" preserveAspectRatio="none"></svg>
-          <div class="ap-card-h" style="margin:18px 0 8px"><h3>Кто идёт лучше</h3><span class="s">среднее в день по неделям за полгода</span></div>
-          <div class="ap-tw"><table class="ap-t" id="best">
-            <thead><tr><th>Аккаунт</th><th>Охват</th><th>Подписчики</th><th>Пришли в бота</th><th>Продажи</th></tr></thead>
+        </div>
+
+        <!-- четыре показателя -->
+        <div class="ap-stats">
+          <div class="kab-panel ap-stat"><div class="l"><span class="ap-tile"><i data-lucide="users"></i></span>Подписчики Instagram</div><div class="v">35 656</div><div class="f">2 аккаунта, сейчас</div></div>
+          <div class="kab-panel ap-stat"><div class="l"><span class="ap-tile"><i data-lucide="message-circle"></i></span>Написали в директ</div><div class="v">312</div><div class="f">ждут ответа: 9</div></div>
+          <div class="kab-panel ap-stat"><div class="l"><span class="ap-tile"><i data-lucide="bot"></i></span>Пришли в бота</div><div class="v">1 184</div><div class="f"><span class="ap-delta up"><i data-lucide="trending-up"></i>+18%</span>к прошлым 30 дням</div></div>
+          <div class="kab-panel ap-stat"><div class="l"><span class="ap-tile"><i data-lucide="wallet"></i></span>Оплаты</div><div class="v">37<small>412 600 ₽</small></div><div class="f"><span class="ap-delta up"><i data-lucide="trending-up"></i>+6%</span>к прошлым 30 дням</div></div>
+        </div>
+
+        <!-- контент и деньги -->
+        <div class="kab-panel ap-card">
+          <div class="ap-h"><div><h3>Контент и деньги</h3><p>Площадки по деньгам от новых людей. Нажмите на площадку, чтобы увидеть, какие ролики, посты, сторис и ссылки из шапки привели людей в @freemen_alliance_bot. Конверсия в продажу: сколько пришедших купили.</p></div></div>
+          <div class="ap-tw"><table class="ap-t" id="money">
+            <thead><tr><th>Источник</th><th>Подписались</th><th>Кодовые слова</th><th>В боте</th><th>Смотрели урок</th><th>Купили</th><th>Конверсия</th><th>Деньги</th></tr></thead>
             <tbody></tbody>
           </table></div>
+        </div>
+
+        <!-- рост -->
+        <div class="kab-panel ap-card">
+          <div class="ap-h"><div><h3>Какая площадка растёт</h3><p>Выберите показатель: столбик складывает все площадки, ниже видно, кто идёт лучше. Пунктир показывает средний день прошлых 30 дней.</p></div></div>
+          <div class="ap-mchips" id="metrics"></div>
+          <div class="ap-big">
+            <div><div class="l" id="bigL"></div><div class="v" id="bigV"></div><div class="f" id="bigF"></div></div>
+            <div class="side"><div class="l">Публикаций вышло</div><div class="v">96</div></div>
+          </div>
+          <div class="ap-legend" id="legend"></div>
+          <svg class="ap-chart" id="chart" viewBox="0 0 1000 240" preserveAspectRatio="none"></svg>
+          <div class="ap-legend foot"><span><i style="background:var(--blue)"></i>по дням</span><span><i class="dash"></i>средний день прошлых 30 дней</span><span><i class="now"></i>сегодня, день ещё идёт</span></div>
+
+          <div class="ap-sub-h"><h4>Кто идёт лучше</h4><div class="ap-seg"><button aria-pressed="true">по сумме</button><button>по росту</button></div></div>
+          <div class="ap-tw"><table class="ap-t ap-best" id="best">
+            <thead><tr><th class="rk"></th><th>Аккаунт</th><th class="sorted">Охват <i data-lucide="arrow-down-wide-narrow"></i></th><th>Подписчики</th><th>Комментарии</th><th>В бота</th><th>Продажи</th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+        </div>
+
+        <!-- деньги YouTube -->
+        <div class="kab-panel ap-card">
+          <div class="ap-h"><div><h3>Деньги YouTube</h3><p>30 дней по 19 октября: последние 1–2 дня YouTube ещё досчитывает. Суммы в долларах, как их показывает YouTube. Каналы Саши и Игоря вместе.</p></div><div class="r"><span class="ap-legend" style="margin:0"><span><i style="background:#e5484d"></i>доход за день</span></span></div></div>
+          <div class="ap-kpis">
+            <div class="ap-kpi"><div class="l"><span class="ap-tile"><i data-lucide="circle-dollar-sign"></i></span>Доход каналов</div><div class="v">$214<small>≈ 18 тыс. ₽</small></div><div class="f"><span class="ap-delta up"><i data-lucide="trending-up"></i>+9%</span>к прошлым 30 дням</div></div>
+            <div class="ap-kpi"><div class="l"><span class="ap-tile"><i data-lucide="banknote"></i></span>Грязными</div><div class="v">$262</div><div class="f">до доли YouTube</div></div>
+            <div class="ap-kpi"><div class="l"><span class="ap-tile"><i data-lucide="eye"></i></span>RPM</div><div class="v">$0,82</div><div class="f">доход на 1000 просмотров</div></div>
+            <div class="ap-kpi"><div class="l"><span class="ap-tile"><i data-lucide="target"></i></span>CPM рекламы</div><div class="v">$3,1</div><div class="f">показов рекламы: 84 600</div></div>
+          </div>
+          <svg class="ap-chart" id="ytChart" viewBox="0 0 1000 200" preserveAspectRatio="none" style="height:200px"></svg>
+          <div class="ap-eyebrow">Больше всех заработали за 30 дней</div>
+          <ul class="ap-top" id="ytTop"></ul>
         </div>
       </section>
 
@@ -128,107 +137,333 @@
       <section data-pane="plan" hidden>
         <div class="kab-panel ap-plan-sum">
           <span>Сегодня выйдут <b>4</b>: @sasha_turubarov в 19:00, @graf.freeman в 12:00, YouTube Саша в 18:00 и сторис</span>
-          <span>В очереди <b>17</b> публикаций, короче всего запас у <b>@graf.freeman</b>: до 23 октября</span>
+          <span>В очереди <b>17</b> публикаций, короче всего запас у <b>YouTube Саши</b>: только сегодня</span>
         </div>
+        <div class="ap-h"><div><h3>Что выходит на неделе</h3><p>Неделя с понедельника по воскресенье, время московское. У каждого аккаунта своя строка на каждый тип контента. Нажмите на публикацию, чтобы открыть её карточку.</p></div></div>
         <div class="ap-week-nav">
           <button class="ap-ibtn" aria-label="Прошлая неделя"><i data-lucide="chevron-left"></i></button>
-          <span class="t">19–25 октября</span>
+          <span class="t">с 19 по 25 октября</span>
           <button class="ap-ibtn" aria-label="Следующая неделя"><i data-lucide="chevron-right"></i></button>
           <button class="kab-btn kab-btn-ghost kab-btn-sm">Сегодня</button>
-          <div style="margin-left:auto" class="ap-seg"><button aria-pressed="true">Неделя</button><button>День</button></div>
+          <div class="ap-seg"><button aria-pressed="true"><i data-lucide="calendar-days"></i>Неделя</button><button><i data-lucide="clock"></i>День</button></div>
         </div>
+        <div class="ap-types" id="types"></div>
         <div class="kab-panel ap-plan"><div class="ap-pg" id="planGrid"></div></div>
       </section>
 
       <!-- ============ ПРОДАКШН ============ -->
       <section data-pane="prod" hidden>
         <div class="ap-prod-h">
-          <span class="c">11 роликов в работе</span>
-          <span class="ap-pill bad">просрочено 1</span>
-          <span class="ap-pill warn">залежалось 2</span>
-          <div style="margin-left:auto;display:flex;gap:8px"><button class="kab-btn kab-btn-primary kab-btn-sm"><i data-lucide="plus"></i>Новая идея</button></div>
+          <span class="c">12 роликов в работе</span>
+          <div class="ap-ppl" id="ppl"></div>
         </div>
-        <div class="ap-board" id="board"></div>
+        <div class="ap-prod">
+          <div class="ap-board" id="board"></div>
+          <div class="ap-rail">
+            <div class="kab-panel">
+              <h4>Кто что делает<span class="n">роликов в работе</span></h4>
+              <div id="load"></div>
+              <p class="hint">Нажмите на человека, чтобы оставить на доске только его ролики.</p>
+            </div>
+            <div class="kab-panel">
+              <h4>Просрочено<span class="n">1</span></h4>
+              <div class="ap-ri2"><b>Встреча в Дубае</b><span class="bad">монтаж · срок был 20 окт</span></div>
+            </div>
+            <div class="kab-panel">
+              <h4>Залежались<span class="n">2</span></h4>
+              <div class="ap-ri2"><b>Почему клубы проваливаются</b><span class="warn">снято, ждёт монтажа 6 дней</span></div>
+              <div class="ap-ri2"><b>Продукт за выходные</b><span class="warn">монтаж стоит 4 дня</span></div>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   </div>
+
+  <!-- карточка публикации -->
+  <div class="ap-scrim" id="scrim"></div>
+  <aside class="ap-drawer ap-dr" id="drawer" aria-label="Карточка публикации">
+    <div class="ap-dr-h"><h3 id="drT">Reels · @sasha_turubarov</h3><button class="ap-ibtn" id="drX" aria-label="Закрыть"><i data-lucide="x"></i></button></div>
+    <div class="ap-dr-b">
+      <div class="ap-dr-top">
+        <span class="ap-thumb" style="--h:250"></span>
+        <div>
+          <h4 id="drName">Ошибка запуска на холодную</h4>
+          <div class="mt"><span id="drAcc">@sasha_turubarov</span><span id="drWhen">21 октября, 19:00</span><span class="ap-chip q" id="drSt">В очереди</span></div>
+        </div>
+      </div>
+      <div class="ap-eyebrow">Описание</div>
+      <div class="ap-desc">Запускать продукт на холодную аудиторию: самый дорогой способ узнать, что он никому не нужен.
+
+Напишите в комментариях слово «база», и бот пришлёт урок: как за неделю проверить спрос до запуска.
+
+Три шага, которые я делаю перед каждым потоком, в ролике.</div>
+      <div class="ap-eyebrow">Путь публикации</div>
+      <ul class="ap-path">
+        <li><b>Смонтировано в DAVE</b><span>Файл в хранилище платформы, исходники можно удалять с компьютера.</span></li>
+        <li><b>Одобрено к выходу</b><span>Саша подтвердил время при постановке в очередь.</span></li>
+        <li class="next"><b id="drNext">Выйдет 21 октября в 19:00</b><span>Платформа опубликует сама, в бот придёт отметка о выходе.</span></li>
+      </ul>
+      <div class="ap-eyebrow">Этот ролик в других аккаунтах</div>
+      <div class="ap-other"><span class="ap-av sm p-s"><span class="pf yt"><i data-lucide="play"></i></span>СТ</span>YouTube · Саша<span class="when">20 окт, 18:00</span><span class="ap-chip ok"><i data-lucide="check"></i>Вышло</span></div>
+      <div class="ap-other"><span class="ap-av sm p-fa"><span class="pf ig"><i data-lucide="instagram"></i></span>FA</span>@graf.freeman<span class="when">24 окт, 12:00</span><span class="ap-chip q">В очереди</span></div>
+      <div class="ap-other"><span class="ap-av sm p-s"><span class="pf tg"><i data-lucide="send"></i></span>TG</span>@turubarov_prodoxod<span class="when">не поставлено</span><span class="ap-chip mute">—</span></div>
+      <div class="ap-eyebrow">Изменить</div>
+      <div class="ap-dr-sec">
+        <b>Перенести</b><span>Выберите день и время.</span>
+        <div class="ap-pills"><button aria-pressed="true">сегодня</button><button>22 окт</button><button>23 окт</button><button>24 окт</button><button>25 окт</button></div>
+        <div class="ap-pills"><button disabled>утро 10:00</button><button>день 14:00</button><button aria-pressed="true">вечер 19:00</button></div>
+      </div>
+      <div class="ap-dr-sec ap-tog">
+        <div class="tx"><b>Пробный Reels</b><span>Сначала покажут тем, кто не подписан. Если зайдёт, Instagram сам добавит ролик в ленту.</span></div>
+        <button class="ap-switch" role="switch" aria-checked="false" aria-label="Пробный Reels" onclick="this.setAttribute('aria-checked', this.getAttribute('aria-checked') !== 'true')"></button>
+      </div>
+      <div class="ap-dr-act">
+        <button class="kab-btn kab-btn-primary"><i data-lucide="check"></i>Сохранить</button>
+        <button class="kab-btn kab-btn-ghost"><i data-lucide="send"></i>Опубликовать сейчас</button>
+        <button class="danger">Снять с публикации</button>
+      </div>
+    </div>
+  </aside>
 </div>
 
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 <script>
+const $ = s => document.querySelector(s);
+const ICON = { ig: 'instagram', yt: 'play', tg: 'send' };
+// аватар: человек (цвет) + площадка (значок)
+const av = (p, pf, txt, size = '') => `<span class="ap-av ${size} p-${p}">${pf ? `<span class="pf ${pf}"><i data-lucide="${ICON[pf]}"></i></span>` : ''}${txt}</span>`;
+const ACC = [
+  { p: 's', pf: 'ig', t: 'СТ', name: '@sasha_turubarov', subs: '31 400 подписчиков', tag: 'insta_sasha', color: '#2f7bff' },
+  { p: 'fa', pf: 'ig', t: 'FA', name: '@graf.freeman', subs: '4 256 подписчиков', tag: 'insta_graf', color: '#9b87ff' },
+  { p: 's', pf: 'yt', t: 'СТ', name: 'YouTube · Саша', subs: '9 800 подписчиков', tag: 'youtube_sasha', color: '#e5484d' },
+  { p: 'i', pf: 'yt', t: 'ИГ', name: 'YouTube · Игорь', subs: '12 100 подписчиков', tag: 'youtube_igor', color: '#ff9f5a' },
+  { p: 's', pf: 'tg', t: 'TG', name: '@turubarov_prodoxod', subs: '3 640 подписчиков', tag: 'tg_channel', color: '#2aabee' },
+];
+
 // ---------- переключение подвкладок ----------
-const panes = document.querySelectorAll('[data-pane]');
 function go(v) {
-  document.querySelectorAll('[data-view]').forEach(b => { if (b.dataset.view === v) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
-  panes.forEach(p => p.hidden = p.dataset.pane !== v);
-  document.getElementById('periodBar').style.visibility = v === 'overview' ? 'visible' : 'hidden';
-  document.getElementById('accs').hidden = v === 'prod';
+  document.querySelectorAll('[data-view]').forEach(b => b.dataset.view === v ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
+  document.querySelectorAll('[data-pane]').forEach(p => p.hidden = p.dataset.pane !== v);
+  $('#periodBar').hidden = v !== 'overview';
+  $('#accs').hidden = v === 'prod';
   history.replaceState(null, '', '#' + v);
 }
 document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => go(b.dataset.view));
-document.querySelectorAll('[data-go]').forEach(a => a.onclick = e => { e.preventDefault(); go(a.dataset.go); });
+document.addEventListener('click', e => { const a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); go(a.dataset.go); } });
 
-// ---------- график: столбики по дням, сложены по площадкам ----------
+// ---------- аккаунты ----------
+$('#accs').innerHTML = `<button class="ap-acc" aria-pressed="true"><span class="ap-tile"><i data-lucide="layout-grid"></i></span><span class="tx"><b>Все площадки</b><small>5 аккаунтов: Instagram, YouTube, Telegram</small></span></button>` +
+  ACC.map(a => `<button class="ap-acc">${av(a.p, a.pf, a.t)}<span class="tx"><b>${a.name}</b><small>${a.subs}</small></span></button>`).join('');
+document.querySelectorAll('.ap-acc').forEach(b => b.onclick = () => { document.querySelectorAll('.ap-acc').forEach(x => x.removeAttribute('aria-pressed')); b.setAttribute('aria-pressed', 'true'); });
+
+// ---------- сторож ----------
+const W = [
+  ['plug', 'Техника: доступ к аккаунтам', 'чинит владелец аккаунта или разработчик', [
+    [3, 'warn', 'Нет свежей статистики', 'YouTube · Игорь', 'Последние данные 19 октября. Игорю нужно переподключить канал в «Подключениях», иначе рост и деньги YouTube не считаются.', 'plug', 'Подключения']]],
+  ['calendar', 'Контент: очередь и публикации', 'решает контент-менеджер', [
+    [2, 'bad', 'Контент кончается', 'YouTube · Саша', 'Shorts в очереди только на сегодня, с завтра пусто. Поставьте ролики в «Контент-план».', 'calendar', 'Контент-план', 'plan'],
+    [1, 'warn', 'Контент скоро кончится', '@graf.freeman', 'Очередь до 23 окт в 12:00, вчера один ролик не вышел. Готово к выкладке ещё 3 ролика.', 'calendar', 'Контент-план', 'plan']]],
+  ['message-square', 'Отклик: кодовые слова', 'проверить призыв в роликах и правила бота', [
+    [0, 'warn', 'Давно нет кодовых слов', '@sasha_turubarov', 'Слово «база» не приходило 26 часов, обычно срабатывает каждый день. Проверьте призыв в свежих роликах.', 'clapperboard', 'Ролики']]],
+];
+$('#watch').innerHTML = W.map(([ic, g, who, rows]) => `<div class="ap-wg"><i data-lucide="${ic}"></i>${g}<span class="n">${rows.length}</span><span class="who">${who}</span></div>` +
+  rows.map(([ai, sev, t, acc, d, bi, bt, goTo]) => { const a = ACC[ai]; return `<div class="ap-wr">${av(a.p, a.pf, a.t, 'lg')}<div class="tx"><div class="t ${sev === 'bad' ? 'bad' : ''}">${t}<span>${acc}</span></div><div class="d">${d}</div></div><a class="kab-btn kab-btn-ghost kab-btn-sm" href="#" ${goTo ? `data-go="${goTo}"` : ''}><i data-lucide="${bi}"></i>${bt}</a></div>`; }).join('')).join('');
+
+// ---------- контент и деньги ----------
+const nil = '<span class="nil">·</span>';
+const conv = (p, a, b) => `${p}<span class="sub">${a} из ${b}</span>`;
+const MONEY = [
+  { a: 0, src: '14 источников · 612 пришли', v: ['+1 840', '486', '612', '244', '21', '3,4%', '268 900 ₽'], open: true, kids: [
+    ['tile', 'link', 'Ссылка в шапке профиля', 'Шапка профиля', '', [nil, nil, '214', '96', '8', conv('3,7%', 8, 214), '99 200 ₽']],
+    ['thumb', 210, 'Почему эксперт без продукта теряет клиентов', 'Reels', 'вышел 12.10', [nil, '142', '171', '68', '7', conv('4,1%', 7, 171), '94 300 ₽']],
+    ['thumb', 300, 'Три вопроса перед запуском курса', 'Reels', 'вышел 06.10', [nil, '98', '120', '51', '5', conv('4,2%', 5, 120), '62 000 ₽']],
+    ['tile', 'circle-dot', 'Ответ на сторис', 'Сторис', '', [nil, '77', '62', '21', '1', conv('1,6%', 1, 62), '13 400 ₽']],
+    ['tile', 'message-circle', 'Кодовое слово в директ, ролик неизвестен', 'Директ', '', [nil, '45', '45', '8', '0', conv('0%', 0, 45), nil]],
+  ] },
+  { a: 3, src: '9 источников · 288 пришли', v: ['+410', nil, '288', '131', '11', '3,8%', '121 400 ₽'] },
+  { a: 2, src: '11 источников · 71 пришли', v: ['+190', nil, '71', '30', '2', '2,8%', '28 600 ₽'] },
+  { a: 1, src: '6 источников · 117 пришли', v: ['+212', '84', '117', '40', '3', '2,6%', '16 700 ₽'] },
+  { a: 4, src: '5 источников · 96 пришли', v: ['+64', nil, '96', '29', '2', '2,1%', '5 600 ₽'] },
+  { tile: 'link', name: 'Другие ссылки', src: '3 источника · 22 пришли', v: [nil, nil, '22', '9', '1', '4,5%', '9 900 ₽'] },
+  { tile: 'unlink', name: 'Без метки', src: 'пришли в бота без UTM · 40', v: [nil, nil, '40', '12', '0', '0%', nil] },
+];
+$('#money tbody').innerHTML = MONEY.map((r, i) => {
+  const a = r.a != null ? ACC[r.a] : null;
+  const head = `<tr class="plat ${r.open ? 'open' : ''}" data-i="${i}"><td><div class="ap-src"><i data-lucide="chevron-right" class="chev"></i>${a ? av(a.p, a.pf, a.t) : `<span class="ap-tile" style="border-radius:50%;width:32px;height:32px"><i data-lucide="${r.tile}"></i></span>`}<div><span class="nm">${a ? a.name : r.name}</span><span class="ss">${r.src}</span></div></div></td>${r.v.map((x, k) => `<td class="${k === 6 ? 'money' : ''}">${x}</td>`).join('')}</tr>`;
+  const kids = (r.kids || []).map(k => `<tr class="kid" data-p="${i}" ${r.open ? '' : 'hidden'}><td><div class="ap-pub">${k[0] === 'thumb' ? `<span class="ap-thumb" style="--h:${k[1]}"></span>` : `<span class="ap-tile"><i data-lucide="${k[1]}"></i></span>`}<div><b>${k[2]}</b><span class="mt"><span class="ap-chip mute">${k[3]}</span>${k[4]}</span></div></div></td>${k[5].map((x, n) => `<td class="${n === 6 ? 'money' : ''}">${x}</td>`).join('')}</tr>`).join('');
+  const more = r.kids ? `<tr class="kid more" data-p="${i}" ${r.open ? '' : 'hidden'}><td colspan="8"><button class="ap-link">Показать все 14 источников<i data-lucide="chevron-down"></i></button></td></tr>` : '';
+  return head + kids + more;
+}).join('');
+document.querySelectorAll('#money tr.plat').forEach(tr => tr.onclick = () => { const o = tr.classList.toggle('open'); document.querySelectorAll(`#money tr[data-p="${tr.dataset.i}"]`).forEach(k => k.hidden = !o); });
+
+// ---------- рост ----------
 let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-const days = 30, W = 900, H = 170, colors = ['#2f7bff', '#9b87ff', '#e5484d', '#2aabee'];
-const data = Array.from({ length: days }, (_, i) => [18 + rnd() * 16 + i * .35, 3 + rnd() * 5, 7 + rnd() * 9, 2 + rnd() * 4]);
-const max = Math.max(...data.map(d => d.reduce((a, b) => a + b, 0)));
-const bw = W / days;
-let svg = '';
-const avg = data.reduce((s, d) => s + d.reduce((a, b) => a + b, 0), 0) / days;
-data.forEach((d, i) => {
-  let y = H;
-  d.forEach((v, k) => { const h = v / max * (H - 10); y -= h; svg += `<rect x="${i * bw + 2}" y="${y}" width="${bw - 4}" height="${h}" rx="${k === 3 ? 2 : 0}" fill="${colors[k]}" opacity="${k ? .9 : 1}"/>`; });
-  if (i % 5 === 0) { const dt = new Date(2026, 8, 22 + i); svg += `<text x="${i * bw + bw / 2}" y="${H + 16}" text-anchor="middle">${dt.getDate()}.${String(dt.getMonth() + 1).padStart(2, '0')}</text>`; }
-});
-const ay = H - avg / max * (H - 10);
-svg += `<line x1="0" x2="${W}" y1="${ay}" y2="${ay}" stroke="#0b1020" stroke-opacity=".35" stroke-dasharray="4 4"/>`;
-document.getElementById('chart').innerHTML = svg;
+const METRICS = [
+  ['eye', 'Охват', 'Охват, все площадки за 30 дней', '1 942 300', ['up', '+12%'], 60000],
+  ['user-plus', 'Подписчики', 'Новые подписчики, все площадки за 30 дней', '+2 716', ['up', '+9%'], 90],
+  ['message-square', 'Комментарии', 'Комментарии, все площадки за 30 дней', '8 410', ['dn', '−4%'], 280],
+  ['bot', 'В бота', 'Пришли в бота, все площадки за 30 дней', '1 184', ['up', '+18%'], 40],
+  ['wallet', 'Продажи', 'Продажи от контента за 30 дней', '412 600 ₽', ['up', '+6%'], 14000],
+];
+const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(1).replace('.', ',') + ' млн' : n >= 1e4 ? Math.round(n / 1e3) + ' тыс.' : Math.round(n).toLocaleString('ru-RU');
+function drawGrowth(mi) {
+  const m = METRICS[mi];
+  document.querySelectorAll('.ap-mchip').forEach((b, i) => b.setAttribute('aria-pressed', i === mi));
+  $('#bigL').innerHTML = `<i data-lucide="${m[0]}"></i>${m[2]}`;
+  $('#bigV').textContent = m[3];
+  $('#bigF').innerHTML = `<span class="ap-delta ${m[4][0]}"><i data-lucide="trending-${m[4][0] === 'up' ? 'up' : 'down'}"></i>${m[4][1]}</span>к прошлым 30 дням`;
+  seed = 7 + mi * 13;
+  const days = 30, Wd = 1000, H = 205, L = 52, share = [.46, .1, .14, .2, .1];
+  const data = Array.from({ length: days }, (_, i) => share.map(s => s * m[5] * (.55 + rnd() * .9 + (i % 9 === 4 ? 1.4 : 0)) * (i === days - 1 ? .45 : 1)));
+  const tot = data.map(d => d.reduce((a, b) => a + b, 0)), max = Math.max(...tot) * 1.1;
+  const avg = tot.slice(0, -1).reduce((a, b) => a + b, 0) / (days - 1) * .92;
+  const bw = (Wd - L) / days;
+  let s = '<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="6" fill="rgba(47,123,255,.35)"/></pattern></defs>';
+  [0, .5, 1].forEach(f => { const y = H - f * (H - 10); s += `<line x1="${L}" x2="${Wd}" y1="${y}" y2="${y}" stroke="rgba(16,24,48,.07)"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${fmt(max * f)}</text>`; });
+  data.forEach((d, i) => {
+    let y = H; const x = L + i * bw + 3, w = bw - 6;
+    if (i === days - 1) { const h = tot[i] / max * (H - 10); s += `<rect x="${x}" y="${H - h}" width="${w}" height="${h}" rx="3" fill="url(#hatch)" stroke="rgba(47,123,255,.6)"/>`; }
+    else d.forEach((v, k) => { const h = v / max * (H - 10); y -= h; s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${ACC[k].color}"/>`; });
+    if (i % 5 === 0 || i === days - 1) { const dt = new Date(2026, 8, 22 + i); s += `<text x="${x + w / 2}" y="${H + 18}" text-anchor="middle" class="${i === days - 1 ? 'today' : ''}">${i === days - 1 ? 'сегодня' : `${dt.getDate()}.${String(dt.getMonth() + 1).padStart(2, '0')}`}</text>`; }
+  });
+  const ay = H - avg / max * (H - 10);
+  s += `<line x1="${L}" x2="${Wd}" y1="${ay}" y2="${ay}" stroke="#0b1020" stroke-opacity=".45" stroke-width="1.5" stroke-dasharray="5 5"/>`;
+  $('#chart').innerHTML = s;
+  lucide.createIcons();
+}
+$('#metrics').innerHTML = METRICS.map((m, i) => `<button class="ap-mchip" data-m="${i}"><i data-lucide="${m[0]}"></i>${m[1]}</button>`).join('');
+document.querySelectorAll('.ap-mchip').forEach(b => b.onclick = () => drawGrowth(+b.dataset.m));
+$('#legend').innerHTML = ACC.map(a => `<span><i style="background:${a.color}"></i>${a.name}</span>`).join('');
 
 // ---------- «Кто идёт лучше» ----------
-function spark(c) { let p = [], v = 10 + rnd() * 6; for (let i = 0; i < 26; i++) { v = Math.max(2, v + (rnd() - .45) * 4); p.push(v); } const m = Math.max(...p); const pts = p.map((x, i) => `${i * 96 / 25},${24 - x / m * 22}`).join(' '); return `<svg class="ap-spark" viewBox="0 0 96 26"><line x1="0" x2="96" y1="13" y2="13" stroke="#8a93a8" stroke-dasharray="2 3" stroke-width="1"/><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/></svg>`; }
-const best = [['ig', 'СТ', '@sasha_turubarov', '412K', '+1 840', '612', '21', '#2f7bff'], ['yt', 'ИГ', 'YouTube · Игорь', '186K', '+410', '288', '11', '#e5484d'], ['yt', 'СТ', 'YouTube · Саша', '74K', '+190', '71', '0', '#e5484d'], ['ig', 'FA', '@graf.freeman', '38K', '+212', '117', '3', '#9b87ff'], ['tg', 'TG', '@turubarov_prodoxod', '22K', '+64', '96', '2', '#2aabee']];
-document.querySelector('#best tbody').innerHTML = best.map(r => `<tr><td><div class="src" style="display:flex;align-items:center;gap:10px"><span class="ap-av ${r[0]} sm">${r[1]}</span>${r[2]}</div></td><td><div class="spw">${spark(r[7])}${r[3]}</div></td><td><div class="spw">${spark(r[7])}${r[4]}</div></td><td>${r[5]}</td><td><div class="spw">${spark(r[7])}${r[6]}</div></td></tr>`).join('');
+function spark(c, up) { let p = [], v = 10 + rnd() * 6; for (let i = 0; i < 26; i++) { v = Math.max(2, v + (rnd() - (up ? .4 : .55)) * 4); p.push(v); } const mx = Math.max(...p); const pts = p.map((x, i) => `${(i * 54 / 25).toFixed(1)},${(23 - x / mx * 20).toFixed(1)}`).join(' '); return `<svg class="ap-spark" viewBox="0 0 54 24"><line x1="0" x2="54" y1="14" y2="14" stroke="#8a93a8" stroke-dasharray="2 3" stroke-width="1"/><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/></svg>`; }
+const cell = (c, v, d, cls = '') => `<td class="${cls}"><div class="ap-mc">${spark(c, d && d[0] === 'up')}<div class="vv"><b>${v}</b>${d ? `<span class="ap-delta ${d[0]}"><i data-lucide="trending-${d[0] === 'up' ? 'up' : 'down'}"></i>${d[1]}</span>` : ''}</div></div></td>`;
+const BEST = [
+  [0, ['1,1 млн', ['up', '+21%']], ['+1 840', ['up', '+14%']], ['5 120', ['dn', '−6%']], ['612', ['up', '+18%']], ['268 тыс. ₽', ['up', '+9%']]],
+  [3, ['412 тыс.', ['dn', '−3%']], ['+410', ['up', '+31%']], ['1 380', ['up', '+12%']], ['288', ['up', '+22%']], ['121 тыс. ₽', ['up', '+4%']]],
+  [2, ['236 тыс.', ['up', '+48%']], ['+190', ['up', '+66%']], ['904', ['up', '+27%']], ['71', ['up', '+40%']], ['29 тыс. ₽', ['dn', '−12%']]],
+  [1, ['148 тыс.', ['dn', '−9%']], ['+212', ['dn', '−4%']], ['760', ['dn', '−15%']], ['117', ['dn', '−11%']], ['17 тыс. ₽', ['dn', '−20%']]],
+  [4, ['46 тыс.', ['up', '+5%']], ['+64', ['dn', '−8%']], ['246', ['up', '+3%']], ['96', ['up', '+7%']], ['5,6 тыс. ₽', ['dn', '−2%']]],
+];
+seed = 41;
+$('#best tbody').innerHTML = BEST.map((r, i) => { const a = ACC[r[0]]; return `<tr><td class="rk">${i + 1}</td><td><div class="ap-src">${av(a.p, a.pf, a.t)}<div><span class="nm">${a.name}</span><span class="ss">${a.name.startsWith('YouTube') ? 'YouTube' : a.pf === 'tg' ? 'Telegram' : 'Instagram'} · метка ${a.tag}</span></div></div></td>${cell(a.color, ...r[1], 'sorted')}${cell(a.color, ...r[2])}${cell(a.color, ...r[3])}${cell(a.color, ...r[4])}${cell(a.color, ...r[5])}</tr>`; }).join('');
+
+// ---------- деньги YouTube ----------
+(() => { seed = 99; const n = 30, Wd = 1000, H = 170, L = 40, bw = (Wd - L) / n; const v = Array.from({ length: n }, () => 4 + rnd() * 6); const mx = 12; let s = '';
+  [0, .5, 1].forEach(f => { const y = H - f * (H - 10); s += `<line x1="${L}" x2="${Wd}" y1="${y}" y2="${y}" stroke="rgba(16,24,48,.07)"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">$${mx * f}</text>`; });
+  v.forEach((x, i) => { const h = x / mx * (H - 10); s += `<rect x="${L + i * bw + 4}" y="${H - h}" width="${bw - 8}" height="${h}" rx="4" fill="#e5484d" fill-opacity=".78"/>`; if (i % 5 === 0 || i === n - 1) { const dt = new Date(2026, 8, 20 + i); s += `<text x="${L + i * bw + bw / 2}" y="${H + 18}" text-anchor="middle">${String(dt.getDate()).padStart(2, '0')}.${String(dt.getMonth() + 1).padStart(2, '0')}</text>`; } });
+  $('#ytChart').innerHTML = s; })();
+const YT = [[3, 20, 'Как я построил клуб на 4 страны', 'вышел 2 окт. 2026', '38 410', '$31,6', '$0,82'], [2, 340, 'Первый клиент за неделю: разбор по шагам', 'вышел 24 сент. 2026', '21 870', '$19,2', '$0,88'], [3, 60, 'Сколько на самом деле зарабатывает онлайн-школа', 'вышел 9 окт. 2026', '17 340', '$14,7', '$0,85'], [2, 280, 'Продукт за выходные: что успеть до понедельника', 'вышел 14 окт. 2026', '12 090', '$9,4', '$0,78'], [3, 110, 'Почему клубы для предпринимателей разваливаются', 'вышел 30 авг. 2026', '9 610', '$8,1', '$0,84']];
+$('#ytTop').innerHTML = YT.map((r, i) => `<li><span class="rk">${i + 1}</span><span class="ap-thumb wide" style="--h:${r[1]}"></span><div class="tx"><b>${r[2]}</b><span class="mt"><span class="ap-chip bad">${ACC[r[0]].name}</span>${r[3]}</span></div><div class="nums"><div><b>${r[4]}</b><span>просмотры</span></div><div><b class="money">${r[5]}</b><span>доход</span></div><div><b>${r[6]}</b><span>RPM</span></div></div></li>`).join('');
 
 // ---------- контент-план ----------
-const dnames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], today = 2;
-const rows = [
-  { chan: 'Instagram' },
-  { av: ['ig', 'СТ'], who: '@sasha_turubarov', typ: 'Сторис', stories: [6, 8, 5, 0, 0, 0, 0] },
-  { av: ['ig', 'СТ'], who: '@sasha_turubarov', typ: 'Reels', rs: 'каждый день в 19:00', stock: ['ok', 'запас до 29 окт'], cells: [[['19:00', 'done', 'Вышло', 'Почему эксперт без продукта…']], [['19:00', 'done', 'Вышло', 'Сколько стоит первый клиент']], [['19:00', 'q', 'В очереди', 'Ошибка запуска на холодную']], [['19:00', 'q', 'В очереди', 'Продукт за выходные']], [['19:00', 'q', 'Пробный', 'Три вопроса перед запуском']], [['19:00', 'q', 'В очереди', 'Как я собрал первый поток']], [['19:00', 'q', 'В очереди', 'Зачем эксперту клуб']]] },
-  { av: ['ig', 'СТ'], who: '@sasha_turubarov', typ: 'Посты и карусели', cells: [[], [], [['12:00', 'man', 'Черновик', 'Карусель: 7 ошибок оффера']], [], [], [], []], addOnly: true },
-  { av: ['ig', 'FA'], who: '@graf.freeman', typ: 'Reels', rs: 'каждый день в 12:00', stock: ['warn', 'запас до 23 окт'], cells: [[['12:00', 'done', 'Вышло', 'Клуб для предпринимателей']], [['12:00', 'err', 'Не вышло', 'Что такое Альянс']], [['12:00', 'q', 'В очереди', 'Встреча в Дубае']], [['12:00', 'q', 'В очереди', 'Ужин клуба в Москве']], 'free:12:00', 'free:12:00', 'free:12:00'] },
-  { chan: 'YouTube' },
-  { av: ['yt', 'СТ'], who: 'Саша', typ: 'Shorts', rs: 'каждый день в 18:00', stock: ['bad', 'запас: только сегодня'], cells: [[['18:00', 'done', 'Вышло', 'Первый клиент за неделю']], [['18:00', 'done', 'Вышло', 'Почему эксперт без продукта…']], [['18:00', 'q', 'В очереди', 'Сколько стоит первый клиент']], 'free:18:00', 'free:18:00', 'free:18:00', 'free:18:00'] },
-  { av: ['yt', 'ИГ'], who: 'Игорь', typ: 'Видео', rs: 'наблюдаем · ведёт Игорь', cells: [[], [], [], [['19:00', 'man', 'Вручную', 'Как я построил клуб на 4 страны']], [], [], []] },
-  { chan: 'Telegram' },
-  { av: ['tg', 'TG'], who: '@turubarov_prodoxod', typ: 'Посты канала', cells: [[['10:14', 'done', 'Вышло', 'Анонс эфира в четверг']], [['09:40', 'done', 'Вышло', 'Разбор ученицы: оффер за 2 дня']], [], [], [], [], []] },
+$('#types').innerHTML = [['Все типы', 0], ['Сторис', 19], ['Reels', 11], ['Посты и карусели', 1], ['Shorts', 3], ['Видео YouTube', 1], ['Посты канала', 2]].map(([t, n], i) => `<button class="ap-type" ${i ? '' : 'aria-pressed="true"'}>${t}${n ? `<span class="n">${n}</span>` : ''}</button>`).join('');
+const today = 2, DN = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+const ST = { done: ['ok', 'Вышло'], q: ['q', 'В очереди'], err: ['bad', 'Не вышло'], draft: ['mute', 'Черновик'], trial: ['q', 'Пробный'], man: ['mute', 'Вручную'] };
+const pi = (tm, st, ttl, h, acc, typ) => `<button class="ap-pi" data-pub data-ttl="${ttl}" data-tm="${tm}" data-acc="${acc}" data-typ="${typ}" data-st="${st}"><span class="ap-thumb" style="--h:${h}"></span><span class="tm">${tm}</span><span class="ap-chip ${ST[st][0]}">${st === 'done' ? '<i data-lucide="check"></i>' : ''}${ST[st][1]}</span><span class="ttl">${ttl}</span></button>`;
+const PLAN = [
+  { chan: ['ig', 'Instagram', '2 аккаунта · сторис, reels, посты и карусели'] },
+  { a: 0, rs: 'Reels каждый день в 19:00', stock: ['ok', 'запас до 29 окт'], rows: [
+    ['Сторис', { stories: [[6, '18:48'], [8, '22:11'], [5, '12:30'], 0, 0, 0, 0] }],
+    ['Reels', [[['19:00', 'done', 'Почему эксперт без продукта теряет клиентов']], [['19:00', 'done', 'Сколько стоит первый клиент']], [['19:00', 'q', 'Ошибка запуска на холодную']], [['19:00', 'q', 'Продукт за выходные']], [['19:00', 'trial', 'Три вопроса перед запуском']], [['19:00', 'q', 'Как я собрал первый поток']], [['19:00', 'q', 'Зачем эксперту клуб']]]],
+    ['Посты и карусели', [[], [], [['12:00', 'draft', 'Карусель: 7 ошибок оффера']], [], [], [], []]],
+  ] },
+  { a: 1, rs: 'Reels каждый день в 12:00', stock: ['warn', 'запас до 23 окт'], rows: [
+    ['Reels', [[['12:00', 'done', 'Клуб для предпринимателей']], [['12:00', 'err', 'Что такое Альянс']], [['12:00', 'q', 'Встреча в Дубае']], [['12:00', 'q', 'Ужин клуба в Москве']], 'free:12:00', 'free:12:00', 'free:12:00']],
+    ['Сторис', { stories: [0, 0, 0, 0, 0, 0, 0] }],
+  ] },
+  { chan: ['yt', 'YouTube', '2 канала · Shorts и видео'] },
+  { a: 2, rs: 'Shorts каждый день в 18:00', stock: ['bad', 'запас: только сегодня'], rows: [
+    ['Shorts', [[['18:00', 'done', 'Первый клиент за неделю']], [['18:00', 'done', 'Почему эксперт без продукта…']], [['18:00', 'q', 'Сколько стоит первый клиент']], 'free:18:00', 'free:18:00', 'free:18:00', 'free:18:00']],
+  ] },
+  { a: 3, rs: 'наблюдаем · ведёт Игорь', rows: [
+    ['Видео', [[], [], [], [['19:00', 'man', 'Как я построил клуб на 4 страны']], [], [], []]],
+  ] },
+  { chan: ['tg', 'Telegram', '1 канал · посты'] },
+  { a: 4, rs: 'посты по готовности', rows: [
+    ['Посты канала', [[['10:14', 'done', 'Анонс эфира в четверг']], [['09:40', 'done', 'Разбор ученицы: оффер за 2 дня']], [], [], [], [], []]],
+  ] },
 ];
-let g = '<div class="lbl dh"></div>' + dnames.map((d, i) => `<div class="dh ${i === today ? 'today' : ''}">${d}<b>${19 + i}</b></div>`).join('');
-rows.forEach(r => {
-  if (r.chan) { g += `<div class="chan">${r.chan}</div>`; return; }
-  g += `<div class="lbl"><div class="who"><span class="ap-av ${r.av[0]} sm">${r.av[1]}</span>${r.who}</div><div class="typ">${r.typ}</div>${r.rs ? `<div class="rs">${r.rs}</div>` : ''}${r.stock ? `<span class="ap-stock ${r.stock[0]}">${r.stock[1]}</span>` : ''}</div>`;
-  for (let i = 0; i < 7; i++) {
-    let c = '';
-    if (r.stories) c = r.stories[i] ? `<div class="ap-stories"><span class="stk">${'<i></i>'.repeat(Math.min(3, r.stories[i]))}</span>${r.stories[i]}</div>` : (i > today ? '' : '<span class="ap-none">нет</span>');
-    else { const cell = r.cells[i]; if (typeof cell === 'string') c = `<button class="ap-free">+ Свободно ${cell.slice(5)}</button>`; else c = cell.map(p => `<span class="ap-pi"><span class="m">${p[0]} · <span class="ap-st ${p[1]}">${p[2]}</span></span><span class="ttl">${p[3]}</span></span>`).join(''); }
-    g += `<div class="${i === today ? 'today-col' : ''}">${c}</div>`;
-  }
+const PF_BG = { ig: 'linear-gradient(135deg,#f58529,#dd2a7b 55%,#8134af)', yt: '#e5484d', tg: '#2aabee' };
+let g = '<div class="hd">Аккаунт</div><div class="hd">Тип</div>' + DN.map((d, i) => `<div class="hd ${i === today ? 'today' : ''}">${i === today ? 'Сегодня' : d}<b>${19 + i} окт</b></div>`).join('');
+let hcount = 0;
+PLAN.forEach(r => {
+  if (r.chan) { g += `<div class="chan"><span class="pfb" style="background:${PF_BG[r.chan[0]]}"><i data-lucide="${ICON[r.chan[0]]}"></i></span><b>${r.chan[1]}</b><span>${r.chan[2]}</span><button class="kab-btn kab-btn-ghost kab-btn-sm">Свернуть<i data-lucide="chevron-up"></i></button></div>`; return; }
+  const a = ACC[r.a];
+  g += `<div class="acc" style="grid-row:span ${r.rows.length}"><div class="who">${av(a.p, a.pf, a.t)}<span><b>${a.name}</b><span class="rs">${r.rs}</span></span></div>${r.stock ? `<span class="ap-chip ${r.stock[0]}"><i data-lucide="calendar"></i>${r.stock[1]}</span>` : ''}</div>`;
+  r.rows.forEach(([typ, cells]) => {
+    g += `<div class="typ">${typ}</div>`;
+    for (let i = 0; i < 7; i++) {
+      let c = '';
+      if (cells.stories) {
+        const s = cells.stories[i];
+        if (s) c = `<div class="ap-story"><span class="ring"><i></i></span><div><b>${s[0]} сторис</b><span>до ${s[1]}</span></div></div>`;
+        else if (i === 0 && cells.stories.every(x => !x)) c = '<span class="ap-none">нет на неделе</span>';
+      } else {
+        const cl = cells[i];
+        if (typeof cl === 'string') c = `<button class="ap-free"><i data-lucide="plus" style="width:13px;height:13px"></i>Свободно ${cl.slice(5)}</button>`;
+        else { c = cl.map(p => pi(p[0], p[1], p[2], 200 + (hcount++ * 37) % 160, a.name, typ)).join(''); if (i >= today && typ !== 'Видео') c += '<button class="ap-add"><i data-lucide="plus" style="width:12px;height:12px"></i>Добавить</button>'; }
+      }
+      g += `<div class="${i === today ? 'tcol' : ''}">${c}</div>`;
+    }
+  });
 });
-document.getElementById('planGrid').innerHTML = g;
+$('#planGrid').innerHTML = g;
+
+// карточка публикации
+const kab = $('#kab');
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-pub]'); if (!b) return;
+  $('#drT').textContent = `${b.dataset.typ} · ${b.dataset.acc}`;
+  $('#drName').textContent = b.dataset.ttl;
+  $('#drAcc').textContent = b.dataset.acc;
+  const st = ST[b.dataset.st]; const chip = $('#drSt'); chip.className = `ap-chip ${st[0]}`; chip.textContent = st[1];
+  kab.classList.add('ap-dr-open');
+});
+const closeDr = () => kab.classList.remove('ap-dr-open');
+$('#scrim').onclick = closeDr; $('#drX').onclick = closeDr;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDr(); });
 
 // ---------- продакшн ----------
-const cols = [
-  ['Идеи', [['Ответ на вопрос «где брать клиентов»', 'Из директа · 3 недели повторяется', 4, 'И'], ['Ещё на тему: продукт за выходные', 'Зашло: 24 тыс. просм., +180 подписок', 5, 'D'], ['Как я выбирал нишу', 'Эфир 14 октября', 2, 'С']]],
-  ['Сценарий', [['Ошибки первого запуска', 'Сценарий: 140 слов, около 56 секунд', 0, 'С', 'срок 23 окт']]],
-  ['В съёмку', [['Клуб изнутри: один день', 'Съёмка 24 октября · 4 материала', 0, 'И']]],
-  ['Снято', [['Почему клубы проваливаются', 'ждёт монтажа 6 дней', 0, 'И', '', 'stale']]],
-  ['Монтаж', [['Сколько стоит первый клиент', 'утверждено 4 из 6 · дальше: описание Shorts', 0, 'С', 'срок 22 окт', '', 66], ['Встреча в Дубае', 'утверждено 1 из 6 · дальше: версии', 0, 'И', 'срок 20 окт', 'late', 17], ['Продукт за выходные', 'утверждено 2 из 6', 0, 'С', '', 'stale', 33]]],
-  ['Выкладка', [['Три вопроса перед запуском', 'вышло 2 из 4 · в очереди 2', 0, 'С'], ['Что такое Альянс', 'вышло 0 из 2 · не вышло 1', 0, 'И']]],
-  ['Готово', [['Почему эксперт без продукта теряет клиентов', 'вышло везде · 41 тыс. просмотров', 0, 'С'], ['Первый клиент за неделю', 'вышло везде · 12 тыс. просмотров', 0, 'С']]],
+const PPL = { s: ['s', 'С', 'Саша'], i: ['i', 'И', 'Игорь'], d: ['d', 'D', 'DAVE · монтаж'], x: ['x', '?', 'Не назначен'] };
+$('#ppl').innerHTML = '<button class="all" aria-pressed="true">Все</button>' + Object.values(PPL).map(p => `<button>${av(p[0], '', p[1], 'sm')}${p[2]}</button>`).join('');
+const pa = k => av(PPL[k][0], '', PPL[k][1], 'sm');
+const COLS = [
+  ['Идеи', 'rgba(16,24,48,.3)', 'idea', [
+    { eb: 'Удачный ролик', t: 'Ещё на тему: продукт за выходные', why: 'Зашло 24 тыс. просм., +180 подписок. Ролик от 14 окт.', w: 5, who: 'x', date: '19 окт' },
+    { eb: 'Из директа', t: 'Ответ на вопрос «где брать первых клиентов»', why: 'Спрашивают 3 недели подряд, 41 сообщение.', w: 4, who: 'i', date: '18 окт' },
+    { eb: 'Из эфира', t: 'Как я выбирал нишу', why: 'Эфир 14 октября, кусок на 38-й минуте.', w: 2, who: 's', date: '15 окт' },
+  ]],
+  ['Сценарий', '#9b87ff', 'Возьмите идею в сценарий', [
+    { eb: 'Сценарий · срок 23 окт', t: 'Ошибки первого запуска', m: '140 слов, около 56 секунд', who: 's' },
+  ]],
+  ['В съёмку', '#2aabee', 'Сценариев к съёмке нет', []],
+  ['Снято', '#ea8c14', 'Отснятое ждёт здесь монтажа', [
+    { eb: 'Снято 15 окт', t: 'Почему клубы проваливаются', chips: [['warn', 'ждёт монтажа 6 дней']], who: 'i' },
+  ]],
+  ['Монтаж', '#7b61ff', 'На монтаже ничего', [
+    { eb: 'Монтаж в DAVE', t: 'Сколько стоит первый клиент', m: 'утверждено 4 из 6 · дальше: описание Shorts', prog: 66, chips: [['mute', 'срок 22 окт']], who: 'd' },
+    { eb: 'Монтаж в DAVE', t: 'Встреча в Дубае', m: 'утверждено 1 из 6 · дальше: версии', prog: 17, chips: [['bad', 'просрочено с 20 окт']], who: 'd' },
+    { eb: 'Монтаж в DAVE', t: 'Продукт за выходные', m: 'утверждено 2 из 6', prog: 33, chips: [['warn', 'стоит 4 дня']], who: 'd' },
+  ]],
+  ['Выкладка', '#2f7bff', 'Готовое к выходу появится здесь', [
+    { eb: 'В выкладке с 18 окт', t: 'Три вопроса перед запуском', chips: [['ok', '<i data-lucide="check"></i>вышло 2 из 4'], ['q', 'в очереди 2'], ['mute', '<i data-lucide="eye"></i>18 тыс. просм.']], who: 's' },
+    { eb: 'Карусель · в выкладке с 21 окт', t: 'Семь ошибок оффера, которые съедают продажи', chips: [['q', 'в очереди 1']], who: 's' },
+    { eb: 'В выкладке с 19 окт', t: 'Что такое Альянс', chips: [['bad', 'не вышло 1'], ['warn', 'не поставлено 1']], who: 'i' },
+  ]],
+  ['Готово', '#16a36a', '', [
+    { eb: 'Готово 20 окт', t: 'Почему эксперт без продукта теряет клиентов', chips: [['ok', '<i data-lucide="check"></i>вышло 4'], ['mute', '<i data-lucide="eye"></i>41 тыс. просм.']], who: 's' },
+    { eb: 'Готово 19 окт', t: 'Первый клиент за неделю', chips: [['ok', '<i data-lucide="check"></i>вышло 3'], ['mute', '<i data-lucide="eye"></i>12 тыс. просм.']], who: 's' },
+  ], 'Показать ещё 18'],
 ];
-document.getElementById('board').innerHTML = cols.map(([name, cards], ci) => `<div class="ap-col"><div class="ap-col-h">${name}<span class="n">${cards.length}</span></div>${ci === 0 ? '<button class="ap-addidea">+ Идея</button>' : ''}${cards.map(c => `<div class="ap-kc"><div class="t">${c[0]}</div><div class="m">${c[1]}</div>${c[6] ? `<div class="ap-prog"><i style="width:${c[6]}%"></i></div>` : ''}<div class="f">${c[3] === 'D' ? '<span class="who" style="background:#16a36a">D</span>' : `<span class="who ${c[3] === 'С' ? 's' : ''}">${c[3]}</span>`}${c[2] ? `<span class="ap-w">${[1, 2, 3, 4, 5].map(n => `<i class="${n <= c[2] ? 'on' : ''}"></i>`).join('')}</span>` : ''}${c[5] === 'late' ? `<span class="late">просрочено · ${c[4]}</span>` : c[5] === 'stale' ? '<span class="stale">залежалась</span>' : c[4] ? `<span>${c[4]}</span>` : ''}</div></div>`).join('')}</div>`).join('');
+$('#board').innerHTML = COLS.map(([name, dot, empty, cards, more]) => `<div class="ap-col"><div class="ap-col-h"><span class="d" style="background:${dot}"></span>${name}<span class="n">${cards.length + (more ? 18 : 0)}</span></div>` +
+  (empty === 'idea' ? '<div class="ap-newidea"><button class="add"><i data-lucide="plus"></i>Идея</button><button class="ap-ibtn" aria-label="Надиктовать идею"><i data-lucide="mic"></i></button></div>' : '') +
+  (cards.length ? cards.map(c => `<div class="ap-kc"><div class="eb">${c.eb}</div><div class="t">${c.t}</div>${c.why ? `<div class="m"><b>Основание:</b> ${c.why}</div>` : ''}${c.m ? `<div class="m">${c.m}</div>` : ''}${c.prog ? `<div class="ap-prog"><i style="width:${c.prog}%"></i></div>` : ''}${c.chips ? `<div class="chips">${c.chips.map(([k, t]) => `<span class="ap-chip ${k}">${t}</span>`).join('')}</div>` : ''}<div class="f">${pa(c.who)}${c.w ? `<span class="ap-w">${[1, 2, 3, 4, 5].map(n => `<i class="${n <= c.w ? 'on' : ''}"></i>`).join('')}</span>` : ''}${c.date ? `<span class="dt">${c.date}</span>` : ''}</div>${c.why ? '<button class="ap-link">В сценарий<i data-lucide="chevron-right"></i></button>' : ''}</div>`).join('') : `<div class="ap-empty">${empty}</div>`) +
+  (more ? `<button class="ap-more">${more}</button>` : '') + '</div>').join('');
+$('#load').innerHTML = [['s', 5, ''], ['i', 3, ''], ['d', 3, ''], ['x', 1, 'warn']].map(([k, n, c]) => `<div class="ap-load">${pa(k)}<span class="nm">${PPL[k][2]}</span><span class="bar"><i class="${c}" style="width:${n / 5 * 100}%"></i></span><b>${n}</b></div>`).join('');
 
+drawGrowth(0);
 lucide.createIcons();
 if (['plan', 'prod'].includes(location.hash.slice(1))) go(location.hash.slice(1));
 </script>
