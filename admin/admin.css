@@ -202,3 +202,6 @@
   .kab .ap-mdeps a.back { padding: 0 10px; color: var(--ink-2); }
   .kab .ap-mdeps svg { width: 18px; height: 18px; }
 }
+
+/* админка во всю ширину экрана (Саша 21.10) */
+.kab .kab-content.ap-wide { max-width: none; }
