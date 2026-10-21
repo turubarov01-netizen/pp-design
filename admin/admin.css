@@ -192,6 +192,7 @@
 .kab .ap-side-t { display: flex; align-items: center; gap: 10px; padding: 16px 12px 8px; margin-top: 4px; border-top: 1px solid var(--line-2); font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); }
 .kab .ap-side-t svg { width: 16px; height: 16px; }
 .kab .ap-soon { color: var(--faint); }
+.kab .ap-soon span { white-space: nowrap; }
 .kab .ap-soon-b { margin-left: auto; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 7px; background: rgba(16,24,48,.06); color: var(--faint); }
 .kab .ap-mdeps { display: none; }
 @media (max-width: 960px) {
