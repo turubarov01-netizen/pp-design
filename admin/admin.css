@@ -98,7 +98,8 @@
 .kab .ap-chart { width: 100%; height: 190px; display: block; }
 .kab .ap-chart text { font-size: 10px; fill: var(--faint); font-family: inherit; }
 .kab .ap-spark { width: 96px; height: 26px; display: block; }
-.kab .ap-t td.sp { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+.kab .ap-t .spw { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+@media (max-width: 640px) { .kab .ap-spark { width: 56px; } }
 
 /* ---------- контент-план ---------- */
 .kab .ap-plan-sum { padding: 16px 22px; margin-bottom: 16px; font-size: 14px; color: var(--ink-2); display: flex; gap: 8px 28px; flex-wrap: wrap; }
