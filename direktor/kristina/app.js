@@ -76,6 +76,8 @@
   dlg?.querySelector('[data-close]').addEventListener('click', () => dlg.close());
   dlg?.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
   dlg?.addEventListener('close', onScroll);
+  // Ссылка вида /intro-k#reg (с закрытого предложения) сразу открывает регистрацию
+  if (location.hash === '#reg' && dlg) document.querySelector('[data-open]')?.click();
   const f = document.getElementById('f');
   const RULES = {
     name: (v) => v.trim() ? '' : 'Напишите, как к вам обращаться.',

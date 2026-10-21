@@ -1139,3 +1139,16 @@ footer.lgl .wrap{display:grid;gap:16px;justify-content:stretch}
 .lgl-r a{color:inherit}
 .lgl-x{font-size:12px;line-height:1.5;color:var(--ink-3);max-width:110ch}
 .lgl-c{display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between;padding-top:16px;border-top:1px solid var(--line)}
+
+/* v8.32: «Войти в кабинет» в шапке — на вход платформы с кодом директора */
+.hdr-in{gap:0;background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.hdr-in:hover{background:rgba(10,15,92,.06)}
+.hdr-in:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+.hdr .hdr-in + .btn-sm{margin-left:0}
+@media (max-width:560px){
+  .hdr .wrap{gap:8px}
+  .hdr .hdr-in{margin-left:auto;padding:0 14px}
+  .hdr-in-x{display:none}
+  .hdr .btn-sm{padding:0 14px}
+}
+@media (max-width:360px){.brand span{display:none}}
