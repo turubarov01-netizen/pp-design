@@ -338,7 +338,7 @@ input[aria-invalid="true"]{border-color:#b42318;box-shadow:0 0 0 3px rgba(180,35
 .hdr{background:#fdfcf9}
 .btn{border-radius:10px}
 .hero3{position:relative;overflow:hidden;background:var(--night,#060a26);color:#fff;min-height:min(900px,calc(100svh - 68px));display:flex;align-items:center}
-.h3-bg{position:absolute;inset:0;overflow:hidden;background:#0b1040 url(img/intro-bg-poster.jpg) center/cover}
+.h3-bg{position:absolute;inset:0;overflow:hidden;background:#0b1040 url(img/intro-ru-bg-poster.jpg) center/cover}
 .h3-bg video{position:absolute;inset:-4%;width:108%;height:108%;max-width:none;object-fit:cover;filter:saturate(.85);animation:h3kb 26s ease-in-out infinite alternate}
 @keyframes h3kb{from{transform:scale(1)}to{transform:scale(1.12) translate(-1.5%,-1%)}}
 .h3-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,10,38,.9) 0%,rgba(6,10,38,.68) 36%,rgba(6,10,38,.22) 70%,rgba(6,10,38,.3) 100%),linear-gradient(0deg,rgba(6,10,38,.95) 0%,transparent 30%)}
