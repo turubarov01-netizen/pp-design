@@ -54,6 +54,10 @@
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 21l1.6-4.7A8.5 8.5 0 1 1 7.8 19.6z"/><path d="M9 9.5c.3 2 2.2 4.2 4.8 5 .6.2 1.4-.4 1.7-1l-1.6-.9-.9.8c-1-.5-1.8-1.3-2.3-2.3l.8-.9-.9-1.6c-.6.3-1.2 1.1-1 1.7"/></svg>
       <span>WhatsApp<small data-t="wa">Написать Игорю</small></span>
     </a>
+    <a class="btn" href="https://wa.me/31620310567">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 21l1.6-4.7A8.5 8.5 0 1 1 7.8 19.6z"/><path d="M9 9.5c.3 2 2.2 4.2 4.8 5 .6.2 1.4-.4 1.7-1l-1.6-.9-.9.8c-1-.5-1.8-1.3-2.3-2.3l.8-.9-.9-1.6c-.6.3-1.2 1.1-1 1.7"/></svg>
+      <span>WhatsApp<small data-t="wa2">Написать Александру Турубарову</small></span>
+    </a>
     <a class="btn" href="https://igorgraf.life">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
       <span><span data-t="site">Сайт Игоря</span><small>igorgraf.life</small></span>
@@ -63,9 +67,9 @@
 </main>
 <script>
 const T={
- ru:{name:"Игорь Граф",sub:"Основатель Freeman's&nbsp;Alliance — сообщества предпринимателей",joinsub:"Узнать о&nbsp;комьюнити",wa:"Написать Игорю",site:"Сайт Игоря",ig:"Instagram*",meta:"* Instagram принадлежит компании Meta, признанной экстремистской и запрещённой в&nbsp;РФ",title:"Игорь Граф · Freeman's Alliance"},
- uk:{name:"Ігор Граф",sub:"Засновник Freeman's&nbsp;Alliance — спільноти підприємців",joinsub:"Дізнатися про ком'юніті",wa:"Написати Ігорю",site:"Сайт Ігоря",ig:"Instagram",meta:"",title:"Ігор Граф · Freeman's Alliance"},
- en:{name:"Igor Graf",sub:"Founder of Freeman's&nbsp;Alliance, a community of entrepreneurs",joinsub:"Learn about the community",wa:"Message Igor",site:"Igor's website",ig:"Instagram",meta:"",title:"Igor Graf · Freeman's Alliance"}
+ ru:{name:"Игорь Граф",sub:"Основатель Freeman's&nbsp;Alliance — сообщества предпринимателей",joinsub:"Узнать о&nbsp;комьюнити",wa:"Написать Игорю",wa2:"Написать Александру Турубарову",site:"Сайт Игоря",ig:"Instagram*",meta:"* Instagram принадлежит компании Meta, признанной экстремистской и запрещённой в&nbsp;РФ",title:"Игорь Граф · Freeman's Alliance"},
+ uk:{name:"Ігор Граф",sub:"Засновник Freeman's&nbsp;Alliance — спільноти підприємців",joinsub:"Дізнатися про ком'юніті",wa:"Написати Ігорю",wa2:"Написати Олександру Турубарову",site:"Сайт Ігоря",ig:"Instagram",meta:"",title:"Ігор Граф · Freeman's Alliance"},
+ en:{name:"Igor Graf",sub:"Founder of Freeman's&nbsp;Alliance, a community of entrepreneurs",joinsub:"Learn about the community",wa:"Message Igor",wa2:"Message Alexander Turubarov",site:"Igor's website",ig:"Instagram",meta:"",title:"Igor Graf · Freeman's Alliance"}
 };
 function setLang(l){const t=T[l];document.documentElement.lang=l;document.title=t.title;
  document.querySelectorAll('[data-t]').forEach(e=>{e.innerHTML=t[e.dataset.t]});
