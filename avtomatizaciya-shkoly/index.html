@@ -4729,7 +4729,7 @@ addEventListener('keydown',e=>{
   frames.forEach(reset);
   const io=new IntersectionObserver(es=>es.forEach(en=>{
     const f=en.target;
-    if(en.intersectionRatio>=.6&&!f.classList.contains('on')){const back=en.boundingClientRect.top<0;f.classList.toggle('noanim',back);f.classList.add('on');run(f,back)}
+    if(en.intersectionRatio>=.6&&!f.classList.contains('on')){const back=en.boundingClientRect.top<0||!!f._seenA;f._seenA=1;f.classList.toggle('noanim',back);f.classList.add('on');run(f,back)}
     else if(en.intersectionRatio<.2&&f.classList.contains('on')){f.classList.remove('on','noanim');reset(f)}
   }),{threshold:[0,.2,.6,1]});
   frames.forEach(f=>io.observe(f));
@@ -4760,7 +4760,7 @@ addEventListener('keydown',e=>{
     const tw=s.classList.contains('tabsw'),sl=s.closest('.slide');
     const set=(n,reset)=>{const was=k;k=Math.max(0,Math.min(max,n));s.dataset.step=k;for(let i=1;i<=max;i++)s.classList.toggle('st'+i,i<=k);
       if(tw){if(reset)sl.classList.remove('sw');else if(k!==was)sl.classList.add('sw');s.querySelectorAll(':scope>.tp').forEach((p,i)=>p.classList.toggle('act',i===k))}};
-    f._st={get:()=>k,max,set};
+    f._st={get:()=>k,max,set,tw};
     set(isStatic?max:0,1);
     s.addEventListener('click',e=>{if(e.target.closest('a[href]'))return;const t=e.target.closest('[data-tab]');if(t){e.preventDefault();set(+t.dataset.tab);return}const g=e.target.closest('[data-go]');if(g){set(+g.dataset.go);return}if(!tw&&k<max)set(k+1)});
   });
@@ -4769,7 +4769,8 @@ addEventListener('keydown',e=>{
   // вошли сверху — с начала, вернулись снизу — сразу последний шаг
   const io=new IntersectionObserver(es=>es.forEach(en=>{const f=en.target;
     if(en.intersectionRatio<.2)f._in=0;
-    else if(en.intersectionRatio>=.6&&!f._in){f._in=1;f._st.set(en.boundingClientRect.top<0?f._st.max:0,1)}
+    // уже смотрели слайд: при возврате он сразу собран (у вкладок — первая вкладка сверху, последняя снизу)
+    else if(en.intersectionRatio>=.6&&!f._in){f._in=1;const back=en.boundingClientRect.top<0,again=f._seen;f._seen=1;f._st.set(back||(again&&!f._st.tw)?f._st.max:0,1)}
   }),{threshold:[0,.2,.6,1]});
   fr.forEach(f=>io.observe(f));
   const center=f=>{const r=f.getBoundingClientRect();if(Math.abs(r.top+r.height/2-((innerHeight+(document.querySelector(".dnav")||{}).offsetHeight||innerHeight)/2))>4)scrollTo({top:scrollY+r.top+r.height/2-((innerHeight+(document.querySelector(".dnav")||{}).offsetHeight||innerHeight)/2),behavior:'smooth'})};
@@ -4783,7 +4784,8 @@ addEventListener('keydown',e=>{
     const f=active();if(!f)return;const st=f._st;
     const d=e.deltaY>0?1:e.deltaY<0?-1:0;if(!d)return;
     const next=st.get()+d;
-    if(next<0||next>st.max){if(gid===stepG)e.preventDefault();return}
+    // прокрутка вверх шаги не откатывает: слайд уже собран, сразу листаем на предыдущий
+    if(d<0||next>st.max){if(gid===stepG)e.preventDefault();return}
     e.preventDefault();
     if(f!==startActive||gid===stepG){center(f);return}
     acc+=e.deltaY;if(Math.abs(acc)<30)return;
@@ -4792,7 +4794,7 @@ addEventListener('keydown',e=>{
   addEventListener('keydown',e=>{
     let d=0;if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key))d=1;if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key))d=-1;
     if(!d)return;const f=active();if(!f)return;const st=f._st,next=st.get()+d;
-    if(next<0||next>st.max)return;
+    if(next<0||next>st.max||(d<0&&e.key!=='ArrowLeft'))return;
     e.preventDefault();e.stopImmediatePropagation();lastStep=Date.now();st.set(next);center(f);
   },true);
 })();
