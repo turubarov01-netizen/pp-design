@@ -3579,6 +3579,21 @@ html.static .r54 .p6-an,html.static .r54f .p6-an{animation:none!important;opacit
 .r60-arr{margin-left:14px;margin-right:22px}
 .r60-b .r60-arr{flex-basis:56px}
 
+/* меню разделов сверху (23.10) */
+.dnav{display:none}
+@media screen{
+  html.has-dnav{scroll-padding-top:52px}
+  html.has-dnav .deck{padding-top:52px}
+  html.has-dnav .frame{width:min(100vw,calc((100vh - 52px)*1.7778));margin:calc((100vh - 52px - min(100vw,calc((100vh - 52px)*1.7778))*.5625)/2) auto}
+  .dnav{display:flex;position:fixed;left:0;right:0;top:0;z-index:40;height:52px;align-items:center;justify-content:center;gap:6px;padding:0 16px;background:oklch(0.97 0.004 262 / .92);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid oklch(0.88 0.01 262);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif}
+  .dnav button{height:34px;padding:0 16px;border:0;border-radius:17px;background:none;color:oklch(0.45 0.02 262);font:500 15px/1 inherit;font-family:inherit;font-size:15px;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+  .dnav button:hover{background:oklch(0.92 0.02 255);color:oklch(0.3 0.03 262)}
+  .dnav button[aria-current]{background:#0071e3;color:oklch(0.98 0.01 255)}
+  .dnav button:focus-visible{outline:2px solid #0071e3;outline-offset:2px}
+  @media (max-width:760px){.dnav{justify-content:flex-start;overflow-x:auto;gap:2px}.dnav button{padding:0 11px;font-size:13px}}
+}
+@media print{.dnav{display:none!important}}
+
 </style>
 </head>
 <body>
@@ -4750,14 +4765,14 @@ addEventListener('keydown',e=>{
     s.addEventListener('click',e=>{if(e.target.closest('a[href]'))return;const t=e.target.closest('[data-tab]');if(t){e.preventDefault();set(+t.dataset.tab);return}const g=e.target.closest('[data-go]');if(g){set(+g.dataset.go);return}if(!tw&&k<max)set(k+1)});
   });
   if(isStatic)return;
-  const active=()=>fr.find(f=>{const r=f.getBoundingClientRect();return Math.abs(r.top+r.height/2-innerHeight/2)<r.height*.25});
+  const active=()=>fr.find(f=>{const r=f.getBoundingClientRect();return Math.abs(r.top+r.height/2-((innerHeight+(document.querySelector(".dnav")||{}).offsetHeight||innerHeight)/2))<r.height*.25});
   // вошли сверху — с начала, вернулись снизу — сразу последний шаг
   const io=new IntersectionObserver(es=>es.forEach(en=>{const f=en.target;
     if(en.intersectionRatio<.2)f._in=0;
     else if(en.intersectionRatio>=.6&&!f._in){f._in=1;f._st.set(en.boundingClientRect.top<0?f._st.max:0,1)}
   }),{threshold:[0,.2,.6,1]});
   fr.forEach(f=>io.observe(f));
-  const center=f=>{const r=f.getBoundingClientRect();if(Math.abs(r.top+r.height/2-innerHeight/2)>4)scrollTo({top:scrollY+r.top+r.height/2-innerHeight/2,behavior:'smooth'})};
+  const center=f=>{const r=f.getBoundingClientRect();if(Math.abs(r.top+r.height/2-((innerHeight+(document.querySelector(".dnav")||{}).offsetHeight||innerHeight)/2))>4)scrollTo({top:scrollY+r.top+r.height/2-((innerHeight+(document.querySelector(".dnav")||{}).offsetHeight||innerHeight)/2),behavior:'smooth'})};
   // Один жест прокрутки = один шаг. Жест, которым слайд только приехал в кадр
   // (инерция тачпада), шаг не переключает: сначала виден текущий шаг.
   let lastWheel=0,gid=0,startActive=null,stepG=-1;
@@ -4786,4 +4801,18 @@ document.addEventListener('click',e=>{const a=e.target.closest('[data-jump]');if
   const fr=[...document.querySelectorAll('.frame')],i=fr.indexOf(a.closest('.frame')),t=fr[i+ +a.dataset.jump];
   if(t)scrollTo({top:scrollY+t.getBoundingClientRect().top,behavior:'smooth'})});
 
+// Меню разделов сверху (23.10): клик — переход к первому слайду раздела, текущий раздел подсвечен.
+(function(){
+  const S=[[1,'Проблема рынка'],[12,'ИИ‑отдел продаж'],[26,'ИИ‑маркетолог'],[36,'ИИ‑платформа'],[40,'Условия внедрения']];
+  const fr=[...document.querySelectorAll('.frame')];if(!fr.length||/static/.test(location.search))return;
+  const nav=document.createElement('nav');nav.className='dnav';nav.setAttribute('aria-label','Разделы презентации');
+  nav.innerHTML=S.map(([n,t],i)=>`<button type="button" data-n="${n}">${t}</button>`).join('');
+  document.body.prepend(nav);document.documentElement.classList.add('has-dnav');dispatchEvent(new Event('resize'));
+  const bs=[...nav.children];
+  const go=n=>{const f=fr[n-1];if(!f)return;const r=f.getBoundingClientRect(),h=nav.offsetHeight;scrollTo({top:scrollY+r.top+r.height/2-(innerHeight+h)/2,behavior:'smooth'})};
+  nav.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b)go(+b.dataset.n)});
+  const cur=()=>{const m=(innerHeight+nav.offsetHeight)/2;let c=0,best=1e9;fr.forEach((f,i)=>{const r=f.getBoundingClientRect(),d=Math.abs(r.top+r.height/2-m);if(d<best){best=d;c=i}});return c+1};
+  const mark=()=>{const c=cur();let k=0;S.forEach(([n],i)=>{if(c>=n)k=i});bs.forEach((b,i)=>b.toggleAttribute('aria-current',i===k))};
+  addEventListener('scroll',()=>requestAnimationFrame(mark),{passive:true});addEventListener('resize',mark);mark();
+})();
 </script>
