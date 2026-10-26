@@ -9,6 +9,7 @@
 @font-face{font-family:"Medeo Sans";src:url("fonts/MedeoSansVariable-Italic.woff2") format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
 /* курсив отдельным именем, чтобы голос участника оставался курсивом в любом font-шортхенде */
 @font-face{font-family:"Medeo Voice";src:url("fonts/MedeoSansVariable-Italic.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Medeo Voice";src:url("fonts/MedeoSansVariable-Italic.woff2") format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
 @font-face{font-family:"Medeo Mono";src:url("fonts/MedeoMonoVariable.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:"Medeo Pixel";src:url("fonts/MedeoPixelVariable.woff") format("woff");font-weight:400;font-style:normal;font-display:swap}
 
@@ -130,7 +131,7 @@ a:hover .arrow,button:hover .arrow{transform:translate(2px,-2px)}
 /* 3. одна фраза — тёмная, для коротких и сильных отзывов */
 .c-line{padding:30px 26px 24px;background:var(--night);color:var(--on-night);box-shadow:none}
 .c-line .tag{color:var(--on-night-2)}
-.c-line .q{margin:16px 0 24px;font:500 italic 27px/1.28 var(--voice)}
+.c-line .q{margin:16px 0 24px;font:500 27px/1.28 var(--voice)}
 .c-line .who div span{color:var(--on-night-2)}
 .c-line .mono{background:var(--y);color:var(--ink)}
 
@@ -183,3 +184,5 @@ a:hover .arrow,button:hover .arrow{transform:translate(2px,-2px)}
   .ba{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+html{font-synthesis-style:none}
