@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Freeman Stories — истории тех, кто решился</title>
+<link rel="stylesheet" href="assets/stories.css">
+<style>
+/* ---- главная ---- */
+.hero{padding:64px 0 72px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.hero h1{margin:18px 0 22px;font:800 clamp(40.96px,5.38vw,81.92px)/1.08 var(--display);letter-spacing:-.03em}
+.hero h1 em{font-style:normal;color:var(--ink-3)}
+.hero .lead{max-width:34ch;margin:0 0 30px;font-size:19px;line-height:1.5;color:var(--ink-2)}
+.search{display:flex;align-items:center;gap:10px;max-width:540px;height:60px;padding:0 8px 0 22px;border-radius:999px;background:var(--card);box-shadow:0 0 0 1.5px var(--line-2)}
+.search:focus-within{box-shadow:0 0 0 2px var(--ink)}
+.search input{flex:1;min-width:0;border:0;background:none;font:400 16.5px/1 var(--body);color:var(--ink);outline:none}
+.search input::placeholder{color:var(--ink-3)}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;max-width:560px}
+.quick .chip{height:34px;font-size:13.5px;padding:0 13px}
+.stat{display:flex;gap:22px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font:600 14.5px/1.3 var(--body);color:var(--ink-2)}
+.stat b{display:block;font:400 30px/1.1 var(--pixel);color:var(--ink)}
+
+/* мозаика лиц: только реальные участники из видеоисторий */
+.faces{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;transform:rotate(-2deg)}
+.face{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:radial-gradient(120% 80% at 50% 30%,color-mix(in oklab,var(--pc) 72%,var(--paper)) 0,var(--pc) 70%)}
+.face:nth-child(4n+2),.face:nth-child(4n+4){transform:translateY(34px)}
+.face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0}
+.face figcaption{position:absolute;inset:auto 0 0 0;padding:28px 10px 9px;background:linear-gradient(transparent,rgba(7,11,42,.86));color:var(--on-night);font:700 12px/1.2 var(--body)}
+.face figcaption span{display:block;font-weight:500;color:var(--on-night-2);font-size:11px;margin-top:2px}
+
+/* выбор редакции */
+.featured{background:var(--night);color:var(--on-night);padding:88px 0}
+.featured .eyebrow{color:var(--y)}
+.feat{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:center;margin-top:26px}
+.feat .vid{position:relative;aspect-ratio:16/10;border-radius:var(--r-l);overflow:hidden;background:#05081f}
+.feat .vid img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.feat .vid .play{left:24px;bottom:24px;height:52px;font-size:15px;padding-right:22px}
+.feat .vid .play::before{width:40px;height:40px}
+.feat .tag{color:var(--on-night-2)}
+.feat h2{margin:16px 0 18px;font:760 clamp(30px,3vw,44px)/1.08 var(--display)}
+.feat p{margin:0 0 26px;color:var(--on-night-2);font-size:17px}
+.feat .ba{background:rgba(238,234,246,.14)}
+.feat .ba div{background:var(--night-2);color:var(--on-night)}
+.feat .ba .eyebrow{color:var(--on-night-2)}
+.feat .meta{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.feat .meta span{font-size:14px;color:var(--on-night-2)}
+
+/* программы */
+.progs{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
+.prog{display:flex;flex-direction:column;justify-content:space-between;min-height:188px;padding:18px 16px;border-radius:var(--r-m);background:var(--pc);color:var(--on-night);transition:transform .25s var(--ease)}
+.prog:hover{transform:translateY(-4px)}
+.prog b{font:720 21px/1.1 var(--display);letter-spacing:-.02em}
+.prog span{font:600 13px/1 var(--body);color:var(--on-night-2)}
+
+/* лента */
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.filters .div{width:1px;height:26px;background:var(--line-2);margin:0 8px}
+.filters .sp{flex:1}
+.sel{appearance:none;height:40px;padding:0 36px 0 16px;border-radius:999px;border:1.5px solid var(--line-2);background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230a0f5c' stroke-width='1.6' fill='none'/%3E%3C/svg%3E") right 14px center no-repeat;font:600 14px/1 var(--body);color:var(--ink)}
+.more-btn{display:flex;justify-content:center;margin-top:16px}
+
+/* финальный призыв */
+.invite{padding:104px 0;background:var(--y)}
+.invite .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:end}
+.invite h2{margin:0;font:800 clamp(33.28px,4.1vw,61.44px)/1.08 var(--display)}
+.steps{list-style:none;margin:0 0 30px;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:4px 14px;padding:16px 0;border-top:1.5px solid rgba(10,15,92,.2)}
+.steps li::before{content:counter(s,decimal-leading-zero);grid-row:span 2;font:500 15px/1.4 var(--mono)}
+.steps b{font:700 17px/1.3 var(--body)}
+.steps span{font-size:15px;color:var(--ink-2)}
+
+@media (max-width:1100px){.progs{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:900px){
+  .hero .wrap,.feat,.invite .wrap{grid-template-columns:1fr}
+  .hero{padding:36px 0 56px}
+  .faces{order:-1;grid-template-columns:repeat(6,1fr);transform:none;gap:8px}
+  .face:nth-child(n+7){display:none}
+  .face:nth-child(4n+2),.face:nth-child(4n+4){transform:none}
+  .face:nth-child(even){transform:translateY(14px)}
+  .face figcaption{display:none}
+  .progs{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:150px;overflow-x:auto}
+  .prog{min-height:150px}
+  .featured{padding:64px 0}
+}
+@media (max-width:560px){
+  .hero h1{font-size:44px}
+  .hero .lead{font-size:17px}
+  .search{height:54px}
+  .faces{grid-template-columns:repeat(3,1fr)}
+  .face:nth-child(n+4){display:none}
+  .filters{flex-wrap:nowrap;overflow-x:auto;margin-inline:-16px;padding-inline:16px}
+  .filters .sp,.filters .div{display:none}
+  .invite{padding:72px 0}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr"><div class="wrap">
+  <a class="logo" href="index.html">Freeman<i>Stories</i></a>
+  <nav class="nav" aria-label="Разделы"><a class="on" href="index.html">Все истории</a><a href="#feed">Кейсы</a><a href="#feed">Отзывы</a><a href="#programs">Программы</a></nav>
+  <span class="sp"></span>
+  <a class="login" href="cabinet.html">Мои истории</a>
+  <a class="btn btn-y btn-sm" href="share.html">Рассказать историю <span class="arrow">↗</span></a>
+  <button class="burger" aria-label="Меню">☰</button>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <div>
+    <div class="eyebrow">Freeman’s Alliance · истории участников</div>
+    <h1>Истории тех, <em>кто решился</em></h1>
+    <p class="lead">Предприниматели и эксперты рассказывают своими словами: с чего начинали, что делали и что изменилось.</p>
+    <label class="search"><span class="sr">Поиск</span>
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6.5" stroke="#61658e" stroke-width="1.8" fill="none"/><path d="M13.5 13.5L18 18" stroke="#61658e" stroke-width="1.8"/></svg>
+      <input type="search" placeholder="Ниша, имя, город или результат">
+      <button class="btn btn-sm" type="button">Найти</button>
+    </label>
+    <div class="quick" aria-label="Популярные темы">
+      <button class="chip">Запустил продажи</button><button class="chip">Вырос доход</button><button class="chip">Собрал команду</button><button class="chip">Нашёл своё дело</button><button class="chip">Стал экспертом</button>
+    </div>
+    <div class="stat"><div><b>37</b>кейсов</div><div><b>172</b>отзыва</div><div><b>7</b>программ</div></div>
+  </div>
+  <div class="faces" aria-label="Участники, рассказавшие свои истории">
+    <figure class="face p-kod"><img src="assets/photos/cut/soroka.webp" alt=""><figcaption>Сергей Сорока<span>Код Бизнеса</span></figcaption></figure>
+    <figure class="face p-pp"><img src="assets/photos/cut/zemene.webp" alt=""><figcaption>Инга Земене<span>План Продюсера</span></figcaption></figure>
+    <figure class="face p-pp"><img src="assets/photos/cut/melkova.webp" alt=""><figcaption>Виктория Мелькова<span>План Продюсера</span></figcaption></figure>
+    <figure class="face p-pp"><img src="assets/photos/cut/totari.webp" alt=""><figcaption>Олеся Тотари<span>План Продюсера</span></figcaption></figure>
+    <figure class="face p-pp"><img src="assets/photos/cut/velichko.webp" alt=""><figcaption>Ирина Величко<span>План Продюсера</span></figcaption></figure>
+    <figure class="face p-none"><img src="assets/photos/cut/burenova.webp" alt=""><figcaption>Наталья Буренова<span>Видеоистория</span></figcaption></figure>
+    <figure class="face p-pp"><img src="assets/photos/cut/kozhevnikova.webp" alt=""><figcaption>Ксения Кожевникова<span>План Продюсера</span></figcaption></figure>
+    <figure class="face p-pp"><img src="assets/photos/cut/maykhrovskaya.webp" alt=""><figcaption>Елена Майхровская<span>План Продюсера</span></figcaption></figure>
+  </div>
+</div></section>
+
+<section class="featured"><div class="wrap">
+  <div class="eyebrow">Выбор редакции · кейс недели</div>
+  <div class="feat">
+    <a class="vid" href="case.html"><img src="assets/photos/soroka/yacht.jpg" alt="Сергей Сорока" style="object-position:50% 0"><span class="play">Смотреть интервью</span></a>
+    <div>
+      <span class="tag p-kod">Код Бизнеса · Power ON</span>
+      <h2>Сергей Сорока: от управленческого тупика к поэтапному развитию компании</h2>
+      <div class="ba">
+        <div><span class="eyebrow">Было</span>Клиенты только по рекомендациям, попытка внедрить всё сразу и перегрузка</div>
+        <div><span class="eyebrow">Стало</span>Своя реклама и первые обращения, оргструктура показала, кого не хватает</div>
+      </div>
+      <div class="meta"><a class="btn btn-y" href="case.html">Читать кейс <span class="arrow">↗</span></a><span>Видеоинтервью · 6 минут чтения</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec" id="programs"><div class="wrap">
+  <div class="sec-h"><div><div class="eyebrow">По программам</div><h2>Найдите своих</h2></div><a class="link" href="#feed">Все программы <span class="arrow">↗</span></a></div>
+  <div class="progs">
+    <a class="prog p-alliance" href="#feed"><b>Freeman’s Alliance</b><span>Истории <span class="arrow">↗</span></span></a>
+    <a class="prog p-power" href="#feed"><b>Power ON</b><span>Истории <span class="arrow">↗</span></span></a>
+    <a class="prog p-kod" href="#feed"><b>Код Бизнеса</b><span>Истории <span class="arrow">↗</span></span></a>
+    <a class="prog p-pp" href="#feed"><b>План Продюсера</b><span>Истории <span class="arrow">↗</span></span></a>
+    <a class="prog p-proryv" href="#feed"><b>Прорыв за 30 дней</b><span>Истории <span class="arrow">↗</span></span></a>
+    <a class="prog p-fabrika" href="#feed"><b>Фабрика Бизнеса</b><span>Истории <span class="arrow">↗</span></span></a>
+    <a class="prog p-mentor" href="#feed"><b>Наставничество Игоря Графа</b><span>Истории <span class="arrow">↗</span></span></a>
+  </div>
+</div></section>
+
+<section class="sec" style="padding-top:0"><div class="wrap">
+  <div class="sec-h"><div><div class="eyebrow">Видеоистории</div><h2>Своими словами, на камеру</h2></div><a class="link" href="#feed">Все видео <span class="arrow">↗</span></a></div>
+  <div class="shelf">
+    <a class="card c-video p-pp" href="case.html"><div class="thumb"><img src="assets/photos/cut/zemene.webp" alt=""><span class="play">Смотреть</span></div><div class="body"><span class="tag p-pp">План Продюсера</span><h3>«Не искать, почему не получится, а смотреть, как можно сделать»</h3><div class="who"><img class="ava" src="assets/photos/p/zemene.webp" alt=""><div><b>Инга Земене</b><span>Видеоистория</span></div></div></div></a>
+    <a class="card c-video p-pp" href="case.html"><div class="thumb"><img src="assets/photos/cut/melkova.webp" alt=""><span class="play">Смотреть</span></div><div class="body"><span class="tag p-pp">План Продюсера</span><h3>«Теперь я точно понимаю свою ценность и вижу, как устроена воронка продаж»</h3><div class="who"><img class="ava" src="assets/photos/p/melkova.webp" alt=""><div><b>Виктория Мелькова</b><span>Видеоистория</span></div></div></div></a>
+    <a class="card c-video p-pp" href="case.html"><div class="thumb"><img src="assets/photos/cut/kozhevnikova.webp" alt=""><span class="play">Смотреть</span></div><div class="body"><span class="tag p-pp">План Продюсера</span><h3>«Самое сильное — это прорыв в голове. Я увидела паттерны, которые годами меня тормозили»</h3><div class="who"><img class="ava" src="assets/photos/p/kozhevnikova.webp" alt=""><div><b>Ксения Кожевникова</b><span>Видеоистория</span></div></div></div></a>
+    <a class="card c-video p-pp" href="case.html"><div class="thumb"><img src="assets/photos/cut/maykhrovskaya.webp" alt=""><span class="play">Смотреть</span></div><div class="body"><span class="tag p-pp">План Продюсера</span><h3>«Без вас я бы не поняла, что у меня есть опыт и я действительно эксперт»</h3><div class="who"><img class="ava" src="assets/photos/p/maykhrovskaya.webp" alt=""><div><b>Елена Майхровская</b><span>Видеоистория</span></div></div></div></a>
+  </div>
+</div></section>
+
+<section class="sec" id="feed" style="padding-top:0"><div class="wrap">
+  <div class="sec-h"><div><div class="eyebrow">Все истории</div><h2>У каждого своя точка роста</h2></div></div>
+  <div class="filters" role="toolbar" aria-label="Фильтры">
+    <button class="chip on">Все <span class="n">212</span></button>
+    <button class="chip">Кейсы <span class="n">37</span></button>
+    <button class="chip">Отзывы <span class="n">172</span></button>
+    <button class="chip">С видео</button>
+    <span class="div"></span>
+    <select class="sel" aria-label="Программа"><option>Все программы</option><option>Power ON</option><option>Код Бизнеса</option><option>План Продюсера</option></select>
+    <select class="sel" aria-label="Результат"><option>Любой результат</option><option>Запустил продажи</option><option>Вырос доход</option></select>
+    <span class="sp"></span>
+    <select class="sel" aria-label="Порядок"><option>Сначала сильные</option><option>Сначала новые</option></select>
+  </div>
+
+  <div class="feed">
+    <a class="card c-fact" href="review.html">
+      <span class="tag p-power">Power ON</span>
+      <div class="fact">4 дня</div>
+      <p class="fact-l">за столько окупился тренинг: первый предоплатный заказ на 100 пар серёжек</p>
+      <p class="q">«Кто бы мог подумать, что за пару дней можно запустить колесо сувенирки? Просто взять и запустить.»</p>
+      <div class="who"><span class="mono p-power">АП</span><div><b>Андрей Полюга</b><span>Бижутерия и сувениры</span></div></div>
+    </a>
+
+    <a class="card c-video p-pp" href="case.html"><div class="thumb"><img src="assets/photos/cut/velichko.webp" alt=""><span class="play">Смотреть</span></div><div class="body"><span class="tag p-pp">План Продюсера</span><h3>«Я тут перешагнула через огромное количество барьеров, своих страхов и самозванцев»</h3><div class="who"><img class="ava" src="assets/photos/p/velichko.webp" alt=""><div><b>Ирина Величко</b><span>Видеоистория</span></div></div></div></a>
+
+    <a class="card c-quote" href="review.html">
+      <div class="top"><span class="tag plain">История из архива</span><span class="badge">2015</span></div>
+      <p class="q">Я работал официантом на очередном банкете. Люди делились тем, что у них произошло за год, я видел их восторженные лица и загорелся сам. <b class="mark">В этот вечер я купил билет на будущее обучение.</b></p>
+      <span class="more">Читать историю целиком <span class="arrow">↗</span></span>
+      <div class="who"><span class="mono" style="--pc:var(--ink-2)">ЕП</span><div><b>Евгений Панасюк</b><span>Участник</span></div></div>
+    </a>
+
+    <a class="card c-line" href="review.html">
+      <span class="tag plain">Отзыв участника</span>
+      <p class="q">«Предупреждали не писать „спасибо, вау“, но всё же именно так.»</p>
+      <div class="who"><span class="mono">ЕШ</span><div><b>Елена Шевцова</b><span>Отзыв из архива</span></div></div>
+    </a>
+
+    <a class="card c-quote" href="review.html">
+      <div class="top"><span class="tag plain">Отзыв из архива</span></div>
+      <p class="q">По организации: долго ждали начала, расхолаживает; тянучка при регистрации. Говоришь уверенно и от души. <b class="mark">После мероприятия ощущение, что с пользой провёл время.</b></p>
+      <span class="more">Читать отзыв <span class="arrow">↗</span></span>
+      <div class="who"><span class="mono" style="--pc:var(--p-fabrika)">MH</span><div><b>Michael Huntsys</b><span>Участник</span></div></div>
+    </a>
+
+    <a class="card c-quote" href="review.html">
+      <div class="top"><span class="tag plain">Отзыв из архива</span><span class="badge">Instagram</span></div>
+      <p class="q">Твои страхи определяют, куда двигаться. <b class="mark">Ставь цели не ради плюшек, а ради того, кем ты станешь, проходя этот путь.</b></p>
+      <span class="more">Читать отзыв <span class="arrow">↗</span></span>
+      <div class="who"><span class="mono" style="--pc:var(--p-mentor)">О</span><div><b>@olyamashkova</b><span>Конференция миллионеров</span></div></div>
+    </a>
+
+    <a class="card c-quote" href="review.html">
+      <div class="top"><span class="tag plain">Отзыв из архива</span><span class="badge">Українською</span></div>
+      <p class="q"><b class="mark">Тренінг, який вчить думати інакше,</b> вчить концентруватись на справі і дисциплінувати, в першу чергу, себе.</p>
+      <div class="who"><span class="mono" style="--pc:var(--p-proryv)">СС</span><div><b>Соломія Сивик</b><span>Участниця</span></div></div>
+    </a>
+
+    <a class="card c-quote" href="review.html">
+      <div class="top"><span class="tag plain">Отзыв из архива</span></div>
+      <p class="q">Как человек с двумя высшими образованиями и дипломами, успешно пылящимися в серванте, <b class="mark">я точно знаю, что вернусь к вам в будущем</b>, так как у меня ниша — наши детки.</p>
+      <span class="more">Читать отзыв <span class="arrow">↗</span></span>
+      <div class="who"><span class="mono" style="--pc:var(--p-alliance)">ДТ</span><div><b>Дмитрий Трофименко</b><span>В прошлом военный</span></div></div>
+    </a>
+
+    <a class="card c-video p-pp" href="case.html"><div class="thumb"><img src="assets/photos/cut/totari.webp" alt=""><span class="play">Смотреть</span></div><div class="body"><span class="tag p-pp">План Продюсера</span><h3>«Я очень много курсов проходила — такого не было нигде»</h3><div class="who"><img class="ava" src="assets/photos/p/totari.webp" alt=""><div><b>Олеся Тотари</b><span>Видеоистория</span></div></div></div></a>
+  </div>
+  <div class="more-btn"><button class="btn btn-ghost">Показать ещё истории</button></div>
+</div></section>
+
+<section class="invite"><div class="wrap">
+  <h2>Ваша история может стать следующей</h2>
+  <div>
+    <ol class="steps">
+      <li><b>Расскажите за 5 минут</b><span>Три вопроса: что было, что сделали, что изменилось</span></li>
+      <li><b>Редакция поможет с текстом</b><span>Поправим, подберём заголовок и пришлём вам на согласование</span></li>
+      <li><b>Публикуем с вашего согласия</b><span>Сообщим письмом, когда история выйдет</span></li>
+    </ol>
+    <a class="btn" href="share.html">Рассказать свою историю <span class="arrow">↗</span></a>
+  </div>
+</div></section>
+</main>
+
+<footer class="ftr"><div class="wrap">
+  <div class="top"><a class="logo" href="index.html">Freeman<i>Stories</i></a><div class="say">У каждой перемены есть своя история</div></div>
+  <div class="cols"><a href="share.html">Рассказать историю</a><a href="cabinet.html">Мои истории</a><a href="#">Как мы готовим истории</a><a href="#">Freeman’s Alliance ↗</a></div>
+  <p class="fine">Истории отражают личный опыт участников. Результаты каждого человека индивидуальны.</p>
+</div></footer>
+</body>
+</html>

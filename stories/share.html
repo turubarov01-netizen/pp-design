@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Рассказать историю — Freeman Stories</title>
+<link rel="stylesheet" href="assets/stories.css">
+<style>
+body{background:var(--paper)}
+.s-hdr{border-bottom:1px solid var(--line)}
+.s-hdr .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.s-hdr .close{font:600 15px/1 var(--body);color:var(--ink-2)}
+.shell{display:grid;grid-template-columns:minmax(0,660px) 380px;gap:72px;justify-content:space-between;padding:48px 0 96px}
+.intro h1{margin:14px 0 14px;font:800 clamp(36px,3.8vw,54px)/1.05 var(--display)}
+.intro p{margin:0;max-width:46ch;font-size:18px;color:var(--ink-2)}
+.trust{display:flex;flex-wrap:wrap;gap:8px 20px;margin:20px 0 0;padding:0;list-style:none;font:600 14px/1.3 var(--body);color:var(--ink-2)}
+.trust li::before{content:"✓ ";color:var(--ok);font-weight:800}
+/* шаги */
+.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:40px 0 32px}
+.stepper button{display:grid;gap:8px;padding:0;border:0;background:none;text-align:left;font:600 13.5px/1.2 var(--body);color:var(--ink-3)}
+.stepper button::before{content:"";height:4px;border-radius:4px;background:var(--line-2);transition:background .3s}
+.stepper button.done::before,.stepper button.on::before{background:var(--ink)}
+.stepper button.on{color:var(--ink)}
+.step{display:none}
+.step.on{display:block;animation:in .35s var(--ease)}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.step h2{margin:0 0 6px;font:750 30px/1.1 var(--display)}
+.step .sub{margin:0 0 26px;color:var(--ink-2)}
+.field{display:block;margin-bottom:22px}
+.field>span{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px;font:700 15px/1.3 var(--body)}
+.field>span i{font-style:normal;font-weight:500;color:var(--ink-3)}
+.field small{display:block;margin:-2px 0 10px;font-size:14px;color:var(--ink-3)}
+.in,.ta{width:100%;border:0;border-radius:14px;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line-2);font:400 17px/1.5 var(--body);color:var(--ink);padding:14px 16px;transition:box-shadow .2s}
+.in{height:54px}
+.ta{min-height:120px;resize:vertical;font-family:var(--voice);font-size:18px}
+.in:focus,.ta:focus{outline:none;box-shadow:inset 0 0 0 2px var(--ink)}
+.count{display:block;margin-top:6px;text-align:right;font-size:12.5px;color:var(--ink-3)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips .chip{height:46px;padding:0 18px;font-size:15px}
+.chips .chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.voice{display:flex;align-items:center;gap:14px;margin:4px 0 26px;padding:16px 18px;border-radius:14px;background:var(--paper-2)}
+.voice .rec{flex:none;width:48px;height:48px;border-radius:50%;border:0;background:var(--ink);color:var(--y);font-size:20px}
+.voice b{display:block;font-size:15px}.voice span{font-size:14px;color:var(--ink-2)}
+/* фото */
+[hidden]{display:none!important}
+.por{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start}
+.por-frame{position:relative;aspect-ratio:4/5;border-radius:var(--r-m);overflow:hidden;background:var(--card);box-shadow:inset 0 0 0 2px var(--line-2)}
+.por-frame.has{box-shadow:none;background:radial-gradient(120% 80% at 50% 30%,color-mix(in oklab,var(--pc,var(--ink)) 72%,var(--paper)) 0,var(--pc,var(--ink)) 70%)}
+.por-frame.orig{background:var(--night)}
+.por-empty{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:6px;text-align:center;color:var(--ink-3);font-size:13.5px}
+.por-empty b{color:var(--ink);font-size:15px}
+.por-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0;transform-origin:50% 25%;transition:transform .3s var(--ease),opacity .4s}
+.por-busy{position:absolute;inset:auto 10px 10px;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(7,11,42,.78);color:var(--paper);font:600 13px/1 var(--body)}
+.por-busy i{width:12px;height:12px;border-radius:50%;border:2px solid var(--y);border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(1turn)}}
+.tips{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:7px;font-size:14.5px;line-height:1.35;color:var(--ink-2)}
+.tips li{display:grid;grid-template-columns:20px 1fr;gap:6px}
+.tips li::before{font-weight:800}
+.tips .ok::before{content:"✓";color:var(--ok)}
+.tips .no::before{content:"✕";color:#a1394a}
+.por-acts{display:flex;flex-wrap:wrap;gap:8px}
+.por-acts label{cursor:pointer}
+.por-tools{margin-top:18px;display:grid;gap:12px}
+.seg2{display:inline-grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:12px;background:var(--paper-2);width:max-content}
+.seg2 button{height:36px;padding:0 14px;border:0;border-radius:9px;background:none;font:600 13.5px/1 var(--body);color:var(--ink-2)}
+.seg2 button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(10,15,92,.15)}
+.zoom{display:flex;align-items:center;gap:12px;font-size:13.5px;color:var(--ink-3)}
+.zoom input{flex:1;max-width:200px;accent-color:var(--ink)}
+.slots{display:grid;gap:10px}
+.slots.s3{grid-template-columns:repeat(3,1fr)}
+.slots.s3 .slot{aspect-ratio:4/3}
+.slots.s5{grid-template-columns:repeat(5,1fr)}
+.slot{position:relative;display:grid;place-content:center;justify-items:center;gap:4px;aspect-ratio:1;border-radius:14px;border:2px dashed var(--line-2);background:var(--card);text-align:center;color:var(--ink-3);font-size:12.5px;line-height:1.3;padding:8px;cursor:pointer;overflow:hidden;transition:border-color .2s}
+.slot:hover{border-color:var(--ink-3)}
+.slot.tall{aspect-ratio:9/16}
+.slot b{font:400 26px/1 var(--display);color:var(--ink)}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.slot.filled{border:0}
+.check{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start;margin:0 0 16px;font-size:15px;line-height:1.45;color:var(--ink-2)}
+.check input{width:22px;height:22px;margin:1px 0 0;accent-color:var(--ink)}
+.check b{color:var(--ink)}
+.offer{margin:8px 0 22px;padding:18px;border-radius:14px;background:var(--y)}
+.offer .check{margin:0;color:var(--ink)}
+.nav-row{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
+.nav-row .save{font-size:13.5px;color:var(--ink-3)}
+/* превью */
+.preview{position:sticky;top:32px;align-self:start}
+.preview .eyebrow{margin-bottom:14px}
+.preview .card{pointer-events:none}
+.preview .hint{margin:14px 0 0;font-size:13.5px;color:var(--ink-3)}
+.ph{color:var(--ink-3)}
+/* финал */
+.done{display:none;max-width:680px}
+.done.on{display:block;animation:in .4s var(--ease)}
+.done h2{margin:12px 0 14px;font:800 44px/1.05 var(--display)}
+.timeline{list-style:none;margin:32px 0;padding:0}
+.timeline li{position:relative;display:grid;grid-template-columns:32px 1fr;gap:2px 16px;padding-bottom:22px}
+.timeline li::before{content:"";grid-row:span 2;width:20px;height:20px;margin:2px 0 0 6px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line-2);background:var(--paper)}
+.timeline li::after{content:"";position:absolute;left:15px;top:26px;bottom:2px;width:2px;background:var(--line)}
+.timeline li:last-child::after{display:none}
+.timeline li.now::before{background:var(--ok);box-shadow:none}
+.timeline b{font-size:16px}.timeline span{font-size:14.5px;color:var(--ink-2)}
+@media (max-width:980px){.shell{grid-template-columns:1fr;gap:40px}.preview{position:static;order:2}}
+@media (max-width:560px){.por{grid-template-columns:1fr}.por-frame{max-width:240px}.slots.s5{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}.step h2{font-size:34px}.stepper button{font-size:0}.stepper{margin:28px 0 24px}}
+</style>
+</head>
+<body>
+<header class="s-hdr"><div class="wrap"><a class="logo" href="index.html">Freeman<i>Stories</i></a><a class="close" href="index.html">Закрыть ✕</a></div></header>
+
+<main class="wrap shell">
+<div>
+  <section class="intro" id="intro">
+    <div class="eyebrow">Рассказать историю</div>
+    <h1>Что изменилось после программы?</h1>
+    <p>Займёт около пяти минут. Не нужно писать красиво: редакция поможет с текстом и пришлёт его вам перед публикацией.</p>
+    <ul class="trust"><li>Без регистрации</li><li>Публикуем только с вашего согласия</li><li>Черновик сохраняется сам</li></ul>
+  </section>
+
+  <nav class="stepper" aria-label="Шаги">
+    <button class="on" data-go="0">Программа</button><button data-go="1">История</button><button data-go="2">Фото и видео</button><button data-go="3">О вас</button>
+  </nav>
+
+  <form id="f" onsubmit="return false">
+    <section class="step on">
+      <h2>Где вы учились?</h2>
+      <p class="sub">Можно выбрать несколько программ.</p>
+      <div class="chips" id="progs">
+        <button type="button" class="chip" aria-pressed="false" data-c="p-alliance">Freeman’s Alliance</button>
+        <button type="button" class="chip" aria-pressed="false" data-c="p-power">Power ON</button>
+        <button type="button" class="chip" aria-pressed="false" data-c="p-kod">Код Бизнеса</button>
+        <button type="button" class="chip" aria-pressed="false" data-c="p-pp">План Продюсера</button>
+        <button type="button" class="chip" aria-pressed="false" data-c="p-proryv">Прорыв за 30 дней</button>
+        <button type="button" class="chip" aria-pressed="false" data-c="p-fabrika">Фабрика Бизнеса</button>
+        <button type="button" class="chip" aria-pressed="false" data-c="p-mentor">Наставничество Игоря Графа</button>
+      </div>
+    </section>
+
+    <section class="step">
+      <h2>Ваша история</h2>
+      <p class="sub">Три коротких ответа. Пишите, как рассказали бы другу.</p>
+      <div class="voice"><button type="button" class="rec" aria-label="Записать голосом">●</button><div><b>Удобнее голосом?</b><span>Наговорите до пяти минут, мы расшифруем и разложим по вопросам.</span></div></div>
+      <label class="field"><span>С чего вы начинали?</span><small>Чем занимались до программы, что не получалось, что беспокоило.</small><textarea class="ta" id="a1" maxlength="1500"></textarea><i class="count" data-for="a1"></i></label>
+      <label class="field"><span>Что вы сделали?</span><small>Какие решения приняли, что из программы применили.</small><textarea class="ta" id="a2" maxlength="1500"></textarea><i class="count" data-for="a2"></i></label>
+      <label class="field"><span>Что изменилось?</span><small>Конкретно: события, цифры, как вы себя чувствуете. Планы лучше написать отдельно от того, что уже случилось.</small><textarea class="ta" id="a3" maxlength="1500"></textarea><i class="count" data-for="a3"></i></label>
+      <label class="field"><span>Главный результат одной строкой <i>по желанию</i></span><input class="in" id="res" maxlength="90" placeholder="Например: запустила первый поток"></label>
+    </section>
+
+    <section class="step">
+      <h2>Фото и видео</h2>
+      <p class="sub">По желанию, но с фотографией историю читают охотнее. Оформим сами: уберём фон и поставим портрет на цвет вашей программы, как у всех историй на сайте.</p>
+
+      <div class="field"><span>Ваш портрет</span>
+        <div class="por">
+          <div class="por-frame" id="porFrame">
+            <div class="por-empty" id="porEmpty"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.8 4-5.6 7.5-5.6s6.3 1.8 7.5 5.6"/></svg><b>Загрузите фото</b><span>JPG, PNG или HEIC</span></div>
+            <img id="porImg" alt="" hidden>
+            <div class="por-busy" id="porBusy" hidden><i></i>Убираем фон…</div>
+          </div>
+          <div class="por-side">
+            <ul class="tips">
+              <li class="ok">Лицо и плечи, смотрите в камеру</li>
+              <li class="ok">Дневной свет, лицо хорошо видно</li>
+              <li class="ok">Вы одни в кадре</li>
+              <li class="no">Солнцезащитные очки, маска, сильный фильтр</li>
+              <li class="no">Скриншот из видео с надписями</li>
+            </ul>
+            <div class="por-acts">
+              <label class="btn btn-sm"><input type="file" accept="image/*" id="porFile" hidden>Выбрать фото</label>
+              <button type="button" class="btn btn-ghost btn-sm" id="porDemo">Показать на примере</button>
+            </div>
+            <div class="por-tools" id="porTools" hidden>
+              <div class="seg2" role="group" aria-label="Фон"><button type="button" class="on" data-bg="cut">Цвет программы</button><button type="button" data-bg="orig">Свой фон</button></div>
+              <label class="zoom"><span>Масштаб</span><input type="range" min="100" max="160" value="100" id="porZoom"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field"><span>Ещё 2–3 фото из жизни <i>по желанию</i></span><small>Покажем внутри вашей истории. Подойдут фото за работой, с командой или клиентами, на событиях Альянса.</small>
+        <div class="slots s3">
+          <label class="slot"><input type="file" accept="image/*" hidden><b>+</b><span>За работой</span></label>
+          <label class="slot"><input type="file" accept="image/*" hidden><b>+</b><span>С командой или клиентами</span></label>
+          <label class="slot"><input type="file" accept="image/*" hidden><b>+</b><span>На событии</span></label>
+        </div>
+      </div>
+
+      <div class="field"><span>Скриншоты сторис и постов <i>до 5</i></span><small>Моменты, где виден результат: первая продажа, запуск, отзыв клиента, новый офис. Чужие имена, лица и контакты редакция закроет перед публикацией.</small>
+        <div class="slots s5">
+          <label class="slot tall"><input type="file" accept="image/*" hidden><b>+</b></label>
+          <label class="slot tall"><input type="file" accept="image/*" hidden><b>+</b></label>
+          <label class="slot tall"><input type="file" accept="image/*" hidden><b>+</b></label>
+          <label class="slot tall"><input type="file" accept="image/*" hidden><b>+</b></label>
+          <label class="slot tall"><input type="file" accept="image/*" hidden><b>+</b></label>
+        </div>
+      </div>
+
+      <label class="field"><span>Ссылка на видео <i>по желанию</i></span><input class="in" placeholder="YouTube, Instagram, Telegram или Google Диск"></label>
+      <div class="offer"><label class="check"><input type="checkbox" id="interview"><span><b>Готов(а) рассказать на видео.</b> Редакция предложит записать короткое интервью по Zoom, и из него может получиться полный кейс.</span></label></div>
+    </section>
+
+    <section class="step">
+      <h2>О вас</h2>
+      <p class="sub">Так вас увидят читатели.</p>
+      <div class="grid2">
+        <label class="field"><span>Имя и фамилия</span><input class="in" id="nm" autocomplete="name"></label>
+        <label class="field"><span>Чем занимаетесь</span><input class="in" id="role" placeholder="Например: психолог, бизнес-тренер"></label>
+        <label class="field"><span>Город <i>по желанию</i></span><input class="in" id="city" autocomplete="address-level2"></label>
+        <label class="field"><span>Страна <i>по желанию</i></span><input class="in" autocomplete="country-name"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="first"><span>Показывать только имя, без фамилии</span></label>
+      <label class="field" style="margin-top:22px"><span>Почта</span><small>Пришлём текст на согласование и ссылку, когда история выйдет. На сайте почта не показывается.</small><input class="in" type="email" autocomplete="email"></label>
+      <label class="check"><input type="checkbox"><span>Разрешаю опубликовать историю на stories.wearefree.club и отредактировать текст с сохранением смысла. Перед публикацией редакция пришлёт его мне.</span></label>
+    </section>
+  </form>
+
+  <section class="done" id="done">
+    <div class="eyebrow">Готово</div>
+    <h2>Спасибо, история у нас</h2>
+    <p style="font-size:18px;color:var(--ink-2)">Мы отправили письмо со ссылкой на ваш кабинет. Там видно, на каком этапе история, и там же вы согласуете текст.</p>
+    <ol class="timeline">
+      <li class="now"><b>Получили</b><span>Только что</span></li>
+      <li><b>Редакция читает</b><span>Поправим текст и подберём заголовок</span></li>
+      <li><b>Согласование с вами</b><span>Пришлём готовый вариант на почту и в кабинет</span></li>
+      <li><b>Публикация</b><span>Сообщим и пришлём ссылку, чтобы поделиться</span></li>
+    </ol>
+    <a class="btn" href="cabinet.html">Открыть мои истории <span class="arrow">↗</span></a>
+  </section>
+
+  <div class="nav-row" id="navrow">
+    <button type="button" class="btn btn-ghost" id="back">Назад</button>
+    <span class="save" id="save">Черновик сохранён</span>
+    <button type="button" class="btn" id="next">Дальше <span class="arrow">→</span></button>
+  </div>
+</div>
+
+<aside class="preview">
+  <div class="eyebrow">Так история будет выглядеть</div>
+  <div id="pv"></div>
+  <p class="hint">Редакция может выделить главную фразу и предложить заголовок. Перед публикацией вы всё увидите.</p>
+</aside>
+</main>
+
+<script>
+const $=s=>document.querySelector(s),steps=[...document.querySelectorAll('.step')],tabs=[...document.querySelectorAll('.stepper button')];
+let cur=0;
+function go(i){cur=i;steps.forEach((s,k)=>s.classList.toggle('on',k===i));tabs.forEach((t,k)=>{t.classList.toggle('on',k===i);t.classList.toggle('done',k<i)});$('#back').style.visibility=i?'visible':'hidden';$('#intro').style.display=i?'none':'';$('#next').innerHTML=i===3?'Отправить на проверку <span class="arrow">↗</span>':'Дальше <span class="arrow">→</span>';window.scrollTo({top:0,behavior:'smooth'})}
+$('#next').onclick=()=>{if(cur<3)go(cur+1);else{$('#f').style.display='none';$('#navrow').style.display='none';document.querySelector('.stepper').style.display='none';$('#intro').style.display='none';$('#done').classList.add('on')}};
+$('#back').onclick=()=>go(Math.max(0,cur-1));
+tabs.forEach(t=>t.onclick=()=>go(+t.dataset.go));
+let photo=null,bg='cut';
+const pf=$('#porFrame'),pi=$('#porImg');
+function prog(){const c=document.querySelector('#progs .chip[aria-pressed=true]');return c?c.dataset.c:'p-none'}
+function showPhoto(){if(!photo)return;pf.className='por-frame has '+prog()+(bg==='orig'?' orig':'');pi.src=bg==='cut'&&photo.cut?photo.cut:photo.orig;pi.hidden=false;$('#porEmpty').hidden=true;$('#porTools').hidden=false;pi.style.transform=`scale(${$('#porZoom').value/100})`;render()}
+function loadPhoto(p){photo=p;pi.style.opacity=.35;showPhoto();$('#porBusy').hidden=false;setTimeout(()=>{$('#porBusy').hidden=true;pi.style.opacity=1},1100)}
+$('#porDemo').onclick=()=>loadPhoto({orig:'assets/photos/p/zemene.webp',cut:'assets/photos/cut/zemene.webp'});
+$('#porFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>loadPhoto({orig:r.result,cut:null});r.readAsDataURL(f)};
+document.querySelectorAll('.seg2 button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.seg2 button').forEach(x=>x.classList.toggle('on',x===b));bg=b.dataset.bg;showPhoto()});
+$('#porZoom').oninput=showPhoto;
+document.querySelectorAll('.slot input').forEach(i=>i.onchange=()=>{const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const sl=i.parentElement;sl.querySelectorAll('img').forEach(x=>x.remove());const im=new Image();im.src=r.result;sl.appendChild(im);sl.classList.add('filled')};r.readAsDataURL(f)});
+document.querySelectorAll('#progs .chip').forEach(c=>c.onclick=()=>{c.setAttribute('aria-pressed',c.getAttribute('aria-pressed')!=='true');photo?showPhoto():render()});
+document.querySelectorAll('input,textarea').forEach(e=>e.addEventListener('input',render));
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function render(){
+  const pr=[...document.querySelectorAll('#progs .chip[aria-pressed=true]')];
+  const tag=pr.length?`<span class="tag ${pr[0].dataset.c}">${pr.map(p=>p.textContent).join(' · ')}</span>`:'<span class="tag plain">Отзыв участника</span>';
+  let txt=[ $('#a1').value,$('#a2').value,$('#a3').value ].map(s=>s.trim()).filter(Boolean).join(' ');
+  if(txt.length>260)txt=txt.slice(0,260).replace(/\s\S*$/,'')+'…';
+  let nm=$('#nm').value.trim();if($('#first').checked)nm=nm.split(/\s+/)[0];
+  const ini=(nm||'Вы').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const sub=[$('#role').value.trim(),$('#city').value.trim()].filter(Boolean).join(' · ')||'Чем вы занимаетесь';
+  const res=$('#res').value.trim();
+  const who=`<div class="who"><span class="mono ${pr[0]?pr[0].dataset.c:''}">${esc(ini)}</span><div><b>${esc(nm)||'<span class=ph>Ваше имя</span>'}</b><span>${esc(sub)}</span></div></div>`;
+  const zoom=$('#porZoom')?$('#porZoom').value/100:1;
+  const thumb=photo?`<div class="thumb ${bg==='orig'?'orig':''}" style="aspect-ratio:1/1${bg==='orig'?';background:var(--night)':''}"><img src="${bg==='cut'&&photo.cut?photo.cut:photo.orig}" alt="" style="transform:scale(${zoom});transform-origin:50% 25%"></div>`:'';
+  if(photo){const who2=who.replace(/<span class="mono[^"]*">[^<]*<\/span>/,`<img class="ava" src="${photo.orig}" alt="">`);
+    $('#pv').innerHTML=`<div class="card c-video ${pr[0]?pr[0].dataset.c:'p-none'}">${thumb}<div class="body">${tag}<h3>${res?esc(res):(txt?'«'+esc(txt.slice(0,110).replace(/\s\S*$/,''))+'…»':'<span class=ph>Здесь появится ваша история</span>')}</h3>${who2}</div></div>`}
+  else $('#pv').innerHTML=res
+    ?`<div class="card c-fact">${tag}<div class="fact" style="font-size:40px;line-height:.95">${esc(res)}</div><p class="q" style="margin-top:16px">${txt?'«'+esc(txt)+'»':'<span class=ph>Здесь появится начало вашей истории</span>'}</p>${who}</div>`
+    :`<div class="card c-quote"><div class="top">${tag}</div><p class="q">${txt?esc(txt):'<span class=ph>Здесь появится начало вашей истории. Пока вы пишете, карточка обновляется.</span>'}</p>${who}</div>`;
+  document.querySelectorAll('.count').forEach(c=>{const t=document.getElementById(c.dataset.for);c.textContent=t.value.length?t.value.length+' / 1500':''});
+}
+const st=new URLSearchParams(location.search).get('step');go(st?+st:0);render();
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+/* Freeman Stories — дизайн-система макетов (26.10.2026)
+   Палитра Freeman's Alliance, шрифты платформы Альянса — семейство Medeo (OFL, public/fonts/medeo в репо).
+   Голоса шрифта:
+   - Medeo Sans — заголовки, интерфейс, текст статей
+   - Medeo Sans Italic — голос участника: всё, что человек сказал сам (цитаты, отзывы)
+   - Medeo Mono — служебные подписи: метки программ, рубрики
+   - Medeo Pixel — крупные цифры-результаты */
+@font-face{font-family:"Medeo Sans";src:url("fonts/MedeoSansVariable.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Medeo Sans";src:url("fonts/MedeoSansVariable-Italic.woff2") format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
+/* курсив отдельным именем, чтобы голос участника оставался курсивом в любом font-шортхенде */
+@font-face{font-family:"Medeo Voice";src:url("fonts/MedeoSansVariable-Italic.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Medeo Mono";src:url("fonts/MedeoMonoVariable.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Medeo Pixel";src:url("fonts/MedeoPixelVariable.woff") format("woff");font-weight:400;font-style:normal;font-display:swap}
+
+:root{
+  --paper:#f6f2ea; --paper-2:#eee7d8; --card:#fbf9f4;
+  --ink:#0a0f5c; --ink-2:#3a3f74; --ink-3:#61658e;
+  --line:rgba(10,15,92,.12); --line-2:rgba(10,15,92,.22);
+  --y:#ffc306; --y-2:#ffd447; --mark:rgba(255,195,6,.55);
+  --night:#070b2a; --night-2:#111850; --on-night:#eeeaf6; --on-night-2:rgba(238,234,246,.66);
+  --ok:#1f7a4d; --warn:#a8650b;
+  /* цвета программ: обложки, точки в метках, монограммы */
+  --p-alliance:#1b2a9c; --p-power:#c2410c; --p-kod:#0f6b5c; --p-pp:#5b2a86;
+  --p-proryv:#a8721c; --p-fabrika:#3a3f74; --p-mentor:#7a1f3d;
+  --display:'Medeo Sans',system-ui,sans-serif;
+  --body:'Medeo Sans',system-ui,sans-serif;
+  --voice:'Medeo Voice','Medeo Sans',system-ui,sans-serif;
+  --mono:'Medeo Mono',ui-monospace,Menlo,monospace;
+  --pixel:'Medeo Pixel','Medeo Mono',monospace;
+  --r-s:10px; --r-m:18px; --r-l:28px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --wrap:min(1240px,calc(100% - 48px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+figure,blockquote{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{width:var(--wrap);margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:3px solid var(--y);outline-offset:3px;border-radius:6px}
+
+/* ---------- мелкая типографика ---------- */
+.eyebrow{font:500 11.5px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.display{font-family:var(--display);font-weight:800;line-height:1.02}
+h1,h2,h3,.display,.logo{letter-spacing:-.025em}
+.mark{background:linear-gradient(transparent 58%,var(--mark) 58%,var(--mark) 92%,transparent 92%);padding:0 .08em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.muted{color:var(--ink-3)}
+
+/* ---------- кнопки, чипы, метки ---------- */
+.btn{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;border-radius:999px;border:0;background:var(--ink);color:var(--paper);font:700 15px/1 var(--body);transition:transform .2s var(--ease),background .2s}
+.btn:hover{transform:translateY(-1px);background:var(--night-2)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn-y{background:var(--y);color:var(--ink)}
+.btn-y:hover{background:var(--y-2)}
+.btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line-2)}
+.btn-ghost:hover{background:rgba(10,15,92,.05)}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.arrow{font-family:var(--body);transition:transform .2s var(--ease)}
+a:hover .arrow,button:hover .arrow{transform:translate(2px,-2px)}
+
+.chip{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line-2);background:transparent;font:600 14px/1 var(--body);color:var(--ink);white-space:nowrap;transition:background .2s,border-color .2s}
+.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.chip .n{font-weight:500;opacity:.6}
+
+.tag{display:inline-flex;align-items:center;gap:7px;font:500 11.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pc,var(--ink))}
+.tag.plain::before{display:none}
+.p-alliance{--pc:var(--p-alliance)} .p-power{--pc:var(--p-power)} .p-kod{--pc:var(--p-kod)} .p-pp{--pc:var(--p-pp)}
+.p-proryv{--pc:var(--p-proryv)} .p-fabrika{--pc:var(--p-fabrika)} .p-mentor{--pc:var(--p-mentor)}
+
+.badge{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;background:var(--paper-2);font:600 12px/1 var(--body);color:var(--ink-2)}
+
+/* монограмма вместо фото */
+.mono{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--pc,var(--ink));color:var(--paper);font:700 15px/1 var(--display);letter-spacing:0}
+.ava{flex:none;width:44px;height:44px;border-radius:50%;object-fit:cover}
+.who{display:flex;align-items:center;gap:12px}
+.who div b{display:block;font:700 15px/1.25 var(--body)}
+.who div span{display:block;font:400 13.5px/1.35 var(--body);color:var(--ink-3)}
+
+/* ---------- шапка ---------- */
+.hdr{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.logo{display:flex;align-items:baseline;gap:9px;font:850 20px/1 var(--display);letter-spacing:-.01em;text-transform:uppercase}
+.logo i{font:700 11px/1 var(--body);font-style:normal;letter-spacing:.32em;color:var(--ink-3)}
+.nav{display:flex;gap:26px;margin-left:12px}
+.nav a{font:600 15px/1 var(--body);color:var(--ink-2);padding:8px 0;border-bottom:2px solid transparent}
+.nav a:hover,.nav a.on{color:var(--ink);border-color:var(--y)}
+.hdr .sp{flex:1}
+.hdr .login{font:600 15px/1 var(--body);color:var(--ink-2)}
+.hdr .login:hover{color:var(--ink)}
+.burger{display:none}
+
+/* ---------- подвал ---------- */
+.ftr{background:var(--night);color:var(--on-night);padding:72px 0 40px;margin-top:0}
+.ftr .top{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;padding-bottom:40px;border-bottom:1px solid rgba(238,234,246,.14)}
+.ftr .logo i{color:var(--on-night-2)}
+.ftr .say{font:700 clamp(24px,2.6vw,36px)/1.1 var(--display);max-width:16ch}
+.ftr .cols{display:flex;gap:48px;flex-wrap:wrap;padding-top:32px;font-size:14.5px;color:var(--on-night-2)}
+.ftr .cols a:hover{color:var(--on-night)}
+.ftr .fine{margin-top:28px;font-size:12.5px;color:var(--on-night-2)}
+
+/* ---------- карточки ленты ---------- */
+.feed{columns:3 340px;column-gap:24px}
+.feed>*{break-inside:avoid;margin-bottom:24px}
+.card{position:relative;display:block;border-radius:var(--r-m);background:var(--card);box-shadow:0 0 0 1px var(--line);transition:transform .25s var(--ease),box-shadow .25s}
+.card:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--line-2),0 18px 40px -22px rgba(10,15,92,.35)}
+
+/* 1. история с фото. Фото участника без фона на цвете его программы — так снимки
+   разного качества и с разным фоном выглядят одной серией (как карточки директоров Альянса).
+   Значок «Смотреть» — только если у истории есть видео. */
+.p-none{--pc:#2b3170}
+.portrait,.c-video .thumb{position:relative;overflow:hidden;background:radial-gradient(120% 80% at 50% 30%,color-mix(in oklab,var(--pc,var(--ink)) 72%,var(--paper)) 0,var(--pc,var(--ink)) 70%)}
+.portrait img,.c-video .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0}
+.c-video .thumb{aspect-ratio:4/5;border-radius:var(--r-m) var(--r-m) 0 0}
+.play{position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:10px;height:40px;padding:0 16px 0 6px;border-radius:999px;background:rgba(7,11,42,.78);color:var(--on-night);font:700 13px/1 var(--body)}
+.play::before{content:"";width:28px;height:28px;border-radius:50%;background:var(--y) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M11 9l8 5-8 5z' fill='%230a0f5c'/%3E%3C/svg%3E") center/100% no-repeat}
+.c-video .body{padding:20px 22px 22px}
+.c-video h3{margin:12px 0 18px;font:650 20px/1.22 var(--display)}
+/* 2. отзыв-цитата (главный формат для 172 отзывов) */
+.c-quote{padding:26px 24px 22px}
+.c-quote .q{margin:14px 0 20px;font:400 19px/1.5 var(--voice);color:var(--ink)}
+.c-quote .q b{font-weight:600}
+.c-quote .more{display:block;margin-top:-8px;margin-bottom:18px;font:600 14px/1 var(--body);color:var(--ink-3)}
+.c-quote .top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+
+/* 3. одна фраза — тёмная, для коротких и сильных отзывов */
+.c-line{padding:30px 26px 24px;background:var(--night);color:var(--on-night);box-shadow:none}
+.c-line .tag{color:var(--on-night-2)}
+.c-line .q{margin:16px 0 24px;font:500 italic 27px/1.28 var(--voice)}
+.c-line .who div span{color:var(--on-night-2)}
+.c-line .mono{background:var(--y);color:var(--ink)}
+
+/* 4. результат-факт — когда в отзыве есть цифра или поступок */
+.c-fact{padding:24px}
+.c-fact .fact{margin:18px 0 10px;font:400 50px/1 var(--pixel);color:var(--ink);letter-spacing:-.01em}
+.c-fact .fact-l{margin:0 0 16px;font:600 15px/1.4 var(--body);color:var(--ink-2)}
+.c-fact .q{margin:0 0 20px;padding-top:16px;border-top:1px solid var(--line);font:400 16.5px/1.5 var(--voice);color:var(--ink-2)}
+
+/* 5. кейс — широкая карточка в начале ленты и в подборках */
+.c-case{display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden;column-span:all}
+.c-case .thumb{position:relative;min-height:100%;background:var(--night)}
+.c-case .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.36)}
+.c-case .body{padding:34px 34px 30px}
+.c-case h3{margin:14px 0 14px;font:750 30px/1.08 var(--display)}
+.c-case p{margin:0 0 22px;color:var(--ink-2);font-size:16px}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-radius:var(--r-s);overflow:hidden;margin-bottom:24px}
+.ba div{background:var(--card);padding:14px 16px;font-size:14.5px;line-height:1.45}
+.ba .eyebrow{display:block;margin-bottom:6px;font-size:10.5px}
+
+/* ---------- секции ---------- */
+.sec{padding:96px 0}
+.sec-h{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:36px}
+.sec-h h2{margin:10px 0 0;font:760 clamp(30px,3.3vw,46px)/1.06 var(--display)}
+.link{font:700 15px/1 var(--body);border-bottom:1.5px solid var(--line-2);padding-bottom:4px;white-space:nowrap}
+.link:hover{border-color:var(--ink)}
+
+/* ---------- полка видео ---------- */
+.shelf{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(270px,1fr);gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
+.shelf>*{scroll-snap-align:start}
+
+/* ---------- адаптив ---------- */
+@media (max-width:900px){
+  .nav,.hdr .login{display:none}
+  .burger{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line-2);background:none}
+  .c-case{grid-template-columns:1fr}
+  .c-case .thumb{aspect-ratio:16/10}
+  .sec{padding:64px 0}
+  .sec-h{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:560px){
+  :root{--wrap:calc(100% - 32px)}
+  body{font-size:16px}
+  .hdr .wrap{height:62px;gap:12px}
+  .hdr .btn{height:40px;padding:0 14px;font-size:13.5px}
+  .logo{font-size:22px}
+  .logo i{display:none}
+  .c-case .body{padding:24px 22px}
+  .c-case h3{font-size:32px}
+  .ba{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}

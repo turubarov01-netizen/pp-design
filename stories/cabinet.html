@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Мои истории — Freeman Stories</title>
+<link rel="stylesheet" href="assets/stories.css">
+<style>
+.demo{background:var(--paper-2);font-size:13.5px;color:var(--ink-2);text-align:center;padding:9px 16px}
+.cab{padding:48px 0 96px}
+.cab-h{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:36px}
+.cab-h h1{margin:10px 0 0;font:800 clamp(36px,3.6vw,52px)/1.05 var(--display)}
+.list{display:grid;gap:16px}
+.item{display:grid;grid-template-columns:1fr auto;gap:18px 28px;padding:26px 28px;border-radius:var(--r-m);background:var(--card);box-shadow:0 0 0 1px var(--line)}
+.item h2{margin:10px 0 6px;font:700 24px/1.15 var(--display)}
+.item .meta{font-size:14px;color:var(--ink-3)}
+.item .acts{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;justify-content:flex-end}
+.st{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px;border-radius:999px;font:700 12.5px/1 var(--body)}
+.st::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.st-wait{background:#fff1c7;color:var(--warn)}
+.st-pub{background:#dff1e7;color:var(--ok)}
+.st-draft{background:var(--paper-2);color:var(--ink-3)}
+.st-review{background:#e4e6f6;color:var(--ink-2)}
+/* согласование */
+.approve{grid-column:1/-1;display:grid;grid-template-columns:1fr 380px;gap:28px;margin-top:6px;padding-top:24px;border-top:1px solid var(--line)}
+.approve h3{margin:0 0 12px;font:700 16px/1.3 var(--body)}
+.changes{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:10px;font-size:15px;color:var(--ink-2)}
+.changes li{display:grid;grid-template-columns:22px 1fr;gap:8px}
+.changes li::before{content:"✎";color:var(--ink)}
+.changes b{color:var(--ink)}
+.diff{padding:18px;border-radius:14px;background:var(--paper);font:400 16px/1.6 var(--voice);color:var(--ink-2)}
+.diff del{color:#a1394a;text-decoration-thickness:1.5px}
+.diff ins{text-decoration:none;background:#dff1e7;color:var(--ink)}
+.approve .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.upgrade{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-top:28px;padding:30px 32px;border-radius:var(--r-l);background:var(--night);color:var(--on-night)}
+.upgrade h2{margin:8px 0 8px;font:750 30px/1.1 var(--display)}
+.upgrade p{margin:0;color:var(--on-night-2)}
+.upgrade .eyebrow{color:var(--y)}
+@media (max-width:900px){.item,.approve,.upgrade{grid-template-columns:1fr}.item .acts{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<div class="demo">Макет кабинета. Чтобы показать путь одной истории, в примере использован реальный отзыв из архива.</div>
+<header class="hdr"><div class="wrap">
+  <a class="logo" href="index.html">Freeman<i>Stories</i></a>
+  <nav class="nav" aria-label="Разделы"><a href="index.html">Все истории</a><a href="index.html#feed">Кейсы</a><a href="index.html#feed">Отзывы</a></nav>
+  <span class="sp"></span>
+  <a class="login" href="#">Андрей П. ▾</a>
+  <a class="btn btn-y btn-sm" href="share.html">Новая история <span class="arrow">↗</span></a>
+</div></header>
+
+<main class="wrap cab">
+  <div class="cab-h"><div><div class="eyebrow">Кабинет</div><h1>Мои истории</h1></div></div>
+
+  <div class="list">
+    <article class="item">
+      <div>
+        <span class="st st-wait">Ждёт вашего согласия</span>
+        <h2>Power ON окупился за четыре дня: первый заказ на 100 пар серёжек</h2>
+        <div class="meta">Отзыв · Power ON · редакция подготовила текст</div>
+      </div>
+      <div class="acts"><a class="btn btn-ghost btn-sm" href="review.html">Посмотреть на сайте</a></div>
+
+      <div class="approve">
+        <div>
+          <h3>Что поправила редакция</h3>
+          <ul class="changes">
+            <li><span><b>Заголовок:</b> «Power ON окупился за четыре дня: первый заказ на 100 пар серёжек»</span></li>
+            <li><span><b>Главная фраза</b> для карточки: «Power ON окупился у меня уже в первые четыре дня после окончания тренинга»</span></li>
+            <li><span><b>Пометка:</b> будущие отгрузки и расширение отмечены как планы</span></li>
+          </ul>
+          <div class="diff">…В одной из точек уже пошли продажи. В планах — покрыть Соборку полностью и сети. Power ON окупился у меня уже в первые четыре дня после окончания тренинга. Спасибо, Игорь Граф!<br><ins>Под текстом: будущие отгрузки и расширение — планы автора на момент отзыва.</ins></div>
+        </div>
+        <div>
+          <div class="card c-fact" style="pointer-events:none"><span class="tag p-power">Power ON</span><div class="fact">4 дня</div><p class="fact-l">за столько окупился тренинг: первый предоплатный заказ на 100 пар серёжек</p><div class="who"><span class="mono p-power">АП</span><div><b>Андрей Полюга</b><span>Бижутерия и сувениры</span></div></div></div>
+          <div class="btns"><button class="btn">Согласовать</button><button class="btn btn-ghost">Предложить правку</button></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="item">
+      <div><span class="st st-review">У редакции</span><h2>Пример: история на проверке</h2><div class="meta">Отправлено через форму · редакция читает</div></div>
+      <div class="acts"><button class="btn btn-ghost btn-sm">Дополнить</button></div>
+    </article>
+
+    <article class="item">
+      <div><span class="st st-draft">Черновик</span><h2>Пример: черновик</h2><div class="meta">Заполнены 2 шага из 4</div></div>
+      <div class="acts"><a class="btn btn-sm" href="share.html">Продолжить</a></div>
+    </article>
+  </div>
+
+  <section class="upgrade">
+    <div><div class="eyebrow">Ваша история может стать кейсом</div><h2>Расскажите её на видео</h2><p>Редакция запишет короткое интервью по Zoom и подготовит полный кейс с видео. Текст вы увидите до публикации.</p></div>
+    <a class="btn btn-y" href="#">Выбрать время <span class="arrow">↗</span></a>
+  </section>
+</main>
+</body>
+</html>

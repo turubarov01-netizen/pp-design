@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Сергей Сорока: от управленческого тупика к поэтапному развитию компании — Freeman Stories</title>
+<link rel="stylesheet" href="assets/stories.css">
+<style>
+.progress{position:fixed;left:0;top:0;z-index:60;height:3px;width:100%;background:var(--y);transform-origin:0 50%;transform:scaleX(0)}
+.crumbs{display:flex;gap:10px;padding-top:28px;font:600 14px/1 var(--body);color:var(--ink-3)}
+.crumbs a:hover{color:var(--ink)}
+.c-hero{padding:40px 0 56px}
+.c-hero .grid{display:grid;grid-template-columns:1fr 340px;gap:64px;align-items:end}
+.c-hero h1{margin:18px 0 22px;font:780 clamp(38px,4vw,60px)/1.06 var(--display);letter-spacing:-.03em;max-width:20ch}
+.c-hero .stand{max-width:52ch;margin:0;font-size:20px;line-height:1.5;color:var(--ink-2)}
+.person{padding:22px;border-radius:var(--r-m);background:var(--card);box-shadow:0 0 0 1px var(--line)}
+.person{padding:0;overflow:hidden}
+.person .portrait{aspect-ratio:5/4;margin:0}
+.person .p-in{padding:20px 22px 22px}
+.person b{display:block;font:750 22px/1.1 var(--display)}
+.person .role{margin:6px 0 16px;font-size:14.5px;color:var(--ink-2)}
+.person dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:0;padding-top:14px;border-top:1px solid var(--line);font-size:14px}
+.person dt{color:var(--ink-3)} .person dd{margin:0;font-weight:600}
+.cinema{background:var(--night);padding:56px 0 48px}
+.cinema .frame{position:relative;max-width:1080px;margin-inline:auto;aspect-ratio:16/9;border-radius:var(--r-l);overflow:hidden;background:#05081f}
+.cinema .frame img{width:100%;height:100%;object-fit:cover}
+.cinema .play{left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);height:64px;padding:0 26px 0 8px;font-size:16px}
+.cinema .play::before{width:48px;height:48px}
+.cinema .cap{max-width:1080px;margin:16px auto 0;display:flex;justify-content:space-between;gap:16px;font-size:13.5px;color:var(--on-night-2)}
+.cinema .cap a{color:var(--on-night);border-bottom:1px solid rgba(238,234,246,.4)}
+/* коротко о кейсе */
+.brief{padding:64px 0 24px}
+.brief .eyebrow{margin-bottom:18px}
+.abc{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.abc>div{padding:24px 24px 26px;border-radius:var(--r-m);background:var(--card);box-shadow:0 0 0 1px var(--line)}
+.abc>div:last-child{background:var(--ink);color:var(--paper);box-shadow:none}
+.abc>div:last-child .eyebrow{color:var(--y)}
+.abc h3{margin:12px 0 10px;font:720 22px/1.15 var(--display)}
+.abc p{margin:0;font-size:15.5px;line-height:1.5;opacity:.9}
+/* тело статьи */
+.read{display:grid;grid-template-columns:240px minmax(0,680px) 1fr;gap:56px;padding:48px 0 32px}
+.toc{position:sticky;top:104px;align-self:start}
+.toc .eyebrow{margin-bottom:14px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc a{display:grid;grid-template-columns:28px 1fr;gap:6px;padding:7px 0;font:500 14px/1.35 var(--body);color:var(--ink-3);transition:color .2s}
+.toc a span{font:500 12px/1.4 var(--mono);color:var(--ink-3)}
+.toc a:hover{color:var(--ink)}
+.toc a.on{color:var(--ink);font-weight:700}
+.toc a.on span{color:var(--ink)}
+.toc .share{display:flex;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.toc .share button{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line-2);background:none;font:700 12px/1 var(--body)}
+.article{font-size:19px;line-height:1.68}
+.article .ch{scroll-margin-top:96px}
+.article h2{display:flex;gap:16px;align-items:baseline;margin:56px 0 18px;font:720 28px/1.15 var(--display)}
+.article h2 span{font:500 14px/1 var(--mono);color:var(--ink-3);min-width:26px}
+.article .ch:first-child h2{margin-top:0}
+.article p{margin:0 0 20px}
+.article .ch:first-child p:first-of-type::first-letter{float:left;margin:8px 10px 0 0;font:780 76px/.8 var(--display);color:var(--ink)}
+.pull{margin:44px 0;padding:34px 0 30px;border-top:2px solid var(--ink);border-bottom:1px solid var(--line-2)}
+.pull .eyebrow{margin-bottom:14px}
+.pull p{margin:0;font:500 italic 31px/1.32 var(--voice)}
+.tools{margin:40px 0 36px;padding:28px;border-radius:var(--r-m);background:var(--paper-2)}
+.tools .eyebrow{margin-bottom:16px}
+.tools ol{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.tools li{display:grid;grid-template-columns:48px 1fr;gap:4px 14px;font-size:16px;line-height:1.45}
+.tools li::before{content:attr(data-n);grid-row:span 2;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--y);font:400 22px/1 var(--pixel)}
+.tools b{font-size:17px}
+.tools span{color:var(--ink-2)}
+.note{margin:48px 0 0;padding:22px 24px;border-radius:var(--r-m);box-shadow:inset 0 0 0 1.5px var(--line-2);font-size:14.5px;line-height:1.55;color:var(--ink-2)}
+.note b{display:block;margin-bottom:6px;color:var(--ink);font-size:15px}
+/* вставки в статью */
+.ins{position:relative;margin:40px 0 44px}
+.ins figcaption{margin-top:12px;font-size:14px;line-height:1.5;color:var(--ink-3)}
+.ins figcaption b{color:var(--ink-2)}
+.film-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-radius:var(--r-m);overflow:hidden}
+.film-row a{display:block;aspect-ratio:16/10;overflow:hidden}
+.film-row img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.film-row a:hover img{transform:scale(1.04)}
+.film figcaption{display:flex;justify-content:space-between;font:500 12px/1.4 var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.film figcaption a{color:var(--ink)}
+.pull-photo{display:grid;grid-template-columns:210px 1fr;gap:30px;align-items:center;padding:0;border-radius:var(--r-l);background:var(--card);box-shadow:0 0 0 1px var(--line);overflow:hidden}
+.pull-photo .portrait{height:100%;min-height:270px}
+.pull-photo .pp-text{padding:30px 34px 30px 0}
+.pull-photo .eyebrow{margin-bottom:12px}
+.pull-photo p{margin:0;font:400 27px/1.32 var(--voice)}
+.sample{padding:22px;border-radius:var(--r-l);box-shadow:inset 0 0 0 1.5px var(--line-2);background:repeating-linear-gradient(-45deg,transparent 0 12px,rgba(10,15,92,.018) 12px 24px)}
+.sample-tag{position:absolute;top:-11px;right:18px;padding:4px 10px;border-radius:999px;background:var(--y);font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.g-grid{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:170px 170px;gap:8px}
+.g-grid>*{border-radius:14px;overflow:hidden;width:100%;height:100%}
+.g-grid>img{object-fit:cover}
+.g-grid .g-big{grid-row:span 2}
+.gallery figcaption{font:500 12px/1.4 var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.g-grid{grid-template-rows:200px 200px}
+.stories .eyebrow{margin-bottom:14px}
+.phones{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.phone{position:relative;aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:var(--night);box-shadow:0 0 0 5px var(--night),0 14px 30px -12px rgba(10,15,92,.45);margin:5px}
+.phone>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phone::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,11,42,.55) 0,transparent 26%,transparent 62%,rgba(7,11,42,.5) 100%)}
+.st-top{position:absolute;z-index:1;left:10px;right:10px;top:10px}
+.bars{display:flex;gap:3px;margin-bottom:9px}
+.bars i{flex:1;height:2.5px;border-radius:2px;background:rgba(246,242,234,.4)}
+.bars i.on{background:var(--paper)}
+.st-who{display:flex;align-items:center;gap:7px;font:650 12px/1 var(--body);color:var(--paper)}
+.st-ava{position:relative;width:24px;height:24px;border-radius:50%;overflow:hidden;background:var(--pc)}
+.st-ava img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0}
+.sticker{position:absolute;z-index:1;left:50%;bottom:16%;transform:translateX(-50%) rotate(-3deg);width:max-content;max-width:84%;padding:8px 12px;border-radius:10px;background:var(--y);font:750 14px/1.2 var(--display);color:var(--ink);text-align:center}
+@media (max-width:560px){.pull-photo{grid-template-columns:1fr}.pull-photo .portrait{min-height:0;aspect-ratio:4/3}.pull-photo .pp-text{padding:0 22px 24px}.pull-photo p{font-size:23px}.phones{grid-template-columns:repeat(3,72%);overflow-x:auto;scroll-snap-type:x mandatory}.phone{scroll-snap-align:start}.g-grid{grid-template-rows:120px 120px}}
+/* программа */
+.prog-cta{margin:72px 0 0;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;padding:44px;border-radius:var(--r-l);background:var(--p-kod);color:var(--on-night)}
+.prog-cta h2{margin:12px 0 0;font:760 clamp(30px,3vw,42px)/1.08 var(--display)}
+.prog-cta p{margin:0 0 22px;color:var(--on-night-2)}
+.prog-cta .eyebrow{color:rgba(238,234,246,.7)}
+.next{padding:88px 0}
+.next .row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:1100px){.read{grid-template-columns:200px minmax(0,1fr);gap:40px}.read .aside-r{display:none}}
+@media (max-width:900px){
+  .c-hero .grid,.abc,.prog-cta,.next .row{grid-template-columns:1fr}
+  .read{grid-template-columns:1fr}
+  .toc{position:static;padding:18px;border-radius:var(--r-m);background:var(--card);box-shadow:0 0 0 1px var(--line)}
+  .toc ol{display:none}
+  .toc .share{border:0;margin:0;padding:0}
+  .cinema{padding:24px 0}
+  .prog-cta{padding:30px 24px}
+}
+@media (max-width:560px){
+  .c-hero h1{font-size:50px}
+  .c-hero .stand{font-size:17.5px}
+  .article{font-size:17.5px}
+  .article h2{font-size:31px}
+  .pull p{font-size:24px}
+  .cinema .wrap{width:100%}
+  .cinema .frame{border-radius:0}
+  .cinema .cap{padding:0 16px;flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="hdr"><div class="wrap">
+  <a class="logo" href="index.html">Freeman<i>Stories</i></a>
+  <nav class="nav" aria-label="Разделы"><a href="index.html">Все истории</a><a class="on" href="index.html#feed">Кейсы</a><a href="index.html#feed">Отзывы</a><a href="index.html#programs">Программы</a></nav>
+  <span class="sp"></span>
+  <a class="login" href="cabinet.html">Мои истории</a>
+  <a class="btn btn-y btn-sm" href="share.html">Рассказать историю <span class="arrow">↗</span></a>
+  <button class="burger" aria-label="Меню">☰</button>
+</div></header>
+
+<main>
+<div class="wrap crumbs"><a href="index.html">Кейсы</a><span>/</span><a href="index.html#programs">Код Бизнеса</a></div>
+
+<section class="c-hero"><div class="wrap grid">
+  <div>
+    <span class="tag p-kod">Кейс · Код Бизнеса</span>
+    <h1>От управленческого тупика к поэтапному развитию компании</h1>
+    <p class="stand">Как предприниматель в сфере создания и продвижения сайтов пересмотрел работу с командой, начал запускать рекламу и научился внедрять изменения без попытки переделать всё сразу.</p>
+  </div>
+  <aside class="person">
+    <div class="portrait p-kod"><img src="assets/photos/cut/soroka.webp" alt="Сергей Сорока"></div>
+    <div class="p-in"><b>Сергей Сорока</b>
+    <div class="role">Предприниматель, создание и продвижение сайтов</div>
+    <dl><dt>Программы</dt><dd>Power ON → Код Бизнеса</dd><dt>Формат</dt><dd>Видеоинтервью</dd><dt>Чтение</dt><dd>6 минут</dd></dl></div>
+  </aside>
+</div></section>
+
+<section class="cinema" id="video"><div class="wrap">
+  <div class="frame"><img src="assets/photos/soroka/plane.jpg" style="object-position:50% 22%" alt="Кадр интервью"><button class="play" type="button">Смотреть интервью</button></div>
+  <div class="cap"><span>Видео загрузится только после нажатия.</span><a href="https://www.youtube.com/watch?v=vayzTyeac-Y">Открыть на YouTube ↗</a></div>
+</div></section>
+
+<section class="brief wrap">
+  <div class="eyebrow">Кейс за 30 секунд</div>
+  <div class="abc">
+    <div><span class="eyebrow">Точка А</span><h3>Компания держалась на плаву</h3><p>После спада бизнес работал, но клиенты шли в основном по рекомендациям. Сергей оставался скорее профильным специалистом, чем предпринимателем.</p></div>
+    <div><span class="eyebrow">Что делал</span><h3>Перестраивал по шагу</h3><p>Прошёл Power ON, затем «Код Бизнеса». Нарисовал оргструктуру, переделал сайт, запустил рекламу. Внедрять всё сразу не вышло, перешёл к поэтапному плану.</p></div>
+    <div><span class="eyebrow">На момент интервью</span><h3>Видит, куда двигаться</h3><p>Понимает, каких людей не хватает в команде. Получил первые обращения с собственной рекламы. Готовит новое направление контекстной рекламы.</p></div>
+  </div>
+</section>
+
+<div class="wrap read">
+  <nav class="toc" aria-label="Содержание">
+    <div class="eyebrow">Содержание</div>
+    <ol id="toc"><li><a href="#ch1"><span>01</span>Прежний подход перестал помогать</a></li><li><a href="#ch2"><span>02</span>Пришёл со своими сомнениями</a></li><li><a href="#ch3"><span>03</span>Другой взгляд на себя</a></li><li><a href="#ch4"><span>04</span>Отношения с людьми</a></li><li><a href="#ch5"><span>05</span>Оргструктура</a></li><li><a href="#ch6"><span>06</span>Перегрузка от «всё сразу»</a></li><li><a href="#ch7"><span>07</span>Не всё внедрять первым</a></li><li><a href="#ch8"><span>08</span>Своя реклама</a></li><li><a href="#ch9"><span>09</span>Передавать знания дальше</a></li><li><a href="#ch10"><span>10</span>Главный итог</a></li></ol>
+    <div class="share"><button title="Скопировать ссылку">⧉</button><button title="Telegram">TG</button><button title="WhatsApp">WA</button></div>
+  </nav>
+  <article class="article">
+<section class="ch" id="ch1"><h2><span>01</span>Компания работала. Но прежний подход перестал помогать</h2>
+<p>Сергей Сорока пришёл на обучение с действующим бизнесом в сфере создания и продвижения сайтов. Компания пережила сложный период, продолжала работать и зарабатывать. Удержаться на плаву было важно, но Сергей понимал: этого уже недостаточно.</p>
+<p>Раньше он был прежде всего профильным специалистом. Теперь ему приходилось решать задачи предпринимателя — развивать компанию, работать с командой и выбирать направление движения. Привычных знаний, характера и силы воли для следующего этапа уже не хватало.</p>
+<p>Спад в бизнесе он переживал тяжело. В интервью Сергей вспоминает, что мог несколько дней не выходить из дома, стараясь отстраниться от происходящего. Нужен был новый взгляд на ситуацию и на собственную роль в компании.</p>
+</section>
+<figure class="ins film">
+  <div class="film-row"><a href="#video"><img src="assets/photos/soroka-w1.jpg" alt="Сергей Сорока в интервью"></a><a href="#video"><img src="assets/photos/soroka-w2.jpg" alt=""></a><a href="#video"><img src="assets/photos/soroka-w3.jpg" alt=""></a></div>
+  <figcaption><span>Кадры из интервью</span><a href="#video">Смотреть видео ↑</a></figcaption>
+</figure>
+<section class="ch" id="ch2"><h2><span>02</span>Обучение, к которому он пришёл со своими сомнениями</h2>
+<p>Сергей не описывает знакомство с обучением как мгновенную уверенность, что теперь всё получится. Часть идей он уже встречал раньше. По его словам, Power ON не дал ему сразу огромного скачка именно в бизнесе. Зато помог выйти из затянувшегося внутреннего затишья.</p>
+<p>Вспоминая первые впечатления, он рассуждает: если бы подобные знания появились у него раньше, на некоторые этапы развития компании, возможно, ушло бы меньше времени.</p>
+<p>Был и другой вопрос: сможет ли тренер, который не работает в его конкретной сфере, подсказать что-то действительно полезное? Позже Сергей отмечал, что получал применимую информацию даже по знакомым ему профессиональным задачам — в том числе по сайту и привлечению клиентов.</p>
+</section>
+<section class="ch" id="ch3"><h2><span>03</span>Сначала — другой взгляд на себя</h2>
+<p>Знакомство с обучением началось с Power ON. Затем Сергей прошёл программу «Код Бизнеса». Когда он говорит о главном изменении, то начинает не с финансовых показателей, а с мышления: изменились его взгляд на жизнь, отношение к людям и ощущение дальнейшего пути.</p>
+<p>Для него это было не возвращением к прежнему состоянию. Он описывает появление новых ориентиров и интереса к тому, что ещё можно сделать — в работе и за её пределами.</p>
+<p>Практические инструменты программы легли на этот личный сдвиг. Вопрос был уже не только в том, чтобы пережить сложный период, но и в том, как дальше строить компанию.</p>
+</section>
+<figure class="ins gallery">
+  <div class="g-grid">
+    <img class="g-big" src="assets/photos/soroka/g-yacht.jpg" alt="Сергей Сорока на яхте" style="object-position:60% 30%">
+    <img src="assets/photos/soroka/g-plane.jpg" alt="Сергей Сорока у самолёта" style="object-position:30% 30%">
+    <img src="assets/photos/soroka/g-event.jpg" alt="Сергей Сорока на мероприятии" style="object-position:40% 20%">
+  </div>
+  <figcaption><span>Фото из жизни Сергея</span></figcaption>
+</figure>
+<section class="ch" id="ch4"><h2><span>04</span>Менялся не только бизнес, но и отношения с людьми</h2>
+<p>Говоря об изменениях, Сергей несколько раз возвращается к своему взгляду на жизнь и отношениям с окружением. Некоторые люди перестали понимать его так, как раньше. При этом он отдельно уточняет: истории о том, что после обучения из компании ушла едва ли не половина сотрудников, у него не было.</p>
+<p>Он воспринимал происходящее скорее как естественный отбор по взглядам и направлениям движения: часть людей оставалась рядом, с частью пути расходились. В интервью для него это связано с тем, что он сам начал по-другому смотреть на привычные вещи.</p>
+<p>Сергей также не утверждает, что полностью изменил характер. Он продолжал считать себя человеком, склонным к пессимизму, но чувствовал, что оптимизма стало больше. Ему нравилось это более сбалансированное внутреннее состояние. Прогресс был не всегда заметен в отдельный день, однако ощущение движения и роста приносило удовольствие.</p>
+</section>
+<section class="ch" id="ch5"><h2><span>05</span>Организационная структура показала, где не хватает людей</h2>
+<p>Одним из инструментов стала работа над организационной структурой. Сергей не описывает её как решение, которое мгновенно исправило бизнес. Польза оказалась конкретнее: схема помогла ему и руководителю компании увидеть, каких сотрудников не хватает и где один человек выполняет слишком много разных задач.</p>
+<p>Это дало основу для дальнейших решений. Структуру можно было соотнести с реальным развитием компании: понять, какую роль потребуется закрыть следующей и почему существующее распределение работы создаёт сложности.</p>
+<p>Так отдельное учебное задание стало способом внимательнее посмотреть на повседневную работу команды.</p>
+</section>
+<section class="ch" id="ch6"><h2><span>06</span>Попытка внедрить всё сразу привела к перегрузке</h2>
+<p>Изменения не шли ровно. Примерно в середине обучения Сергей почувствовал перегрузку: новых знаний было много, и хотелось сразу применить организационную структуру, бизнес-процессы и другие инструменты.</p>
+<p>Но компания уже работала, в ней были сотрудники со своими привычками и сложившимися отношениями. Быстро перестроить всё не получалось. На этом фоне возникало сомнение: возможно, новые подходы вообще не работают?</p>
+<p>Позже Сергей увидел причину в самом темпе внедрения. Изменить мышление и действующую компанию за неделю или месяц невозможно. Вместо попытки охватить всё он выбрал поэтапное движение: обсуждать приоритеты с сотрудниками, планировать и переходить от одной задачи к следующей.</p>
+<p>Полезной оказалась и практика выбирать главное дело на день. Её он стал применять в собственном планировании.</p>
+</section>
+<figure class="ins pull-photo p-kod">
+  <div class="portrait"><img src="assets/photos/cut/soroka.webp" alt="Сергей Сорока"></div>
+  <div class="pp-text"><div class="eyebrow">Главный вывод Сергея</div><p><span class="mark">Изменить мышление и действующую компанию за неделю или месяц невозможно.</span> Поэтому он перешёл к поэтапному движению.</p></div>
+</figure>
+<section class="ch" id="ch7"><h2><span>07</span>Полезно оказалось не всё внедрять первым</h2>
+<p>Сергей подчёркивает, что даже хороший инструмент нужно соотносить со стадией своего бизнеса. Если в команде всего несколько человек, нельзя автоматически считать подробную оргструктуру более срочной задачей, чем привлечение клиентов. Важно понять, что поможет именно сейчас.</p>
+<p>Его собственный опыт был двойственным: нарисованная структура не упростила все процессы сама по себе, но дала понимание перегрузок и следующих нужных ролей. Польза заключалась в том, какие решения можно было принять, увидев картину целиком.</p>
+<p>Так же он подбирал планирование под себя. Практика выбирать одно основное дело на день показалась ему удобной и продуктивной. Не требовалось внедрять любую методику целиком — нужно было проверить, как она работает в его реальном дне.</p>
+</section>
+<section class="ch" id="ch8"><h2><span>08</span>От рекомендаций — к собственной рекламе</h2>
+<p>Параллельно Сергей начал менять подход к привлечению клиентов. До этого компания во многом опиралась на рекомендации. Во время обучения он перерабатывал сайт и начал запускать рекламу для собственного бизнеса.</p>
+<p>В интервью он уже отмечает первые обращения после запуска рекламы. Также рассказывает о подготовке нового направления контекстной рекламы: раньше часть таких задач решалась через субподряд, теперь он хотел подойти к развитию направления системнее.</p>
+<p>На момент записи это были первые шаги, а не завершённая перестройка. Часть решений уже внедрялась, часть ещё находилась в планах. Сергей говорил о перспективах с воодушевлением.</p>
+</section>
+<figure class="ins stories sample">
+  <span class="sample-tag">Образец блока</span>
+  <div class="eyebrow">Из соцсетей Сергея</div>
+  <div class="phones">
+    <div class="phone"><img src="assets/photos/soroka/s-street.jpg" alt=""><div class="st-top"><div class="bars"><i class="on"></i><i class=""></i><i class=""></i></div><div class="st-who"><span class="st-ava p-kod"><img src="assets/photos/cut/soroka.webp" alt=""></span>Сергей Сорока</div></div><div class="sticker">Переделали сайт</div></div>
+    <div class="phone"><img src="assets/photos/soroka/s-football.jpg" alt=""><div class="st-top"><div class="bars"><i class="on"></i><i class="on"></i><i class=""></i></div><div class="st-who"><span class="st-ava p-kod"><img src="assets/photos/cut/soroka.webp" alt=""></span>Сергей Сорока</div></div><div class="sticker">Запустили рекламу</div></div>
+    <div class="phone"><img src="assets/photos/soroka/s-yacht.jpg" alt=""><div class="st-top"><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i></div><div class="st-who"><span class="st-ava p-kod"><img src="assets/photos/cut/soroka.webp" alt=""></span>Сергей Сорока</div></div><div class="sticker">Первые обращения с рекламы</div></div>
+  </div>
+  <figcaption><b>Сторис и посты героя.</b> Участник присылает до 5 скриншотов. Редакция закрывает чужие имена, лица и контакты. Здесь вместо настоящих сторис фото Сергея, подписи взяты из кейса.</figcaption>
+</figure>
+<section class="ch" id="ch9"><h2><span>09</span>Новые знания хотелось передавать дальше</h2>
+<p>В интервью есть ещё один личный эпизод: Сергей рассказывает, как вспоминал полезные идеи в разговорах с другими участниками и делился тем, что сам начал применять. Ему было приятно понимать, что он может помочь другому человеку.</p>
+<p>Это добавляло ценность самому обучению. Помимо задач компании, появлялись новые направления, которыми хотелось заниматься, и интерес к дальнейшим действиям. К концу программы он уже с нетерпением ждал возможности заняться следующими бизнес-процессами.</p>
+<p>Но этот интерес не отменял пережитой перегрузки. Увлечённость знаниями и попытка применить их одновременно оказались разными вещами. Сергей начал отделять желание изменить многое от реального плана, который команда способна выполнить.</p>
+</section>
+<aside class="tools"><div class="eyebrow">Что сработало у Сергея</div><ol>
+<li data-n="1"><b>Оргструктура</b><span>Показала, каких сотрудников не хватает и где один человек делает слишком много.</span></li>
+<li data-n="2"><b>Одно главное дело на день</b><span>Практика из программы, которую он перенёс в собственное планирование.</span></li>
+<li data-n="3"><b>Собственная реклама вместо одних рекомендаций</b><span>Переделал сайт, запустил рекламу и получил первые обращения.</span></li></ol></aside>
+<section class="ch" id="ch10"><h2><span>10</span>Главный итог — понимание, как двигаться дальше</h2>
+<p>В этой истории важны и новые инструменты, и изменение отношения к собственному бизнесу. Сергей стал внимательнее смотреть на ограничения команды, расставлять приоритеты и соотносить новые идеи с тем, что компания действительно может внедрить сейчас.</p>
+<p>Он не рассказывает о моментальном решении всех проблем. Напротив, один из его главных выводов — перестать требовать от себя и команды немедленной трансформации. Выбрать направление, разбить работу на этапы и последовательно двигаться вперёд.</p>
+</section>
+
+    <div class="note"><b>Как подготовлен этот кейс</b>Текст подготовлен редакцией по видеоинтервью выпускника «Кода Бизнеса» и описывает опыт Сергея на момент записи. Текущие показатели его компании в материале не утверждаются. Результаты каждого человека индивидуальны.</div>
+  </article>
+  <div class="aside-r"></div>
+</div>
+
+<div class="wrap">
+  <section class="prog-cta">
+    <div><div class="eyebrow">Программа из этой истории</div><h2>Код Бизнеса</h2></div>
+    <div><p>Сергей пришёл в программу после Power ON. Посмотрите, как она устроена, и другие истории её выпускников.</p><a class="btn btn-y" href="#">О программе <span class="arrow">↗</span></a> <a class="btn btn-ghost" style="color:var(--on-night);box-shadow:inset 0 0 0 1.5px rgba(238,234,246,.4)" href="index.html#feed">Истории выпускников</a></div>
+  </section>
+</div>
+
+<section class="next"><div class="wrap">
+  <div class="sec-h"><div><div class="eyebrow">Читайте дальше</div><h2>Ещё истории</h2></div><a class="link" href="index.html#feed">Все истории <span class="arrow">↗</span></a></div>
+  <div class="row">
+    <a class="card c-video p-none" href="#"><div class="thumb"><img src="assets/photos/cut/burenova.webp" alt=""><span class="play">Смотреть</span></div><div class="body"><span class="tag plain">Видеоистория</span><h3>Наталья Буренова</h3><div class="who"><img class="ava" src="assets/photos/p/burenova.webp" alt=""><div><b>Наталья Буренова</b><span>Видеоистория</span></div></div></div></a>
+    <a class="card c-fact" href="review.html"><span class="tag p-power">Power ON</span><div class="fact">4 дня</div><p class="fact-l">за столько окупился тренинг: первый предоплатный заказ на 100 пар серёжек</p><p class="q">«Кто бы мог подумать, что за пару дней можно запустить колесо сувенирки?»</p><div class="who"><span class="mono p-power">АП</span><div><b>Андрей Полюга</b><span>Бижутерия и сувениры</span></div></div></a>
+    <a class="card c-video" href="#"><div class="thumb"><img src="https://i.ytimg.com/vi/IPqHPiA7jXI/hqdefault.jpg" alt=""><span class="play">Смотреть</span></div><div class="body"><span class="tag plain">Видеоистория</span><h3>Юрий Каменский</h3><div class="who"><img class="ava" src="https://i.ytimg.com/vi/IPqHPiA7jXI/default.jpg" alt=""><div><b>Юрий Каменский</b><span>Видеоистория</span></div></div></div></a>
+  </div>
+</div></section>
+</main>
+
+<footer class="ftr"><div class="wrap">
+  <div class="top"><a class="logo" href="index.html">Freeman<i>Stories</i></a><div class="say">У каждой перемены есть своя история</div></div>
+  <div class="cols"><a href="share.html">Рассказать историю</a><a href="cabinet.html">Мои истории</a><a href="#">Как мы готовим истории</a><a href="#">Freeman’s Alliance ↗</a></div>
+  <p class="fine">Истории отражают личный опыт участников. Результаты каждого человека индивидуальны.</p>
+</div></footer>
+<script>
+const bar=document.getElementById('progress'),art=document.querySelector('.article');
+addEventListener('scroll',()=>{const r=art.getBoundingClientRect();const p=Math.min(1,Math.max(0,-r.top/(r.height-innerHeight)));bar.style.transform=`scaleX(${p})`},{passive:true});
+const links=[...document.querySelectorAll('#toc a')];
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.hash==='#'+e.target.id))}})},{rootMargin:'-25% 0px -65% 0px'});
+document.querySelectorAll('.ch').forEach(s=>io.observe(s));
+</script>
+</body>
+</html>
