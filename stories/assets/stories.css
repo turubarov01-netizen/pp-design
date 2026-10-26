@@ -22,7 +22,7 @@
   --ok:#1f7a4d; --warn:#a8650b;
   /* цвета программ: обложки, точки в метках, монограммы */
   --p-alliance:#1b2a9c; --p-power:#c2410c; --p-kod:#0f6b5c; --p-pp:#5b2a86;
-  --p-proryv:#a8721c; --p-fabrika:#3a3f74; --p-mentor:#7a1f3d;
+  --p-proryv:#a8721c; --p-fabrika:#3a3f74; --p-mentor:#7a1f3d; --p-tools:#1f5fa8; --p-mesto:#3f6b1f;
   --display:'Medeo Sans',system-ui,sans-serif;
   --body:'Medeo Sans',system-ui,sans-serif;
   --voice:'Medeo Voice','Medeo Sans',system-ui,sans-serif;
@@ -71,7 +71,7 @@ a:hover .arrow,button:hover .arrow{transform:translate(2px,-2px)}
 .tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pc,var(--ink))}
 .tag.plain::before{display:none}
 .p-alliance{--pc:var(--p-alliance)} .p-power{--pc:var(--p-power)} .p-kod{--pc:var(--p-kod)} .p-pp{--pc:var(--p-pp)}
-.p-proryv{--pc:var(--p-proryv)} .p-fabrika{--pc:var(--p-fabrika)} .p-mentor{--pc:var(--p-mentor)}
+.p-proryv{--pc:var(--p-proryv)} .p-fabrika{--pc:var(--p-fabrika)} .p-mentor{--pc:var(--p-mentor)} .p-tools{--pc:var(--p-tools)} .p-mesto{--pc:var(--p-mesto)}
 
 .badge{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;background:var(--paper-2);font:600 12px/1 var(--body);color:var(--ink-2)}
 
