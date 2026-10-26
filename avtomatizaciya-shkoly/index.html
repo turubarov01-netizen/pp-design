@@ -3776,6 +3776,34 @@ html.static .r54 .p6-an,html.static .r54f .p6-an{animation:none!important;opacit
 .r61-step small{font-size:20px;font-weight:600;letter-spacing:.04em;color:#0071e3}
 .fn .r61-step p{font-size:32px;line-height:1.35;color:#1d1d1f;font-weight:500}
 
+
+html.has-toc .dnav{display:none!important}
+.toc-btn{position:fixed;top:18px;right:18px;z-index:60;width:48px;height:48px;border-radius:24px;border:1px solid oklch(0.88 0.012 262);background:oklch(0.985 0.003 262 / .9);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 8px 24px -14px oklch(0.3 0.03 262 / .45);cursor:pointer;display:grid;place-items:center;transition:background-color .2s,box-shadow .2s}
+.toc-btn:hover{background:oklch(0.96 0.012 255)}
+.toc-btn:focus-visible{outline:2px solid #0071e3;outline-offset:3px}
+.toc-btn i{position:absolute;left:15px;width:18px;height:2px;border-radius:1px;background:oklch(0.3 0.025 262);transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .2s}
+.toc-btn i:nth-child(1){top:17px}.toc-btn i:nth-child(2){top:23px}.toc-btn i:nth-child(3){top:29px}
+html.toc-open .toc-btn i:nth-child(1){transform:translateY(6px) rotate(45deg)}
+html.toc-open .toc-btn i:nth-child(2){opacity:0}
+html.toc-open .toc-btn i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.toc-shade{position:fixed;inset:0;z-index:58;background:oklch(0.2 0.02 262 / .22);opacity:0;pointer-events:none;transition:opacity .3s}
+html.toc-open .toc-shade{opacity:1;pointer-events:auto}
+.toc{position:fixed;top:0;right:0;bottom:0;z-index:59;width:min(460px,100vw);overflow-y:auto;overscroll-behavior:contain;background:oklch(0.99 0.003 262);border-left:1px solid oklch(0.9 0.01 262);box-shadow:-24px 0 60px -40px oklch(0.25 0.03 262 / .5);padding:84px 22px 40px 26px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;transform:translateX(102%);transition:transform .4s cubic-bezier(.22,1,.36,1);visibility:hidden}
+html.toc-open .toc{transform:none;visibility:visible}
+.toc-g{margin-bottom:18px}
+.toc-g>button{display:flex;align-items:baseline;justify-content:space-between;width:100%;padding:10px 12px;border:0;border-radius:12px;background:none;cursor:pointer;text-align:left;font:650 19px/1.25 inherit;font-family:inherit;color:oklch(0.22 0.02 262);letter-spacing:-.01em}
+.toc-g>button small{font-size:13px;font-weight:500;color:oklch(0.6 0.02 262);letter-spacing:0}
+.toc-g>button:hover{background:oklch(0.95 0.012 255)}
+.toc-g.cur>button{color:#0062c4}
+.toc-g ol{list-style:none;margin:2px 0 0;padding:0 0 0 12px;border-left:1px solid oklch(0.9 0.01 262);margin-left:12px}
+.toc-g li button{display:grid;grid-template-columns:30px 1fr;gap:6px;width:100%;padding:7px 10px;border:0;border-radius:10px;background:none;cursor:pointer;text-align:left;font:400 15px/1.35 inherit;font-family:inherit;color:oklch(0.38 0.02 262)}
+.toc-g li button span:first-child{font-size:13px;line-height:20px;color:oklch(0.62 0.02 262);font-variant-numeric:tabular-nums}
+.toc-g li button span:last-child{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.toc-g li button:hover{background:oklch(0.95 0.012 255);color:oklch(0.22 0.02 262)}
+.toc-g li button[aria-current]{background:#e8f1fd;color:#0062c4}
+.toc-g li button[aria-current] span:first-child{color:#0071e3}
+.toc button:focus-visible{outline:2px solid #0071e3;outline-offset:-2px}
+@media print{.toc-btn,.toc,.toc-shade{display:none!important}}
 </style>
 </head>
 <body>
@@ -5026,3 +5054,21 @@ document.addEventListener('click',e=>{const a=e.target.closest('[data-jump]');if
 })();
 </script>
 <script>document.addEventListener('click',e=>{const a=e.target.closest('[data-goto]');if(!a)return;const f=document.querySelector('.slide.'+a.dataset.goto)?.closest('.frame');if(!f)return;e.preventDefault();e.stopPropagation();const h=document.querySelector('.dnav')?.offsetHeight||0;const r=f.getBoundingClientRect();scrollTo({top:scrollY+r.top+r.height/2-(innerHeight+h)/2,behavior:'smooth'})},true);</script>
+<script>(function(){if(/static/.test(location.search))return;const T=[{"n":1,"t":"Проблема рынка","end":11,"items":[[2,"Как обычно выглядит работа внутри многих онлайн‑школ"],[3,"В 2027 году сохранять прибыль с такой структурой будет сложнее"],[4,"Расходы на поддержание работы школы остаются. Даже в несезон и между запусками"],[5,"Найм и адаптация сотрудников"],[6,"Как обычно устроены продажи в хорошей онлайн‑школе"],[7,"Разрыв коммуникации"],[8,"Отдел контента"],[9,"Аутсорсный отдел продаж под запуск"],[10,"«А можно как‑то по‑другому?»"],[11,"Три направления оптимизации"]]},{"n":12,"t":"ИИ‑отдел продаж","end":27,"items":[[13,"Как работа выглядит сейчас"],[14,"ИИ‑отдел продаж работает 24/7 и приносит доход"],[15,"ИИ-продавец"],[16,"Почему ИИ‑продавец по переписке работает лучше обычных менеджеров?"],[17,"Глубокий сбор данных о клиенте"],[18,"Досье клиента: переписка"],[19,"Досье клиента: путь клиента"],[20,"Если в школе есть продажи по телефону, то собираем данные внутри карточки клиента"],[21,"Аудит активов школы"],[22,"Глубокие базовые настройки ИИ‑продавца"],[23,"Решения ИИ‑продавца опираются на поведение клиента"],[24,"Продавец ведёт человека от первого касания до повторной покупки"],[25,"Как происходит обучение ИИ‑продавца?"],[26,"ИИ-продавец сам ведёт CRM-систему"],[27,"Что входит в пакет «ИИ‑отдел продаж»?"]]},{"n":28,"t":"ИИ‑маркетолог","end":43,"items":[[29,"Отдел маркетинга и контента"],[30,"Можно облегчить работу и сократить расходы"],[31,"Все маркетинговые инструменты собраны внутри своей экосистемы"],[32,"Каждый день вы получаете подробный разбор всей воронки"],[33,"Вы знаете, какой контент приводит клиентов и приносит деньги"],[34,"Вы знаете, что спрашивают клиенты и какие голосовые стоит записать"],[35,"Вы видите, как люди смотрят лидмагнит, вебинар и переходят ли после него на сайт"],[36,"Вы видите, как люди читают сайт и что улучшить на странице"],[37,"На том же трафике школа зарабатывает на 56% больше"],[38,"Одна и та же дожимная серия писем для всех, кто посмотрел лид-магнит"],[39,"Благодаря ИИ-маркетологу вы будете видеть, сколько денег принёс конкретный Reels*, пост, карусель или видео"],[40,"ИИ может сейчас выполнять работу монтажёра видео"],[41,"ИИ может сейчас выполнять работу дизайнера каруселей, монтажёра Reels* и автора Threads*"],[42,"Теперь производство контента может быть управляемым"],[43,"Пакет «ИИ‑маркетолог»"]]},{"n":44,"t":"ИИ‑платформа","end":47,"items":[[45,"Образовательная платформа"],[46,"Тут всё зависит от вашей фантазии"],[47,"Пакет «Платформа»"]]},{"n":48,"t":"План внедрения","end":50,"items":[[48,"Три пакета рядом"],[49,"Вся школа: сейчас и после"],[50,"Как проходит передача"]]},{"n":51,"t":"Частые вопросы","end":54,"items":[[52,"Можно ли оплачивать сервис по подписке?"],[53,"Безопасность и передача данных через иностранные компании"],[54,"А если я захочу что-то изменить? Снова привлекать вас и платить кучу денег?"]]}];
+const fr=[...document.querySelectorAll('.frame')];if(!fr.length)return;
+const H=document.documentElement;H.classList.add('has-toc');H.classList.remove('has-dnav');document.querySelector('.dnav')?.remove();dispatchEvent(new Event('resize'));
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const btn=document.createElement('button');btn.type='button';btn.className='toc-btn';btn.setAttribute('aria-label','Содержание презентации');btn.setAttribute('aria-expanded','false');btn.innerHTML='<i></i><i></i><i></i>';
+const shade=document.createElement('div');shade.className='toc-shade';
+const nav=document.createElement('nav');nav.className='toc';nav.setAttribute('aria-label','Содержание презентации');
+nav.innerHTML=T.map(g=>'<div class="toc-g" data-from="'+g.n+'" data-to="'+g.end+'"><button type="button" data-n="'+g.n+'">'+esc(g.t)+'<small>'+g.n+'–'+g.end+'</small></button>'+(g.items.length?'<ol>'+g.items.map(([n,t])=>'<li><button type="button" data-n="'+n+'"><span>'+n+'</span><span>'+esc(t)+'</span></button></li>').join('')+'</ol>':'')+'</div>').join('');
+document.body.append(shade,nav,btn);
+const cur=()=>{const m=innerHeight/2;let c=0,b=1e9;fr.forEach((f,i)=>{const r=f.getBoundingClientRect(),d=Math.abs(r.top+r.height/2-m);if(d<b){b=d;c=i+1}});return c};
+const mark=()=>{const c=cur();nav.querySelectorAll('.toc-g').forEach(g=>g.classList.toggle('cur',c>=+g.dataset.from&&c<=+g.dataset.to));let hit=null;nav.querySelectorAll('li button').forEach(b=>{const on=+b.dataset.n===c;b.toggleAttribute('aria-current',on);if(on)hit=b});return hit};
+const open=v=>{H.classList.toggle('toc-open',v);btn.setAttribute('aria-expanded',v);if(v){const h=mark();(h||nav.querySelector('.toc-g.cur'))?.scrollIntoView({block:'center'});nav.querySelector('button')?.focus({preventScroll:true})}};
+const go=n=>{const f=fr[n-1];if(!f)return;open(false);const r=f.getBoundingClientRect();scrollTo({top:scrollY+r.top+r.height/2-innerHeight/2,behavior:'smooth'})};
+btn.addEventListener('click',()=>open(!H.classList.contains('toc-open')));shade.addEventListener('click',()=>open(false));
+nav.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b)go(+b.dataset.n)});
+addEventListener('keydown',e=>{if(!H.classList.contains('toc-open'))return;if(e.key==='Escape'){open(false);btn.focus()}e.stopImmediatePropagation()},true);
+nav.addEventListener('wheel',e=>e.stopPropagation(),{passive:true});
+})();</script>
