@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ru" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ПП · продление подписки — макет</title>
+<link rel="stylesheet" href="pd2.css">
+<style>
+:root{--background:37 38% 96%;--foreground:0 6% 3%;--card:0 0% 100%;--muted:37 15% 92%;--muted-foreground:0 6% 40%;--border:229 20% 90%;--expedition-gold:42 85% 60%}
+.dark{--background:0 6% 4%;--foreground:37 38% 94%;--card:0 6% 9%;--muted:0 6% 16%;--muted-foreground:37 25% 70%;--border:0 6% 16%}
+html,body{margin:0;background:hsl(var(--background))}
+body{font-family:Inter,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:430px;margin:0 auto;padding:4px 16px 40px}
+h2,p{margin:0}
+svg{display:block}
+.state{margin:28px 4px 12px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue2)}
+.state:first-child{margin-top:12px}
+.state small{display:block;margin-top:4px;font-size:12px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--mut)}
+/* уведомление в колокольчике */
+.nt{display:flex;gap:12px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.nt i{width:36px;height:36px;flex:none;border-radius:11px;display:grid;place-items:center;background:rgba(234,184,32,.14);color:#EAB820}
+.nt i svg{width:18px;height:18px}
+.nt b{display:block;font-size:14px;line-height:1.35}
+.nt span{display:block;margin-top:3px;font-size:12px;color:var(--mut)}
+/* карточка продления */
+.ex{padding:18px;border-color:rgba(240,208,128,.35);background:linear-gradient(160deg,rgba(240,208,128,.10),transparent 55%),var(--card)}
+.ex-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ex-chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:13px;font-size:12px;font-weight:700;background:rgba(234,184,32,.14);color:#EAB820;white-space:nowrap}
+.ex-chip.red{background:rgba(255,107,107,.14);color:#FF8A8A}
+.ex-chip.ok{background:rgba(107,203,119,.14);color:var(--moss)}
+.ex-chip svg{width:13px;height:13px}
+.ex-left{font-size:13px;color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
+.ex h3{margin:14px 0 0;font-size:20px;font-weight:800;line-height:1.25}
+.ex p{margin-top:6px;font-size:14px;line-height:1.5;color:var(--mut)}
+.ex-bar{margin-top:14px}
+.ex-bar .pd2-bar{height:6px}
+.ex-bar .pd2-bar i{background:linear-gradient(90deg,#CCA830,#F0D080)}
+.ex-bar div:last-child{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--mut);font-variant-numeric:tabular-nums}
+.ex-list{display:grid;gap:8px;margin-top:16px}
+.ex-list div{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border-radius:12px;background:hsl(var(--background)/.55);border:1px solid var(--line);font-size:14px;line-height:1.35}
+.ex-list svg{width:18px;height:18px;flex:none;margin-top:1px}
+.ex-list b{display:block;font-weight:700}
+.ex-t{flex:1;padding:0!important;border:0!important;background:none!important;display:block!important}
+.ex-list span{display:block;font-size:12px;color:var(--mut);margin-top:2px}
+.ex-price{display:flex;align-items:baseline;gap:8px;margin-top:18px}
+.ex-price b{font-size:28px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ex-price span{font-size:14px;color:var(--mut)}
+.ex .pd2-cta{width:100%;margin-top:14px}
+.ex-note{margin-top:10px;font-size:12px;line-height:1.45;color:var(--mut);text-align:center}
+.ex-was{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px dashed var(--line2);font-size:12px;line-height:1.45;color:var(--mut)}
+/* закрытый урок */
+.lk{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);opacity:.8}
+.lk i{width:36px;height:36px;flex:none;border-radius:11px;display:grid;place-items:center;background:hsl(var(--muted));color:var(--mut)}
+.lk i svg{width:16px;height:16px}
+.lk b{display:block;font-size:14px}
+.lk span{display:block;font-size:12px;color:var(--mut);margin-top:2px}
+.cap{margin:26px 4px 0;padding:12px 14px;border-radius:14px;border:1px dashed var(--line2);font-size:12px;line-height:1.5;color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="wrap pd2">
+
+  <!-- ═══════════ 1. До конца доступа 14 дней и меньше ═══════════ -->
+  <div class="state">1. С&nbsp;4&nbsp;ноября, до&nbsp;конца доступа 14&nbsp;дней<small>Карточка — первой на главной ПП. В&nbsp;колокольчике — уведомление</small></div>
+
+  <div class="nt">
+    <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></i>
+    <div><b>Доступ к&nbsp;подписке до&nbsp;18&nbsp;ноября. Продлите на&nbsp;месяц, чтобы ходить на&nbsp;разборы и&nbsp;пойти в&nbsp;поход</b><span>Сегодня · План Продюсера</span></div>
+  </div>
+
+  <div style="height:12px"></div>
+
+  <div class="pd2-card ex">
+    <div class="ex-top">
+      <span class="ex-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Доступ до&nbsp;18&nbsp;ноября</span>
+      <span class="ex-left">осталось 14&nbsp;дн.</span>
+    </div>
+    <h3>Продлите подписку «План Продюсера» на&nbsp;месяц</h3>
+    <p>Вы прошли установочную и&nbsp;три встречи. Дальше&nbsp;— разборы каждую среду и&nbsp;поход с&nbsp;командой.</p>
+    <div class="ex-bar">
+      <div class="pd2-bar"><i style="width:50%"></i></div>
+      <div><span>20 окт</span><span>4 ноя · последняя встреча</span><span>18 ноя</span></div>
+    </div>
+    <div class="ex-list">
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#6B9FFF" stroke-width="2" stroke-linecap="round"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg><div class="ex-t"><b>Разборы по&nbsp;средам</b><span>Саша разбирает ваш шаг и&nbsp;возражения клиентов</span></div></div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#6BCB77" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg><div class="ex-t"><b>Поход с&nbsp;командой</b><span>3–4 недели в&nbsp;команде, 10–30&nbsp;человек, общая цель</span></div></div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#E0B84E" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><div class="ex-t"><b>Все уроки и&nbsp;записи</b><span>Маршрут, разборы, установочная</span></div></div>
+    </div>
+    <div class="ex-price"><b>14&nbsp;990&nbsp;₽</b><span>за&nbsp;месяц</span></div>
+    <button class="pd2-b pd2-cta">Продлить на&nbsp;месяц</button>
+    <p class="ex-note">Оплата картой. Месяц добавится к&nbsp;вашему сроку: доступ будет до&nbsp;18&nbsp;декабря.</p>
+  </div>
+
+  <!-- ═══════════ 2. Доступ закончился ═══════════ -->
+  <div class="state">2. После 18&nbsp;ноября, не&nbsp;продлили<small>Карточка остаётся первой. Уроки и&nbsp;встречи закрыты, кабинет открыт</small></div>
+
+  <div class="pd2-card ex">
+    <div class="ex-top">
+      <span class="ex-chip red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Доступ закончился 18&nbsp;ноября</span>
+    </div>
+    <h3>Вернитесь в&nbsp;подписку «План Продюсера»</h3>
+    <p>Ваши задания, цель и&nbsp;дневник дохода сохранены. После оплаты всё откроется сразу.</p>
+    <div class="ex-price"><b>14&nbsp;990&nbsp;₽</b><span>за&nbsp;месяц</span></div>
+    <button class="pd2-b pd2-cta">Продлить на&nbsp;месяц</button>
+    <p class="ex-note">Доступ будет на&nbsp;30&nbsp;дней с&nbsp;дня оплаты.</p>
+  </div>
+
+  <div style="height:12px"></div>
+  <div class="lk">
+    <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></i>
+    <div><b>Разборы по&nbsp;средам · 25&nbsp;ноября</b><span>Откроется после продления подписки</span></div>
+  </div>
+
+  <!-- ═══════════ 3. Оплатил ═══════════ -->
+  <div class="state">3. Сразу после оплаты<small>Карточка исчезает со&nbsp;следующего захода</small></div>
+
+  <div class="pd2-card ex" style="border-color:rgba(107,203,119,.35);background:linear-gradient(160deg,rgba(107,203,119,.10),transparent 55%),var(--card)">
+    <div class="ex-top"><span class="ex-chip ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Оплачено</span></div>
+    <h3>Подписка продлена до&nbsp;18&nbsp;декабря</h3>
+    <p>Ближайший разбор&nbsp;— в&nbsp;среду. Запишитесь в&nbsp;поход, чтобы попасть в&nbsp;команду.</p>
+    <button class="pd2-b pd2-cta" style="margin-top:16px">Пойду в&nbsp;поход</button>
+  </div>
+
+  <div class="cap">Макет. Для 17&nbsp;участников установочной 20&nbsp;октября: подписка 14&nbsp;990&nbsp;₽ со&nbsp;скидкой 100% (партнёр Самойлова), доступ до&nbsp;18&nbsp;ноября. Продление&nbsp;— пакет «ПП Подписка · 30&nbsp;дней», 14&nbsp;990&nbsp;₽.</div>
+</div>
+</body>
+</html>
