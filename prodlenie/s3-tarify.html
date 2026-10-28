@@ -1,0 +1,21 @@
+<!doctype html><html lang="ru" class="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="pd2.css"><link rel="stylesheet" href="prodlenie.css"></head><body><style>body{background:#000}.scrim{position:fixed;inset:0;background:rgba(0,0,0,.6)}.sh{position:relative;max-width:430px;margin:28px auto 0;padding:0 8px 30px}.sh-h{display:flex;align-items:center;justify-content:space-between;padding:6px 10px 0;color:#fff}.sh-h b{font-size:17px}.sh-h span{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.12);font-size:18px}.sh .f-offer{margin-top:12px;padding:24px 14px 18px}</style><div class="scrim"></div><div class="sh"><div class="sh-h"><b>Продление подписки</b><span>✕</span></div><div data-plans="Месяц добавится к&nbsp;вашему сроку: доступ будет до&nbsp;18&nbsp;декабря."></div></div><script>
+const core=[['Персональный план развития под вашу ситуацию','уроки и&nbsp;задания на&nbsp;платформе'],['Проверка заданий','кураторы'],['Групповые разборы с&nbsp;Александром и&nbsp;Игорем','48 встреч в&nbsp;год'],['Своя команда и&nbsp;личный бадди','около 10&nbsp;человек'],['Практикумы','два дня каждый месяц'],['Челленджи','каждую неделю'],['Ответ авторов на&nbsp;ваш вопрос','за&nbsp;72 часа']];
+const vip=[['Личные разборы вашей ситуации','два раза в&nbsp;месяц по&nbsp;часу'],['Закрытый VIP-чат','с&nbsp;авторами программы'],['VIP-десятка','сильные эксперты рядом']];
+const row=r=>`<div class="f-row"><span>${r[0]}</span><i>${r[1]}</i></div>`;
+const arr='<svg class="f-arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></svg>';
+document.querySelectorAll('[data-plans]').forEach(el=>{const note=el.dataset.plans;el.outerHTML=`<section class="f-offer f-how f-plans">
+<p class="f-plans-k">Всё, что входит, и&nbsp;сколько это стоит</p>
+<p class="f-cases-t">Подписка на&nbsp;«План&nbsp;Продюсера»</p>
+<div class="f-plan"><p class="f-plan-h">Базовый</p><p class="f-plan-d">полноценное участие в&nbsp;подписке</p>
+<div class="f-rows">${core.map(row).join('')}</div><div class="f-plan-div"></div>
+<p class="f-plan-n f-plan-n--price">Ваша цена</p>
+<p class="f-plan-txt">14&nbsp;990&nbsp;₽ в&nbsp;месяц, это около 3&nbsp;500&nbsp;₽ в&nbsp;неделю. ${note}</p>
+<p class="f-plan-p"><b>14&nbsp;990&nbsp;₽</b><span>/мес</span></p>
+<button class="f-btn f-plan-btn" type="button">Продлить за&nbsp;14&nbsp;990&nbsp;₽ в&nbsp;месяц ${arr}</button></div>
+<div class="f-plan f-plan--vip"><p class="f-plan-h f-plan-h--g">ВИП</p><p class="f-plan-d">расширенный формат с&nbsp;авторами программы</p>
+<p class="f-plan-txt f-plan-hook">Для тех, кому нужно <b>сильное окружение рядом</b> и&nbsp;более плотная работа с&nbsp;нами.</p>
+<p class="f-plan-txt f-plan-hook">Мы собираем отдельную малую группу из&nbsp;сильных экспертов. А&nbsp;вашу ситуацию мы с&nbsp;Игорем <b>разбираем лично</b>.</p>
+<p class="f-plan-n">Всё, что в&nbsp;базовом, плюс</p><div class="f-rows">${vip.map(row).join('')}</div>
+<p class="f-plan-p"><b>49&nbsp;990&nbsp;₽</b><span>/мес</span></p>
+<button class="f-btn f-plan-btn" type="button">Продлить на&nbsp;ВИП</button></div></section>`});
+</script></body></html>
