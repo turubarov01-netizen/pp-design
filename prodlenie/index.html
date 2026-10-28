@@ -55,6 +55,104 @@ svg{display:block}
 .lk b{display:block;font-size:14px}
 .lk span{display:block;font-size:12px;color:var(--mut);margin-top:2px}
 .cap{margin:26px 4px 0;padding:12px 14px;border-radius:14px;border:1px dashed var(--line2);font-size:12px;line-height:1.5;color:var(--mut)}
+/* тарифы — один в один из «Моего оффера», экран 12 (app/public/index.html) */
+.f-offer{margin-top:22px;background:oklch(0.975 0.008 255);color:oklch(0.25 0.03 262);border-radius:26px;padding:30px 26px 28px;box-shadow:0 30px 70px rgba(0,0,0,.45);animation:in .35s ease}
+.f-how-link{font-size:16px;color:oklch(0.35 0.04 262);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.f-how-link:hover{color:oklch(0.45 0.17 262)}
+.f-btn{display:flex;align-items:center;justify-content:center;width:100%;font:inherit;font-weight:700;font-size:15.5px;color:#3A2E18;background:linear-gradient(180deg,#DFC880 0%,#C9A84C 100%);border:none;border-radius:100px;padding:16px 22px;box-shadow:0 5px 0 #A07828,0 10px 22px rgba(0,0,0,.18);cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.f-btn:hover{transform:translateY(2px);box-shadow:0 3px 0 #A07828,0 6px 16px rgba(0,0,0,.18)}
+.f-btn:focus-visible{outline:3px solid oklch(0.7 0.14 262);outline-offset:3px}
+.f-cases-t{font-size:24px;line-height:1.2;font-weight:800;color:oklch(0.22 0.05 265);margin:0 0 6px}
+.f-cases-t{margin-bottom:10px!important}
+@media (max-width:480px){.f-offer{padding:24px 20px 22px;border-radius:20px}}
+.f-how{margin-top:16px}
+.f-plans{margin-top:18px;text-align:center}
+.f-plans-k{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:oklch(0.5 0.14 262);margin:0 0 8px}
+.f-plans .f-cases-t{margin-bottom:8px}
+.f-plans-sub{max-width:620px;margin:0 auto 20px;font-size:15.5px;line-height:1.6;color:oklch(0.42 0.03 262);text-align:left}
+.f-plans-sub b{color:oklch(0.25 0.05 265)}
+.f-plan{max-width:620px;margin:0 auto 14px;text-align:left;background:#fff;border:1px solid oklch(0.9 0.02 262);border-radius:20px;padding:22px 18px}
+.f-plan--vip{background:linear-gradient(135deg,#111827 0%,#1A2535 100%);border:1px solid rgba(75,123,255,.22);box-shadow:0 10px 30px rgba(17,24,39,.18)}
+.f-plan--vip .f-plan-n{color:#6B9FFF}
+.f-plan--vip .f-plan-txt{color:rgba(255,255,255,.62)}
+.f-plan--vip .f-plan-txt b{color:#fff}
+.f-plan--vip .f-row{border-bottom-color:rgba(255,255,255,.1)}
+.f-plan--vip .f-row span{color:rgba(255,255,255,.94)}
+.f-plan--vip .f-row i{color:rgba(255,255,255,.5)}
+.f-plan--vip .f-plan-p{margin-top:20px}
+.f-plan--vip .f-plan-p b{color:#fff}
+.f-plan--vip .f-plan-p span{color:rgba(255,255,255,.55)}
+.f-plan--vip .f-plan-btn--ghost{color:#fff;border-color:rgba(75,123,255,.55);background:rgba(75,123,255,.1)}
+.f-plan--vip .f-plan-btn--ghost:hover{background:rgba(75,123,255,.22);border-color:rgba(107,159,255,.8)}
+.f-plan-n{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:oklch(0.5 0.14 262);margin:0 0 10px}
+.f-plan-n--price{margin-top:22px}
+.f-rows{display:flex;flex-direction:column}
+.f-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid oklch(0.93 0.012 262);font-size:15px;line-height:1.4}
+.f-row:last-child{border-bottom:0}
+.f-row span{color:oklch(0.25 0.04 265);font-weight:600}
+.f-row i{font-style:normal;text-align:right;color:oklch(0.52 0.03 262);font-size:14px;flex:none;max-width:52%}
+.f-row-l{color:oklch(0.25 0.04 265);font-weight:600;text-decoration:none;border-bottom:1px dashed oklch(0.78 0.05 262);transition:color .15s,border-color .15s}
+.f-row-l::after{content:"";display:inline-block;width:13px;height:13px;margin-left:6px;vertical-align:-1px;background:currentColor;opacity:.32;-webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></svg>') center/contain no-repeat;mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></svg>') center/contain no-repeat;transition:opacity .15s,transform .15s}
+.f-row-l:hover{color:oklch(0.42 0.17 262);border-bottom-color:oklch(0.55 0.15 262)}
+.f-row-l:hover::after{opacity:1;transform:translateX(2px)}
+.f-row-l:focus-visible{outline:2px solid oklch(0.55 0.17 262);outline-offset:3px;border-radius:3px}
+.f-plan-div{height:2px;background:oklch(0.55 0.17 262);border-radius:2px;margin:18px 0 18px}
+.f-plan-ok{display:flex;flex-wrap:wrap;gap:6px 18px;margin:12px 0 0;justify-content:center}
+.f-plan-ok span{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:oklch(0.5 0.03 262)}
+.f-plan-ok span::before{content:"";width:14px;height:14px;flex:none;background:oklch(0.55 0.13 155);-webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>') center/contain no-repeat;mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>') center/contain no-repeat}
+.f-plan-hook{margin:0 0 16px}
+.f-plan-txt{font-size:15px;line-height:1.55;color:oklch(0.42 0.03 262);margin:0 0 14px}
+.f-plan-txt b{color:oklch(0.25 0.05 265)}
+.f-plan-p{display:flex;align-items:baseline;gap:8px;margin:0 0 4px}
+.f-plan-p b{font-size:38px;line-height:1;font-weight:800;color:oklch(0.22 0.05 265);letter-spacing:-.02em}
+.f-plan-p span{font-size:15px;color:oklch(0.5 0.03 262)}
+.f-plan-pay{background:oklch(0.93 0.072 262);border:1px solid oklch(0.855 0.085 262);border-left:5px solid oklch(0.52 0.20 262);border-radius:10px;padding:11px 13px;margin:14px 0 0;font-size:14.5px;line-height:1.5;color:oklch(0.26 0.04 262)}
+.f-plan-btn{display:block;text-align:center;margin:16px 0 0}
+.f-plan-btn--ghost{background:none;color:oklch(0.35 0.14 262);border:1.5px solid oklch(0.8 0.06 262);box-shadow:none}
+.f-plan-when{font-size:13.5px;line-height:1.45;color:oklch(0.5 0.03 262);margin:10px 0 0;text-align:center}
+.f-plan-note{max-width:620px;margin:6px auto 0;font-size:14px;line-height:1.55;color:oklch(0.45 0.03 262)}
+.f-plan{background:linear-gradient(145deg,#3B5AC8 0%,#1B2A7A 100%);border:1px solid rgba(255,255,255,.14);box-shadow:0 14px 40px rgba(20,38,110,.22)}
+.f-plan-h{font-size:34px;line-height:1;font-weight:800;letter-spacing:-.02em;color:#fff;margin:0 0 6px}
+.f-plan-d{font-style:italic;font-size:14.5px;line-height:1.4;color:rgba(255,255,255,.62);margin:0 0 18px}
+.f-plan .f-plan-n{color:rgba(255,255,255,.6)}
+.f-plan .f-plan-txt{color:rgba(255,255,255,.74)}
+.f-plan .f-plan-txt b{color:#fff}
+.f-plan .f-row{border-bottom-color:rgba(255,255,255,.16)}
+.f-plan .f-row span{color:#fff}
+.f-plan .f-row i{color:rgba(255,255,255,.62)}
+.f-plan .f-row-l{color:#fff;border-bottom-color:rgba(255,255,255,.4)}
+.f-plan .f-row-l:hover{color:#F0D89A;border-bottom-color:#DFC880}
+.f-plan .f-plan-div{background:rgba(255,255,255,.28)}
+.f-plan .f-plan-p b{color:#fff}
+.f-plan .f-plan-p span{color:rgba(255,255,255,.6)}
+.f-plan .f-plan-pay{background:linear-gradient(90deg,rgba(234,184,32,.17),rgba(255,255,255,.08));border:1px solid rgba(234,184,32,.22);border-left:5px solid #EAB820;color:rgba(255,255,255,.95)}
+.f-plan .f-plan-pay b{color:#fff}
+.f-plan .f-plan-when{color:rgba(255,255,255,.62)}
+.f-plan .f-plan-ok span{color:rgba(255,255,255,.82)}
+.f-plan .f-plan-ok span::before{background:#9FE3B8}
+.f-plan--vip{background:linear-gradient(150deg,#161D2F 0%,#0B0F18 100%);border:1px solid rgba(220,197,119,.24);box-shadow:0 14px 40px rgba(8,12,22,.32)}
+.f-plan--vip .f-plan-h--g{background:linear-gradient(135deg,#F0D080 0%,#CCA830 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.f-plan--vip .f-plan-n{color:rgba(255,255,255,.5)}
+.f-plan--vip .f-plan-txt{color:rgba(255,255,255,.66)}
+.f-plan--vip .f-plan-txt b{color:#E8D399}
+.f-plan--vip .f-row{border-bottom-color:rgba(255,255,255,.12)}
+.f-plan--vip .f-row span{color:#fff}
+.f-plan--vip .f-row i{color:rgba(255,255,255,.55)}
+.f-plan--vip .f-plan-p b{background:linear-gradient(135deg,#F0D080 0%,#CCA830 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.f-plan--vip .f-plan-p span{color:rgba(255,255,255,.55)}
+.f-plan{padding:30px 32px;border-radius:24px}
+.f-plan-ok{justify-content:flex-start}
+.f-plan-p b{font-size:46px}
+.f-row{font-size:16px;padding:13px 0}
+.f-plan .f-plan-pay,.f-plan-pay{background:none;border:0;border-radius:0;padding:0;margin:16px 0 4px;color:#fff}
+.f-offer .f-proof{font-size:18px;line-height:1.35;font-weight:800;color:oklch(0.22 0.05 265);margin:4px 0 26px}
+.f-offer .f-oh{font-size:15px;font-weight:700;color:oklch(0.35 0.04 262);margin:0 0 12px}
+.f-offer .f-guar-card .f-guar-t{text-align:left!important;margin:0 0 14px!important}
+.f-offer .f-stk-btn,.f-stk .f-stk-btn{flex:none;padding:15px 26px;font-size:15.5px;box-shadow:0 4px 0 #A07828,0 8px 18px rgba(0,0,0,.3)}
+.f-offer{box-shadow:0 18px 40px rgba(0,0,0,.35);margin-top:16px}
+.html:not(.dark) .f-offer{box-shadow:0 10px 30px rgba(17,24,39,.12)}
+.f-arr{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-left:6px;display:inline-block}
+.f-plans-in{font-size:14.5px;line-height:1.5;color:oklch(0.42 0.03 262);margin:0 0 16px}
 </style>
 </head>
 <body>
@@ -82,14 +180,12 @@ svg{display:block}
       <div><span>20 окт</span><span>4 ноя · последняя встреча</span><span>18 ноя</span></div>
     </div>
     <div class="ex-list">
-      <div><svg viewBox="0 0 24 24" fill="none" stroke="#6B9FFF" stroke-width="2" stroke-linecap="round"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg><div class="ex-t"><b>Разборы по&nbsp;средам</b><span>Групповая встреча, где можно задать любой вопрос оСаша разбирает ваш шаг и&nbsp;возражения клиентовnbsp;своём финансовом развитии</span></div></div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#6B9FFF" stroke-width="2" stroke-linecap="round"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg><div class="ex-t"><b>Разборы по&nbsp;средам</b><span>Групповая встреча, где можно задать любой вопрос о&nbsp;своём финансовом развитии</span></div></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="#6BCB77" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg><div class="ex-t"><b>Поход с&nbsp;командой</b><span>3–4 недели в&nbsp;команде, 10–30&nbsp;человек, общая цель</span></div></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="#E0B84E" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><div class="ex-t"><b>Все уроки и&nbsp;записи</b><span>Маршрут, разборы, установочная</span></div></div>
     </div>
-    <div class="ex-price"><b>14&nbsp;990&nbsp;₽</b><span>за&nbsp;месяц</span></div>
-    <button class="pd2-b pd2-cta">Продлить на&nbsp;месяц</button>
-    <p class="ex-note">Оплата картой. Месяц добавится к&nbsp;вашему сроку: доступ будет до&nbsp;18&nbsp;декабря.</p>
   </div>
+  <div data-plans="Месяц добавится к&nbsp;вашему сроку: доступ будет до&nbsp;18&nbsp;декабря."></div>
 
   <!-- ═══════════ 2. Доступ закончился ═══════════ -->
   <div class="state">2. После 18&nbsp;ноября, не&nbsp;продлили<small>Карточка остаётся первой. Уроки и&nbsp;встречи закрыты, кабинет открыт</small></div>
@@ -100,10 +196,8 @@ svg{display:block}
     </div>
     <h3>Вернитесь в&nbsp;подписку «План Продюсера»</h3>
     <p>Ваши задания, цель и&nbsp;дневник дохода сохранены. После оплаты всё откроется сразу.</p>
-    <div class="ex-price"><b>14&nbsp;990&nbsp;₽</b><span>за&nbsp;месяц</span></div>
-    <button class="pd2-b pd2-cta">Продлить на&nbsp;месяц</button>
-    <p class="ex-note">Доступ будет на&nbsp;30&nbsp;дней с&nbsp;дня оплаты.</p>
   </div>
+  <div data-plans="Доступ откроется сразу и&nbsp;будет на&nbsp;30&nbsp;дней с&nbsp;дня оплаты."></div>
 
   <div style="height:12px"></div>
   <div class="lk">
@@ -121,7 +215,28 @@ svg{display:block}
     <button class="pd2-b pd2-cta" style="margin-top:16px">Пойду в&nbsp;поход</button>
   </div>
 
-  <div class="cap">Макет. Для 17&nbsp;участников установочной 20&nbsp;октября: подписка 14&nbsp;990&nbsp;₽ со&nbsp;скидкой 100% (партнёр Самойлова), доступ до&nbsp;18&nbsp;ноября. Продление&nbsp;— пакет «ПП Подписка · 30&nbsp;дней», 14&nbsp;990&nbsp;₽.</div>
+  <div class="cap">Макет. Для 17&nbsp;участников установочной 20&nbsp;октября: подписка 14&nbsp;990&nbsp;₽ со&nbsp;скидкой 100% (партнёр Самойлова), доступ до&nbsp;18&nbsp;ноября. Продление&nbsp;— пакеты «Подписка» 14&nbsp;990&nbsp;₽ и&nbsp;«VIP-подписка» 49&nbsp;990&nbsp;₽ на&nbsp;30&nbsp;дней. Карточки тарифов&nbsp;— как на&nbsp;12-м экране «Моего оффера».</div>
 </div>
+<script>
+const core=[['Персональный план развития под вашу ситуацию','уроки и&nbsp;задания на&nbsp;платформе'],['Проверка заданий','кураторы'],['Групповые разборы с&nbsp;Александром и&nbsp;Игорем','48 встреч в&nbsp;год'],['Своя команда и&nbsp;личный бадди','около 10&nbsp;человек'],['Практикумы','два дня каждый месяц'],['Челленджи','каждую неделю'],['Ответ авторов на&nbsp;ваш вопрос','за&nbsp;72 часа']];
+const vip=[['Личные разборы вашей ситуации','два раза в&nbsp;месяц по&nbsp;часу'],['Закрытый VIP-чат','с&nbsp;авторами программы'],['VIP-десятка','сильные эксперты рядом']];
+const row=r=>`<div class="f-row"><span>${r[0]}</span><i>${r[1]}</i></div>`;
+const arr='<svg class="f-arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></svg>';
+document.querySelectorAll('[data-plans]').forEach(el=>{const note=el.dataset.plans;el.outerHTML=`<section class="f-offer f-how f-plans">
+<p class="f-plans-k">Всё, что входит, и&nbsp;сколько это стоит</p>
+<p class="f-cases-t">Подписка на&nbsp;«План&nbsp;Продюсера»</p>
+<div class="f-plan"><p class="f-plan-h">Базовый</p><p class="f-plan-d">полноценное участие в&nbsp;подписке</p>
+<div class="f-rows">${core.map(row).join('')}</div><div class="f-plan-div"></div>
+<p class="f-plan-n f-plan-n--price">Ваша цена</p>
+<p class="f-plan-txt">14&nbsp;990&nbsp;₽ в&nbsp;месяц, это около 3&nbsp;500&nbsp;₽ в&nbsp;неделю. ${note}</p>
+<p class="f-plan-p"><b>14&nbsp;990&nbsp;₽</b><span>/мес</span></p>
+<button class="f-btn f-plan-btn" type="button">Продлить за&nbsp;14&nbsp;990&nbsp;₽ в&nbsp;месяц ${arr}</button></div>
+<div class="f-plan f-plan--vip"><p class="f-plan-h f-plan-h--g">ВИП</p><p class="f-plan-d">расширенный формат с&nbsp;авторами программы</p>
+<p class="f-plan-txt f-plan-hook">Для тех, кому нужно <b>сильное окружение рядом</b> и&nbsp;более плотная работа с&nbsp;нами.</p>
+<p class="f-plan-txt f-plan-hook">Мы собираем отдельную малую группу из&nbsp;сильных экспертов. А&nbsp;вашу ситуацию мы с&nbsp;Игорем <b>разбираем лично</b>.</p>
+<p class="f-plan-n">Всё, что в&nbsp;базовом, плюс</p><div class="f-rows">${vip.map(row).join('')}</div>
+<p class="f-plan-p"><b>49&nbsp;990&nbsp;₽</b><span>/мес</span></p>
+<button class="f-btn f-plan-btn" type="button">Продлить на&nbsp;ВИП</button></div></section>`});
+</script>
 </body>
 </html>
