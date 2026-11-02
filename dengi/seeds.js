@@ -40,7 +40,7 @@
       make: () => ({
         cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', businesses: [], personalMode: 'simple',
         sources: [{ id: 'main', name: 'Основной доход', cat: 'employment', cur: 'USD' }, { id: 'side', name: 'Подработка', cat: 'other', cur: 'USD' }],
-        entries: [], repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
+        entries: [], repeats: [], balance: null, today: TODAY, tab: 'business',
       }),
     },
     voice: {
@@ -56,7 +56,7 @@
         }],
         personalMode: 'simple',
         sources: [{ id: 'biz', name: 'Бизнес из примера', cat: 'own_business', cur: 'USD', bizId: 'b1' }],
-        entries: [], repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
+        entries: [], repeats: [], balance: null, today: TODAY, tab: 'business',
       }),
     },
     micro: {
@@ -79,7 +79,6 @@
           repeats: [{ id: 'r1', title: 'Аренда', cat: 'home', amount: 32000, cur: 'RUB', day: 5, last: '2026-10' }],
           templates: [{ id: 't1', title: 'Продукты', cat: 'food', amount: 3000 }, { id: 't2', title: 'Кафе', cat: 'cafe', amount: 1200 }, { id: 't3', title: 'Такси', cat: 'move', amount: 600 }],
           balance: { date: '2026-10-27', amount: 214000 },
-          moved: { b1: { '2026-08': rub(40000), '2026-09': rub(25000), '2026-10': rub(45000) } },
           today: TODAY, tab: 'personal',
         };
       },
@@ -105,7 +104,7 @@
             { id: 's4', name: 'Аренда квартиры', cat: 'investment', cur: 'RUB' },
           ],
           entries: [inc('g1', '2026-10-08', 45000, 's1'), inc('g2', '2026-10-12', 20000, 's2'), inc('g3', '2026-10-15', 28000, 's4')],
-          repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
+          repeats: [], balance: null, today: TODAY, tab: 'business',
         };
       },
     },
@@ -116,7 +115,7 @@
         businesses: [{ id: 'b1', name: 'Студия ремонта', periods: year.map(([rev, profit, pocket], i) => ({ kind: 'month', key: M.addMonths('2025-11', i), rev, profit, pocket })) }],
         personalMode: 'simple',
         sources: [{ id: 'biz', name: 'Студия ремонта', cat: 'own_business', cur: 'USD', bizId: 'b1' }],
-        entries: [], repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
+        entries: [], repeats: [], balance: null, today: TODAY, tab: 'business',
       }),
     },
     job: {
@@ -130,7 +129,7 @@
         return {
           cur: 'RUB', level: 1, levelSource: 'По анкете: своего дела пока нет', businesses: [], personalMode: 'simple',
           sources: [{ id: 'salary', name: 'Зарплата', cat: 'employment', cur: 'RUB' }, { id: 'gig', name: 'Подработка', cat: 'other', cur: 'RUB' }],
-          entries, repeats: [], balance: null, moved: {}, today: TODAY, tab: 'personal',
+          entries, repeats: [], balance: null, today: TODAY, tab: 'personal',
         };
       },
     },

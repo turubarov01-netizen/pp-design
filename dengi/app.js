@@ -2,12 +2,12 @@
 (function () {
   const M = window.Model;
   const { PERSONAS, CATS } = window.Seeds;
-  const STORE = 'dengi.v5';
+  const STORE = 'dengi.v6';
   const MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
   const MONTHS_G = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
   const MONTHS_L = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
   const MONTHS_S = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-  const METRICS = { profit: 'Чистая прибыль', rev: 'Оборот', pocket: 'Деньги в кармане' };
+  const METRICS = { profit: 'Чистая прибыль', rev: 'Выручка', pocket: 'В карман' };
   const SYMBOL = { USD: '$', RUB: '₽', EUR: '€' };
   // Четыре категории источника, как в таблице income_sources на платформе: по ним ПЭРЛ считает долю своего дела
   const INC_CATS = [['own_business', 'Свой бизнес'], ['employment', 'Наёмный труд'], ['investment', 'Инвестиции'], ['other', 'Разовый доход']];
@@ -96,6 +96,15 @@
     return list.find((b) => b.id === p.bizView) || (list.length === 1 ? list[0] : null);
   };
   const viewPeriods = () => { const b = curBiz(); return b ? b.periods : allPeriods(); };
+
+  /* Сверка кармана с личными финансами: сколько уже записано от этой компании за месяц.
+     Дописка стоит сегодняшним числом, поэтому считается за месяц из ссылки, а не за свою дату */
+  const bizSource = (id) => d().sources.find((s) => s.bizId === id);
+  const gotFor = (bizId, key) => {
+    const src = bizSource(bizId);
+    if (!src) return 0;
+    return d().entries.filter((e) => e.type === 'income' && e.src === src.id && (e.link ? e.link === key : M.monthKey(e.date) === key)).reduce((a, e) => a + inDisp(e), 0);
+  };
 
   /* Прибор считает только бизнес: личные финансы на него не влияют. Компании складываются */
   const meterData = () => ({ periods: allPeriods(), metric: prefs.metric, label: METRICS[prefs.metric] });
@@ -225,7 +234,7 @@
   const topBar = () => {
     const p = d();
     const who = prefs.role === 'mentor' ? 'Наставник' : PERSONAS[prefs.persona].title;
-    return `<header class="top"><h1>Трекер Фримана</h1><div class="me"><span class="ava">${esc(who[0])}</span><div><b>${esc(who)}</b><span>Уровень ${p.level} из 3</span></div></div></header>`;
+    return `<header class="top"><h1>Трекер Фримана</h1>${prefs.role === 'member' ? '<button class="help" data-act="tour" aria-label="Как устроен раздел «Финансы»" title="Как устроен раздел">?</button>' : ''}<div class="me"><span class="ava">${esc(who[0])}</span><div><b>${esc(who)}</b><span>Уровень ${p.level} из 3</span></div></div></header>`;
   };
 
   /* Столбики */
@@ -323,7 +332,7 @@
 
     const rowsHtml = list.length ? list.map((e) => {
       const name = e.type === 'income' ? (srcOf(e.src) || {}).name || 'Доход' : (e.note || (catOf(e.cat) || {}).name || 'Без категории');
-      const tags = [e.link ? 'из бизнеса' : '', e.auto ? 'повтор' : '', e.cur !== p.cur ? `${money(e.amount, e.cur)}` : ''].filter(Boolean).join(' · ');
+      const tags = [e.link ? `из бизнеса, итоги ${MONTHS_G[monthNo(e.link)]}` : '', e.auto ? 'повтор' : '', e.cur !== p.cur ? `${money(e.amount, e.cur)}` : ''].filter(Boolean).join(' · ');
       const needsSort = e.type === 'expense' && e.cat === 'none';
       return `<div class="it"><span class="d">${dayOf(e.date)}</span><span class="t">${esc(name)}${tags ? `<em>${tags}</em>` : ''}${needsSort && isMember ? ` <button class="link" data-act="sort" data-v="${e.id}">Разобрать</button>` : ''}</span><span class="a num ${e.type === 'income' ? 'in' : ''}">${e.type === 'income' ? '+' : ''}${money(inDisp(e))}</span>${isMember ? `<button class="x" data-act="del" data-v="${e.id}" aria-label="Удалить запись">×</button>` : '<span></span>'}</div>
       ${ui.sort === e.id ? `<div class="sort chips">${activeCats().map((k) => `<button class="chip" data-act="sortTo" data-v="${k.id}">${esc(k.name)}</button>`).join('')}</div>` : ''}`;
@@ -379,9 +388,9 @@
     const rev = parseNum(b.rev); const profit = parseNum(b.profit); const pocket = parseNum(b.pocket);
     let err = '';
     if ([rev, profit, pocket].some((x) => Number.isNaN(x))) err = 'Проверьте суммы: нужны только цифры.';
-    else if (rev != null && rev < 0) err = 'Оборот не может быть меньше нуля.';
+    else if (rev != null && rev < 0) err = 'Выручка не может быть меньше нуля.';
     else if (pocket != null && pocket < 0) err = 'Сумма в карман не может быть меньше нуля.';
-    else if (rev != null && profit != null && profit > rev) err = 'Прибыль не может быть больше оборота.';
+    else if (rev != null && profit != null && profit > rev) err = 'Прибыль не может быть больше выручки.';
     return { rev, profit, pocket, err };
   }
   function bizLive() {
@@ -401,8 +410,8 @@
       if (!isMember) return `<div class="stack">${meter()}<section class="card sec"><p class="mut" style="margin:0">Участник пока не добавил компанию.</p></section></div>`;
       return `<div class="stack">${meter()}<section class="card sec">
         <h2>Добавьте свою компанию</h2>
-        <p class="mut" style="margin:6px 0 12px;max-width:62ch">Здесь три цифры: оборот, чистая прибыль и деньги в кармане. Полный учёт ведите в своей бухгалтерии или CRM, сюда только итог. Если компаний несколько, добавьте каждую: цифры вносятся отдельно, стрелка считает всё вместе.</p>
-        <div class="row"><input class="inp" id="bizName" maxlength="40" style="max-width:320px" placeholder="Название компании" aria-label="Название компании"><button class="btn" data-act="bizAdd">Добавить</button></div>
+        <p class="mut" style="margin:6px 0 12px;max-width:62ch">Здесь три цифры: выручка, чистая прибыль компании и сколько вы взяли в карман. Полный учёт ведите в своей бухгалтерии или CRM, сюда только итог. Если компаний несколько, добавьте каждую: цифры вносятся отдельно, стрелка считает всё вместе.</p>
+        <div class="row"><input class="inp" id="bizName" maxlength="64" style="max-width:320px" placeholder="Название компании" aria-label="Название компании"><button class="btn" data-act="bizAdd">Добавить</button></div>
         <div id="cerr" class="err" style="margin-top:6px"></div>
       </section></div>`;
     }
@@ -440,19 +449,19 @@
       <div class="sec-head"><h2>Сводный баланс</h2><div class="seg range" role="group" aria-label="Период">${seg}</div></div>
       <div class="sum-head"><b>${long(latest)}</b>${part(latest) ? `<span class="mut small">${part(latest)}</span>` : ''}</div>
       <div class="sum">
-        <div class="fig sm"><small>Оборот</small><b class="num">${usd(latest.rev)}</b></div>
+        <div class="fig sm"><small>Выручка</small><b class="num">${usd(latest.rev)}</b></div>
         <div class="fig sm"><small>Чистая прибыль</small><b class="num">${usd(latest.profit)}</b></div>
         <div class="fig sm"><small>Рентабельность</small><b class="num">${pct(M.margin(latest.profit, latest.rev))}</b></div>
         <div class="fig sm"><small>В карман</small><b class="num">${usd(latest.pocket)}</b></div>
       </div>
-      ${byCompany.length ? `<div class="tw co-t"><table><thead><tr><th>Компания</th><th>Оборот</th><th>Прибыль</th><th>В карман</th></tr></thead><tbody>
+      ${byCompany.length ? `<div class="tw co-t"><table><thead><tr><th>Компания</th><th>Выручка</th><th>Прибыль</th><th>В карман</th></tr></thead><tbody>
       ${byCompany.map(({ b, g }) => `<tr><td>${esc(b.name)}${b.archived ? '<em>архив</em>' : ''}</td>${g ? `<td>${f(g.rev)}</td><td>${f(g.profit)}</td><td>${f(g.pocket)}</td>` : `<td class="co-none" colspan="3">${range === 'month' ? 'Ещё не внесено' : 'Нет цифр за период'}</td>`}</tr>`).join('')}
       </tbody></table></div>` : ''}
-      ${range === 'month' ? `${bars(series, ui.period.slice(0, 7), null)}<div class="bar-key"><span><i class="l"></i>оборот</span><span><i></i>прибыль</span></div>` : ''}
-      <div class="tw"><table><thead><tr><th>Период</th><th>Оборот</th><th>Прибыль</th><th>${compactTable ? 'Рентаб.' : 'Рентабельность'}</th><th>В карман</th></tr></thead><tbody>
+      ${range === 'month' ? `${bars(series, ui.period.slice(0, 7), null)}<div class="bar-key"><span><i class="l"></i>выручка</span><span><i></i>прибыль</span></div>` : ''}
+      <div class="tw"><table><thead><tr><th>Период</th><th>Выручка</th><th>Прибыль</th><th>${compactTable ? 'Рентаб.' : 'Рентабельность'}</th><th>В карман</th></tr></thead><tbody>
       ${groups.slice().reverse().slice(0, LIMIT[range]).map((g) => `<tr class="${canEdit ? 'go' : ''}" ${canEdit ? `data-act="edit" data-v="${g.key}"` : ''}><td>${short(g)}${g.filled < g.size ? `<em>${g.filled} из ${g.size}</em>` : ''}</td><td>${f(g.rev)}</td><td>${f(g.profit)}</td><td>${pct(M.margin(g.profit, g.rev))}</td><td>${f(g.pocket)}</td></tr>`).join('')}
       </tbody>${range === 'month' ? `<tfoot><tr><td>Итого</td><td>${f(tot.rev)}</td><td>${f(tot.profit)}</td><td>${pct(M.margin(tot.profit, tot.rev))}</td><td>${f(tot.pocket)}</td></tr></tfoot>` : ''}</table></div>
-      <div class="mut small" style="margin-top:8px">${compactTable ? `Суммы в ${SYMBOL[p.cur]}. ` : ''}${range === 'month' ? `Заполнено ${cov.filled} из ${cov.expected} мес.` : 'Считаем по календарю и только внесённые месяцы.'}</div>
+      <div class="mut small" style="margin-top:8px">${compactTable ? `Суммы в ${SYMBOL[p.cur]}. ` : ''}${range === 'month' ? `Заполнено ${cov.filled} из ${cov.expected} мес.` : 'Считаем по календарю и только внесённые месяцы.'}${canEdit ? ' Нажмите на месяц, чтобы исправить цифры.' : isMember && range === 'month' ? ' Чтобы исправить месяц, выберите компанию.' : ''}</div>
     </section>` : '';
 
     const form = isMember && cur ? `<section class="card sec mg" id="bForm">
@@ -461,9 +470,9 @@
       </div>
       <p class="mut small" style="margin:0 0 14px">Удобнее всего с 1 по 5 число, напомним в Telegram</p>
       <div class="fields three">
-        <label class="f"><span>Оборот</span><input class="inp" id="b-rev" inputmode="decimal" autocomplete="off" value="${esc(ui.biz.rev)}" placeholder="0"><small>Все оплаты клиентов, до расходов</small></label>
-        <label class="f"><span>Чистая прибыль</span><input class="inp" id="b-profit" inputmode="text" autocomplete="off" value="${esc(ui.biz.profit)}" placeholder="0"><small>Что осталось после всех расходов. Если в минус, поставьте −</small></label>
-        <label class="f"><span>В карман</span><input class="inp" id="b-pocket" inputmode="decimal" autocomplete="off" value="${esc(ui.biz.pocket)}" placeholder="0"><small>Сколько вывели себе лично</small></label>
+        <label class="f"><span>Выручка</span><input class="inp" id="b-rev" inputmode="decimal" autocomplete="off" value="${esc(ui.biz.rev)}" placeholder="0"><small>Все оплаты клиентов, до расходов</small></label>
+        <label class="f"><span>Чистая прибыль компании</span><input class="inp" id="b-profit" inputmode="text" autocomplete="off" value="${esc(ui.biz.profit)}" placeholder="0"><small>Сумма, которая осталась после всех расходов в бизнесе. Если в минус, поставьте −</small></label>
+        <label class="f"><span>В карман</span><input class="inp" id="b-pocket" inputmode="decimal" autocomplete="off" value="${esc(ui.biz.pocket)}" placeholder="0"><small>Сколько вы вытащили себе на жизнь</small></label>
       </div>
       <div class="live" id="bLive">${live.html}</div>
       <div id="bErr" class="err">${live.err}</div>
@@ -506,7 +515,7 @@
     const cats = `<option value="" ${e.cat ? '' : 'selected'} disabled>Выберите</option>${INC_CATS.map(([k, t]) => `<option value="${k}" ${e.cat === k ? 'selected' : ''}>${t}</option>`).join('')}`;
     const curs = Object.keys(SYMBOL).reverse().map((k) => `<option value="${k}" ${e.cur === k ? 'selected' : ''}>${SYMBOL[k]}</option>`).join('');
     return `<div class="mg-f">
-      <label class="f"><span>Название</span><input class="inp" id="mgName" maxlength="40" autocomplete="off" value="${esc(e.name)}" placeholder="${PH[e.kind]}"></label>
+      <label class="f"><span>Название</span><input class="inp" id="mgName" maxlength="64" autocomplete="off" value="${esc(e.name)}" placeholder="${PH[e.kind]}"></label>
       ${e.kind === 'src' ? `<div class="mg-2"><label class="f"><span>Категория</span><select class="inp" id="mgCat">${cats}</select></label><label class="f"><span>Валюта</span><select class="inp" id="mgCur">${curs}</select></label></div>` : ''}
       <div id="mgErr" class="err"></div>
       <div class="row"><button class="btn sm" data-act="mgSave">${e.id === 'new' ? 'Добавить' : 'Сохранить'}</button><button class="btn ghost sm" data-act="mgCancel">Отмена</button></div>
@@ -568,11 +577,11 @@
   }
 
   function offer() {
-    const o = ui.offer;
+    const o = ui.offer; const src = bizSource(o.bizId);
     return `<div class="offer">
-      <p style="margin:0">Вы вывели себе <b class="num">${money(o.amount)}</b>. Записать в личные финансы как доход? Если выводили частями, поправьте сумму.</p>
+      <p style="margin:0"><b>Сверка с личными финансами.</b> За ${monthName(o.key)} в карман <b class="num">${money(o.pocket)}</b>, а в личных от «${esc(src ? src.name : '')}» записано <b class="num">${money(o.got)}</b>. Не хватает <b class="num">${money(o.amount)}</b>. Дописать их сегодняшним числом?</p>
       <input class="inp" id="offerVal" inputmode="decimal" value="${group(o.amount)}" aria-label="Сумма для личных финансов">
-      <div class="row"><button class="btn sm" data-act="offerYes">Записать</button><button class="btn ghost sm" data-act="offerNo">Не сейчас</button></div>
+      <div class="row"><button class="btn sm" data-act="offerYes">Дописать</button><button class="btn ghost sm" data-act="offerNo">Не сейчас</button></div>
     </div>`;
   }
 
@@ -583,7 +592,7 @@
     const cov = M.coverage(viewed, p.today);
     return `<section class="card sec"><div class="sec-head"><h2>Карточка для встречи: ${esc(cur ? cur.name : 'все компании')}</h2><span class="sub">Заполнено ${cov.filled} из ${cov.expected} мес</span></div>
       <div class="mentor">
-        <div class="fig sm"><small>Оборот, ${rows.length} мес</small><b class="num">${usd(tot.rev)}</b></div>
+        <div class="fig sm"><small>Выручка, ${rows.length} мес</small><b class="num">${usd(tot.rev)}</b></div>
         <div class="fig sm"><small>Прибыль</small><b class="num">${usd(tot.profit)}</b></div>
         <div class="fig sm"><small>Рентабельность</small><b class="num">${pct(M.margin(tot.profit, tot.rev))}</b></div>
         <div class="fig sm"><small>В карман</small><b class="num">${usd(tot.pocket)}</b><em>${pct(tot.profit > 0 ? tot.pocket / tot.profit : null)} прибыли</em></div>
@@ -599,7 +608,7 @@
       <div class="demo-body">
         <label>Участник<select data-pref="persona">${opt(people, prefs.persona)}</select></label>
         <label>Смотрю как<select data-pref="role">${opt({ member: 'Участник', mentor: 'Наставник' }, prefs.role)}</select></label>
-        <label>Стрелка считает<select data-pref="metric">${opt({ profit: 'Чистую прибыль', rev: 'Оборот', pocket: 'Деньги в кармане' }, prefs.metric)}</select></label>
+        <label>Стрелка считает<select data-pref="metric">${opt({ profit: 'Чистую прибыль', rev: 'Выручку', pocket: 'В карман' }, prefs.metric)}</select></label>
         <label>Валюта<select data-demo="cur">${opt({ RUB: 'Рубли', USD: 'Доллары', EUR: 'Евро' }, p.cur)}</select></label>
         <button data-act="advance">Месяц вперёд</button>
         <button data-act="reset">Сбросить этого участника</button>
@@ -735,7 +744,9 @@
     mgSave() {
       const p = d(); const e = ui.mg; const name = (e.name || '').trim();
       if (!name) return mgFail('Введите название.');
-      const same = mgItems(e.kind).find((x) => x.id !== e.id && !x.sys && x.name.toLowerCase() === name.toLowerCase());
+      const was = e.id === 'new' ? null : mgItems(e.kind).find((x) => x.id === e.id);
+      const renamed = !was || was.name.toLowerCase() !== name.toLowerCase();
+      const same = renamed && mgItems(e.kind).find((x) => x.id !== e.id && !x.sys && x.name.toLowerCase() === name.toLowerCase());
       if (same) return mgFail(same.archived ? 'Такое название есть в архиве, его можно восстановить.' : 'Такое название уже есть.');
       if (e.kind === 'src' && !e.cat) return mgFail('Выберите категорию: по ней ПЭРЛ считает долю дохода от своего дела.');
       if (e.kind === 'biz') {
@@ -845,30 +856,27 @@
     bizSave() {
       const p = d(); const b = curBiz(); const { rev, profit, pocket, err } = bizCheck();
       if (err || !b) return false;
-      if (rev == null && profit == null && pocket == null) { document.getElementById('bErr').textContent = 'Внесите хотя бы одну цифру.'; return false; }
+      if (rev == null || profit == null) { document.getElementById('bErr').textContent = 'Внесите выручку и чистую прибыль компании.'; return false; }
       const k = M.RATES[p.cur]; const key = ui.period;
-      const row = { kind: 'month', key, rev: (rev || 0) / k, profit: (profit || 0) / k, pocket: (pocket || 0) / k };
+      const row = { kind: 'month', key, rev: rev / k, profit: profit / k, pocket: (pocket || 0) / k };
       const i = b.periods.findIndex((x) => x.key === key && x.kind === 'month');
       if (i >= 0) b.periods[i] = row; else b.periods.push(row);
-      const moved = ((p.moved || {})[b.id] || {})[key] || 0;
-      const rest = (row.pocket - moved) * k;
-      const keep = key;
-      setPeriod(keep);
-      ui.offer = rest >= 1 ? { key, amount: rest, bizId: b.id } : null;
-      toast('Сохранено');
+      const got = gotFor(b.id, key); const rest = Math.round((pocket || 0) - got);
+      setPeriod(key);
+      ui.offer = rest >= 1 ? { key, pocket: pocket || 0, got, amount: rest, bizId: b.id } : null;
+      toast(pocket > 0 && rest < 1 ? 'Сохранено. С личными финансами сходится' : 'Сохранено');
     },
     offerYes() {
       const p = d(); const el = document.getElementById('offerVal'); const v = parseNum(el && el.value);
       if (v == null || Number.isNaN(v) || v <= 0) return false;
       const { bizId, key } = ui.offer;
-      const src = p.sources.find((s) => s.bizId === bizId) || linkSource(bizOf(bizId));
+      const src = bizSource(bizId) || linkSource(bizOf(bizId));
       const entry = { id: uid(), type: 'income', date: p.today, amount: v, cur: p.cur, src: src.id, link: key };
       p.entries.push(entry);
-      p.moved = p.moved || {}; p.moved[bizId] = p.moved[bizId] || {};
-      p.moved[bizId][key] = (p.moved[bizId][key] || 0) + v / M.RATES[p.cur];
-      ui.offer = null; ui.month = curMonth(); toast('Записали в личные финансы', entry.id);
+      ui.offer = null; ui.month = curMonth(); toast('Дописали в личные финансы', entry.id);
     },
     offerNo() { ui.offer = null; },
+    tour() { window.DengiTour.open(); return false; },
     levelup() {
       const p = d(); p.level = Math.min(3, p.level + 1); p.levelSource = 'Предыдущий уровень сделан'; needleWas = -90;
       toast(`Уровень ${p.level}: ${M.LEVELS[p.level - 1].name}`);
@@ -971,5 +979,10 @@
   let wasPhone = window.innerWidth < 640;
   window.addEventListener('resize', () => { const now = window.innerWidth < 640; if (now !== wasPhone) { wasPhone = now; render(); } });
 
+  window.DengiApp = {
+    go(tab) { actions.tab(tab); render(); },
+    tab: () => d().tab,
+    member: () => prefs.role === 'member',
+  };
   render();
 })();
