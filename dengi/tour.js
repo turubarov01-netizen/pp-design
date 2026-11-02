@@ -20,20 +20,29 @@
   const FRAME = 14; // рамка подсветки 8 px и ещё 6 px до флажка
   const SINK = 0.45; // сколько роста спрятано за карточкой на телефоне
 
-  /* Шаг без блока на экране выпадает сам: например, у человека ещё нет компании */
+  const field = (id) => () => { const x = document.getElementById(id); return x && x.closest('.f'); };
+
+  /* Шаг без блока на экране выпадает сам. Шаг с tap ждёт, пока человек сам нажмёт на подсвеченное */
   const STEPS = [
-    { id: 'toggle', tab: 'personal', sel: '.tg', title: 'Два раздела', text: 'Слева **личные финансы**, справа **бизнес**. Они считаются отдельно: личный доход на стрелку уровня не влияет.' },
-    { id: 'income', tab: 'personal', sel: '[data-act="open"][data-v="income"]', title: 'Личный доход', text: 'Пришли деньги: нажмите сюда, укажите сумму и откуда. Этого достаточно.' },
-    { id: 'sources', tab: 'personal', sel: '.fin-side [data-act="manage"]', title: 'Источники дохода', text: 'Здесь добавляются и меняются источники дохода, а в полном учёте ещё и категории расходов.' },
+    { id: 'toggle', tab: 'personal', sel: '.tg', title: 'Два раздела', text: 'Слева **личные финансы**, справа **бизнес**. Они считаются отдельно: личный доход на стрелку уровня не влияет. Начнём с личных.' },
+    { id: 'mode', tab: 'personal', sel: '.fin-side .seg', title: 'Простой или полный учёт', text: '**Только доход**, если нужно просто видеть, сколько пришло. **Полный учёт**, если хотите вести личную бухгалтерию и понимать, куда уходят деньги.' },
+    { id: 'income', tab: 'personal', sel: '[data-act="open"][data-v="income"]', title: 'Записать доход', text: 'Пришли деньги: нажмите сюда, укажите сумму и откуда они. Этого достаточно.' },
+    { id: 'expense', tab: 'personal', sel: '[data-act="open"][data-v="expense"]', title: 'Записать расход', text: 'Потратили: нажмите сюда, укажите сумму и название. Категорию можно выбрать сразу или разобрать потом.' },
+    { id: 'cats', tab: 'personal', sel: '.fin-side [data-act="manage"]', title: 'Категории и источники', text: 'Здесь добавляются и меняются категории расходов и источники дохода. Запись без категории разбирается кнопкой **Разобрать**.' },
+    { id: 'analytics', tab: 'personal', find: () => document.querySelector('.bars') || document.querySelector('.split .col:last-child .card'), title: 'Аналитика', text: 'Столбики показывают доход и расход по месяцам. Нажмите на месяц, и вы увидите его записи и расходы по категориям.' },
+    { id: 'flip', tab: 'personal', sel: '.tg', tap: '#tg', title: 'Теперь бизнес', text: '**Нажмите на переключатель**, чтобы перейти в бизнес.' },
+    { id: 'monthly', tab: 'business', sel: '#bForm .sec-head', demo: 'Пока это пример: цифры в нём не сохранятся.', title: 'Бизнес раз в месяц', text: 'Итоги вносятся **раз в месяц**. Так вы научитесь считать рентабельность и разделять прибыль компании и свои личные доходы.' },
+    { id: 'rev', tab: 'business', find: field('b-rev'), title: 'Выручка', text: 'Общий оборот компании: сколько всего продаж получилось сделать за месяц, до всех расходов.' },
+    { id: 'profit', tab: 'business', find: field('b-profit'), title: 'Чистая прибыль компании', text: 'Сколько осталось в компании после всех расходов. Это ваша маржа с бизнеса: часть можно реинвестировать, часть оставить на балансе.' },
+    { id: 'pocket', tab: 'business', find: field('b-pocket'), title: 'В карман', text: 'Деньги, которые вы забрали и уже тратите на жизнь. Если их больше, чем записано в личных финансах, я покажу разницу и предложу дописать её одной кнопкой.' },
+    { id: 'companies', tab: 'business', sel: '.biz-pick', title: 'Компании', text: 'Чтобы добавить компанию, нажмите **+ Компания**. Если их несколько, цифры вносятся по каждой отдельно, стрелка складывает всё вместе.' },
+    { id: 'months', tab: 'business', sel: '#bForm .nav', title: 'Другие месяцы', text: 'Стрелками листайте месяцы. Любой прошлый месяц можно открыть и исправить.' },
+    { id: 'table', tab: 'business', sel: '.sum-head', head: '.sum', find: () => { const x = document.querySelector('.sum-head'); return x && x.closest('.card'); }, title: 'Сводный баланс', text: 'Месяц, квартал, полгода и год: выручка, прибыль, рентабельность и карман. Ошиблись в прошлом месяце? **Нажмите на него** в таблице и исправьте.' },
     { id: 'meter', tab: 'business', sel: '.meter', head: '.dial', title: 'Спидометр', text: 'Стрелка показывает, сколько **чистой прибыли** выйдет за год при таком темпе. Считаем с первого месяца, который вы внесёте.' },
-    { id: 'companies', tab: 'business', sel: '.biz-pick, #bizName', title: 'Компании', text: 'Если компаний несколько, добавьте каждую. Цифры вносятся отдельно, стрелка складывает всё вместе.' },
-    { id: 'form', tab: 'business', sel: '#bForm .fields', title: 'Итоги месяца', text: 'Раз в месяц три цифры: **выручка**, **чистая прибыль компании** и сколько **в карман**. Расходы отдельно считать не нужно.' },
-    { id: 'check', tab: 'business', sel: '#bForm [data-act="bizSave"]', title: 'Сверка с личными', text: 'Если в карман вышло больше, чем записано в личных финансах, я покажу разницу и предложу дописать её одной кнопкой.' },
-    { id: 'table', tab: 'business', sel: '.sum-head', head: '.sum', find: () => { const x = document.querySelector('.sum-head'); return x && x.closest('.card'); }, title: 'Сводный баланс', text: 'Месяц, квартал, полгода и год. Ошиблись в прошлом месяце? **Нажмите на него** в таблице и исправьте.' },
   ];
 
   const ST = {
-    phase: 'closed', steps: [], i: 0, was: null, back: null, rect: null, raf: 0, stable: 0, shown: false, timers: [],
+    phase: 'closed', steps: [], i: 0, was: null, back: null, rect: null, raf: 0, stable: 0, shown: false, timers: [], run: null, busy: false,
   };
   let layer = null;
   const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -155,8 +164,8 @@
     const intro = mode === 'intro';
     layer.innerHTML = `<div class="iit-full"></div><div class="iit-sheet" role="dialog" aria-modal="true" aria-labelledby="ft-title" tabindex="-1">
       <span class="iit-ey">${intro ? 'Финансы' : 'Готово'}</span>
-      <h2 id="ft-title">${intro ? 'Как устроен раздел' : esc(nb('Начните с итогов прошлого месяца'))}</h2>
-      <p>${esc(nb(intro ? 'Я Фрими, ваш вожатый. Покажу за минуту, где личные деньги, где бизнес и как раз в месяц подвести итоги.' : 'Проводника можно открыть снова: кнопка со знаком вопроса вверху страницы.'))}</p>
+      <h2 id="ft-title">${intro ? 'Как устроен раздел' : esc(nb(ST.run && ST.run.demo ? 'Добавьте компанию и внесите итоги месяца' : 'Начните с итогов прошлого месяца'))}</h2>
+      <p>${esc(nb(intro ? 'Я Фрими, ваш вожатый. Покажу, как вести личные деньги, как раз в месяц подводить итоги бизнеса и где смотреть аналитику.' : 'Проводника можно открыть снова: кнопка со знаком вопроса вверху страницы.'))}</p>
       <button type="button" class="iit-next" data-t="next">${intro ? 'Показать' : 'Понятно'}</button>
       <button type="button" class="iit-skip" data-t="${intro ? 'bye' : 'back'}">${intro ? 'Разберусь сам' : 'Назад'}</button>
     </div>`;
@@ -181,6 +190,8 @@
     const left = wide ? Math.min(Math.max(16, r.x + r.w / 2 - tw / 2), vw - tw - 16) : null;
     Object.assign(hole.style, { left: `${r.x - pad}px`, top: `${r.y - pad}px`, width: `${r.w + pad * 2}px`, height: `${r.h + pad * 2}px` });
     tip.style.top = `${top}px`;
+    const tap = layer.querySelector('.iit-tap');
+    if (tap) Object.assign(tap.style, { left: `${r.x - pad}px`, top: `${r.y - pad}px`, width: `${r.w + pad * 2}px`, height: `${r.h + pad * 2}px` });
     Object.assign(tip.style, wide ? { left: `${left}px`, right: 'auto', margin: '0', width: `${tw}px` } : { left: '', right: '', margin: '', width: '' });
     const ax = Math.min(Math.max(r.x + r.w / 2, 40), vw - 40);
     Object.assign(arrow.style, { left: `${ax - 7}px`, top: `${below ? top - 7 : top + tipH - 7}px` });
@@ -217,18 +228,20 @@
     const st = ST.steps[i];
     if (window.DengiApp.tab() !== st.tab) window.DengiApp.go(st.tab);
     const n = ST.steps.length;
-    layer.innerHTML = `<div class="iit-hole"></div><div class="iit-arrow"></div>
+    const note = st.demo && ST.run && ST.run.demo ? ` ${st.demo}` : '';
+    const main = st.tap ? '<span class="iit-wait">Жду нажатия</span>' : '<button type="button" class="iit-next" data-t="next">Далее →</button>';
+    layer.innerHTML = `<div class="iit-hole"></div>${st.tap ? '<button type="button" class="iit-tap" data-t="tap" aria-label="Перейти в бизнес"></button>' : ''}<div class="iit-arrow"></div>
       <div class="iit-tip" role="dialog" aria-modal="true" aria-labelledby="ft-title" tabindex="-1">
-        <div class="iit-ey"><span>Раздел «Финансы»</span><span>${i + 1} / ${n}</span></div>
+        <div class="iit-ey"><span>Раздел «Финансы»</span><span class="iit-ey-r">${i + 1} / ${n}<button type="button" class="iit-x" data-t="bye" aria-label="Закрыть проводник">×</button></span></div>
         <h3 id="ft-title">${esc(nb(st.title))}</h3>
-        <p>${rich(st.text)}</p>
+        <p>${rich(st.text + note)}</p>
         <div class="iit-seg" style="grid-template-columns:repeat(${n},1fr)" aria-hidden="true">${ST.steps.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div>
-        <div class="iit-act"><button type="button" class="iit-skip" data-t="${i ? 'back' : 'bye'}">${i ? 'Назад' : 'Пропустить'}</button><button type="button" class="iit-next" data-t="next">Далее →</button></div>
+        <div class="iit-act"><button type="button" class="iit-skip" data-t="${i ? 'back' : 'bye'}">${i ? 'Назад' : 'Пропустить'}</button>${main}</div>
       </div>`;
     const tip = layer.querySelector('.iit-tip');
     const el = targetEl(st);
     if (el) bringIn(el);
-    tip.focus({ preventScroll: true });
+    (layer.querySelector('.iit-tap') || tip).focus({ preventScroll: true });
     track();
     blink();
   }
@@ -236,12 +249,23 @@
     next() {
       if (ST.phase === 'intro') return step(0);
       if (ST.phase === 'step') {
+        if (ST.steps[ST.i].tap) return go.tap();
         if (ST.i + 1 < ST.steps.length) return step(ST.i + 1);
         clear(); cancelAnimationFrame(ST.raf); ST.phase = 'finale'; return sheet('finale');
       }
       return close();
     },
+    /* Настоящий щелчок по тумблеру: человек видит, как он переключается, и только потом идёт дальше */
+    tap() {
+      const st = ST.steps[ST.i];
+      if (ST.phase !== 'step' || !st.tap || ST.busy) return;
+      ST.busy = true;
+      const t = document.querySelector(st.tap);
+      if (t) t.click();
+      later(520, () => { ST.busy = false; step(ST.i + 1); });
+    },
     back() {
+      if (ST.busy) return undefined;
       if (ST.phase === 'finale') return step(ST.steps.length - 1);
       if (ST.phase === 'step' && ST.i > 0) return step(ST.i - 1);
       return undefined;
@@ -256,7 +280,8 @@
 
   function open() {
     if (layer || !window.DengiApp.member()) return;
-    ST.was = window.DengiApp.tab(); ST.back = document.activeElement;
+    ST.was = window.DengiApp.tab(); ST.back = document.activeElement; ST.busy = false;
+    ST.run = window.DengiApp.tourStart();
     // Оставляем только шаги, блоки которых есть у этого человека
     ST.steps = STEPS.filter((st) => {
       if (window.DengiApp.tab() !== st.tab) window.DengiApp.go(st.tab);
@@ -277,6 +302,8 @@
     if (layer) layer.remove();
     layer = null;
     if (ST.was && window.DengiApp.tab() !== ST.was) window.DengiApp.go(ST.was);
+    if (ST.run) { ST.run.stop(); ST.run = null; }
+    ST.busy = false;
     window.scrollTo({ top: 0 });
     if (ST.back && ST.back.focus) ST.back.focus({ preventScroll: true });
   }
@@ -288,8 +315,7 @@
   document.addEventListener('keydown', (ev) => {
     if (!layer) return;
     if (ev.key === 'Escape') { ev.preventDefault(); close(); } else if (ev.key === 'ArrowRight') { ev.preventDefault(); go.next(); } else if (ev.key === 'ArrowLeft') { ev.preventDefault(); go.back(); } else if (ev.key === 'Tab') {
-      const box = layer.querySelector('.iit-tip, .iit-sheet');
-      const f = [...box.querySelectorAll('button')];
+      const f = [...layer.querySelectorAll('.iit-tap, .iit-tip button, .iit-sheet button')];
       if (!f.length) return;
       const first = f[0]; const last = f[f.length - 1];
       if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); } else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }

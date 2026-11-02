@@ -31,7 +31,16 @@
     return data[prefs.persona];
   };
   const fresh = () => ({ cats: CATS.map((k) => ({ ...k })), ...PERSONAS[prefs.persona].make() });
-  const save = () => { try { localStorage.setItem(STORE, JSON.stringify({ prefs, data })); } catch (e) { /* режим инкогнито */ } };
+  // Пока идёт проводник, пример компании и его временные настройки на диск не попадают, даже если закрыть вкладку посреди шага
+  const save = () => {
+    const t = ui.tour;
+    const keep = t ? function (k, v) {
+      if (this !== t.p) return v;
+      if (k === 'businesses') return v.filter((b) => !b.tourDemo);
+      return k === 'personalMode' ? t.mode : k === 'bizView' ? t.view : k === 'tab' ? t.tab : v;
+    } : undefined;
+    try { localStorage.setItem(STORE, JSON.stringify({ prefs, data }, keep)); } catch (e) { /* режим инкогнито */ }
+  };
   const uid = () => `x${Date.now().toString(36)}${Math.floor(Math.random() * 1e4)}`;
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -983,6 +992,31 @@
     go(tab) { actions.tab(tab); render(); },
     tab: () => d().tab,
     member: () => prefs.role === 'member',
+    /* У всех бизнес начинается пустым, поэтому без компании проводник показывает форму на примере */
+    tourStart() {
+      const p = d(); const demo = !companies().length;
+      ui.tour = { p, mode: p.personalMode, view: p.bizView, tab: p.tab };
+      p.personalMode = 'full';
+      if (demo) {
+        const due = dueKey(p);
+        const periods = [[3600, 900, 600], [4200, 1100, 700], [4800, 1300, 800]].map(([rev, profit, pocket], i) => ({ kind: 'month', key: M.addMonths(due, i - 2), rev, profit, pocket }));
+        p.businesses.push({ id: 'tour-demo', tourDemo: true, name: 'Пример компании', periods });
+        p.bizView = 'tour-demo';
+      } else if (!curBiz()) p.bizView = companies()[0].id;
+      ui.period = null; ui.biz = null; ui.offer = null; ui.manage = null; ui.mg = null; ui.composer = null; ui.rec = false;
+      render();
+      return {
+        demo,
+        stop() {
+          const t = ui.tour; if (!t) return;
+          ui.tour = null;
+          t.p.businesses = t.p.businesses.filter((b) => !b.tourDemo);
+          t.p.personalMode = t.mode; t.p.bizView = t.view;
+          ui.period = null; ui.biz = null; ui.offer = null;
+          render();
+        },
+      };
+    },
   };
   render();
 })();
