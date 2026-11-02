@@ -2,7 +2,7 @@
 (function () {
   const M = window.Model;
   const { PERSONAS, CATS } = window.Seeds;
-  const STORE = 'dengi.v3';
+  const STORE = 'dengi.v4';
   const MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
   const MONTHS_G = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
   const MONTHS_L = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
@@ -13,13 +13,14 @@
   const app = document.getElementById('app');
   const saved = (() => { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { return {}; } })();
   const prefs = {
-    persona: 'micro', theme: 'dark', switcher: 'cards', metric: 'profit', role: 'member', ...saved.prefs,
+    persona: 'micro', metric: 'profit', role: 'member', ...saved.prefs,
   };
   const data = saved.data || {};
   const ui = {
     demoOpen: false, composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, recVal: '', toast: null, addSrc: false,
   };
   let needleWas = -90;
+  let thumbWas = null;
 
   const d = () => {
     if (!PERSONAS[prefs.persona]) prefs.persona = 'micro';
@@ -92,15 +93,16 @@
     }
     const [lx, ly] = pt(0.5, R + 32);
     return `<svg viewBox="0 0 340 186" role="img" aria-label="Прогноз ${Math.round(planT * 100)} процентов цели уровня">
+      <defs><linearGradient id="gFact" gradientUnits="userSpaceOnUse" x1="34" y1="0" x2="306" y2="0"><stop offset="0" stop-color="#2f7bff"/><stop offset="1" stop-color="#7b61ff"/></linearGradient></defs>
       <path class="trackarc" d="${arc(0, 1)}" fill="none" stroke-width="16" stroke-linecap="round"/>
       ${planT > factT ? `<path class="planarc" d="${arc(0, planT)}" fill="none" stroke-width="16" stroke-linecap="round"/>` : ''}
-      ${factT > 0.002 ? `<path class="factarc" d="${arc(0, factT)}" fill="none" stroke-width="16" stroke-linecap="round"/>` : ''}
+      ${factT > 0.002 ? `<path class="factarc" d="${arc(0, factT)}" fill="none" stroke="url(#gFact)" stroke-width="16" stroke-linecap="round"/>` : ''}
       ${ticks}
       <text x="${lx}" y="${ly + 4}" text-anchor="middle">50%</text>
       <text x="8" y="184">0</text>
       <text x="332" y="184" text-anchor="end">${compact(target)}</text>
       <g class="needle" id="needle" style="transform:rotate(${needleWas}deg)" data-to="${(-90 + 180 * planT).toFixed(2)}">
-        <line x1="${CX}" y1="${CY}" x2="${CX}" y2="${CY - R + 26}"/><circle cx="${CX}" cy="${CY}" r="7"/>
+        <line x1="${CX}" y1="${CY}" x2="${CX}" y2="${CY - R + 16}"/><circle cx="${CX}" cy="${CY}" r="8"/><circle cx="${CX}" cy="${CY}" r="3"/>
       </g>
     </svg>`;
   }
@@ -141,14 +143,14 @@
     const ladder = M.LEVELS.map((l) => {
       const t = M.levelTarget(l.n, m.metric);
       const fill = l.n < p.level ? 1 : l.n === p.level ? Math.max(0, Math.min(1, s.fact / t)) : 0;
-      return `<div class="rung ${l.n === p.level ? 'now' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><span>${goalUsd(t)}</span></div>`;
+      return `<div class="rung ${l.n === p.level ? 'now' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><b>${l.name}</b><span>${goalUsd(t)}</span></div>`;
     }).join('');
 
     return `<section class="card meter">
       <div class="dial">${dial(s, target)}<div class="dial-read">${read}</div></div>
       <div>
-        <div class="lv-head"><h2>Уровень ${lv.n} из 3: ${lv.name}</h2><span class="mut small">${lv.sub}</span></div>
-        <div class="mut small" style="margin-top:2px">${esc(m.label)} за год: цель ${goalUsd(target)}${p.cur === 'USD' ? '' : ` (около ${compact(target)})`}. ${esc(p.levelSource)}.</div>
+        <div class="lv-head"><div class="eyebrow">Уровень ${lv.n} из 3</div><h2>${lv.name}</h2></div>
+        <div class="lv-sub">${esc(m.label)} за год: цель ${goalUsd(target)}${p.cur === 'USD' ? '' : ` (около ${compact(target)})`}. ${esc(p.levelSource)}.</div>
         <dl class="lv-rows">${rows}</dl>
         ${how ? `<p class="how">${how}</p>` : ''}
         <div class="ladder" aria-label="Три уровня развития">${ladder}</div>
@@ -162,36 +164,43 @@
   const sumType = (list, type) => list.filter((e) => e.type === type).reduce((a, e) => a + inDisp(e), 0);
   const lastBiz = () => { const rows = M.rollup(d().periods); return rows[rows.length - 1] || null; };
 
-  function pairCards() {
-    const p = d(); const key = viewMonth();
-    const inc = sumType(monthEntries(key), 'income');
-    const last = lastBiz();
-    return `<div class="pair" role="group" aria-label="Раздел финансов">
-      <button data-act="tab" data-v="personal" aria-pressed="${p.tab === 'personal'}"><small>Личные финансы</small><b class="num">${money(inc)}</b><em>доход, ${monthName(key)}</em></button>
-      <button data-act="tab" data-v="business" aria-pressed="${p.tab === 'business'}"><small>Бизнес</small>${last ? `<b class="num">${usd(last.profit)}</b><em>прибыль, ${monthName(last.key)}</em>` : `<b>${p.hasBiz ? 'Нет данных' : 'Добавить'}</b><em>${p.hasBiz ? 'внесите первый месяц' : 'оборот, прибыль, в карман'}</em>`}</button>
+  /* Тумблер: два положения, выключенного нет */
+  function toggle() {
+    const p = d(); const biz = p.tab === 'business';
+    return `<div class="tg" role="group" aria-label="Раздел финансов">
+      <button class="tg-l" data-act="tab" data-v="personal" aria-pressed="${!biz}" tabindex="-1">Личные финансы</button>
+      <button class="tg-t" id="tg" role="switch" aria-checked="${biz}" aria-label="Бизнес" data-act="flip" data-pos="${thumbWas || p.tab}"><i></i></button>
+      <button class="tg-l" data-act="tab" data-v="business" aria-pressed="${biz}" tabindex="-1">Бизнес</button>
     </div>`;
   }
-  const segSwitch = () => {
-    const p = d();
-    return `<div class="seg big" role="group" aria-label="Раздел финансов">
-      <button data-act="tab" data-v="personal" aria-pressed="${p.tab === 'personal'}">Личные финансы</button>
-      <button data-act="tab" data-v="business" aria-pressed="${p.tab === 'business'}">Бизнес</button></div>`;
-  };
 
-  function tracker() {
+  const TRACKER_TABS = ['Фокус дня', 'Задачи', 'Финансы', 'Дневник успеха', '1000 целей', 'Зверёк'];
+  const tracker = () => `<div class="trk">${TRACKER_TABS.map((l) => `<span class="${l === 'Финансы' ? 'on' : ''}">${l.replace(' успеха', '<u> успеха</u>')}</span>`).join('')}</div>`;
+
+  /* Оболочка кабинета Альянса */
+  const ICON = {
+    dash: '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
+    route: '<path d="M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>',
+    todo: '<rect x="3" y="5" width="6" height="6" rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/>',
+    cal: '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
+    feed: '<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0V9a2 2 0 0 1 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/>',
+    msg: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    lib: '<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>',
+    people: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  };
+  const svg = (k) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+  const SIDE = [['dash', 'Дашборд Альянса'], ['route', 'Мой маршрут'], ['todo', 'Трекер Фримана'], ['cal', 'Календарь'], ['feed', 'Лента'], ['msg', 'Сообщения'], ['lib', 'Библиотека'], ['people', 'Члены Альянса']];
+  const MOB = [['dash', 'Альянс'], ['todo', 'Трекер'], ['cal', 'Календарь'], ['feed', 'Лента']];
+  const side = () => `<aside class="side" aria-label="Меню Альянса">
+    <div class="brand"><img src="img/context-alliance.png" alt="" width="34" height="34"><span><b>Freeman's Alliance</b><span>кабинет Альянса</span></span></div>
+    ${SIDE.map(([k, l]) => `<div class="nav-i ${k === 'todo' ? 'on' : ''}">${svg(k)}<span>${l}</span></div>`).join('')}
+  </aside>`;
+  const mnav = () => `<nav class="mnav" aria-label="Нижнее меню">${MOB.map(([k, l]) => `<span class="${k === 'todo' ? 'on' : ''}">${svg(k)}${l}</span>`).join('')}</nav>`;
+  const topBar = () => {
     const p = d();
-    const two = prefs.switcher === 'tabs';
-    const items = [['Фокус дня'], ['Задачи']];
-    if (two) items.push(['Личные финансы', 'personal'], ['Бизнес', 'business']);
-    else items.push(['Финансы', 'on']);
-    items.push(['Дневник успеха'], ['1000 целей'], ['Зверёк']);
-    const html = items.map(([l, v]) => {
-      if (v === 'on') return `<span class="on">${l}</span>`;
-      if (v) return `<button class="${p.tab === v ? 'on' : ''}" data-act="tab" data-v="${v}">${l}</button>`;
-      return `<span>${l}</span>`;
-    }).join('');
-    return `<h1>Трекер Фримана</h1><div class="trk ${two ? 'seven' : ''}">${html}</div>`;
-  }
+    const who = prefs.role === 'mentor' ? 'Наставник' : PERSONAS[prefs.persona].title;
+    return `<header class="top"><h1>Трекер Фримана</h1><div class="me"><span class="ava">${esc(who[0])}</span><div><b>${esc(who)}</b><span>Уровень ${p.level} из 3</span></div></div></header>`;
+  };
 
   /* Столбики */
   function bars(rows, sel, act) {
@@ -257,14 +266,14 @@
       body = `<div class="fig"><small>Доход за ${monthName(key)}</small><b class="num">${money(0)}</b></div>
         <p class="mut" style="margin:8px 0 0">Запишите первое поступление: сумма, источник, готово. Этого достаточно, чтобы видеть рост.</p>`;
     } else if (full) {
-      body = `<div class="top"><div class="figs">
-        <div class="fig"><small>Доход за ${monthName(key)}</small><b class="num">${money(inc)}</b></div>
+      body = `<div class="top-fig wide"><div class="figs">
+        <div class="fig"><small>Доход</small><b class="num">${money(inc)}</b></div>
         <div class="fig"><small>Расход</small><b class="num">${money(exp)}</b></div>
         <div class="fig"><small>Осталось</small><b class="num">${money(inc - exp)}</b></div></div>
         <div>${bars(series, key, 'month')}<div class="bar-key"><span><i class="l"></i>доход</span><span><i></i>расход</span></div></div></div>`;
     } else {
-      body = `<div class="top"><div class="figs">
-        <div class="fig"><small>Доход за ${monthName(key)}</small><b class="num">${money(inc)}</b>${delta != null ? `<em class="num">${delta >= 0 ? '+' : '−'}${Math.abs(Math.round(delta * 100))}% к ${MONTHS_S[monthNo(M.addMonths(key, -1))]}</em>` : ''}</div></div>
+      body = `<div class="top-fig"><div class="figs">
+        <div class="fig"><small>Доход за ${monthName(key)}</small><b class="num">${money(inc)}</b>${delta != null ? `<em class="num ${delta >= 0 ? 'up-t' : ''}">${delta >= 0 ? '+' : '−'}${Math.abs(Math.round(delta * 100))}% к ${MONTHS_S[monthNo(M.addMonths(key, -1))]}</em>` : ''}</div></div>
         <div>${bars(series, key, 'month')}</div></div>`;
     }
 
@@ -289,25 +298,21 @@
       const name = e.type === 'income' ? (p.sources.find((s) => s.id === e.src) || {}).name || 'Доход' : (e.note || (CATS.find((k) => k.id === e.cat) || {}).name || 'Без категории');
       const tags = [e.link && e.src !== 'biz' ? 'из бизнеса' : '', e.auto ? 'повтор' : '', e.cur !== p.cur ? `${money(e.amount, e.cur)}` : ''].filter(Boolean).join(' · ');
       const needsSort = e.type === 'expense' && e.cat === 'none';
-      return `<div class="it"><span class="d">${dayOf(e.date)}</span><span class="t">${esc(name)}${tags ? `<em>${tags}</em>` : ''}${needsSort && isMember ? ` <button class="link" data-act="sort" data-v="${e.id}">Разобрать</button>` : ''}</span><span class="a num">${e.type === 'income' ? '+' : ''}${money(inDisp(e))}</span>${isMember ? `<button class="x" data-act="del" data-v="${e.id}" aria-label="Удалить запись">×</button>` : '<span></span>'}</div>
+      return `<div class="it"><span class="d">${dayOf(e.date)}</span><span class="t">${esc(name)}${tags ? `<em>${tags}</em>` : ''}${needsSort && isMember ? ` <button class="link" data-act="sort" data-v="${e.id}">Разобрать</button>` : ''}</span><span class="a num ${e.type === 'income' ? 'in' : ''}">${e.type === 'income' ? '+' : ''}${money(inDisp(e))}</span>${isMember ? `<button class="x" data-act="del" data-v="${e.id}" aria-label="Удалить запись">×</button>` : '<span></span>'}</div>
       ${ui.sort === e.id ? `<div class="sort chips">${CATS.map((k) => `<button class="chip" data-act="sortTo" data-v="${k.id}">${k.name}</button>`).join('')}</div>` : ''}`;
     }).join('') : `<p class="mut small" style="margin:6px 0 0">В ${MONTHS_L[monthNo(key)]} записей нет. Это нормально: дописывать пропущенное не нужно.</p>`;
 
+    const aside = `${full ? `<section class="card sec"><div class="sec-head"><h2>Расходы по категориям</h2>${noCatSum ? `<span class="sub num">Без категории: ${money(noCatSum)}</span>` : ''}</div>${catRows ? `<div class="cats">${catRows}</div>` : '<p class="mut small" style="margin:0">Расходов в этом месяце пока нет.</p>'}</section>` : ''}
+      ${srcRows ? `<section class="card sec"><div class="sec-head"><h2>Источники дохода</h2></div><div class="cats">${srcRows}</div></section>` : ''}`;
+
     return `<div class="stack">
-      ${isMember ? `<div class="row" style="justify-content:space-between">
-        <div class="seg" role="group" aria-label="Режим учёта">
-          <button data-act="mode" data-v="simple" aria-pressed="${!full}">Только доход</button>
-          <button data-act="mode" data-v="full" aria-pressed="${full}">Полный учёт</button>
-        </div>
-        <span class="mut small">${full ? 'Доход, расходы, категории. Вернуться можно в любой момент, записи сохранятся.' : 'Рекомендуем для старта: только сколько пришло и откуда.'}</span>
-      </div>` : ''}
+      <div class="${aside.trim() ? 'split' : ''}"><div class="col">
       <section class="card sec">
         <div class="sec-head"><div class="nav"><button data-act="mPrev" aria-label="Предыдущий месяц">‹</button><b>${monthName(key)[0].toUpperCase()}${monthName(key).slice(1)} ${key.slice(0, 4)}</b><button data-act="mNext" aria-label="Следующий месяц" ${key >= curMonth() ? 'disabled' : ''}>›</button></div></div>
         ${body}${actions}
       </section>
-      ${full ? `<section class="card sec"><div class="sec-head"><h2>Расходы по категориям</h2>${noCatSum ? `<span class="sub num">Без категории: ${money(noCatSum)}</span>` : ''}</div>${catRows ? `<div class="cats">${catRows}</div>` : '<p class="mut small" style="margin:0">Расходов в этом месяце пока нет.</p>'}</section>` : ''}
-      ${srcRows ? `<section class="card sec"><div class="sec-head"><h2>Источники дохода</h2></div><div class="cats">${srcRows}</div></section>` : ''}
       ${p.entries.length ? `<section class="card sec"><div class="sec-head"><h2>Записи</h2>${isMember ? '<button class="link" data-act="csv">Скачать CSV</button>' : ''}</div><div class="list">${rowsHtml}</div></section>` : ''}
+      </div>${aside.trim() ? `<div class="col">${aside}</div>` : ''}</div>
       <div class="stub">Цель, точка А, метрики и аналитика остаются здесь же, как сейчас. В прототипе они не показаны.</div>
     </div>`;
   }
@@ -415,25 +420,23 @@
     </section>` : '';
 
     const form = isMember ? `<section class="card sec" id="bForm">
-      <div class="sec-head">
-        <div><h2>${esc(p.bizName)}</h2></div>
-      </div>
-      <div class="sec-head" style="margin-bottom:10px">
+      <div class="sec-head" style="margin-bottom:6px">
         <div class="nav"><button data-act="pPrev" aria-label="Раньше">‹</button><b>${title}</b><button data-act="pNext" aria-label="Позже" ${ui.period >= due ? 'disabled' : ''}>›</button></div>
-        <span class="sub">Удобнее всего с 1 по 5 число, напомним в Telegram</span>
       </div>
-      <div class="fields">
+      <p class="mut small" style="margin:0 0 14px">Удобнее всего с 1 по 5 число, напомним в Telegram</p>
+      <div class="fields three">
         <label class="f"><span>Оборот</span><input class="inp" id="b-rev" inputmode="decimal" autocomplete="off" value="${esc(ui.biz.rev)}" placeholder="0"><small>Все оплаты клиентов, до расходов</small></label>
         <label class="f"><span>Чистая прибыль</span><input class="inp" id="b-profit" inputmode="text" autocomplete="off" value="${esc(ui.biz.profit)}" placeholder="0"><small>Что осталось после всех расходов. Если в минус, поставьте −</small></label>
         <label class="f"><span>В карман</span><input class="inp" id="b-pocket" inputmode="decimal" autocomplete="off" value="${esc(ui.biz.pocket)}" placeholder="0"><small>Сколько вывели себе лично</small></label>
       </div>
       <div class="live" id="bLive">${live.html}</div>
       <div id="bErr" class="err">${live.err}</div>
-      <div class="row" style="margin-top:6px"><button class="btn" data-act="bizSave">${filled ? 'Обновить' : 'Сохранить'}</button><span class="mut small">В ${SYMBOL[p.cur]}. Остальной учёт ведите в своей бухгалтерии.</span></div>
+      <div class="row" style="margin-top:6px"><button class="btn" data-act="bizSave">${filled ? 'Обновить' : 'Сохранить'}</button><span class="mut small">Суммы ${{ RUB: 'в рублях', USD: 'в долларах', EUR: 'в евро' }[p.cur]}</span></div>
       ${ui.offer ? offer() : ''}
     </section>` : '';
 
-    return `<div class="stack">${meter()}${isMember ? '' : mentorCard()}${form}${table}
+    const body = isMember && table ? `<div class="split biz"><div class="col">${table}</div><div class="col">${form}</div></div>` : `${isMember ? '' : mentorCard()}${form}${table}`;
+    return `<div class="stack">${meter()}${body}
       <div class="privacy">Цифры бизнеса видите вы, ваш наставник и директор клана.</div></div>`;
   }
 
@@ -442,8 +445,7 @@
     return `<div class="offer">
       <p style="margin:0">Вы вывели себе <b class="num">${money(o.amount)}</b>. Записать в личные финансы как доход? Если выводили частями, поправьте сумму.</p>
       <input class="inp" id="offerVal" inputmode="decimal" value="${group(o.amount)}" aria-label="Сумма для личных финансов">
-      <button class="btn sm" data-act="offerYes">Записать</button>
-      <button class="btn ghost sm" data-act="offerNo">Не сейчас</button>
+      <div class="row"><button class="btn sm" data-act="offerYes">Записать</button><button class="btn ghost sm" data-act="offerNo">Не сейчас</button></div>
     </div>`;
   }
 
@@ -470,27 +472,41 @@
       <div class="demo-body">
         <label>Участник<select data-pref="persona">${opt(people, prefs.persona)}</select></label>
         <label>Смотрю как<select data-pref="role">${opt({ member: 'Участник', mentor: 'Наставник' }, prefs.role)}</select></label>
-        <label>Переключатель<select data-pref="switcher">${opt({ cards: 'А. Две карточки с цифрами', seg: 'Б. Простой переключатель', tabs: 'В. Две вкладки в трекере' }, prefs.switcher)}</select></label>
         <label>Стрелка считает<select data-pref="metric">${opt({ profit: 'Чистую прибыль', rev: 'Оборот', pocket: 'Деньги в кармане' }, prefs.metric)}</select></label>
         <label>Валюта<select data-demo="cur">${opt({ RUB: 'Рубли', USD: 'Доллары', EUR: 'Евро' }, p.cur)}</select></label>
-        <label>Тема<select data-pref="theme">${opt({ dark: 'Тёмная', light: 'Светлая' }, prefs.theme)}</select></label>
         <button data-act="advance">Месяц вперёд</button>
         <button data-act="reset">Сбросить этого участника</button>
         <div class="demo-note">${esc(PERSONAS[prefs.persona].hint)}. Данные вымышленные и хранятся только в этом браузере. Курс: $1 = ${M.RATES.RUB} ₽, ${M.RATES.EUR} €.</div>
       </div></details>`;
   }
 
+  function finHead() {
+    const p = d(); const full = p.personalMode === 'full';
+    let right = '';
+    if (p.tab === 'business') right = p.hasBiz ? `<span class="biz-name">${esc(p.bizName)}</span>` : '';
+    else if (prefs.role === 'member') {
+      right = `<div class="seg" role="group" aria-label="Режим учёта">
+        <button data-act="mode" data-v="simple" aria-pressed="${!full}">Только доход</button>
+        <button data-act="mode" data-v="full" aria-pressed="${full}">Полный учёт</button>
+      </div><span class="mut small">${full ? 'Доход, расходы, категории. Вернуться можно в любой момент, записи сохранятся.' : 'Для старта: только сколько пришло и откуда.'}</span>`;
+    }
+    return `<div class="fin-head">${toggle()}${right ? `<div class="fin-side">${right}</div>` : ''}</div>`;
+  }
+
   function render() {
     const p = d();
-    document.documentElement.classList.toggle('dark', prefs.theme === 'dark');
-    const sw = prefs.switcher === 'cards' ? pairCards() : prefs.switcher === 'seg' ? segSwitch() : '';
-    app.innerHTML = `${demoBar()}<main class="page">${tracker()}
-      ${prefs.role === 'mentor' || sw ? `<div class="stack">${prefs.role === 'mentor' ? '<p class="mut small" style="margin:0">Вы смотрите кабинет участника: только чтение.</p>' : ''}${sw}</div>` : ''}
-      ${p.tab === 'business' ? business() : personal()}
-    </main>${ui.toast ? `<div class="toast" role="status"><span>${esc(ui.toast.text)}</span>${ui.toast.undo ? '<button data-act="undo">Отменить</button>' : ''}</div>` : ''}`;
+    app.innerHTML = `${demoBar()}<div class="kab">${side()}<div class="main">${topBar()}
+      <main class="content">${tracker()}${finHead()}
+        ${prefs.role === 'mentor' ? '<p class="note">Вы смотрите кабинет участника: только чтение.</p>' : ''}
+        ${p.tab === 'business' ? business() : personal()}
+      </main></div></div>${mnav()}${ui.toast ? `<div class="toast" role="status"><span>${esc(ui.toast.text)}</span>${ui.toast.undo ? '<button data-act="undo">Отменить</button>' : ''}</div>` : ''}`;
     typo(app);
     const n = document.getElementById('needle');
     if (n) requestAnimationFrame(() => requestAnimationFrame(() => { n.style.transform = `rotate(${n.dataset.to}deg)`; needleWas = Number(n.dataset.to); }));
+    const tg = document.getElementById('tg');
+    if (ui.refocus) { tg.focus({ preventScroll: true }); ui.refocus = false; }
+    if (thumbWas !== p.tab) requestAnimationFrame(() => requestAnimationFrame(() => { tg.dataset.pos = p.tab; }));
+    thumbWas = p.tab;
     if (ui.composer) { const a = document.getElementById('amt'); if (a && ui.focusAmt) { a.focus({ preventScroll: false }); ui.focusAmt = false; } }
     save();
   }
@@ -535,6 +551,7 @@
 
   const actions = {
     tab(v) { d().tab = v; ui.composer = null; ui.rec = false; },
+    flip() { const p = d(); actions.tab(p.tab === 'business' ? 'personal' : 'business'); ui.refocus = true; },
     mode(v) { d().personalMode = v; ui.composer = null; ui.rec = false; if (v === 'simple') toast('Расходы сохранены и скрыты. Вернуть можно в любой момент.'); },
     open(v) { openComposer(v); },
     closeComposer() { ui.composer = null; },
@@ -660,6 +677,13 @@
     const fn = actions[el.dataset.act];
     if (!fn) return;
     if (fn(el.dataset.v) !== false) render();
+  });
+  // Стрелки двигают тумблер туда, куда нажали, Space и Enter переключают сами
+  document.addEventListener('keydown', (ev) => {
+    if (ev.target.id !== 'tg' || (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight')) return;
+    ev.preventDefault();
+    const to = ev.key === 'ArrowRight' ? 'business' : 'personal';
+    if (d().tab !== to) { actions.tab(to); ui.refocus = true; render(); }
   });
   document.addEventListener('toggle', (ev) => { if (ev.target.id === 'demo') ui.demoOpen = ev.target.open; }, true);
 
