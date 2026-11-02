@@ -30,24 +30,24 @@
   microEntries.push(exp('e10', '2026-11-01', 3400, 'food', 'Продукты'));
 
   const year = [
-    [3100, 620, 400], [2800, 540, 400], [3600, 800, 500], [4200, 980, 700], [3900, 860, 600], [4700, 1120, 800],
-    [5100, 1240, 900], [4600, 1010, 700], [5400, 1300, 1000], [5900, 1390, 1000], [5500, 1180, 800], [6300, 1480, 1100],
+    [9300, 1860, 1200], [8400, 1620, 1200], [10800, 2400, 1500], [12600, 2940, 2100], [11700, 2580, 1800], [14100, 3360, 2400],
+    [15300, 3720, 2700], [13800, 3030, 2100], [16200, 3900, 3000], [17700, 4170, 3000], [16500, 3540, 2400], [18900, 4440, 3300],
   ];
 
   const PERSONAS = {
     zero: {
       title: 'С нуля', hint: 'Пустой кабинет: вносите месяц за месяцем и смотрите на стрелку',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $10 000 в год', hasBiz: false, bizName: '', cadence: 'month',
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: false, bizName: '', cadence: 'month',
         periods: [], personalMode: 'simple',
         sources: [{ id: 'main', name: 'Основной доход', own: true }, { id: 'side', name: 'Подработка', own: true }],
         entries: [], repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
       }),
     },
     voice: {
-      title: 'Пример из голосового', hint: 'Месяц $2 500, месяц $1 500, цель $100 000',
+      title: 'Пример из голосового', hint: 'Месяц $2 500, месяц $1 500, цель $36 000',
       make: () => ({
-        cur: 'USD', level: 2, levelSource: 'По анкете: от $10 000 в год', hasBiz: true, bizName: 'Бизнес из примера', cadence: 'month',
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Бизнес из примера', cadence: 'month',
         periods: [
           { kind: 'month', key: '2026-09', rev: 7000, profit: 2500, pocket: 1500 },
           { kind: 'month', key: '2026-10', rev: 5200, profit: 1500, pocket: 900 },
@@ -58,13 +58,13 @@
       }),
     },
     micro: {
-      title: 'Микробизнес, 7 месяцев', hint: 'Онлайн-школа, рубли, полный личный учёт',
+      title: 'Онлайн-школа, 7 месяцев', hint: 'Онлайн-школа, рубли, полный личный учёт',
       make: () => {
         const r = [180, 240, 160, 310, 270, 220, 340];
         const p = [25, 40, 15, 55, 45, 30, 60];
         const c = [20, 30, 10, 40, 40, 25, 45];
         return {
-          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до $10 000 в год', hasBiz: true, bizName: 'Онлайн-школа рисования', cadence: 'month',
+          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Онлайн-школа рисования', cadence: 'month',
           periods: r.map((v, i) => ({
             kind: 'month', key: M.addMonths('2026-04', i), rev: rub(v * 1000), profit: rub(p[i] * 1000), pocket: rub(c[i] * 1000),
           })),
@@ -82,7 +82,7 @@
     ready: {
       title: 'Готов к переходу', hint: 'За 12 месяцев сделал цель первого уровня',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $10 000 в год', hasBiz: true, bizName: 'Студия ремонта', cadence: 'month',
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Студия ремонта', cadence: 'month',
         periods: year.map(([rev, profit, pocket], i) => ({ kind: 'month', key: M.addMonths('2025-11', i), rev, profit, pocket })),
         personalMode: 'simple',
         sources: [{ id: 'biz', name: 'Из бизнеса', own: true }],

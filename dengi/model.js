@@ -7,9 +7,9 @@
   const RATES = { USD: 1, RUB: 80.4, EUR: 0.896 };
 
   const LEVELS = [
-    { n: 1, name: 'Микробизнес', sub: 'Продукт и первые покупки', steps: 'шаги 0–5', target: 10000 },
-    { n: 2, name: 'Средний бизнес', sub: 'Система продаж и команда', steps: 'шаги 6–10', target: 100000 },
-    { n: 3, name: 'Крупный бизнес', sub: 'Масштабирование', steps: 'шаги 11–15', target: 1000000 },
+    { n: 1, name: 'Market Fit', sub: 'Продукт и первые покупки', steps: 'шаги 0–5', profit: 36000, rev: 100000 },
+    { n: 2, name: 'Team and System', sub: 'Система продаж и команда', steps: 'шаги 6–10', profit: 120000, rev: 500000 },
+    { n: 3, name: 'Enterprise', sub: 'Масштабирование', steps: 'шаги 11–15', profit: 1000000, rev: 5000000 },
   ];
 
   const WEIGHT = { month: 1 / 12, week: 1 / 52 };
@@ -90,13 +90,15 @@
     return { filled: expected - gaps.length, expected, gaps };
   }
 
-  const canLevelUp = (level, fact) => level < LEVELS.length && fact >= LEVELS[level - 1].target;
+  // Оборот имеет свою шкалу, деньги в кармане идут по шкале прибыли
+  const levelTarget = (level, metric = 'profit') => LEVELS[level - 1][metric === 'rev' ? 'rev' : 'profit'];
+  const canLevelUp = (level, fact, metric = 'profit') => level < LEVELS.length && fact >= levelTarget(level, metric);
 
   // Стартовый уровень по годовой сумме из анкеты, в долларах
-  const levelFromYear = (usd) => (usd >= 100000 ? 3 : usd >= 10000 ? 2 : 1);
+  const levelFromYear = (usd, metric = 'profit') => (usd >= levelTarget(2, metric) ? 3 : usd >= levelTarget(1, metric) ? 2 : 1);
 
   return {
     RATES, LEVELS, WEIGHT, iso, parse, pad, monthKey, addMonths, lastDay, addDays, weekStart, weekMonth,
-    periodEnd, normalize, stats, rollup, margin, coverage, canLevelUp, levelFromYear,
+    periodEnd, normalize, stats, rollup, margin, coverage, levelTarget, canLevelUp, levelFromYear,
   };
 });

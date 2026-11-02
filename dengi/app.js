@@ -2,7 +2,7 @@
 (function () {
   const M = window.Model;
   const { PERSONAS, CATS } = window.Seeds;
-  const STORE = 'dengi.v1';
+  const STORE = 'dengi.v2';
   const MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
   const MONTHS_G = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
   const MONTHS_L = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
@@ -46,7 +46,7 @@
     return group(x);
   };
   const compact = (u, cur = d().cur) => wrap(compactNum(u * M.RATES[cur]), cur);
-  const goalUsd = (t) => (t >= 1e6 ? '$1\u00a0млн' : `$${group(t)}`);
+  const goalUsd = (t) => (t >= 1e6 ? `$${t / 1e6}\u00a0млн` : `$${group(t)}`);
   const compactBare = (u, cur = d().cur) => compactNum(u * M.RATES[cur]);
   const inDisp = (e) => (e.cur === d().cur ? e.amount : (e.amount / M.RATES[e.cur]) * M.RATES[d().cur]);
   const toUsd = (e) => e.amount / M.RATES[e.cur];
@@ -128,13 +128,14 @@
   function meter() {
     const p = d(); const m = meterData();
     const lv = M.LEVELS[p.level - 1];
+    const target = M.levelTarget(p.level, m.metric);
     const s = M.stats(m.periods, m.metric);
     const has = s.n > 0;
-    const share = has ? s.forecast / lv.target : 0;
+    const share = has ? s.forecast / target : 0;
     const months = Math.round(s.months * 10) / 10;
     const monthsTxt = `${String(months).replace('.', ',')} мес`;
-    const left = Math.max(0, lv.target - s.fact);
-    const canUp = M.canLevelUp(p.level, s.fact);
+    const left = Math.max(0, target - s.fact);
+    const canUp = M.canLevelUp(p.level, s.fact, m.metric);
 
     let read;
     if (!has) read = `<b class="empty">Пока нет данных</b><span>Внесите первый месяц, и стрелка покажет, что выйдет за год</span>`;
@@ -144,8 +145,8 @@
     const rows = has ? `
       <div class="lv-row"><dt>Уже сделано</dt><dd class="num">${usd(s.fact)} <span class="mut small">за ${monthsTxt}</span></dd></div>
       <div class="lv-row"><dt>Сейчас в среднем</dt><dd class="num">${usd(s.perMonth)} <span class="mut small">в месяц</span></dd></div>
-      <div class="lv-row"><dt>Нужно для цели</dt><dd class="num">${usd(lv.target / 12)} <span class="mut small">в месяц</span></dd></div>` : `
-      <div class="lv-row"><dt>Нужно для цели</dt><dd class="num">${usd(lv.target / 12)} <span class="mut small">в месяц</span></dd></div>`;
+      <div class="lv-row"><dt>Нужно для цели</dt><dd class="num">${usd(target / 12)} <span class="mut small">в месяц</span></dd></div>` : `
+      <div class="lv-row"><dt>Нужно для цели</dt><dd class="num">${usd(target / 12)} <span class="mut small">в месяц</span></dd></div>`;
 
     let how = '';
     if (has) {
@@ -154,19 +155,20 @@
         ? 'Считаем сумму за последние 12 месяцев: это уже факт, а не прогноз.'
         : `Как считаем: ${group(s.fact * M.RATES[p.cur])} за ${whole != null ? `${whole} мес` : monthsTxt} → ${group(s.perMonth * M.RATES[p.cur])} в месяц → × 12.`;
       if (s.n < 3 && s.weight < 1) how += ' По одному-двум месяцам прогноз пока грубый.';
-      if (s.forecast >= lv.target && !canUp) how += ` Темп выше цели. Уровень засчитаем, когда сумма станет фактом: осталось ${usd(left)}.`;
+      if (s.forecast >= target && !canUp) how += ` Темп выше цели. Уровень засчитаем, когда сумма станет фактом: осталось ${usd(left)}.`;
     }
 
     const ladder = M.LEVELS.map((l) => {
-      const fill = l.n < p.level ? 1 : l.n === p.level ? Math.max(0, Math.min(1, s.fact / l.target)) : 0;
-      return `<div class="rung ${l.n === p.level ? 'now' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><span>${goalUsd(l.target)}</span></div>`;
+      const t = M.levelTarget(l.n, m.metric);
+      const fill = l.n < p.level ? 1 : l.n === p.level ? Math.max(0, Math.min(1, s.fact / t)) : 0;
+      return `<div class="rung ${l.n === p.level ? 'now' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><span>${goalUsd(t)}</span></div>`;
     }).join('');
 
     return `<section class="card meter">
-      <div class="dial">${dial(s, lv.target)}<div class="dial-read">${read}</div></div>
+      <div class="dial">${dial(s, target)}<div class="dial-read">${read}</div></div>
       <div>
         <div class="lv-head"><h2>Уровень ${lv.n} из 3: ${lv.name}</h2><span class="mut small">${lv.sub}</span></div>
-        <div class="mut small" style="margin-top:2px">${esc(m.label)} за год: цель ${goalUsd(lv.target)}${p.cur === 'USD' ? '' : ` (около ${compact(lv.target)})`}. ${esc(p.levelSource)}.</div>
+        <div class="mut small" style="margin-top:2px">${esc(m.label)} за год: цель ${goalUsd(target)}${p.cur === 'USD' ? '' : ` (около ${compact(target)})`}. ${esc(p.levelSource)}.</div>
         <dl class="lv-rows">${rows}</dl>
         ${how ? `<p class="how">${how}</p>` : ''}
         <div class="ladder" aria-label="Три уровня развития">${ladder}</div>
