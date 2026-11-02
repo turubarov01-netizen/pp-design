@@ -198,14 +198,14 @@
   function meter() {
     const p = d(); const m = meterData(); const s = m.stats;
     const lv = M.LEVELS[p.level - 1];
-    const goal = M.levelGoal(p.level, m.metric, p.cur);
-    const target = M.levelTarget(p.level, m.metric, p.cur);
+    const goalTxt = (n, metric) => { const g = M.goalOf(n, metric, p.cur, p.goals); return goalText(g.value, g.cur); };
+    const target = M.levelTarget(p.level, m.metric, p.cur, p.goals);
     const has = s.n > 0;
     const share = has ? s.forecast / target : 0;
     const months = Math.round(s.months * 10) / 10;
     const monthsTxt = `${String(months).replace('.', ',')} мес`;
     const left = Math.max(0, target - s.fact);
-    const canUp = M.canLevelUp(p.level, s.fact, m.metric, p.cur);
+    const canUp = M.canLevelUp(p.level, s.fact, m.metric, p.cur, p.goals);
     const base = s.closedFact == null ? s.fact : s.closedFact;
 
     const none = m.metric === 'income' ? 'Запишите первый доход, и стрелка покажет, что выйдет за год' : p.businesses.length ? 'Внесите первый месяц, и стрелка покажет, что выйдет за год' : 'Добавьте компанию, и стрелка покажет, что выйдет за год';
@@ -232,29 +232,45 @@
     }
 
     const ladder = M.LEVELS.map((l) => {
-      const t = M.levelTarget(l.n, m.metric, p.cur);
+      const t = M.levelTarget(l.n, m.metric, p.cur, p.goals);
       const fill = l.n < p.level ? 1 : l.n === p.level ? Math.max(0, Math.min(1, s.fact / t)) : 0;
-      return `<div class="rung ${l.n === p.level ? 'now' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><b>${l.name}</b><span>${goalText(M.levelGoal(l.n, m.metric, p.cur))}</span></div>`;
+      return `<div class="rung ${l.n === p.level ? 'now' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><b>${l.name}</b><span>${goalTxt(l.n, m.metric)}</span></div>`;
     }).join('');
 
     const pick = prefs.role === 'member' && !p.request && !locked(p);
     const track = pick
       ? `<div class="lv-track"><span>Считаем по</span><div class="seg" role="group" aria-label="По чему считать уровень">${Object.entries(TRACKS).map(([k, t]) => `<button data-act="track" data-v="${k}" aria-pressed="${k === m.metric}">${t}</button>`).join('')}</div></div>`
       : `<div class="lv-track ro">Считаем: ${esc(trackLow(m.metric))}</div>`;
-    const source = p.levelSource.replace('{goal}', goalText(M.levelGoal(1, 'income', p.cur)));
+    const source = p.goals ? 'Цели поставил наставник' : p.levelSource.replace('{goal}', goalTxt(1, 'income'));
+    const open = p.request && p.request.status !== 'rejected';
+    const own = prefs.role === 'mentor' && !ui.goals ? `<div class="track-hint in"><span>${open ? 'Цели можно изменить после решения по заявке.' : p.goals ? 'У участника свои цели.' : 'У участника общие цели.'}</span>${open ? '' : '<button class="link" data-act="goalsOpen">Изменить цели участника</button>'}</div>` : '';
 
     return `<section class="card meter">
-      <div class="dial">${dial(s, target, goalText(goal))}<div class="dial-read">${read}</div></div>
+      <div class="dial">${dial(s, target, goalTxt(p.level, m.metric))}<div class="dial-read">${read}</div></div>
       <div>
         ${track}
         <div class="lv-head"><div class="eyebrow">Уровень ${lv.n} из 3</div><h2>${lv.name}</h2></div>
-        <div class="lv-sub">Цель уровня за год: личный доход ${goalText(M.levelGoal(p.level, 'income', p.cur))} или выручка компании ${goalText(M.levelGoal(p.level, 'rev', p.cur))}. ${esc(source)}.${m.metric === 'rev' && p.businesses.length > 1 ? ' Считаем все компании вместе.' : ''}</div>
+        <div class="lv-sub">Цель уровня за год: личный доход ${goalTxt(p.level, 'income')} или выручка компании ${goalTxt(p.level, 'rev')}. ${esc(source)}.${m.metric === 'rev' && p.businesses.length > 1 ? ' Считаем все компании вместе.' : ''}</div>
         <dl class="lv-rows">${rows}</dl>
         ${how ? `<p class="how">${how}</p>` : ''}
         <div class="ladder" aria-label="Три уровня развития">${ladder}</div>
+        ${own}
       </div>
       ${upBlock(canUp, s)}
+      ${prefs.role === 'mentor' && ui.goals ? goalsForm() : ''}
     </section>`;
+  }
+
+  // Наставник ставит цели под рынок участника. Участник видит их сразу
+  function goalsForm() {
+    const g = ui.goals;
+    const rows = M.LEVELS.map((l, i) => `<div class="gf-row"><b>${l.name}</b>
+      <label class="f"><span>Личный доход</span><input class="inp" id="g-income-${i}" inputmode="numeric" autocomplete="off" value="${esc(g.income[i])}"></label>
+      <label class="f"><span>Выручка компании</span><input class="inp" id="g-rev-${i}" inputmode="numeric" autocomplete="off" value="${esc(g.rev[i])}"></label></div>`).join('');
+    return `<div class="up goals-f"><div class="gf-head"><b>Цели участника за год, в ${SYMBOL[g.cur]}</b><p>Для тех, кто работает на другом рынке. Участник увидит их сразу, заявка на переход будет считаться по ним.</p></div>
+      ${rows}
+      ${g.err ? `<p class="err" role="alert">${esc(g.err)}</p>` : ''}
+      <div class="row"><button class="btn sm" data-act="goalsSave">Сохранить цели</button>${d().goals ? '<button class="btn ghost sm" data-act="goalsReset">Вернуть общие</button>' : ''}<button class="btn ghost sm" data-act="goalsNo">Отмена</button></div></div>`;
   }
 
   /* Сводки для переключателя */
@@ -702,7 +718,7 @@
     const p = d();
     app.innerHTML = `${demoBar()}<div class="kab">${side()}<div class="main">${topBar()}
       <main class="content">${tracker()}${finHead()}
-        ${prefs.role === 'mentor' ? '<p class="note">Вы смотрите кабинет участника: только чтение. Заявку на переход подтверждаете здесь.</p>' : ''}
+        ${prefs.role === 'mentor' ? '<p class="note">Вы смотрите кабинет участника. Записи только для чтения, а заявку на переход и цели участника вы решаете здесь.</p>' : ''}
         ${locked(p) ? `<p class="note lock"><b>Ведение финансов закрыто до ${dayOf(p.lockedUntil)} ${p.lockedUntil.slice(0, 4)}.</b> Результат на переход не подтвердился. Записи видны, новые вносить нельзя.</p>` : ''}
         ${p.tab === 'business' ? business() : personal()}
       </main></div></div>${mnav()}${ui.toast ? `<div class="toast" role="status"><span>${esc(ui.toast.text)}</span>${ui.toast.undo ? '<button data-act="undo">Отменить</button>' : ''}</div>` : ''}`;
@@ -957,6 +973,20 @@
       const p = d(); p.request.status = 'rejected'; p.lockedUntil = lockDate(p.today);
       toast(`Ведение финансов закрыто на ${LOCK_MONTHS} месяца`);
     },
+    goalsOpen() {
+      const p = d(); const first = M.goalOf(1, 'income', p.cur, p.goals); const cur = first.cur;
+      const fill = (metric) => M.LEVELS.map((l) => group(M.goalOf(l.n, metric, p.cur, p.goals).value));
+      ui.goals = { cur, income: fill('income'), rev: fill('rev'), err: '' };
+    },
+    goalsNo() { ui.goals = null; },
+    goalsSave() {
+      const g = ui.goals; const read = (list) => list.map((v) => parseNum(v));
+      const income = read(g.income); const rev = read(g.rev);
+      if (!M.goalsValid(income) || !M.goalsValid(rev)) { g.err = 'Внесите все суммы: на каждом следующем уровне цель выше предыдущей'; return undefined; }
+      d().goals = { cur: g.cur, income, rev }; ui.goals = null; toast('Цели участника сохранены');
+      return undefined;
+    },
+    goalsReset() { d().goals = null; ui.goals = null; toast('Вернули общие цели'); },
     examPass() {
       const p = d(); p.level = Math.min(3, p.level + 1); p.levelSource = 'Предыдущий уровень сделан'; p.request = null; needleWas = -90;
       toast(`Уровень ${p.level}: ${M.LEVELS[p.level - 1].name}`);
@@ -969,7 +999,7 @@
     },
     reset() {
       data[prefs.persona] = fresh();
-      Object.assign(ui, { composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, toast: null, manage: null, mg: null, ask: false });
+      Object.assign(ui, { composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, toast: null, manage: null, mg: null, ask: false, goals: null });
       needleWas = -90;
     },
     csv() {
@@ -1014,13 +1044,17 @@
     if (t.dataset.pref) {
       prefs[t.dataset.pref] = t.value;
       if (t.dataset.pref === 'persona' || t.dataset.pref === 'role') {
-        Object.assign(ui, { composer: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, manage: null, mg: null, ask: false });
+        Object.assign(ui, { composer: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, manage: null, mg: null, ask: false, goals: null });
         needleWas = -90;
         if (t.dataset.pref === 'role' && t.value === 'mentor' && d().businesses.length) d().tab = 'business';
       }
       render();
     } else if (t.dataset.demo === 'cur') {
-      d().cur = t.value; ui.biz = null; ui.period = null; ui.offer = null; render();
+      d().cur = t.value; ui.biz = null; ui.period = null; ui.offer = null; ui.goals = null; render();
+    } else if (t.id && t.id.startsWith('g-') && ui.goals) {
+      const [, key, i] = t.id.split('-'); const v = parseNum(t.value);
+      if (v != null && !Number.isNaN(v) && Number.isInteger(v)) t.value = group(v);
+      ui.goals[key][i] = t.value;
     } else if (t.id && (t.id.startsWith('b-') || t.id === 'amt' || t.id === 'recVal' || t.id === 'offerVal')) {
       const v = parseNum(t.value);
       if (v != null && !Number.isNaN(v) && Number.isInteger(v)) {
@@ -1038,6 +1072,7 @@
   document.addEventListener('input', (ev) => {
     const t = ev.target;
     if (t.id === 'mgName' && ui.mg) ui.mg.name = t.value;
+    else if (t.id && t.id.startsWith('g-') && ui.goals) { const [, key, i] = t.id.split('-'); ui.goals[key][i] = t.value; }
     else if (t.id === 'amt') { ui.draft.amount = t.value; const fx = document.getElementById('fx'); if (fx) fx.textContent = fxLine(); }
     else if (t.id === 'note') {
       ui.draft.note = t.value;

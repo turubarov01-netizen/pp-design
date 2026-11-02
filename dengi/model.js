@@ -151,15 +151,26 @@
 
   // Цель уровня в валюте человека
   const levelGoal = (level, metric = 'income', cur = 'USD') => (GOALS[cur] || GOALS.USD)[metric === 'rev' ? 'rev' : 'income'][level - 1];
+  // Личные цели от наставника важнее общих и живут в своей валюте: { cur, income: [3], rev: [3] }
+  const goalOf = (level, metric = 'income', cur = 'USD', own = null) => {
+    const list = own && own[metric === 'rev' ? 'rev' : 'income'];
+    if (list) return { value: list[level - 1], cur: own.cur };
+    return { value: levelGoal(level, metric, cur), cur: GOALS[cur] ? cur : 'USD' };
+  };
   // Та же цель в долларах: в них считаются суммы
-  const levelTarget = (level, metric = 'income', cur = 'USD') => levelGoal(level, metric, cur) / (GOALS[cur] ? RATES[cur] : 1);
-  const canLevelUp = (level, factUsd, metric = 'income', cur = 'USD') => level < LEVELS.length && factUsd * RATES[cur] >= levelGoal(level, metric, cur) - 1e-6;
+  const levelTarget = (level, metric = 'income', cur = 'USD', own = null) => { const g = goalOf(level, metric, cur, own); return g.value / RATES[g.cur]; };
+  const canLevelUp = (level, factUsd, metric = 'income', cur = 'USD', own = null) => {
+    const g = goalOf(level, metric, cur, own);
+    return level < LEVELS.length && factUsd * RATES[g.cur] >= g.value - 1e-6;
+  };
+  // Три цели одной дорожки: все положительные и каждая следующая больше предыдущей
+  const goalsValid = (list) => list.length === LEVELS.length && list.every((v, i) => Number.isFinite(v) && v > 0 && (i === 0 || v > list[i - 1]));
 
   // Стартовый уровень по годовой сумме из анкеты, в долларах
   const levelFromYear = (usd, metric = 'income') => (usd >= levelTarget(2, metric) ? 3 : usd >= levelTarget(1, metric) ? 2 : 1);
 
   return {
     RATES, LEVELS, WEIGHT, iso, parse, pad, monthKey, addMonths, lastDay, addDays, weekStart, weekMonth,
-    periodEnd, normalize, stats, incomeStats, rollup, combine, margin, coverage, groupPeriods, GOALS, levelGoal, levelTarget, canLevelUp, levelFromYear,
+    periodEnd, normalize, stats, incomeStats, rollup, combine, margin, coverage, groupPeriods, GOALS, levelGoal, goalOf, goalsValid, levelTarget, canLevelUp, levelFromYear,
   };
 });
