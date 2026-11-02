@@ -250,7 +250,7 @@
       <div>
         ${track}
         <div class="lv-head"><div class="eyebrow">Уровень ${lv.n} из 3</div><h2>${lv.name}</h2></div>
-        <div class="lv-sub">Цель уровня за год: личный доход ${goalTxt(p.level, 'income')} или выручка компании ${goalTxt(p.level, 'rev')}. ${esc(source)}.${m.metric === 'rev' && p.businesses.length > 1 ? ' Считаем все компании вместе.' : ''}</div>
+        <div class="lv-sub">Цель уровня за год: личный доход ${goalTxt(p.level, 'income')} или выручка компании ${goalTxt(p.level, 'rev')}. ${esc(source)}.${m.metric === 'income' ? ' Личный доход считаем до налогов.' : ''}${m.metric === 'rev' && p.businesses.length > 1 ? ' Считаем все компании вместе.' : ''}</div>
         <dl class="lv-rows">${rows}</dl>
         ${how ? `<p class="how">${how}</p>` : ''}
         <div class="ladder" aria-label="Три уровня развития">${ladder}</div>
