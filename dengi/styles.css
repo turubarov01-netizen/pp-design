@@ -389,7 +389,9 @@ td em { font-style: normal; font-size: 11px; color: var(--muted); margin-left: 4
 }
 @media (max-width: 640px) {
   .lv-track .seg { width: 100%; }
-  .lv-track .seg button { flex: 1; padding: 6px 8px; }
+  .lv-track .seg button { flex: 1; padding: 6px 8px; min-height: 38px; }
+  .up .btn.sm { height: 40px; padding: 0 14px; }
+  .track-hint .link { min-height: 40px; }
   .trk { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
   .trk span { padding: 8px 2px; font-size: 12px; }
   .trk u { display: none; }
