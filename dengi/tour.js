@@ -181,7 +181,7 @@
     const left = wide ? Math.min(Math.max(16, r.x + r.w / 2 - tw / 2), vw - tw - 16) : null;
     Object.assign(hole.style, { left: `${r.x - pad}px`, top: `${r.y - pad}px`, width: `${r.w + pad * 2}px`, height: `${r.h + pad * 2}px` });
     tip.style.top = `${top}px`;
-    if (wide) Object.assign(tip.style, { left: `${left}px`, right: 'auto', margin: '0', width: `${tw}px` });
+    Object.assign(tip.style, wide ? { left: `${left}px`, right: 'auto', margin: '0', width: `${tw}px` } : { left: '', right: '', margin: '', width: '' });
     const ax = Math.min(Math.max(r.x + r.w / 2, 40), vw - 40);
     Object.assign(arrow.style, { left: `${ax - 7}px`, top: `${below ? top - 7 : top + tipH - 7}px` });
     arrow.classList.toggle('up', !below);
