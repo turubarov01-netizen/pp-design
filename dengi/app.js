@@ -225,7 +225,7 @@
       const whole = Math.abs(s.months - Math.round(s.months)) < 1e-6 ? Math.round(s.months) : null;
       how = s.weight >= 1 - 1e-9
         ? 'Считаем сумму за последние 12 месяцев: это уже факт, а не прогноз.'
-        : `Как считаем: ${group(base * M.RATES[p.cur])} за ${whole != null ? `${whole} мес` : monthsTxt} → ${group(s.perMonth * M.RATES[p.cur])} в месяц → × 12.`;
+        : `Как считаем: ${group(base * M.RATES[p.cur])} за ${whole != null ? `${whole} мес` : monthsTxt} → ${group(s.perMonth * M.RATES[p.cur])} в месяц → × 12.`;
       if (s.thisMonth) how += ' Текущий месяц войдёт в расчёт, когда закончится.';
       if (s.n < 3 && s.weight < 1) how += ' По одному-двум месяцам прогноз пока грубый.';
       if (s.forecast >= target && !canUp) how += ` Темп выше цели. Заявку на переход можно подать, когда сумма станет фактом: осталось ${usd(left)}.`;
