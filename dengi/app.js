@@ -2,12 +2,12 @@
 (function () {
   const M = window.Model;
   const { PERSONAS, CATS } = window.Seeds;
-  const STORE = 'dengi.v6';
+  const STORE = 'dengi.v7';
   const MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
   const MONTHS_G = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
   const MONTHS_L = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
   const MONTHS_S = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-  const METRICS = { profit: 'Чистая прибыль', rev: 'Выручка', pocket: 'В карман' };
+  const TRACKS = { income: 'Личный доход', rev: 'Выручка компании' };
   const SYMBOL = { USD: '$', RUB: '₽', EUR: '€' };
   // Четыре категории источника, как в таблице income_sources на платформе: по ним ПЭРЛ считает долю своего дела
   const INC_CATS = [['own_business', 'Свой бизнес'], ['employment', 'Наёмный труд'], ['investment', 'Инвестиции'], ['other', 'Разовый доход']];
@@ -16,11 +16,11 @@
   const app = document.getElementById('app');
   const saved = (() => { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { return {}; } })();
   const prefs = {
-    persona: 'micro', metric: 'profit', role: 'member', ...saved.prefs,
+    persona: 'micro', role: 'member', ...saved.prefs,
   };
   const data = saved.data || {};
   const ui = {
-    demoOpen: false, composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, recVal: '', toast: null, manage: null, mg: null,
+    demoOpen: false, composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, recVal: '', toast: null, manage: null, mg: null, ask: false,
   };
   let needleWas = -90;
   let thumbWas = null;
@@ -60,7 +60,7 @@
     return group(x);
   };
   const compact = (u, cur = d().cur) => wrap(compactNum(u * M.RATES[cur]), cur);
-  const goalUsd = (t) => (t >= 1e6 ? `$${t / 1e6}\u00a0млн` : `$${group(t)}`);
+  const goalText = (v, cur = d().cur) => wrap(v >= 1e6 ? `${String(v / 1e6).replace('.', ',')}\u00a0млн` : group(v), cur);
   const compactBare = (u, cur = d().cur) => compactNum(u * M.RATES[cur]);
   const inDisp = (e) => (e.cur === d().cur ? e.amount : (e.amount / M.RATES[e.cur]) * M.RATES[d().cur]);
   const toUsd = (e) => e.amount / M.RATES[e.cur];
@@ -115,8 +115,31 @@
     return d().entries.filter((e) => e.type === 'income' && e.src === src.id && (e.link ? e.link === key : M.monthKey(e.date) === key)).reduce((a, e) => a + inDisp(e), 0);
   };
 
-  /* Прибор считает только бизнес: личные финансы на него не влияют. Компании складываются */
-  const meterData = () => ({ periods: allPeriods(), metric: prefs.metric, label: METRICS[prefs.metric] });
+  /* Прибор считает то, что выбрал человек: личный доход или выручку всех компаний.
+     Пока человек не выбрал сам, при компании считаем выручку, без неё личный доход */
+  const trackOf = (p = d()) => p.track || (p.businesses.some((b) => !b.archived) ? 'rev' : 'income');
+  const incomeRows = () => {
+    const map = new Map();
+    d().entries.filter((e) => e.type === 'income').forEach((e) => {
+      const key = e.link || M.monthKey(e.date);
+      map.set(key, (map.get(key) || 0) + toUsd(e));
+    });
+    return [...map.entries()].map(([key, income]) => ({ key, income })).sort((a, b) => a.key.localeCompare(b.key));
+  };
+  const meterData = () => {
+    const p = d(); const metric = trackOf(p);
+    return { metric, label: TRACKS[metric], stats: metric === 'income' ? M.incomeStats(incomeRows(), p.today) : M.stats(allPeriods(), 'rev') };
+  };
+  const trackLow = (t) => TRACKS[t].replace(/^./, (c) => c.toLowerCase());
+
+  /* Переход на уровень: заявка куратору, подтверждение, экзамен. Неподтверждённый результат закрывает ведение финансов на 3 месяца */
+  const LOCK_MONTHS = 3;
+  const locked = (p = d()) => !!p.lockedUntil && p.today < p.lockedUntil;
+  const editable = () => prefs.role === 'member' && !locked();
+  const lockDate = (today) => {
+    const key = M.addMonths(M.monthKey(today), LOCK_MONTHS);
+    return `${key}-${M.pad(Math.min(Number(today.slice(8, 10)), M.lastDay(key)))}`;
+  };
 
   /* Прибор */
   const CX = 170; const CY = 166; const R = 136;
@@ -125,7 +148,7 @@
     const [x0, y0] = pt(t0); const [x1, y1] = pt(t1);
     return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${R} ${R} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
   };
-  function dial(s, target) {
+  function dial(s, target, top) {
     const clamp = (x) => Math.max(0, Math.min(1, x));
     const factT = clamp(s.fact / target); const planT = clamp(s.forecast / target);
     let ticks = '';
@@ -143,32 +166,56 @@
       ${ticks}
       <text x="${lx}" y="${ly + 4}" text-anchor="middle">50%</text>
       <text x="8" y="184">0</text>
-      <text x="332" y="184" text-anchor="end">${compact(target)}</text>
+      <text x="332" y="184" text-anchor="end">${top}</text>
       <g class="needle" id="needle" style="transform:rotate(${needleWas}deg)" data-to="${(-90 + 180 * planT).toFixed(2)}">
         <line x1="${CX}" y1="${CY}" x2="${CX}" y2="${CY - R + 16}"/><circle cx="${CX}" cy="${CY}" r="8"/><circle cx="${CX}" cy="${CY}" r="3"/>
       </g>
     </svg>`;
   }
 
+  // Что под прибором: заявка, её статус или кнопка перехода
+  function upBlock(canUp, s) {
+    const p = d(); const r = p.request; const mem = prefs.role === 'member';
+    const sum = (u) => `<b class="num">${usd(u)}</b>`;
+    if (locked(p)) return '';
+    if (r && r.status === 'pending') {
+      return mem
+        ? `<div class="up"><span><b>Заявка у куратора.</b> Результат ${sum(r.factUsd)}, ${trackLow(r.track)}. Пока куратор не ответит, следующий уровень закрыт.</span></div>`
+        : `<div class="up"><span><b>Заявка на переход.</b> Участник заявил ${sum(r.factUsd)}, ${trackLow(r.track)}. Попросите подтвердить результат.</span><div class="row"><button class="btn sm" data-act="reqConfirm">Подтвердить</button><button class="btn ghost sm" data-act="reqReject">Не подтвердился</button></div></div>`;
+    }
+    if (r && r.status === 'confirmed') {
+      return mem
+        ? `<div class="up"><span><b>Результат подтверждён.</b> Остался экзамен перед людьми, после него откроется уровень ${p.level + 1}.</span></div>`
+        : `<div class="up"><span><b>Результат подтверждён.</b> Остался экзамен перед людьми.</span><button class="btn sm" data-act="examPass">Экзамен сдан</button></div>`;
+    }
+    if (!canUp || !mem) return '';
+    if (ui.ask) {
+      return `<div class="up ask"><div><b>Подать заявку куратору?</b><p>Куратор получит уведомление и попросит подтвердить результат ${sum(s.fact)}. Если результат не подтвердится, ведение финансов закроется на ${LOCK_MONTHS} месяца. После подтверждения останется экзамен перед людьми.</p></div><div class="row"><button class="btn sm" data-act="askYes">Подать заявку</button><button class="btn ghost sm" data-act="askNo">Проверить цифры</button></div></div>`;
+    }
+    return `<div class="up"><span>Цель уровня достигнута: ${sum(s.fact)}. Чтобы перейти дальше, подайте заявку куратору.</span><button class="btn sm" data-act="askUp">Подать заявку</button></div>`;
+  }
+
   function meter() {
-    const p = d(); const m = meterData();
+    const p = d(); const m = meterData(); const s = m.stats;
     const lv = M.LEVELS[p.level - 1];
-    const target = M.levelTarget(p.level, m.metric);
-    const s = M.stats(m.periods, m.metric);
+    const goal = M.levelGoal(p.level, m.metric, p.cur);
+    const target = M.levelTarget(p.level, m.metric, p.cur);
     const has = s.n > 0;
     const share = has ? s.forecast / target : 0;
     const months = Math.round(s.months * 10) / 10;
-    const monthsTxt = `${String(months).replace('.', ',')} мес`;
+    const monthsTxt = `${String(months).replace('.', ',')} мес`;
     const left = Math.max(0, target - s.fact);
-    const canUp = M.canLevelUp(p.level, s.fact, m.metric);
+    const canUp = M.canLevelUp(p.level, s.fact, m.metric, p.cur);
+    const base = s.closedFact == null ? s.fact : s.closedFact;
 
+    const none = m.metric === 'income' ? 'Запишите первый доход, и стрелка покажет, что выйдет за год' : p.businesses.length ? 'Внесите первый месяц, и стрелка покажет, что выйдет за год' : 'Добавьте компанию, и стрелка покажет, что выйдет за год';
     let read;
-    if (!has) read = `<b class="empty">Пока нет данных</b><span>${p.businesses.length ? 'Внесите первый месяц, и стрелка покажет, что выйдет за год' : 'Добавьте компанию, и стрелка покажет, что выйдет за год'}</span>`;
-    else if (s.forecast < 0) read = `<b class="num">${usd(s.forecast)}</b><span>${esc(m.label.toLowerCase())}: прогноз на год пока ниже нуля</span>`;
-    else read = `<b class="num">${usd(s.forecast)}</b><span>${s.weight >= 1 - 1e-9 ? 'за 12 месяцев' : 'прогноз на год'} · ${pct(share)} цели уровня</span>`;
+    if (!has) read = `<b class="empty">Пока нет данных</b><span>${none}</span>`;
+    else if (s.forecast < 0) read = `<b class="num">${usd(s.forecast)}</b><span>${esc(trackLow(m.metric))}: прогноз на год пока ниже нуля</span>`;
+    else read = `<b class="num">${usd(s.forecast)}</b><span>${s.weight >= 1 - 1e-9 ? 'за 12 месяцев' : 'прогноз на год'} · ${share > 9.99 ? 'намного выше цели' : `${pct(share)} цели уровня`}</span>`;
 
     const rows = has ? `
-      <div class="lv-row"><dt>Уже сделано</dt><dd class="num">${usd(s.fact)} <span class="mut small">за ${monthsTxt}</span></dd></div>
+      <div class="lv-row"><dt>Уже сделано</dt><dd class="num">${usd(s.fact)} <span class="mut small">за ${monthsTxt}${s.thisMonth ? ' и текущий' : ''}</span></dd></div>
       <div class="lv-row"><dt>Сейчас в среднем</dt><dd class="num">${usd(s.perMonth)} <span class="mut small">в месяц</span></dd></div>
       <div class="lv-row"><dt>Нужно для цели</dt><dd class="num">${usd(target / 12)} <span class="mut small">в месяц</span></dd></div>` : `
       <div class="lv-row"><dt>Нужно для цели</dt><dd class="num">${usd(target / 12)} <span class="mut small">в месяц</span></dd></div>`;
@@ -178,27 +225,35 @@
       const whole = Math.abs(s.months - Math.round(s.months)) < 1e-6 ? Math.round(s.months) : null;
       how = s.weight >= 1 - 1e-9
         ? 'Считаем сумму за последние 12 месяцев: это уже факт, а не прогноз.'
-        : `Как считаем: ${group(s.fact * M.RATES[p.cur])} за ${whole != null ? `${whole} мес` : monthsTxt} → ${group(s.perMonth * M.RATES[p.cur])} в месяц → × 12.`;
+        : `Как считаем: ${group(base * M.RATES[p.cur])} за ${whole != null ? `${whole} мес` : monthsTxt} → ${group(s.perMonth * M.RATES[p.cur])} в месяц → × 12.`;
+      if (s.thisMonth) how += ' Текущий месяц войдёт в расчёт, когда закончится.';
       if (s.n < 3 && s.weight < 1) how += ' По одному-двум месяцам прогноз пока грубый.';
-      if (s.forecast >= target && !canUp) how += ` Темп выше цели. Уровень засчитаем, когда сумма станет фактом: осталось ${usd(left)}.`;
+      if (s.forecast >= target && !canUp) how += ` Темп выше цели. Заявку на переход можно подать, когда сумма станет фактом: осталось ${usd(left)}.`;
     }
 
     const ladder = M.LEVELS.map((l) => {
-      const t = M.levelTarget(l.n, m.metric);
+      const t = M.levelTarget(l.n, m.metric, p.cur);
       const fill = l.n < p.level ? 1 : l.n === p.level ? Math.max(0, Math.min(1, s.fact / t)) : 0;
-      return `<div class="rung ${l.n === p.level ? 'now' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><b>${l.name}</b><span>${goalUsd(t)}</span></div>`;
+      return `<div class="rung ${l.n === p.level ? 'now' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><b>${l.name}</b><span>${goalText(M.levelGoal(l.n, m.metric, p.cur))}</span></div>`;
     }).join('');
 
+    const pick = prefs.role === 'member' && !p.request && !locked(p);
+    const track = pick
+      ? `<div class="lv-track"><span>Считаем по</span><div class="seg" role="group" aria-label="По чему считать уровень">${Object.entries(TRACKS).map(([k, t]) => `<button data-act="track" data-v="${k}" aria-pressed="${k === m.metric}">${t}</button>`).join('')}</div></div>`
+      : `<div class="lv-track ro">Считаем: ${esc(trackLow(m.metric))}</div>`;
+    const source = p.levelSource.replace('{goal}', goalText(M.levelGoal(1, 'income', p.cur)));
+
     return `<section class="card meter">
-      <div class="dial">${dial(s, target)}<div class="dial-read">${read}</div></div>
+      <div class="dial">${dial(s, target, goalText(goal))}<div class="dial-read">${read}</div></div>
       <div>
+        ${track}
         <div class="lv-head"><div class="eyebrow">Уровень ${lv.n} из 3</div><h2>${lv.name}</h2></div>
-        <div class="lv-sub">${esc(m.label)} за год: цель ${goalUsd(target)}${p.cur === 'USD' ? '' : ` (около ${compact(target)})`}. ${esc(p.levelSource)}.${p.businesses.length > 1 ? ' Считаем все компании вместе.' : ''}</div>
+        <div class="lv-sub">Цель уровня за год: личный доход ${goalText(M.levelGoal(p.level, 'income', p.cur))} или выручка компании ${goalText(M.levelGoal(p.level, 'rev', p.cur))}. ${esc(source)}.${m.metric === 'rev' && p.businesses.length > 1 ? ' Считаем все компании вместе.' : ''}</div>
         <dl class="lv-rows">${rows}</dl>
         ${how ? `<p class="how">${how}</p>` : ''}
         <div class="ladder" aria-label="Три уровня развития">${ladder}</div>
       </div>
-      ${canUp && prefs.role === 'member' ? `<div class="up"><span>Цель уровня сделана: <b class="num">${usd(s.fact)}</b> за последние ${monthsTxt}.</span><button class="btn sm" data-act="levelup">Перейти на уровень ${p.level + 1}</button></div>` : ''}
+      ${upBlock(canUp, s)}
     </section>`;
   }
 
@@ -297,10 +352,12 @@
   function personal() {
     const p = d(); const key = viewMonth(); const full = p.personalMode === 'full';
     const list = monthEntries(key).slice().sort((a, b) => b.date.localeCompare(a.date));
+    // При выборе «по личному доходу» спидометр стоит и здесь: доходы записываются в этом разделе
+    const level = trackOf(p) === 'income' ? meter() : (prefs.role === 'member' && !p.request && !locked(p) ? `<div class="track-hint"><span>Уровень считается по выручке компании.</span><button class="link" data-act="track" data-v="income">Считать по личному доходу</button></div>` : '');
     const inc = sumType(list, 'income'); const exp = sumType(list, 'expense');
     const prevInc = sumType(monthEntries(M.addMonths(key, -1)), 'income');
     const delta = prevInc > 0 ? (inc - prevInc) / prevInc : null;
-    const isMember = prefs.role === 'member';
+    const isMember = editable();
     const series = last12(curMonth()).map((k) => {
       const l = monthEntries(k);
       return full ? { key: k, a: sumType(l, 'income'), b: Math.min(sumType(l, 'expense'), sumType(l, 'income')) } : { key: k, a: sumType(l, 'income') };
@@ -353,6 +410,7 @@
 
     return `<div class="stack">
       ${isMember && ui.manage === 'personal' ? manager() : ''}
+      ${level}
       <div class="split"><div class="col">
       <section class="card sec">
         <div class="sec-head"><div class="nav"><button data-act="mPrev" aria-label="Предыдущий месяц">‹</button><b>${monthName(key)[0].toUpperCase()}${monthName(key).slice(1)} ${key.slice(0, 4)}</b><button data-act="mNext" aria-label="Следующий месяц" ${key >= curMonth() ? 'disabled' : ''}>›</button></div></div>
@@ -414,12 +472,12 @@
   }
 
   function business() {
-    const p = d(); const isMember = prefs.role === 'member';
+    const p = d(); const isMember = editable();
     if (!p.businesses.length) {
-      if (!isMember) return `<div class="stack">${meter()}<section class="card sec"><p class="mut" style="margin:0">Участник пока не добавил компанию.</p></section></div>`;
+      if (!isMember) return `<div class="stack">${meter()}<section class="card sec"><p class="mut" style="margin:0">Компании пока нет.</p></section></div>`;
       return `<div class="stack">${meter()}<section class="card sec">
         <h2>Добавьте свою компанию</h2>
-        <p class="mut" style="margin:6px 0 12px;max-width:62ch">Здесь три цифры: выручка, чистая прибыль компании и сколько вы взяли в карман. Полный учёт ведите в своей бухгалтерии или CRM, сюда только итог. Если компаний несколько, добавьте каждую: цифры вносятся отдельно, стрелка считает всё вместе.</p>
+        <p class="mut" style="margin:6px 0 12px;max-width:62ch">Здесь три цифры: выручка, чистая прибыль компании и сколько вы взяли в карман. Полный учёт ведите в своей бухгалтерии или CRM, сюда только итог. Если компаний несколько, добавьте каждую: цифры вносятся отдельно, выручка складывается.</p>
         <div class="row"><input class="inp" id="bizName" maxlength="64" style="max-width:320px" placeholder="Название компании" aria-label="Название компании"><button class="btn" data-act="bizAdd">Добавить</button></div>
         <div id="cerr" class="err" style="margin-top:6px"></div>
       </section></div>`;
@@ -490,23 +548,23 @@
     </section>` : '';
 
     const right = cur ? form : monthCard();
-    const body = isMember && table ? `<div class="split biz"><div class="col">${table}</div><div class="col">${right}</div></div>` : `${isMember ? '' : mentorCard()}${isMember || !cur ? right : ''}${table}`;
+    const body = isMember && table ? `<div class="split biz"><div class="col">${table}</div><div class="col">${right}</div></div>` : `${prefs.role === 'mentor' ? mentorCard() : ''}${isMember || !cur ? right : ''}${table}`;
     return `<div class="stack">${isMember && ui.manage === 'biz' ? manager() : ''}${meter()}${bizPick()}${body}
       <div class="privacy">Цифры бизнеса видите вы, ваш наставник и директор клана.</div></div>`;
   }
 
-  // Переключатель компаний: стрелка всегда считает все, ниже цифры выбранной
+  // Переключатель компаний: выручка на стрелке считает все, ниже цифры выбранной
   function bizPick() {
     const p = d(); const cur = curBiz();
     const all = p.businesses.length > 1 ? `<button class="chip" data-act="bizView" data-v="all" aria-pressed="${!cur}">Все компании</button>` : '';
     const list = companies().map((b) => `<button class="chip" data-act="bizView" data-v="${b.id}" aria-pressed="${!!cur && cur.id === b.id}">${esc(b.name)}</button>`).join('');
-    const add = prefs.role === 'member' ? '<button class="chip add" data-act="mgQuick" data-v="biz">+ Компания</button>' : '';
+    const add = editable() ? '<button class="chip add" data-act="mgQuick" data-v="biz">+ Компания</button>' : '';
     return `<div class="chips biz-pick" role="group" aria-label="Компания">${all}${list}${add}</div>`;
   }
 
   // Когда выбраны все компании, вместо формы видно, кто внёс месяц
   function monthCard() {
-    const due = dueKey(); const list = companies(); const isMember = prefs.role === 'member';
+    const due = dueKey(); const list = companies(); const isMember = editable();
     const row = (b) => b.periods.find((x) => x.key === due && x.kind === 'month');
     const done = list.filter(row).length;
     return `<section class="card sec"><div class="sec-head" style="margin-bottom:8px"><h2>Итоги ${MONTHS_G[monthNo(due)]}</h2><span class="sub">Внесено ${done} из ${list.length}</span></div>
@@ -617,7 +675,6 @@
       <div class="demo-body">
         <label>Участник<select data-pref="persona">${opt(people, prefs.persona)}</select></label>
         <label>Смотрю как<select data-pref="role">${opt({ member: 'Участник', mentor: 'Наставник' }, prefs.role)}</select></label>
-        <label>Стрелка считает<select data-pref="metric">${opt({ profit: 'Чистую прибыль', rev: 'Выручку', pocket: 'В карман' }, prefs.metric)}</select></label>
         <label>Валюта<select data-demo="cur">${opt({ RUB: 'Рубли', USD: 'Доллары', EUR: 'Евро' }, p.cur)}</select></label>
         <button data-act="advance">Месяц вперёд</button>
         <button data-act="reset">Сбросить этого участника</button>
@@ -630,8 +687,8 @@
     let right = '';
     const on = (k) => (ui.manage === k ? 'true' : 'false');
     if (p.tab === 'business') {
-      if (prefs.role === 'member' && p.businesses.length) right = `<button class="btn ghost sm" data-act="manage" data-v="biz" aria-expanded="${on('biz')}">Мои компании: ${companies().length}</button>`;
-    } else if (prefs.role === 'member') {
+      if (editable() && p.businesses.length) right = `<button class="btn ghost sm" data-act="manage" data-v="biz" aria-expanded="${on('biz')}">Мои компании: ${companies().length}</button>`;
+    } else if (editable()) {
       right = `<div class="seg" role="group" aria-label="Режим учёта">
         <button data-act="mode" data-v="simple" aria-pressed="${!full}">Только доход</button>
         <button data-act="mode" data-v="full" aria-pressed="${full}">Полный учёт</button>
@@ -645,7 +702,8 @@
     const p = d();
     app.innerHTML = `${demoBar()}<div class="kab">${side()}<div class="main">${topBar()}
       <main class="content">${tracker()}${finHead()}
-        ${prefs.role === 'mentor' ? '<p class="note">Вы смотрите кабинет участника: только чтение.</p>' : ''}
+        ${prefs.role === 'mentor' ? '<p class="note">Вы смотрите кабинет участника: только чтение. Заявку на переход подтверждаете здесь.</p>' : ''}
+        ${locked(p) ? `<p class="note lock"><b>Ведение финансов закрыто до ${dayOf(p.lockedUntil)} ${p.lockedUntil.slice(0, 4)}.</b> Результат на переход не подтвердился. Записи видны, новые вносить нельзя.</p>` : ''}
         ${p.tab === 'business' ? business() : personal()}
       </main></div></div>${mnav()}${ui.toast ? `<div class="toast" role="status"><span>${esc(ui.toast.text)}</span>${ui.toast.undo ? '<button data-act="undo">Отменить</button>' : ''}</div>` : ''}`;
     typo(app);
@@ -886,18 +944,32 @@
     },
     offerNo() { ui.offer = null; },
     tour() { window.DengiTour.open(); return false; },
-    levelup() {
-      const p = d(); p.level = Math.min(3, p.level + 1); p.levelSource = 'Предыдущий уровень сделан'; needleWas = -90;
+    track(v) { const p = d(); if (p.request || !TRACKS[v]) return false; p.track = v; ui.ask = false; return undefined; },
+    askUp() { ui.ask = true; },
+    askNo() { ui.ask = false; },
+    askYes() {
+      const p = d(); const m = meterData();
+      p.request = { level: p.level, track: m.metric, factUsd: m.stats.fact, at: p.today, status: 'pending' };
+      ui.ask = false; toast('Заявка ушла куратору');
+    },
+    reqConfirm() { d().request.status = 'confirmed'; toast('Результат подтверждён'); },
+    reqReject() {
+      const p = d(); p.request.status = 'rejected'; p.lockedUntil = lockDate(p.today);
+      toast(`Ведение финансов закрыто на ${LOCK_MONTHS} месяца`);
+    },
+    examPass() {
+      const p = d(); p.level = Math.min(3, p.level + 1); p.levelSource = 'Предыдущий уровень сделан'; p.request = null; needleWas = -90;
       toast(`Уровень ${p.level}: ${M.LEVELS[p.level - 1].name}`);
     },
     advance() {
       const p = d(); const key = M.addMonths(M.monthKey(p.today), 1);
       p.today = `${key}-${p.today.slice(8, 10)}`; addRepeatsUntil(p);
+      if (p.lockedUntil && p.today >= p.lockedUntil) { p.lockedUntil = null; p.request = null; }
       ui.period = null; ui.biz = null; ui.offer = null; ui.month = null;
     },
     reset() {
       data[prefs.persona] = fresh();
-      Object.assign(ui, { composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, toast: null, manage: null, mg: null });
+      Object.assign(ui, { composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, toast: null, manage: null, mg: null, ask: false });
       needleWas = -90;
     },
     csv() {
@@ -942,7 +1014,7 @@
     if (t.dataset.pref) {
       prefs[t.dataset.pref] = t.value;
       if (t.dataset.pref === 'persona' || t.dataset.pref === 'role') {
-        Object.assign(ui, { composer: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, manage: null, mg: null });
+        Object.assign(ui, { composer: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, manage: null, mg: null, ask: false });
         needleWas = -90;
         if (t.dataset.pref === 'role' && t.value === 'mentor' && d().businesses.length) d().tab = 'business';
       }
@@ -1003,7 +1075,7 @@
         p.businesses.push({ id: 'tour-demo', tourDemo: true, name: 'Пример компании', periods });
         p.bizView = 'tour-demo';
       } else if (!curBiz()) p.bizView = companies()[0].id;
-      ui.period = null; ui.biz = null; ui.offer = null; ui.manage = null; ui.mg = null; ui.composer = null; ui.rec = false;
+      ui.period = null; ui.biz = null; ui.offer = null; ui.manage = null; ui.mg = null; ui.composer = null; ui.rec = false; ui.ask = false;
       render();
       return {
         demo,

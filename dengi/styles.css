@@ -161,6 +161,12 @@ h2 { font-size: 16px; line-height: 1.35; margin: 0; font-weight: 650; }
 .rung span { display: block; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .rung.now b { color: var(--ink); }
 
+.lv-track { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 14px; font-size: 13px; color: var(--muted); }
+.track-hint { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 14px; border-radius: 12px; background: var(--tint); font-size: 14px; color: var(--ink-2); }
+.up.ask { align-items: flex-end; }
+.up.ask > div:first-child { flex: 1 1 320px; }
+.up p { margin: 4px 0 0; font-size: 14px; max-width: 70ch; }
+.note.lock { background: rgba(214, 69, 65, .08); color: var(--ink); }
 .up {
   grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between;
   margin-top: 10px; padding: 12px 16px; border-radius: 14px;
@@ -382,6 +388,8 @@ td em { font-style: normal; font-size: 11px; color: var(--muted); margin-left: 4
   .toast { bottom: 100px; }
 }
 @media (max-width: 640px) {
+  .lv-track .seg { width: 100%; }
+  .lv-track .seg button { flex: 1; padding: 6px 8px; }
   .trk { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
   .trk span { padding: 8px 2px; font-size: 12px; }
   .trk u { display: none; }

@@ -38,7 +38,7 @@
     zero: {
       title: 'С нуля', hint: 'Пустой кабинет: вносите месяц за месяцем и смотрите на стрелку',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', businesses: [], personalMode: 'simple',
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до {goal} в год', businesses: [], personalMode: 'simple',
         sources: [{ id: 'main', name: 'Основной доход', cat: 'employment', cur: 'USD' }, { id: 'side', name: 'Подработка', cat: 'other', cur: 'USD' }],
         entries: [], repeats: [], balance: null, today: TODAY, tab: 'business',
       }),
@@ -46,7 +46,7 @@
     voice: {
       title: 'Пример из голосового', hint: 'Месяц $2 500, месяц $1 500, цель $36 000',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год',
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до {goal} в год',
         businesses: [{
           id: 'b1', name: 'Бизнес из примера',
           periods: [
@@ -66,7 +66,7 @@
         const p = [25, 40, 15, 55, 45, 30, 60];
         const c = [20, 30, 10, 40, 40, 25, 45];
         return {
-          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до $36 000 в год',
+          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до {goal} в год',
           businesses: [{
             id: 'b1', name: 'Онлайн-школа рисования',
             periods: r.map((v, i) => ({
@@ -84,13 +84,13 @@
       },
     },
     group: {
-      title: 'Две компании', hint: 'Школа и студия вносятся отдельно, стрелка считает всё вместе. Кофейня закрыта и лежит в архиве',
+      title: 'Две компании', hint: 'Школа и студия вносятся отдельно, выручка складывается. Кофейня закрыта и лежит в архиве',
       make: () => {
         const rows = (start, list) => list.map(([v, pr, po], i) => ({
           kind: 'month', key: M.addMonths(start, i), rev: rub(v * 1000), profit: rub(pr * 1000), pocket: rub(po * 1000),
         }));
         return {
-          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до $36 000 в год',
+          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до {goal} в год',
           businesses: [
             { id: 'b1', name: 'Онлайн-школа', periods: rows('2026-05', [[240, 40, 30], [160, 15, 10], [310, 55, 40], [270, 45, 40], [220, 30, 25], [340, 60, 45]]) },
             { id: 'b2', name: 'Студия дизайна', periods: rows('2026-07', [[120, 30, 15], [150, 42, 20], [135, 35, 20]]) },
@@ -111,7 +111,7 @@
     ready: {
       title: 'Готов к переходу', hint: 'За 12 месяцев сделал цель первого уровня',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год',
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до {goal} в год',
         businesses: [{ id: 'b1', name: 'Студия ремонта', periods: year.map(([rev, profit, pocket], i) => ({ kind: 'month', key: M.addMonths('2025-11', i), rev, profit, pocket })) }],
         personalMode: 'simple',
         sources: [{ id: 'biz', name: 'Студия ремонта', cat: 'own_business', cur: 'USD', bizId: 'b1' }],
@@ -119,7 +119,7 @@
       }),
     },
     job: {
-      title: 'Работа и подработка', hint: 'Бизнеса нет: личные финансы живут отдельно, стрелка ждёт бизнес',
+      title: 'Работа и подработка', hint: 'Бизнеса нет: стрелка идёт по личному доходу',
       make: () => {
         const entries = [];
         ['2026-07', '2026-08', '2026-09', '2026-10'].forEach((m, i) => {

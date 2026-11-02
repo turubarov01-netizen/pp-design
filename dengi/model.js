@@ -6,11 +6,18 @@
   // Единиц валюты за 1 доллар: таблица currency_rates, 02.11.2026
   const RATES = { USD: 1, RUB: 80.4, EUR: 0.896 };
 
+  // Уровень достигается одним из двух путей: личный доход или выручка компании за год (решение Саши 02.11.2026)
   const LEVELS = [
-    { n: 1, name: 'Market Fit', sub: 'Продукт и первые покупки', steps: 'шаги 0–5', profit: 36000, rev: 100000 },
-    { n: 2, name: 'Team and System', sub: 'Система продаж и команда', steps: 'шаги 6–10', profit: 120000, rev: 500000 },
-    { n: 3, name: 'Enterprise', sub: 'Масштабирование', steps: 'шаги 11–15', profit: 1000000, rev: 5000000 },
+    { n: 1, name: 'Market Fit', sub: 'Продукт и первые покупки', steps: 'шаги 0–5' },
+    { n: 2, name: 'Team and System', sub: 'Система продаж и команда', steps: 'шаги 6–10' },
+    { n: 3, name: 'Enterprise', sub: 'Масштабирование', steps: 'шаги 11–15' },
   ];
+  // Круглые аналоги в валюте человека, а не пересчёт по курсу: цель не плавает вместе с курсом
+  const GOALS = {
+    USD: { income: [36000, 120000, 1000000], rev: [120000, 500000, 5000000] },
+    RUB: { income: [3000000, 10000000, 80000000], rev: [10000000, 40000000, 400000000] },
+    EUR: { income: [30000, 100000, 900000], rev: [100000, 450000, 4500000] },
+  };
 
   const WEIGHT = { month: 1 / 12, week: 1 / 52 };
   const pad = (n) => String(n).padStart(2, '0');
@@ -124,15 +131,35 @@
     return [...map.values()].sort((a, b) => a.id.localeCompare(b.id));
   }
 
-  // Оборот имеет свою шкалу, деньги в кармане идут по шкале прибыли
-  const levelTarget = (level, metric = 'profit') => LEVELS[level - 1][metric === 'rev' ? 'rev' : 'profit'];
-  const canLevelUp = (level, fact, metric = 'profit') => level < LEVELS.length && fact >= levelTarget(level, metric);
+  /* Личный доход по месяцам. Идущий месяц входит в факт сразу, а в прогноз нет: два первых дня месяца занизили бы темп.
+     Окно факта: 12 месяцев вместе с текущим */
+  function incomeStats(rows, today) {
+    const now = monthKey(today);
+    const month = (r) => ({ kind: 'month', key: r.key, income: r.income });
+    const closed = rows.filter((r) => r.key < now).map(month);
+    const live = rows.find((r) => r.key === now);
+    const thisMonth = live ? live.income : 0;
+    if (!closed.length) {
+      const first = stats(live ? [month(live)] : [], 'income');
+      return { ...first, closedFact: first.fact, thisMonth: 0 };
+    }
+    const base = stats(closed, 'income');
+    const from = addMonths(now, -11);
+    const fact = rows.filter((r) => r.key >= from && r.key <= now).reduce((a, r) => a + r.income, 0);
+    return { ...base, closedFact: base.fact, fact, thisMonth, forecast: Math.max(base.forecast, fact) };
+  }
+
+  // Цель уровня в валюте человека
+  const levelGoal = (level, metric = 'income', cur = 'USD') => (GOALS[cur] || GOALS.USD)[metric === 'rev' ? 'rev' : 'income'][level - 1];
+  // Та же цель в долларах: в них считаются суммы
+  const levelTarget = (level, metric = 'income', cur = 'USD') => levelGoal(level, metric, cur) / (GOALS[cur] ? RATES[cur] : 1);
+  const canLevelUp = (level, factUsd, metric = 'income', cur = 'USD') => level < LEVELS.length && factUsd * RATES[cur] >= levelGoal(level, metric, cur) - 1e-6;
 
   // Стартовый уровень по годовой сумме из анкеты, в долларах
-  const levelFromYear = (usd, metric = 'profit') => (usd >= levelTarget(2, metric) ? 3 : usd >= levelTarget(1, metric) ? 2 : 1);
+  const levelFromYear = (usd, metric = 'income') => (usd >= levelTarget(2, metric) ? 3 : usd >= levelTarget(1, metric) ? 2 : 1);
 
   return {
     RATES, LEVELS, WEIGHT, iso, parse, pad, monthKey, addMonths, lastDay, addDays, weekStart, weekMonth,
-    periodEnd, normalize, stats, rollup, combine, margin, coverage, groupPeriods, levelTarget, canLevelUp, levelFromYear,
+    periodEnd, normalize, stats, incomeStats, rollup, combine, margin, coverage, groupPeriods, GOALS, levelGoal, levelTarget, canLevelUp, levelFromYear,
   };
 });
