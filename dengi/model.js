@@ -74,6 +74,20 @@
     return [...map.values()].sort((a, b) => a.key.localeCompare(b.key));
   }
 
+  // Несколько компаний в один ряд: один месяц в разных компаниях складывается
+  function combine(lists) {
+    const map = new Map();
+    lists.flat().forEach((p) => {
+      const id = `${p.kind}:${p.key}`;
+      const row = map.get(id) || { kind: p.kind, key: p.key, rev: 0, profit: 0, pocket: 0 };
+      row.rev += Number(p.rev) || 0;
+      row.profit += Number(p.profit) || 0;
+      row.pocket += Number(p.pocket) || 0;
+      map.set(id, row);
+    });
+    return [...map.values()];
+  }
+
   const margin = (profit, rev) => (rev > 0 ? profit / rev : null);
 
   // Сколько месяцев заполнено от первого заполненного до последнего закрытого
@@ -119,6 +133,6 @@
 
   return {
     RATES, LEVELS, WEIGHT, iso, parse, pad, monthKey, addMonths, lastDay, addDays, weekStart, weekMonth,
-    periodEnd, normalize, stats, rollup, margin, coverage, groupPeriods, levelTarget, canLevelUp, levelFromYear,
+    periodEnd, normalize, stats, rollup, combine, margin, coverage, groupPeriods, levelTarget, canLevelUp, levelFromYear,
   };
 });

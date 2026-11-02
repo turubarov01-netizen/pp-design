@@ -38,22 +38,24 @@
     zero: {
       title: 'С нуля', hint: 'Пустой кабинет: вносите месяц за месяцем и смотрите на стрелку',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: false, bizName: '',
-        periods: [], personalMode: 'simple',
-        sources: [{ id: 'main', name: 'Основной доход', own: true }, { id: 'side', name: 'Подработка', own: true }],
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', businesses: [], personalMode: 'simple',
+        sources: [{ id: 'main', name: 'Основной доход', cat: 'employment', cur: 'USD' }, { id: 'side', name: 'Подработка', cat: 'other', cur: 'USD' }],
         entries: [], repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
       }),
     },
     voice: {
       title: 'Пример из голосового', hint: 'Месяц $2 500, месяц $1 500, цель $36 000',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Бизнес из примера',
-        periods: [
-          { kind: 'month', key: '2026-09', rev: 7000, profit: 2500, pocket: 1500 },
-          { kind: 'month', key: '2026-10', rev: 5200, profit: 1500, pocket: 900 },
-        ],
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год',
+        businesses: [{
+          id: 'b1', name: 'Бизнес из примера',
+          periods: [
+            { kind: 'month', key: '2026-09', rev: 7000, profit: 2500, pocket: 1500 },
+            { kind: 'month', key: '2026-10', rev: 5200, profit: 1500, pocket: 900 },
+          ],
+        }],
         personalMode: 'simple',
-        sources: [{ id: 'biz', name: 'Из бизнеса', own: true }],
+        sources: [{ id: 'biz', name: 'Бизнес из примера', cat: 'own_business', cur: 'USD', bizId: 'b1' }],
         entries: [], repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
       }),
     },
@@ -64,28 +66,56 @@
         const p = [25, 40, 15, 55, 45, 30, 60];
         const c = [20, 30, 10, 40, 40, 25, 45];
         return {
-          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Онлайн-школа рисования',
-          periods: r.map((v, i) => ({
-            kind: 'month', key: M.addMonths('2026-04', i), rev: rub(v * 1000), profit: rub(p[i] * 1000), pocket: rub(c[i] * 1000),
-          })),
+          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до $36 000 в год',
+          businesses: [{
+            id: 'b1', name: 'Онлайн-школа рисования',
+            periods: r.map((v, i) => ({
+              kind: 'month', key: M.addMonths('2026-04', i), rev: rub(v * 1000), profit: rub(p[i] * 1000), pocket: rub(c[i] * 1000),
+            })),
+          }],
           personalMode: 'full',
-          sources: [{ id: 'biz', name: 'Из бизнеса', own: true }, { id: 'consult', name: 'Консультации', own: true }],
+          sources: [{ id: 'biz', name: 'Онлайн-школа рисования', cat: 'own_business', cur: 'RUB', bizId: 'b1' }, { id: 'consult', name: 'Консультации', cat: 'own_business', cur: 'RUB' }],
           entries: microEntries,
           repeats: [{ id: 'r1', title: 'Аренда', cat: 'home', amount: 32000, cur: 'RUB', day: 5, last: '2026-10' }],
           templates: [{ id: 't1', title: 'Продукты', cat: 'food', amount: 3000 }, { id: 't2', title: 'Кафе', cat: 'cafe', amount: 1200 }, { id: 't3', title: 'Такси', cat: 'move', amount: 600 }],
           balance: { date: '2026-10-27', amount: 214000 },
-          moved: { '2026-08': rub(40000), '2026-09': rub(25000), '2026-10': rub(45000) },
+          moved: { b1: { '2026-08': rub(40000), '2026-09': rub(25000), '2026-10': rub(45000) } },
           today: TODAY, tab: 'personal',
+        };
+      },
+    },
+    group: {
+      title: 'Две компании', hint: 'Школа и студия вносятся отдельно, стрелка считает всё вместе. Кофейня закрыта и лежит в архиве',
+      make: () => {
+        const rows = (start, list) => list.map(([v, pr, po], i) => ({
+          kind: 'month', key: M.addMonths(start, i), rev: rub(v * 1000), profit: rub(pr * 1000), pocket: rub(po * 1000),
+        }));
+        return {
+          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до $36 000 в год',
+          businesses: [
+            { id: 'b1', name: 'Онлайн-школа', periods: rows('2026-05', [[240, 40, 30], [160, 15, 10], [310, 55, 40], [270, 45, 40], [220, 30, 25], [340, 60, 45]]) },
+            { id: 'b2', name: 'Студия дизайна', periods: rows('2026-07', [[120, 30, 15], [150, 42, 20], [135, 35, 20]]) },
+            { id: 'b3', name: 'Кофейня', archived: true, periods: rows('2026-02', [[90, 5, 0], [80, -6, 0]]) },
+          ],
+          personalMode: 'simple',
+          sources: [
+            { id: 's1', name: 'Онлайн-школа', cat: 'own_business', cur: 'RUB', bizId: 'b1' },
+            { id: 's2', name: 'Студия дизайна', cat: 'own_business', cur: 'RUB', bizId: 'b2' },
+            { id: 's3', name: 'Кофейня', cat: 'own_business', cur: 'RUB', bizId: 'b3', archived: true },
+            { id: 's4', name: 'Аренда квартиры', cat: 'investment', cur: 'RUB' },
+          ],
+          entries: [inc('g1', '2026-10-08', 45000, 's1'), inc('g2', '2026-10-12', 20000, 's2'), inc('g3', '2026-10-15', 28000, 's4')],
+          repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
         };
       },
     },
     ready: {
       title: 'Готов к переходу', hint: 'За 12 месяцев сделал цель первого уровня',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Студия ремонта',
-        periods: year.map(([rev, profit, pocket], i) => ({ kind: 'month', key: M.addMonths('2025-11', i), rev, profit, pocket })),
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год',
+        businesses: [{ id: 'b1', name: 'Студия ремонта', periods: year.map(([rev, profit, pocket], i) => ({ kind: 'month', key: M.addMonths('2025-11', i), rev, profit, pocket })) }],
         personalMode: 'simple',
-        sources: [{ id: 'biz', name: 'Из бизнеса', own: true }],
+        sources: [{ id: 'biz', name: 'Студия ремонта', cat: 'own_business', cur: 'USD', bizId: 'b1' }],
         entries: [], repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
       }),
     },
@@ -98,9 +128,8 @@
           entries.push(inc(`g${i}`, `${m}-21`, [15000, 22000, 18000, 30000][i], 'gig'));
         });
         return {
-          cur: 'RUB', level: 1, levelSource: 'По анкете: своего дела пока нет', hasBiz: false, bizName: '',
-          periods: [], personalMode: 'simple',
-          sources: [{ id: 'salary', name: 'Зарплата', own: false }, { id: 'gig', name: 'Подработка', own: true }],
+          cur: 'RUB', level: 1, levelSource: 'По анкете: своего дела пока нет', businesses: [], personalMode: 'simple',
+          sources: [{ id: 'salary', name: 'Зарплата', cat: 'employment', cur: 'RUB' }, { id: 'gig', name: 'Подработка', cat: 'other', cur: 'RUB' }],
           entries, repeats: [], balance: null, moved: {}, today: TODAY, tab: 'personal',
         };
       },

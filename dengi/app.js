@@ -2,13 +2,16 @@
 (function () {
   const M = window.Model;
   const { PERSONAS, CATS } = window.Seeds;
-  const STORE = 'dengi.v4';
+  const STORE = 'dengi.v5';
   const MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
   const MONTHS_G = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
   const MONTHS_L = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
   const MONTHS_S = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
   const METRICS = { profit: 'Чистая прибыль', rev: 'Оборот', pocket: 'Деньги в кармане' };
   const SYMBOL = { USD: '$', RUB: '₽', EUR: '€' };
+  // Четыре категории источника, как в таблице income_sources на платформе: по ним ПЭРЛ считает долю своего дела
+  const INC_CATS = [['own_business', 'Свой бизнес'], ['employment', 'Наёмный труд'], ['investment', 'Инвестиции'], ['other', 'Разовый доход']];
+  const incCat = (v) => (INC_CATS.find((x) => x[0] === v) || [])[1] || '';
 
   const app = document.getElementById('app');
   const saved = (() => { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { return {}; } })();
@@ -17,16 +20,17 @@
   };
   const data = saved.data || {};
   const ui = {
-    demoOpen: false, composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, recVal: '', toast: null, addSrc: false,
+    demoOpen: false, composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, recVal: '', toast: null, manage: null, mg: null,
   };
   let needleWas = -90;
   let thumbWas = null;
 
   const d = () => {
     if (!PERSONAS[prefs.persona]) prefs.persona = 'micro';
-    if (!data[prefs.persona]) data[prefs.persona] = PERSONAS[prefs.persona].make();
+    if (!data[prefs.persona]) data[prefs.persona] = fresh();
     return data[prefs.persona];
   };
+  const fresh = () => ({ cats: CATS.map((k) => ({ ...k })), ...PERSONAS[prefs.persona].make() });
   const save = () => { try { localStorage.setItem(STORE, JSON.stringify({ prefs, data })); } catch (e) { /* режим инкогнито */ } };
   const uid = () => `x${Date.now().toString(36)}${Math.floor(Math.random() * 1e4)}`;
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -72,8 +76,29 @@
   };
   const dueKey = (p = d()) => M.addMonths(M.monthKey(p.today), -1);
 
-  /* Прибор считает только бизнес: личные финансы на него не влияют */
-  const meterData = () => ({ periods: d().periods, metric: prefs.metric, label: METRICS[prefs.metric] });
+  /* Справочники человека */
+  const srcOf = (id) => d().sources.find((x) => x.id === id);
+  const catOf = (id) => d().cats.find((x) => x.id === id);
+  const activeSrc = () => d().sources.filter((x) => !x.archived && !x.sys);
+  const activeCats = () => d().cats.filter((x) => !x.archived);
+  const plural = (n, one, few, many) => {
+    const a = n % 100; const b = n % 10;
+    return `${n} ${a > 10 && a < 20 ? many : b === 1 ? one : b >= 2 && b <= 4 ? few : many}`;
+  };
+
+  /* Компании: каждая вносится отдельно, вместе они складываются */
+  const companies = () => d().businesses.filter((b) => !b.archived);
+  const bizOf = (id) => d().businesses.find((b) => b.id === id);
+  const allPeriods = () => M.combine(d().businesses.map((b) => b.periods));
+  const curBiz = () => {
+    const p = d(); const list = companies();
+    if (p.bizView === 'all' && p.businesses.length > 1) return null;
+    return list.find((b) => b.id === p.bizView) || (list.length === 1 ? list[0] : null);
+  };
+  const viewPeriods = () => { const b = curBiz(); return b ? b.periods : allPeriods(); };
+
+  /* Прибор считает только бизнес: личные финансы на него не влияют. Компании складываются */
+  const meterData = () => ({ periods: allPeriods(), metric: prefs.metric, label: METRICS[prefs.metric] });
 
   /* Прибор */
   const CX = 170; const CY = 166; const R = 136;
@@ -120,7 +145,7 @@
     const canUp = M.canLevelUp(p.level, s.fact, m.metric);
 
     let read;
-    if (!has) read = `<b class="empty">Пока нет данных</b><span>${p.hasBiz ? 'Внесите первый месяц, и стрелка покажет, что выйдет за год' : 'Добавьте бизнес, и стрелка покажет, что выйдет за год'}</span>`;
+    if (!has) read = `<b class="empty">Пока нет данных</b><span>${p.businesses.length ? 'Внесите первый месяц, и стрелка покажет, что выйдет за год' : 'Добавьте компанию, и стрелка покажет, что выйдет за год'}</span>`;
     else if (s.forecast < 0) read = `<b class="num">${usd(s.forecast)}</b><span>${esc(m.label.toLowerCase())}: прогноз на год пока ниже нуля</span>`;
     else read = `<b class="num">${usd(s.forecast)}</b><span>${s.weight >= 1 - 1e-9 ? 'за 12 месяцев' : 'прогноз на год'} · ${pct(share)} цели уровня</span>`;
 
@@ -150,7 +175,7 @@
       <div class="dial">${dial(s, target)}<div class="dial-read">${read}</div></div>
       <div>
         <div class="lv-head"><div class="eyebrow">Уровень ${lv.n} из 3</div><h2>${lv.name}</h2></div>
-        <div class="lv-sub">${esc(m.label)} за год: цель ${goalUsd(target)}${p.cur === 'USD' ? '' : ` (около ${compact(target)})`}. ${esc(p.levelSource)}.</div>
+        <div class="lv-sub">${esc(m.label)} за год: цель ${goalUsd(target)}${p.cur === 'USD' ? '' : ` (около ${compact(target)})`}. ${esc(p.levelSource)}.${p.businesses.length > 1 ? ' Считаем все компании вместе.' : ''}</div>
         <dl class="lv-rows">${rows}</dl>
         ${how ? `<p class="how">${how}</p>` : ''}
         <div class="ladder" aria-label="Три уровня развития">${ladder}</div>
@@ -162,7 +187,6 @@
   /* Сводки для переключателя */
   const monthEntries = (key) => d().entries.filter((e) => M.monthKey(e.date) === key);
   const sumType = (list, type) => list.filter((e) => e.type === type).reduce((a, e) => a + inDisp(e), 0);
-  const lastBiz = () => { const rows = M.rollup(d().periods); return rows[rows.length - 1] || null; };
 
   /* Тумблер: два положения, выключенного нет */
   function toggle() {
@@ -187,6 +211,8 @@
     msg: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
     lib: '<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>',
     people: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    edit: '<path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>',
+    trash: '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
   };
   const svg = (k) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
   const SIDE = [['dash', 'Дашборд Альянса'], ['route', 'Мой маршрут'], ['todo', 'Трекер Фримана'], ['cal', 'Календарь'], ['feed', 'Лента'], ['msg', 'Сообщения'], ['lib', 'Библиотека'], ['people', 'Члены Альянса']];
@@ -219,10 +245,11 @@
   /* Личные финансы */
   function composer(type) {
     const p = d(); const c = ui.draft; const full = p.personalMode === 'full';
-    const chips = type === 'income'
-      ? p.sources.map((s) => `<button class="chip" data-act="pick" data-v="${s.id}" aria-pressed="${c.pick === s.id}">${esc(s.name)}</button>`).join('')
-        + (ui.addSrc ? `<input class="inp" id="newSrc" style="max-width:190px;min-height:38px;font-size:14px" placeholder="Название источника" aria-label="Название источника"><button class="chip" data-act="srcSave">Добавить</button>` : '<button class="chip add" data-act="srcAdd">+ источник</button>')
-      : CATS.map((k) => `<button class="chip" data-act="pick" data-v="${k.id}" aria-pressed="${c.pick === k.id}">${k.name}</button>`).join('');
+    const list = type === 'income' ? activeSrc() : activeCats();
+    const kind = type === 'income' ? 'src' : 'cat';
+    const adding = ui.mg && ui.mg.from === 'composer';
+    const chips = list.map((x) => `<button class="chip" data-act="pick" data-v="${x.id}" aria-pressed="${c.pick === x.id}">${esc(x.name)}</button>`).join('')
+      + (adding ? '' : `<button class="chip add" data-act="mgQuick" data-v="${kind}">+ ${type === 'income' ? 'источник' : 'категория'}</button>`);
     const notes = [...new Set(p.entries.filter((e) => e.note).map((e) => e.note))];
     const curChips = ['RUB', 'USD', 'EUR'].map((k) => `<button class="chip" data-act="curPick" data-v="${k}" aria-pressed="${c.cur === k}">${SYMBOL[k]}</button>`).join('');
     return `<div class="compose">
@@ -231,9 +258,9 @@
         <div class="chips" role="group" aria-label="Валюта">${curChips}</div>
       </div>
       <div id="fx" class="mut small">${fxLine()}</div>
-      <div class="f"><span>${type === 'income' ? 'Откуда' : 'На что'}${type === 'expense' ? ' <small style="display:inline;font-weight:400">можно не выбирать</small>' : ''}</span><div class="chips" id="pickers">${chips}</div></div>
-      <div class="row" style="align-items:flex-start">
-        ${type === 'expense' ? `<label class="f" style="flex:1;min-width:190px"><span>Название</span><input class="inp" id="note" list="notes" autocomplete="off" value="${esc(c.note)}" placeholder="Например, аренда"><datalist id="notes">${notes.map((n) => `<option value="${esc(n)}">`).join('')}</datalist></label>` : ''}
+      <div class="f"><div class="lab"><span>${type === 'income' ? 'Откуда' : 'На что'}${type === 'expense' ? ' <small>можно не выбирать</small>' : ''}</span><button class="link" data-act="manageOpen" data-v="personal">Настроить</button></div><div class="chips" id="pickers">${chips}</div>${adding ? mgForm() : ''}</div>
+      <div class="two ${type === 'expense' ? '' : 'solo'}">
+        ${type === 'expense' ? `<label class="f"><span>Название</span><input class="inp" id="note" list="notes" autocomplete="off" value="${esc(c.note)}" placeholder="Например, аренда"><datalist id="notes">${notes.map((n) => `<option value="${esc(n)}">`).join('')}</datalist></label>` : ''}
         <label class="f"><span>Дата</span><input class="inp" id="date" type="date" value="${esc(c.date)}"></label>
       </div>
       ${type === 'expense' && full ? `<label class="check"><input type="checkbox" id="rep" ${c.repeat ? 'checked' : ''}> Повторять каждый месяц</label>` : ''}
@@ -277,14 +304,14 @@
         <div>${bars(series, key, 'month')}</div></div>`;
     }
 
-    const srcRows = !full && inc > 0 ? p.sources.map((s) => {
-      const v = list.filter((e) => e.type === 'income' && e.src === s.id).reduce((a, e) => a + inDisp(e), 0);
-      return v ? `<div class="cat"><span>${esc(s.name)}</span><span class="amt num">${money(v)}</span><i><u style="width:${(v / inc) * 100}%"></u></i></div>` : '';
-    }).join('') : '';
+    const srcRows = p.sources.map((s) => ({
+      s, v: list.filter((e) => e.type === 'income' && e.src === s.id).reduce((a, e) => a + inDisp(e), 0),
+    })).filter((x) => x.v > 0 || (!x.s.archived && !x.s.sys)).sort((a, b) => b.v - a.v)
+      .map(({ s, v }) => `<div class="cat"><span>${esc(s.name)}</span><span class="amt num">${money(v)}</span><i><u style="width:${inc > 0 ? (v / inc) * 100 : 0}%"></u></i></div>`).join('');
 
-    const catRows = full ? CATS.map((k) => ({
+    const catRows = full ? p.cats.map((k) => ({
       k, v: list.filter((e) => e.type === 'expense' && e.cat === k.id).reduce((a, e) => a + inDisp(e), 0),
-    })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).map(({ k, v }) => `<div class="cat"><span>${k.name}</span><span class="amt num">${money(v)}</span><i><u style="width:${(v / exp) * 100}%"></u></i></div>`).join('') : '';
+    })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v).map(({ k, v }) => `<div class="cat"><span>${esc(k.name)}</span><span class="amt num">${money(v)}</span><i><u style="width:${(v / exp) * 100}%"></u></i></div>`).join('') : '';
     const noCat = list.filter((e) => e.type === 'expense' && e.cat === 'none');
     const noCatSum = noCat.reduce((a, e) => a + inDisp(e), 0);
 
@@ -295,24 +322,26 @@
     </div>${tpl}${ui.composer ? composer(ui.composer) : ''}${ui.rec ? reconcile() : ''}` : '';
 
     const rowsHtml = list.length ? list.map((e) => {
-      const name = e.type === 'income' ? (p.sources.find((s) => s.id === e.src) || {}).name || 'Доход' : (e.note || (CATS.find((k) => k.id === e.cat) || {}).name || 'Без категории');
-      const tags = [e.link && e.src !== 'biz' ? 'из бизнеса' : '', e.auto ? 'повтор' : '', e.cur !== p.cur ? `${money(e.amount, e.cur)}` : ''].filter(Boolean).join(' · ');
+      const name = e.type === 'income' ? (srcOf(e.src) || {}).name || 'Доход' : (e.note || (catOf(e.cat) || {}).name || 'Без категории');
+      const tags = [e.link ? 'из бизнеса' : '', e.auto ? 'повтор' : '', e.cur !== p.cur ? `${money(e.amount, e.cur)}` : ''].filter(Boolean).join(' · ');
       const needsSort = e.type === 'expense' && e.cat === 'none';
       return `<div class="it"><span class="d">${dayOf(e.date)}</span><span class="t">${esc(name)}${tags ? `<em>${tags}</em>` : ''}${needsSort && isMember ? ` <button class="link" data-act="sort" data-v="${e.id}">Разобрать</button>` : ''}</span><span class="a num ${e.type === 'income' ? 'in' : ''}">${e.type === 'income' ? '+' : ''}${money(inDisp(e))}</span>${isMember ? `<button class="x" data-act="del" data-v="${e.id}" aria-label="Удалить запись">×</button>` : '<span></span>'}</div>
-      ${ui.sort === e.id ? `<div class="sort chips">${CATS.map((k) => `<button class="chip" data-act="sortTo" data-v="${k.id}">${k.name}</button>`).join('')}</div>` : ''}`;
+      ${ui.sort === e.id ? `<div class="sort chips">${activeCats().map((k) => `<button class="chip" data-act="sortTo" data-v="${k.id}">${esc(k.name)}</button>`).join('')}</div>` : ''}`;
     }).join('') : `<p class="mut small" style="margin:6px 0 0">В ${MONTHS_L[monthNo(key)]} записей нет. Это нормально: дописывать пропущенное не нужно.</p>`;
 
-    const aside = `${full ? `<section class="card sec"><div class="sec-head"><h2>Расходы по категориям</h2>${noCatSum ? `<span class="sub num">Без категории: ${money(noCatSum)}</span>` : ''}</div>${catRows ? `<div class="cats">${catRows}</div>` : '<p class="mut small" style="margin:0">Расходов в этом месяце пока нет.</p>'}</section>` : ''}
-      ${srcRows ? `<section class="card sec"><div class="sec-head"><h2>Источники дохода</h2></div><div class="cats">${srcRows}</div></section>` : ''}`;
+    const cfg = isMember ? '<button class="link" data-act="manageOpen" data-v="personal">Настроить</button>' : '';
+    const aside = `${full ? `<section class="card sec"><div class="sec-head"><h2>Расходы по категориям</h2>${cfg}</div>${noCatSum ? `<p class="mut small num" style="margin:-8px 0 8px">Без категории: ${money(noCatSum)}</p>` : ''}${catRows ? `<div class="cats">${catRows}</div>` : '<p class="mut small" style="margin:0">Расходов в этом месяце пока нет.</p>'}</section>` : ''}
+      <section class="card sec"><div class="sec-head"><h2>Источники дохода</h2>${cfg}</div>${srcRows ? `<div class="cats">${srcRows}</div>` : '<p class="mut small" style="margin:0">Источников пока нет.</p>'}</section>`;
 
     return `<div class="stack">
-      <div class="${aside.trim() ? 'split' : ''}"><div class="col">
+      ${isMember && ui.manage === 'personal' ? manager() : ''}
+      <div class="split"><div class="col">
       <section class="card sec">
         <div class="sec-head"><div class="nav"><button data-act="mPrev" aria-label="Предыдущий месяц">‹</button><b>${monthName(key)[0].toUpperCase()}${monthName(key).slice(1)} ${key.slice(0, 4)}</b><button data-act="mNext" aria-label="Следующий месяц" ${key >= curMonth() ? 'disabled' : ''}>›</button></div></div>
         ${body}${actions}
       </section>
       ${p.entries.length ? `<section class="card sec"><div class="sec-head"><h2>Записи</h2>${isMember ? '<button class="link" data-act="csv">Скачать CSV</button>' : ''}</div><div class="list">${rowsHtml}</div></section>` : ''}
-      </div>${aside.trim() ? `<div class="col">${aside}</div>` : ''}</div>
+      </div><div class="col">${aside}</div></div>
       <div class="stub">Цель, точка А, метрики и аналитика остаются здесь же, как сейчас. В прототипе они не показаны.</div>
     </div>`;
   }
@@ -338,7 +367,7 @@
   }
 
   /* Бизнес */
-  const periodOf = (key) => d().periods.find((x) => x.key === key && x.kind === 'month');
+  const periodOf = (key) => { const b = curBiz(); return b ? b.periods.find((x) => x.key === key && x.kind === 'month') : null; };
   function setPeriod(key) {
     const p = d(); ui.period = key; ui.offer = null;
     const row = periodOf(key); const k = M.RATES[p.cur];
@@ -368,21 +397,23 @@
 
   function business() {
     const p = d(); const isMember = prefs.role === 'member';
-    if (!p.hasBiz) {
-      if (!isMember) return `<div class="stack">${meter()}<section class="card sec"><p class="mut" style="margin:0">Участник пока не добавил бизнес.</p></section></div>`;
+    if (!p.businesses.length) {
+      if (!isMember) return `<div class="stack">${meter()}<section class="card sec"><p class="mut" style="margin:0">Участник пока не добавил компанию.</p></section></div>`;
       return `<div class="stack">${meter()}<section class="card sec">
-        <h2>Добавьте свой бизнес</h2>
-        <p class="mut" style="margin:6px 0 12px;max-width:62ch">Здесь три цифры: оборот, чистая прибыль и деньги в кармане. Полный учёт ведите в своей бухгалтерии или CRM, сюда только итог.</p>
-        <div class="row"><input class="inp" id="bizName" style="max-width:320px" placeholder="Название бизнеса" aria-label="Название бизнеса"><button class="btn" data-act="bizAdd">Добавить</button></div>
+        <h2>Добавьте свою компанию</h2>
+        <p class="mut" style="margin:6px 0 12px;max-width:62ch">Здесь три цифры: оборот, чистая прибыль и деньги в кармане. Полный учёт ведите в своей бухгалтерии или CRM, сюда только итог. Если компаний несколько, добавьте каждую: цифры вносятся отдельно, стрелка считает всё вместе.</p>
+        <div class="row"><input class="inp" id="bizName" maxlength="40" style="max-width:320px" placeholder="Название компании" aria-label="Название компании"><button class="btn" data-act="bizAdd">Добавить</button></div>
         <div id="cerr" class="err" style="margin-top:6px"></div>
       </section></div>`;
     }
+    const cur = curBiz();
+    const viewed = viewPeriods();
     const due = dueKey();
     if (!ui.period || !ui.biz) setPeriod(due);
     const title = `Итоги ${MONTHS_G[monthNo(ui.period)]}`;
     const filled = !!periodOf(ui.period);
     const live = bizLive();
-    const rows = M.rollup(p.periods);
+    const rows = M.rollup(viewed);
     const rows12 = rows.slice(-12);
     const tot = rows12.reduce((a, r) => ({ rev: a.rev + r.rev, profit: a.profit + r.profit, pocket: a.pocket + r.pocket }), { rev: 0, profit: 0, pocket: 0 });
     const compactTable = window.innerWidth < 640;
@@ -391,16 +422,18 @@
       const r = rows.find((x) => x.key === k);
       return { key: k, a: r ? Math.max(0, r.rev) : 0, b: r ? Math.max(0, r.profit) : 0 };
     });
-    const cov = M.coverage(p.periods, p.today);
+    const cov = M.coverage(viewed, p.today);
     const range = ui.range || 'month';
-    const groups = M.groupPeriods(p.periods, range);
+    const groups = M.groupPeriods(viewed, range);
     const latest = groups[groups.length - 1];
     const LIMIT = { month: 12, quarter: 8, half: 6, year: 5 };
     const yy = (g) => (compactTable ? String(g.y).slice(2) : g.y);
     const short = (g) => ({ month: `${MONTHS_S[g.n - 1]} ${String(g.y).slice(2)}`, quarter: `${g.n} кв ${yy(g)}`, half: `${g.n} пол ${yy(g)}`, year: `${g.y}` }[range]);
     const long = (g) => ({ month: `${MONTHS[g.n - 1].replace(/^./, (c) => c.toUpperCase())} ${g.y}`, quarter: `${g.n} квартал ${g.y}`, half: `${g.n} полугодие ${g.y}`, year: `${g.y} год` }[range]);
     const part = (g) => (g.filled < g.size ? `заполнено ${g.filled} из ${g.size} мес` : '');
-    const canEdit = isMember && range === 'month';
+    const canEdit = isMember && range === 'month' && !!cur;
+    // Одна строка на компанию за тот же период, что и сводка выше
+    const byCompany = !cur && latest ? p.businesses.map((b) => ({ b, g: M.groupPeriods(b.periods, range).find((x) => x.id === latest.id) })).filter((x) => x.g || !x.b.archived) : [];
     const seg = [['month', 'Месяц'], ['quarter', 'Квартал'], ['half', 'Полгода'], ['year', 'Год']]
       .map(([k, t]) => `<button data-act="range" data-v="${k}" aria-pressed="${range === k}">${t}</button>`).join('');
     const table = rows.length ? `<section class="card sec">
@@ -412,6 +445,9 @@
         <div class="fig sm"><small>Рентабельность</small><b class="num">${pct(M.margin(latest.profit, latest.rev))}</b></div>
         <div class="fig sm"><small>В карман</small><b class="num">${usd(latest.pocket)}</b></div>
       </div>
+      ${byCompany.length ? `<div class="tw co-t"><table><thead><tr><th>Компания</th><th>Оборот</th><th>Прибыль</th><th>В карман</th></tr></thead><tbody>
+      ${byCompany.map(({ b, g }) => `<tr><td>${esc(b.name)}${b.archived ? '<em>архив</em>' : ''}</td>${g ? `<td>${f(g.rev)}</td><td>${f(g.profit)}</td><td>${f(g.pocket)}</td>` : `<td class="co-none" colspan="3">${range === 'month' ? 'Ещё не внесено' : 'Нет цифр за период'}</td>`}</tr>`).join('')}
+      </tbody></table></div>` : ''}
       ${range === 'month' ? `${bars(series, ui.period.slice(0, 7), null)}<div class="bar-key"><span><i class="l"></i>оборот</span><span><i></i>прибыль</span></div>` : ''}
       <div class="tw"><table><thead><tr><th>Период</th><th>Оборот</th><th>Прибыль</th><th>${compactTable ? 'Рентаб.' : 'Рентабельность'}</th><th>В карман</th></tr></thead><tbody>
       ${groups.slice().reverse().slice(0, LIMIT[range]).map((g) => `<tr class="${canEdit ? 'go' : ''}" ${canEdit ? `data-act="edit" data-v="${g.key}"` : ''}><td>${short(g)}${g.filled < g.size ? `<em>${g.filled} из ${g.size}</em>` : ''}</td><td>${f(g.rev)}</td><td>${f(g.profit)}</td><td>${pct(M.margin(g.profit, g.rev))}</td><td>${f(g.pocket)}</td></tr>`).join('')}
@@ -419,7 +455,7 @@
       <div class="mut small" style="margin-top:8px">${compactTable ? `Суммы в ${SYMBOL[p.cur]}. ` : ''}${range === 'month' ? `Заполнено ${cov.filled} из ${cov.expected} мес.` : 'Считаем по календарю и только внесённые месяцы.'}</div>
     </section>` : '';
 
-    const form = isMember ? `<section class="card sec" id="bForm">
+    const form = isMember && cur ? `<section class="card sec mg" id="bForm">
       <div class="sec-head" style="margin-bottom:6px">
         <div class="nav"><button data-act="pPrev" aria-label="Раньше">‹</button><b>${title}</b><button data-act="pNext" aria-label="Позже" ${ui.period >= due ? 'disabled' : ''}>›</button></div>
       </div>
@@ -431,13 +467,104 @@
       </div>
       <div class="live" id="bLive">${live.html}</div>
       <div id="bErr" class="err">${live.err}</div>
-      <div class="row" style="margin-top:6px"><button class="btn" data-act="bizSave">${filled ? 'Обновить' : 'Сохранить'}</button><span class="mut small">Суммы ${{ RUB: 'в рублях', USD: 'в долларах', EUR: 'в евро' }[p.cur]}</span></div>
+      <div class="row" style="margin-top:6px"><button class="btn" data-act="bizSave">${filled ? 'Обновить' : 'Сохранить'}</button><span class="mut small">${esc(cur ? cur.name : '')}. Суммы ${{ RUB: 'в рублях', USD: 'в долларах', EUR: 'в евро' }[p.cur]}</span></div>
       ${ui.offer ? offer() : ''}
     </section>` : '';
 
-    const body = isMember && table ? `<div class="split biz"><div class="col">${table}</div><div class="col">${form}</div></div>` : `${isMember ? '' : mentorCard()}${form}${table}`;
-    return `<div class="stack">${meter()}${body}
+    const right = cur ? form : monthCard();
+    const body = isMember && table ? `<div class="split biz"><div class="col">${table}</div><div class="col">${right}</div></div>` : `${isMember ? '' : mentorCard()}${isMember || !cur ? right : ''}${table}`;
+    return `<div class="stack">${isMember && ui.manage === 'biz' ? manager() : ''}${meter()}${bizPick()}${body}
       <div class="privacy">Цифры бизнеса видите вы, ваш наставник и директор клана.</div></div>`;
+  }
+
+  // Переключатель компаний: стрелка всегда считает все, ниже цифры выбранной
+  function bizPick() {
+    const p = d(); const cur = curBiz();
+    const all = p.businesses.length > 1 ? `<button class="chip" data-act="bizView" data-v="all" aria-pressed="${!cur}">Все компании</button>` : '';
+    const list = companies().map((b) => `<button class="chip" data-act="bizView" data-v="${b.id}" aria-pressed="${!!cur && cur.id === b.id}">${esc(b.name)}</button>`).join('');
+    const add = prefs.role === 'member' ? '<button class="chip add" data-act="mgQuick" data-v="biz">+ Компания</button>' : '';
+    return `<div class="chips biz-pick" role="group" aria-label="Компания">${all}${list}${add}</div>`;
+  }
+
+  // Когда выбраны все компании, вместо формы видно, кто внёс месяц
+  function monthCard() {
+    const due = dueKey(); const list = companies(); const isMember = prefs.role === 'member';
+    const row = (b) => b.periods.find((x) => x.key === due && x.kind === 'month');
+    const done = list.filter(row).length;
+    return `<section class="card sec"><div class="sec-head" style="margin-bottom:8px"><h2>Итоги ${MONTHS_G[monthNo(due)]}</h2><span class="sub">Внесено ${done} из ${list.length}</span></div>
+      ${list.length ? list.map((b) => {
+        const r = row(b);
+        return `<div class="co"><span class="co-n">${esc(b.name)}<em class="${r ? '' : 'wait'}">${r ? `Чистая прибыль ${usd(r.profit)}` : 'Ещё не внесено'}</em></span>${isMember ? `<button class="btn sm ${r ? 'ghost' : ''}" data-act="bizOpen" data-v="${b.id}">${r ? 'Изменить' : 'Внести'}</button>` : ''}</div>`;
+      }).join('') : '<p class="mut small" style="margin:0">Активных компаний нет.</p>'}
+    </section>`;
+  }
+
+  /* Настройка: источники дохода, категории расходов, компании. Прямо на странице, без всплывающих окон */
+  const PH = { src: 'Например, Консультации', cat: 'Например, Путешествия', biz: 'Например, Студия дизайна' };
+  function mgForm() {
+    const e = ui.mg;
+    const cats = `<option value="" ${e.cat ? '' : 'selected'} disabled>Выберите</option>${INC_CATS.map(([k, t]) => `<option value="${k}" ${e.cat === k ? 'selected' : ''}>${t}</option>`).join('')}`;
+    const curs = Object.keys(SYMBOL).reverse().map((k) => `<option value="${k}" ${e.cur === k ? 'selected' : ''}>${SYMBOL[k]}</option>`).join('');
+    return `<div class="mg-f">
+      <label class="f"><span>Название</span><input class="inp" id="mgName" maxlength="40" autocomplete="off" value="${esc(e.name)}" placeholder="${PH[e.kind]}"></label>
+      ${e.kind === 'src' ? `<div class="mg-2"><label class="f"><span>Категория</span><select class="inp" id="mgCat">${cats}</select></label><label class="f"><span>Валюта</span><select class="inp" id="mgCur">${curs}</select></label></div>` : ''}
+      <div id="mgErr" class="err"></div>
+      <div class="row"><button class="btn sm" data-act="mgSave">${e.id === 'new' ? 'Добавить' : 'Сохранить'}</button><button class="btn ghost sm" data-act="mgCancel">Отмена</button></div>
+    </div>`;
+  }
+  // Сколько записей держит пункт: от этого зависит, удалить его или убрать в архив
+  function usage(kind, id) {
+    const p = d();
+    if (kind === 'src') return p.entries.filter((e) => e.src === id).length;
+    if (kind === 'cat') return p.entries.filter((e) => e.cat === id).length + (p.repeats || []).filter((r) => r.cat === id).length + (p.templates || []).filter((t) => t.cat === id).length;
+    return bizOf(id).periods.length;
+  }
+  function mgAsk(kind, it, n) {
+    const what = { src: 'Источник', cat: 'Категория', biz: 'Компания' }[kind];
+    const text = n
+      ? { src: `У источника ${plural(n, 'запись', 'записи', 'записей')}. Он уйдёт в архив и пропадёт из выбора, записи и суммы останутся.`, cat: `В категории ${plural(n, 'запись', 'записи', 'записей')}. Она уйдёт в архив и пропадёт из выбора, записи и суммы останутся.`, biz: `У компании внесено ${plural(n, 'месяц', 'месяца', 'месяцев')}. Она уйдёт в архив, а цифры останутся в истории и в расчёте уровня.` }[kind]
+      : `${what} без записей, поэтому удалится насовсем. Отменить будет нельзя.`;
+    return `<div class="mg-ask"><p><b>${esc(it.name)}.</b> ${text}</p><div class="row"><button class="btn sm ${n ? '' : 'danger'}" data-act="mgDrop">${n ? 'В архив' : 'Удалить'}</button><button class="btn ghost sm" data-act="mgCancel">Отмена</button></div></div>`;
+  }
+  function mgList(kind, items, addLabel) {
+    const e = ui.mg;
+    const here = (id) => e && e.kind === kind && e.id === id && !e.from;
+    const row = (it) => {
+      if (here(it.id)) return e.mode === 'del' ? mgAsk(kind, it, usage(kind, it.id)) : mgForm();
+      const buttons = it.locked ? '<span></span><span></span>' : `<button class="ib" data-act="mgEdit" data-v="${kind}:${it.id}" aria-label="Изменить: ${esc(it.name)}">${svg('edit')}</button><button class="ib del" data-act="mgAsk" data-v="${kind}:${it.id}" aria-label="Убрать: ${esc(it.name)}">${svg('trash')}</button>`;
+      return `<div class="mg-r"><span class="mg-n"><b>${esc(it.name)}</b><em>${it.sub}</em></span>${buttons}</div>`;
+    };
+    const live = items.filter((x) => !x.archived); const old = items.filter((x) => x.archived);
+    return `${live.map(row).join('') || '<p class="mut small" style="margin:0">Пока пусто.</p>'}
+      ${here('new') ? mgForm() : `<button class="mg-add" data-act="mgNew" data-v="${kind}">${addLabel}</button>`}
+      ${old.length ? `<div class="mg-arch"><h4>Архив: ${old.length}</h4>${old.map((it) => `<div class="mg-r"><span class="mg-n"><b>${esc(it.name)}</b><em>${it.sub}</em></span><button class="link" data-act="mgBack" data-v="${kind}:${it.id}">Восстановить</button></div>`).join('')}</div>` : ''}`;
+  }
+  function manager() {
+    const p = d();
+    const head = (t) => `<div class="sec-head"><h2>${t}</h2><button class="link" data-act="manageClose">Готово</button></div>`;
+    if (ui.manage === 'biz') {
+      const items = p.businesses.map((b) => {
+        const n = b.periods.length;
+        return { ...b, sub: n ? `Внесено ${plural(n, 'месяц', 'месяца', 'месяцев')}` : 'Месяцы ещё не внесены' };
+      });
+      return `<section class="card sec mg" id="mg">${head('Мои компании')}
+        <p class="mg-lead">Цифры каждой компании вносятся отдельно, стрелка уровня считает все вместе.</p>
+        ${mgList('biz', items, '+ Добавить компанию')}</section>`;
+    }
+    const full = p.personalMode === 'full';
+    const srcItems = p.sources.filter((x) => !x.sys).map((s) => {
+      const n = usage('src', s.id);
+      return { ...s, locked: !!s.bizId, sub: `${incCat(s.cat) || 'Без категории'} · ${SYMBOL[s.cur] || ''} · ${s.bizId ? 'меняется в разделе «Бизнес»' : n ? plural(n, 'запись', 'записи', 'записей') : 'записей нет'}` };
+    });
+    const catItems = p.cats.map((k) => {
+      const n = usage('cat', k.id);
+      return { ...k, sub: n ? plural(n, 'запись', 'записи', 'записей') : 'Записей нет' };
+    });
+    return `<section class="card sec mg" id="mg">${head(full ? 'Источники и категории' : 'Источники дохода')}
+      <div class="mg-cols ${full ? 'two' : ''}">
+        <div>${full ? '<h3>Источники дохода</h3>' : ''}<p class="mg-lead">Откуда приходят деньги. По категории источника ПЭРЛ считает долю дохода от своего дела.</p>${mgList('src', srcItems, '+ Добавить источник')}</div>
+        ${full ? `<div><h3>Категории расходов</h3><p class="mg-lead">На что уходят деньги. Новое название сразу применится ко всем записям.</p>${mgList('cat', catItems, '+ Добавить категорию')}</div>` : ''}
+      </div></section>`;
   }
 
   function offer() {
@@ -450,11 +577,11 @@
   }
 
   function mentorCard() {
-    const p = d(); const rows = M.rollup(p.periods).slice(-12);
+    const p = d(); const cur = curBiz(); const viewed = viewPeriods(); const rows = M.rollup(viewed).slice(-12);
     const tot = rows.reduce((a, r) => ({ rev: a.rev + r.rev, profit: a.profit + r.profit, pocket: a.pocket + r.pocket }), { rev: 0, profit: 0, pocket: 0 });
     if (!rows.length) return '';
-    const cov = M.coverage(p.periods, p.today);
-    return `<section class="card sec"><div class="sec-head"><h2>Карточка для встречи: ${esc(p.bizName)}</h2><span class="sub">Заполнено ${cov.filled} из ${cov.expected} мес</span></div>
+    const cov = M.coverage(viewed, p.today);
+    return `<section class="card sec"><div class="sec-head"><h2>Карточка для встречи: ${esc(cur ? cur.name : 'все компании')}</h2><span class="sub">Заполнено ${cov.filled} из ${cov.expected} мес</span></div>
       <div class="mentor">
         <div class="fig sm"><small>Оборот, ${rows.length} мес</small><b class="num">${usd(tot.rev)}</b></div>
         <div class="fig sm"><small>Прибыль</small><b class="num">${usd(tot.profit)}</b></div>
@@ -483,12 +610,15 @@
   function finHead() {
     const p = d(); const full = p.personalMode === 'full';
     let right = '';
-    if (p.tab === 'business') right = p.hasBiz ? `<span class="biz-name">${esc(p.bizName)}</span>` : '';
-    else if (prefs.role === 'member') {
+    const on = (k) => (ui.manage === k ? 'true' : 'false');
+    if (p.tab === 'business') {
+      if (prefs.role === 'member' && p.businesses.length) right = `<button class="btn ghost sm" data-act="manage" data-v="biz" aria-expanded="${on('biz')}">Мои компании: ${companies().length}</button>`;
+    } else if (prefs.role === 'member') {
       right = `<div class="seg" role="group" aria-label="Режим учёта">
         <button data-act="mode" data-v="simple" aria-pressed="${!full}">Только доход</button>
         <button data-act="mode" data-v="full" aria-pressed="${full}">Полный учёт</button>
-      </div><span class="mut small">${full ? 'Доход, расходы, категории. Вернуться можно в любой момент, записи сохранятся.' : 'Для старта: только сколько пришло и откуда.'}</span>`;
+      </div><span class="mut small">${full ? 'Доход, расходы, категории. Вернуться можно в любой момент, записи сохранятся.' : 'Для старта: только сколько пришло и откуда.'}</span>
+      <button class="btn ghost sm" data-act="manage" data-v="personal" aria-expanded="${on('personal')}">${full ? 'Источники и категории' : 'Источники дохода'}</button>`;
     }
     return `<div class="fin-head">${toggle()}${right ? `<div class="fin-side">${right}</div>` : ''}</div>`;
   }
@@ -508,6 +638,11 @@
     if (thumbWas !== p.tab) requestAnimationFrame(() => requestAnimationFrame(() => { tg.dataset.pos = p.tab; }));
     thumbWas = p.tab;
     if (ui.composer) { const a = document.getElementById('amt'); if (a && ui.focusAmt) { a.focus({ preventScroll: false }); ui.focusAmt = false; } }
+    if (ui.focusMg) { const m = document.getElementById('mgName'); if (m) m.focus({ preventScroll: false }); ui.focusMg = false; }
+    if (ui.scrollTo) {
+      const el = document.getElementById(ui.scrollTo); ui.scrollTo = null;
+      if (el) el.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
     save();
   }
 
@@ -541,32 +676,121 @@
   }
   function openComposer(type) {
     const p = d();
-    ui.composer = type; ui.rec = false; ui.addSrc = false; ui.focusAmt = true;
-    const lastSrc = p.entries.filter((e) => e.type === 'income').slice(-1)[0];
-    ui.draft = {
-      amount: '', note: '', date: p.today, cur: p.cur === 'USD' ? 'USD' : p.cur, repeat: false,
-      pick: type === 'income' ? (lastSrc ? lastSrc.src : (p.sources[0] || {}).id) : 'none',
+    ui.composer = type; ui.rec = false; ui.mg = null; ui.focusAmt = true;
+    const live = activeSrc();
+    const last = p.entries.filter((e) => e.type === 'income' && live.some((s) => s.id === e.src)).slice(-1)[0];
+    const pick = type === 'income' ? (last ? last.src : (live[0] || {}).id) : 'none';
+    const src = type === 'income' && srcOf(pick);
+    ui.draft = { amount: '', note: '', date: p.today, cur: (src && src.cur) || p.cur, repeat: false, pick };
+  }
+
+  /* Компания и её строка в личных источниках живут вместе */
+  function linkSource(b) {
+    const p = d();
+    const same = p.sources.find((s) => !s.bizId && !s.sys && s.name.toLowerCase() === b.name.toLowerCase());
+    if (same) { same.bizId = b.id; same.cat = 'own_business'; same.archived = false; return same; }
+    const src = { id: uid(), name: b.name, cat: 'own_business', cur: p.cur, bizId: b.id };
+    p.sources.push(src);
+    return src;
+  }
+  function addCompany(name) {
+    const p = d(); const b = { id: uid(), name, periods: [] };
+    p.businesses.push(b); linkSource(b);
+    p.bizView = b.id; ui.period = null; ui.biz = null; ui.offer = null; ui.manage = null; ui.mg = null; ui.scrollTo = 'bForm';
+    toast('Компания добавлена. Внесите итоги месяца');
+  }
+  const mgItems = (kind) => ({ src: d().sources, cat: d().cats, biz: d().businesses }[kind]);
+  const mgTarget = (v) => { const i = v.indexOf(':'); return [v.slice(0, i), v.slice(i + 1)]; };
+  const mgFail = (text) => { const el = document.getElementById('mgErr'); if (el) el.textContent = text; return false; };
+  function mgStart(kind, id, from) {
+    const it = id === 'new' ? null : mgItems(kind).find((x) => x.id === id);
+    ui.mg = {
+      kind, id, mode: 'edit', from, name: it ? it.name : '', cat: (it && it.cat) || '', cur: (it && it.cur) || (ui.draft && ui.composer ? ui.draft.cur : d().cur),
     };
+    ui.focusMg = true;
   }
 
   const actions = {
-    tab(v) { d().tab = v; ui.composer = null; ui.rec = false; },
+    tab(v) { d().tab = v; ui.composer = null; ui.rec = false; ui.manage = null; ui.mg = null; },
     flip() { const p = d(); actions.tab(p.tab === 'business' ? 'personal' : 'business'); ui.refocus = true; },
-    mode(v) { d().personalMode = v; ui.composer = null; ui.rec = false; if (v === 'simple') toast('Расходы сохранены и скрыты. Вернуть можно в любой момент.'); },
+    mode(v) { d().personalMode = v; ui.composer = null; ui.rec = false; ui.mg = null; if (v === 'simple') toast('Расходы сохранены и скрыты. Вернуть можно в любой момент.'); },
     open(v) { openComposer(v); },
-    closeComposer() { ui.composer = null; },
-    pick(v) { ui.draft.pick = ui.draft.pick === v && ui.composer === 'expense' ? 'none' : v; },
-    curPick(v) { ui.draft.cur = v; },
-    srcAdd() { ui.addSrc = true; },
-    srcSave() {
-      const el = document.getElementById('newSrc'); const name = el && el.value.trim();
-      if (!name) return;
-      const id = uid(); d().sources.push({ id, name, own: true }); ui.draft.pick = id; ui.addSrc = false;
+    closeComposer() { ui.composer = null; if (ui.mg && ui.mg.from) ui.mg = null; },
+    pick(v) {
+      ui.draft.pick = ui.draft.pick === v && ui.composer === 'expense' ? 'none' : v;
+      const s = ui.composer === 'income' && srcOf(v);
+      if (s && s.cur) ui.draft.cur = s.cur;
     },
+    curPick(v) { ui.draft.cur = v; },
+    manage(v) { ui.manage = ui.manage === v ? null : v; ui.mg = null; if (ui.manage) ui.scrollTo = 'mg'; },
+    manageOpen(v) { ui.manage = v; ui.mg = null; ui.scrollTo = 'mg'; },
+    manageClose() { ui.manage = null; ui.mg = null; },
+    mgNew(v) { mgStart(v, 'new'); },
+    mgQuick(v) {
+      if (v === 'biz') { ui.manage = 'biz'; ui.scrollTo = 'mg'; mgStart('biz', 'new'); } else mgStart(v, 'new', 'composer');
+    },
+    mgEdit(v) { const [k, id] = mgTarget(v); mgStart(k, id); },
+    mgAsk(v) { const [k, id] = mgTarget(v); ui.mg = { kind: k, id, mode: 'del' }; },
+    mgCancel() { ui.mg = null; },
+    mgSave() {
+      const p = d(); const e = ui.mg; const name = (e.name || '').trim();
+      if (!name) return mgFail('Введите название.');
+      const same = mgItems(e.kind).find((x) => x.id !== e.id && !x.sys && x.name.toLowerCase() === name.toLowerCase());
+      if (same) return mgFail(same.archived ? 'Такое название есть в архиве, его можно восстановить.' : 'Такое название уже есть.');
+      if (e.kind === 'src' && !e.cat) return mgFail('Выберите категорию: по ней ПЭРЛ считает долю дохода от своего дела.');
+      if (e.kind === 'biz') {
+        if (e.id === 'new') { addCompany(name); return undefined; }
+        const b = bizOf(e.id); b.name = name;
+        const linked = p.sources.find((s) => s.bizId === b.id);
+        if (linked) linked.name = name;
+      } else if (e.id === 'new') {
+        const id = uid();
+        if (e.kind === 'src') p.sources.push({ id, name, cat: e.cat, cur: e.cur });
+        else p.cats.push({ id, name });
+        if (e.from === 'composer') { ui.draft.pick = id; if (e.kind === 'src') ui.draft.cur = e.cur; }
+      } else {
+        const it = mgItems(e.kind).find((x) => x.id === e.id); it.name = name;
+        if (e.kind === 'src') { it.cat = e.cat; it.cur = e.cur; }
+      }
+      ui.mg = null;
+      return undefined;
+    },
+    mgDrop() {
+      const p = d(); const { kind, id } = ui.mg; const n = usage(kind, id);
+      const it = mgItems(kind).find((x) => x.id === id);
+      if (kind === 'biz') {
+        const linked = p.sources.find((s) => s.bizId === id);
+        if (n) { it.archived = true; if (linked) linked.archived = true; } else {
+          p.businesses = p.businesses.filter((b) => b.id !== id);
+          if (linked) {
+            if (usage('src', linked.id)) delete linked.bizId;
+            else p.sources = p.sources.filter((s) => s !== linked);
+          }
+        }
+        if (p.bizView === id) p.bizView = null;
+        ui.period = null; ui.biz = null; ui.offer = null;
+      } else if (n) it.archived = true;
+      else if (kind === 'src') p.sources = p.sources.filter((s) => s.id !== id);
+      else p.cats = p.cats.filter((k) => k.id !== id);
+      if (ui.draft && ui.draft.pick === id) ui.draft.pick = kind === 'src' ? (activeSrc()[0] || {}).id : 'none';
+      ui.mg = null;
+    },
+    mgBack(v) {
+      const [k, id] = mgTarget(v); const it = mgItems(k).find((x) => x.id === id); it.archived = false;
+      if (k === 'biz') {
+        const linked = d().sources.find((s) => s.bizId === id);
+        if (linked) linked.archived = false;
+        ui.period = null; ui.biz = null;
+      }
+    },
+    bizView(v) { d().bizView = v; ui.biz = null; ui.period = null; ui.offer = null; },
+    bizOpen(v) { d().bizView = v; ui.biz = null; ui.period = null; ui.offer = null; ui.scrollTo = 'bForm'; },
     saveEntry() {
       const p = d(); const c = ui.draft; const v = parseNum(c.amount);
-      if (v == null || Number.isNaN(v) || v <= 0) { const e = document.getElementById('cerr'); if (e) e.textContent = 'Введите сумму.'; return false; }
+      const fail = (text) => { const e = document.getElementById('cerr'); if (e) e.textContent = text; return false; };
+      if (v == null || Number.isNaN(v) || v <= 0) return fail('Введите сумму.');
       const type = ui.composer;
+      if (type === 'income' && !c.pick) return fail('Выберите источник.');
       const entry = { id: uid(), type, date: c.date || p.today, amount: v, cur: c.cur };
       if (type === 'income') entry.src = c.pick;
       else { entry.cat = c.pick || 'none'; if (c.note) entry.note = c.note; }
@@ -574,10 +798,10 @@
       if (type === 'expense' && c.repeat) {
         const day = Number(entry.date.slice(8, 10));
         p.repeats = p.repeats || [];
-        p.repeats.push({ id: uid(), title: c.note || (CATS.find((k) => k.id === entry.cat) || {}).name || 'Расход', cat: entry.cat, amount: v, cur: c.cur, day, last: M.monthKey(entry.date) });
+        p.repeats.push({ id: uid(), title: c.note || (catOf(entry.cat) || {}).name || 'Расход', cat: entry.cat, amount: v, cur: c.cur, day, last: M.monthKey(entry.date) });
         entry.auto = true;
       }
-      ui.month = M.monthKey(entry.date); ui.composer = null;
+      ui.month = M.monthKey(entry.date); ui.composer = null; ui.mg = null;
       toast('Записано', entry.id);
     },
     tpl(v) {
@@ -601,7 +825,7 @@
       if (x != null && Math.round(x) !== 0) {
         if (x > 0) p.entries.push({ id: uid(), type: 'expense', date: p.today, amount: Math.round(x), cur: p.cur, cat: 'none', note: 'Неразобранные траты', unsorted: true });
         else {
-          if (!p.sources.some((s) => s.id === 'unsorted')) p.sources.push({ id: 'unsorted', name: 'Неразобранный доход', own: false });
+          if (!p.sources.some((s) => s.id === 'unsorted')) p.sources.push({ id: 'unsorted', name: 'Неразобранный доход', sys: true });
           p.entries.push({ id: uid(), type: 'income', date: p.today, amount: Math.round(-x), cur: p.cur, src: 'unsorted' });
         }
       }
@@ -613,33 +837,35 @@
     pNext() { setPeriod(M.addMonths(ui.period, 1)); },
     edit(v) { setPeriod(v); setTimeout(() => { const f = document.getElementById('bForm'); if (f) f.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 0); },
     bizAdd() {
-      const p = d(); const el = document.getElementById('bizName'); const name = el && el.value.trim();
+      const el = document.getElementById('bizName'); const name = el && el.value.trim();
       if (!name) { document.getElementById('cerr').textContent = 'Введите название.'; return false; }
-      p.hasBiz = true; p.bizName = name; if (!p.sources.some((s) => s.id === 'biz')) p.sources.unshift({ id: 'biz', name: 'Из бизнеса', own: true });
-      ui.period = null; ui.biz = null;
+      addCompany(name);
+      return undefined;
     },
     bizSave() {
-      const p = d(); const { rev, profit, pocket, err } = bizCheck();
-      if (err) return false;
+      const p = d(); const b = curBiz(); const { rev, profit, pocket, err } = bizCheck();
+      if (err || !b) return false;
       if (rev == null && profit == null && pocket == null) { document.getElementById('bErr').textContent = 'Внесите хотя бы одну цифру.'; return false; }
       const k = M.RATES[p.cur]; const key = ui.period;
       const row = { kind: 'month', key, rev: (rev || 0) / k, profit: (profit || 0) / k, pocket: (pocket || 0) / k };
-      const i = p.periods.findIndex((x) => x.key === key && x.kind === 'month');
-      if (i >= 0) p.periods[i] = row; else p.periods.push(row);
-      const moved = (p.moved || {})[key] || 0;
+      const i = b.periods.findIndex((x) => x.key === key && x.kind === 'month');
+      if (i >= 0) b.periods[i] = row; else b.periods.push(row);
+      const moved = ((p.moved || {})[b.id] || {})[key] || 0;
       const rest = (row.pocket - moved) * k;
       const keep = key;
       setPeriod(keep);
-      ui.offer = rest >= 1 ? { key, amount: rest } : null;
+      ui.offer = rest >= 1 ? { key, amount: rest, bizId: b.id } : null;
       toast('Сохранено');
     },
     offerYes() {
       const p = d(); const el = document.getElementById('offerVal'); const v = parseNum(el && el.value);
       if (v == null || Number.isNaN(v) || v <= 0) return false;
-      if (!p.sources.some((s) => s.id === 'biz')) p.sources.unshift({ id: 'biz', name: 'Из бизнеса', own: true });
-      const entry = { id: uid(), type: 'income', date: p.today, amount: v, cur: p.cur, src: 'biz', link: ui.offer.key };
+      const { bizId, key } = ui.offer;
+      const src = p.sources.find((s) => s.bizId === bizId) || linkSource(bizOf(bizId));
+      const entry = { id: uid(), type: 'income', date: p.today, amount: v, cur: p.cur, src: src.id, link: key };
       p.entries.push(entry);
-      p.moved = p.moved || {}; p.moved[ui.offer.key] = (p.moved[ui.offer.key] || 0) + v / M.RATES[p.cur];
+      p.moved = p.moved || {}; p.moved[bizId] = p.moved[bizId] || {};
+      p.moved[bizId][key] = (p.moved[bizId][key] || 0) + v / M.RATES[p.cur];
       ui.offer = null; ui.month = curMonth(); toast('Записали в личные финансы', entry.id);
     },
     offerNo() { ui.offer = null; },
@@ -653,15 +879,15 @@
       ui.period = null; ui.biz = null; ui.offer = null; ui.month = null;
     },
     reset() {
-      data[prefs.persona] = PERSONAS[prefs.persona].make();
-      Object.assign(ui, { composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, toast: null });
+      data[prefs.persona] = fresh();
+      Object.assign(ui, { composer: null, draft: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, toast: null, manage: null, mg: null });
       needleWas = -90;
     },
     csv() {
       const p = d();
       const rows = [['Дата', 'Тип', 'Сумма', 'Валюта', 'Источник или категория', 'Название']].concat(p.entries.map((e) => [
         e.date, e.type === 'income' ? 'Доход' : 'Расход', e.amount, e.cur,
-        e.type === 'income' ? (p.sources.find((s) => s.id === e.src) || {}).name : (CATS.find((k) => k.id === e.cat) || { name: 'Без категории' }).name, e.note || '',
+        e.type === 'income' ? (srcOf(e.src) || {}).name : (catOf(e.cat) || { name: 'Без категории' }).name, e.note || '',
       ]));
       const csv = `﻿${rows.map((r) => r.map((c) => `"${String(c == null ? '' : c).replace(/"/g, '""')}"`).join(';')).join('\n')}`;
       const a = document.createElement('a');
@@ -680,6 +906,13 @@
   });
   // Стрелки двигают тумблер туда, куда нажали, Space и Enter переключают сами
   document.addEventListener('keydown', (ev) => {
+    if (ev.target.id === 'mgName' && (ev.key === 'Enter' || ev.key === 'Escape')) {
+      ev.preventDefault();
+      const fn = ev.key === 'Enter' ? actions.mgSave : actions.mgCancel;
+      if (fn() !== false) render();
+      return;
+    }
+    if (ev.target.id === 'bizName' && ev.key === 'Enter') { ev.preventDefault(); if (actions.bizAdd() !== false) render(); return; }
     if (ev.target.id !== 'tg' || (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight')) return;
     ev.preventDefault();
     const to = ev.key === 'ArrowRight' ? 'business' : 'personal';
@@ -692,9 +925,9 @@
     if (t.dataset.pref) {
       prefs[t.dataset.pref] = t.value;
       if (t.dataset.pref === 'persona' || t.dataset.pref === 'role') {
-        Object.assign(ui, { composer: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false });
+        Object.assign(ui, { composer: null, biz: null, period: null, offer: null, month: null, sort: null, rec: false, manage: null, mg: null });
         needleWas = -90;
-        if (t.dataset.pref === 'role' && t.value === 'mentor' && d().hasBiz) d().tab = 'business';
+        if (t.dataset.pref === 'role' && t.value === 'mentor' && d().businesses.length) d().tab = 'business';
       }
       render();
     } else if (t.dataset.demo === 'cur') {
@@ -707,13 +940,16 @@
         else if (t.id === 'amt') ui.draft.amount = t.value;
         else if (t.id === 'recVal') ui.recVal = t.value;
       }
-    } else if (t.id === 'rep' && ui.draft) ui.draft.repeat = t.checked;
+    } else if (t.id === 'mgCat' && ui.mg) ui.mg.cat = t.value;
+    else if (t.id === 'mgCur' && ui.mg) ui.mg.cur = t.value;
+    else if (t.id === 'rep' && ui.draft) ui.draft.repeat = t.checked;
     else if (t.id === 'date' && ui.draft) ui.draft.date = t.value;
   });
 
   document.addEventListener('input', (ev) => {
     const t = ev.target;
-    if (t.id === 'amt') { ui.draft.amount = t.value; const fx = document.getElementById('fx'); if (fx) fx.textContent = fxLine(); }
+    if (t.id === 'mgName' && ui.mg) ui.mg.name = t.value;
+    else if (t.id === 'amt') { ui.draft.amount = t.value; const fx = document.getElementById('fx'); if (fx) fx.textContent = fxLine(); }
     else if (t.id === 'note') {
       ui.draft.note = t.value;
       const prev = d().entries.filter((e) => e.note === t.value && e.type === 'expense').slice(-1)[0];
