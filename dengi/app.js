@@ -2,7 +2,7 @@
 (function () {
   const M = window.Model;
   const { PERSONAS, CATS } = window.Seeds;
-  const STORE = 'dengi.v2';
+  const STORE = 'dengi.v3';
   const MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
   const MONTHS_G = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
   const MONTHS_L = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
@@ -69,30 +69,10 @@
     const count = (k) => es.filter((e) => M.monthKey(e.date) === k).length;
     return count(now) < 3 && count(prev) > 0 ? prev : now;
   };
-  const dueKey = (p = d()) => (p.cadence === 'week' ? M.addDays(M.weekStart(p.today), -7) : M.addMonths(M.monthKey(p.today), -1));
-  const weekLabel = (start) => {
-    const a = M.parse(start); const b = M.parse(M.addDays(start, 6));
-    return a.getMonth() === b.getMonth()
-      ? `${a.getDate()}–${b.getDate()} ${MONTHS_G[a.getMonth()]}`
-      : `${a.getDate()} ${MONTHS_S[a.getMonth()]} – ${b.getDate()} ${MONTHS_S[b.getMonth()]}`;
-  };
+  const dueKey = (p = d()) => M.addMonths(M.monthKey(p.today), -1);
 
-  /* Что показывает прибор: бизнес, а без бизнеса доход от своего дела (зарплата не считается) */
-  function ownPeriods(p) {
-    const own = new Set(p.sources.filter((s) => s.own).map((s) => s.id));
-    const map = new Map();
-    p.entries.filter((e) => e.type === 'income' && own.has(e.src) && M.monthKey(e.date) < M.monthKey(p.today)).forEach((e) => {
-      const k = M.monthKey(e.date);
-      map.set(k, (map.get(k) || 0) + toUsd(e));
-    });
-    return [...map.entries()].map(([key, v]) => ({ kind: 'month', key, profit: v, rev: v, pocket: v }));
-  }
-  const meterData = () => {
-    const p = d();
-    return p.hasBiz
-      ? { periods: p.periods, metric: prefs.metric, label: METRICS[prefs.metric] }
-      : { periods: ownPeriods(p), metric: 'profit', label: 'Доход от своего дела' };
-  };
+  /* Прибор считает только бизнес: личные финансы на него не влияют */
+  const meterData = () => ({ periods: d().periods, metric: prefs.metric, label: METRICS[prefs.metric] });
 
   /* Прибор */
   const CX = 170; const CY = 166; const R = 136;
@@ -138,7 +118,7 @@
     const canUp = M.canLevelUp(p.level, s.fact, m.metric);
 
     let read;
-    if (!has) read = `<b class="empty">Пока нет данных</b><span>Внесите первый месяц, и стрелка покажет, что выйдет за год</span>`;
+    if (!has) read = `<b class="empty">Пока нет данных</b><span>${p.hasBiz ? 'Внесите первый месяц, и стрелка покажет, что выйдет за год' : 'Добавьте бизнес, и стрелка покажет, что выйдет за год'}</span>`;
     else if (s.forecast < 0) read = `<b class="num">${usd(s.forecast)}</b><span>${esc(m.label.toLowerCase())}: прогноз на год пока ниже нуля</span>`;
     else read = `<b class="num">${usd(s.forecast)}</b><span>${s.weight >= 1 - 1e-9 ? 'за 12 месяцев' : 'прогноз на год'} · ${pct(share)} цели уровня</span>`;
 
@@ -187,14 +167,14 @@
     const inc = sumType(monthEntries(key), 'income');
     const last = lastBiz();
     return `<div class="pair" role="group" aria-label="Раздел финансов">
-      <button data-act="tab" data-v="personal" aria-pressed="${p.tab === 'personal'}"><small>Личные деньги</small><b class="num">${money(inc)}</b><em>доход, ${monthName(key)}</em></button>
+      <button data-act="tab" data-v="personal" aria-pressed="${p.tab === 'personal'}"><small>Личные финансы</small><b class="num">${money(inc)}</b><em>доход, ${monthName(key)}</em></button>
       <button data-act="tab" data-v="business" aria-pressed="${p.tab === 'business'}"><small>Бизнес</small>${last ? `<b class="num">${usd(last.profit)}</b><em>прибыль, ${monthName(last.key)}</em>` : `<b>${p.hasBiz ? 'Нет данных' : 'Добавить'}</b><em>${p.hasBiz ? 'внесите первый месяц' : 'оборот, прибыль, в карман'}</em>`}</button>
     </div>`;
   }
   const segSwitch = () => {
     const p = d();
     return `<div class="seg big" role="group" aria-label="Раздел финансов">
-      <button data-act="tab" data-v="personal" aria-pressed="${p.tab === 'personal'}">Личные деньги</button>
+      <button data-act="tab" data-v="personal" aria-pressed="${p.tab === 'personal'}">Личные финансы</button>
       <button data-act="tab" data-v="business" aria-pressed="${p.tab === 'business'}">Бизнес</button></div>`;
   };
 
@@ -202,7 +182,7 @@
     const p = d();
     const two = prefs.switcher === 'tabs';
     const items = [['Фокус дня'], ['Задачи']];
-    if (two) items.push(['Личные деньги', 'personal'], ['Бизнес', 'business']);
+    if (two) items.push(['Личные финансы', 'personal'], ['Бизнес', 'business']);
     else items.push(['Финансы', 'on']);
     items.push(['Дневник успеха'], ['1000 целей'], ['Зверёк']);
     const html = items.map(([l, v]) => {
@@ -227,7 +207,7 @@
   }
   const last12 = (end) => { const out = []; for (let i = 11; i >= 0; i -= 1) out.push(M.addMonths(end, -i)); return out; };
 
-  /* Личные деньги */
+  /* Личные финансы */
   function composer(type) {
     const p = d(); const c = ui.draft; const full = p.personalMode === 'full';
     const chips = type === 'income'
@@ -353,23 +333,18 @@
   }
 
   /* Бизнес */
-  const periodOf = (key) => d().periods.find((x) => x.key === key && x.kind === d().cadence);
+  const periodOf = (key) => d().periods.find((x) => x.key === key && x.kind === 'month');
   function setPeriod(key) {
     const p = d(); ui.period = key; ui.offer = null;
     const row = periodOf(key); const k = M.RATES[p.cur];
     const val = (v) => (row ? group(v * k) : '');
     ui.biz = { rev: val(row && row.rev), profit: val(row && row.profit), pocket: val(row && row.pocket) };
   }
-  const weekLocked = () => {
-    const p = d();
-    return p.cadence === 'week' && p.periods.some((x) => x.kind === 'month' && x.key === M.weekMonth(ui.period));
-  };
   function bizCheck() {
     const b = ui.biz;
     const rev = parseNum(b.rev); const profit = parseNum(b.profit); const pocket = parseNum(b.pocket);
     let err = '';
-    if (weekLocked()) err = `За ${monthName(M.weekMonth(ui.period))} уже внесён итог месяца. Недели начнут считаться со следующего месяца.`;
-    else if ([rev, profit, pocket].some((x) => Number.isNaN(x))) err = 'Проверьте суммы: нужны только цифры.';
+    if ([rev, profit, pocket].some((x) => Number.isNaN(x))) err = 'Проверьте суммы: нужны только цифры.';
     else if (rev != null && rev < 0) err = 'Оборот не может быть меньше нуля.';
     else if (pocket != null && pocket < 0) err = 'Сумма в карман не может быть меньше нуля.';
     else if (rev != null && profit != null && profit > rev) err = 'Прибыль не может быть больше оборота.';
@@ -378,7 +353,7 @@
   function bizLive() {
     const { rev, profit, pocket, err } = bizCheck();
     const parts = [];
-    if (!err && rev > 0 && profit != null) parts.push(`Маржа <b class="num">${pct(profit / rev)}</b>`);
+    if (!err && rev > 0 && profit != null) parts.push(`Рентабельность <b class="num">${pct(profit / rev)}</b>`);
     if (!err && profit != null && pocket != null) {
       const rest = profit - pocket;
       parts.push(rest >= 0 ? `Осталось в бизнесе <b class="num">${money(rest)}</b>` : `Вывели больше прибыли на <b class="num">${money(-rest)}</b>: это нормально, если брали из накопленного`);
@@ -389,8 +364,8 @@
   function business() {
     const p = d(); const isMember = prefs.role === 'member';
     if (!p.hasBiz) {
-      if (!isMember) return '<div class="stack"><section class="card sec"><p class="mut" style="margin:0">Участник пока не добавил бизнес.</p></section></div>';
-      return `<div class="stack"><section class="card sec">
+      if (!isMember) return `<div class="stack">${meter()}<section class="card sec"><p class="mut" style="margin:0">Участник пока не добавил бизнес.</p></section></div>`;
+      return `<div class="stack">${meter()}<section class="card sec">
         <h2>Добавьте свой бизнес</h2>
         <p class="mut" style="margin:6px 0 12px;max-width:62ch">Здесь три цифры: оборот, чистая прибыль и деньги в кармане. Полный учёт ведите в своей бухгалтерии или CRM, сюда только итог.</p>
         <div class="row"><input class="inp" id="bizName" style="max-width:320px" placeholder="Название бизнеса" aria-label="Название бизнеса"><button class="btn" data-act="bizAdd">Добавить</button></div>
@@ -399,8 +374,7 @@
     }
     const due = dueKey();
     if (!ui.period || !ui.biz) setPeriod(due);
-    const month = p.cadence === 'month';
-    const title = month ? `Итоги ${MONTHS_G[monthNo(ui.period)]}` : `Неделя ${weekLabel(ui.period)}`;
+    const title = `Итоги ${MONTHS_G[monthNo(ui.period)]}`;
     const filled = !!periodOf(ui.period);
     const live = bizLive();
     const rows = M.rollup(p.periods);
@@ -413,22 +387,40 @@
       return { key: k, a: r ? Math.max(0, r.rev) : 0, b: r ? Math.max(0, r.profit) : 0 };
     });
     const cov = M.coverage(p.periods, p.today);
+    const range = ui.range || 'month';
+    const groups = M.groupPeriods(p.periods, range);
+    const latest = groups[groups.length - 1];
+    const LIMIT = { month: 12, quarter: 8, half: 6, year: 5 };
+    const yy = (g) => (compactTable ? String(g.y).slice(2) : g.y);
+    const short = (g) => ({ month: `${MONTHS_S[g.n - 1]} ${String(g.y).slice(2)}`, quarter: `${g.n} кв ${yy(g)}`, half: `${g.n} пол ${yy(g)}`, year: `${g.y}` }[range]);
+    const long = (g) => ({ month: `${MONTHS[g.n - 1].replace(/^./, (c) => c.toUpperCase())} ${g.y}`, quarter: `${g.n} квартал ${g.y}`, half: `${g.n} полугодие ${g.y}`, year: `${g.y} год` }[range]);
+    const part = (g) => (g.filled < g.size ? `заполнено ${g.filled} из ${g.size} мес` : '');
+    const canEdit = isMember && range === 'month';
+    const seg = [['month', 'Месяц'], ['quarter', 'Квартал'], ['half', 'Полгода'], ['year', 'Год']]
+      .map(([k, t]) => `<button data-act="range" data-v="${k}" aria-pressed="${range === k}">${t}</button>`).join('');
     const table = rows.length ? `<section class="card sec">
-      <div class="sec-head"><h2>Сводный баланс</h2><span class="sub">${compactTable ? `Суммы в ${SYMBOL[p.cur]}. ` : ''}Заполнено ${cov.filled} из ${cov.expected} мес</span></div>
-      ${bars(series, ui.period.slice(0, 7), null)}<div class="bar-key"><span><i class="l"></i>оборот</span><span><i></i>прибыль</span></div>
-      <div class="tw"><table><thead><tr><th>Месяц</th><th>Оборот</th><th>Прибыль</th><th>Маржа</th><th>В карман</th></tr></thead><tbody>
-      ${rows.slice().reverse().slice(0, 12).map((r) => `<tr class="${r.weeks || !isMember ? '' : 'go'}" ${r.weeks || !isMember ? '' : `data-act="edit" data-v="${r.key}"`}><td>${MONTHS_S[monthNo(r.key)]} ${r.key.slice(2, 4)}${r.weeks ? `<em>${r.weeks} нед</em>` : ''}</td><td>${f(r.rev)}</td><td>${f(r.profit)}</td><td>${pct(M.margin(r.profit, r.rev))}</td><td>${f(r.pocket)}</td></tr>`).join('')}
-      </tbody><tfoot><tr><td>Итого</td><td>${f(tot.rev)}</td><td>${f(tot.profit)}</td><td>${pct(M.margin(tot.profit, tot.rev))}</td><td>${f(tot.pocket)}</td></tr></tfoot></table></div>
+      <div class="sec-head"><h2>Сводный баланс</h2><div class="seg range" role="group" aria-label="Период">${seg}</div></div>
+      <div class="sum-head"><b>${long(latest)}</b>${part(latest) ? `<span class="mut small">${part(latest)}</span>` : ''}</div>
+      <div class="sum">
+        <div class="fig sm"><small>Оборот</small><b class="num">${usd(latest.rev)}</b></div>
+        <div class="fig sm"><small>Чистая прибыль</small><b class="num">${usd(latest.profit)}</b></div>
+        <div class="fig sm"><small>Рентабельность</small><b class="num">${pct(M.margin(latest.profit, latest.rev))}</b></div>
+        <div class="fig sm"><small>В карман</small><b class="num">${usd(latest.pocket)}</b></div>
+      </div>
+      ${range === 'month' ? `${bars(series, ui.period.slice(0, 7), null)}<div class="bar-key"><span><i class="l"></i>оборот</span><span><i></i>прибыль</span></div>` : ''}
+      <div class="tw"><table><thead><tr><th>Период</th><th>Оборот</th><th>Прибыль</th><th>${compactTable ? 'Рентаб.' : 'Рентабельность'}</th><th>В карман</th></tr></thead><tbody>
+      ${groups.slice().reverse().slice(0, LIMIT[range]).map((g) => `<tr class="${canEdit ? 'go' : ''}" ${canEdit ? `data-act="edit" data-v="${g.key}"` : ''}><td>${short(g)}${g.filled < g.size ? `<em>${g.filled} из ${g.size}</em>` : ''}</td><td>${f(g.rev)}</td><td>${f(g.profit)}</td><td>${pct(M.margin(g.profit, g.rev))}</td><td>${f(g.pocket)}</td></tr>`).join('')}
+      </tbody>${range === 'month' ? `<tfoot><tr><td>Итого</td><td>${f(tot.rev)}</td><td>${f(tot.profit)}</td><td>${pct(M.margin(tot.profit, tot.rev))}</td><td>${f(tot.pocket)}</td></tr></tfoot>` : ''}</table></div>
+      <div class="mut small" style="margin-top:8px">${compactTable ? `Суммы в ${SYMBOL[p.cur]}. ` : ''}${range === 'month' ? `Заполнено ${cov.filled} из ${cov.expected} мес.` : 'Считаем по календарю и только внесённые месяцы.'}</div>
     </section>` : '';
 
-    const form = isMember ? `<section class="card sec">
+    const form = isMember ? `<section class="card sec" id="bForm">
       <div class="sec-head">
         <div><h2>${esc(p.bizName)}</h2></div>
-        <div class="seg" role="group" aria-label="Как часто вносить"><button data-act="cad" data-v="month" aria-pressed="${month}">Раз в месяц</button><button data-act="cad" data-v="week" aria-pressed="${!month}">Раз в неделю</button></div>
       </div>
       <div class="sec-head" style="margin-bottom:10px">
         <div class="nav"><button data-act="pPrev" aria-label="Раньше">‹</button><b>${title}</b><button data-act="pNext" aria-label="Позже" ${ui.period >= due ? 'disabled' : ''}>›</button></div>
-        <span class="sub">${month ? 'Удобнее всего с 1 по 5 число, напомним в Telegram' : 'Напомним в Telegram в выбранный день'}</span>
+        <span class="sub">Удобнее всего с 1 по 5 число, напомним в Telegram</span>
       </div>
       <div class="fields">
         <label class="f"><span>Оборот</span><input class="inp" id="b-rev" inputmode="decimal" autocomplete="off" value="${esc(ui.biz.rev)}" placeholder="0"><small>Все оплаты клиентов, до расходов</small></label>
@@ -441,15 +433,15 @@
       ${ui.offer ? offer() : ''}
     </section>` : '';
 
-    return `<div class="stack">${form}${table}
+    return `<div class="stack">${meter()}${isMember ? '' : mentorCard()}${form}${table}
       <div class="privacy">Цифры бизнеса видите вы, ваш наставник и директор клана.</div></div>`;
   }
 
   function offer() {
     const o = ui.offer;
     return `<div class="offer">
-      <p style="margin:0">Вы вывели себе <b class="num">${money(o.amount)}</b>. Записать в личные деньги как доход? Если выводили частями, поправьте сумму.</p>
-      <input class="inp" id="offerVal" inputmode="decimal" value="${group(o.amount)}" aria-label="Сумма для личных денег">
+      <p style="margin:0">Вы вывели себе <b class="num">${money(o.amount)}</b>. Записать в личные финансы как доход? Если выводили частями, поправьте сумму.</p>
+      <input class="inp" id="offerVal" inputmode="decimal" value="${group(o.amount)}" aria-label="Сумма для личных финансов">
       <button class="btn sm" data-act="offerYes">Записать</button>
       <button class="btn ghost sm" data-act="offerNo">Не сейчас</button>
     </div>`;
@@ -464,7 +456,7 @@
       <div class="mentor">
         <div class="fig sm"><small>Оборот, ${rows.length} мес</small><b class="num">${usd(tot.rev)}</b></div>
         <div class="fig sm"><small>Прибыль</small><b class="num">${usd(tot.profit)}</b></div>
-        <div class="fig sm"><small>Маржа</small><b class="num">${pct(M.margin(tot.profit, tot.rev))}</b></div>
+        <div class="fig sm"><small>Рентабельность</small><b class="num">${pct(M.margin(tot.profit, tot.rev))}</b></div>
         <div class="fig sm"><small>В карман</small><b class="num">${usd(tot.pocket)}</b><em>${pct(tot.profit > 0 ? tot.pocket / tot.profit : null)} прибыли</em></div>
       </div></section>`;
   }
@@ -493,8 +485,7 @@
     document.documentElement.classList.toggle('dark', prefs.theme === 'dark');
     const sw = prefs.switcher === 'cards' ? pairCards() : prefs.switcher === 'seg' ? segSwitch() : '';
     app.innerHTML = `${demoBar()}<main class="page">${tracker()}
-      <div class="stack">${prefs.role === 'mentor' ? '<p class="mut small" style="margin:0">Вы смотрите кабинет участника: только чтение.</p>' : ''}
-      ${meter()}${prefs.role === 'mentor' ? mentorCard() : ''}${sw}</div>
+      ${prefs.role === 'mentor' || sw ? `<div class="stack">${prefs.role === 'mentor' ? '<p class="mut small" style="margin:0">Вы смотрите кабинет участника: только чтение.</p>' : ''}${sw}</div>` : ''}
       ${p.tab === 'business' ? business() : personal()}
     </main>${ui.toast ? `<div class="toast" role="status"><span>${esc(ui.toast.text)}</span>${ui.toast.undo ? '<button data-act="undo">Отменить</button>' : ''}</div>` : ''}`;
     typo(app);
@@ -600,10 +591,10 @@
       p.balance = { date: p.today, amount: v }; ui.rec = false; ui.month = curMonth();
       toast(x == null ? 'Запомнили точку отсчёта' : 'Сверили');
     },
-    cad(v) { const p = d(); p.cadence = v; ui.period = null; ui.biz = null; ui.offer = null; },
-    pPrev() { setPeriod(d().cadence === 'month' ? M.addMonths(ui.period, -1) : M.addDays(ui.period, -7)); },
-    pNext() { setPeriod(d().cadence === 'month' ? M.addMonths(ui.period, 1) : M.addDays(ui.period, 7)); },
-    edit(v) { const p = d(); if (p.cadence !== 'month') { p.cadence = 'month'; } setPeriod(v); window.scrollTo({ top: 0, behavior: 'smooth' }); },
+    range(v) { ui.range = v; },
+    pPrev() { setPeriod(M.addMonths(ui.period, -1)); },
+    pNext() { setPeriod(M.addMonths(ui.period, 1)); },
+    edit(v) { setPeriod(v); setTimeout(() => { const f = document.getElementById('bForm'); if (f) f.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 0); },
     bizAdd() {
       const p = d(); const el = document.getElementById('bizName'); const name = el && el.value.trim();
       if (!name) { document.getElementById('cerr').textContent = 'Введите название.'; return false; }
@@ -615,8 +606,8 @@
       if (err) return false;
       if (rev == null && profit == null && pocket == null) { document.getElementById('bErr').textContent = 'Внесите хотя бы одну цифру.'; return false; }
       const k = M.RATES[p.cur]; const key = ui.period;
-      const row = { kind: p.cadence, key, rev: (rev || 0) / k, profit: (profit || 0) / k, pocket: (pocket || 0) / k };
-      const i = p.periods.findIndex((x) => x.key === key && x.kind === p.cadence);
+      const row = { kind: 'month', key, rev: (rev || 0) / k, profit: (profit || 0) / k, pocket: (pocket || 0) / k };
+      const i = p.periods.findIndex((x) => x.key === key && x.kind === 'month');
       if (i >= 0) p.periods[i] = row; else p.periods.push(row);
       const moved = (p.moved || {})[key] || 0;
       const rest = (row.pocket - moved) * k;
@@ -632,7 +623,7 @@
       const entry = { id: uid(), type: 'income', date: p.today, amount: v, cur: p.cur, src: 'biz', link: ui.offer.key };
       p.entries.push(entry);
       p.moved = p.moved || {}; p.moved[ui.offer.key] = (p.moved[ui.offer.key] || 0) + v / M.RATES[p.cur];
-      ui.offer = null; ui.month = curMonth(); toast('Записали в личные деньги', entry.id);
+      ui.offer = null; ui.month = curMonth(); toast('Записали в личные финансы', entry.id);
     },
     offerNo() { ui.offer = null; },
     levelup() {
@@ -658,7 +649,7 @@
       const csv = `﻿${rows.map((r) => r.map((c) => `"${String(c == null ? '' : c).replace(/"/g, '""')}"`).join(';')).join('\n')}`;
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-      a.download = 'lichnye-dengi.csv'; a.click();
+      a.download = 'lichnye-finansy.csv'; a.click();
       return false;
     },
   };

@@ -38,7 +38,7 @@
     zero: {
       title: 'С нуля', hint: 'Пустой кабинет: вносите месяц за месяцем и смотрите на стрелку',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: false, bizName: '', cadence: 'month',
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: false, bizName: '',
         periods: [], personalMode: 'simple',
         sources: [{ id: 'main', name: 'Основной доход', own: true }, { id: 'side', name: 'Подработка', own: true }],
         entries: [], repeats: [], balance: null, moved: {}, today: TODAY, tab: 'business',
@@ -47,7 +47,7 @@
     voice: {
       title: 'Пример из голосового', hint: 'Месяц $2 500, месяц $1 500, цель $36 000',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Бизнес из примера', cadence: 'month',
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Бизнес из примера',
         periods: [
           { kind: 'month', key: '2026-09', rev: 7000, profit: 2500, pocket: 1500 },
           { kind: 'month', key: '2026-10', rev: 5200, profit: 1500, pocket: 900 },
@@ -64,7 +64,7 @@
         const p = [25, 40, 15, 55, 45, 30, 60];
         const c = [20, 30, 10, 40, 40, 25, 45];
         return {
-          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Онлайн-школа рисования', cadence: 'month',
+          cur: 'RUB', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Онлайн-школа рисования',
           periods: r.map((v, i) => ({
             kind: 'month', key: M.addMonths('2026-04', i), rev: rub(v * 1000), profit: rub(p[i] * 1000), pocket: rub(c[i] * 1000),
           })),
@@ -82,7 +82,7 @@
     ready: {
       title: 'Готов к переходу', hint: 'За 12 месяцев сделал цель первого уровня',
       make: () => ({
-        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Студия ремонта', cadence: 'month',
+        cur: 'USD', level: 1, levelSource: 'По анкете: доход до $36 000 в год', hasBiz: true, bizName: 'Студия ремонта',
         periods: year.map(([rev, profit, pocket], i) => ({ kind: 'month', key: M.addMonths('2025-11', i), rev, profit, pocket })),
         personalMode: 'simple',
         sources: [{ id: 'biz', name: 'Из бизнеса', own: true }],
@@ -90,7 +90,7 @@
       }),
     },
     job: {
-      title: 'Работа и подработка', hint: 'Бизнеса нет: стрелка считает только своё дело, зарплату не считает',
+      title: 'Работа и подработка', hint: 'Бизнеса нет: личные финансы живут отдельно, стрелка ждёт бизнес',
       make: () => {
         const entries = [];
         ['2026-07', '2026-08', '2026-09', '2026-10'].forEach((m, i) => {
@@ -98,7 +98,7 @@
           entries.push(inc(`g${i}`, `${m}-21`, [15000, 22000, 18000, 30000][i], 'gig'));
         });
         return {
-          cur: 'RUB', level: 1, levelSource: 'По анкете: своего дела пока нет', hasBiz: false, bizName: '', cadence: 'month',
+          cur: 'RUB', level: 1, levelSource: 'По анкете: своего дела пока нет', hasBiz: false, bizName: '',
           periods: [], personalMode: 'simple',
           sources: [{ id: 'salary', name: 'Зарплата', own: false }, { id: 'gig', name: 'Подработка', own: true }],
           entries, repeats: [], balance: null, moved: {}, today: TODAY, tab: 'personal',

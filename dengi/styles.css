@@ -233,6 +233,9 @@ h2 { font-size: 17px; margin: 0; font-weight: 650; }
 .sort { padding: 2px 0 10px 64px; }
 
 .stub { display: flex; flex-wrap: wrap; gap: 6px 10px; font-size: 13px; color: hsl(var(--muted-fg)); }
+.sum-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 2px 0 8px; font-size: 15px; }
+.sum-head b { font-weight: 650; }
+.sum { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 20px; margin-bottom: 14px; }
 .privacy { font-size: 13px; color: hsl(var(--muted-fg)); }
 
 /* Таблица */
@@ -275,14 +278,19 @@ td em { font-style: normal; font-size: 11px; color: hsl(var(--muted-fg)); margin
   .fig b { font-size: 22px; }
   .pair b { font-size: 17px; }
   .pair button { padding: 9px 12px 10px; }
+  .sum { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  td em { display: block; margin-left: 0; }
+  .seg.range { display: flex; width: 100%; }
+  .seg.range button { flex: 1; padding: 7px 4px; font-size: 13px; }
   .it { grid-template-columns: 44px 1fr auto auto; gap: 6px; }
   .sort { padding-left: 0; }
   .dial-read b { font-size: 28px; }
 }
 @media (max-width: 360px) {
   table { font-size: 13px; }
-  th { font-size: 11px; padding-inline: 3px; }
-  td { padding-inline: 3px; }
+  th { font-size: 11px; padding-inline: 2px; }
+  td { padding-inline: 2px; }
+  .cats { grid-template-columns: 1fr; }
   .sec { padding-inline: 12px; }
 }
 .stack > * { min-width: 0; }

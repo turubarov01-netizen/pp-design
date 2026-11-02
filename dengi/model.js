@@ -90,6 +90,26 @@
     return { filled: expected - gaps.length, expected, gaps };
   }
 
+  // Календарные группы: месяц, квартал, полгода, год. Сумма по заполненным месяцам, без пересчёта на будущее
+  const GROUP_SIZE = { month: 1, quarter: 3, half: 6, year: 12 };
+  function groupId(key, range) {
+    const [y, m] = key.split('-').map(Number);
+    if (range === 'quarter') return { id: `${y}-Q${Math.ceil(m / 3)}`, y, n: Math.ceil(m / 3) };
+    if (range === 'half') return { id: `${y}-H${m <= 6 ? 1 : 2}`, y, n: m <= 6 ? 1 : 2 };
+    if (range === 'year') return { id: `${y}`, y, n: 1 };
+    return { id: key, y, n: m };
+  }
+  function groupPeriods(periods, range = 'month') {
+    const map = new Map();
+    for (const r of rollup(periods)) {
+      const g = groupId(r.key, range);
+      const row = map.get(g.id) || { ...g, range, key: r.key, size: GROUP_SIZE[range], filled: 0, rev: 0, profit: 0, pocket: 0 };
+      row.rev += r.rev; row.profit += r.profit; row.pocket += r.pocket; row.filled += 1;
+      map.set(g.id, row);
+    }
+    return [...map.values()].sort((a, b) => a.id.localeCompare(b.id));
+  }
+
   // Оборот имеет свою шкалу, деньги в кармане идут по шкале прибыли
   const levelTarget = (level, metric = 'profit') => LEVELS[level - 1][metric === 'rev' ? 'rev' : 'profit'];
   const canLevelUp = (level, fact, metric = 'profit') => level < LEVELS.length && fact >= levelTarget(level, metric);
@@ -99,6 +119,6 @@
 
   return {
     RATES, LEVELS, WEIGHT, iso, parse, pad, monthKey, addMonths, lastDay, addDays, weekStart, weekMonth,
-    periodEnd, normalize, stats, rollup, margin, coverage, levelTarget, canLevelUp, levelFromYear,
+    periodEnd, normalize, stats, rollup, margin, coverage, groupPeriods, levelTarget, canLevelUp, levelFromYear,
   };
 });
