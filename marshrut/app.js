@@ -10,10 +10,12 @@
 
   /* Линейка: каждый урок получает сквозной номер и вес */
   const FLAT = [];
+  /* Вымышленные номера уроков в библиотеке: в маршруте показываем их, а не 1, 2, 3 (Игорь 03.11.2026) */
+  const LIB = [118, 33, 133, 154, 25, 42, 97, 13, 67, 144, 167, 9, 121, 75, 58, 51, 116, 143, 153, 157, 5, 165, 168, 162, 128, 124, 108, 106, 38, 64, 30, 117, 52, 21, 12, 28, 99, 26, 16];
   R.stages.forEach((st, si) => {
     st.ls.forEach((l, i) => {
       const base = st.n == null ? 0 : (st.n + 1) * 1000;
-      FLAT.push(Object.assign({}, l, { si, g: FLAT.length + 1, w: base + (i + 1) * 10 }));
+      FLAT.push(Object.assign({}, l, { si, g: FLAT.length + 1, n: LIB[FLAT.length], w: base + (i + 1) * 10 }));
     });
   });
   const pick = (g) => FLAT[g - 1];
@@ -184,7 +186,7 @@
       h = stc.n == null ? 'Старт маршрута' : `Шаг ${stc.n}. ${esc(stc.title)}`;
       sub = `Урок ${pos(c)} из ${T}. Следующий откроется, когда вы посмотрите этот и запишете результат задания.`;
       if (startStep() > 0) sub += ` По Точке А маршрут идёт со ${startStep()}-го шага: шаги 0–${startStep() - 1} наставник может попросить пройти, если увидит в них недоработки.`;
-      cta = `<button class="btn" data-act="go">${svg('play', 'ic-f')}Продолжить урок ${pos(c)}</button>`;
+      cta = `<button class="btn" data-act="go">${svg('play', 'ic-f')}Продолжить урок №${c.n}</button>`;
     }
     const segs = R.stages.map((st, si) => {
       const ls = FLAT.filter((l) => l.si === si);
@@ -272,8 +274,8 @@
     if (s === 'done') node = svg('check');
     else if (s === 'paid') node = svg('lock');
     else if (s === 'skip') node = svg('skip');
-    else node = `<span class="num">${p}</span>`;
-    const meta = s === 'done' ? `Результат записан` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока ${p - 1}` : `${l.m}${NB}мин`;
+    else node = `<span class="num${l.n > 99 ? ' n3' : ''}">${l.n}</span>`;
+    const meta = s === 'done' ? `Результат записан` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока №${route()[p - 2].n}` : `${l.m}${NB}мин`;
     if (s === 'now') return nowCard(l, kind, tag, w);
     return `<li class="ls is-${s} ${kind}" id="l${l.g}">
       <span class="nd">${node}</span>
@@ -297,9 +299,9 @@
         </div>
       </li>`;
     return `<li class="ls is-now ${kind} ${ui.flash === l.g ? 'enter' : ''}" id="l${l.g}">
-      <span class="nd"><span class="num">${pos(l)}</span></span>
+      <span class="nd"><span class="num${l.n > 99 ? ' n3' : ''}">${l.n}</span></span>
       <div class="now">
-        <div class="now-h"><p class="eyebrow">Сейчас · урок ${pos(l)}</p><h3>${esc(l.t)}</h3><div class="ls-m">${tag}${w}</div></div>
+        <div class="now-h"><p class="eyebrow">Сейчас · урок №${l.n} из библиотеки</p><h3>${esc(l.t)}</h3><div class="ls-m">${tag}${w}</div></div>
         <ol class="chk">${step1}${step2}</ol>
       </div>
     </li>`;
@@ -371,8 +373,8 @@
       <section class="card sec legend"><p class="eyebrow">Как открываются уроки</p>
         <ul>
           <li><span class="nd mini-nd is-done">${svg('check')}</span><span>Пройден: видео посмотрено, результат записан</span></li>
-          <li><span class="nd mini-nd is-now"><span class="num">9</span></span><span>Сейчас: посмотрите урок и запишите результат задания</span></li>
-          <li><span class="nd mini-nd is-next"><span class="num">10</span></span><span>Откроется сразу после предыдущего</span></li>
+          <li><span class="nd mini-nd is-now"><span class="num">97</span></span><span>Сейчас: посмотрите урок и запишите результат задания</span></li>
+          <li><span class="nd mini-nd is-next"><span class="num n3">105</span></span><span>Откроется сразу после предыдущего</span></li>
           <li><span class="nd mini-nd is-paid">${svg('lock')}</span><span>Откроется со стартовым доступом</span></li>
         </ul>
       </section>
@@ -446,7 +448,7 @@
     if (a === 'club') { toast('Клуб добавляет к урокам разборы шагов. Переключите доступ на «Клуб» в панели сверху.'); render(); return; }
     if (a === 'row') {
       const l = pick(+v); const s = state(l);
-      if (s === 'next') toast(`Откроется, когда будет записан результат урока ${pos(l) - 1}.`);
+      if (s === 'next') toast(`Откроется, когда будет записан результат урока №${route()[pos(l) - 2].n}.`);
       else if (s === 'wait') toast('Первый урок откроется после Точки А.');
       else if (s === 'skip') toast('Этот шаг наставник может назначить вам, если увидит в нём недоработки.');
       else if (s === 'paid') { toast('Этот урок откроется со стартовым доступом.'); }
