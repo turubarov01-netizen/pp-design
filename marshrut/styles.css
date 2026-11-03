@@ -432,3 +432,24 @@ h2, h3 { margin: 0; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 .nw { white-space: nowrap; }
+
+/* Этап 1.1–3.3: заголовок над шагами (Игорь 03.11.2026) */
+.etap { --top: 46px; margin-top: 14px; }
+.lvl + .etap { margin-top: 6px; }
+.nd.et-nd { background: #fff; border: 2px solid var(--ink); color: var(--ink); font-size: 13px; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.etap.is-cur .nd.et-nd { border-color: var(--blue); color: var(--blue-ink); box-shadow: 0 0 0 5px rgba(47,123,255,.14); }
+.etap.is-done .nd.et-nd { background: var(--blue); border-color: var(--blue); color: #fff; }
+.etap.is-skip .nd.et-nd { border-color: var(--line-2); color: var(--faint); }
+.path > li.etap.is-done::before, .path > li.etap.is-done::after, .path > li.etap.is-cur::before { background: var(--blue); }
+.etap-b { padding: 14px 0 6px; max-width: 68ch; }
+.etap-k { margin: 0; font-size: 12px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; color: var(--blue-ink); }
+.etap.is-skip .etap-k { color: var(--muted); }
+.etap-b h3 { margin: 2px 0 6px; font-size: 21px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; }
+.etap-r { margin: 0; font-size: 14px; line-height: 1.45; color: var(--muted); }
+.etap-r b { color: var(--ink); font-weight: 700; }
+@media (max-width: 640px) {
+  .etap { --top: 41px; }
+  .etap-b { padding-top: 10px; }
+  .etap-b h3 { font-size: 19px; }
+  .etap-r { font-size: 13.5px; }
+}

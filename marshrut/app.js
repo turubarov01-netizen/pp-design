@@ -14,11 +14,16 @@
   const LIB = [118, 33, 133, 154, 25, 42, 97, 13, 67, 144, 167, 9, 121, 75, 58, 51, 116, 143, 153, 157, 5, 165, 168, 162, 128, 124, 108, 106, 38, 64, 30, 117, 52, 21, 12, 28, 99, 26, 16];
   R.stages.forEach((st, si) => {
     st.ls.forEach((l, i) => {
-      const base = st.n == null ? 0 : (st.n + 1) * 1000;
+      const base = si * 1000;
       FLAT.push(Object.assign({}, l, { si, g: FLAT.length + 1, n: LIB[FLAT.length], w: base + (i + 1) * 10 }));
     });
   });
   const pick = (g) => FLAT[g - 1];
+  /* Этап по номеру шага и первый шаг этапа/уровня в порядке маршрута */
+  const etapOf = (n) => (n == null ? null : R.etapy.find((e) => e.steps.includes(n)));
+  const lvOf = (n) => (n == null ? null : R.biz.find((b) => n >= b.from && n <= b.to));
+  const firstIdx = (pred) => R.stages.findIndex((s) => s.n != null && pred(s.n));
+  const etapRange = (lv) => { const es = R.etapy.filter((e) => e.lv === lv); return `<span class="nw">${es[0].k}–${es[es.length - 1].k}</span>`; };
   const MONTHS = ['Август', 'Сентябрь', 'Октябрь'];
   const START_STEP = { 1: 0, 2: 6, 3: 11 }; // Саша 03.11: маршрут начинается с первого шага уровня; пропущенные шаги может назначить наставник
 
@@ -32,7 +37,7 @@
     wall: { label: '10 бесплатных уроков пройдены', done: 10, watched: false, access: 'free', profile: true, pa: inc([140000, 145000, 150000]), booked: false, onb: ONB_A },
     start: { label: 'Стартовый доступ, урок 15', done: 14, watched: false, access: 'starter', profile: true, pa: inc([170000, 180000, 190000]), booked: true, onb: ONB_A },
     club: { label: 'Клуб, урок 15', done: 14, watched: false, access: 'club', profile: true, pa: inc([170000, 180000, 190000]), booked: true, onb: ONB_A },
-    scaling: { label: 'Бизнес на уровне Scaling: маршрут с 6-го шага', done: 2, watched: false, access: 'starter', profile: true, pa: bz([1100000, 1200000, 1300000], [650000, 700000, 750000], [330000, 350000, 370000]), booked: false, onb: ONB_B },
+    scaling: { label: 'Бизнес на уровне Scaling: маршрут с этапа 2.1', done: 2, watched: false, access: 'starter', profile: true, pa: bz([1100000, 1200000, 1300000], [650000, 700000, 750000], [330000, 350000, 370000]), booked: false, onb: ONB_B },
   };
   const ACCESS = { free: 'Бесплатно', starter: 'Стартовый доступ', club: 'Клуб' };
 
@@ -112,7 +117,7 @@
         <label>Ситуация<select data-act="scen">${opts(SCEN, ui.scen)}${ui.scen === 'custom' ? '<option value="custom" selected>Свой сценарий</option>' : ''}</select></label>
         <label>Доступ<select data-act="access">${opts(ACCESS, ui.access)}</select></label>
         <label class="chk-l"><input type="checkbox" data-act="weights" ${ui.weights ? 'checked' : ''}> Показать вес урока</label>
-        <p class="demo-note">Урок открывается по очереди: посмотреть видео, затем записать результат задания. Проверка куратора не задерживает. Вес урока задаёт порядок: тысячи — шаг бизнеса, остаток — место внутри шага.</p>
+        <p class="demo-note">Урок открывается по очереди: посмотреть видео, затем записать результат задания. Проверка куратора не задерживает. Вес урока задаёт порядок: тысячи — место шага в маршруте, остаток — место урока внутри шага.</p>
       </div></details>`;
   }
 
@@ -152,7 +157,7 @@
       <div class="biz-t">
         <p class="eyebrow">Уровень бизнеса ${L.n} из 3</p>
         <h2>${L.name}</h2>
-        <p class="biz-sub">${L.sub}. <span class="nw">Шаги маршрута ${L.from}–${L.to}</span>. Цель уровня за год: личный доход ${money(L.income)} или выручка компании ${money(L.rev)}.</p>
+        <p class="biz-sub">${L.sub}. <span class="nw">Этапы маршрута ${etapRange(L.n)}</span>. Цель уровня за год: личный доход ${money(L.income)} или выручка компании ${money(L.rev)}.</p>
         <dl class="lv-rows">
           <div class="lv-row"><dt>${m.metric === 'income' ? 'Личный доход' : 'Выручка'} в среднем</dt><dd class="num">${onb ? '≈' + NB : ''}${money(m.pm)} <span class="mut small">в месяц</span></dd></div>
           ${m.metric === 'rev' ? `<div class="lv-row"><dt>Чистыми в карман</dt><dd class="num">${money(m.pocket)} <span class="mut small">в месяц</span></dd></div>` : ''}
@@ -183,9 +188,10 @@
       sub = `Вы прошли ${lessonsWord(FREE)}. Ещё ${lessonsWord(T - FREE)} этого маршрута откроются со стартовым доступом.`;
       cta = `<button class="btn" data-act="buy">Открыть весь маршрут</button>`;
     } else {
-      h = stc.n == null ? 'Старт маршрута' : `Шаг ${stc.n}. ${esc(stc.title)}`;
+      h = stc.n == null ? 'Старт маршрута' : `Этап ${etapOf(stc.n).k}. ${esc(etapOf(stc.n).name)}`;
       sub = `Урок ${pos(c)} из ${T}. Следующий откроется, когда вы посмотрите этот и запишете результат задания.`;
-      if (startStep() > 0) sub += ` По Точке А маршрут идёт со ${startStep()}-го шага: шаги 0–${startStep() - 1} наставник может попросить пройти, если увидит в них недоработки.`;
+      if (stc.n != null) sub = `Шаг ${stc.n}. ${esc(stc.title)}. ` + sub;
+      if (startStep() > 0) { const L0 = levelNow(); const prev = R.biz.filter((b) => b.n < L0.n).map((b) => etapRange(b.n)).join(', '); sub += ` По Точке А маршрут идёт с этапа ${etapOf(startStep()).k}: этапы ${prev} наставник может попросить пройти, если увидит в них недоработки.`; }
       cta = `<button class="btn" data-act="go">${svg('play', 'ic-f')}Продолжить урок №${c.n}</button>`;
     }
     const segs = R.stages.map((st, si) => {
@@ -194,10 +200,10 @@
       const done = ls.filter((l) => state(l) === 'done').length;
       const pct = skip ? 0 : ls.length ? Math.round((done / ls.length) * 100) : (c && c.si > si ? 100 : 0);
       const isCur = c && c.si === si;
-      const label = st.n == null ? 'Старт' : `Шаг ${st.n}. ${st.title}`;
+      const label = st.n == null ? 'Старт' : `Этап ${etapOf(st.n).k}, шаг ${st.n}. ${st.title}`;
       return `<button class="seg-i ${isCur ? 'cur' : ''} ${ls.length ? '' : 'empty'} ${skip ? 'skip' : ''}" style="flex-grow:${Math.max(1, ls.length)}" data-act="jump" data-v="${si}" title="${esc(label)}" aria-label="${esc(label)}${skip ? ', по решению наставника' : `: ${done} из ${ls.length}`}"><i><u style="width:${pct}%"></u></i></button>`;
     }).join('');
-    const stepNo = !prepDone() ? 'Подготовка' : !nxt ? 'Маршрут пройден' : stc && stc.n != null ? `Шаг бизнеса ${stc.n}${NB}из${NB}15` : 'Старт, до шагов бизнеса';
+    const stepNo = !prepDone() ? 'Подготовка' : !nxt ? 'Маршрут пройден' : stc && stc.n != null ? `Этап ${etapOf(stc.n).k}${NB}из${NB}9` : 'Старт, до этапов бизнеса';
     return `<section class="card hero">
       <div class="hero-t">
         <p class="eyebrow">Где вы сейчас</p>
@@ -357,17 +363,27 @@
     let body = '';
     if (open && ls.length) body = ls.map((l) => lessonRow(l) + (showWall && !skipped(l) && pos(l) === FREE ? wall() : '')).join('');
     else if (!open && showWall && hasWall) body = wall();
-    const lv = st.n != null ? R.biz.find((b) => b.from === st.n) : null;
+    const lv0 = lvOf(st.n); const lv = lv0 && firstIdx((n) => n >= lv0.from && n <= lv0.to) === si ? lv0 : null;
+    const et = etapOf(st.n); const etFirst = et && firstIdx((n) => et.steps.includes(n)) === si;
     const L = levelNow();
     /* Уровень целиком ниже старта: свёрнут в одну полосу, шаги раскрываются по кнопке (Игорь 03.11.2026) */
     const own = R.biz.find((b) => st.n != null && st.n >= b.from && st.n <= b.to);
     const lvSkipped = own && own.to < startStep();
     const lvOpen = own && ui.open.has('lv' + own.n);
     const band = !lv ? '' : lvSkipped
-      ? `<li class="lvl past"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Ваш бизнес уже выше этого уровня по Точке А. Наставник может назначить любой из шагов ${lv.from}–${lv.to}.</span><button class="lvl-t" data-act="stage" data-v="lv${lv.n}" aria-expanded="${!!lvOpen}">${lvOpen ? 'Свернуть шаги' : 'Показать шаги'}${svg('chev', 'chev')}</button></div></li>`
-      : `<li class="lvl ${L && L.n === lv.n ? 'cur' : ''}"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Шаги ${lv.from}–${lv.to} · цель за год: доход ${short(lv.income)}${NB}₽ или выручка ${short(lv.rev)}${NB}₽</span></div></li>`;
+      ? `<li class="lvl past"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Ваш бизнес уже выше этого уровня по Точке А. Наставник может назначить любой из этапов ${etapRange(lv.n)}.</span><button class="lvl-t" data-act="stage" data-v="lv${lv.n}" aria-expanded="${!!lvOpen}">${lvOpen ? 'Свернуть этапы' : 'Показать этапы'}${svg('chev', 'chev')}</button></div></li>`
+      : `<li class="lvl ${L && L.n === lv.n ? 'cur' : ''}"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Этапы ${etapRange(lv.n)} · цель за год: доход ${short(lv.income)}${NB}₽ или выручка ${short(lv.rev)}${NB}₽</span></div></li>`;
     if (lvSkipped && !lvOpen) return band;
-    return band + head + body;
+    let etap = '';
+    if (etFirst) {
+      const sis = R.stages.map((x, i) => (x.n != null && et.steps.includes(x.n) ? i : -1)).filter((i) => i >= 0);
+      const els = FLAT.filter((l) => sis.includes(l.si));
+      const eSkip = els.length > 0 && els.every(skipped);
+      const eDone = !eSkip && els.length > 0 && els.every((l) => state(l) === 'done');
+      const eCur = c && sis.includes(c.si);
+      etap = `<li class="etap ${eDone ? 'is-done' : ''} ${eCur ? 'is-cur' : ''} ${eSkip ? 'is-skip' : ''}"><span class="nd et-nd">${eDone ? svg('check') : et.k}</span><div class="etap-b"><p class="etap-k">Этап ${et.k}</p><h3>${esc(et.name)}</h3><p class="etap-r"><b>Этап готов, когда:</b> ${esc(et.res[0].toLowerCase() + et.res.slice(1))}</p></div></li>`;
+    }
+    return band + etap + head + body;
   }
 
   function aside() {
@@ -439,7 +455,7 @@
       const L = levelNow(); const st = startStep();
       if (st !== before) ui.done = Math.min(ui.done, route().filter((l) => R.stages[l.si].n == null).length);
       ui.open = defaultOpen();
-      toast(st > 0 ? `Точка А записана. Уровень ${L.name}: маршрут начнётся с ${st}-го шага. Куратор уточнит на установочной.` : `Точка А записана. Уровень ${L.name}, открыт первый урок.`);
+      toast(st > 0 ? `Точка А записана. Уровень ${L.name}: маршрут начнётся с этапа ${etapOf(st).k}. Куратор уточнит на установочной.` : `Точка А записана. Уровень ${L.name}, открыт первый урок.`);
       render(); scrollTo('app', 'start'); return;
     }
     if (a === 'book') { ui.booked = true; ui.scen = 'custom'; toast('Вы записаны на установочную сессию. Ссылка придёт в Telegram.'); render(); return; }
