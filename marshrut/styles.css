@@ -410,6 +410,10 @@ h2, h3 { margin: 0; }
 /* Ориентир из онбординга */
 .biz-fix { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(255, 196, 61, .14); box-shadow: inset 0 0 0 1px rgba(214, 150, 20, .25); }
 .biz-fix p { margin: 0; flex: 1 1 300px; font-size: 14px; color: var(--ink-2); }
+.biz-fix .fix-sub { flex-basis: 100%; padding-top: 8px; border-top: 1px solid rgba(214, 150, 20, .2); font-size: 13px; color: var(--muted); }
+.fix-sub a { color: var(--blue); font-weight: 600; text-decoration: none; }
+.fix-sub a:hover { text-decoration: underline; }
+.fix-sub.pa-year { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }

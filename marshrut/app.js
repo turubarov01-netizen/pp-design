@@ -156,7 +156,7 @@
           ${m.metric === 'rev' ? `<div class="lv-row"><dt>Чистыми в карман</dt><dd class="num">${money(m.pocket)} <span class="mut small">в месяц</span></dd></div>` : ''}
           <div class="lv-row"><dt>Нужно для цели</dt><dd class="num">${money(target / 12)} <span class="mut small">в месяц</span></dd></div>
         </dl>
-        ${onb ? `<div class="biz-fix"><p>Пока это ориентир из анкеты онбординга: годовой доход ${esc(ui.onb.label)}. Исправьте его реальными цифрами за последние три месяца, и уровень пересчитается.</p><button class="btn sm" data-act="goPA">${svg('chart')}Заполнить Точку А</button></div>` : `<p class="biz-src">Посчитано по Точке А: ${what} за ${MONTHS[0].toLowerCase()}–${MONTHS[2].toLowerCase()}. Куратор уточнит уровень на установочной сессии.</p>`}
+        ${onb ? `<div class="biz-fix"><p>Пока это ориентир из анкеты онбординга: годовой доход ${esc(ui.onb.label)}. Исправьте его реальными цифрами за последние три месяца, и уровень пересчитается.</p><button class="btn sm" data-act="goPA">${svg('chart')}Заполнить Точку А</button><p class="fix-sub">Можно заполнить и за весь последний год: в <a href="https://turubarov01-netizen.github.io/pp-design/dengi/" target="_blank" rel="noopener">«Финансах» трекера Фримана</a>.</p></div>` : `<p class="biz-src">Посчитано по Точке А: ${what} за ${MONTHS[0].toLowerCase()}–${MONTHS[2].toLowerCase()}. Куратор уточнит уровень на установочной сессии.</p>`}
         <p class="biz-why">Задания маршрута и есть путь к этой цели. Делаете их, растёт бизнес, и стрелка идёт вправо. Дальше цифры берутся из «Финансов» в трекере.</p>
         <div class="bladder" aria-label="Три уровня бизнеса">${rungsOf((b) => (b.n < L.n ? 1 : b.n === L.n ? Math.min(1, m.year / target) : 0))}</div>
       </div>
@@ -221,6 +221,7 @@
       <div class="seg" role="group" aria-label="Что считаем"><button data-act="paMode" data-v="income" aria-pressed="${f.mode === 'income'}">Личный доход</button><button data-act="paMode" data-v="biz" aria-pressed="${f.mode === 'biz'}">Доходы бизнеса</button></div>
       ${body}
       <div class="ans-a"><button class="btn sm" data-act="paSave" ${paValid() ? '' : 'disabled'}>Сохранить Точку А</button><span class="small mut">Уровень потом уточнит куратор на установочной сессии.</span></div>
+      <p class="fix-sub pa-year">Можно заполнить и за весь последний год: в <a href="https://turubarov01-netizen.github.io/pp-design/dengi/" target="_blank" rel="noopener">«Финансах» трекера Фримана</a>.</p>
     </div>`;
   }
   const num = (v) => Number(String(v).replace(/[^\d]/g, ''));
