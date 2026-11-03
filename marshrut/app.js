@@ -374,14 +374,21 @@
       ? `<li class="lvl past"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Ваш бизнес уже выше этого уровня по Точке А. Наставник может назначить любой из этапов ${etapRange(lv.n)}.</span><button class="lvl-t" data-act="stage" data-v="lv${lv.n}" aria-expanded="${!!lvOpen}">${lvOpen ? 'Свернуть этапы' : 'Показать этапы'}${svg('chev', 'chev')}</button></div></li>`
       : `<li class="lvl ${L && L.n === lv.n ? 'cur' : ''}"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Этапы ${etapRange(lv.n)} · цель за год: доход ${short(lv.income)}${NB}₽ или выручка ${short(lv.rev)}${NB}₽</span></div></li>`;
     if (lvSkipped && !lvOpen) return band;
-    let etap = '';
-    if (etFirst) {
-      const sis = R.stages.map((x, i) => (x.n != null && et.steps.includes(x.n) ? i : -1)).filter((i) => i >= 0);
+    const etapHead = (e) => {
+      const sis = R.stages.map((x, i) => (x.n != null && e.steps.includes(x.n) ? i : -1)).filter((i) => i >= 0);
       const els = FLAT.filter((l) => sis.includes(l.si));
       const eSkip = els.length > 0 && els.every(skipped);
       const eDone = !eSkip && els.length > 0 && els.every((l) => state(l) === 'done');
       const eCur = c && sis.includes(c.si);
-      etap = `<li class="etap ${eDone ? 'is-done' : ''} ${eCur ? 'is-cur' : ''} ${eSkip ? 'is-skip' : ''}"><span class="nd et-nd">${eDone ? svg('check') : et.k}</span><div class="etap-b"><p class="etap-k">Этап ${et.k}</p><h3>${esc(et.name)}</h3><p class="etap-r"><b>Этап готов, когда:</b> ${esc(et.res[0].toLowerCase() + et.res.slice(1))}</p></div></li>`;
+      const sub = e.sub ? `<ol class="etap-s">${e.sub.map((t) => `<li>${esc(t)}</li>`).join('')}</ol>` : '';
+      const rep = e.rep ? `<p class="etap-rep">${esc(e.rep)}</p>` : '';
+      return `<li class="etap ${eDone ? 'is-done' : ''} ${eCur ? 'is-cur' : ''} ${eSkip ? 'is-skip' : ''}"><span class="nd et-nd">${eDone ? svg('check') : e.k}</span><div class="etap-b"><p class="etap-k">Этап ${e.k}</p><h3>${esc(e.name)}</h3><p class="etap-r"><b>Этап готов, когда:</b> ${esc(e.res[0].toLowerCase() + e.res.slice(1))}</p>${sub}${rep}</div></li>`;
+    };
+    let etap = '';
+    if (etFirst) {
+      /* Этап без своих шагов (3.1) ставим перед следующим этапом того же уровня */
+      const pre = []; for (let j = R.etapy.indexOf(et) - 1; j >= 0 && R.etapy[j].lv === et.lv && !R.etapy[j].steps.length; j -= 1) pre.unshift(R.etapy[j]);
+      etap = pre.map(etapHead).join('') + etapHead(et);
     }
     return band + etap + head + body;
   }
