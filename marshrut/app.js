@@ -12,15 +12,20 @@
   const FLAT = [];
   /* Вымышленные номера уроков в библиотеке: в маршруте показываем их, а не 1, 2, 3 (Игорь 03.11.2026) */
   const LIB = [118, 33, 133, 154, 25, 42, 97, 13, 67, 144, 167, 9, 121, 75, 58, 51, 116, 143, 153, 157, 5, 165, 168, 162, 128, 124, 108, 106, 38, 64, 30, 117, 52, 21, 12, 28, 99, 26, 16];
+  let libI = 0;
   R.stages.forEach((st, si) => {
     st.ls.forEach((l, i) => {
       const base = si * 1000;
-      FLAT.push(Object.assign({}, l, { si, g: FLAT.length + 1, n: LIB[FLAT.length], w: base + (i + 1) * 10 }));
+      const orig = l.dup ? FLAT.find((x) => !x.dup && x.t === l.dup) : null;
+      if (l.dup && !orig) throw new Error('нет урока ' + l.dup);
+      const src = orig ? { t: orig.t, m: orig.m, p: orig.p, task: orig.task, mt: orig.mt } : l;
+      FLAT.push(Object.assign({}, src, { si, g: FLAT.length + 1, n: orig ? orig.n : LIB[libI++], w: base + (i + 1) * 10, dup: orig || null }));
     });
   });
   const pick = (g) => FLAT[g - 1];
   /* Этап по номеру шага и первый шаг этапа/уровня в порядке маршрута */
   const etapOf = (n) => (n == null ? null : R.etapy.find((e) => e.steps.includes(n)));
+  const etapOfSt = (st) => (st.et ? R.etapy.find((e) => e.k === st.et) : etapOf(st.n));
   const lvOf = (n) => (n == null ? null : R.biz.find((b) => n >= b.from && n <= b.to));
   const firstIdx = (pred) => R.stages.findIndex((s) => s.n != null && pred(s.n));
   const etapRange = (lv) => { const es = R.etapy.filter((e) => e.lv === lv); return `<span class="nw">${es[0].k}–${es[es.length - 1].k}</span>`; };
@@ -37,6 +42,7 @@
     wall: { label: '10 бесплатных уроков пройдены', done: 10, watched: false, access: 'free', profile: true, pa: inc([140000, 145000, 150000]), booked: false, onb: ONB_A },
     start: { label: 'Стартовый доступ, урок 15', done: 14, watched: false, access: 'starter', profile: true, pa: inc([170000, 180000, 190000]), booked: true, onb: ONB_A },
     club: { label: 'Клуб, урок 15', done: 14, watched: false, access: 'club', profile: true, pa: inc([170000, 180000, 190000]), booked: true, onb: ONB_A },
+    ent: { label: 'Бизнес на уровне Enterprise: маршрут с этапа 3.1', done: 3, watched: false, access: 'starter', profile: true, pa: bz([3600000, 3800000, 4000000], [2100000, 2200000, 2300000], [900000, 950000, 1000000]), booked: true, onb: ONB_B },
     scaling: { label: 'Бизнес на уровне Scaling: маршрут с этапа 2.1', done: 2, watched: false, access: 'starter', profile: true, pa: bz([1100000, 1200000, 1300000], [650000, 700000, 750000], [330000, 350000, 370000]), booked: false, onb: ONB_B },
   };
   const ACCESS = { free: 'Бесплатно', starter: 'Стартовый доступ', club: 'Клуб' };
@@ -54,13 +60,19 @@
   const levelNow = () => { const m = metrics(); if (!m) return null; return R.biz.find((b) => m.year < b[m.metric]) || R.biz[R.biz.length - 1]; };
   const startStep = () => { const L = levelNow(); return L ? START_STEP[L.n] : 0; };
   const skipped = (l) => { const n = R.stages[l.si].n; return n != null && n < startStep(); };
-  const route = () => FLAT.filter((l) => !skipped(l));
+  /* Уровни выше текущего закрыты целиком (Игорь 03.11.2026) */
+  const lvCur = () => (levelNow() || R.biz[0]).n;
+  const future = (l) => { const b = lvOf(R.stages[l.si].n); return !!b && b.n > lvCur(); };
+  /* Повтор урока: если исходный урок уже в маршруте человека, повтор не проходится второй раз */
+  const covered = (l) => !!l.dup && !skipped(l.dup) && !future(l.dup);
+  const route = () => FLAT.filter((l) => !skipped(l) && !future(l) && !covered(l));
   const pos = (l) => route().indexOf(l) + 1;
   const total = () => route().length;
   const prepDone = () => ui.profile && !!ui.pa;
 
   const state = (l) => {
     if (skipped(l)) return 'skip';
+    if (covered(l)) return state(l.dup) === 'done' ? 'done' : 'dup';
     const p = pos(l);
     if (p <= ui.done) return 'done';
     if (ui.access === 'free' && p > FREE) return 'paid';
@@ -188,9 +200,9 @@
       sub = `Вы прошли ${lessonsWord(FREE)}. Ещё ${lessonsWord(T - FREE)} этого маршрута откроются со стартовым доступом.`;
       cta = `<button class="btn" data-act="buy">Открыть весь маршрут</button>`;
     } else {
-      h = stc.n == null ? 'Старт маршрута' : `Этап ${etapOf(stc.n).k}. ${esc(etapOf(stc.n).name)}`;
+      h = stc.n == null ? 'Старт маршрута' : `Этап ${etapOfSt(stc).k}. ${esc(etapOfSt(stc).name)}`;
       sub = `Урок ${pos(c)} из ${T}. Следующий откроется, когда вы посмотрите этот и запишете результат задания.`;
-      if (stc.n != null) sub = `Шаг ${stc.n}. ${esc(stc.title)}. ` + sub;
+      if (stc.n != null && !stc.rep) sub = `Шаг ${stc.n}. ${esc(stc.title)}. ` + sub;
       if (startStep() > 0) { const L0 = levelNow(); const prev = R.biz.filter((b) => b.n < L0.n).map((b) => etapRange(b.n)).join(', '); sub += ` По Точке А маршрут идёт с этапа ${etapOf(startStep()).k}: этапы ${prev} наставник может попросить пройти, если увидит в них недоработки.`; }
       cta = `<button class="btn" data-act="go">${svg('play', 'ic-f')}Продолжить урок №${c.n}</button>`;
     }
@@ -200,10 +212,11 @@
       const done = ls.filter((l) => state(l) === 'done').length;
       const pct = skip ? 0 : ls.length ? Math.round((done / ls.length) * 100) : (c && c.si > si ? 100 : 0);
       const isCur = c && c.si === si;
-      const label = st.n == null ? 'Старт' : `Этап ${etapOf(st.n).k}, шаг ${st.n}. ${st.title}`;
+      if (st.n != null && lvOf(st.n).n > lvCur()) return '';
+      const label = st.n == null ? 'Старт' : st.rep ? `Этап ${etapOfSt(st).k}. ${st.title}` : `Этап ${etapOf(st.n).k}, шаг ${st.n}. ${st.title}`;
       return `<button class="seg-i ${isCur ? 'cur' : ''} ${ls.length ? '' : 'empty'} ${skip ? 'skip' : ''}" style="flex-grow:${Math.max(1, ls.length)}" data-act="jump" data-v="${si}" title="${esc(label)}" aria-label="${esc(label)}${skip ? ', по решению наставника' : `: ${done} из ${ls.length}`}"><i><u style="width:${pct}%"></u></i></button>`;
     }).join('');
-    const stepNo = !prepDone() ? 'Подготовка' : !nxt ? 'Маршрут пройден' : stc && stc.n != null ? `Этап ${etapOf(stc.n).k}${NB}из${NB}9` : 'Старт, до этапов бизнеса';
+    const stepNo = !prepDone() ? 'Подготовка' : !nxt ? 'Маршрут пройден' : stc && stc.n != null ? `Этап ${etapOfSt(stc).k}${NB}из${NB}9` : 'Старт, до этапов бизнеса';
     return `<section class="card hero">
       <div class="hero-t">
         <p class="eyebrow">Где вы сейчас</p>
@@ -280,8 +293,9 @@
     if (s === 'done') node = svg('check');
     else if (s === 'paid') node = svg('lock');
     else if (s === 'skip') node = svg('skip');
+    else if (s === 'dup') node = svg('flag');
     else node = `<span class="num">${p}</span>`;
-    const meta = s === 'done' ? `Результат у наставника` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока №${route()[p - 2].n}` : `${l.m}${NB}мин`;
+    const meta = s === 'done' ? `Результат у наставника` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'dup' ? `${l.m}${NB}мин · откроется в этапе ${etapOfSt(R.stages[l.dup.si]).k}` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока №${route()[p - 2].n}` : `${l.m}${NB}мин`;
     if (s === 'now') return nowCard(l, kind, tag, w);
     return `<li class="ls is-${s} ${kind}" id="l${l.g}">
       <span class="nd">${node}</span>
@@ -349,11 +363,11 @@
     const chips = [];
     if (ui.access === 'club' && isCur && st.n != null) chips.push('<span class="tag club">Разбор шага в клубе</span>');
     if (allPaid) chips.push(`<span class="tag lock">${svg('lock')}Стартовый доступ</span>`);
-    const badge = passed && ls.length ? svg('check') : st.n == null ? svg('flag') : `<span class="num">${st.n}</span>`;
+    const badge = passed && ls.length ? svg('check') : st.n == null ? svg('flag') : st.rep ? svg('play') : `<span class="num">${st.n}</span>`;
     const head = `<li class="st ${passed ? 'is-passed' : ''} ${isCur ? 'is-cur' : ''} ${skip ? 'is-skip' : ''}" id="s${si}">
       <span class="nd sq">${badge}</span>
       <button class="st-b" data-act="stage" data-v="${si}" aria-expanded="${open}" ${ls.length ? '' : 'disabled'}>
-        <span class="st-t">${st.n == null ? '' : `<span class="st-k">Шаг ${st.n}</span>`}${esc(st.title)}</span>
+        <span class="st-t">${st.n == null || st.rep ? '' : `<span class="st-k">Шаг ${st.n}</span>`}${esc(st.title)}</span>
         <span class="st-m"><span>${meta}</span>${chips.join('')}</span>
         ${ls.length ? svg('chev', 'chev') : ''}
       </button>
@@ -364,7 +378,7 @@
     if (open && ls.length) body = ls.map((l) => lessonRow(l) + (showWall && !skipped(l) && pos(l) === FREE ? wall() : '')).join('');
     else if (!open && showWall && hasWall) body = wall();
     const lv0 = lvOf(st.n); const lv = lv0 && firstIdx((n) => n >= lv0.from && n <= lv0.to) === si ? lv0 : null;
-    const et = etapOf(st.n); const etFirst = et && firstIdx((n) => et.steps.includes(n)) === si;
+    const et = etapOfSt(st); const etFirst = et && R.stages.findIndex((x) => x.n != null && etapOfSt(x) === et) === si;
     const L = levelNow();
     /* Уровень целиком ниже старта: свёрнут в одну полосу, шаги раскрываются по кнопке (Игорь 03.11.2026) */
     const own = R.biz.find((b) => st.n != null && st.n >= b.from && st.n <= b.to);
@@ -374,20 +388,20 @@
       ? `<li class="lvl past"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Ваш бизнес уже выше этого уровня по Точке А. Наставник может назначить любой из этапов ${etapRange(lv.n)}.</span><button class="lvl-t" data-act="stage" data-v="lv${lv.n}" aria-expanded="${!!lvOpen}">${lvOpen ? 'Свернуть этапы' : 'Показать этапы'}${svg('chev', 'chev')}</button></div></li>`
       : `<li class="lvl ${L && L.n === lv.n ? 'cur' : ''}"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Этапы ${etapRange(lv.n)} · цель за год: доход ${short(lv.income)}${NB}₽ или выручка ${short(lv.rev)}${NB}₽</span></div></li>`;
     if (lvSkipped && !lvOpen) return band;
+    if (own && own.n > lvCur()) return lv ? `<li class="lvl future"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>${svg('lock')}Уровень ${lv.n} · ${lv.name}</b><span>Этапы ${etapRange(lv.n)} · цель за год: доход ${short(lv.income)}${NB}₽ или выручка ${short(lv.rev)}${NB}₽</span><span>Откроется, когда бизнес выйдет на этот уровень.</span></div></li>` : '';
     const etapHead = (e) => {
-      const sis = R.stages.map((x, i) => (x.n != null && e.steps.includes(x.n) ? i : -1)).filter((i) => i >= 0);
+      const sis = R.stages.map((x, i) => (x.n != null && etapOfSt(x) === e ? i : -1)).filter((i) => i >= 0);
       const els = FLAT.filter((l) => sis.includes(l.si));
       const eSkip = els.length > 0 && els.every(skipped);
       const eDone = !eSkip && els.length > 0 && els.every((l) => state(l) === 'done');
       const eCur = c && sis.includes(c.si);
       const sub = e.sub ? `<ol class="etap-s">${e.sub.map((t) => `<li>${esc(t)}</li>`).join('')}</ol>` : '';
-      const rep = e.rep ? `<p class="etap-rep">${esc(e.rep)}</p>` : '';
-      return `<li class="etap ${eDone ? 'is-done' : ''} ${eCur ? 'is-cur' : ''} ${eSkip ? 'is-skip' : ''}"><span class="nd et-nd">${eDone ? svg('check') : e.k}</span><div class="etap-b"><p class="etap-k">Этап ${e.k}</p><h3>${esc(e.name)}</h3><p class="etap-r"><b>Этап готов, когда:</b> ${esc(e.res[0].toLowerCase() + e.res.slice(1))}</p>${sub}${rep}</div></li>`;
+            return `<li class="etap ${eDone ? 'is-done' : ''} ${eCur ? 'is-cur' : ''} ${eSkip ? 'is-skip' : ''}"><span class="nd et-nd">${eDone ? svg('check') : e.k}</span><div class="etap-b"><p class="etap-k">Этап ${e.k}</p><h3>${esc(e.name)}</h3><p class="etap-r"><b>Этап готов, когда:</b> ${esc(e.res[0].toLowerCase() + e.res.slice(1))}</p>${sub}</div></li>`;
     };
     let etap = '';
     if (etFirst) {
       /* Этап без своих шагов (3.1) ставим перед следующим этапом того же уровня */
-      const pre = []; for (let j = R.etapy.indexOf(et) - 1; j >= 0 && R.etapy[j].lv === et.lv && !R.etapy[j].steps.length; j -= 1) pre.unshift(R.etapy[j]);
+      const pre = []; for (let j = R.etapy.indexOf(et) - 1; j >= 0 && R.etapy[j].lv === et.lv && !R.stages.some((x) => x.n != null && etapOfSt(x) === R.etapy[j]); j -= 1) pre.unshift(R.etapy[j]);
       etap = pre.map(etapHead).join('') + etapHead(et);
     }
     return band + etap + head + body;
