@@ -20,11 +20,11 @@
   const pick = (g) => FLAT[g - 1];
 
   const SCEN = {
-    fresh: { label: 'Сразу после диагностики', done: 0, watched: false, access: 'free' },
-    mid: { label: 'Урок 4: видео посмотрено, задание не сдано', done: 3, watched: true, access: 'free' },
-    wall: { label: '10 бесплатных уроков пройдены', done: 10, watched: false, access: 'free' },
-    start: { label: 'Стартовый доступ, урок 15', done: 14, watched: false, access: 'starter' },
-    club: { label: 'Клуб, урок 15', done: 14, watched: false, access: 'club' },
+    fresh: { label: 'Сразу после диагностики', done: 0, watched: false, access: 'free', pm: 120000, mo: 3 },
+    mid: { label: 'Урок 4: видео посмотрено, задание не сдано', done: 3, watched: true, access: 'free', pm: 120000, mo: 4 },
+    wall: { label: '10 бесплатных уроков пройдены', done: 10, watched: false, access: 'free', pm: 145000, mo: 5 },
+    start: { label: 'Стартовый доступ, урок 15', done: 14, watched: false, access: 'starter', pm: 180000, mo: 6 },
+    club: { label: 'Клуб, урок 15', done: 14, watched: false, access: 'club', pm: 180000, mo: 6 },
   };
   const ACCESS = { free: 'Бесплатно', starter: 'Стартовый доступ', club: 'Клуб' };
 
@@ -82,6 +82,52 @@
         <label class="chk-l"><input type="checkbox" data-act="weights" ${ui.weights ? 'checked' : ''}> Показать вес урока</label>
         <p class="demo-note">Урок открывается по очереди: посмотреть видео, затем записать результат задания. Проверка куратора не задерживает. Вес урока задаёт порядок: тысячи — шаг бизнеса, остаток — место внутри шага.</p>
       </div></details>`;
+  }
+
+
+  /* Спидометр уровня бизнеса — как в «Финансах» трекера */
+  const money = (v) => `${Math.round(v).toLocaleString('ru-RU').replace(/\s/g, NB)}${NB}₽`;
+  const short = (v) => v >= 1e6 ? `${String(+(v / 1e6).toFixed(1)).replace('.', ',')}${NB}млн` : `${Math.round(v / 1000)}${NB}тыс`;
+  const CX = 170, CY = 166, RR = 136;
+  const pt = (t, r = RR) => { const a = Math.PI * (1 - t); return [CX + r * Math.cos(a), CY - r * Math.sin(a)]; };
+  const arc = (t0, t1) => { const [x0, y0] = pt(t0), [x1, y1] = pt(t1); return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${RR} ${RR} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`; };
+  let needleWas = -90;
+  function dial(fact, plan, target, top) {
+    const cl = (x) => Math.max(0, Math.min(1, x));
+    const fT = cl(fact / target), pT = cl(plan / target);
+    let ticks = '';
+    for (let i = 0; i <= 20; i += 1) { const big = i % 5 === 0; const [x0, y0] = pt(i / 20, RR + 13), [x1, y1] = pt(i / 20, RR + (big ? 22 : 18)); ticks += `<line class="tick" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}" stroke-width="${big ? 1.6 : 1}"/>`; }
+    const [lx, ly] = pt(0.5, RR + 32);
+    return `<svg viewBox="0 0 340 186" role="img" aria-label="Прогноз ${Math.round(pT * 100)} процентов цели уровня">
+      <defs><linearGradient id="gFact" gradientUnits="userSpaceOnUse" x1="34" y1="0" x2="306" y2="0"><stop offset="0" stop-color="#2f7bff"/><stop offset="1" stop-color="#7b61ff"/></linearGradient></defs>
+      <path class="trackarc" d="${arc(0, 1)}" fill="none" stroke-width="16" stroke-linecap="round"/>
+      ${pT > fT ? `<path class="planarc" d="${arc(0, pT)}" fill="none" stroke-width="16" stroke-linecap="round"/>` : ''}
+      ${fT > 0.002 ? `<path d="${arc(0, fT)}" fill="none" stroke="url(#gFact)" stroke-width="16" stroke-linecap="round"/>` : ''}
+      ${ticks}
+      <text x="${lx}" y="${ly + 4}" text-anchor="middle">50%</text><text x="8" y="184">0</text><text x="332" y="184" text-anchor="end">${top}</text>
+      <g class="needle" id="needle" style="transform:rotate(${needleWas}deg)" data-to="${(-90 + 180 * pT).toFixed(2)}"><line x1="${CX}" y1="${CY}" x2="${CX}" y2="${CY - RR + 16}"/><circle cx="${CX}" cy="${CY}" r="8"/><circle cx="${CX}" cy="${CY}" r="3"/></g>
+    </svg>`;
+  }
+  const bizOf = (stepN) => R.biz.find((b) => stepN >= b.from && stepN <= b.to) || R.biz[0];
+  function bizCard() {
+    const L = R.biz[0];
+    const fact = ui.pm * ui.mo, plan = ui.pm * 12, target = L.income;
+    const share = Math.round((plan / target) * 100);
+    const rungs = R.biz.map((b) => { const fill = b.n === L.n ? Math.min(1, fact / b.income) : 0; return `<div class="brung ${b.n === L.n ? 'cur' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><b>${b.name}</b><span>шаги ${b.from}–${b.to}</span></div>`; }).join('');
+    return `<section class="card bizlv">
+      <div class="dial">${dial(fact, plan, target, short(target))}<div class="dial-read"><b class="num">${money(plan)}</b><span>прогноз на год · ${share}% цели уровня</span></div></div>
+      <div class="biz-t">
+        <p class="eyebrow">Уровень бизнеса ${L.n} из 3</p>
+        <h2>${L.name}</h2>
+        <p class="biz-sub">${L.sub}. <span class="nw">Шаги маршрута ${L.from}–${L.to}</span>. Цель уровня за год: личный доход ${money(L.income)} или выручка компании ${money(L.rev)}.</p>
+        <dl class="lv-rows">
+          <div class="lv-row"><dt>Сейчас в среднем</dt><dd class="num">${money(ui.pm)} <span class="mut small">в месяц</span></dd></div>
+          <div class="lv-row"><dt>Нужно для цели</dt><dd class="num">${money(target / 12)} <span class="mut small">в месяц</span></dd></div>
+        </dl>
+        <p class="biz-why">Задания маршрута и есть путь к этой цели. Делаете их, растёт бизнес, и стрелка идёт вправо. Цифры берутся из «Финансов» в трекере.</p>
+        <div class="bladder" aria-label="Три уровня бизнеса">${rungs}</div>
+      </div>
+    </section>`;
   }
 
   /* Шапка маршрута */
@@ -212,7 +258,9 @@
     } else if (!open && ui.access === 'free' && ls.some((l) => l.g === FREE) && ui.done <= FREE) {
       body = wall();
     }
-    return head + body;
+    const lv = st.n != null ? R.biz.find((b) => b.from === st.n) : null;
+    const band = lv ? `<li class="lvl ${R.biz[0].n === lv.n ? 'cur' : ''}"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Шаги ${lv.from}–${lv.to} · цель за год: доход ${short(lv.income)}${NB}₽ или выручка ${short(lv.rev)}${NB}₽</span></div></li>` : '';
+    return band + head + body;
   }
 
   function aside() {
@@ -224,7 +272,7 @@
         ? `<p class="eyebrow">Доступ</p><h3>Стартовый доступ</h3><p class="small mut">Открыты все ${lessonsWord(TOTAL)} маршрута, по порядку.</p><button class="btn soft wide" data-act="club">Что добавляет клуб</button>`
         : `<p class="eyebrow">Доступ</p><h3>Клуб</h3><p class="small mut">Все уроки маршрута и разборы шагов с наставником.</p>`;
     return `<aside class="col">
-      <section class="card sec"><p class="eyebrow">Личный рост</p><h3>${L.t}</h3><p class="small mut">По доходу: ${esc(R.person.income)}. Уроки личного роста стоят внутри шагов бизнеса и отмечены фиолетовым.</p><div class="ladder">${rungs}</div></section>
+      <section class="card sec"><p class="eyebrow">Личный рост</p><h3>${L.t}</h3><p class="small mut">По доходу: ${short(ui.pm)}${NB}₽ в месяц. Уроки личного роста стоят внутри шагов бизнеса и отмечены фиолетовым.</p><div class="ladder">${rungs}</div></section>
       <section class="card sec">${acc}</section>
       <section class="card sec legend"><p class="eyebrow">Как открываются уроки</p>
         <ul>
@@ -243,6 +291,7 @@
     const path = R.stages.map(stageBlock).join('');
     app.innerHTML = `${demoBar()}<div class="kab">${side()}<div class="main">${topBar()}
       <main class="content">
+        ${bizCard()}
         ${hero()}
         <div class="split">
           <section class="card path-c" aria-label="Уроки маршрута"><ol class="path">${path}</ol></section>
@@ -251,12 +300,14 @@
       </main></div></div>${mnav()}${ui.toast ? `<div class="toast" role="status">${esc(ui.toast)}</div>` : ''}`;
     const d = app.querySelector('.demo');
     if (d && ui.demoOpen) d.open = true;
+    const n = document.getElementById('needle');
+    if (n) requestAnimationFrame(() => requestAnimationFrame(() => { n.style.transform = `rotate(${n.dataset.to}deg)`; needleWas = Number(n.dataset.to); }));
   }
 
   let tt;
   function toast(t) { ui.toast = t; clearTimeout(tt); tt = setTimeout(() => { ui.toast = null; const el = app.querySelector('.toast'); if (el) el.remove(); }, 3200); }
   function scrollTo(id, block) { requestAnimationFrame(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: block || 'center' }); }); }
-  function setScen(k) { const s = SCEN[k]; if (!s) return; Object.assign(ui, { scen: k, done: s.done, watched: s.watched, access: s.access, answer: '', flash: 0 }); ui.open = defaultOpen(); }
+  function setScen(k) { const s = SCEN[k]; if (!s) return; needleWas = -90; Object.assign(ui, { scen: k, done: s.done, watched: s.watched, access: s.access, pm: s.pm, mo: s.mo, answer: '', flash: 0 }); ui.open = defaultOpen(); }
 
   app.addEventListener('click', (e) => {
     const b = e.target.closest('[data-act]');

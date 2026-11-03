@@ -305,6 +305,57 @@ h2, h3 { margin: 0; }
   .wall-b .btn { width: 100%; height: 46px; }
   .sec { padding: 16px; }
 }
+
+/* Уровень бизнеса и спидометр (как в «Финансах» трекера) */
+.bizlv { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 8px 40px; padding: 24px 30px 24px; align-items: center; margin-bottom: 20px; }
+.dial svg { display: block; width: 100%; height: auto; overflow: visible; }
+.dial .trackarc { stroke: rgba(47, 123, 255, .1); }
+.dial .planarc { stroke: rgba(47, 123, 255, .3); }
+.dial .tick { stroke: rgba(91, 100, 122, .42); }
+.dial text { fill: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.needle { transform-origin: 170px 166px; transition: transform .9s var(--ease); }
+.needle line { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.needle circle { fill: var(--ink); }
+.needle circle + circle { fill: #fff; }
+.dial-read { text-align: center; margin-top: 8px; }
+.dial-read b { display: block; font-size: 32px; line-height: 1.1; font-weight: 800; letter-spacing: -.02em; }
+.dial-read span { font-size: 13px; color: var(--muted); }
+.biz-t h2 { font-size: 30px; line-height: 1.15; font-weight: 800; letter-spacing: -.02em; margin-top: 4px; }
+.biz-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); max-width: 62ch; }
+.lv-rows { display: grid; margin: 12px 0 0; }
+.lv-row { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-top: 1px solid var(--line-2); font-size: 14px; }
+.lv-row dt { color: var(--muted); }
+.lv-row dd { margin: 0; font-weight: 650; text-align: right; }
+.lv-row dd span { font-weight: 400; }
+.biz-why { margin: 10px 0 0; padding: 10px 14px; border-radius: 12px; background: var(--tint); font-size: 14px; color: var(--ink-2); max-width: 66ch; }
+.bladder { display: flex; gap: 6px; margin-top: 14px; }
+.brung { flex: 1; min-width: 0; }
+.brung i { display: block; height: 8px; border-radius: 4px; background: var(--tint-2); overflow: hidden; }
+.brung u { display: block; height: 100%; background: var(--grad); border-radius: 4px; }
+.brung b { display: block; margin-top: 7px; font-size: 13px; line-height: 1.2; font-weight: 600; color: var(--muted); }
+.brung span { display: block; font-size: 12px; color: var(--faint); }
+.brung.cur b { color: var(--ink); }
+
+/* Полоса уровня в линейке */
+.lvl { --top: 26px; }
+.lvl:not(:first-child) { margin-top: 10px; }
+.nd.lv-nd { border-radius: 5px; background: var(--ink); border: 0; font-size: 0; transform: rotate(45deg); width: 18px; height: 18px; margin-left: calc(var(--nd) / 2 - 9px); margin-top: 17px; }
+.lvl-b { display: grid; gap: 2px; padding: 12px 14px; margin: 4px 0; border-radius: 14px; background: linear-gradient(90deg, rgba(11,16,32,.05), rgba(11,16,32,.015)); }
+.lvl-b b { font-size: 13px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+.lvl-b span { font-size: 13px; color: var(--muted); }
+.lvl.cur .lvl-b { background: linear-gradient(90deg, rgba(47,123,255,.13), rgba(123,97,255,.08)); }
+.lvl.cur .nd.lv-nd { background: var(--blue); border-color: var(--blue); }
+.lvl::after { background: var(--rail); }
+@media (max-width: 1100px) { .bizlv { grid-template-columns: 280px minmax(0, 1fr); gap: 8px 28px; } }
+@media (max-width: 760px) {
+  .bizlv { grid-template-columns: minmax(0, 1fr); padding: 16px; margin-bottom: 14px; }
+  .dial { max-width: 300px; width: 100%; margin: 0 auto; }
+  .dial-read b { font-size: 26px; }
+  .biz-t h2 { font-size: 24px; }
+  .brung span { font-size: 11px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+.nw { white-space: nowrap; }
