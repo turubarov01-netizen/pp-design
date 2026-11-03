@@ -19,7 +19,7 @@
       const orig = l.dup ? FLAT.find((x) => !x.dup && x.t === l.dup) : null;
       if (l.dup && !orig) throw new Error('нет урока ' + l.dup);
       const src = orig ? { t: orig.t, m: orig.m, p: orig.p, task: orig.task, mt: orig.mt } : l;
-      FLAT.push(Object.assign({}, src, { si, g: FLAT.length + 1, n: orig ? orig.n : LIB[libI++], w: base + (i + 1) * 10, dup: orig || null }));
+      FLAT.push(Object.assign({}, src, { si, g: FLAT.length + 1, n: l.lib || (orig ? orig.n : LIB[libI++]), w: base + (i + 1) * 10, dup: orig || null }));
     });
   });
   const pick = (g) => FLAT[g - 1];
@@ -43,6 +43,7 @@
     start: { label: 'Стартовый доступ, урок 15', done: 14, watched: false, access: 'starter', profile: true, pa: inc([170000, 180000, 190000]), booked: true, onb: ONB_A },
     club: { label: 'Клуб, урок 15', done: 14, watched: false, access: 'club', profile: true, pa: inc([170000, 180000, 190000]), booked: true, onb: ONB_A },
     ent: { label: 'Бизнес на уровне Enterprise: маршрут с этапа 3.1', done: 3, watched: false, access: 'starter', profile: true, pa: bz([3600000, 3800000, 4000000], [2100000, 2200000, 2300000], [900000, 950000, 1000000]), booked: true, onb: ONB_B },
+    mentor: { label: 'Scaling: наставник открыл и добавил уроки', done: 2, watched: false, access: 'starter', profile: true, pa: bz([1100000, 1200000, 1300000], [650000, 700000, 750000], [330000, 350000, 370000]), booked: true, onb: ONB_B, mopen: ['Первый помощник: кого и когда', 'Пять цифр бизнеса на каждый понедельник'], added: ['Разбор: чек в три раза без новых клиентов'] },
     scaling: { label: 'Бизнес на уровне Scaling: маршрут с этапа 2.1', done: 2, watched: false, access: 'starter', profile: true, pa: bz([1100000, 1200000, 1300000], [650000, 700000, 750000], [330000, 350000, 370000]), booked: false, onb: ONB_B },
   };
   const ACCESS = { free: 'Бесплатно', starter: 'Стартовый доступ', club: 'Клуб' };
@@ -65,7 +66,11 @@
   const future = (l) => { const b = lvOf(R.stages[l.si].n); return !!b && b.n > lvCur(); };
   /* Повтор урока: если исходный урок уже в маршруте человека, повтор не проходится второй раз */
   const covered = (l) => !!l.dup && !skipped(l.dup) && !future(l.dup);
-  const route = () => FLAT.filter((l) => !skipped(l) && !future(l) && !covered(l));
+  /* Наставник: открывает уроки вне очереди и добавляет уроки из библиотеки (Игорь 03.11.2026) */
+  const hidden = (l) => !!l.extra && !(ui.added || []).includes(l.t);
+  const mOpen = (l) => !l.dup && (ui.mopen || []).includes(l.t);
+  const lsOf = (si) => FLAT.filter((l) => l.si === si && !hidden(l));
+  const route = () => FLAT.filter((l) => !skipped(l) && !future(l) && !covered(l) && !hidden(l));
   const pos = (l) => route().indexOf(l) + 1;
   const total = () => route().length;
   const prepDone = () => ui.profile && !!ui.pa;
@@ -75,6 +80,7 @@
     if (covered(l)) return state(l.dup) === 'done' ? 'done' : 'dup';
     const p = pos(l);
     if (p <= ui.done) return 'done';
+    if (mOpen(l) && p > ui.done + 1) return 'mopen';
     if (ui.access === 'free' && p > FREE) return 'paid';
     if (p === ui.done + 1) return prepDone() ? 'now' : 'wait';
     return 'next';
@@ -88,6 +94,7 @@
     const si = c ? c.si : R.stages.length - 1;
     s.add(si);
     if (si + 1 < R.stages.length) s.add(si + 1);
+    FLAT.forEach((l) => { if ((mOpen(l) || (l.extra && !hidden(l))) && !future(l)) s.add(l.si); });
     return s;
   }
 
@@ -207,7 +214,7 @@
       cta = `<button class="btn" data-act="go">${svg('play', 'ic-f')}Продолжить урок №${c.n}</button>`;
     }
     const segs = R.stages.map((st, si) => {
-      const ls = FLAT.filter((l) => l.si === si);
+      const ls = lsOf(si);
       const skip = ls.length && ls.every(skipped);
       const done = ls.filter((l) => state(l) === 'done').length;
       const pct = skip ? 0 : ls.length ? Math.round((done / ls.length) * 100) : (c && c.si > si ? 100 : 0);
@@ -287,15 +294,16 @@
   function lessonRow(l) {
     const s = state(l); const p = pos(l);
     const kind = l.p ? 'pers' : 'biz';
-    const tag = l.p ? `<span class="tag pers">Личный рост</span>` : '';
+    const tag = (l.p ? `<span class="tag pers">Личный рост</span>` : '') + (s === 'mopen' ? `<span class="tag mentor">${svg('user')}Открыл наставник</span>` : l.extra ? `<span class="tag mentor">${svg('user')}Добавил наставник</span>` : '');
     const w = ui.weights ? `<span class="wt num">вес ${l.w}</span>` : '';
     let node;
     if (s === 'done') node = svg('check');
     else if (s === 'paid') node = svg('lock');
     else if (s === 'skip') node = svg('skip');
     else if (s === 'dup') node = svg('flag');
+    else if (s === 'mopen') node = svg('play');
     else node = `<span class="num">${p}</span>`;
-    const meta = s === 'done' ? `Результат у наставника` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'dup' ? `${l.m}${NB}мин · откроется в этапе ${etapOfSt(R.stages[l.dup.si]).k}` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока №${route()[p - 2].n}` : `${l.m}${NB}мин`;
+    const meta = s === 'done' ? `Результат у наставника` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'mopen' ? `${l.m}${NB}мин · можно смотреть сейчас, вне очереди` : s === 'dup' ? `${l.m}${NB}мин · откроется в этапе ${etapOfSt(R.stages[l.dup.si]).k}` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока №${route()[p - 2].n}` : `${l.m}${NB}мин`;
     if (s === 'now') return nowCard(l, kind, tag, w);
     return `<li class="ls is-${s} ${kind}" id="l${l.g}">
       <span class="nd">${node}</span>
@@ -344,7 +352,7 @@
   }
 
   function stageBlock(st, si) {
-    const ls = FLAT.filter((l) => l.si === si);
+    const ls = lsOf(si);
     const c = cur();
     const skip = ls.length > 0 && ls.every(skipped);
     const done = ls.filter((l) => state(l) === 'done').length;
@@ -391,7 +399,7 @@
     if (own && own.n > lvCur()) return lv ? `<li class="lvl future"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>${svg('lock')}Уровень ${lv.n} · ${lv.name}</b><span>Этапы ${etapRange(lv.n)} · цель за год: доход ${short(lv.income)}${NB}₽ или выручка ${short(lv.rev)}${NB}₽</span><span>Откроется, когда бизнес выйдет на этот уровень.</span></div></li>` : '';
     const etapHead = (e) => {
       const sis = R.stages.map((x, i) => (x.n != null && etapOfSt(x) === e ? i : -1)).filter((i) => i >= 0);
-      const els = FLAT.filter((l) => sis.includes(l.si));
+      const els = FLAT.filter((l) => sis.includes(l.si) && !hidden(l));
       const eSkip = els.length > 0 && els.every(skipped);
       const eDone = !eSkip && els.length > 0 && els.every((l) => state(l) === 'done');
       const eCur = c && sis.includes(c.si);
@@ -415,7 +423,10 @@
       : ui.access === 'starter'
         ? `<p class="eyebrow">Доступ</p><h3>Стартовый доступ</h3><p class="small mut">Открыты все ${lessonsWord(T)} маршрута, по порядку.</p><button class="btn soft wide" data-act="club">Что добавляет клуб</button>`
         : `<p class="eyebrow">Доступ</p><h3>Клуб</h3><p class="small mut">Все уроки маршрута и разборы шагов с наставником.</p>`;
+    const fromM = FLAT.filter((l) => !future(l) && !l.dup && (mOpen(l) && state(l) === 'mopen' || (l.extra && !hidden(l))));
+    const mCard = fromM.length ? `<section class="card sec mentor-c"><p class="eyebrow">От наставника</p><h3>${fromM.length === 1 ? 'Один урок' : lessonsWord(fromM.length)} для вас</h3><ul class="mlist">${fromM.map((l) => `<li><button class="link" data-act="jump" data-v="${l.si}"><span class="lib">Урок №${l.n}</span> ${esc(l.t)}</button><span>${l.extra ? 'Добавил из библиотеки в ваш маршрут' : 'Открыл вне очереди, можно смотреть сейчас'}</span></li>`).join('')}</ul></section>` : '';
     return `<aside class="col">
+      ${mCard}
       <section class="card sec"><p class="eyebrow">Личный рост</p><h3>${pl == null ? 'Определится по Точке А' : R.levels[pl].t}</h3><p class="small mut">${m ? `По доходу в карман: ${short(m.pocket)}${NB}₽ в месяц. ` : ''}Уроки личного роста стоят внутри шагов бизнеса и отмечены фиолетовым.</p><div class="ladder">${rungs}</div></section>
       <section class="card sec">${acc}</section>
       <section class="card sec legend"><p class="eyebrow">Как открываются уроки</p>
@@ -423,6 +434,7 @@
           <li><span class="nd mini-nd is-done">${svg('check')}</span><span>Пройден: видео посмотрено, результат у наставника</span></li>
           <li><span class="nd mini-nd is-now"><span class="num">9</span></span><span>Сейчас: посмотрите урок и отправьте результат наставнику</span></li>
           <li><span class="nd mini-nd is-next"><span class="num">10</span></span><span>Откроется сразу после предыдущего</span></li>
+          <li><span class="nd mini-nd is-mopen">${svg('play')}</span><span>Открыл наставник: можно смотреть вне очереди</span></li>
           <li><span class="nd mini-nd is-paid">${svg('lock')}</span><span>Откроется со стартовым доступом</span></li>
         </ul>
       </section>
@@ -451,7 +463,7 @@
   let tt;
   function toast(t) { ui.toast = t; clearTimeout(tt); tt = setTimeout(() => { ui.toast = null; const el = app.querySelector('.toast'); if (el) el.remove(); }, 3200); }
   function scrollTo(id, block) { requestAnimationFrame(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: block || 'center' }); }); }
-  function setScen(k) { const s = SCEN[k]; if (!s) return; needleWas = -90; Object.assign(ui, { scen: k, done: s.done, watched: s.watched, access: s.access, profile: s.profile, pa: s.pa, onb: s.onb, booked: s.booked, editPA: false, form: null, answer: '', metric: '', flash: 0 }); ui.open = defaultOpen(); }
+  function setScen(k) { const s = SCEN[k]; if (!s) return; needleWas = -90; Object.assign(ui, { scen: k, done: s.done, watched: s.watched, access: s.access, profile: s.profile, pa: s.pa, onb: s.onb, booked: s.booked, editPA: false, form: null, answer: '', metric: '', flash: 0, mopen: s.mopen || [], added: s.added || [] }); ui.open = defaultOpen(); }
 
   app.addEventListener('click', (e) => {
     const b = e.target.closest('[data-act]');
@@ -498,6 +510,7 @@
       const l = pick(+v); const s = state(l);
       if (s === 'next') toast(`Откроется, когда результат урока №${route()[pos(l) - 2].n}.`);
       else if (s === 'wait') toast('Первый урок откроется после Точки А.');
+      else if (s === 'mopen') toast('Наставник открыл этот урок вне очереди: смотрите и отправляйте результат сейчас. Остальные уроки идут своим порядком.');
       else if (s === 'skip') toast('Этот шаг наставник может назначить вам, если увидит в нём недоработки.');
       else if (s === 'paid') { toast('Этот урок откроется со стартовым доступом.'); }
       else if (s === 'done') toast('Урок пройден. На платформе здесь откроется урок и ваш записанный результат.');

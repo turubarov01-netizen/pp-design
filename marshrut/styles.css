@@ -463,3 +463,14 @@ h2, h3 { margin: 0; }
 .lvl.future .lvl-b { background: rgba(11,16,32,.025); }
 .lvl.future .lvl-b b { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
 .lvl.future .lvl-b b svg { width: 13px; height: 13px; }
+
+/* Уроки от наставника: открыл вне очереди или добавил из библиотеки */
+.tag.mentor { background: rgba(214,124,0,.12); color: #8a4f00; }
+.is-mopen > .nd, .nd.is-mopen { border-color: #e08a00; color: #b06800; box-shadow: 0 0 0 4px rgba(224,138,0,.12); }
+.mentor-c { background: linear-gradient(180deg, rgba(224,138,0,.07), rgba(224,138,0,.02)); }
+.mentor-c .eyebrow { color: #a35f00; }
+.mlist { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 10px; }
+.mlist li { display: grid; gap: 2px; }
+.mlist .link { text-align: left; font-size: 14px; font-weight: 650; color: var(--ink); line-height: 1.35; }
+.mlist .link .lib { margin-right: 4px; vertical-align: 1px; }
+.mlist li > span { font-size: 12.5px; color: var(--muted); }
