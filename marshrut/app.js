@@ -18,17 +18,19 @@
   });
   const pick = (g) => FLAT[g - 1];
   const MONTHS = ['Август', 'Сентябрь', 'Октябрь'];
-  const START_STEP = { 1: 0, 2: 5, 3: 10 }; // Саша 03.11: уровень Scaling — маршрут с 5-го шага
+  const START_STEP = { 1: 0, 2: 6, 3: 11 }; // Саша 03.11: маршрут начинается с первого шага уровня; пропущенные шаги может назначить наставник
 
+  const ONB_A = { year: 2000000, label: 'около 2 млн ₽' };
+  const ONB_B = { year: 9000000, label: 'около 9 млн ₽' };
   const inc = (a) => ({ mode: 'income', inc: a });
   const bz = (rev, gross, net) => ({ mode: 'biz', rev, gross, net });
   const SCEN = {
-    fresh: { label: 'Новый участник: подготовка не пройдена', done: 0, watched: false, access: 'free', profile: false, pa: null, booked: false },
-    mid: { label: 'Урок 4: видео посмотрено, задание не сдано', done: 3, watched: true, access: 'free', profile: true, pa: inc([110000, 120000, 130000]), booked: false },
-    wall: { label: '10 бесплатных уроков пройдены', done: 10, watched: false, access: 'free', profile: true, pa: inc([140000, 145000, 150000]), booked: false },
-    start: { label: 'Стартовый доступ, урок 15', done: 14, watched: false, access: 'starter', profile: true, pa: inc([170000, 180000, 190000]), booked: true },
-    club: { label: 'Клуб, урок 15', done: 14, watched: false, access: 'club', profile: true, pa: inc([170000, 180000, 190000]), booked: true },
-    scaling: { label: 'Бизнес на уровне Scaling: маршрут с 5-го шага', done: 2, watched: false, access: 'starter', profile: true, pa: bz([1100000, 1200000, 1300000], [650000, 700000, 750000], [330000, 350000, 370000]), booked: false },
+    fresh: { label: 'Новый участник: подготовка не пройдена', done: 0, watched: false, access: 'free', profile: false, pa: null, booked: false, onb: ONB_A },
+    mid: { label: 'Урок 4: видео посмотрено, задание не сдано', done: 3, watched: true, access: 'free', profile: true, pa: inc([110000, 120000, 130000]), booked: false, onb: ONB_A },
+    wall: { label: '10 бесплатных уроков пройдены', done: 10, watched: false, access: 'free', profile: true, pa: inc([140000, 145000, 150000]), booked: false, onb: ONB_A },
+    start: { label: 'Стартовый доступ, урок 15', done: 14, watched: false, access: 'starter', profile: true, pa: inc([170000, 180000, 190000]), booked: true, onb: ONB_A },
+    club: { label: 'Клуб, урок 15', done: 14, watched: false, access: 'club', profile: true, pa: inc([170000, 180000, 190000]), booked: true, onb: ONB_A },
+    scaling: { label: 'Бизнес на уровне Scaling: маршрут с 6-го шага', done: 2, watched: false, access: 'starter', profile: true, pa: bz([1100000, 1200000, 1300000], [650000, 700000, 750000], [330000, 350000, 370000]), booked: false, onb: ONB_B },
   };
   const ACCESS = { free: 'Бесплатно', starter: 'Стартовый доступ', club: 'Клуб' };
 
@@ -37,7 +39,8 @@
   /* Точка А: доходы за последние три месяца. От неё — спидометр, уровень и место старта */
   const avg = (a) => a.reduce((x, y) => x + y, 0) / a.length;
   function metrics() {
-    const p = ui.pa; if (!p) return null;
+    const p = ui.pa;
+    if (!p) { const o = ui.onb; if (!o) return null; const pm = o.year / 12; return { metric: 'income', pm, year: o.year, fact: 0, pocket: pm, src: 'onb' }; }
     if (p.mode === 'income') { const pm = avg(p.inc); return { metric: 'income', pm, year: pm * 12, fact: pm * 3, pocket: pm }; }
     const pm = avg(p.rev); return { metric: 'rev', pm, year: pm * 12, fact: pm * 3, pocket: avg(p.net), gross: avg(p.gross) };
   }
@@ -139,32 +142,21 @@
   function bizCard() {
     const m = metrics(); const L = levelNow() || R.biz[0];
     const rungsOf = (fill) => R.biz.map((b) => `<div class="brung ${m && b.n === L.n ? 'cur' : ''}"><i><u style="width:${(fill(b) * 100).toFixed(1)}%"></u></i><b>${b.name}</b><span>шаги ${b.from}–${b.to}</span></div>`).join('');
-    if (!m) {
-      return `<section class="card bizlv">
-      <div class="dial">${dial(0, 0, L.income, short(L.income))}<div class="dial-read"><b class="empty">Пока нет данных</b><span>Внесите Точку А, и стрелка покажет, что выйдет за год</span></div></div>
-      <div class="biz-t">
-        <p class="eyebrow">Уровень бизнеса</p>
-        <h2>Определится по Точке А</h2>
-        <p class="biz-sub">Укажите личный доход или доходы бизнеса за последние три месяца. По ним считаем уровень, цель на год и шаг, с которого начнётся маршрут.</p>
-        <button class="btn" data-act="goPA">${svg('chart')}Заполнить Точку А</button>
-        <div class="bladder" aria-label="Три уровня бизнеса">${rungsOf(() => 0)}</div>
-      </div>
-    </section>`;
-    }
     const target = L[m.metric]; const share = Math.round((m.year / target) * 100);
     const what = m.metric === 'income' ? 'личный доход' : 'выручка компании';
+    const onb = m.src === 'onb';
     return `<section class="card bizlv">
-      <div class="dial">${dial(m.fact, m.year, target, short(target))}<div class="dial-read"><b class="num">${money(m.year)}</b><span>прогноз на год · ${share}% цели уровня</span></div></div>
+      <div class="dial">${dial(m.fact, m.year, target, short(target))}<div class="dial-read"><b class="num">${onb ? '≈' + NB : ''}${money(m.year)}</b><span>${onb ? 'по анкете онбординга' : 'прогноз на год'} · ${share}% цели уровня</span></div></div>
       <div class="biz-t">
         <p class="eyebrow">Уровень бизнеса ${L.n} из 3</p>
         <h2>${L.name}</h2>
         <p class="biz-sub">${L.sub}. <span class="nw">Шаги маршрута ${L.from}–${L.to}</span>. Цель уровня за год: личный доход ${money(L.income)} или выручка компании ${money(L.rev)}.</p>
         <dl class="lv-rows">
-          <div class="lv-row"><dt>${m.metric === 'income' ? 'Личный доход' : 'Выручка'} в среднем</dt><dd class="num">${money(m.pm)} <span class="mut small">в месяц</span></dd></div>
+          <div class="lv-row"><dt>${m.metric === 'income' ? 'Личный доход' : 'Выручка'} в среднем</dt><dd class="num">${onb ? '≈' + NB : ''}${money(m.pm)} <span class="mut small">в месяц</span></dd></div>
           ${m.metric === 'rev' ? `<div class="lv-row"><dt>Чистыми в карман</dt><dd class="num">${money(m.pocket)} <span class="mut small">в месяц</span></dd></div>` : ''}
           <div class="lv-row"><dt>Нужно для цели</dt><dd class="num">${money(target / 12)} <span class="mut small">в месяц</span></dd></div>
         </dl>
-        <p class="biz-src">Посчитано по Точке А: ${what} за ${MONTHS[0].toLowerCase()}–${MONTHS[2].toLowerCase()}. Куратор уточнит уровень на установочной сессии.</p>
+        ${onb ? `<div class="biz-fix"><p>Пока это ориентир из анкеты онбординга: годовой доход ${esc(ui.onb.label)}. Исправьте его реальными цифрами за последние три месяца, и уровень пересчитается.</p><button class="btn sm" data-act="goPA">${svg('chart')}Заполнить Точку А</button></div>` : `<p class="biz-src">Посчитано по Точке А: ${what} за ${MONTHS[0].toLowerCase()}–${MONTHS[2].toLowerCase()}. Куратор уточнит уровень на установочной сессии.</p>`}
         <p class="biz-why">Задания маршрута и есть путь к этой цели. Делаете их, растёт бизнес, и стрелка идёт вправо. Дальше цифры берутся из «Финансов» в трекере.</p>
         <div class="bladder" aria-label="Три уровня бизнеса">${rungsOf((b) => (b.n < L.n ? 1 : b.n === L.n ? Math.min(1, m.year / target) : 0))}</div>
       </div>
@@ -178,8 +170,8 @@
     const paidWall = prepDone() && nxt && state(nxt) === 'paid';
     let h, sub, cta = '';
     if (!prepDone()) {
-      h = 'Подготовка к обучению';
-      sub = 'Заполните профиль и Точку А: доходы за последние три месяца. По ним строится спидометр и ваш маршрут, после этого откроется первый урок.';
+      h = 'Подготовка к росту';
+      sub = 'Заполните профиль и Точку А: реальные доходы за последние три месяца. Сейчас спидометр и маршрут построены по анкете онбординга, Точка А их уточнит. После неё откроется первый урок.';
       cta = `<button class="btn" data-act="goPrep">Продолжить подготовку</button>`;
     } else if (!nxt) {
       h = 'Маршрут пройден';
@@ -191,7 +183,7 @@
     } else {
       h = stc.n == null ? 'Старт маршрута' : `Шаг ${stc.n}. ${esc(stc.title)}`;
       sub = `Урок ${pos(c)} из ${T}. Следующий откроется, когда вы посмотрите этот и запишете результат задания.`;
-      if (startStep() > 0) sub += ` По Точке А маршрут идёт со ${startStep()}-го шага: шаги 0–${startStep() - 1} можно пройти по желанию.`;
+      if (startStep() > 0) sub += ` По Точке А маршрут идёт со ${startStep()}-го шага: шаги 0–${startStep() - 1} наставник может попросить пройти, если увидит в них недоработки.`;
       cta = `<button class="btn" data-act="go">${svg('play', 'ic-f')}Продолжить урок ${pos(c)}</button>`;
     }
     const segs = R.stages.map((st, si) => {
@@ -201,7 +193,7 @@
       const pct = skip ? 0 : ls.length ? Math.round((done / ls.length) * 100) : (c && c.si > si ? 100 : 0);
       const isCur = c && c.si === si;
       const label = st.n == null ? 'Старт' : `Шаг ${st.n}. ${st.title}`;
-      return `<button class="seg-i ${isCur ? 'cur' : ''} ${ls.length ? '' : 'empty'} ${skip ? 'skip' : ''}" style="flex-grow:${Math.max(1, ls.length)}" data-act="jump" data-v="${si}" title="${esc(label)}" aria-label="${esc(label)}${skip ? ', можно пропустить' : `: ${done} из ${ls.length}`}"><i><u style="width:${pct}%"></u></i></button>`;
+      return `<button class="seg-i ${isCur ? 'cur' : ''} ${ls.length ? '' : 'empty'} ${skip ? 'skip' : ''}" style="flex-grow:${Math.max(1, ls.length)}" data-act="jump" data-v="${si}" title="${esc(label)}" aria-label="${esc(label)}${skip ? ', по решению наставника' : `: ${done} из ${ls.length}`}"><i><u style="width:${pct}%"></u></i></button>`;
     }).join('');
     const stepNo = !prepDone() ? 'Подготовка' : !nxt ? 'Маршрут пройден' : stc && stc.n != null ? `Шаг бизнеса ${stc.n}${NB}из${NB}15` : 'Старт, до шагов бизнеса';
     return `<section class="card hero">
@@ -218,7 +210,7 @@
     </section>`;
   }
 
-  /* Подготовка к обучению: профиль, Точка А, установочная сессия */
+  /* Подготовка к росту: профиль, Точка А, установочная сессия */
   function paForm() {
     const f = ui.form;
     const field = (k, i, lab) => `<label class="pa-f"><span>${lab}</span><span class="pa-in"><input inputmode="numeric" data-act="pa" data-k="${k}" data-i="${i}" value="${esc(f[k][i])}" placeholder="0" autocomplete="off"><em>₽</em></span></label>`;
@@ -264,7 +256,7 @@
     const meta = passed ? 'Готово' : prepDone() ? 'Осталось записаться на установочную сессию' : `${doneN} из 3 · сначала профиль и Точка А`;
     const head = `<li class="st ${passed ? 'is-passed' : ''} ${!prepDone() ? 'is-cur' : ''}" id="sprep">
       <span class="nd sq">${passed ? svg('check') : svg('user')}</span>
-      <button class="st-b" data-act="stage" data-v="prep" aria-expanded="${open}"><span class="st-t">Подготовка к обучению</span><span class="st-m"><span>${meta}</span></span>${svg('chev', 'chev')}</button>
+      <button class="st-b" data-act="stage" data-v="prep" aria-expanded="${open}"><span class="st-t">Подготовка к росту</span><span class="st-m"><span>${meta}</span></span>${svg('chev', 'chev')}</button>
     </li>`;
     return head + (open ? items.join('') : '');
   }
@@ -280,7 +272,7 @@
     else if (s === 'paid') node = svg('lock');
     else if (s === 'skip') node = svg('skip');
     else node = `<span class="num">${p}</span>`;
-    const meta = s === 'done' ? `Результат записан` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по желанию` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока ${p - 1}` : `${l.m}${NB}мин`;
+    const meta = s === 'done' ? `Результат записан` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока ${p - 1}` : `${l.m}${NB}мин`;
     if (s === 'now') return nowCard(l, kind, tag, w);
     return `<li class="ls is-${s} ${kind}" id="l${l.g}">
       <span class="nd">${node}</span>
@@ -337,7 +329,7 @@
     const time = mins >= 60 ? `${Math.floor(mins / 60)}${NB}ч${mins % 60 ? ` ${mins % 60}${NB}мин` : ''}` : `${mins}${NB}мин`;
     let meta;
     if (!ls.length) meta = 'Уроки шага готовятся';
-    else if (skip) meta = 'По желанию: по Точке А вы уже дальше';
+    else if (skip) meta = 'Наставник может попросить пройти этот шаг';
     else if (passed) meta = 'Пройден';
     else if (done) meta = `${done} из ${ls.length} · ${time}`;
     else meta = `${lessonsWord(ls.length)} · ${time}`;
@@ -408,7 +400,7 @@
   let tt;
   function toast(t) { ui.toast = t; clearTimeout(tt); tt = setTimeout(() => { ui.toast = null; const el = app.querySelector('.toast'); if (el) el.remove(); }, 3200); }
   function scrollTo(id, block) { requestAnimationFrame(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: block || 'center' }); }); }
-  function setScen(k) { const s = SCEN[k]; if (!s) return; needleWas = -90; Object.assign(ui, { scen: k, done: s.done, watched: s.watched, access: s.access, profile: s.profile, pa: s.pa, booked: s.booked, editPA: false, form: null, answer: '', flash: 0 }); ui.open = defaultOpen(); }
+  function setScen(k) { const s = SCEN[k]; if (!s) return; needleWas = -90; Object.assign(ui, { scen: k, done: s.done, watched: s.watched, access: s.access, profile: s.profile, pa: s.pa, onb: s.onb, booked: s.booked, editPA: false, form: null, answer: '', flash: 0 }); ui.open = defaultOpen(); }
 
   app.addEventListener('click', (e) => {
     const b = e.target.closest('[data-act]');
@@ -455,7 +447,7 @@
       const l = pick(+v); const s = state(l);
       if (s === 'next') toast(`Откроется, когда будет записан результат урока ${pos(l) - 1}.`);
       else if (s === 'wait') toast('Первый урок откроется после Точки А.');
-      else if (s === 'skip') toast('Урок по желанию: по Точке А вы уже дальше этого шага. На платформе он откроется сразу.');
+      else if (s === 'skip') toast('Этот шаг наставник может назначить вам, если увидит в нём недоработки.');
       else if (s === 'paid') { toast('Этот урок откроется со стартовым доступом.'); }
       else if (s === 'done') toast('Урок пройден. На платформе здесь откроется урок и ваш записанный результат.');
       render(); return;
