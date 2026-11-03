@@ -359,7 +359,14 @@
     else if (!open && showWall && hasWall) body = wall();
     const lv = st.n != null ? R.biz.find((b) => b.from === st.n) : null;
     const L = levelNow();
-    const band = lv ? `<li class="lvl ${L && L.n === lv.n ? 'cur' : ''}"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Шаги ${lv.from}–${lv.to} · цель за год: доход ${short(lv.income)}${NB}₽ или выручка ${short(lv.rev)}${NB}₽</span></div></li>` : '';
+    /* Уровень целиком ниже старта: свёрнут в одну полосу, шаги раскрываются по кнопке (Игорь 03.11.2026) */
+    const own = R.biz.find((b) => st.n != null && st.n >= b.from && st.n <= b.to);
+    const lvSkipped = own && own.to < startStep();
+    const lvOpen = own && ui.open.has('lv' + own.n);
+    const band = !lv ? '' : lvSkipped
+      ? `<li class="lvl past"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Ваш бизнес уже выше этого уровня по Точке А. Наставник может назначить любой из шагов ${lv.from}–${lv.to}.</span><button class="lvl-t" data-act="stage" data-v="lv${lv.n}" aria-expanded="${!!lvOpen}">${lvOpen ? 'Свернуть шаги' : 'Показать шаги'}${svg('chev', 'chev')}</button></div></li>`
+      : `<li class="lvl ${L && L.n === lv.n ? 'cur' : ''}"><span class="nd lv-nd">${lv.n}</span><div class="lvl-b"><b>Уровень ${lv.n} · ${lv.name}</b><span>Шаги ${lv.from}–${lv.to} · цель за год: доход ${short(lv.income)}${NB}₽ или выручка ${short(lv.rev)}${NB}₽</span></div></li>`;
+    if (lvSkipped && !lvOpen) return band;
     return band + head + body;
   }
 
@@ -437,7 +444,7 @@
     }
     if (a === 'book') { ui.booked = true; ui.scen = 'custom'; toast('Вы записаны на установочную сессию. Ссылка придёт в Telegram.'); render(); return; }
     if (a === 'jump') { ui.open.add(+v); render(); scrollTo(`s${v}`, 'start'); return; }
-    if (a === 'stage') { const i = v === 'prep' ? 'prep' : +v; ui.open.has(i) ? ui.open.delete(i) : ui.open.add(i); render(); return; }
+    if (a === 'stage') { const i = v === 'prep' || String(v).startsWith('lv') ? v : +v; ui.open.has(i) ? ui.open.delete(i) : ui.open.add(i); render(); return; }
     if (a === 'watch') { if (!ui.watched) { ui.watched = true; toast('Видео отмечено как просмотренное. Теперь задание.'); } else toast('В прототипе видео нет: на платформе здесь откроется плеер.'); render(); return; }
     if (a === 'submit') {
       if (!c || ui.answer.trim().length < 3) return;
