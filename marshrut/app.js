@@ -275,7 +275,7 @@
     else if (s === 'paid') node = svg('lock');
     else if (s === 'skip') node = svg('skip');
     else node = `<span class="num${l.n > 99 ? ' n3' : ''}">${l.n}</span>`;
-    const meta = s === 'done' ? `Результат записан` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока №${route()[p - 2].n}` : `${l.m}${NB}мин`;
+    const meta = s === 'done' ? `Результат у наставника` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока №${route()[p - 2].n}` : `${l.m}${NB}мин`;
     if (s === 'now') return nowCard(l, kind, tag, w);
     return `<li class="ls is-${s} ${kind}" id="l${l.g}">
       <span class="nd">${node}</span>
@@ -291,11 +291,15 @@
         <div class="chk-b"><b>Посмотреть урок</b><span>${watched ? 'Видео просмотрено' : `${l.m}${NB}мин`}</span></div>
         ${watched ? '<button class="btn soft sm" data-act="watch">Пересмотреть</button>' : `<button class="btn sm" data-act="watch">${svg('play', 'ic-f')}Смотреть</button>`}
       </li>`;
+    const mt = l.mt || 'Цифра результата';
     const step2 = `<li class="${watched ? 'todo' : 'wait'}">
         <span class="chk-n">2</span>
-        <div class="chk-b"><b>Задание</b><span>${esc(task)}</span>
-          ${watched ? `<label class="ans"><span class="vh">Ваш результат</span><textarea data-act="answer" rows="3" placeholder="Ваш результат">${esc(ui.answer)}</textarea></label>
-          <div class="ans-a"><button class="btn sm" data-act="submit" ${ui.answer.trim().length < 3 ? 'disabled' : ''}>Записать результат</button><span class="small mut">Куратор посмотрит позже. Ждать проверки не нужно.</span></div>` : `<span class="wait-n">Откроется после просмотра</span>`}
+        <div class="chk-b"><b>Результат наставнику</b><span>${esc(task)}</span>
+          ${watched ? `<div class="ans-grid">
+            <label class="ans-f"><span>${esc(mt)}</span><input data-act="metric" inputmode="decimal" value="${esc(ui.metric || '')}" placeholder="0" autocomplete="off"></label>
+            <label class="ans"><span class="ans-l">Что сделали и главный инсайт</span><textarea data-act="answer" rows="3" placeholder="Что получилось, что поняли">${esc(ui.answer)}</textarea></label>
+          </div>
+          <div class="ans-a"><button class="btn sm" data-act="submit" ${ui.answer.trim().length < 3 ? 'disabled' : ''}>Отправить наставнику</button><span class="small mut">Сохранится в вашей карточке развития бизнеса. Наставник откроет её перед созвоном, ждать проверки не нужно.</span></div>` : `<span class="wait-n">Откроется после просмотра</span>`}
         </div>
       </li>`;
     return `<li class="ls is-now ${kind} ${ui.flash === l.g ? 'enter' : ''}" id="l${l.g}">
@@ -372,8 +376,8 @@
       <section class="card sec">${acc}</section>
       <section class="card sec legend"><p class="eyebrow">Как открываются уроки</p>
         <ul>
-          <li><span class="nd mini-nd is-done">${svg('check')}</span><span>Пройден: видео посмотрено, результат записан</span></li>
-          <li><span class="nd mini-nd is-now"><span class="num">97</span></span><span>Сейчас: посмотрите урок и запишите результат задания</span></li>
+          <li><span class="nd mini-nd is-done">${svg('check')}</span><span>Пройден: видео посмотрено, результат у наставника</span></li>
+          <li><span class="nd mini-nd is-now"><span class="num">97</span></span><span>Сейчас: посмотрите урок и отправьте результат наставнику</span></li>
           <li><span class="nd mini-nd is-next"><span class="num n3">105</span></span><span>Откроется сразу после предыдущего</span></li>
           <li><span class="nd mini-nd is-paid">${svg('lock')}</span><span>Откроется со стартовым доступом</span></li>
         </ul>
@@ -403,7 +407,7 @@
   let tt;
   function toast(t) { ui.toast = t; clearTimeout(tt); tt = setTimeout(() => { ui.toast = null; const el = app.querySelector('.toast'); if (el) el.remove(); }, 3200); }
   function scrollTo(id, block) { requestAnimationFrame(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: block || 'center' }); }); }
-  function setScen(k) { const s = SCEN[k]; if (!s) return; needleWas = -90; Object.assign(ui, { scen: k, done: s.done, watched: s.watched, access: s.access, profile: s.profile, pa: s.pa, onb: s.onb, booked: s.booked, editPA: false, form: null, answer: '', flash: 0 }); ui.open = defaultOpen(); }
+  function setScen(k) { const s = SCEN[k]; if (!s) return; needleWas = -90; Object.assign(ui, { scen: k, done: s.done, watched: s.watched, access: s.access, profile: s.profile, pa: s.pa, onb: s.onb, booked: s.booked, editPA: false, form: null, answer: '', metric: '', flash: 0 }); ui.open = defaultOpen(); }
 
   app.addEventListener('click', (e) => {
     const b = e.target.closest('[data-act]');
@@ -437,18 +441,18 @@
     if (a === 'watch') { if (!ui.watched) { ui.watched = true; toast('Видео отмечено как просмотренное. Теперь задание.'); } else toast('В прототипе видео нет: на платформе здесь откроется плеер.'); render(); return; }
     if (a === 'submit') {
       if (!c || ui.answer.trim().length < 3) return;
-      ui.done += 1; ui.watched = false; ui.answer = ''; ui.scen = 'custom';
+      ui.done += 1; ui.watched = false; ui.answer = ''; ui.metric = ''; ui.scen = 'custom';
       const n = cur();
-      if (!n) { ui.flash = 0; toast('Результат записан. Маршрут пройден.'); render(); scrollTo('app', 'start'); return; }
-      if (state(n) === 'paid') { ui.flash = 0; toast('Результат записан. Бесплатная часть маршрута пройдена.'); ui.open = defaultOpen(); render(); scrollTo('wall'); return; }
-      ui.flash = n.g; ui.open.add(n.si); toast(`Результат записан. Открыт урок ${pos(n)}.`);
+      if (!n) { ui.flash = 0; toast('Результат у наставника. Маршрут пройден.'); render(); scrollTo('app', 'start'); return; }
+      if (state(n) === 'paid') { ui.flash = 0; toast('Результат у наставника. Бесплатная часть маршрута пройдена.'); ui.open = defaultOpen(); render(); scrollTo('wall'); return; }
+      ui.flash = n.g; ui.open.add(n.si); toast(`Результат у наставника. Открыт урок №${n.n}.`);
       render(); scrollTo(`l${n.g}`); return;
     }
     if (a === 'buy') { ui.access = 'starter'; ui.scen = 'custom'; toast('Прототип: стартовый доступ включён, оплаты здесь нет.'); render(); return; }
     if (a === 'club') { toast('Клуб добавляет к урокам разборы шагов. Переключите доступ на «Клуб» в панели сверху.'); render(); return; }
     if (a === 'row') {
       const l = pick(+v); const s = state(l);
-      if (s === 'next') toast(`Откроется, когда будет записан результат урока №${route()[pos(l) - 2].n}.`);
+      if (s === 'next') toast(`Откроется, когда результат урока №${route()[pos(l) - 2].n}.`);
       else if (s === 'wait') toast('Первый урок откроется после Точки А.');
       else if (s === 'skip') toast('Этот шаг наставник может назначить вам, если увидит в нём недоработки.');
       else if (s === 'paid') { toast('Этот урок откроется со стартовым доступом.'); }
@@ -464,6 +468,7 @@
       const btn = app.querySelector('[data-act="paSave"]'); if (btn) btn.disabled = !paValid();
       return;
     }
+    if (e.target.dataset.act === 'metric') { ui.metric = e.target.value; return; }
     if (e.target.dataset.act === 'answer') {
       ui.answer = e.target.value;
       const btn = app.querySelector('[data-act="submit"]');
