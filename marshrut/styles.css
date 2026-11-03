@@ -152,7 +152,7 @@ h2, h3 { margin: 0; }
 .nd { position: relative; z-index: 1; width: var(--nd); height: var(--nd); border-radius: 50%; display: grid; place-items: center; align-self: start; margin-top: calc(var(--top, 22px) - var(--nd) / 2); background: #fff; border: 2px solid var(--line-2); color: var(--faint); font-size: 14px; font-weight: 700; }
 .nd svg { width: 16px; height: 16px; }
 .nd .num { font-variant-numeric: tabular-nums; }
-.nd .num.n3 { font-size: 12px; letter-spacing: -.02em; }
+.lib { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; background: #eef3ff; color: var(--blue-ink); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .is-done > .nd, .nd.is-done { background: var(--blue); border-color: var(--blue); color: #fff; }
 .is-done.pers > .nd { background: var(--pers); border-color: var(--pers); }
 .is-now > .nd, .nd.is-now { border-color: var(--blue); color: var(--blue-ink); box-shadow: 0 0 0 5px rgba(47,123,255,.14); }

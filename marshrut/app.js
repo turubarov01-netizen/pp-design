@@ -274,12 +274,12 @@
     if (s === 'done') node = svg('check');
     else if (s === 'paid') node = svg('lock');
     else if (s === 'skip') node = svg('skip');
-    else node = `<span class="num${l.n > 99 ? ' n3' : ''}">${l.n}</span>`;
+    else node = `<span class="num">${p}</span>`;
     const meta = s === 'done' ? `Результат у наставника` : s === 'paid' ? `${l.m}${NB}мин · со стартовым доступом` : s === 'skip' ? `${l.m}${NB}мин · по решению наставника` : s === 'wait' ? `${l.m}${NB}мин · откроется после Точки А` : s === 'next' && p === ui.done + 2 ? `${l.m}${NB}мин · откроется после урока №${route()[p - 2].n}` : `${l.m}${NB}мин`;
     if (s === 'now') return nowCard(l, kind, tag, w);
     return `<li class="ls is-${s} ${kind}" id="l${l.g}">
       <span class="nd">${node}</span>
-      <button class="ls-b" data-act="row" data-v="${l.g}"><span class="ls-t">${esc(l.t)}</span><span class="ls-m">${tag}<span>${meta}</span>${w}</span></button>
+      <button class="ls-b" data-act="row" data-v="${l.g}"><span class="ls-t">${esc(l.t)}</span><span class="ls-m"><span class="lib">Урок №${l.n}</span>${tag}<span>${meta}</span>${w}</span></button>
     </li>`;
   }
 
@@ -303,9 +303,9 @@
         </div>
       </li>`;
     return `<li class="ls is-now ${kind} ${ui.flash === l.g ? 'enter' : ''}" id="l${l.g}">
-      <span class="nd"><span class="num${l.n > 99 ? ' n3' : ''}">${l.n}</span></span>
+      <span class="nd"><span class="num">${pos(l)}</span></span>
       <div class="now">
-        <div class="now-h"><p class="eyebrow">Сейчас · урок №${l.n} из библиотеки</p><h3>${esc(l.t)}</h3><div class="ls-m">${tag}${w}</div></div>
+        <div class="now-h"><p class="eyebrow">Сейчас · урок ${pos(l)} маршрута</p><h3>${esc(l.t)}</h3><div class="ls-m"><span class="lib">Урок №${l.n}</span>${tag}${w}</div></div>
         <ol class="chk">${step1}${step2}</ol>
       </div>
     </li>`;
@@ -377,8 +377,8 @@
       <section class="card sec legend"><p class="eyebrow">Как открываются уроки</p>
         <ul>
           <li><span class="nd mini-nd is-done">${svg('check')}</span><span>Пройден: видео посмотрено, результат у наставника</span></li>
-          <li><span class="nd mini-nd is-now"><span class="num">97</span></span><span>Сейчас: посмотрите урок и отправьте результат наставнику</span></li>
-          <li><span class="nd mini-nd is-next"><span class="num n3">105</span></span><span>Откроется сразу после предыдущего</span></li>
+          <li><span class="nd mini-nd is-now"><span class="num">9</span></span><span>Сейчас: посмотрите урок и отправьте результат наставнику</span></li>
+          <li><span class="nd mini-nd is-next"><span class="num">10</span></span><span>Откроется сразу после предыдущего</span></li>
           <li><span class="nd mini-nd is-paid">${svg('lock')}</span><span>Откроется со стартовым доступом</span></li>
         </ul>
       </section>
