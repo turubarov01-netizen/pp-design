@@ -143,7 +143,7 @@
   const bizOf = (stepN) => R.biz.find((b) => stepN >= b.from && stepN <= b.to) || R.biz[0];
   function bizCard() {
     const m = metrics(); const L = levelNow() || R.biz[0];
-    const rungsOf = (fill) => R.biz.map((b) => `<div class="brung ${m && b.n === L.n ? 'cur' : ''}"><i><u style="width:${(fill(b) * 100).toFixed(1)}%"></u></i><b>${b.name}</b><span>шаги ${b.from}–${b.to}</span></div>`).join('');
+    const rungsOf = (fill) => R.biz.map((b) => `<div class="brung ${m && b.n === L.n ? 'cur' : ''}"><i><u style="width:${(fill(b) * 100).toFixed(1)}%"></u></i><b>${b.name}</b><span>${m && b.n === L.n ? `${short(m.year)} из ${short(b[m.metric])}${NB}₽ за год` : `${m.metric === 'income' ? 'доход' : 'выручка'} ${short(b[m.metric])}${NB}₽ за год`}</span></div>`).join('');
     const target = L[m.metric]; const share = Math.round((m.year / target) * 100);
     const what = m.metric === 'income' ? 'личный доход' : 'выручка компании';
     const onb = m.src === 'onb';
