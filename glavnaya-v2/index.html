@@ -43,10 +43,16 @@ svg{flex:none}
 .main{min-width:0}
 .top{height:62px;display:flex;align-items:center;gap:10px;padding:0 32px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.62);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);position:sticky;top:0;z-index:5}
 .top h1{font-size:17px;font-weight:700;margin-right:auto}
-.tb{height:38px;min-width:38px;border-radius:12px;display:inline-grid;place-items:center;background:#fff;border:1px solid var(--line);color:var(--ink2)}
+.tb{position:relative;height:38px;min-width:38px;padding:0 9px;border-radius:999px;display:inline-flex;align-items:center;background:#fff;border:1px solid var(--line);color:var(--ink2);font-size:13px;font-weight:600;transition:border-color .2s var(--ease),color .2s,box-shadow .2s}
+.tb .lbl{max-width:0;opacity:0;overflow:hidden;white-space:nowrap;transition:max-width .35s var(--ease),opacity .2s var(--ease),margin .35s var(--ease)}
+.tb:hover,.tb:focus-visible{color:var(--blue-ink);border-color:rgba(47,123,255,.4);box-shadow:0 4px 14px rgba(47,123,255,.12)}
+@media (hover:hover){.tb:hover .lbl{max-width:260px;opacity:1;margin:0 4px 0 8px}}
+.tb:focus-visible .lbl{max-width:260px;opacity:1;margin:0 4px 0 8px}
+.tb .badge{position:absolute;top:-4px;left:22px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;border:2px solid #fff}
 .tb svg{width:18px;height:18px}
-.howto{display:none;grid-auto-flow:column;gap:7px;padding:0 13px;font-size:13px;font-weight:600;color:var(--blue-ink);border-color:rgba(47,123,255,.35)}
-.howto.show{display:inline-grid;animation:pop .45s var(--ease)}
+.howto{display:none;color:var(--blue-ink);border-color:rgba(47,123,255,.35)}
+.howto.ghost{display:inline-flex;visibility:hidden}
+.howto.show{display:inline-flex;visibility:visible;animation:pop .45s var(--ease)}
 @keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
 .avatar{width:38px;height:38px;border-radius:50%;background:#C9D6F5;display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--ink);border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
 
@@ -76,9 +82,8 @@ svg{flex:none}
 .screen .pl svg{width:22px;height:22px;margin-left:3px}
 .screen .cap{position:absolute;left:20px;bottom:16px;color:#C7D2EE;font-size:13px}
 .screen .cap b{display:block;color:#fff;font-size:15px}
-.vid.fly{animation:fly .6s var(--ease) forwards;pointer-events:none}
-@keyframes fly{to{transform:translate(38%,-130%) scale(.06);opacity:0}}
-@media (prefers-reduced-motion:reduce){.vid.fly{animation:fade .2s linear forwards}@keyframes fade{to{opacity:0}}.howto.show{animation:none}}
+.vid.fly{z-index:20;transition:transform .6s var(--ease),opacity .6s var(--ease),border-radius .6s var(--ease);pointer-events:none}
+@media (prefers-reduced-motion:reduce){.vid.fly{z-index:20;transition:opacity .2s linear}.howto.show{animation:none}.tb .lbl{transition:none}}
 
 /* Д3 Мой день: как на живом кабинете, вкладки «Сегодня / Неделя» */
 @font-face{font-family:"Bebas Neue";src:url("fonts/bebasneue-bold.woff2") format("woff2");font-weight:700;font-display:swap}
@@ -249,7 +254,6 @@ svg{flex:none}
   .po-pr .po-eye,.po-pr h3{max-width:60%}
   .po-pr h3{font-size:60px}.po-pr h3 span{font-size:40px}
   .po-img{top:18px;right:-14px;bottom:auto;height:auto;width:46%;max-width:190px;z-index:0;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
-  .howto span{display:none}.howto{padding:0;width:38px}
   .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:8;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
   .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--ink3);padding:6px 0;min-height:48px}
   .tabbar a svg{width:21px;height:21px}
@@ -283,9 +287,9 @@ svg{flex:none}
   <div class="main">
     <header class="top">
       <h1>Мой дашборд</h1>
-      <button class="tb howto" id="howto" aria-label="Как пользоваться платформой"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg><span>Как пользоваться</span></button>
-      <button class="tb" aria-label="Экскурсия по кабинету"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg></button>
-      <button class="tb" aria-label="Уведомления"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0"/></svg></button>
+      <button class="tb howto" id="howto" aria-label="Как пользоваться платформой"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg><span class="lbl">Как пользоваться платформой</span></button>
+      <button class="tb" aria-label="Подсказки: где что находится"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span class="lbl">Подсказки: где что находится</span></button>
+      <button class="tb" aria-label="Уведомления, 2 новых"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0"/></svg><span class="badge">2</span><span class="lbl">2 новых уведомления</span></button>
       <button class="avatar" aria-label="Профиль и настройки">А</button>
     </header>
 
@@ -371,8 +375,14 @@ document.querySelectorAll('[data-toggle]').forEach(b => b.addEventListener('clic
 document.getElementById('closevid').addEventListener('click', () => {
   const v = document.getElementById('d-vid'), h = document.getElementById('howto');
   const rm = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  h.classList.add('ghost');                       // место кнопки уже есть, видимость позже
+  const vr = v.getBoundingClientRect(), hr = h.getBoundingClientRect();
+  const dx = hr.left + hr.width / 2 - (vr.left + vr.width / 2), dy = hr.top + hr.height / 2 - (vr.top + vr.height / 2);
+  const sc = hr.height / vr.height;
   v.classList.add('fly');
-  setTimeout(() => { v.remove(); h.classList.add('show'); }, rm ? 200 : 600);
+  if (!rm) { v.style.transformOrigin = '50% 50%'; v.style.borderRadius = '50%'; v.style.transform = `translate(${dx}px,${dy}px) scale(${sc})`; }
+  v.style.opacity = '0';
+  setTimeout(() => { v.remove(); h.classList.remove('ghost'); h.classList.add('show'); }, rm ? 200 : 600);
 });
 // «Мой день»: вкладки
 document.querySelectorAll('.day-tabs button').forEach(t => t.addEventListener('click', () => {
