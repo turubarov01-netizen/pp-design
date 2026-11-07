@@ -624,7 +624,7 @@ const link = (p, l) => { const u = new URLSearchParams(Q); Object.entries(p).for
 const tog = (k, l) => { const u = new URLSearchParams(Q); Q.has(k) ? u.delete(k) : u.set(k, '1'); return `<a class="${Q.has(k) ? 'on' : ''}" href="?${u}">${l}</a>`; };
 if (Q.has('mo')) document.body.classList.add('done-offer');
 if (Q.has('pr')) document.body.classList.add('done-pr');
-document.getElementById('pult').innerHTML = 'Пакет: ' + link({k:'g'}, 'Гость') + link({k:'s'}, 'Стартовый') + link({k:'m'}, 'Член клуба') + '&nbsp;&nbsp;День после теста: ' + link({d:1}, '1-й') + link({d:4}, '4-й') + link({d:11}, '11-й') + '&nbsp;&nbsp;' + tog('mo', 'Прошёл «Мой оффер»') + tog('pr', 'Записался на Прорыв') + '&nbsp;&nbsp;<a href="#" id="unhide">Вернуть большие баннеры</a>';
+document.getElementById('pult').innerHTML = 'Пакет: ' + link({k:'g'}, 'Гость') + link({k:'s'}, 'Стартовый') + link({k:'m'}, 'Член клуба') + '&nbsp;&nbsp;День после теста: ' + link({d:1}, '1-й') + link({d:4}, '4-й') + link({d:11}, '11-й') + '&nbsp;&nbsp;' + tog('mo', 'Начинал «Мой оффер»') + tog('pr', 'Записался на Прорыв') + '&nbsp;&nbsp;<a href="#" id="unhide">Вернуть большие баннеры</a>';
 // баннер по крестику сворачивается под календарь и запоминается
 const HK = 'pp-hidden-ads', hid = new Set((Q.get('h') || localStorage.getItem(HK) || '').split(',').filter(Boolean));
 hid.forEach(k => document.body.classList.add('hid-' + k));
