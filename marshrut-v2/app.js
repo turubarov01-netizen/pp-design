@@ -635,7 +635,7 @@
       <div class="hc-p"><span class="hc-a">${esc(m.n[0])}</span><div><b>${esc(m.n)}</b><span>${esc(m.c)} · ${esc(m.lv)}</span></div></div>
       <div class="hc-b ok"><em>Чем могу помочь</em><p>${esc(m.help)}</p></div>
       <div class="hc-b"><em>Кого ищу</em><p>${esc(m.look)}</p></div>
-      <div class="hc-f"><button class="btn sm" data-act="hcwrite">${svg('msg')}Написать</button><button class="btn soft sm" data-act="hcnext">Другой фриман</button></div>
+      <div class="hc-f"><button class="btn sm" data-act="hcwrite">${svg('msg')}Написать</button><button class="btn soft sm" data-act="hcnext">Другой фриман</button></div>${ui.hclock && ui.access !== 'club' ? `<div class="hc-lock">${svg('lock')}<p>Общаться с${NB}фриманами доступно членам Альянса</p><button class="btn sm" data-act="buy">Повысить доступ</button></div>` : ''}
     </section>`;
   }
 
@@ -658,8 +658,8 @@
   const myPl = () => PL_KEY[P().pearl] || 'pawn';
   const curPl = () => ui.plvl || myPl();
   const tabs = () => `<div class="vtabs" role="tablist" aria-label="Что показать">
-      <button role="tab" class="vt${ui.tab === 'route' ? ' on' : ''}" aria-selected="${ui.tab === 'route'}" data-act="tab" data-v="route">${svg('route')}<span class="vt-l">Маршрутная карта бизнеса</span><span class="vt-s">Бизнес</span></button>
-      <button role="tab" class="vt${ui.tab === 'pearl' ? ' on' : ''}" aria-selected="${ui.tab === 'pearl'}" data-act="tab" data-v="pearl">${svg('flag')}<span class="vt-l">Маршрутная карта личности</span><span class="vt-s">Личность</span></button>
+      <button role="tab" class="vt${ui.tab === 'route' ? ' on' : ''}" aria-selected="${ui.tab === 'route'}" data-act="tab" data-v="route">${svg('route')}Бизнес</button>
+      <button role="tab" class="vt${ui.tab === 'pearl' ? ' on' : ''}" aria-selected="${ui.tab === 'pearl'}" data-act="tab" data-v="pearl">${svg('flag')}Личность</button>
     </div>`;
   const cpKind = (t) => /^Челлендж/.test(t) ? 'Челлендж' : /^Вызов/.test(t) ? 'Вызов' : /^Тест-драйв/.test(t) ? 'Тест-драйв' : '';
   const plKey = (lv, i, j, x) => `${lv}:${i}:${j}:${x}`;
@@ -756,6 +756,7 @@
     else if (a === 'stsend') { ui.stage[v] = 'sent'; custom(); toast(`Заявка по этапу ${v} отправлена куратору`); }
     else if (a === 'stok') { ui.stage[v] = 'ok'; custom(); toast(`Этап ${v} пройден`); }
     else if (a === 'hcnext') { ui.fm++; render(); return; }
+    else if (a === 'hcwrite' && ui.access !== 'club') { ui.hclock = true; render(); return; }
     else if (a === 'hcwrite') { toast(`Здесь откроется чат: ${FREEMEN[ui.fm % FREEMEN.length].n}`); render(); return; }
     else if (a === 'go' && v === 'life') { ui.open.has('life') ? ui.open.delete('life') : ui.open.add('life'); render(); return; }
     else if (a === 'lifego') { L0().calc = true; render(); lifeCount(); return; }

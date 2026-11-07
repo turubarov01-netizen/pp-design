@@ -356,3 +356,7 @@ button.ps-h:hover b { color: var(--blue-ink); }
 .tag.kind { background: var(--tint-2); color: var(--blue-ink); }
 .vt-s { display: none; }
 @media (max-width: 560px) { .vt-l { display: none; } .vt-s { display: inline; } }
+.hc-lock { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px 10px; align-items: center; margin-top: 12px; padding: 12px; border-radius: 12px; background: var(--tint); }
+.hc-lock svg { width: 16px; height: 16px; color: var(--blue-ink); }
+.hc-lock p { margin: 0; font-size: 14px; font-weight: 600; color: var(--ink-2); }
+.hc-lock .btn { grid-column: 1 / -1; justify-self: start; }
