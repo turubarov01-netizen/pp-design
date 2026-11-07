@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Главная: ничего не открыто · макет</title>
+<title>Мой дашборд: ничего не открыто · макет</title>
 <style>
 @font-face{font-family:"Medeo Sans";src:url("../glavnaya/fonts/MedeoSansVariable.woff2") format("woff2"),url("../proto/fonts/MedeoSansVariable.woff2") format("woff2");font-weight:100 900;font-display:swap}
 :root{
@@ -80,26 +80,40 @@ svg{flex:none}
 @keyframes fly{to{transform:translate(38%,-130%) scale(.06);opacity:0}}
 @media (prefers-reduced-motion:reduce){.vid.fly{animation:fade .2s linear forwards}@keyframes fade{to{opacity:0}}.howto.show{animation:none}}
 
-/* Д3 Мой день */
-.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:16px}
-.day{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 0 8px;border-radius:14px;border:1px solid transparent;color:var(--ink3)}
-.day .w{font-size:12px;white-space:nowrap}
-.day .dn{font-size:18px;font-weight:700;color:var(--ink);line-height:1.15;font-variant-numeric:tabular-nums}
-.day.today .dn{color:var(--blue)}
-.day[aria-selected=true]{background:#fff;border-color:var(--line);box-shadow:0 2px 10px rgba(47,123,255,.1)}
-.task{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:14px 14px 14px 14px;border-radius:16px;background:#fff;border:1.5px solid rgba(47,123,255,.45);box-shadow:0 6px 18px rgba(47,123,255,.1)}
-.task .ic{width:44px;height:44px;border-radius:13px;background:var(--blue);color:#fff;display:grid;place-items:center}
-.task .ic svg{width:21px;height:21px}
-.task .k{font-size:12px;color:var(--blue-ink);font-weight:600}
-.task b{display:block;font-size:15px;line-height:1.3}
-.task small{color:var(--ink3);font-size:13px}
+/* Д3 Мой день: как на живом кабинете, вкладки «Сегодня / Неделя» */
+@font-face{font-family:"Bebas Neue";src:url("fonts/bebasneue-bold.woff2") format("woff2");font-weight:700;font-display:swap}
+.ph .day-tabs{margin-left:auto}
+.day-tabs{display:flex;gap:4px;padding:4px;border-radius:12px;background:rgba(47,123,255,.07)}
+.day-tabs button{padding:6px 14px;border-radius:9px;font-size:13px;font-weight:600;color:var(--ink3);transition:background-color .18s var(--ease),color .18s}
+.day-tabs button[aria-selected=true]{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(16,24,48,.08)}
+.feed{list-style:none}
+.day-group+.day-group{margin-top:16px}
+.day-name{font-size:13px;font-weight:700;color:var(--ink2);margin:0 0 6px;display:flex;gap:8px;align-items:baseline}
+.day-name span{font-weight:500;color:var(--ink3)}
+.feed-ahead{margin:0 0 12px;font-size:13px;color:var(--ink3)}
+.item{display:grid;grid-template-columns:56px 36px minmax(0,1fr) auto;gap:14px;align-items:center;margin:6px 0;padding:12px 12px 12px 0;border-radius:16px}
+.item[data-p=fa]{background:radial-gradient(60% 150% at 100% 0%,rgba(201,162,39,.24),transparent 62%),linear-gradient(135deg,#24211A,#121110);border:1px solid rgba(201,162,39,.36);color:#F6F0DF;box-shadow:0 10px 28px rgba(8,12,24,.22)}
+.item .tm{font-size:14px;font-weight:650;text-align:right;font-variant-numeric:tabular-nums;color:rgba(246,240,223,.62)}
+.pmark{position:relative;width:36px;height:36px}
+.pmark .pm-l{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:#1B1913;border:1px solid rgba(201,162,39,.3);color:#E6CC77;font:700 13px/1 Georgia,serif;letter-spacing:-.04em}
+.pmark .pm-b{position:absolute;right:-5px;bottom:-5px;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;background:#fff;color:#C9A227;box-shadow:0 1px 4px rgba(16,24,48,.18)}
+.pmark .pm-b svg{width:11px;height:11px}
+.item .tx{min-width:0}
+.item .tx b{display:block;font-weight:600;font-size:15px;line-height:1.35}
+.item .row{display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap}
+.item .nt{font-size:13px;color:rgba(246,240,223,.62)}
+.item .hst{display:block;margin-top:4px}
+.pchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;padding:3px 9px 3px 7px;border-radius:8px;background:rgba(201,162,39,.14);border:1px solid rgba(201,162,39,.42);color:#E6CC77;white-space:nowrap}
+.pchip i{width:7px;height:7px;border-radius:50%;background:#C9A227;display:block}
+.item .act{height:40px;padding:0 16px;border-radius:12px;background:linear-gradient(180deg,#E4C766,#B8901F);color:#221A05;box-shadow:0 6px 18px rgba(201,162,39,.3);font-size:13px}
+.item .act:hover{filter:brightness(1.06)}
+[data-pane][hidden]{display:none}
+
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:40px;padding:0 16px;border-radius:12px;font-size:14px;font-weight:600;white-space:nowrap;transition:transform .15s var(--ease),background .2s}
 .btn:active{transform:scale(.97)}
 .btn-p{background:var(--blue);color:#fff}.btn-p:hover{background:#1F6BF0}
 .btn-s{background:var(--blue-soft);color:var(--blue-ink)}
 .btn svg{width:16px;height:16px}
-.quiet{display:flex;align-items:center;gap:12px;margin-top:10px;padding:12px 14px;border-radius:14px;border:1px dashed rgba(11,16,32,.14);color:var(--ink3);font-size:14px}
-.quiet svg{width:18px;height:18px}
 
 /* Фрими с флажком: стоит вместо «Моего членства» */
 .frimi{position:relative;overflow:hidden;background:linear-gradient(160deg,#FFFFFF 0%,#F1F5FF 60%,#E9EEFF 100%)}
@@ -150,6 +164,37 @@ svg{flex:none}
 .acc svg{width:12px;height:12px}
 .pop .all{display:block;margin-top:8px;color:var(--blue-ink);font-size:13px;font-weight:600}
 
+/* Промо внизу основной колонки: «Мой оффер» и «Прорыв» */
+.promos{display:flex;flex-direction:column;gap:20px}
+.promo{position:relative;overflow:hidden;isolation:isolate;border-radius:20px;padding:30px 32px}
+.po-eye{margin:0 0 12px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.po-sub{margin-top:14px;max-width:58ch;font-size:15.5px;line-height:1.55}
+.po-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;margin-top:22px;font-weight:700;transition:transform .15s var(--ease),filter .2s var(--ease)}
+.po-btn:hover{filter:brightness(1.06)}.po-btn:active{transform:translateY(2px)}
+.po-btn svg{width:18px;height:18px}
+.po-offer{background:radial-gradient(110% 120% at 0% 0%,#1a2b52 0%,#111a2c 45%,#0D1117 100%);color:#E5E7EB}
+.po-offer .po-eye{color:#6B9FFF}
+.po-offer h3{font-size:38px;line-height:1.04;font-weight:800;letter-spacing:-.02em;color:#fff}
+.po-offer h3 .g{color:#E5C062}.po-offer h3 .b{color:#6B9FFF;font-style:italic;display:block}
+.po-offer .po-sub{color:#A6B1C0}
+.po-list{list-style:none;margin-top:18px;display:grid;gap:10px;font-size:15px}
+.po-list li{display:flex;gap:10px;align-items:flex-start}
+.po-list svg{width:18px;height:18px;margin-top:2px;color:#E5C062}
+.po-offer .po-btn{border-radius:999px;color:#1c1606;background:linear-gradient(180deg,#F0D483 0%,#D9B354 100%);box-shadow:0 4px 0 #a9852f,0 10px 24px rgba(217,179,84,.25)}
+.po-pr{background:oklch(0.918 0.185 104);color:#111;min-height:380px}
+.po-pr .po-txt{position:relative;z-index:1;max-width:54%}
+.po-pr .po-eye{font-family:"Bebas Neue","Medeo Sans",sans-serif;font-size:17px;letter-spacing:.12em;margin-bottom:6px}
+.po-pr h3{font-family:"Bebas Neue","Medeo Sans",sans-serif;font-weight:700;font-size:76px;line-height:.86;text-transform:uppercase}
+.po-pr h3 span{display:block;font-size:48px}
+.po-pr .po-sub{color:#222;max-width:44ch}
+.po-pr .po-btn{background:#111;color:#fff;font-family:"Bebas Neue","Medeo Sans",sans-serif;font-size:20px;letter-spacing:.04em;text-transform:uppercase;padding:4px 22px 0}
+.po-note{margin-top:10px;font-size:13px;color:#3a3a1a}
+.po-img{position:absolute;right:-24px;bottom:0;height:128%;width:auto;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 5%);mask-image:linear-gradient(to right,transparent 0,#000 5%)}
+
+/* открытые сервисы в меню */
+.sub .nav.open-svc{color:var(--ink)}
+.sub .free{margin-left:auto;font-size:11px;font-weight:600;color:var(--blue-ink);background:var(--blue-soft);padding:2px 7px;border-radius:7px;white-space:nowrap}
+
 /* нижнее меню телефона */
 .tabbar{display:none}
 
@@ -168,10 +213,20 @@ svg{flex:none}
   .screen .cap span,.screen .cap{font-size:12px}
   .hello h2{font-size:25px}
   #d-hello{order:1}#d-vid{order:2}#d-day{order:3}#d-frimi{order:4}#d-setup{order:5}#d-cal{order:6}
-  .task{grid-template-columns:40px 1fr;gap:12px}
-  .task .ic{width:40px;height:40px}
-  .task .btn{grid-column:1/-1;width:100%}
-  .day .dn{font-size:16px}
+  .item{grid-template-columns:44px 32px minmax(0,1fr);gap:10px}
+  .pmark,.pmark .pm-l{width:32px;height:32px;border-radius:10px}
+  .item .act{grid-column:2/-1;justify-self:stretch}
+  .item .tm{font-size:13px}
+  .day-tabs button{min-height:38px}
+  #d-promos{order:7}
+  .promo{padding:24px 20px}
+  .po-offer h3{font-size:30px}
+  .po-btn{width:100%}
+  .po-pr{min-height:0}
+  .po-pr .po-txt{max-width:none}
+  .po-pr .po-eye,.po-pr h3{max-width:60%}
+  .po-pr h3{font-size:60px}.po-pr h3 span{font-size:40px}
+  .po-img{top:18px;right:-14px;bottom:auto;height:auto;width:46%;max-width:190px;z-index:0;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
   .howto span{display:none}.howto{padding:0;width:38px}
   .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:8;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
   .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--ink3);padding:6px 0;min-height:48px}
@@ -180,24 +235,24 @@ svg{flex:none}
   .note{padding:0 14px 96px}
 }
 @media (max-width:420px){.screen .cap{display:none}}
-@media (max-width:360px){.frimi .row{grid-template-columns:1fr 80px}.frimi img{width:80px}.hello h2{font-size:22px}.week{gap:3px}}
+@media (max-width:360px){.frimi .row{grid-template-columns:1fr 80px}.frimi img{width:80px}.hello h2{font-size:22px}.ph{flex-wrap:wrap}}
 </style>
 </head>
 <body>
 <div class="app">
   <aside class="side" aria-label="Меню кабинета">
-    <div class="logo"><i>FA</i><div><b>Личный кабинет</b><small>wearefree.club</small></div></div>
-    <a class="nav on" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Главная</a>
+    <div class="logo"><i>FA</i><div><b>Альянс</b></div></div>
+    <a class="nav on" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Мой дашборд</a>
     <a class="nav" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Мои продукты</a>
     <a class="nav" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7.5-4.6-9.3-9.2C1.5 8.6 3.6 5 7.2 5c2 0 3.6 1.1 4.8 2.8C13.2 6.1 14.8 5 16.8 5c3.6 0 5.7 3.6 4.5 6.8C19.5 16.4 12 21 12 21z"/></svg>Служба заботы</a>
     <button class="nav" aria-expanded="false" aria-controls="svc" data-toggle="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg>Сервисы<svg class="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button>
     <div class="sub" id="svc">
+      <a class="nav open-svc" href="#">Мой оффер<span class="free">2 прохода</span></a>
+      <a class="nav open-svc" href="#">Визитка</a>
       <div class="hint">Откроются после теста</div>
       <a class="nav" href="#">Регистратор 24/7<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
       <a class="nav" href="#">Выбор ниши<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
-      <a class="nav" href="#">Мой оффер<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
       <a class="nav" href="#">Мой лендинг<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
-      <a class="nav" href="#">Визитка<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
       <a class="nav" href="#">Мой КЭВ<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
     </div>
     <div class="foot"><a href="#">Старая версия</a><a href="#">Выйти</a></div>
@@ -205,7 +260,7 @@ svg{flex:none}
 
   <div class="main">
     <header class="top">
-      <h1>Личный кабинет</h1>
+      <h1>Мой дашборд</h1>
       <button class="tb howto" id="howto" aria-label="Как пользоваться платформой"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg><span>Как пользоваться</span></button>
       <button class="tb" aria-label="Экскурсия по кабинету"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg></button>
       <button class="tb" aria-label="Уведомления"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0"/></svg></button>
@@ -226,22 +281,33 @@ svg{flex:none}
           </section>
 
           <section class="panel" id="d-day" aria-label="Мой день">
-            <div class="ph"><h3>Мой день</h3><small>ближайшие 7&nbsp;дней</small></div>
-            <div class="week" role="tablist" aria-label="Дни недели">
-              <button class="day today" role="tab" aria-selected="true"><span class="w">пт</span><span class="dn">6</span></button>
-              <button class="day" role="tab" aria-selected="false"><span class="w">сб</span><span class="dn">7</span></button>
-              <button class="day" role="tab" aria-selected="false"><span class="w">вс</span><span class="dn">8</span></button>
-              <button class="day" role="tab" aria-selected="false"><span class="w">пн</span><span class="dn">9</span></button>
-              <button class="day" role="tab" aria-selected="false"><span class="w">вт</span><span class="dn">10</span></button>
-              <button class="day" role="tab" aria-selected="false"><span class="w">ср</span><span class="dn">11</span></button>
-              <button class="day" role="tab" aria-selected="false"><span class="w">чт</span><span class="dn">12</span></button>
+            <div class="ph"><h3>Мой день</h3><div class="day-tabs" role="tablist"><button role="tab" aria-selected="true" data-tab="today">Сегодня</button><button role="tab" aria-selected="false" data-tab="week">Неделя</button></div></div>
+            <div data-pane="today"><p class="feed-ahead">На сегодня дел нет. Ближайшее на неделе</p><div class="day-group"><p class="day-name">Вторник <span>10&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="fa"><div class="tm">19:00</div><div class="pmark"><span class="pm-l">FA</span><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></svg></span></div><div class="tx"><b>Открытая встреча с Игорем</b><div class="row"><span class="pchip"><i></i>Альянс</span><span class="nt">Бесплатно для всех</span></div><span class="nt hst">Ведущий: Игорь Граф</span></div><a class="btn act" href="#">Записаться</a></li></ul></div><div class="day-group"><p class="day-name">Четверг <span>12&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="fa"><div class="tm">18:00</div><div class="pmark"><span class="pm-l">FA</span><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></svg></span></div><div class="tx"><b>Эфир «Как упаковать оффер»</b><div class="row"><span class="pchip"><i></i>Альянс</span><span class="nt">Бесплатно для всех</span></div><span class="nt hst">Ведущий: Игорь Граф</span></div><a class="btn act" href="#">Записаться</a></li></ul></div></div>
+            <div data-pane="week" hidden><div class="day-group"><p class="day-name">Вторник <span>10&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="fa"><div class="tm">19:00</div><div class="pmark"><span class="pm-l">FA</span><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></svg></span></div><div class="tx"><b>Открытая встреча с Игорем</b><div class="row"><span class="pchip"><i></i>Альянс</span><span class="nt">Бесплатно для всех</span></div><span class="nt hst">Ведущий: Игорь Граф</span></div><a class="btn act" href="#">Записаться</a></li></ul></div><div class="day-group"><p class="day-name">Четверг <span>12&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="fa"><div class="tm">18:00</div><div class="pmark"><span class="pm-l">FA</span><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></svg></span></div><div class="tx"><b>Эфир «Как упаковать оффер»</b><div class="row"><span class="pchip"><i></i>Альянс</span><span class="nt">Бесплатно для всех</span></div><span class="nt hst">Ведущий: Игорь Граф</span></div><a class="btn act" href="#">Записаться</a></li></ul></div></div>
+          </section>
+
+          <section class="promos" id="d-promos" aria-label="Предложения">
+            <div class="promo po-offer">
+              <p class="po-eye">ИИ-сервис · 2&nbsp;бесплатных прохода</p>
+              <h3>Упакуйте свой <span class="g">оффер</span> <span class="b">за&nbsp;15&nbsp;минут</span></h3>
+              <p class="po-sub">Сервис подберёт вам идеального клиента, соберёт позиционирование и&nbsp;оффер для вашей услуги или продукта, предложит, где искать клиентов и&nbsp;как им продавать.</p>
+              <ul class="po-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>Собран на сотнях реальных кейсов</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 17 6-6 4 4 8-8M14 7h7v7"/></svg>Подходит экспертам с&nbsp;оборотом от&nbsp;нуля до&nbsp;5&nbsp;млн в&nbsp;месяц</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>В&nbsp;конце получите подробный план внедрения на&nbsp;30&nbsp;дней</li>
+              </ul>
+              <a class="po-btn" href="#">Собрать мой оффер <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
-            <div class="task">
-              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4h6M9 4a2 2 0 0 0-2 2v0h10v0a2 2 0 0 0-2-2M7 6H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-1"/><path d="m8.5 14 2.5 2.5 4.5-5"/></svg></span>
-              <div><span class="k">Задача</span><b>Пройдите тест, чтобы активировать доступы</b><small>10&nbsp;минут, можно с&nbsp;телефона</small></div>
-              <a class="btn btn-p" href="#">Пройти тест</a>
+            <div class="promo po-pr">
+              <div class="po-txt">
+                <p class="po-eye">Трансформационная онлайн-игра Игоря Графа</p>
+                <h3>Прорыв <span>за&nbsp;30&nbsp;дней</span></h3>
+                <p class="po-sub">Достигните за&nbsp;месяц то, на&nbsp;что обычно уходит 6–12 месяцев: доход, тело, привычки, окружение, бизнес.</p>
+                <a class="po-btn" href="#">Записаться на ближайший поток</a>
+                <p class="po-note">Заполните анкету, пришлём дату старта</p>
+              </div>
+              <img class="po-img" src="img/proryv-igor.webp" alt="" width="986" height="1060">
             </div>
-            <div class="quiet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Встречи: пока пусто</div>
           </section>
         </div>
 
@@ -249,7 +315,7 @@ svg{flex:none}
           <section class="panel frimi" id="d-frimi" aria-label="Фрими">
             <span class="fl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3h2v18H5zM8 4h11l-2.5 4L19 12H8z"/></svg>Первый шаг</span>
             <div class="row">
-              <div><h3>Пройдите тест</h3><p>чтобы активировать маршрутную карту вашего роста и&nbsp;развития и&nbsp;функции на&nbsp;платформе</p></div>
+              <div><h3>Откройте маршрутную карту</h3><p>Ответьте на&nbsp;вопросы теста, и&nbsp;откроются карта вашего роста и&nbsp;развития и&nbsp;функции платформы</p></div>
               <img src="img/frimi.webp" alt="Фрими с рупором и флагом">
             </div>
             <a class="btn btn-p" href="#">Пройти тест</a>
@@ -277,12 +343,12 @@ svg{flex:none}
         </div>
       </div>
     </div>
-    <p class="note">Макет экрана «Ничего не открыто»: нет теста, нет покупок. Имя, даты и события для примера. Нажмите крестик у видео, сервисы в меню и день в календаре.</p>
+    <p class="note">Макет экрана «Ничего не открыто»: нет теста, нет покупок. Имя, даты и события для примера. Нажмите крестик у видео, вкладки «Моего дня», сервисы в меню и день в календаре.</p>
   </div>
 </div>
 
 <nav class="tabbar" aria-label="Нижнее меню">
-  <a class="on" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Главная</a>
+  <a class="on" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Дашборд</a>
   <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Продукты</a>
   <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg>Сервисы</a>
   <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Меню</a>
@@ -302,15 +368,21 @@ document.getElementById('closevid').addEventListener('click', () => {
   v.classList.add('fly');
   setTimeout(() => { v.remove(); h.classList.add('show'); }, rm ? 200 : 600);
 });
+// «Мой день»: вкладки
+document.querySelectorAll('.day-tabs button').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.day-tabs button').forEach(x => x.setAttribute('aria-selected', x === t));
+  document.querySelectorAll('[data-pane]').forEach(p => p.hidden = p.dataset.pane !== t.dataset.tab);
+}));
 // календарь: ноябрь 2026, 1-е — воскресенье
 const EV = {
   7:[['13:00','Нетворк участников',0]],
-  11:[['17:00','Разборы по средам',0],['18:00','Установочная ПП',1]],
+  10:[['19:00','Открытая встреча с Игорем',1]],
+  11:[['17:00','Разборы по средам',0]],
+  12:[['18:00','Эфир «Как упаковать оффер»',1]],
   14:[['12:00','Комнаты Альянса',0]],
   18:[['17:00','Разборы по средам',0]],
   21:[['12:00','Комнаты Альянса',0]],
-  25:[['17:00','Разборы по средам',0]],
-  28:[['13:00','Бесплатная встреча с Игорем',1]]
+  25:[['17:00','Разборы по средам',0]]
 };
 const cg = document.getElementById('cg'), pop = document.getElementById('pop');
 let html = ['пн','вт','ср','чт','пт','сб','вс'].map(d => `<span class="wd">${d}</span>`).join('') + '<span></span>'.repeat(6);
