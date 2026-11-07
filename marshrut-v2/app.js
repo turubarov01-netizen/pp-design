@@ -176,7 +176,7 @@
     const free5 = 5 - firstFiveDone();
     if (!prepDone()) return { img: 'focus-flag', eb: firstFiveDone() ? `Осталось подготовиться` : 'С чего начать', t: 'Начните с подготовки к росту', d: `${prepDoneN()} из${NB}4 разделов готово. Без подготовки не${NB}откроется шаг 6. Шаги 1–5 можно смотреть уже сейчас, в${NB}любом порядке.`, cta: 'Продолжить подготовку', act: 'goprep' };
     if (free5 > 0) return { img: 'idea', eb: 'Подготовка готова', t: `Сдайте задания шагов 1–5`, d: `Осталось ${stepsWord(free5)}. После них откроется шаг 6.`, cta: 'Открыть шаг', act: 'gocur' };
-    if (c) return { img: c <= 10 ? 'idea' : 'focus-flag', eb: `Шаг ${c} из${NB}${seq().length}`, t: L[seq()[c - 1]].t, d: c <= 10 && ten()[c - 1].kind === 'bar' ? ten()[c - 1].why + '.' : `Посмотрите урок и${NB}сдайте задание, затем откроется следующий шаг.`, cta: ui.watched.has(seq()[c - 1]) ? 'Сдать задание' : 'Смотреть урок', act: 'gocur' };
+    if (c) return { img: c <= 10 ? 'idea' : 'focus-flag', eb: `Следующий урок · шаг ${c} из${NB}${seq().length}`, t: L[seq()[c - 1]].t, d: c <= 10 && ten()[c - 1].kind === 'bar' ? ten()[c - 1].why + '.' : `Посмотрите урок и${NB}сдайте задание, затем откроется следующий шаг.`, cta: ui.watched.has(seq()[c - 1]) ? 'Сдать задание' : 'Смотреть урок', act: 'gocur' };
     if (!paid()) return { img: 'focus-cup', eb: '10 бесплатных шагов пройдены', t: 'Откройте весь маршрут', d: `Дальше ${stepsWord(seq().length - 10)} со${NB}стартовым доступом. После покупки нужна установочная сессия.`, cta: 'Открыть весь маршрут', act: 'buy' };
     if (ui.setup !== 'yes') return { img: 'focus-flag', eb: 'Перед шагом 11', t: 'Пройдите установочную сессию', d: `${p.seg === 'E' ? 'Эксперты' : 'Предприниматели'} встречаются по${NB}${p.seg === 'E' ? 'вторникам' : 'средам'}. После неё откроется шаг 11.`, cta: ui.setup === 'booked' ? 'Вы записаны' : `Записаться на${NB}${DAY[p.seg]}`, act: ui.setup === 'booked' ? 'gowall' : 'book' };
     return { img: 'hooray', eb: 'Маршрут пройден', t: 'Все шаги пройдены', d: 'Наставник подберёт следующие уроки.', cta: '', act: '' };
@@ -388,15 +388,76 @@
     return out;
   }
 
+  /* Спидометр бизнеса: как в «Финансах» трекера (цели уровней в долларах, пример цифр) */
+  const GOAL = { income: [36000, 120000, 1000000], rev: [120000, 500000, 5000000] };
+  const FIN = {
+    olga: { metric: 'income', perMonth: 450 },
+    denis: { metric: 'income', perMonth: 1600 },
+    marina: { metric: 'income', perMonth: 2300 },
+    artem: { metric: 'rev', perMonth: 21500 },
+    irina: { metric: 'rev', perMonth: 165000 },
+  };
+  const usd = (n) => '$' + Math.round(n).toLocaleString('ru-RU').replace(/\u00a0|\s/g, NB);
+  const short = (n) => (n >= 1e6 ? `$${String(n / 1e6).replace('.', ',')}${NB}млн` : `$${Math.round(n / 1000)}${NB}тыс`);
+  function dial(t) {
+    const CX = 120, CY = 112, R = 92;
+    const pt = (x, r = R) => { const q = Math.PI * (1 - x); return [CX + r * Math.cos(q), CY - r * Math.sin(q)]; };
+    const arcD = (t0, t1) => { const [x0, y0] = pt(t0), [x1, y1] = pt(t1); return `M${x0.toFixed(1)} ${y0.toFixed(1)}A${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`; };
+    let ticks = '';
+    for (let i = 0; i <= 10; i++) { const [x0, y0] = pt(i / 10, R + 11), [x1, y1] = pt(i / 10, R + (i % 5 ? 15 : 19)); ticks += `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`; }
+    const k = Math.max(0, Math.min(1, t));
+    return `<svg viewBox="0 0 240 126" aria-hidden="true"><defs><linearGradient id="gF" gradientUnits="userSpaceOnUse" x1="28" y1="0" x2="212" y2="0"><stop offset="0" stop-color="#2f7bff"/><stop offset="1" stop-color="#7b61ff"/></linearGradient></defs>
+      <path class="d-track" d="${arcD(0, 1)}"/>${k > 0.003 ? `<path class="d-fact" d="${arcD(0, k)}" stroke="url(#gF)"/>` : ''}<g class="d-ticks">${ticks}</g>
+      <g class="d-needle" style="transform:rotate(${(-90 + 180 * k).toFixed(1)}deg)"><line x1="${CX}" y1="${CY}" x2="${CX}" y2="${CY - R + 14}"/><circle cx="${CX}" cy="${CY}" r="6"/><circle cx="${CX}" cy="${CY}" r="2.2"/></g></svg>`;
+  }
+  function bizCard() {
+    const p = P(), f = FIN[p.id], lv = +p.route.start[0];
+    const target = GOAL[f.metric][lv - 1], year = f.perMonth * 12, share = year / target;
+    const what = f.metric === 'income' ? 'личный доход' : 'выручку компании';
+    return `<section class="card sec biz"><p class="eyebrow">Ваш бизнес сейчас</p>
+      <div class="biz-d">${dial(share)}<div class="biz-r"><b class="num">${usd(year)}</b><span>прогноз на${NB}год · ${Math.round(share * 100)}% цели</span></div></div>
+      <dl class="biz-rows">
+        <div><dt>Уровень</dt><dd>${LVL[lv]}</dd></div>
+        <div><dt>Цель уровня за${NB}год</dt><dd class="num">${short(target)}</dd></div>
+        <div><dt>Сейчас в${NB}среднем</dt><dd class="num">${usd(f.perMonth)} <span>в${NB}месяц</span></dd></div>
+        <div><dt>Нужно для цели</dt><dd class="num">${usd(target / 12)} <span>в${NB}месяц</span></dd></div>
+      </dl>
+      <p class="biz-n">Считаем ${what}. Цифры из${NB}раздела «Финансы» трекера.</p>
+      <button class="link biz-go" data-act="go" data-v="inc">Открыть «Финансы»${svg('arrow')}</button>
+    </section>`;
+  }
+
+  /* «Знакомьтесь»: случайный фриман с «Чем могу помочь», как на дашборде Альянса (вымышленные люди) */
+  const FREEMEN = [
+    { n: 'Анна Соколова', c: 'Москва', lv: 'Бунтарь', help: 'Соберу воронку в Telegram-боте и настрою рассылку', look: 'Ищу маркетолога для запуска курса' },
+    { n: 'Дмитрий Орлов', c: 'Лиссабон', lv: 'Мечтатель', help: 'Помогу посчитать юнит-экономику и цену продукта', look: 'Ищу партнёра на продажи в Европе' },
+    { n: 'Елена Кравец', c: 'Алматы', lv: 'Бунтарь', help: 'Сниму и смонтирую Reels для эксперта', look: 'Ищу экспертов для совместного эфира' },
+    { n: 'Павел Левин', c: 'Санкт-Петербург', lv: 'Архитектор', help: 'Разберу структуру отдела продаж и скрипты', look: 'Ищу сильного РОПа в команду' },
+    { n: 'Мария Белова', c: 'Дубай', lv: 'Бунтарь', help: 'Упакую оффер и лендинг под запуск', look: 'Ищу таргетолога с кейсами' },
+    { n: 'Сергей Тихонов', c: 'Казань', lv: 'Мечтатель', help: 'Подскажу, как оформить ИП и не переплатить налоги', look: 'Ищу клиентов на бухгалтерию' },
+  ];
+  ui.fm = Math.floor(Math.random() * FREEMEN.length);
+  function helpCard() {
+    const m = FREEMEN[ui.fm % FREEMEN.length];
+    return `<section class="card sec hc"><p class="eyebrow">Знакомьтесь: фриманы на${NB}связи</p>
+      <div class="hc-p"><span class="hc-a">${esc(m.n[0])}</span><div><b>${esc(m.n)}</b><span>${esc(m.c)} · ${esc(m.lv)}</span></div></div>
+      <div class="hc-b ok"><em>Чем могу помочь</em><p>${esc(m.help)}</p></div>
+      <div class="hc-b"><em>Кого ищу</em><p>${esc(m.look)}</p></div>
+      <div class="hc-f"><button class="btn sm" data-act="hcwrite">${svg('msg')}Написать</button><button class="btn soft sm" data-act="hcnext">Другой фриман</button></div>
+    </section>`;
+  }
+
   function aside() {
     return `<aside class="col">
+      ${bizCard()}
       <section class="card sec rules"><p class="eyebrow">Как открываются шаги</p>
         <ol>
-          <li><b>Шаги 1–5</b><span>сразу, в${NB}любом порядке. В${NB}каждом есть задание.</span></li>
-          <li><b>Шаг 6</b><span>когда сданы задания 1–5 и${NB}пройдена подготовка.</span></li>
-          <li><b>Шаг 11</b><span>со${NB}стартовым доступом и после установочной.</span></li>
-          <li><b>Дальше</b><span>по${NB}очереди, после задания предыдущего шага.</span></li>
+          <li><b>Шаги 1–5 открыты сразу</b><span>Смотрите в${NB}любом порядке. В${NB}каждом есть задание.</span></li>
+          <li><b>Шаг 6</b><span>Откроется, когда сданы задания 1–5 и${NB}готова подготовка к${NB}росту.</span></li>
+          <li><b>Шаг 11</b><span>Откроется со${NB}стартовым доступом после установочной сессии.</span></li>
+          <li><b>Дальше по${NB}одному</b><span>Сдали задание, открылся следующий шаг.</span></li>
         </ol></section>
+      ${helpCard()}
     </aside>`;
   }
 
@@ -453,6 +514,8 @@
       if (c) { ui.openL = seq()[c - 1]; render(); scrollTo('l' + c); return; }
     }
     else if (a === 'gowall') { scrollTo('wall'); return; }
+    else if (a === 'hcnext') { ui.fm++; render(); return; }
+    else if (a === 'hcwrite') { toast(`Здесь откроется чат: ${FREEMEN[ui.fm % FREEMEN.length].n}`); render(); return; }
     else if (a === 'go') { const it = PREP.flatMap((s) => s.items).find((i) => i.k === v); toast(`Здесь откроется: ${it.go}`); render(); return; }
     else if (a === 'auto') {
       const was6 = gate6();
