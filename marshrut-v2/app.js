@@ -37,13 +37,15 @@
       { k: 'biz', go: 'Трекер Фримана → Финансы', t: 'Оборот, выручка и прибыль бизнеса за 3 месяца', alt: 'Нет бизнеса: отметка «Стартап», точка ноль' },
     ] },
     { k: 'tr', t: 'Трекер Фримана', where: 'Трекер Фримана', items: [
-      { k: 'wish', go: 'Трекер Фримана → Желания', t: '10 желаний: категория, горизонт 1, 5 или 10 лет и цена', n: 10 },
-      { k: 'focus', go: 'Трекер Фримана → Фокус', t: 'Выбран фокус' },
-      { k: 'fday', go: 'Трекер Фримана → Фокус дня', t: 'Фокус дня выполнен хотя бы раз' },
-      { k: 'zv', go: 'Трекер Фримана → Зверёк', t: 'Зверёк' },
-      { k: 'wheel', go: 'Трекер Фримана → Колесо баланса', t: 'Колесо баланса' },
-      { k: 'tasks', go: 'Трекер Фримана → Задачи', t: '5 задач', n: 5 },
-      { k: 'habit', go: 'Трекер Фримана → Привычки', t: 'Одна привычка' },
+      { k: 'wish', go: 'Трекер Фримана → Желания', t: 'Заполните 10 своих желаний: у каждого категория, горизонт 1, 5 или 10 лет и стоимость', n: 10 },
+      { k: 'focus', go: 'Трекер Фримана → Фокус', t: 'Выберите одно из 10 желаний и поставьте его в фокус' },
+      { k: 'fsteps', go: 'Трекер Фримана → Фокус', t: 'Пропишите минимум 5 потенциальных шагов по фокусу', n: 5 },
+      { k: 'fday', go: 'Трекер Фримана → Фокус дня', t: 'Выполните фокус один раз' },
+      { k: 'zv', go: 'Трекер Фримана → Зверёк', t: 'Поставьте 3 награды для Зверька', n: 3 },
+      { k: 'wheel', go: 'Трекер Фримана → Колесо баланса', t: 'Заполните колесо баланса за этот месяц' },
+      { k: 'tasks', go: 'Трекер Фримана → Задачи', t: 'Занесите себе минимум 5 задач', n: 5 },
+      { k: 'habit', go: 'Трекер Фримана → Привычки', t: 'Занесите минимум одну привычку' },
+      { k: 'habitdone', go: 'Трекер Фримана → Привычки', t: 'Выполните привычку хотя бы один раз' },
     ] },
     { k: 'ch', t: 'Чат Альянса', where: 'Telegram', items: [
       { k: 'chat', go: 'Чат Альянса в Telegram', t: 'Вступить в чат Альянса в Telegram' },
@@ -110,11 +112,11 @@
   function setSit(k) {
     const all = seq();
     const t = all.slice(0, 10);
-    const full = () => { ALL_ITEMS.forEach((i) => (ui.prep[i] = true)); ui.cnt = { wish: 10, tasks: 5 }; };
-    Object.assign(ui, { sit: k, watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: { wish: 0, tasks: 0 }, setup: 'no', access: 'free', answer: '', open: new Set(), shut: new Set() });
+    const full = () => { ALL_ITEMS.forEach((i) => (ui.prep[i] = true)); ui.cnt = { wish: 10, fsteps: 5, zv: 3, tasks: 5 }; };
+    Object.assign(ui, { sit: k, watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: { wish: 0, fsteps: 0, zv: 0, tasks: 0 }, setup: 'no', access: 'free', answer: '', open: new Set(), shut: new Set() });
     const doneN = (n) => all.slice(0, n).forEach((x) => { ui.done.add(x); ui.watched.add(x); });
     if (k === 'some') { [t[0], t[2], t[3]].forEach((x) => ui.watched.add(x)); ui.done.add(t[0]); ui.done.add(t[2]); ui.prep.inc = true; ui.cnt = { wish: 3, tasks: 1 }; }
-    if (k === 'gate6') { doneN(5); Object.assign(ui.prep, { inc: true, biz: true, focus: true, zv: true, wheel: true, habit: true, chat: true }); ui.cnt = { wish: 6, tasks: 3 }; }
+    if (k === 'gate6') { doneN(5); Object.assign(ui.prep, { inc: true, biz: true, focus: true, fday: true, wheel: true, habit: true, chat: true }); ui.cnt = { wish: 6, fsteps: 2, zv: 1, tasks: 3 }; }
     if (k === 'at7') { doneN(6); full(); }
     if (k === 'wall') { doneN(10); full(); }
     if (k === 'bought') { doneN(10); full(); ui.access = 'starter'; }
