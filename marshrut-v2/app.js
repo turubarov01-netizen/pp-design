@@ -40,12 +40,12 @@
       { k: 'wish', go: 'Трекер Фримана → Желания', t: 'Заполните 10 своих желаний: у каждого категория, горизонт 1, 5 или 10 лет и стоимость', n: 10 },
       { k: 'focus', go: 'Трекер Фримана → Фокус', t: 'Выберите одно из 10 желаний и поставьте его в фокус' },
       { k: 'fsteps', go: 'Трекер Фримана → Фокус', t: 'Пропишите минимум 5 потенциальных шагов по фокусу', n: 5 },
-      { k: 'fday', go: 'Трекер Фримана → Фокус дня', t: 'Выполните фокус один раз' },
+      { k: 'fday', go: 'Трекер Фримана → Фокус дня', t: 'Выполните фокус' },
       { k: 'zv', go: 'Трекер Фримана → Зверёк', t: 'Поставьте 3 награды для Зверька', n: 3 },
       { k: 'wheel', go: 'Трекер Фримана → Колесо баланса', t: 'Заполните колесо баланса за этот месяц' },
       { k: 'tasks', go: 'Трекер Фримана → Задачи', t: 'Занесите себе минимум 5 задач', n: 5 },
       { k: 'habit', go: 'Трекер Фримана → Привычки', t: 'Занесите минимум одну привычку' },
-      { k: 'habitdone', go: 'Трекер Фримана → Привычки', t: 'Выполните привычку хотя бы один раз' },
+      { k: 'habitdone', go: 'Трекер Фримана → Привычки', t: 'Выполните привычку' },
     ] },
     { k: 'ch', t: 'Чат Альянса', where: 'Telegram', items: [
       { k: 'chat', go: 'Чат Альянса в Telegram', t: 'Вступить в чат Альянса в Telegram' },
@@ -210,7 +210,6 @@
       </div>
       <div class="g-foot">
         <div class="mini"><span class="num">${done} из${NB}${total}</span><i><u style="width:${(done / total) * 100}%"></u></i><span>шагов пройдено</span></div>
-        ${ui.q.les ? stars(ui.q.les, 'Учёба') : ''}
         <details class="why"><summary>Почему такой маршрут${svg('chev', 'chev')}</summary>
           <div class="why-b">
             <p>Собран по вашей анкете: ${SEG[p.seg].toLowerCase()}, шаг бизнеса ${p.step}, уровень ПЭРЛ «${esc(p.pearl)}». Вы начинаете с${NB}этапа ${p.route.start} «${esc(ETAPY[p.route.start].name)}». Шаги 1–5 про личность: первый у${NB}всех один, остальные закрывают то, что мешает. У${NB}каждого шага пометка: «Личность» или «Бизнес».</p>
@@ -247,7 +246,7 @@
     const cls = s === 'done' ? 'is-done' : s === 'skip' ? 'is-skip' : actionable(s) ? 'is-open' : s === 'next' ? 'is-next' : 'is-paid';
     return `<li class="ls ${cls}" id="l${pos}">
       <span class="nd">${node}</span>
-      <button class="ls-b" data-act="row" data-v="${pos}" ${actionable(s) || s === 'done' ? '' : 'aria-disabled="true"'}><span class="ls-k">Шаг ${pos}</span><span class="ls-t">${esc(L[k].t)}</span><span class="ls-m"><span class="lib">${libOf(k)}</span>${tag}<span>${what}</span></span></button>
+      <button class="ls-b" data-act="row" data-v="${pos}" ${actionable(s) || s === 'done' ? '' : 'aria-disabled="true"'}><span class="ls-k">Шаг ${pos}</span><span class="ls-t">${esc(L[k].t)}</span><span class="ls-m"><span class="lib">${libOf(k)}</span>${tag}<span>${what}</span>${s === 'done' ? qIcons(lesScore(k), true) : ''}</span></button>
     </li>`;
   }
 
@@ -257,7 +256,7 @@
         <div class="chk-b"><b>Посмотреть урок</b><span>${watched ? 'Видео просмотрено' : libOf(k)}</span></div>
         ${watched ? '<button class="btn soft sm" data-act="watch">Пересмотреть</button>' : `<button class="btn sm" data-act="watch">${svg('play', 'ic-f')}Смотреть</button>`}</li>`;
     const step2 = `<li class="${watched ? 'todo' : 'wait'}"><span class="chk-n">2</span>
-        <div class="chk-b"><b>Задание</b><span>${esc(DEF_TASK)}</span>
+        <div class="chk-b"><b>Задание</b><span>${esc(DEF_TASK)}</span>${critList(LES_CRIT)}
         ${watched ? `<label class="ans"><span class="ans-l">Ваш результат</span><textarea data-act="answer" rows="3" placeholder="Что сделали и что поняли">${esc(ui.answer)}</textarea></label>
           <div class="ans-a"><button class="btn sm" data-act="submit" ${ui.answer.trim().length < 3 ? 'disabled' : ''}>Сдать задание</button></div>` : '<span class="wait-n">Откроется после просмотра</span>'}
         </div></li>`;
@@ -300,22 +299,50 @@
     return out + (tail || '');
   }
 
-  /* Звёзды за регулярность */
-  const STAR_STEPS = ['1 раз', '2 раза', '2 дня подряд', '5 раз', '5 дней подряд'];
+  /* Звёзды качества: у каждой задачи 0–5 по её критериям, у раздела средняя по задачам.
+     Критерии, кроме фокуса дня и привычки (голосовое Игоря 12:56), черновые: их утверждает Игорь */
+  const CRIT = {
+    inc: ['Внесён 1 месяц дохода', 'Внесены 2 месяца', 'Внесены 3 месяца', 'У дохода указаны источники', 'Ведётся полный учёт: доходы и расходы'],
+    biz: ['Внесён 1 месяц', 'Внесены 3 месяца', 'Есть выручка и прибыль', 'Указаны источники выручки', 'Внесён текущий месяц'],
+    wish: ['3 желания', '5 желаний', '10 желаний', 'У всех категория и горизонт', 'У всех указана стоимость'],
+    focus: ['Фокус выбран', 'У фокуса есть стоимость', 'Есть срок', 'Описан результат: как поймёте, что достигли', 'Фокус на горизонте одного года'],
+    fsteps: ['1 шаг', '3 шага', '5 шагов', 'У шагов есть сроки', 'Шаги разбиты на этапы'],
+    fday: ['1 раз', '2 раза', '2 дня подряд', '5 раз', '5 дней подряд'],
+    zv: ['1 награда', '2 награды', '3 награды', 'Награды разные по уровням', 'У наград есть стоимость'],
+    wheel: ['Оценены 4 сферы', 'Оценены все 8 сфер', 'Есть комментарий к самой слабой', 'Выбрана сфера для роста', 'Заполнено второй месяц подряд'],
+    tasks: ['1 задача', '3 задачи', '5 задач', 'У задач есть сроки', 'Выполнена хотя бы одна'],
+    habit: ['1 привычка', 'У привычки выбраны дни', '2 привычки', '3 привычки', 'Есть привычка из «Спорта»'],
+    habitdone: ['1 раз', '2 раза', '2 дня подряд', '5 раз', '5 дней подряд'],
+    chat: ['Вступили в чат', 'Поставили фото', 'Поздоровались', 'Рассказали о себе', 'Ответили другому участнику'],
+    hello: ['Поздоровались', 'Рассказали, чем занимаетесь', 'Написали, чем можете помочь', 'Написали, кого ищете', 'Ответили на вопрос участника'],
+    prof: ['Указан город', 'Указаны ниши', 'Описан опыт', 'Заполнено «Чем могу помочь»', 'Заполнено «Кого ищу» и есть фото'],
+  };
+  const LES_CRIT = ['Задание сдано', 'Есть главный вывод своими словами', 'Есть конкретное действие на неделю', 'Действие выполнено, есть результат', 'Результат в цифрах или со ссылкой'];
+  const STAGE_CRIT = {
+    '1.1': ['Указаны 5 ниш', 'У каждой ниши есть «почему»', 'У ниш понятна аудитория', 'По каждой нише виден спрос', 'Выбрана ниша для теста'],
+    '1.2': ['Протестированы 5 ниш', 'У каждой есть результат теста', 'Результаты в цифрах: заявки, оплаты, цена заявки', 'Ниша выбрана по цифрам', 'Есть первая оплата'],
+  };
+  const GEN_CRIT = ['Результат описан', 'Есть цифры', 'Есть ссылка на таблицу или документ', 'Результат совпадает с целью этапа', 'Принято без доработок'];
   const starsOf = (q) => (!q || !q.t ? 0 : q.s >= 5 ? 5 : q.t >= 5 ? 4 : q.s >= 2 ? 3 : q.t >= 2 ? 2 : 1);
-  function stars(q, label) {
-    const n = starsOf(q);
-    const icons = Array.from({ length: 5 }, (_, i) => `<i class="${i < n ? 'on' : ''}">${svg('star')}</i>`).join('');
-    const next = n >= 5 ? 'все звёзды' : `следующая: ${STAR_STEPS[n]}`;
-    return `<span class="stars" aria-label="${label ? label + ': ' : ''}${n} из${NB}5 звёзд, ${next}"><span class="st-i">${icons}</span><span class="st-x">${label ? `<b>${label}</b> · ` : ''}${next}</span></span>`;
+  const seed = (x) => { let h = 7; for (const c of x + ui.pid) h = (h * 31 + c.charCodeAt(0)) % 9973; return h; };
+  const qScore = (k) => (k === 'fday' || k === 'habitdone' ? starsOf(ui.q[k]) : !ui.prep[k] ? 0 : 2 + (seed(k) % 4));
+  const lesScore = (k) => 2 + (seed(k) % 4);
+  const qIcons = (n, sm) => `<span class="st-i ${sm ? 'sm' : ''}" role="img" aria-label="${n} из${NB}5 звёзд">${Array.from({ length: 5 }, (_, i) => `<i class="${i < n ? 'on' : ''}">${svg('star')}</i>`).join('')}</span>`;
+  function qLine(k) {
+    const n = qScore(k), c = CRIT[k];
+    if (!c) return '';
+    return `<span class="stars">${qIcons(n)}<span class="st-x">${n >= 5 ? 'все звёзды' : `${n ? 'следующая звезда' : 'первая звезда'}: ${c[n]}`}</span></span>`;
   }
+  const avgOf = (arr) => (arr.length ? arr.reduce((x, y) => x + y, 0) / arr.length : 0);
+  const avgChip = (arr) => (arr.length ? `<span class="q-avg" title="Средняя оценка задач">${svg('star')}<b>${avgOf(arr).toFixed(1).replace('.', ',')}</b></span>` : '');
+  const critList = (c, title) => `<details class="crit"><summary>${title || 'Как оценивается'}${svg('chev', 'chev')}</summary><ol>${c.map((t, i) => `<li>${qIcons(i + 1, true)}<span>${t}</span></li>`).join('')}</ol></details>`;
 
   /* Подготовка к росту: первая в маршруте, сворачивается */
   function prepBlock() {
     const n = prepDoneN(), all = prepDone();
     const open = ui.open.has('prep') || (!all && !ui.shut.has('prep'));
     let out = `<li class="st ${all ? 'is-passed' : 'is-cur'}" id="sprep"><span class="nd sq">${all ? svg('check') : svg('user')}</span>
-      <button class="st-b" data-act="grp" data-v="prep" aria-expanded="${open}"><span class="st-t">Подготовка к росту</span><span class="st-m"><span>${all ? 'Готово' : `${n} из${NB}4 · нужна для шага 6`}</span></span>${svg('chev', 'chev')}</button></li>`;
+      <button class="st-b" data-act="grp" data-v="prep" aria-expanded="${open}"><span class="st-t">Подготовка к росту</span><span class="st-m"><span>${all ? 'Готово' : `${n} из${NB}4 · нужна для шага 6`}</span>${avgChip(PREP.flatMap((x) => x.items.filter(itemOn)).filter((i) => ui.prep[i.k]).map((i) => qScore(i.k)))}</span>${svg('chev', 'chev')}</button></li>`;
     if (!open) return out;
     const secs = PREP.map((s, si) => {
       const ok = secDone(s);
@@ -327,10 +354,10 @@
         const on = !!ui.prep[i.k];
         const c = i.n ? Math.min(ui.cnt[i.k] || 0, i.n) : null;
         const sub = i.k === 'biz' && on && P().step <= 2 ? 'Отмечено: стартап, точка ноль' : i.k === 'biz' ? i.alt : c != null && !on ? `${c} из${NB}${i.n}` : i.club ? 'В клубе и выше' : '';
-        const st = i.k === 'fday' || i.k === 'habitdone' ? stars(ui.q[i.k]) : '';
+        const st = qLine(i.k);
         return `<li class="${on ? 'ok' : ''}"><button class="pi" data-act="go" data-v="${i.k}"><span class="pi-c" title="${on ? 'Засчитано' : 'Ещё не сделано'}">${on ? svg('check') : ''}</span><span class="pi-t">${esc(i.t)}${sub ? `<em>${esc(sub)}</em>` : ''}${st}</span><span class="pi-go">${on ? 'Открыть' : 'Перейти'}${svg('arrow')}</span></button></li>`;
       }).join('')}</ul>` : '';
-      return `<div class="ps ${ok ? 'ok' : ''}"><button class="ps-h" data-act="grp" data-v="ps-${s.k}" aria-expanded="${sOpen}"><b><span class="ps-n">${ok ? svg('check') : si + 1}</span>${esc(s.t)}</b><span>${ok ? 'Готово' : `${doneI} из${NB}${items.length}`}${svg('chev', 'chev')}</span></button>${rows}</div>`;
+      return `<div class="ps ${ok ? 'ok' : ''}"><button class="ps-h" data-act="grp" data-v="ps-${s.k}" aria-expanded="${sOpen}"><b><span class="ps-n">${ok ? svg('check') : si + 1}</span>${esc(s.t)}</b><span>${avgChip(items.filter((i) => ui.prep[i.k] || qScore(i.k)).map((i) => qScore(i.k)))}${ok ? 'Готово' : `${doneI} из${NB}${items.length}`}${svg('chev', 'chev')}</span></button>${rows}</div>`;
     }).join('');
     out += `<li class="ls prep-body"><span class="nd nd-ghost"></span><div class="prep-c">${secs}${setupCard()}</div></li>`;
     return out;
@@ -406,7 +433,7 @@
     const st = ui.stage[etap] || 'none', lv = +etap[0], last = etap[2] === '3';
     const head = (t) => `<div class="sd-h"><span class="sd-i">${svg(st === 'ok' ? 'check' : 'flag')}</span><div><b>${t}</b><span>Уроки этапа остаются открытыми, их можно пересматривать.</span></div></div>`;
     let body = '';
-    if (st === 'ok') body = head(`Этап ${etap} пройден`) + '<p class="sd-n">Куратор принял результат.</p>';
+    if (st === 'ok') body = head(`Этап ${etap} пройден`) + `<p class="sd-n">Куратор принял результат.</p><div class="stars">${qIcons(4)}<span class="st-x">оценка куратора</span></div>`;
     else if (st === 'sent') body = head(`Этап ${etap}: заявка на${NB}проверке`) + `<p class="sd-n">Куратор проверит результат и${NB}ответит в${NB}Telegram.</p><button class="btn soft sm" data-act="stok" data-v="${etap}">Прототип: куратор принял</button>`;
     else if (last) {
       const fm = FIN[P().id], target = GOAL[fm.metric][lv - 1], year = fm.perMonth * 12, done = year >= target;
@@ -416,11 +443,11 @@
     } else if (SF[etap]) {
       const c = SF[etap], v = ui.sf[etap] || {};
       const rows = Array.from({ length: c.rows }, (_, i) => `<div class="sd-r"><span class="sd-k">${i + 1}</span><input data-sf="${etap}:a${i}" value="${esc(v['a' + i] || '')}" placeholder="${c.a}" aria-label="${c.a} ${i + 1}"><input data-sf="${etap}:b${i}" value="${esc(v['b' + i] || '')}" placeholder="${c.b}" aria-label="${c.b} ${i + 1}"></div>`).join('');
-      body = head(`Завершение этапа ${etap}`) + `<p class="sd-n">${c.intro}</p><div class="sd-f">${rows}${c.extra ? `<input class="sd-x" data-sf="${etap}:x" value="${esc(v.x || '')}" placeholder="${c.extra}" aria-label="${c.extra}">` : ''}</div>
+      body = head(`Завершение этапа ${etap}`) + `<p class="sd-n">${c.intro}</p>${critList(STAGE_CRIT[etap] || GEN_CRIT, 'Как куратор оценит')}<div class="sd-f">${rows}${c.extra ? `<input class="sd-x" data-sf="${etap}:x" value="${esc(v.x || '')}" placeholder="${c.extra}" aria-label="${c.extra}">` : ''}</div>
         <button class="btn sm" data-act="stsend" data-v="${etap}">Отправить на${NB}проверку</button>`;
     } else {
       const v = ui.sf[etap] || {};
-      body = head(`Завершение этапа ${etap}`) + `<p class="sd-n">Покажите результат этапа: ${esc(ETAPY[etap].res.charAt(0).toLowerCase() + ETAPY[etap].res.slice(1))}</p>
+      body = head(`Завершение этапа ${etap}`) + `${critList(GEN_CRIT, 'Как куратор оценит')}<p class="sd-n">Покажите результат этапа: ${esc(ETAPY[etap].res.charAt(0).toLowerCase() + ETAPY[etap].res.slice(1))}</p>
         <div class="sd-f"><textarea data-sf="${etap}:t" rows="3" placeholder="Что сделали, цифры, ссылка на${NB}таблицу или документ">${esc(v.t || '')}</textarea></div>
         <button class="btn sm" data-act="stsend" data-v="${etap}">Отправить на${NB}проверку</button>`;
     }
@@ -442,7 +469,7 @@
         return;
       }
       const ok = ui.stage[g.etap] === 'ok';
-      out += group('e' + g.etap, g.etap, `Этап ${g.etap} · ${esc(e.name)}`, `${ok ? '<span class="tag ok-t">Этап пройден</span>' : ''}<span>${first === lastP ? `Шаг ${first}` : `Шаги ${first}–${lastP}`} · личность ${pN}, бизнес ${g.items.length - pN}</span><span class="res">Этап готов, когда: ${esc(e.res)}</span>`, g.items, ok ? 'stage-ok' : '', stageDone(g.etap));
+      out += group('e' + g.etap, g.etap, `Этап ${g.etap} · ${esc(e.name)}`, `${ok ? '<span class="tag ok-t">Этап пройден</span>' : ''}<span>${first === lastP ? `Шаг ${first}` : `Шаги ${first}–${lastP}`} · личность ${pN}, бизнес ${g.items.length - pN}</span>${avgChip(g.items.filter((q) => state(q) === 'done').map((q) => lesScore(seq()[q - 1])))}<span class="res">Этап готов, когда: ${esc(e.res)}</span>`, g.items, ok ? 'stage-ok' : '', stageDone(g.etap));
     });
     return out;
   }
@@ -486,10 +513,26 @@
     </section>`;
   }
 
+  function dialT(fact, plan, target, top) {
+    const CX = 170, CY = 166, R = 136;
+    const pt = (t, r = R) => { const q = Math.PI * (1 - t); return [CX + r * Math.cos(q), CY - r * Math.sin(q)]; };
+    const arc = (t0, t1) => { const [x0, y0] = pt(t0), [x1, y1] = pt(t1); return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${R} ${R} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`; };
+    const cl = (x) => Math.max(0, Math.min(1, x)), fT = cl(fact / target), pT = cl(plan / target);
+    let ticks = '';
+    for (let i = 0; i <= 20; i++) { const big = i % 5 === 0; const [x0, y0] = pt(i / 20, R + 13), [x1, y1] = pt(i / 20, R + (big ? 22 : 18)); ticks += `<line class="tk-t" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}" stroke-width="${big ? 1.6 : 1}"/>`; }
+    const [lx, ly] = pt(0.5, R + 32);
+    return `<svg viewBox="0 0 340 186" aria-hidden="true"><defs><linearGradient id="gTk" gradientUnits="userSpaceOnUse" x1="34" y1="0" x2="306" y2="0"><stop offset="0" stop-color="#2f7bff"/><stop offset="1" stop-color="#7b61ff"/></linearGradient></defs>
+      <path class="tk-track" d="${arc(0, 1)}" fill="none" stroke-width="16" stroke-linecap="round"/>
+      ${pT > fT ? `<path class="tk-plan" d="${arc(0, pT)}" fill="none" stroke-width="16" stroke-linecap="round"/>` : ''}
+      ${fT > 0.002 ? `<path d="${arc(0, fT)}" fill="none" stroke="url(#gTk)" stroke-width="16" stroke-linecap="round"/>` : ''}
+      ${ticks}<text x="${lx}" y="${ly + 4}" text-anchor="middle">50%</text><text x="8" y="184">0</text><text x="332" y="184" text-anchor="end">${top}</text>
+      <g class="tk-n" style="transform:rotate(${(-90 + 180 * pT).toFixed(2)}deg)"><line x1="${CX}" y1="${CY}" x2="${CX}" y2="${CY - R + 16}"/><circle cx="${CX}" cy="${CY}" r="8"/><circle cx="${CX}" cy="${CY}" r="3"/></g></svg>`;
+  }
   function bizMini() {
     const p = P(), fm = FIN[p.id], lv = +p.route.start[0];
-    const target = GOAL[fm.metric][lv - 1], year = fm.perMonth * 12, share = year / target;
-    return `<button class="biz-mini" data-act="go" data-v="inc" aria-label="Ваш бизнес: открыть «Финансы»"><span class="bm-d">${dial(share)}</span><span class="bm-t"><span class="eyebrow">Ваш бизнес</span><b class="num">${usd(year)}</b><span>прогноз на${NB}год · ${Math.round(share * 100)}% цели уровня ${short(target)}</span></span><span class="bm-go">${svg('arrow')}</span></button>`;
+    const target = GOAL[fm.metric][lv - 1], plan = fm.perMonth * 12, fact = fm.perMonth * 10, share = plan / target;
+    const ladder = [1, 2, 3].map((n) => { const fill = n < lv ? 1 : n === lv ? Math.min(1, fact / target) : 0; return `<span class="rg ${n === lv ? 'rg-on' : ''}"><i><u style="width:${(fill * 100).toFixed(1)}%"></u></i><b>${LVL[n]}</b><em>${short(GOAL[fm.metric][n - 1])}</em></span>`; }).join('');
+    return `<button class="biz-mini" data-act="go" data-v="inc" aria-label="Ваш бизнес: уровень ${LVL[lv]}, открыть «Финансы»"><span class="bm-go">${svg('arrow')}</span><span class="bm-d">${dialT(fact, plan, target, short(target))}</span><span class="bm-t"><b class="num">${usd(plan)}</b><span>прогноз на${NB}год · ${Math.round(share * 100)}% цели уровня</span></span><span class="bm-l">${ladder}</span></button>`;
   }
 
   /* «Знакомьтесь»: случайный фриман с «Чем могу помочь», как на дашборде Альянса (вымышленные люди) */
@@ -521,10 +564,6 @@
           <li><b>Шаг 11</b><span>Откроется со${NB}стартовым доступом после установочной сессии.</span></li>
           <li><b>Дальше по${NB}одному</b><span>Сдали задание, открылся следующий шаг.</span></li>
         </ol></section>
-      <section class="card sec stars-rule"><p class="eyebrow">Звёзды за${NB}регулярность</p>
-        <ol>${STAR_STEPS.map((t, i) => `<li><span class="stars"><span class="st-i">${Array.from({ length: 5 }, (_, j) => `<i class="${j <= i ? 'on' : ''}">${svg('star')}</i>`).join('')}</span></span><span>${t}</span></li>`).join('')}</ol>
-        <p class="biz-n">Так считаем фокус дня, привычки и${NB}уроки. Звёзды показывают, насколько это вошло в${NB}привычку.</p>
-      </section>
       ${helpCard()}
     </aside>`;
   }

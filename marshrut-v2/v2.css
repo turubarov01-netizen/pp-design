@@ -226,39 +226,65 @@ button.ps-h:hover b { color: var(--blue-ink); }
 .tag.ok-t { background: rgba(14,124,80,.1); color: var(--ok); }
 .stage-ok > .nd.sq { background: var(--ok) !important; color: #fff !important; }
 
-/* Маленький спидометр в карточке Фрими, справа */
-.g-main { grid-template-columns: 132px minmax(0, 1fr) 220px; }
-.biz-mini { position: relative; display: grid; justify-items: center; text-align: center; gap: 4px; width: 100%; padding: 14px 14px 12px; border: 1px solid var(--line-2); border-radius: 18px; background: rgba(255,255,255,.7); font: inherit; color: inherit; cursor: pointer; transition: border-color .2s, background .2s; }
-.biz-mini:hover { border-color: #c5d3f5; background: #fff; }
-.biz-mini:focus-visible { outline: 2px solid var(--blue, #2f7bff); outline-offset: 2px; }
-.bm-d { width: 132px; }
-.bm-d svg { display: block; width: 100%; height: auto; overflow: visible; }
-.bm-t { display: grid; gap: 2px; }
-.bm-t .eyebrow { font-size: 10.5px; }
-.bm-t b { font-size: 22px; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
-.bm-t > span:last-child { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
-.bm-go { position: absolute; top: 10px; right: 12px; color: var(--blue-ink, #2f5bd8); }
-.bm-go svg { width: 18px; height: 18px; }
-@media (max-width: 1100px) { .g-main { grid-template-columns: 132px minmax(0, 1fr) 200px; } .bm-d { width: 116px; } }
-@media (max-width: 760px) {
-  .g-main { grid-template-columns: minmax(0, 1fr); }
-  .biz-mini { grid-template-columns: 92px minmax(0, 1fr); justify-items: start; text-align: left; align-items: center; gap: 14px; margin-top: 14px; padding: 10px 40px 10px 14px; }
-  .bm-d { width: 92px; }
-  .bm-t b { font-size: 19px; }
-  .bm-go { top: 50%; transform: translateY(-50%); }
-}
+
 @media (max-width: 640px) { .sd-r { grid-template-columns: 18px minmax(0, 1fr); } .sd-r input + input { grid-column: 2; } }
 
-/* Звёзды за регулярность */
+
+
+/* Спидометр в карточке Фрими, справа: как в «Финансах» трекера */
+.g-main { grid-template-columns: 132px minmax(0, 1fr) 300px; }
+.biz-mini { position: relative; display: grid; justify-items: center; text-align: center; gap: 2px; width: 100%; padding: 14px 16px 14px; border: 1px solid var(--line-2); border-radius: 18px; background: rgba(255,255,255,.7); font: inherit; color: inherit; cursor: pointer; transition: border-color .2s, background .2s; }
+.biz-mini:hover { border-color: #c5d3f5; background: #fff; }
+.biz-mini:focus-visible { outline: 2px solid #2f7bff; outline-offset: 2px; }
+.bm-d { width: 200px; }
+.bm-d svg { display: block; width: 100%; height: auto; overflow: visible; }
+.bm-d .tk-track { stroke: rgba(47, 123, 255, .1); }
+.bm-d .tk-plan { stroke: rgba(47, 123, 255, .3); }
+.bm-d .tk-t { stroke: rgba(91, 100, 122, .42); }
+.bm-d text { fill: var(--muted); font-size: 19px; font-variant-numeric: tabular-nums; }
+.bm-d .tk-n { transform-origin: 170px 166px; }
+.bm-d .tk-n line { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.bm-d .tk-n circle { fill: var(--ink); }
+.bm-d .tk-n circle + circle { fill: #fff; }
+.bm-t { display: grid; gap: 1px; margin-top: 2px; }
+.bm-t b { font-size: 24px; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+.bm-t > span { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.bm-l { display: flex; gap: 5px; width: 100%; margin-top: 10px; text-align: left; }
+.rg { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.rg i { display: block; height: 6px; border-radius: 3px; background: var(--tint-2); overflow: hidden; margin-bottom: 4px; }
+.rg i u { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #2f7bff, #7b61ff); }
+.rg b { font-size: 11px; line-height: 1.2; font-weight: 600; color: var(--muted); }
+.rg em { font-style: normal; font-size: 10.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.rg.rg-on b { color: var(--ink); }
+.bm-go { position: absolute; top: 10px; right: 12px; color: #2f5bd8; }
+.bm-go svg { width: 18px; height: 18px; }
+@media (max-width: 1360px) { .g-main { grid-template-columns: 132px minmax(0, 1fr) 260px; } .bm-d { width: 176px; } }
+@media (max-width: 760px) {
+  .g-main { grid-template-columns: minmax(0, 1fr); }
+  .biz-mini { grid-template-columns: 128px minmax(0, 1fr); justify-items: start; text-align: left; align-items: center; column-gap: 14px; margin-top: 14px; padding: 12px 36px 12px 14px; }
+  .bm-d { width: 128px; }
+  .bm-t b { font-size: 20px; }
+  .bm-l { grid-column: 1 / -1; }
+}
+
+/* Звёзды качества: у каждой задачи 0–5, у раздела средняя */
 .stars { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-.stars .st-i { display: inline-flex; gap: 2px; }
-.stars i { display: inline-flex; color: #c9cfdc; }
-.stars i svg { width: 15px; height: 15px; fill: currentColor; stroke-width: 1.4; }
-.stars i.on { color: #f2b437; }
+.st-i { display: inline-flex; gap: 2px; vertical-align: middle; }
+.st-i i { display: inline-flex; color: #c9cfdc; }
+.st-i i svg { width: 15px; height: 15px; fill: currentColor; stroke-width: 1.4; }
+.st-i.sm i svg { width: 12px; height: 12px; }
+.st-i i.on { color: #f2b437; }
 .stars .st-x { font-size: 12.5px; font-style: normal; color: var(--muted); }
-.stars .st-x b { color: var(--ink, #14182b); font-weight: 600; }
-.g-foot .stars { margin-top: 0; }
-.stars-rule ol { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
-.stars-rule li { display: flex; align-items: center; gap: 12px; font-size: 14px; }
-.stars-rule li .stars { margin: 0; flex: none; }
-.stars-rule .biz-n { margin-top: 12px; }
+.ls-m .st-i { margin-left: 2px; }
+.q-avg { display: inline-flex; align-items: center; gap: 3px; margin-right: 8px; padding: 2px 8px 2px 6px; border-radius: 999px; background: #fff6df; color: #8a5a00; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; vertical-align: middle; }
+.q-avg svg { width: 12px; height: 12px; fill: #f2b437; stroke: #f2b437; stroke-width: 1.4; }
+.st-m .q-avg { margin: 0 0 0 4px; }
+.crit { margin-top: 8px; font-size: 13px; }
+.crit summary { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; color: #2f5bd8; font-weight: 600; list-style: none; }
+.crit summary::-webkit-details-marker { display: none; }
+.crit summary .chev { width: 14px; height: 14px; transition: transform .2s; }
+.crit[open] summary .chev { transform: rotate(180deg); }
+.crit ol { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.crit li { display: flex; align-items: center; gap: 10px; color: var(--ink-2); }
+.crit li .st-i { flex: none; }
+.sd .crit { margin: 4px 0 14px; }
