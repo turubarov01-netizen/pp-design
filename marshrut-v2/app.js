@@ -67,7 +67,7 @@
     at30: 'Идёт шаг 30, один шаг пропущен',
   };
 
-  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, open: new Set(), shut: new Set(), answer: '', toast: null, flash: null, stage: {}, sf: {} };
+  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, open: new Set(), shut: new Set(), answer: '', toast: null, flash: null, stage: {}, sf: {}, q: {} };
   const P = () => PROFILES.find((p) => p.id === ui.pid);
   const ten = () => P().route.ten;
   const rest = () => P().route.rest;
@@ -113,7 +113,7 @@
     const all = seq();
     const t = all.slice(0, 10);
     const full = () => { ALL_ITEMS.forEach((i) => (ui.prep[i] = true)); ui.cnt = { wish: 10, fsteps: 5, zv: 3, tasks: 5 }; };
-    Object.assign(ui, { sit: k, watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: { wish: 0, fsteps: 0, zv: 0, tasks: 0 }, stage: {}, sf: {}, setup: 'no', access: 'free', answer: '', open: new Set(), shut: new Set() });
+    Object.assign(ui, { sit: k, watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: { wish: 0, fsteps: 0, zv: 0, tasks: 0 }, stage: {}, sf: {}, q: {}, setup: 'no', access: 'free', answer: '', open: new Set(), shut: new Set() });
     const doneN = (n) => all.slice(0, n).forEach((x) => { ui.done.add(x); ui.watched.add(x); });
     if (k === 'some') { [t[0], t[2], t[3]].forEach((x) => ui.watched.add(x)); ui.done.add(t[0]); ui.done.add(t[2]); ui.prep.inc = true; ui.cnt = { wish: 3, tasks: 1 }; }
     if (k === 'gate6') { doneN(5); Object.assign(ui.prep, { inc: true, biz: true, focus: true, fday: true, wheel: true, habit: true, chat: true }); ui.cnt = { wish: 6, fsteps: 2, zv: 1, tasks: 3 }; }
@@ -125,6 +125,15 @@
       doneN(n); full(); ui.access = 'starter'; ui.setup = 'yes';
       const s = all[n - 6]; ui.done.delete(s); ui.skip.add(s);
     }
+    const Q = {
+      some: { les: [2, 1] },
+      gate6: { fday: [1, 1], les: [5, 2] },
+      at7: { fday: [3, 2], habitdone: [5, 3], les: [6, 3] },
+      wall: { fday: [6, 5], habitdone: [8, 6], les: [10, 5] },
+      bought: { fday: [6, 5], habitdone: [8, 6], les: [10, 5] },
+      at30: { fday: [12, 4], habitdone: [20, 9], les: [29, 7] },
+    }[k] || {};
+    ui.q = Object.fromEntries(Object.entries(Q).map(([key, [t, st]]) => [key, { t, s: st }]));
     /* Пока подготовка не готова, Фрими ведёт в неё, карточку шага не раскрываем */
     const c = curPos();
     ui.openL = prepDone() && c ? all[c - 1] : null;
@@ -144,6 +153,7 @@
     lock: '<rect width="16" height="11" x="4" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
     play: '<path d="M7 4.5v15l12-7.5z"/>',
     chev: '<path d="m6 9 6 6 6-6"/>',
+    star: '<path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/>',
     flag: '<path d="M4 22V4"/><path d="M4 4h12l-2 4 2 4H4"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
     x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
@@ -196,9 +206,11 @@
           <p class="g-d">${a.d}</p>
           ${a.cta ? `<button class="btn" data-act="${a.act}">${a.act === 'gocur' ? svg('play', 'ic-f') : ''}${a.cta}</button>` : ''}
         </div>
+        ${bizMini()}
       </div>
       <div class="g-foot">
         <div class="mini"><span class="num">${done} из${NB}${total}</span><i><u style="width:${(done / total) * 100}%"></u></i><span>шагов пройдено</span></div>
+        ${ui.q.les ? stars(ui.q.les, 'Учёба') : ''}
         <details class="why"><summary>Почему такой маршрут${svg('chev', 'chev')}</summary>
           <div class="why-b">
             <p>Собран по вашей анкете: ${SEG[p.seg].toLowerCase()}, шаг бизнеса ${p.step}, уровень ПЭРЛ «${esc(p.pearl)}». Вы начинаете с${NB}этапа ${p.route.start} «${esc(ETAPY[p.route.start].name)}». Шаги 1–5 про личность: первый у${NB}всех один, остальные закрывают то, что мешает. У${NB}каждого шага пометка: «Личность» или «Бизнес».</p>
@@ -288,6 +300,16 @@
     return out + (tail || '');
   }
 
+  /* Звёзды за регулярность */
+  const STAR_STEPS = ['1 раз', '2 раза', '2 дня подряд', '5 раз', '5 дней подряд'];
+  const starsOf = (q) => (!q || !q.t ? 0 : q.s >= 5 ? 5 : q.t >= 5 ? 4 : q.s >= 2 ? 3 : q.t >= 2 ? 2 : 1);
+  function stars(q, label) {
+    const n = starsOf(q);
+    const icons = Array.from({ length: 5 }, (_, i) => `<i class="${i < n ? 'on' : ''}">${svg('star')}</i>`).join('');
+    const next = n >= 5 ? 'все звёзды' : `следующая: ${STAR_STEPS[n]}`;
+    return `<span class="stars" aria-label="${label ? label + ': ' : ''}${n} из${NB}5 звёзд, ${next}"><span class="st-i">${icons}</span><span class="st-x">${label ? `<b>${label}</b> · ` : ''}${next}</span></span>`;
+  }
+
   /* Подготовка к росту: первая в маршруте, сворачивается */
   function prepBlock() {
     const n = prepDoneN(), all = prepDone();
@@ -305,7 +327,8 @@
         const on = !!ui.prep[i.k];
         const c = i.n ? Math.min(ui.cnt[i.k] || 0, i.n) : null;
         const sub = i.k === 'biz' && on && P().step <= 2 ? 'Отмечено: стартап, точка ноль' : i.k === 'biz' ? i.alt : c != null && !on ? `${c} из${NB}${i.n}` : i.club ? 'В клубе и выше' : '';
-        return `<li class="${on ? 'ok' : ''}"><button class="pi" data-act="go" data-v="${i.k}"><span class="pi-c" title="${on ? 'Засчитано' : 'Ещё не сделано'}">${on ? svg('check') : ''}</span><span class="pi-t">${esc(i.t)}${sub ? `<em>${esc(sub)}</em>` : ''}</span><span class="pi-go">${on ? 'Открыть' : 'Перейти'}${svg('arrow')}</span></button></li>`;
+        const st = i.k === 'fday' || i.k === 'habitdone' ? stars(ui.q[i.k]) : '';
+        return `<li class="${on ? 'ok' : ''}"><button class="pi" data-act="go" data-v="${i.k}"><span class="pi-c" title="${on ? 'Засчитано' : 'Ещё не сделано'}">${on ? svg('check') : ''}</span><span class="pi-t">${esc(i.t)}${sub ? `<em>${esc(sub)}</em>` : ''}${st}</span><span class="pi-go">${on ? 'Открыть' : 'Перейти'}${svg('arrow')}</span></button></li>`;
       }).join('')}</ul>` : '';
       return `<div class="ps ${ok ? 'ok' : ''}"><button class="ps-h" data-act="grp" data-v="ps-${s.k}" aria-expanded="${sOpen}"><b><span class="ps-n">${ok ? svg('check') : si + 1}</span>${esc(s.t)}</b><span>${ok ? 'Готово' : `${doneI} из${NB}${items.length}`}${svg('chev', 'chev')}</span></button>${rows}</div>`;
     }).join('');
@@ -466,7 +489,7 @@
   function bizMini() {
     const p = P(), fm = FIN[p.id], lv = +p.route.start[0];
     const target = GOAL[fm.metric][lv - 1], year = fm.perMonth * 12, share = year / target;
-    return `<section class="card biz-mini"><div class="bm-d">${dial(share)}</div><div class="bm-t"><p class="eyebrow">Ваш бизнес · ${LVL[lv]}</p><b class="num">${usd(year)}</b><span>прогноз на${NB}год · ${Math.round(share * 100)}% цели ${short(target)}</span></div><button class="link" data-act="go" data-v="inc" aria-label="Открыть «Финансы»">${svg('arrow')}</button></section>`;
+    return `<button class="biz-mini" data-act="go" data-v="inc" aria-label="Ваш бизнес: открыть «Финансы»"><span class="bm-d">${dial(share)}</span><span class="bm-t"><span class="eyebrow">Ваш бизнес</span><b class="num">${usd(year)}</b><span>прогноз на${NB}год · ${Math.round(share * 100)}% цели уровня ${short(target)}</span></span><span class="bm-go">${svg('arrow')}</span></button>`;
   }
 
   /* «Знакомьтесь»: случайный фриман с «Чем могу помочь», как на дашборде Альянса (вымышленные люди) */
@@ -498,6 +521,10 @@
           <li><b>Шаг 11</b><span>Откроется со${NB}стартовым доступом после установочной сессии.</span></li>
           <li><b>Дальше по${NB}одному</b><span>Сдали задание, открылся следующий шаг.</span></li>
         </ol></section>
+      <section class="card sec stars-rule"><p class="eyebrow">Звёзды за${NB}регулярность</p>
+        <ol>${STAR_STEPS.map((t, i) => `<li><span class="stars"><span class="st-i">${Array.from({ length: 5 }, (_, j) => `<i class="${j <= i ? 'on' : ''}">${svg('star')}</i>`).join('')}</span></span><span>${t}</span></li>`).join('')}</ol>
+        <p class="biz-n">Так считаем фокус дня, привычки и${NB}уроки. Звёзды показывают, насколько это вошло в${NB}привычку.</p>
+      </section>
       ${helpCard()}
     </aside>`;
   }
@@ -507,7 +534,6 @@
     app.innerHTML = `${demoBar()}<div class="kab">${side()}<div class="main">${topBar()}
       <main class="content">
         ${guide()}
-        ${bizMini()}
         <div class="split">
           <section class="card path-c" aria-label="Маршрут"><ol class="path">
             ${prepBlock()}

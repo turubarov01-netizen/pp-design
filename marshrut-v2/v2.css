@@ -226,13 +226,39 @@ button.ps-h:hover b { color: var(--blue-ink); }
 .tag.ok-t { background: rgba(14,124,80,.1); color: var(--ok); }
 .stage-ok > .nd.sq { background: var(--ok) !important; color: #fff !important; }
 
-/* Маленький спидометр под Фрими */
-.biz-mini { display: flex; align-items: center; gap: 14px; margin-top: 12px; padding: 10px 16px; }
-.bm-d { width: 96px; flex: none; }
+/* Маленький спидометр в карточке Фрими, справа */
+.g-main { grid-template-columns: 132px minmax(0, 1fr) 220px; }
+.biz-mini { position: relative; display: grid; justify-items: center; text-align: center; gap: 4px; width: 100%; padding: 14px 14px 12px; border: 1px solid var(--line-2); border-radius: 18px; background: rgba(255,255,255,.7); font: inherit; color: inherit; cursor: pointer; transition: border-color .2s, background .2s; }
+.biz-mini:hover { border-color: #c5d3f5; background: #fff; }
+.biz-mini:focus-visible { outline: 2px solid var(--blue, #2f7bff); outline-offset: 2px; }
+.bm-d { width: 132px; }
 .bm-d svg { display: block; width: 100%; height: auto; overflow: visible; }
-.bm-t { flex: 1; min-width: 0; }
+.bm-t { display: grid; gap: 2px; }
 .bm-t .eyebrow { font-size: 10.5px; }
-.bm-t b { display: block; font-size: 20px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; }
-.bm-t span { font-size: 12.5px; color: var(--muted); }
-.biz-mini .link svg { width: 20px; height: 20px; }
+.bm-t b { font-size: 22px; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+.bm-t > span:last-child { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.bm-go { position: absolute; top: 10px; right: 12px; color: var(--blue-ink, #2f5bd8); }
+.bm-go svg { width: 18px; height: 18px; }
+@media (max-width: 1100px) { .g-main { grid-template-columns: 132px minmax(0, 1fr) 200px; } .bm-d { width: 116px; } }
+@media (max-width: 760px) {
+  .g-main { grid-template-columns: minmax(0, 1fr); }
+  .biz-mini { grid-template-columns: 92px minmax(0, 1fr); justify-items: start; text-align: left; align-items: center; gap: 14px; margin-top: 14px; padding: 10px 40px 10px 14px; }
+  .bm-d { width: 92px; }
+  .bm-t b { font-size: 19px; }
+  .bm-go { top: 50%; transform: translateY(-50%); }
+}
 @media (max-width: 640px) { .sd-r { grid-template-columns: 18px minmax(0, 1fr); } .sd-r input + input { grid-column: 2; } }
+
+/* Звёзды за регулярность */
+.stars { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.stars .st-i { display: inline-flex; gap: 2px; }
+.stars i { display: inline-flex; color: #c9cfdc; }
+.stars i svg { width: 15px; height: 15px; fill: currentColor; stroke-width: 1.4; }
+.stars i.on { color: #f2b437; }
+.stars .st-x { font-size: 12.5px; font-style: normal; color: var(--muted); }
+.stars .st-x b { color: var(--ink, #14182b); font-weight: 600; }
+.g-foot .stars { margin-top: 0; }
+.stars-rule ol { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+.stars-rule li { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.stars-rule li .stars { margin: 0; flex: none; }
+.stars-rule .biz-n { margin-top: 12px; }
