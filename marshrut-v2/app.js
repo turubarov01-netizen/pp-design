@@ -365,8 +365,8 @@
     if (!isFinite(years)) return 'Пока дохода нет, к${NB}такой жизни не${NB}прийти никогда. Цель на${NB}первые 30 дней: первые деньги. Добро пожаловать в${NB}Альянс.';
     if (years <= 3) return 'Жизнь мечты уже рядом. Возможно, вы мечтаете слишком скромно: попробуйте увеличить список желаний в${NB}десять раз и${NB}посчитать заново.';
     if (end <= 50) return `Хороший темп: к${NB}жизни мечты вы придёте в${NB}${end}. Альянс поможет дойти быстрее и${NB}не${NB}потерять по${NB}пути здоровье, семью и${NB}радость.`;
-    if (end <= 70) return `Вы придёте к${NB}ней в${NB}${end}, когда сил и${NB}времени на${NB}такую жизнь останется меньше. Хотите жить так раньше, нужна другая стратегия. Пора что-то менять.`;
-    return `При нынешнем доходе вы не${NB}успеете прожить такую жизнь: вам будет ${end}. И${NB}это если откладывать 100% дохода: не${NB}есть, не${NB}пить, ничего не${NB}тратить. Пора что-то менять. Добро пожаловать в${NB}Альянс.`;
+    const y = Math.ceil(years);
+    return `Если вы сейчас начнёте отдавать весь свой доход, не${NB}оставляя себе на${NB}еду ни${NB}копейки, и${NB}всё сохранять, без учёта инфляции, вам понадобится ${y} ${yrs(y)}, и${NB}вам будет ${end}, когда вы достигнете своей цели. И${NB}это ещё не${NB}Luxury Life: здесь нет трёх машин на${NB}семью, вертолётов или яхт, дорогих часов и${NB}тому подобного. Это трезвый взгляд на${NB}реальность: система, в${NB}которой мы находимся, не${NB}рассчитана на${NB}то, чтобы вы превратили свою жизнь в${NB}шедевр. Для этого мы в${NB}Альянсе объединяемся, чтобы достигать своих целей. Поэтому пора что-то менять.`;
   }
   function lifeStars() {
     const l = ui.life; if (!l) return 0;
@@ -382,11 +382,23 @@
     const l = L0(); if (!l.calc) return '';
     const r = lifeCalc(l);
     const rows = isFinite(r.years)
-      ? `<div><b>${usd(r.total)}</b><span>стоит жизнь мечты</span></div><div><b>${Math.ceil(r.years)} ${yrs(Math.ceil(r.years))}</b><span>копить при доходе ${usd(r.inc)} в${NB}месяц, если откладывать всё</span></div><div><b>${r.end} ${yrs(r.end)}</b><span>будет вам, когда придёте к${NB}ней</span></div>`
-      : `<div><b>${usd(r.total)}</b><span>стоит жизнь мечты</span></div><div><b>Никогда</b><span>при нулевом доходе</span></div>`;
+      ? `<div><b data-cnt="${r.total}" data-f="usd">${usd(r.total)}</b><span>стоит жизнь мечты</span></div><div><b data-cnt="${Math.ceil(r.years)}" data-f="yrs">${Math.ceil(r.years)} ${yrs(Math.ceil(r.years))}</b><span>копить при доходе ${usd(r.inc)} в${NB}месяц, если откладывать всё</span></div><div><b data-cnt="${r.end}" data-f="yrs" data-from="${num(l.age)}">${r.end} ${yrs(r.end)}</b><span>будет вам, когда придёте к${NB}ней</span></div>`
+      : `<div><b data-cnt="${r.total}" data-f="usd">${usd(r.total)}</b><span>стоит жизнь мечты</span></div><div><b>Никогда</b><span>при нулевом доходе</span></div>`;
     return `<div class="lc-r">${rows}</div><p class="lc-v">${lifeVerdict(r.years, r.end)}</p>`;
   }
   const yrs = (n) => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? 'год' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'года' : 'лет'; };
+  function lifeCount() {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const els = [...app.querySelectorAll('#lc-out [data-cnt]')];
+    const fmt = (el, v) => (el.dataset.f === 'usd' ? usd(v) : `${v} ${yrs(v)}`);
+    const t0 = performance.now(), dur = 1500;
+    const tick = (t) => {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      els.forEach((el) => { const to = +el.dataset.cnt, from = +(el.dataset.from || 0); el.textContent = fmt(el, Math.round(from + (to - from) * e)); });
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
   function lifeCard() {
     const l = L0();
     const f = (k, label, step) => `<label class="ans-f"><span>${label}</span><input type="number" inputmode="numeric" min="0" step="${step}" data-lf="${k}" value="${esc(l[k])}"></label>`;
@@ -698,7 +710,7 @@
     else if (a === 'hcnext') { ui.fm++; render(); return; }
     else if (a === 'hcwrite') { toast(`Здесь откроется чат: ${FREEMEN[ui.fm % FREEMEN.length].n}`); render(); return; }
     else if (a === 'go' && v === 'life') { ui.open.has('life') ? ui.open.delete('life') : ui.open.add('life'); render(); return; }
-    else if (a === 'lifego') { L0().calc = true; render(); return; }
+    else if (a === 'lifego') { L0().calc = true; render(); lifeCount(); return; }
     else if (a === 'lifesave') {
       const was6 = gate6();
       if (lifeStars() < 4) { toast('Сначала рассчитайте стоимость жизни'); return; }
