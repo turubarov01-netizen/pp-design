@@ -848,6 +848,110 @@ body.six .ob-wait{display:none}
   .hk-ph{height:170px;margin:-4px -4px 18px}.ob-term b{font-size:24px}
   .ob-ph{grid-template-columns:1fr 1fr;grid-template-rows:160px 110px;height:auto}.ob-ph figure:first-child{grid-row:auto;grid-column:1/3}
   .ob-swap{left:50%;top:164px;width:38px;height:38px}.ob-ph figcaption{font-size:11.5px;white-space:nowrap;left:8px;bottom:8px;padding:4px 9px}}
+
+/* обмен: состояния доступа */
+.ob-month,.ob-wait,.ob-my,.ob-market,.ob-new{display:none}
+.k-m .ob-month{display:flex}
+.k-m.ob-y .ob-month,.k-m.six .ob-month{display:none}
+.k-m.ob-y .ob-wait{display:block}
+.k-m.six .ob-desc{display:none}
+.k-m.six .ob-market,.k-m.six .ob-my{display:block}
+.k-m.six.ob-form .ob-market{display:none}
+.k-m.six.ob-form .ob-new{display:block}
+/* витрина */
+.ob-mk-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ob-mk-head h2{font-size:32px;margin:0}
+.ob-mk-head p{margin:6px 0 0;color:var(--ink2);font-size:15px}
+.ob-chips{display:flex;gap:8px;flex-wrap:wrap}
+.ob-chips button{height:36px;padding:0 15px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink2);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.ob-chips button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.ob-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
+.ob-card{border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.ob-card[hidden]{display:none}
+.ob-card .ph{position:relative;aspect-ratio:4/3;background:var(--line)}
+.ob-card .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ob-kind{position:absolute;left:10px;top:10px;background:rgba(15,20,30,.62);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+.ob-card .bd{padding:14px 16px 16px;display:flex;flex-direction:column;gap:5px;flex:1}
+.ob-card h4{margin:0;font-size:17px;line-height:1.3}
+.ob-place{font-size:13.5px;color:var(--ink3);margin-bottom:4px}
+.ob-row{margin:0;font-size:14px;line-height:1.45;color:var(--ink2)}
+.ob-row b{color:var(--ink);font-weight:600}
+.ob-who{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
+.ob-who img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.ob-who b{display:block;font-size:14px}.ob-who small{font-size:12.5px;color:var(--ink3)}
+.ob-card .btn{height:40px;margin-top:12px;width:100%}
+.ob-card .ob-who+.btn{margin-top:12px}
+/* моя карточка */
+.ob-my h3{font-size:18px;margin:0 0 6px}
+.ob-my p{margin:0;color:var(--ink2);font-size:14.5px;line-height:1.5}
+.ob-my .btn{width:100%;height:44px;margin-top:16px}
+.my-st{display:none}
+.c-none .my-none,.c-mod .my-mod,.c-back .my-back,.c-live .my-live{display:block}
+.my-thumb{display:flex;gap:12px;align-items:center;margin:14px 0 2px}
+.my-thumb img{width:64px;height:48px;border-radius:10px;object-fit:cover}
+.my-thumb b{display:block;font-size:14.5px}.my-thumb small{font-size:12.5px;color:var(--ink3)}
+.ob-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.ob-badge.mod{background:color-mix(in srgb,#E8A317 18%,transparent);color:#9A6B00}
+.ob-badge.back{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+.ob-badge.live{background:color-mix(in srgb,#1F9D55 15%,transparent);color:#1F9D55}
+.ob-badge svg{width:14px;height:14px}
+.ob-note{margin-top:12px;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--red) 7%,transparent);font-size:14px;line-height:1.5;color:var(--ink)}
+.ob-note small{display:block;color:var(--ink3);font-size:12.5px;margin-top:4px}
+/* форма */
+.ob-new h2{font-size:28px;margin:0 0 6px}
+.ob-new>p{margin:0 0 6px;color:var(--ink2)}
+.ob-f{display:flex;flex-direction:column;gap:6px;margin-top:18px}
+.ob-f>span{font-size:14px;font-weight:700;color:var(--ink)}
+.ob-f>small{font-size:12.5px;color:var(--ink3)}
+.ob-f input,.ob-f textarea{font:inherit;font-size:15px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:12px;padding:11px 14px;width:100%;box-sizing:border-box}
+.ob-f textarea{min-height:96px;resize:vertical}
+.ob-f input:focus,.ob-f textarea:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:transparent}
+.ob-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ob-seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px;width:max-content}
+.ob-seg button{font:inherit;font-size:14.5px;font-weight:600;border:0;background:transparent;color:var(--ink2);padding:8px 18px;border-radius:9px;cursor:pointer}
+.ob-seg button[aria-pressed=true]{background:var(--blue);color:#fff}
+.ob-photos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.ob-photos img,.ob-add{aspect-ratio:4/3;width:100%;border-radius:12px;object-fit:cover;display:block}
+.ob-add{border:1.5px dashed var(--line);display:grid;place-items:center;color:var(--ink3);background:transparent;cursor:pointer;font:inherit;font-size:13px;font-weight:600}
+.ob-add svg{width:22px;height:22px;display:block;margin:0 auto 4px}
+.ob-send{display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap}
+.ob-send .btn{height:46px;padding:0 22px}
+.ob-send small{flex-basis:100%;font-size:13px;color:var(--ink3);line-height:1.45}
+/* модерация */
+.md-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+.md-head h2{font-size:32px;margin:0}
+.md-tabs{display:flex;gap:8px}
+.md-tabs span{height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line);display:inline-flex;align-items:center;font-size:14px;font-weight:600;color:var(--ink2)}
+.md-tabs span.on{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.md-item{border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:16px}
+.md-ph{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.md-ph img{aspect-ratio:4/3;width:100%;object-fit:cover;border-radius:10px;display:block}
+.md-bd{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:18px;margin-top:14px}
+.md-bd h4{margin:0 0 2px;font-size:18px}
+.md-bd p{margin:4px 0 0;font-size:14px;line-height:1.5;color:var(--ink2)}
+.md-bd p b{color:var(--ink);font-weight:600}
+.md-auth{border-left:1px solid var(--line);padding-left:18px}
+.md-auth .ob-who{border:0;padding:0;margin:0}
+.md-ok{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;font-weight:700;color:#1F9D55}
+.md-ok svg{width:16px;height:16px}
+.md-auth small.t{display:block;margin-top:8px;font-size:12.5px;color:var(--ink3)}
+.md-acts{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.md-acts .btn{height:42px;padding:0 18px}
+.md-back{display:none;margin-top:14px}
+.md-back textarea{font:inherit;font-size:14.5px;width:100%;box-sizing:border-box;min-height:80px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:transparent;color:var(--ink)}
+.md-back .btn{height:40px;margin-top:10px;padding:0 18px}
+.md-item.ret .md-back{display:block}.md-item.ret .md-acts{display:none}
+.md-done{display:none;align-items:center;gap:8px;font-size:15px;font-weight:700;margin-top:14px}
+.md-done svg{width:18px;height:18px}
+.md-item.ok .md-done.ok,.md-item.sentback .md-done.bk{display:flex}
+.md-item.ok .md-acts,.md-item.sentback .md-acts,.md-item.sentback .md-back{display:none}
+.md-done.ok{color:#1F9D55}.md-done.bk{color:var(--ink2)}
+.md-side h3{font-size:18px;margin:0 0 10px}
+.md-side ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.md-side li{display:flex;gap:10px;font-size:14.5px;line-height:1.45;color:var(--ink2)}
+.md-side li svg{width:18px;height:18px;flex:none;color:var(--blue);margin-top:1px}
+@media (max-width:900px){.k-m.six .hk-side{order:-1}.ob-grid{grid-template-columns:minmax(0,1fr)}.ob-mk-head h2,.md-head h2{font-size:26px}.ob-two{grid-template-columns:1fr}.ob-photos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .md-bd{grid-template-columns:minmax(0,1fr)}.md-auth{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:14px}}
 </style>
 </head>
 <body>
@@ -886,7 +990,8 @@ body.six .ob-wait{display:none}
     <div class="wrap">
       <div hidden aria-hidden="true"><div id="cg"></div><div id="closevid"></div><div id="d-vid"></div><div id="fm-c"></div><div id="fm-cl"></div><div id="fm-load"></div><div id="fm-stats"></div><div id="fm-t"></div><div id="fm-tl"></div><div id="pop"></div><div id="unhide"></div></div>
       <div class="hk">
-        <section class="panel hk-hero" aria-label="Обмен жизнями">
+        <div>
+        <section class="panel hk-hero ob-desc" aria-label="Обмен жизнями">
           <div class="hk-ph ob-ph">
             <figure><img src="img/swap-bali.webp" alt="Вилла с бассейном на Бали"><figcaption>Вилла на&nbsp;Бали</figcaption></figure>
             <figure><img src="img/swap-flat.webp" alt="Светлая квартира в Москве"><figcaption>Квартира в&nbsp;Москве</figcaption></figure>
@@ -894,19 +999,121 @@ body.six .ob-wait{display:none}
             <span class="ob-swap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg></span>
           </div>
           <h2>Обмен жизнями</h2>
-          <p class="hk-lead">Это маркетплейс внутри клуба, где участники меняются квартирами или машинами. Как в&nbsp;фильме «Отпуск по&nbsp;обмену»: двое меняются местами и&nbsp;живут жизнью друг друга две недели или месяц.</p>
+          <p class="hk-lead">Это маркетплейс внутри Альянса, где участники меняются квартирами или машинами. Как в&nbsp;фильме «Отпуск по&nbsp;обмену»: двое меняются местами и&nbsp;живут жизнью друг друга две недели или месяц.</p>
           <ol class="ob-steps">
             <li><p><b>Вы выбираете, что готовы дать:</b> квартиру или машину, и&nbsp;на&nbsp;какие даты.</p></li>
             <li><p><b>Получаете заявку от&nbsp;участника,</b> который тоже готов дать свою квартиру или машину.</p></li>
             <li><p><b>Меняетесь местами.</b> Один приезжает на&nbsp;Бали, а&nbsp;второй в&nbsp;это время живёт в&nbsp;Москве. С&nbsp;машинами так же: вы даёте свой Мерседес, а&nbsp;забираете его Бентли.</p></li>
           </ol>
-          <div class="ob-term"><b>6&nbsp;мес.</b><p>Обмен открыт тем, кто в&nbsp;ПП-клубе больше 6&nbsp;месяцев.</p></div>
+          <div class="ob-term"><b>6&nbsp;мес.</b><p>Обмен открыт годовым членам Альянса, которые в&nbsp;Альянсе не&nbsp;меньше 6&nbsp;месяцев. Так квартиры и&nbsp;машины участников защищены от&nbsp;случайных людей.</p></div>
         </section>
+
+        <section class="panel ob-market" aria-label="Предложения обмена">
+          <div class="ob-mk-head">
+            <div><h2>Обмен жизнями</h2><p>6 предложений от&nbsp;участников Альянса</p></div>
+            <div class="ob-chips" role="group" aria-label="Что показать">
+              <button type="button" data-f="all" aria-pressed="true">Все</button>
+              <button type="button" data-f="flat" aria-pressed="false">Квартиры</button>
+              <button type="button" data-f="car" aria-pressed="false">Машины</button>
+            </div>
+          </div>
+          <div class="ob-grid">
+            <article class="ob-card" data-kind="flat">
+              <div class="ph"><img src="img/swap-bali.webp" alt="" loading="lazy"><span class="ob-kind">Квартира</span></div>
+              <div class="bd">
+                <h4>Вилла с&nbsp;бассейном</h4><span class="ob-place">Чангу, Бали · 3 спальни · до&nbsp;6 гостей</span>
+                <p class="ob-row">Свободно: <b>1&nbsp;февраля – 15&nbsp;марта</b></p>
+                <p class="ob-row">Хочет: <b>Москва или Петербург</b></p>
+                <div class="ob-who"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy"><div><b>Марина К.</b><small>в&nbsp;Альянсе 1,5 года</small></div></div>
+                <a class="btn btn-p" href="#">Предложить обмен</a>
+              </div>
+            </article>
+            <article class="ob-card" data-kind="flat">
+              <div class="ph"><img src="img/swap-flat.webp" alt="" loading="lazy"><span class="ob-kind">Квартира</span></div>
+              <div class="bd">
+                <h4>Квартира на&nbsp;Патриарших</h4><span class="ob-place">Москва · 2 комнаты · до&nbsp;4 гостей</span>
+                <p class="ob-row">Свободно: <b>весь январь</b></p>
+                <p class="ob-row">Хочет: <b>Бали, Дубай</b></p>
+                <div class="ob-who"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy"><div><b>Олег С.</b><small>в&nbsp;Альянсе 1 год</small></div></div>
+                <a class="btn btn-p" href="#">Предложить обмен</a>
+              </div>
+            </article>
+            <article class="ob-card" data-kind="car">
+              <div class="ph"><img src="img/swap-car.webp" alt="" loading="lazy"><span class="ob-kind">Машина</span></div>
+              <div class="bd">
+                <h4>Mercedes-AMG SL</h4><span class="ob-place">Москва · кабриолет · 2024</span>
+                <p class="ob-row">Свободно: <b>выходные декабря</b></p>
+                <p class="ob-row">Хочет: <b>Porsche или Bentley</b></p>
+                <div class="ob-who"><img src="https://randomuser.me/api/portraits/men/52.jpg" alt="" loading="lazy"><div><b>Денис Р.</b><small>в&nbsp;Альянсе 9 месяцев</small></div></div>
+                <a class="btn btn-p" href="#">Предложить обмен</a>
+              </div>
+            </article>
+            <article class="ob-card" data-kind="flat">
+              <div class="ph"><img src="img/swap-dubai.webp" alt="" loading="lazy"><span class="ob-kind">Квартира</span></div>
+              <div class="bd">
+                <h4>Апартаменты у&nbsp;моря</h4><span class="ob-place">Дубай Марина · 1 спальня · вид на&nbsp;море</span>
+                <p class="ob-row">Свободно: <b>10&nbsp;января – 10&nbsp;февраля</b></p>
+                <p class="ob-row">Хочет: <b>Москва</b></p>
+                <div class="ob-who"><img src="https://randomuser.me/api/portraits/women/57.jpg" alt="" loading="lazy"><div><b>Алина В.</b><small>в&nbsp;Альянсе 1 год</small></div></div>
+                <a class="btn btn-p" href="#">Предложить обмен</a>
+              </div>
+            </article>
+            <article class="ob-card" data-kind="flat">
+              <div class="ph"><img src="img/swap-loft.webp" alt="" loading="lazy"><span class="ob-kind">Квартира</span></div>
+              <div class="bd">
+                <h4>Двухуровневый лофт</h4><span class="ob-place">Петербург · студия · 2 этажа</span>
+                <p class="ob-row">Свободно: <b>март</b></p>
+                <p class="ob-row">Хочет: <b>Бали, Тбилиси</b></p>
+                <div class="ob-who"><img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" loading="lazy"><div><b>Ирина Л.</b><small>в&nbsp;Альянсе 7 месяцев</small></div></div>
+                <a class="btn btn-p" href="#">Предложить обмен</a>
+              </div>
+            </article>
+            <article class="ob-card" data-kind="car">
+              <div class="ph"><img src="img/swap-911.webp" alt="" loading="lazy"><span class="ob-kind">Машина</span></div>
+              <div class="bd">
+                <h4>Porsche 911 GT3</h4><span class="ob-place">Москва · купе · 2023</span>
+                <p class="ob-row">Свободно: <b>январь</b></p>
+                <p class="ob-row">Хочет: <b>Mercedes G-класс</b></p>
+                <div class="ob-who"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><div><b>Артём Н.</b><small>в&nbsp;Альянсе 1,5 года</small></div></div>
+                <a class="btn btn-p" href="#">Предложить обмен</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel ob-new" aria-label="Новая карточка">
+          <h2>Новая карточка</h2>
+          <p>Перед публикацией карточку проверит модератор.</p>
+          <div class="ob-f"><span>Что вы даёте</span>
+            <div class="ob-seg" role="group" aria-label="Что даёте"><button type="button" aria-pressed="true">Квартиру</button><button type="button" aria-pressed="false">Машину</button></div></div>
+          <div class="ob-two">
+            <label class="ob-f"><span>Название</span><input type="text" value="Квартира у&nbsp;Чистых прудов"></label>
+            <label class="ob-f"><span>Город</span><input type="text" value="Москва"></label>
+          </div>
+          <label class="ob-f"><span>Описание</span><textarea>2 комнаты, до&nbsp;3 гостей. Светлая квартира в&nbsp;тихом переулке, 7 минут до&nbsp;метро. Рабочее место у&nbsp;окна, быстрый интернет.</textarea></label>
+          <div class="ob-f"><span>Фото</span><small>От&nbsp;3 до&nbsp;10 фото: комнаты, кухня, ванная, вид из&nbsp;окна</small>
+            <div class="ob-photos"><img src="img/swap-flat2.webp" alt=""><img src="img/swap-flat3.webp" alt=""><img src="img/swap-loft.webp" alt=""><button class="ob-add" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Добавить</span></button></div></div>
+          <div class="ob-two">
+            <label class="ob-f"><span>Свободно с</span><input type="text" value="15 декабря"></label>
+            <label class="ob-f"><span>по</span><input type="text" value="15 января"></label>
+          </div>
+          <label class="ob-f"><span>Куда хотели&nbsp;бы поехать</span><input type="text" value="Бали или Дубай"><small>Необязательно. По&nbsp;этому полю вам покажут подходящие предложения.</small></label>
+          <div class="ob-send">
+            <button class="btn btn-p" type="button" data-ob="send">Отправить на&nbsp;модерацию</button>
+            <button class="btn btn-s" type="button" data-ob="cancel">Отмена</button>
+            <small>Карточку проверят Саша или Игорь. Если что-то не&nbsp;так, вернут с&nbsp;комментарием, что исправить.</small>
+          </div>
+        </section>
+        </div>
+
         <div class="hk-side">
-          <section class="panel hk-form ob-wait no-g no-x" id="hk-form" aria-label="Когда откроется">
+          <section class="panel hk-lock ob-month" aria-label="Нужно годовое членство"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3>Обмен&nbsp;— для&nbsp;годового членства</h3><p>Нужно годовое членство и&nbsp;не&nbsp;меньше 6&nbsp;месяцев в&nbsp;Альянсе.</p><a class="btn btn-p" href="#">Перейти на&nbsp;годовое</a>
+            <div class="hk-wait" style="margin-left:-34px"><span class="hk-faces"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><span class="hk-more">+4</span></span><p><b>9&nbsp;участников</b> уже выложили квартиры и&nbsp;машины</p></div></div></section>
+
+          <section class="panel hk-form ob-wait" id="hk-form" aria-label="Когда откроется">
             <div class="hk-ask">
               <h3>Откроется через 4&nbsp;месяца</h3>
-              <p>Вы в&nbsp;ПП-клубе 2&nbsp;месяца из&nbsp;6. Обмен жизнями станет доступен 8&nbsp;марта 2027.</p>
+              <p>Годовое членство у&nbsp;вас есть. В&nbsp;Альянсе вы 2&nbsp;месяца из&nbsp;6, обмен откроется 8&nbsp;марта 2027.</p>
               <div class="ob-bar"><s></s></div><small>2 из&nbsp;6 месяцев</small>
               <button class="btn btn-s" type="button" data-hk="notify">Предупредить, когда откроется</button>
             </div>
@@ -916,22 +1123,30 @@ body.six .ob-wait{display:none}
               <p id="hk-done-p">Напишем 8&nbsp;марта, когда обмен откроется.</p>
               <button class="btn" type="button" data-hk="undo">Не нужно</button>
             </div>
-            <div class="hk-wait"><span class="hk-faces"><span class="hk-me" aria-hidden="true">А</span><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><span class="hk-more">+4</span></span><p><b>9&nbsp;участников</b> уже выложили квартиры и&nbsp;машины</p></div>
+            <div class="hk-wait"><span class="hk-faces"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><span class="hk-more">+4</span></span><p><b>9&nbsp;участников</b> уже выложили квартиры и&nbsp;машины</p></div>
           </section>
-          <section class="panel hk-form ob-open no-g no-x" aria-label="Обмен открыт">
-            <h3>Обмен открыт</h3>
-            <p>Что вы готовы дать?</p>
-            <a class="btn btn-p" href="#" style="margin-top:18px">Квартиру</a>
-            <a class="btn btn-s" href="#">Машину</a>
-            <div class="hk-wait"><span class="hk-faces"><span class="hk-me" aria-hidden="true">А</span><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><span class="hk-more">+4</span></span><p><b>9&nbsp;участников</b> уже выложили квартиры и&nbsp;машины</p></div>
+
+          <section class="panel ob-my" aria-label="Моя карточка">
+            <div class="my-st my-none"><h3>Ваша карточка</h3><p>Выложите квартиру или машину, и&nbsp;вам начнут приходить предложения обмена.</p>
+              <button class="btn btn-p" type="button" data-ob="new">Выложить квартиру или машину</button></div>
+            <div class="my-st my-mod"><span class="ob-badge mod">На&nbsp;модерации</span><h3>Карточка на&nbsp;проверке</h3><p>Обычно проверяем за&nbsp;сутки. Напишем, когда опубликуем.</p>
+              <div class="my-thumb"><img src="img/swap-flat2.webp" alt=""><div><b>Квартира у&nbsp;Чистых прудов</b><small>Москва · отправлена сегодня</small></div></div></div>
+            <div class="my-st my-back"><span class="ob-badge back">Вернули на&nbsp;доработку</span><h3>Что исправить</h3>
+              <div class="ob-note">Добавьте фото ванной и&nbsp;кухни, сейчас видно только комнаты.<small>Модератор · сегодня, 12:10</small></div>
+              <div class="my-thumb"><img src="img/swap-flat2.webp" alt=""><div><b>Квартира у&nbsp;Чистых прудов</b><small>Москва</small></div></div>
+              <button class="btn btn-p" type="button" data-ob="new">Исправить карточку</button></div>
+            <div class="my-st my-live"><span class="ob-badge live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Опубликована</span><h3>Карточка в&nbsp;обмене</h3>
+              <div class="my-thumb"><img src="img/swap-flat2.webp" alt=""><div><b>Квартира у&nbsp;Чистых прудов</b><small>Москва · 15&nbsp;дек – 15&nbsp;янв</small></div></div>
+              <a class="btn btn-p" href="#">2 предложения обмена</a>
+              <button class="btn btn-s" type="button" data-ob="new" style="margin-top:10px">Изменить карточку</button></div>
           </section>
-          <section class="panel hk-lock only-g" aria-label="Закрыто"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3>Обмен жизнями открыт подписчикам клуба</h3><p>Меняться квартирами и&nbsp;машинами могут те, кто в&nbsp;ПП-клубе больше 6&nbsp;месяцев.</p><a class="btn btn-p" href="#">Оформить подписку</a></div></section>
-          <section class="panel hk-lock only-x" aria-label="Закрыто"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3>Подписка закончилась</h3><p>Обмен жизнями доступен после продления.</p><a class="btn btn-p" href="#">Продлить подписку</a></div></section>
+          <section class="panel hk-lock only-g only-s" aria-label="Закрыто"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3>Обмен жизнями открыт годовым членам Альянса</h3><p>Меняться квартирами и&nbsp;машинами могут годовые члены Альянса, которые в&nbsp;Альянсе не&nbsp;меньше 6&nbsp;месяцев.</p></div></section>
+          <section class="panel hk-lock only-x" aria-label="Закрыто"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3>Подписка закончилась</h3><p>Обмен жизнями доступен годовым членам Альянса.</p></div></section>
         </div>
       </div>
     </div>
     <div class="pult" id="pult"></div>
-    <p class="note">Макет: страница «Обмен жизнями» ПП-клуба. Открыт тем, кто в&nbsp;клубе больше 6&nbsp;месяцев; переключатель «6+ месяцев в&nbsp;клубе» показывает открытое состояние. Пульт: Стартовый, до&nbsp;установочной, подписка, только записи.</p>
+    <p class="note">Макет: «Обмен жизнями» в&nbsp;кабинете ПП-клуба — та&nbsp;же функция Альянса и&nbsp;те&nbsp;же условия: годовое членство и&nbsp;не&nbsp;меньше 6&nbsp;месяцев в&nbsp;Альянсе. Пульт «Обмен» переключает доступ и&nbsp;состояние своей карточки.</p>
   </div>
 </div>
 
@@ -948,14 +1163,17 @@ const EMPTY = false;
 const Q = new URLSearchParams(location.search);
 const ST = 'bought', DAY = 4, K = ['g', 's', 'm', 'x'].includes(Q.get('k')) ? Q.get('k') : 'm';
 if (Q.has('p') && K === 'm') document.body.classList.add('hike');
-if (Q.has('o')) document.body.classList.add('six');
+if (K === 'm' && Q.get('o') === 'y') document.body.classList.add('ob-y');
+if (K === 'm' && Q.get('o') === '6') document.body.classList.add('six');
+document.body.classList.add('c-' + (['mod', 'back', 'live'].includes(Q.get('c')) ? Q.get('c') : 'none'));
 document.body.classList.add('k-' + K); document.body.dataset.k = K;
 document.body.classList.add('s-' + ST, DAY >= 11 ? 'day11' : DAY >= 4 ? 'day4' : 'day1');
 const link = (p, l) => { const u = new URLSearchParams(Q); Object.entries(p).forEach(([k, v]) => u.set(k, v)); const on = Object.entries(p).every(([k, v]) => (k === 'k' ? K : String(DAY)) === String(v)); return `<a class="${on ? 'on' : ''}" href="?${u}">${l}</a>`; };
 const tog = (k, l) => { const u = new URLSearchParams(Q); Q.has(k) ? u.delete(k) : u.set(k, '1'); return `<a class="${Q.has(k) ? 'on' : ''}" href="?${u}">${l}</a>`; };
 if (Q.has('mo')) document.body.classList.add('done-offer');
 if (Q.has('pr')) document.body.classList.add('done-pr');
-document.getElementById('pult').innerHTML = 'Человек: ' + link({k:'g'}, 'Стартовый (зритель)') + link({k:'s'}, 'До установочной') + link({k:'m'}, 'Подписка') + link({k:'x'}, 'Только записи') + '&nbsp;&nbsp;' + tog('o', '6+ месяцев в клубе');
+const seg = (k, opts) => opts.map(([v, l]) => { const u = new URLSearchParams(Q); v ? u.set(k, v) : u.delete(k); return `<a class="${(Q.get(k) || '') === v ? 'on' : ''}" href="?${u}">${l}</a>`; }).join('');
+document.getElementById('pult').innerHTML = 'Человек: ' + link({k:'g'}, 'Стартовый (зритель)') + link({k:'s'}, 'До установочной') + link({k:'m'}, 'Подписка') + link({k:'x'}, 'Только записи') + '&nbsp;&nbsp;Обмен: ' + seg('o', [['', 'Месячное'], ['y', 'Годовое, 2 мес.'], ['6', 'Годовое, 6+ мес.']]) + (Q.get('o') === '6' ? '&nbsp;&nbsp;Карточка: ' + seg('c', [['', 'нет'], ['mod', 'на модерации'], ['back', 'вернули'], ['live', 'опубликована']]) : '') + '&nbsp;&nbsp;<a href="obmen-moder.html">Экран модератора</a>';
 // баннер по крестику сворачивается под календарь и запоминается
 const HK = 'pp-hidden-ads', hid = new Set((Q.get('h') || localStorage.getItem(HK) || '').split(',').filter(Boolean));
 hid.forEach(k => document.body.classList.add('hid-' + k));
@@ -1133,19 +1351,36 @@ cg.addEventListener('click', e => {
 </script>
 <script>
 (() => {
-  const f = document.getElementById('hk-form'); if (!f) return;
-  const T = { go: ['Вы в группе', 'Напишем, когда группа соберётся и мы объявим тему.'],
-              notify: ['Предупредим', 'Напишем 8 марта, когда обмен откроется.'] };
-  const w = document.getElementById('hk-wait-t');
-  f.addEventListener('click', e => {
-    const b = e.target.closest('[data-hk]'); if (!b) return;
-    const k = b.dataset.hk;
-    if (k === 'undo') { f.classList.remove('sent', 'joined'); if (w) w.innerHTML = '<b>23&nbsp;участника</b> уже ждут старта'; return; }
-    document.getElementById('hk-done-t').textContent = T[k][0];
-    document.getElementById('hk-done-p').textContent = T[k][1];
-    f.classList.add('sent');
-    if (k === 'go' && w) { f.classList.add('joined'); w.innerHTML = '<b>Вы и&nbsp;ещё 23&nbsp;участника</b> ждёте старта'; }
+  const B = document.body;
+  // ожидание: «Предупредить, когда откроется»
+  const f = document.getElementById('hk-form');
+  if (f) f.addEventListener('click', e => { const b = e.target.closest('[data-hk]'); if (!b) return; f.classList.toggle('sent', b.dataset.hk !== 'undo'); });
+  // фильтр витрины
+  document.querySelectorAll('.ob-chips button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.ob-chips button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    document.querySelectorAll('.ob-card').forEach(c => c.hidden = b.dataset.f !== 'all' && c.dataset.kind !== b.dataset.f);
+  }));
+  // переключатель «Квартиру / Машину» в форме
+  document.querySelectorAll('.ob-seg button').forEach(b => b.addEventListener('click', () => b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b))));
+  // карточка: открыть форму, отправить, отменить
+  const setC = c => { B.className = B.className.replace(/\bc-\w+/g, '').trim() + ' c-' + c; };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-ob]'); if (!b) return;
+    const k = b.dataset.ob, wrap = document.querySelector('.main>.wrap');
+    if (k === 'new') B.classList.add('ob-form');
+    if (k === 'cancel') B.classList.remove('ob-form');
+    if (k === 'send') { B.classList.remove('ob-form'); setC('mod'); }
+    if (wrap) wrap.scrollTop = 0;
   });
+  // модерация
+  document.querySelectorAll('.md-item').forEach(it => it.addEventListener('click', e => {
+    const b = e.target.closest('[data-md]'); if (!b) return;
+    const k = b.dataset.md;
+    if (k === 'ok') it.classList.add('ok');
+    if (k === 'ret') { it.classList.add('ret'); it.querySelector('textarea').focus(); }
+    if (k === 'cancel') it.classList.remove('ret');
+    if (k === 'send') { it.classList.remove('ret'); it.classList.add('sentback'); }
+  }));
 })();
 </script>
 <script>document.body.classList.add('pg-hike');</script>
