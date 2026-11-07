@@ -33,24 +33,24 @@
   /* Пункты «Подготовки к росту» (решение Игоря 07.11.2026) */
   const PREP = [
     { k: 'an', t: 'Анализ доходов', where: 'Трекер Фримана → Финансы', items: [
-      { k: 'inc', t: 'Личный средний доход за 3 месяца' },
-      { k: 'biz', t: 'Оборот, выручка и прибыль бизнеса за 3 месяца', alt: 'Нет бизнеса: отметка «Стартап», точка ноль' },
+      { k: 'inc', go: 'Трекер Фримана → Финансы', t: 'Личный средний доход за 3 месяца' },
+      { k: 'biz', go: 'Трекер Фримана → Финансы', t: 'Оборот, выручка и прибыль бизнеса за 3 месяца', alt: 'Нет бизнеса: отметка «Стартап», точка ноль' },
     ] },
     { k: 'tr', t: 'Трекер Фримана', where: 'Трекер Фримана', items: [
-      { k: 'wish', t: '10 желаний: категория, горизонт 1, 5 или 10 лет и цена', n: 10 },
-      { k: 'focus', t: 'Выбран фокус' },
-      { k: 'fday', t: 'Фокус дня выполнен хотя бы раз' },
-      { k: 'zv', t: 'Зверёк' },
-      { k: 'wheel', t: 'Колесо баланса' },
-      { k: 'tasks', t: '5 задач', n: 5 },
-      { k: 'habit', t: 'Одна привычка' },
+      { k: 'wish', go: 'Трекер Фримана → Желания', t: '10 желаний: категория, горизонт 1, 5 или 10 лет и цена', n: 10 },
+      { k: 'focus', go: 'Трекер Фримана → Фокус', t: 'Выбран фокус' },
+      { k: 'fday', go: 'Трекер Фримана → Фокус дня', t: 'Фокус дня выполнен хотя бы раз' },
+      { k: 'zv', go: 'Трекер Фримана → Зверёк', t: 'Зверёк' },
+      { k: 'wheel', go: 'Трекер Фримана → Колесо баланса', t: 'Колесо баланса' },
+      { k: 'tasks', go: 'Трекер Фримана → Задачи', t: '5 задач', n: 5 },
+      { k: 'habit', go: 'Трекер Фримана → Привычки', t: 'Одна привычка' },
     ] },
     { k: 'ch', t: 'Чат Альянса', where: 'Telegram', items: [
-      { k: 'chat', t: 'Вступить в чат Альянса в Telegram' },
-      { k: 'hello', t: 'Поздороваться и рассказать о себе в чате', club: true },
+      { k: 'chat', go: 'Чат Альянса в Telegram', t: 'Вступить в чат Альянса в Telegram' },
+      { k: 'hello', go: 'Чат Альянса в Telegram', t: 'Поздороваться и рассказать о себе в чате', club: true },
     ] },
     { k: 'pr', t: 'Профиль', where: 'Мой профиль', items: [
-      { k: 'prof', t: 'Ниши, опыт, город и чем вы можете быть полезны' },
+      { k: 'prof', go: 'Мой профиль', t: 'Ниши, опыт, город и чем вы можете быть полезны' },
     ] },
   ];
   const ALL_ITEMS = PREP.flatMap((s) => s.items.map((i) => i.k));
@@ -144,6 +144,7 @@
     chev: '<path d="m6 9 6 6 6-6"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
     x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+    arrow: '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>',
     skip: '<path d="M12 8v5"/><path d="M12 16.5h.01"/><circle cx="12" cy="12" r="9"/>',
   };
   const svg = (k, cls) => `<svg class="${cls || ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
@@ -163,7 +164,7 @@
         <div class="pf" role="group" aria-label="Анкета онбординга">${PROFILES.map((p) => `<button data-act="pid" data-v="${p.id}" aria-pressed="${p.id === ui.pid}"><b>${esc(p.name)}</b><span>${esc(p.who)}</span></button>`).join('')}</div>
         <label>Ситуация<select data-act="sit">${opts(SIT, ui.sit)}${SIT[ui.sit] ? '' : '<option selected>Свой сценарий</option>'}</select></label>
         <label>Доступ<select data-act="access">${opts(ACCESS, ui.access)}</select></label>
-        <p class="demo-note">Участники вымышленные, ответы анкет составлены по образцу реальных. Пункты подготовки отмечаются кликом.</p>
+        <p class="demo-note">Участники вымышленные, ответы анкет составлены по образцу реальных. Пункты подготовки засчитывает сама платформа, когда в разделе всё записано. Клик по пункту ведёт в нужный раздел.</p><button data-act="auto">Прототип: платформа засчитала следующий пункт</button><p class="demo-note" hidden></p>
       </div></details>`;
   }
 
@@ -295,9 +296,9 @@
         const on = !!ui.prep[i.k];
         const c = i.n ? Math.min(ui.cnt[i.k] || 0, i.n) : null;
         const sub = i.k === 'biz' && on && P().step <= 2 ? 'Отмечено: стартап, точка ноль' : i.k === 'biz' ? i.alt : c != null && !on ? `${c} из${NB}${i.n}` : i.club ? 'В клубе и выше' : '';
-        return `<li class="${on ? 'ok' : ''}"><button class="pi" data-act="pi" data-v="${i.k}" aria-pressed="${on}"><span class="pi-c">${on ? svg('check') : ''}</span><span class="pi-t">${esc(i.t)}${sub ? `<em>${esc(sub)}</em>` : ''}</span></button></li>`;
+        return `<li class="${on ? 'ok' : ''}"><button class="pi" data-act="go" data-v="${i.k}"><span class="pi-c" title="${on ? 'Засчитано' : 'Ещё не сделано'}">${on ? svg('check') : ''}</span><span class="pi-t">${esc(i.t)}${sub ? `<em>${esc(sub)}</em>` : ''}</span><span class="pi-go">${on ? 'Открыть' : 'Перейти'}${svg('arrow')}</span></button></li>`;
       }).join('')}</ul>` : '';
-      return `<div class="ps ${ok ? 'ok' : ''}"><button class="ps-h" data-act="grp" data-v="ps-${s.k}" aria-expanded="${sOpen}"><b><span class="ps-n">${ok ? svg('check') : si + 1}</span>${esc(s.t)}</b><span>${ok ? 'Готово' : `${doneI} из${NB}${items.length}`}${sOpen ? ` · ${esc(s.where)}` : ''}${svg('chev', 'chev')}</span></button>${rows}</div>`;
+      return `<div class="ps ${ok ? 'ok' : ''}"><button class="ps-h" data-act="grp" data-v="ps-${s.k}" aria-expanded="${sOpen}"><b><span class="ps-n">${ok ? svg('check') : si + 1}</span>${esc(s.t)}</b><span>${ok ? 'Готово' : `${doneI} из${NB}${items.length}`}${svg('chev', 'chev')}</span></button>${rows}</div>`;
     }).join('');
     out += `<li class="ls prep-body"><span class="nd nd-ghost"></span><div class="prep-c">${secs}${setupCard()}</div></li>`;
     return out;
@@ -423,11 +424,13 @@
       if (c) { ui.openL = seq()[c - 1]; render(); scrollTo('l' + c); return; }
     }
     else if (a === 'gowall') { scrollTo('wall'); return; }
-    else if (a === 'pi') {
+    else if (a === 'go') { const it = PREP.flatMap((s) => s.items).find((i) => i.k === v); toast(`Здесь откроется: ${it.go}`); render(); return; }
+    else if (a === 'auto') {
       const was6 = gate6();
-      ui.prep[v] = !ui.prep[v];
-      const it = PREP.flatMap((s) => s.items).find((i) => i.k === v);
-      if (it.n) ui.cnt[v] = ui.prep[v] ? it.n : Math.max(0, it.n - 2);
+      const it = PREP.flatMap((s) => s.items).find((i) => itemOn(i) && !ui.prep[i.k]);
+      if (!it) { toast('Подготовка уже засчитана'); return; }
+      ui.prep[it.k] = true; if (it.n) ui.cnt[it.k] = it.n; ui.open.add('prep');
+      toast(`Засчитано: ${it.t}`);
       custom();
       const c = curPos(); if (c && prepDone()) ui.openL = seq()[c - 1];
       if (!was6 && gate6()) toast('Подготовка пройдена. Шаг 6 открыт');
