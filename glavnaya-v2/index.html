@@ -108,6 +108,13 @@ svg{flex:none}
 .item .act{height:40px;padding:0 16px;border-radius:12px;background:linear-gradient(180deg,#E4C766,#B8901F);color:#221A05;box-shadow:0 6px 18px rgba(201,162,39,.3);font-size:13px}
 .item .act:hover{filter:brightness(1.06)}
 [data-pane][hidden]{display:none}
+.day-empty{display:none;flex-direction:column;align-items:center;text-align:center;padding:22px 12px 10px}
+.day-empty .ei{width:52px;height:52px;border-radius:16px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;margin-bottom:12px}
+.day-empty .ei svg{width:24px;height:24px}
+.day-empty b{font-size:16px}
+.day-empty p{color:var(--ink3);font-size:14px;margin-top:4px;max-width:34ch}
+.day-empty a{margin-top:12px;color:var(--blue-ink);font-size:14px;font-weight:600}
+.no-day [data-pane]{display:none}.no-day .day-empty{display:flex}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:40px;padding:0 16px;border-radius:12px;font-size:14px;font-weight:600;white-space:nowrap;transition:transform .15s var(--ease),background .2s}
 .btn:active{transform:scale(.97)}
@@ -248,11 +255,11 @@ svg{flex:none}
     <button class="nav" aria-expanded="false" aria-controls="svc" data-toggle="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg>Сервисы<svg class="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button>
     <div class="sub" id="svc">
       <a class="nav open-svc" href="#">Мой оффер<span class="free">2 прохода</span></a>
-      <a class="nav open-svc" href="#">Визитка</a>
       <div class="hint">Откроются после теста</div>
       <a class="nav" href="#">Регистратор 24/7<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
       <a class="nav" href="#">Выбор ниши<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
       <a class="nav" href="#">Мой лендинг<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
+      <a class="nav" href="#">Визитка<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
       <a class="nav" href="#">Мой КЭВ<svg class="lock car" style="transform:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
     </div>
     <div class="foot"><a href="#">Старая версия</a><a href="#">Выйти</a></div>
@@ -282,6 +289,7 @@ svg{flex:none}
 
           <section class="panel" id="d-day" aria-label="Мой день">
             <div class="ph"><h3>Мой день</h3><div class="day-tabs" role="tablist"><button role="tab" aria-selected="true" data-tab="today">Сегодня</button><button role="tab" aria-selected="false" data-tab="week">Неделя</button></div></div>
+            <div class="day-empty"><span class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><b>На этой неделе встреч нет</b><p>Когда появятся бесплатные встречи, они будут здесь и&nbsp;в&nbsp;календаре</p><a href="#">Открыть календарь</a></div>
             <div data-pane="today"><p class="feed-ahead">На сегодня дел нет. Ближайшее на неделе</p><div class="day-group"><p class="day-name">Вторник <span>10&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="fa"><div class="tm">19:00</div><div class="pmark"><span class="pm-l">FA</span><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></svg></span></div><div class="tx"><b>Открытая встреча с Игорем</b><div class="row"><span class="pchip"><i></i>Альянс</span><span class="nt">Бесплатно для всех</span></div><span class="nt hst">Ведущий: Игорь Граф</span></div><a class="btn act" href="#">Записаться</a></li></ul></div><div class="day-group"><p class="day-name">Четверг <span>12&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="fa"><div class="tm">18:00</div><div class="pmark"><span class="pm-l">FA</span><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></svg></span></div><div class="tx"><b>Эфир «Как упаковать оффер»</b><div class="row"><span class="pchip"><i></i>Альянс</span><span class="nt">Бесплатно для всех</span></div><span class="nt hst">Ведущий: Игорь Граф</span></div><a class="btn act" href="#">Записаться</a></li></ul></div></div>
             <div data-pane="week" hidden><div class="day-group"><p class="day-name">Вторник <span>10&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="fa"><div class="tm">19:00</div><div class="pmark"><span class="pm-l">FA</span><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></svg></span></div><div class="tx"><b>Открытая встреча с Игорем</b><div class="row"><span class="pchip"><i></i>Альянс</span><span class="nt">Бесплатно для всех</span></div><span class="nt hst">Ведущий: Игорь Граф</span></div><a class="btn act" href="#">Записаться</a></li></ul></div><div class="day-group"><p class="day-name">Четверг <span>12&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="fa"><div class="tm">18:00</div><div class="pmark"><span class="pm-l">FA</span><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></svg></span></div><div class="tx"><b>Эфир «Как упаковать оффер»</b><div class="row"><span class="pchip"><i></i>Альянс</span><span class="nt">Бесплатно для всех</span></div><span class="nt hst">Ведущий: Игорь Граф</span></div><a class="btn act" href="#">Записаться</a></li></ul></div></div>
           </section>
@@ -343,7 +351,7 @@ svg{flex:none}
         </div>
       </div>
     </div>
-    <p class="note">Макет экрана «Ничего не открыто»: нет теста, нет покупок. Имя, даты и события для примера. Нажмите крестик у видео, вкладки «Моего дня», сервисы в меню и день в календаре.</p>
+    <p class="note">Макет экрана «Ничего не открыто»: нет теста, нет покупок. Имя, даты и события для примера. Нажмите крестик у видео, вкладки «Моего дня», сервисы в меню и день в календаре. Пустой «Мой день»: <a href="?day=empty" style="color:var(--blue-ink)">открыть вариант</a>.</p>
   </div>
 </div>
 
@@ -356,6 +364,8 @@ svg{flex:none}
 
 <script>
 if (/[?&]shot=1/.test(location.search)) document.documentElement.classList.add('shot');
+const EMPTY = /[?&]day=empty/.test(location.search);
+if (EMPTY) document.getElementById('d-day').classList.add('no-day');
 // сервисы в меню
 document.querySelectorAll('[data-toggle]').forEach(b => b.addEventListener('click', () => {
   const s = document.getElementById(b.dataset.toggle); const o = !s.classList.contains('open');
@@ -384,6 +394,7 @@ const EV = {
   21:[['12:00','Комнаты Альянса',0]],
   25:[['17:00','Разборы по средам',0]]
 };
+if (EMPTY) { delete EV[10]; delete EV[12]; }
 const cg = document.getElementById('cg'), pop = document.getElementById('pop');
 let html = ['пн','вт','ср','чт','пт','сб','вс'].map(d => `<span class="wd">${d}</span>`).join('') + '<span></span>'.repeat(6);
 for (let d = 1; d <= 30; d++) html += `<button class="cd${d < 6 ? ' past' : ''}${d === 6 ? ' today' : ''}" data-d="${d}" aria-pressed="false">${d}<i class="${EV[d] ? '' : 'no'}"></i></button>`;
