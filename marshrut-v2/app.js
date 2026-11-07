@@ -361,12 +361,24 @@
     });
     return out;
   }
+  function pastLevels() {
+    const cur = P().route.start[0];
+    let out = '';
+    for (let lv = 1; lv < +cur; lv++) {
+      out += `<li class="lvl lvl-past ${lv === 1 ? 'lvl-first' : ''}"><span class="nd lvl-n">${svg('check')}</span><div class="lvl-b"><p class="eyebrow">Уровень ${lv} · пройден</p><h3>${LVL[lv]}</h3></div></li>`;
+      [1, 2, 3].forEach((n) => {
+        const k = lv + '.' + n, e = ETAPY[k];
+        out += `<li class="st is-passed st-past"><span class="nd sq">${svg('check')}</span><div class="st-b st-static"><span class="st-t">Этап ${k} · ${esc(e.name)}</span><span class="st-m"><span>Пройден: ${esc(e.res.charAt(0).toLowerCase() + e.res.slice(1))}</span></span></div></li>`;
+      });
+    }
+    return out;
+  }
   function levelGroups() {
-    let out = '', lvl = null;
+    let out = pastLevels(), lvl = out ? 'past' : null;
     stages().forEach((g) => {
       const lv = g.etap[0];
       if (lv !== lvl) {
-        out += `<li class="lvl ${lvl ? '' : 'lvl-first'}"><span class="nd lvl-n">${lv}</span><div class="lvl-b"><p class="eyebrow">Уровень ${lv}${lvl ? '' : ' · ваш'}</p><h3>${LVL[lv]}</h3></div></li>`;
+        out += `<li class="lvl ${lvl ? '' : 'lvl-first'} ${lv === P().route.start[0] ? 'lvl-cur' : ''}"><span class="nd lvl-n">${lv}</span><div class="lvl-b"><p class="eyebrow">Уровень ${lv}${lv === P().route.start[0] ? ' · ваш' : ''}</p><h3>${LVL[lv]}</h3></div></li>`;
         lvl = lv;
       }
       const e = ETAPY[g.etap], first = g.items[0], lastP = g.items[g.items.length - 1];

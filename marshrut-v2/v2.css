@@ -147,3 +147,11 @@ button.ps-h:hover b { color: var(--blue-ink); }
 .tag.cat::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .tag.cat-P { color: #6a52e0; }
 .tag.cat-B { color: var(--blue-ink); }
+
+/* Пройденные уровни ниже стартового */
+.lvl.lvl-past .nd.lvl-n { background: var(--blue); border-color: var(--blue); }
+.lvl.lvl-past .nd.lvl-n svg { width: 16px; height: 16px; }
+.path > li.lvl.lvl-past::before, .path > li.lvl.lvl-past::after { background: var(--blue); }
+.st-past .st-b.st-static { display: grid; gap: 2px; padding: 10px 0; }
+.st-past .st-t { font-size: 15.5px; font-weight: 700; color: var(--ink-2); }
+.st-past .st-m span { color: var(--muted); }
