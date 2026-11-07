@@ -261,18 +261,33 @@ svg{flex:none}
 .chat img,.chat .fa{width:32px;height:32px;border-radius:10px;flex:none}
 .chat .fa{background:#1B1913;color:#E6CC77;display:grid;place-items:center;font:700 12px/1 Georgia,serif;font-style:normal}
 .chat span{margin-right:auto}.chat svg{width:16px;height:16px;color:var(--blue-ink)}
-.tst{padding:16px 18px}
-.tst p{font-size:13.5px;color:var(--ink2)}
-.tst-b{margin-top:10px;height:36px;font-size:13px;background:#fff;color:var(--blue-ink);border:1px solid rgba(47,123,255,.4)}
+.rec{margin-top:14px;background:linear-gradient(150deg,#F4F8FF 0%,#DCE8FF 55%,#C9DBFF 100%);border-color:rgba(47,123,255,.55);box-shadow:0 10px 28px rgba(47,123,255,.2)}
+.po-x{position:absolute;top:14px;right:14px;z-index:3;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);transition:background .2s var(--ease),color .2s var(--ease)}
+.po-x:hover{background:rgba(255,255,255,.22);color:#fff}
+.po-pr .po-x{background:rgba(17,17,17,.08);color:#111}.po-pr .po-x:hover{background:rgba(17,17,17,.16);color:#111}
+.po-x svg{width:16px;height:16px}
+.promo.fly{transition:transform .6s var(--ease),opacity .6s var(--ease);z-index:20}
+.mini-ads{display:flex;flex-direction:column;gap:12px}
+.mini-ads>a{display:none;animation:miniIn .45s var(--ease) both}
+.mini-ads>a.ghost{display:flex;visibility:hidden;animation:none}
+@keyframes miniIn{from{opacity:0;transform:translateY(10px)}}
+.o-mini{flex-direction:column;align-items:flex-start;gap:4px;padding:16px 18px;border-radius:20px;background:radial-gradient(110% 120% at 0% 0%,#1a2b52 0%,#111a2c 45%,#0D1117 100%);color:#E5E7EB}
+.o-mini small{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B9FFF}
+.o-mini b{font-size:19px;font-weight:800;letter-spacing:-.01em;line-height:1.15;color:#fff}.o-mini b span{color:#E5C062}
+.o-mini i{font-style:normal;display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-size:13px;font-weight:700;color:#E5C062}.o-mini i svg{width:14px;height:14px}
+.hid-offer .po-offer,.hid-pr .po-pr{display:none!important}
+.day4.hid-offer #m-offer,.day11.hid-offer #m-offer,.day4.hid-pr #m-pr,.day11 #m-pr{display:flex}
+@media (prefers-reduced-motion:reduce){.mini-ads>a{animation:none}.promo.fly{transition:opacity .2s linear}}
 .pr-mini{position:relative;overflow:hidden;display:flex;align-items:center;min-height:96px;padding:16px 18px;border-radius:20px;background:oklch(0.918 0.185 104);color:#111}
 .pr-mini b{font-family:"Bebas Neue","Medeo Sans",sans-serif;font-weight:700;font-size:32px;line-height:.9;text-transform:uppercase;display:block}
 .pr-mini b span{display:block;font-size:20px}
 .pr-mini small{font-size:12px;color:#3a3a1a}
 .pr-mini img{position:absolute;right:-10px;bottom:0;height:120%;width:auto}
 /* что показывается по дням и состоянию (пульт макета) */
-.d4,.d4b,.d11{display:none}
+.d4,.d4b,.d4x{display:none}
 .day4 .d4,.day4 .d4b{display:block}
-.day11 .d4{display:block}.day11 .d11{display:flex}.day11 .d4b{display:none}
+.day11 .d4{display:block}.day11 .d4b{display:none}
+.day4 .d4x,.day11 .d4x{display:grid}
 .st-intro1,.st-intro2{display:none}
 .s-intro1 .st-bought,.s-intro2 .st-bought{display:none}
 .s-intro1 .st-intro1,.s-intro2 .st-intro2{display:block}
@@ -298,7 +313,7 @@ svg{flex:none}
   .panel.vid{padding:0}.vid .vh{padding:14px 12px 12px 16px}
   .screen .cap span,.screen .cap{font-size:12px}
   .hello h2{font-size:25px}
-  #d-hello{order:1}#d-vid{order:2}#d-day{order:3}#d-notif{order:4}#d-mem{order:5}#d-chats{order:6}#d-setup{order:7}#d-test{order:8}#d-promos{order:9}#d-prmini{order:10}#d-cal{order:11}
+  #d-hello{order:1}#d-vid{order:2}#d-day{order:3}#d-notif{order:4}#d-mem{order:5}#d-chats{order:6}#d-setup{order:7}#d-promos{order:8}#d-cal{order:9}#d-minis{order:10}
   .hello-f img{width:84px}
   .promo{padding:24px 20px}.po-offer h3{font-size:30px}.po-btn{width:100%}.po-pr{min-height:0}.po-pr .po-txt{max-width:none}.po-pr .po-eye,.po-pr h3{max-width:60%}.po-pr h3{font-size:60px}.po-pr h3 span{font-size:40px}
   .po-img{top:18px;right:-14px;bottom:auto;height:auto;width:46%;max-width:190px;z-index:0;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
@@ -376,7 +391,15 @@ svg{flex:none}
 
           <section class="panel" id="d-day" aria-label="Мой день">
             <div class="ph"><h3>Мой день</h3><div class="day-tabs" role="tablist"><button role="tab" aria-selected="true" data-tab="today">Сегодня</button><button role="tab" aria-selected="false" data-tab="week">Неделя</button></div></div>
-            <div data-pane="today"><div class="st-bought"><div class="day-group"><p class="day-name">Сегодня <span>6&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="ii"><div class="tm"></div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg></span></div><div class="tx"><b>Урок 4. Коннекторы: вся работа в&nbsp;одном окне</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Урок открыт сегодня</span></div></div><a class="btn act" href="#">Открыть</a></li><li class="item" data-p="ii"><div class="tm">до 23:59</div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="m9 12 2 2 4-4"/></svg></span></div><div class="tx"><b>Задание к&nbsp;уроку 3: свой проект в&nbsp;Claude</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Сдать сегодня</span></div></div><a class="btn act gh" href="#">Сдать</a></li></ul></div></div><div class="st-intro1"><div class="day-group"><p class="day-name">Сегодня <span>6&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="ii"><div class="tm"></div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg></span></div><div class="tx"><b>Вступление: первый день бесплатно</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Начните с&nbsp;урока «Зачем Claude»</span></div></div><a class="btn act" href="#">Начать</a></li></ul></div></div><div class="st-intro2"><div class="day-group"><p class="day-name">Сегодня <span>6&nbsp;ноября</span></p><div class="renew"><img src="img/ii-mark.png" alt=""><div><b>Продлите участие в&nbsp;ИИнструментах</b><p>Бесплатный день прошёл. Войдите, чтобы продолжить уроки, или продлите доступ на&nbsp;2&nbsp;месяца.</p><div class="rn-act"><a class="btn rn-p" href="#">Продлить</a><a class="btn rn-g" href="#">Войти</a></div></div></div></div></div></div>
+            <div data-pane="today"><div class="st-bought"><div class="day-group"><p class="day-name">Сегодня <span>6&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="ii"><div class="tm"></div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg></span></div><div class="tx"><b>Урок 4. Коннекторы: вся работа в&nbsp;одном окне</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Урок открыт сегодня</span></div></div><a class="btn act" href="#">Открыть</a></li><li class="item" data-p="ii"><div class="tm">до 23:59</div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="m9 12 2 2 4-4"/></svg></span></div><div class="tx"><b>Задание к&nbsp;уроку 3: свой проект в&nbsp;Claude</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Сдать сегодня</span></div></div><a class="btn act gh" href="#">Сдать</a></li></ul></div></div><div class="st-intro1"><div class="day-group"><p class="day-name">Сегодня <span>6&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="ii"><div class="tm"></div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg></span></div><div class="tx"><b>Вступление: первый день бесплатно</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Начните с&nbsp;урока «Зачем Claude»</span></div></div><a class="btn act" href="#">Начать</a></li></ul></div></div><div class="st-intro2"><div class="day-group"><p class="day-name">Сегодня <span>6&nbsp;ноября</span></p><div class="renew"><img src="img/ii-mark.png" alt=""><div><b>Продлите участие в&nbsp;ИИнструментах</b><p>Бесплатный день прошёл. Войдите, чтобы продолжить уроки, или продлите доступ на&nbsp;2&nbsp;месяца.</p><div class="rn-act"><a class="btn rn-p" href="#">Продлить</a><a class="btn rn-g" href="#">Войти</a></div></div></div></div></div><div class="mtask rec d4x" id="d-rec">
+              <div class="mt-tx">
+                <span class="mt-k"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>Рекомендация</span>
+                <b>Пройдите тест и&nbsp;откройте сервисы</b>
+                <p>Тест соберёт вашу маршрутную карту и&nbsp;активирует дополнительные функции платформы и&nbsp;сервисы</p>
+                <div class="mt-act"><a class="btn btn-p" href="#">Пройти тест</a><small>около 10&nbsp;минут</small></div>
+              </div>
+              <img src="img/frimi.webp" alt="Фрими с рупором и флагом">
+            </div></div>
             <div data-pane="week" hidden><div class="st-bought"><div class="day-group"><p class="day-name">Сегодня <span>6&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="ii"><div class="tm"></div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg></span></div><div class="tx"><b>Урок 4. Коннекторы: вся работа в&nbsp;одном окне</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Урок открыт сегодня</span></div></div><a class="btn act" href="#">Открыть</a></li><li class="item" data-p="ii"><div class="tm">до 23:59</div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="m9 12 2 2 4-4"/></svg></span></div><div class="tx"><b>Задание к&nbsp;уроку 3: свой проект в&nbsp;Claude</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Сдать сегодня</span></div></div><a class="btn act gh" href="#">Сдать</a></li></ul></div><div class="day-group"><p class="day-name">Понедельник <span>9&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="ii"><div class="tm"></div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg></span></div><div class="tx"><b>Урок 5. Cowork: Claude сам делает работу</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Урок откроется</span></div></div><a class="btn act gh" href="#">Открыть</a></li></ul></div><div class="day-group"><p class="day-name">Четверг <span>12&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="ii"><div class="tm"></div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg></span></div><div class="tx"><b>Урок 6. Дизайн: карусели и&nbsp;обложки</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Урок откроется</span></div></div><a class="btn act gh" href="#">Открыть</a></li></ul></div></div><div class="st-intro1"><div class="day-group"><p class="day-name">Сегодня <span>6&nbsp;ноября</span></p><ul class="feed"><li class="item" data-p="ii"><div class="tm"></div><div class="pmark"><img class="pm-i" src="img/ii-mark.png" alt=""><span class="pm-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg></span></div><div class="tx"><b>Вступление: первый день бесплатно</b><div class="row"><span class="pchip"><i></i>ИИнструменты</span><span class="nt">Начните с&nbsp;урока «Зачем Claude»</span></div></div><a class="btn act" href="#">Начать</a></li></ul></div></div><div class="st-intro2"><div class="day-group"><p class="day-name">Сегодня <span>6&nbsp;ноября</span></p><div class="renew"><img src="img/ii-mark.png" alt=""><div><b>Продлите участие в&nbsp;ИИнструментах</b><p>Бесплатный день прошёл. Войдите, чтобы продолжить уроки, или продлите доступ на&nbsp;2&nbsp;месяца.</p><div class="rn-act"><a class="btn rn-p" href="#">Продлить</a><a class="btn rn-g" href="#">Войти</a></div></div></div></div></div></div>
           </section>
 
@@ -390,7 +413,7 @@ svg{flex:none}
           </section>
 
           <section class="promos" id="d-promos" aria-label="Предложения">
-            <div class="promo po-offer d4">
+            <div class="promo po-offer d4" data-ad="offer"><button class="po-x" data-hide="offer" aria-label="Скрыть, оставить маленьким баннером под календарём"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
               <p class="po-eye">ИИ-сервис · 2&nbsp;бесплатных прохода</p>
               <h3>Упакуйте свой <span class="g">оффер</span> <span class="b">за&nbsp;15&nbsp;минут</span></h3>
               <p class="po-sub">Сервис подберёт вам идеального клиента, соберёт позиционирование и&nbsp;оффер для вашей услуги или продукта, предложит, где искать клиентов и&nbsp;как им продавать.</p>
@@ -401,7 +424,7 @@ svg{flex:none}
               </ul>
               <a class="po-btn" href="#">Собрать мой оффер <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
-            <div class="promo po-pr d4b">
+            <div class="promo po-pr d4b" data-ad="pr"><button class="po-x" data-hide="pr" aria-label="Скрыть, оставить маленьким баннером под календарём"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
               <div class="po-txt">
                 <p class="po-eye">Трансформационная онлайн-игра Игоря Графа</p>
                 <h3>Прорыв <span>за&nbsp;30&nbsp;дней</span></h3>
@@ -438,22 +461,20 @@ svg{flex:none}
             </div>
           </section>
 
-          <section class="panel tst d4" id="d-test" aria-label="Тест">
-            <p>Пройдите тест, чтобы активировать дополнительные функции платформы и&nbsp;сервисы</p>
-            <a class="btn tst-b" href="#">Пройти тест</a>
-          </section>
-
-          <a class="pr-mini d11" id="d-prmini" href="#"><div><b>Прорыв <span>за&nbsp;30&nbsp;дней</span></b><small>Онлайн-игра Игоря Графа</small></div><img src="img/proryv-igor.webp" alt=""></a>
-
           <section class="panel" id="d-cal" aria-label="Календарь событий">
             <div class="ph"><h3>Календарь</h3><a class="go" style="color:var(--blue-ink);font-size:13px;font-weight:600" href="#">События</a></div>
             <div class="cal"><div class="cg" id="cg"></div><div class="pop" id="pop" role="dialog" aria-label="События дня"></div></div>
           </section>
+
+          <div class="mini-ads" id="d-minis" aria-label="Свёрнутые предложения">
+            <a class="o-mini" id="m-offer" href="#"><small>ИИ-сервис · 2&nbsp;бесплатных прохода</small><b>Упакуйте <span>оффер</span> за&nbsp;15&nbsp;минут</b><i>Собрать мой оффер <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+            <a class="pr-mini" id="m-pr" href="#"><div><b>Прорыв <span>за&nbsp;30&nbsp;дней</span></b><small>Онлайн-игра Игоря Графа</small></div><img src="img/proryv-igor.webp" alt=""></a>
+          </div>
         </div>
       </div>
     </div>
     <div class="pult" id="pult"></div>
-    <p class="note">Макет экрана «Продукт без теста» на примере ИИнструментов. Имя, уроки и даты для примера. Пульт выше переключает состояние и день: блок теста и промо «Мой оффер» появляются с 4-го дня, «Прорыв» 7 дней внизу, потом маленьким баннером справа.</p>
+    <p class="note">Макет экрана «Продукт без теста» на примере ИИнструментов. Имя, уроки и даты для примера. Пульт выше переключает состояние и день: с 4-го дня в «Моём дне» появляется рекомендация пройти тест, внизу промо «Мой оффер» и «Прорыв». Крестик на промо сворачивает его в маленький баннер под календарём. «Прорыв» 7 дней внизу, потом сам становится маленьким.</p>
   </div>
 </div>
 
@@ -471,7 +492,23 @@ const Q = new URLSearchParams(location.search);
 const ST = Q.get('s') || 'bought', DAY = +(Q.get('d') || 4);
 document.body.classList.add('s-' + ST, DAY >= 11 ? 'day11' : DAY >= 4 ? 'day4' : 'day1');
 const link = (p, l) => { const u = new URLSearchParams(Q); Object.entries(p).forEach(([k, v]) => u.set(k, v)); const on = Object.entries(p).every(([k, v]) => (k === 's' ? ST : String(DAY)) === String(v)); return `<a class="${on ? 'on' : ''}" href="?${u}">${l}</a>`; };
-document.getElementById('pult').innerHTML = 'Состояние: ' + link({s:'intro1'}, 'Вступление, 1-й день') + link({s:'intro2'}, 'Вступление, через сутки') + link({s:'bought'}, 'Купил') + '&nbsp;&nbsp;День: ' + link({d:1}, '1-й') + link({d:4}, '4-й') + link({d:11}, '11-й');
+document.getElementById('pult').innerHTML = 'Состояние: ' + link({s:'intro1'}, 'Вступление, 1-й день') + link({s:'intro2'}, 'Вступление, через сутки') + link({s:'bought'}, 'Купил') + '&nbsp;&nbsp;День: ' + link({d:1}, '1-й') + link({d:4}, '4-й') + link({d:11}, '11-й') + '&nbsp;&nbsp;<a href="#" id="unhide">Вернуть большие баннеры</a>';
+// баннер по крестику сворачивается под календарь и запоминается
+const HK = 'pp-hidden-ads', hid = new Set((Q.get('h') || localStorage.getItem(HK) || '').split(',').filter(Boolean));
+hid.forEach(k => document.body.classList.add('hid-' + k));
+document.querySelectorAll('.po-x').forEach(b => b.addEventListener('click', () => {
+  const k = b.dataset.hide, big = b.closest('.promo'), mini = document.getElementById('m-' + k);
+  const rm = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  hid.add(k); localStorage.setItem(HK, [...hid].join(','));
+  const done = () => { document.body.classList.add('hid-' + k); mini.classList.remove('ghost'); big.classList.remove('fly'); big.style.cssText = ''; };
+  if (getComputedStyle(mini).display === 'none') mini.classList.add('ghost');
+  const br = big.getBoundingClientRect(), mr = mini.getBoundingClientRect();
+  big.classList.add('fly');
+  if (!rm) { big.style.transformOrigin = '0 0'; big.style.transform = `translate(${mr.left - br.left}px,${mr.top - br.top}px) scale(${mr.width / br.width},${mr.height / br.height})`; }
+  big.style.opacity = '0';
+  setTimeout(done, rm ? 200 : 600);
+}));
+document.getElementById('unhide').addEventListener('click', e => { e.preventDefault(); localStorage.removeItem(HK); location.search = new URLSearchParams([...Q].filter(([k]) => k !== 'h')).toString(); });
 // сервисы в меню
 document.querySelectorAll('[data-toggle]').forEach(b => b.addEventListener('click', () => {
   const s = document.getElementById(b.dataset.toggle); const o = !s.classList.contains('open');
