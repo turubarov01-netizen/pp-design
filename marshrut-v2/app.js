@@ -67,7 +67,7 @@
     at30: 'Идёт шаг 30, один шаг пропущен',
   };
 
-  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, open: new Set(), shut: new Set(), answer: '', toast: null, flash: null };
+  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, open: new Set(), shut: new Set(), answer: '', toast: null, flash: null, stage: {}, sf: {} };
   const P = () => PROFILES.find((p) => p.id === ui.pid);
   const ten = () => P().route.ten;
   const rest = () => P().route.rest;
@@ -113,7 +113,7 @@
     const all = seq();
     const t = all.slice(0, 10);
     const full = () => { ALL_ITEMS.forEach((i) => (ui.prep[i] = true)); ui.cnt = { wish: 10, fsteps: 5, zv: 3, tasks: 5 }; };
-    Object.assign(ui, { sit: k, watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: { wish: 0, fsteps: 0, zv: 0, tasks: 0 }, setup: 'no', access: 'free', answer: '', open: new Set(), shut: new Set() });
+    Object.assign(ui, { sit: k, watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: { wish: 0, fsteps: 0, zv: 0, tasks: 0 }, stage: {}, sf: {}, setup: 'no', access: 'free', answer: '', open: new Set(), shut: new Set() });
     const doneN = (n) => all.slice(0, n).forEach((x) => { ui.done.add(x); ui.watched.add(x); });
     if (k === 'some') { [t[0], t[2], t[3]].forEach((x) => ui.watched.add(x)); ui.done.add(t[0]); ui.done.add(t[2]); ui.prep.inc = true; ui.cnt = { wish: 3, tasks: 1 }; }
     if (k === 'gate6') { doneN(5); Object.assign(ui.prep, { inc: true, biz: true, focus: true, fday: true, wheel: true, habit: true, chat: true }); ui.cnt = { wish: 6, fsteps: 2, zv: 1, tasks: 3 }; }
@@ -144,6 +144,7 @@
     lock: '<rect width="16" height="11" x="4" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
     play: '<path d="M7 4.5v15l12-7.5z"/>',
     chev: '<path d="m6 9 6 6 6-6"/>',
+    flag: '<path d="M4 22V4"/><path d="M4 4h12l-2 4 2 4H4"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
     x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
     arrow: '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>',
@@ -257,7 +258,7 @@
   }
 
   /* Группа шагов со сворачиванием: пройденные прячутся, виден только предыдущий; пропущенные видны всегда */
-  function group(gid, nd, title, meta, positions, extraCls) {
+  function group(gid, nd, title, meta, positions, extraCls, tail) {
     const ld = lastDone(), c = curPos();
     const allDone = positions.every((p) => state(p) === 'done');
     const hasCur = positions.some((p) => p === c || actionable(state(p)));
@@ -284,7 +285,7 @@
       out += step(p);
     });
     flushMore();
-    return out;
+    return out + (tail || '');
   }
 
   /* Подготовка к росту: первая в маршруте, сворачивается */
@@ -373,6 +374,36 @@
     }
     return out;
   }
+  /* Завершение этапа: заявка куратору. Этап засчитывается после проверки, уроки остаются открытыми */
+  const SF = {
+    '1.1': { intro: 'Укажите пять ниш, которые выбрали, и почему каждую.', rows: 5, a: 'Ниша', b: 'Почему выбрали' },
+    '1.2': { intro: 'Укажите пять ниш, которые протестировали, и результат теста каждой. Внизу ниша, которую выбрали, и первая оплата.', rows: 5, a: 'Ниша', b: 'Результат теста: заявки, оплаты, цена заявки', extra: 'Выбранная ниша и первая оплата' },
+  };
+  function stageDone(etap) {
+    const st = ui.stage[etap] || 'none', lv = +etap[0], last = etap[2] === '3';
+    const head = (t) => `<div class="sd-h"><span class="sd-i">${svg(st === 'ok' ? 'check' : 'flag')}</span><div><b>${t}</b><span>Уроки этапа остаются открытыми, их можно пересматривать.</span></div></div>`;
+    let body = '';
+    if (st === 'ok') body = head(`Этап ${etap} пройден`) + '<p class="sd-n">Куратор принял результат.</p>';
+    else if (st === 'sent') body = head(`Этап ${etap}: заявка на${NB}проверке`) + `<p class="sd-n">Куратор проверит результат и${NB}ответит в${NB}Telegram.</p><button class="btn soft sm" data-act="stok" data-v="${etap}">Прототип: куратор принял</button>`;
+    else if (last) {
+      const fm = FIN[P().id], target = GOAL[fm.metric][lv - 1], year = fm.perMonth * 12, done = year >= target;
+      body = head(`Завершение этапа ${etap}: финансовый результат уровня`) + `<p class="sd-n">Этап закрывает уровень ${LVL[lv]}. Нужен результат за${NB}год: ${fm.metric === 'income' ? 'личный доход' : 'выручка компании'} ${short(target)}.</p>
+        <div class="sd-fin"><i><u style="width:${Math.min(100, (year / target) * 100).toFixed(1)}%"></u></i><span>Сейчас ${usd(year)} за${NB}год · ${done ? 'цель достигнута' : `осталось ${usd(target - year)}`}</span></div>
+        ${done ? `<button class="btn sm" data-act="stsend" data-v="${etap}">Подать заявку куратору</button>` : `<button class="btn soft sm" data-act="go" data-v="inc">Открыть «Финансы»</button>`}`;
+    } else if (SF[etap]) {
+      const c = SF[etap], v = ui.sf[etap] || {};
+      const rows = Array.from({ length: c.rows }, (_, i) => `<div class="sd-r"><span class="sd-k">${i + 1}</span><input data-sf="${etap}:a${i}" value="${esc(v['a' + i] || '')}" placeholder="${c.a}" aria-label="${c.a} ${i + 1}"><input data-sf="${etap}:b${i}" value="${esc(v['b' + i] || '')}" placeholder="${c.b}" aria-label="${c.b} ${i + 1}"></div>`).join('');
+      body = head(`Завершение этапа ${etap}`) + `<p class="sd-n">${c.intro}</p><div class="sd-f">${rows}${c.extra ? `<input class="sd-x" data-sf="${etap}:x" value="${esc(v.x || '')}" placeholder="${c.extra}" aria-label="${c.extra}">` : ''}</div>
+        <button class="btn sm" data-act="stsend" data-v="${etap}">Отправить на${NB}проверку</button>`;
+    } else {
+      const v = ui.sf[etap] || {};
+      body = head(`Завершение этапа ${etap}`) + `<p class="sd-n">Покажите результат этапа: ${esc(ETAPY[etap].res.charAt(0).toLowerCase() + ETAPY[etap].res.slice(1))}</p>
+        <div class="sd-f"><textarea data-sf="${etap}:t" rows="3" placeholder="Что сделали, цифры, ссылка на${NB}таблицу или документ">${esc(v.t || '')}</textarea></div>
+        <button class="btn sm" data-act="stsend" data-v="${etap}">Отправить на${NB}проверку</button>`;
+    }
+    return `<li class="ls sd-li"><span class="nd nd-ghost"></span><div class="sd ${st}">${body}</div></li>`;
+  }
+
   function levelGroups() {
     let out = pastLevels(), lvl = out ? 'past' : null;
     stages().forEach((g) => {
@@ -383,7 +414,12 @@
       }
       const e = ETAPY[g.etap], first = g.items[0], lastP = g.items[g.items.length - 1];
       const pN = g.items.filter((p) => catOf(p) === 'P').length;
-      out += group('e' + g.etap, g.etap, `Этап ${g.etap} · ${esc(e.name)}`, `<span>${first === lastP ? `Шаг ${first}` : `Шаги ${first}–${lastP}`} · личность ${pN}, бизнес ${g.items.length - pN}</span><span class="res">Этап готов, когда: ${esc(e.res)}</span>`, g.items);
+      if (lv !== P().route.start[0]) {
+        out += `<li class="st st-future"><span class="nd sq">${g.etap}</span><div class="st-b st-static"><span class="st-t">Этап ${g.etap} · ${esc(e.name)}</span><span class="st-m"><span>${stepsWord(g.items.length)} · откроются на${NB}уровне ${LVL[lv]}</span><span class="res">Результат этапа: ${esc(e.res.charAt(0).toLowerCase() + e.res.slice(1))}</span></span></div></li>`;
+        return;
+      }
+      const ok = ui.stage[g.etap] === 'ok';
+      out += group('e' + g.etap, g.etap, `Этап ${g.etap} · ${esc(e.name)}`, `${ok ? '<span class="tag ok-t">Этап пройден</span>' : ''}<span>${first === lastP ? `Шаг ${first}` : `Шаги ${first}–${lastP}`} · личность ${pN}, бизнес ${g.items.length - pN}</span><span class="res">Этап готов, когда: ${esc(e.res)}</span>`, g.items, ok ? 'stage-ok' : '', stageDone(g.etap));
     });
     return out;
   }
@@ -427,6 +463,12 @@
     </section>`;
   }
 
+  function bizMini() {
+    const p = P(), fm = FIN[p.id], lv = +p.route.start[0];
+    const target = GOAL[fm.metric][lv - 1], year = fm.perMonth * 12, share = year / target;
+    return `<section class="card biz-mini"><div class="bm-d">${dial(share)}</div><div class="bm-t"><p class="eyebrow">Ваш бизнес · ${LVL[lv]}</p><b class="num">${usd(year)}</b><span>прогноз на${NB}год · ${Math.round(share * 100)}% цели ${short(target)}</span></div><button class="link" data-act="go" data-v="inc" aria-label="Открыть «Финансы»">${svg('arrow')}</button></section>`;
+  }
+
   /* «Знакомьтесь»: случайный фриман с «Чем могу помочь», как на дашборде Альянса (вымышленные люди) */
   const FREEMEN = [
     { n: 'Анна Соколова', c: 'Москва', lv: 'Бунтарь', help: 'Соберу воронку в Telegram-боте и настрою рассылку', look: 'Ищу маркетолога для запуска курса' },
@@ -449,7 +491,6 @@
 
   function aside() {
     return `<aside class="col">
-      ${bizCard()}
       <section class="card sec rules"><p class="eyebrow">Как открываются шаги</p>
         <ol>
           <li><b>Шаги 1–5 открыты сразу</b><span>Смотрите в${NB}любом порядке. В${NB}каждом есть задание.</span></li>
@@ -466,6 +507,7 @@
     app.innerHTML = `${demoBar()}<div class="kab">${side()}<div class="main">${topBar()}
       <main class="content">
         ${guide()}
+        ${bizMini()}
         <div class="split">
           <section class="card path-c" aria-label="Маршрут"><ol class="path">
             ${prepBlock()}
@@ -514,6 +556,8 @@
       if (c) { ui.openL = seq()[c - 1]; render(); scrollTo('l' + c); return; }
     }
     else if (a === 'gowall') { scrollTo('wall'); return; }
+    else if (a === 'stsend') { ui.stage[v] = 'sent'; custom(); toast(`Заявка по этапу ${v} отправлена куратору`); }
+    else if (a === 'stok') { ui.stage[v] = 'ok'; custom(); toast(`Этап ${v} пройден`); }
     else if (a === 'hcnext') { ui.fm++; render(); return; }
     else if (a === 'hcwrite') { toast(`Здесь откроется чат: ${FREEMEN[ui.fm % FREEMEN.length].n}`); render(); return; }
     else if (a === 'go') { const it = PREP.flatMap((s) => s.items).find((i) => i.k === v); toast(`Здесь откроется: ${it.go}`); render(); return; }
@@ -538,6 +582,7 @@
     if (a === 'access') { ui.access = e.target.value; custom(); const c = curPos(); if (c) ui.openL = seq()[c - 1]; render(); }
   });
   app.addEventListener('input', (e) => {
+    if (e.target.dataset.sf) { const [et, k] = e.target.dataset.sf.split(':'); (ui.sf[et] = ui.sf[et] || {})[k] = e.target.value; return; }
     if (e.target.dataset.act !== 'answer') return;
     ui.answer = e.target.value;
     const btn = app.querySelector('[data-act="submit"]');
