@@ -253,12 +253,20 @@
   function nowCard(pos, k, s, tag) {
     const watched = s === 'watched' || s === 'skip';
     const step1 = `<li class="${watched ? 'ok' : 'todo'}"><span class="chk-n">${watched ? svg('check') : '1'}</span>
-        <div class="chk-b"><b>Посмотреть урок</b><span>${watched ? 'Видео просмотрено' : libOf(k)}</span></div>
+        <div class="chk-b"><b>Посмотреть урок</b><span>${watched ? 'Смотрел до конца' : libOf(k)}</span></div>
         ${watched ? '<button class="btn soft sm" data-act="watch">Пересмотреть</button>' : `<button class="btn sm" data-act="watch">${svg('play', 'ic-f')}Смотреть</button>`}</li>`;
+    const h = hwOf(k);
+    const nohw = h === null;
+    const title = nohw ? 'Поработать с уроком' : 'Задание';
+    const text = nohw ? 'Домашки нет. Звёзды за то, как вы поработали с уроком.' : h ? h.t : DEF_TASK;
+    const crit = nohw ? critList(window.NOHW, 'За что звёзды') : h && h.one ? critOne(h.s[0]) : critList(h ? h.s : LES_CRIT, h ? 'За что звёзды' : 'Как оценивается');
+    const form = h && h.one
+      ? `<div class="ans-a"><button class="btn sm" data-act="submit" data-free="1">Пройти тест</button></div>`
+      : `<label class="ans"><span class="ans-l">${nohw ? 'Ваш инсайт' : 'Ваш результат'}</span><textarea data-act="answer" rows="3" placeholder="${nohw ? 'Что поняли из урока, 100–200 символов' : 'Что сделали и что поняли'}">${esc(ui.answer)}</textarea></label>
+          <div class="ans-a"><button class="btn sm" data-act="submit" ${ui.answer.trim().length < 3 ? 'disabled' : ''}>${nohw ? 'Сохранить' : 'Сдать задание'}</button></div>`;
     const step2 = `<li class="${watched ? 'todo' : 'wait'}"><span class="chk-n">2</span>
-        <div class="chk-b"><b>Задание</b><span>${esc(DEF_TASK)}</span>${critList(LES_CRIT)}
-        ${watched ? `<label class="ans"><span class="ans-l">Ваш результат</span><textarea data-act="answer" rows="3" placeholder="Что сделали и что поняли">${esc(ui.answer)}</textarea></label>
-          <div class="ans-a"><button class="btn sm" data-act="submit" ${ui.answer.trim().length < 3 ? 'disabled' : ''}>Сдать задание</button></div>` : '<span class="wait-n">Откроется после просмотра</span>'}
+        <div class="chk-b"><b>${title}</b><span class="hw-t">${esc(text)}</span>${crit}
+        ${watched ? form : '<span class="wait-n">Откроется после просмотра</span>'}
         </div></li>`;
     const eyebrow = pos <= 5 ? `Шаг ${pos} · можно в${NB}любом порядке` : s === 'skip' ? `Шаг ${pos} · пропущен` : `Сейчас · шаг ${pos}`;
     return `<li class="ls is-now ${pos <= 10 && ten()[pos - 1].kind === 'bar' ? 'pers' : ''} ${ui.flash === k ? 'enter' : ''}" id="l${pos}">
@@ -326,7 +334,7 @@
   const starsOf = (q) => (!q || !q.t ? 0 : q.s >= 5 ? 5 : q.t >= 5 ? 4 : q.s >= 2 ? 3 : q.t >= 2 ? 2 : 1);
   const seed = (x) => { let h = 7; for (const c of x + ui.pid) h = (h * 31 + c.charCodeAt(0)) % 9973; return h; };
   const qScore = (k) => (k === 'fday' || k === 'habitdone' ? starsOf(ui.q[k]) : !ui.prep[k] ? 0 : 2 + (seed(k) % 4));
-  const lesScore = (k) => 2 + (seed(k) % 4);
+  const lesScore = (k) => (hwOf(k) && hwOf(k).one ? 5 : 2 + (seed(k) % 4));
   const qIcons = (n, sm) => `<span class="st-i ${sm ? 'sm' : ''}" role="img" aria-label="${n} из${NB}5 звёзд">${Array.from({ length: 5 }, (_, i) => `<i class="${i < n ? 'on' : ''}">${svg('star')}</i>`).join('')}</span>`;
   function qLine(k) {
     const n = qScore(k), c = CRIT[k];
@@ -335,6 +343,8 @@
   }
   const avgOf = (arr) => (arr.length ? arr.reduce((x, y) => x + y, 0) / arr.length : 0);
   const avgChip = (arr) => (arr.length ? `<span class="q-avg" title="Средняя оценка задач">${svg('star')}<b>${avgOf(arr).toFixed(1).replace('.', ',')}</b></span>` : '');
+  const hwOf = (k) => (window.HW && k in window.HW ? window.HW[k] : undefined);
+  const critOne = (t) => `<details class="crit"><summary>За что звёзды${svg('chev', 'chev')}</summary><ol><li>${qIcons(5, true)}<span>${esc(t)}</span></li></ol></details>`;
   const critList = (c, title) => `<details class="crit"><summary>${title || 'Как оценивается'}${svg('chev', 'chev')}</summary><ol>${c.map((t, i) => `<li>${qIcons(i + 1, true)}<span>${t}</span></li>`).join('')}</ol></details>`;
 
   /* Подготовка к росту: первая в маршруте, сворачивается */
@@ -613,7 +623,7 @@
       const c = curPos(); ui.openL = c ? seq()[c - 1] : null; ui.flash = ui.openL;
       if (!was6 && gate6()) toast('Шаг 6 открыт');
       else if (seq().indexOf(k) < 5 && firstFiveDone() === 5 && !prepDone()) toast('Задания 1–5 сданы. Осталась подготовка');
-      else toast('Задание сдано');
+      else toast(hwOf(k) === null ? 'Инсайт сохранён' : 'Задание сдано');
     }
     else if (a === 'goprep') { ui.shut.delete('prep'); ui.open.add('prep'); render(); scrollTo('sprep'); return; }
     else if (a === 'gocur') {
