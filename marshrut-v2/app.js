@@ -200,7 +200,7 @@
         <div class="mini"><span class="num">${done} из${NB}${total}</span><i><u style="width:${(done / total) * 100}%"></u></i><span>шагов пройдено</span></div>
         <details class="why"><summary>Почему такой маршрут${svg('chev', 'chev')}</summary>
           <div class="why-b">
-            <p>Собран по вашей анкете: ${SEG[p.seg].toLowerCase()}, шаг бизнеса ${p.step}, уровень ПЭРЛ «${esc(p.pearl)}». Шаг 1 у${NB}всех один, шаги 2–5 закрывают то, что мешает, шаги 6–10 начинают этап ${p.route.start} «${esc(ETAPY[p.route.start].name)}».</p>
+            <p>Собран по вашей анкете: ${SEG[p.seg].toLowerCase()}, шаг бизнеса ${p.step}, уровень ПЭРЛ «${esc(p.pearl)}». Вы начинаете с${NB}этапа ${p.route.start} «${esc(ETAPY[p.route.start].name)}». Шаги 1–5 про личность: первый у${NB}всех один, остальные закрывают то, что мешает. У${NB}каждого шага пометка: «Личность» или «Бизнес».</p>
             <ul>${bars.map((c) => `<li class="${c === p.main ? 'main' : ''}">${c === p.main ? '<b>Главное</b>' : ''}${esc(p.bar_labels[c])}</li>`).join('')}</ul>
           </div>
         </details>
@@ -210,11 +210,15 @@
 
   /* Строка и карточка шага */
   const libOf = (k) => (L[k].n ? `Урок №${L[k].n}` : 'Ролик YouTube');
-  const WHY = (x) => x.kind === 'bar' ? `<span class="tag pers">${esc(x.why)}</span>` : x.kind === 'base' ? `<span class="tag club">${esc(x.why.split(':')[0])}</span>` : `<span class="tag etap">${esc(x.why)}</span>`;
+  const WHY = (x) => x.kind === 'bar' ? `<span class="tag pers">${esc(x.why)}</span>` : x.kind === 'base' ? `<span class="tag club">${esc(x.why.split(':')[0])}</span>` : '';
+  const LVL = { 1: 'Product-Market Fit', 2: 'Scaling', 3: 'Enterprise' };
+  const CAT_T = { P: 'Личность', B: 'Бизнес' };
+  const catOf = (pos) => (pos <= 5 ? 'P' : L[seq()[pos - 1]].c || 'B');
+  const catTag = (pos) => `<span class="tag cat cat-${catOf(pos)}">${CAT_T[catOf(pos)]}</span>`;
   function step(pos) {
     const k = seq()[pos - 1];
     const s = state(pos);
-    const tag = (pos <= 10 ? WHY(ten()[pos - 1]) : '') + (s === 'skip' ? '<span class="tag warn">Пропущен</span>' : '');
+    const tag = catTag(pos) + (pos <= 5 ? WHY(ten()[pos - 1]) : '') + (s === 'skip' ? '<span class="tag warn">Пропущен</span>' : '');
     if (ui.openL === k && actionable(s)) return nowCard(pos, k, s, tag);
     const node = s === 'done' ? svg('check') : s === 'skip' ? svg('skip') : ['gate', 'paid', 'setup'].includes(s) ? svg('lock') : `<span class="num">${pos}</span>`;
     const what = {
@@ -257,7 +261,7 @@
     const ld = lastDone(), c = curPos();
     const allDone = positions.every((p) => state(p) === 'done');
     const hasCur = positions.some((p) => p === c || actionable(state(p)));
-    const defOpen = positions.some((p) => actionable(state(p)));
+    const defOpen = positions.some((p) => actionable(state(p)) || p === c) || (positions.includes(6) && !gate6()) || (positions.includes(11) && doneTotal() >= 10 && wall11() !== '');
     const open = ui.open.has(gid) || (defOpen && !ui.shut.has(gid));
     const doneN = positions.filter((p) => state(p) === 'done').length;
     const m = allDone ? `<span>Пройдено, ${stepsWord(positions.length)}</span>` : meta;
@@ -268,16 +272,18 @@
     const hidden = positions.filter((p) => state(p) === 'done' && !(p === ld && p > 5) && !showAll);
     if (hidden.length) out += `<li class="ls fold"><span class="nd nd-dot">${svg('check')}</span><button class="fold-b" data-act="fold" data-v="done-${gid}">Пройдено ${stepsWord(hidden.length)} · показать</button></li>`;
     else if (showAll && doneN > 1) out += `<li class="ls fold"><span class="nd nd-dot">${svg('check')}</span><button class="fold-b" data-act="fold" data-v="done-${gid}">Свернуть пройденные</button></li>`;
-    let locked = 0;
+    let locked = 0, skipped = 0;
     const moreOpen = ui.open.has('more-' + gid);
     const visible = positions.filter((p) => !hidden.includes(p));
     const lockedAll = visible.filter((p) => ['next', 'gate', 'paid', 'setup'].includes(state(p)));
+    const flushMore = () => { if (skipped) out += `<li class="ls fold"><span class="nd nd-dot">${svg('lock')}</span><button class="fold-b" data-act="fold" data-v="more-${gid}">Ещё ${stepsWord(skipped)} · показать</button></li>`; skipped = 0; };
     visible.forEach((p) => {
-      const isLocked = lockedAll.includes(p);
-      if (isLocked) { locked++; if (locked > 3 && !moreOpen) return; }
+      if (p === 6) out += gate6Card();
+      if (p === 11) { const w = wall11(); if (w) { flushMore(); out += w; locked = 0; } }
+      if (lockedAll.includes(p)) { locked++; if (locked > 3 && !moreOpen) { skipped++; return; } }
       out += step(p);
     });
-    if (lockedAll.length > 3 && !moreOpen) out += `<li class="ls fold"><span class="nd nd-dot">${svg('lock')}</span><button class="fold-b" data-act="fold" data-v="more-${gid}">Ещё ${stepsWord(lockedAll.length - 3)} · показать</button></li>`;
+    flushMore();
     return out;
   }
 
@@ -342,19 +348,32 @@
       <h3>Шаг 11 откроется после установочной сессии</h3>${setupCard(true)}</div></li>`;
   }
 
-  function etapGroups() {
-    const groups = [];
-    rest().forEach((x, i) => {
-      const last = groups[groups.length - 1];
-      if (!last || last.etap !== x.etap) groups.push({ etap: x.etap, items: [] });
-      groups[groups.length - 1].items.push(11 + i);
+  /* Маршрут по уровням и этапам: шаги 1–10 и «Старт» входят в первый этап человека */
+  function stages() {
+    const st = P().route.start, out = [];
+    seq().forEach((k, i) => {
+      const pos = i + 1;
+      let e = pos <= 10 ? st : rest()[pos - 11].etap;
+      if (e === 'start') e = st;
+      let g = out.find((x) => x.etap === e);
+      if (!g) { g = { etap: e, items: [] }; out.push(g); }
+      g.items.push(pos);
     });
-    return groups.map((g) => {
-      const e = ETAPY[g.etap];
-      const label = g.etap === 'start' ? 'Старт' : `Этап ${g.etap} · ${esc(e.name)}`;
-      const first = g.items[0], lastP = g.items[g.items.length - 1];
-      return group('e' + g.etap, g.etap === 'start' ? 'С' : g.etap, label, `<span>${first === lastP ? `Шаг ${first}` : `Шаги ${first}–${lastP}`}</span><span class="res">Этап готов, когда: ${esc(e.res)}</span>`, g.items);
-    }).join('');
+    return out;
+  }
+  function levelGroups() {
+    let out = '', lvl = null;
+    stages().forEach((g) => {
+      const lv = g.etap[0];
+      if (lv !== lvl) {
+        out += `<li class="lvl ${lvl ? '' : 'lvl-first'}"><span class="nd lvl-n">${lv}</span><div class="lvl-b"><p class="eyebrow">Уровень ${lv}${lvl ? '' : ' · ваш'}</p><h3>${LVL[lv]}</h3></div></li>`;
+        lvl = lv;
+      }
+      const e = ETAPY[g.etap], first = g.items[0], lastP = g.items[g.items.length - 1];
+      const pN = g.items.filter((p) => catOf(p) === 'P').length;
+      out += group('e' + g.etap, g.etap, `Этап ${g.etap} · ${esc(e.name)}`, `<span>${first === lastP ? `Шаг ${first}` : `Шаги ${first}–${lastP}`} · личность ${pN}, бизнес ${g.items.length - pN}</span><span class="res">Этап готов, когда: ${esc(e.res)}</span>`, g.items);
+    });
+    return out;
   }
 
   function aside() {
@@ -377,11 +396,7 @@
         <div class="split">
           <section class="card path-c" aria-label="Маршрут"><ol class="path">
             ${prepBlock()}
-            ${group('g15', '1–5', 'Знакомство: шаги 1–5', '<span>Можно смотреть сразу и в любом порядке</span>', [1, 2, 3, 4, 5])}
-            ${gate6Card()}
-            ${group('g610', '6–10', 'Начало пути: шаги 6–10', `<span>По очереди, начало этапа ${P().route.start}</span>`, [6, 7, 8, 9, 10])}
-            ${wall11()}
-            ${paid() ? etapGroups() : ''}
+            ${levelGroups()}
           </ol></section>
           ${aside()}
         </div>

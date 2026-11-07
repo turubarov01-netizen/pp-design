@@ -130,3 +130,20 @@ button.ps-h:hover b { color: var(--blue-ink); }
 .ok > .pi .pi-go { color: var(--muted); font-weight: 600; }
 .ok > .pi .pi-c { border-style: solid; }
 @media (max-width: 960px) { .toast { bottom: 104px; } }
+
+/* Уровень и этапы (07.11.2026) */
+.lvl { --top: 26px; padding-top: 14px; }
+.lvl.lvl-first { padding-top: 6px; }
+.lvl .nd.lvl-n { margin-top: calc(var(--top) - var(--nd) / 2 + 14px); border-radius: 11px; background: #121933; border-color: #121933; color: #fff; font-size: 15px; font-weight: 800; }
+.lvl.lvl-first .nd.lvl-n { margin-top: calc(var(--top) - var(--nd) / 2 + 6px); }
+.path .lvl-b { display: block; margin: 0; padding: 4px 0 8px; border-radius: 0; background: none; border-bottom: 1px solid var(--line-2); }
+.lvl-b .eyebrow { color: var(--muted); }
+.lvl-b h3 { margin: 2px 0 0; font-size: 21px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; }
+.path > li.lvl::before { height: calc(var(--top) + 14px); }
+.path > li.lvl::after { top: calc(var(--top) + 14px); }
+
+/* Личность / Бизнес */
+.tag.cat { gap: 5px; padding: 0 7px 0 6px; background: none; box-shadow: inset 0 0 0 1px color-mix(in oklch, currentColor 38%, transparent); }
+.tag.cat::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.tag.cat-P { color: #6a52e0; }
+.tag.cat-B { color: var(--blue-ink); }
