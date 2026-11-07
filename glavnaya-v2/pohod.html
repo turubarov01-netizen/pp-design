@@ -729,13 +729,15 @@ svg{flex:none}
 
 @media (min-width:901px){.main{height:100vh;display:flex;flex-direction:column;overflow:hidden}.main>.top{flex:none}.main>.wrap{flex:1 1 auto;min-height:0;width:100%;padding-top:0;padding-bottom:0}.grid{height:100%;align-items:stretch}.grid>.col,.grid>.col:last-child{position:static;height:100%;max-height:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;margin:0 -10px;padding:28px 10px 32px}.grid>.col::-webkit-scrollbar{display:none}.grid>.col>*{flex-shrink:0}.main>.pult{flex:none;width:100%;padding-top:10px;padding-bottom:10px;border-top:1px solid var(--line)}}
 
-/* страница похода */
+/* страницы похода и обмена */
 .pg-hike .main>.wrap{overflow-y:auto;overscroll-behavior:contain}
 @media (min-width:901px){.pg-hike .main>.wrap{padding-top:28px;padding-bottom:40px}}
 .hk{display:grid;grid-template-columns:minmax(0,1fr) 352px;gap:20px;align-items:start}
-.hk-k{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-ink)}
 .hk-hero h2{font-size:40px;margin:0 0 14px}
-.hk-lead{font-size:17px;line-height:1.6;color:var(--ink2);max-width:62ch}
+.hk-lead{font-size:17px;line-height:1.6;color:var(--ink2);max-width:62ch;margin:0}
+.hk-ph{display:grid;grid-template-columns:2fr 1fr;gap:8px;height:230px;margin:-6px -8px 22px;border-radius:14px;overflow:hidden}
+.hk-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.hk-ph img[src*=summit]{object-position:50% 20%}
 .hk-facts{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column}
 .hk-facts li{display:grid;grid-template-columns:112px minmax(0,1fr);gap:18px;align-items:center;padding:18px 0;border-top:1px solid var(--line)}
 .hk-mark{display:flex;align-items:center;gap:4px;color:var(--blue)}
@@ -750,19 +752,55 @@ svg{flex:none}
 .hk-form h3{font-size:20px;font-weight:800;margin:0 0 6px}
 .hk-form p{margin:0;color:var(--ink2);font-size:14.5px;line-height:1.5}
 .hk-form .btn{width:100%;margin-top:12px;height:46px}
-.hk-form .btn:first-of-type{margin-top:18px}
-.hk-form img{display:block;width:96px;margin:4px auto 0}
+.hk-form .hk-ask .btn:first-of-type{margin-top:18px}
+.hk-form img.fr{display:block;width:96px;margin:4px auto 0}
 .hk-done{display:none;text-align:center}
 .hk-done b{display:block;font-size:17px;margin:6px 0 4px}
 .hk-done .btn{background:transparent;color:var(--ink3);height:34px;margin-top:8px}
 .hk-form.sent .hk-ask{display:none}.hk-form.sent .hk-done{display:block}
+.hk-wait{display:flex;align-items:center;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.hk-wait p{font-size:13.5px!important;line-height:1.4!important}
+.hk-wait p b{color:var(--ink)}
+.hk-faces{display:flex;flex:none}
+.hk-faces>*{width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px var(--panel);margin-left:-9px}
+.hk-faces>:first-child{margin-left:0}
+.hk-me{display:none;place-items:center;background:var(--blue);color:#fff;font-size:12px;font-weight:800}
+.hk-more{display:grid;place-items:center;background:var(--line);color:var(--ink2);font-size:11.5px;font-weight:700}
+.joined .hk-me{display:grid}
+.joined .hk-faces img:nth-of-type(5){display:none}
 .hk-lock{display:flex;gap:12px;align-items:flex-start}
 .hk-lock>svg{width:22px;height:22px;flex:none;color:var(--ink3);margin-top:2px}
+.hk-lock h3{font-size:18px;margin:0 0 4px}
+.hk-lock p{margin:0;color:var(--ink2)}
 .hk-lock .btn{margin-top:14px}
-@media (max-width:900px){.hk{grid-template-columns:minmax(0,1fr)}.hk-side{position:static}.hk-hero h2{font-size:30px}.hk-facts li{grid-template-columns:84px minmax(0,1fr);gap:12px}.hk-mark b{font-size:28px}.hk-mark svg{width:18px;height:18px}}
+/* обмен жизнями */
+.ob-ph{grid-template-columns:3fr 2fr;grid-template-rows:1fr 1fr;height:300px;position:relative}
+.ob-ph figure{margin:0;position:relative;min-height:0}
+.ob-ph figure:first-child{grid-row:1/3}
+.ob-ph figcaption{position:absolute;left:10px;bottom:10px;background:rgba(15,20,30,.62);color:#fff;font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:999px}
+.ob-swap{position:absolute;left:60%;top:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:var(--panel);color:var(--blue);display:grid;place-items:center;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+.ob-swap svg{width:22px;height:22px}
+.ob-steps{list-style:none;counter-reset:s;margin:24px 0 0;padding:0}
+.ob-steps li{counter-increment:s;display:grid;grid-template-columns:40px minmax(0,1fr);gap:14px;align-items:start;padding:16px 0;border-top:1px solid var(--line)}
+.ob-steps li::before{content:counter(s);width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center}
+.ob-steps p{margin:5px 0 0;font-size:15.5px;line-height:1.55;color:var(--ink2)}
+.ob-steps p b{color:var(--ink)}
+.ob-term{display:flex;align-items:center;gap:14px;margin-top:6px;padding:16px 18px;border-radius:14px;background:color-mix(in srgb,var(--blue) 9%,transparent)}
+.ob-term b{font-size:28px;font-weight:800;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+.ob-term p{margin:0;font-size:15px;line-height:1.5;color:var(--ink2)}
+.ob-bar{height:8px;border-radius:99px;background:var(--line);margin:16px 0 6px;overflow:hidden}
+.ob-bar s{display:block;height:100%;width:33.3%;background:var(--blue);border-radius:inherit}
+.ob-bar+small{font-size:13px;color:var(--ink3)}
+.ob-open{display:none}
+body.six .ob-open{display:block}
+body.six .ob-wait{display:none}
+@media (max-width:900px){.hk{grid-template-columns:minmax(0,1fr)}.hk-side{position:static}.hk-hero h2{font-size:30px}.hk-facts li{grid-template-columns:84px minmax(0,1fr);gap:12px}.hk-mark b{font-size:28px}.hk-mark svg{width:18px;height:18px}
+  .hk-ph{height:170px;margin:-4px -4px 18px}.ob-term b{font-size:24px}
+  .ob-ph{grid-template-columns:1fr 1fr;grid-template-rows:160px 110px;height:auto}.ob-ph figure:first-child{grid-row:auto;grid-column:1/3}
+  .ob-swap{left:50%;top:164px;width:38px;height:38px}.ob-ph figcaption{font-size:11.5px;white-space:nowrap;left:8px;bottom:8px;padding:4px 9px}}
 </style>
 </head>
-<body data-pg="hike">
+<body>
 <div class="app">
   <aside class="side" aria-label="Меню кабинета клуба">
     <div class="logo"><img class="club-logo" src="img/fa-logo.webp" alt=""><div><b>Альянс Фриманов</b><small>кабинет клуба</small></div></div>
@@ -782,7 +820,7 @@ svg{flex:none}
     <a class="nav no-g no-x" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 7v5c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V7z"/></svg><span>Кланы и команды</span></a>
     <a class="nav no-g no-x" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg><span>Книжный клуб</span></a>
     <a class="nav no-g no-s no-x" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="m5 15 4-4 3 3 6-6"/><path d="M15 8h3v3"/></svg><span>Инвестиции</span></a>
-    <a class="nav no-g no-s no-x" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.6-9.3-9.2C1.5 8.6 3.6 5 7.2 5c2 0 3.6 1.1 4.8 2.8C13.2 6.1 14.8 5 16.8 5c3.6 0 5.7 3.6 4.5 6.8C19.5 16.4 12 21 12 21z"/></svg><span>Обмен жизнями</span></a>
+    <a class="nav no-g no-s no-x" href="obmen.html" data-keepq><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.6-9.3-9.2C1.5 8.6 3.6 5 7.2 5c2 0 3.6 1.1 4.8 2.8C13.2 6.1 14.8 5 16.8 5c3.6 0 5.7 3.6 4.5 6.8C19.5 16.4 12 21 12 21z"/></svg><span>Обмен жизнями</span></a>
     <div class="foot"><a href="#">← Мой дашборд</a></div>
   </aside>
 
@@ -799,6 +837,7 @@ svg{flex:none}
       <div hidden aria-hidden="true"><div id="cg"></div><div id="closevid"></div><div id="d-vid"></div><div id="fm-c"></div><div id="fm-cl"></div><div id="fm-load"></div><div id="fm-stats"></div><div id="fm-t"></div><div id="fm-tl"></div><div id="pop"></div><div id="unhide"></div></div>
       <div class="hk">
         <section class="panel hk-hero" aria-label="Поход">
+          <div class="hk-ph"><img src="img/hike-summit.webp" alt="Команда на вершине"><img src="img/hike-ridge.webp" alt="Команда на хребте"></div>
           <h2>Поход</h2>
           <p class="hk-lead">Это командная игра, когда участники все вместе за&nbsp;30, 60 или 90&nbsp;дней сфокусированы на&nbsp;достижении какой-то конкретной цели. От&nbsp;зарабатывания денег до&nbsp;приведения тела в&nbsp;порядок. От&nbsp;масштабирования социальных сетей до&nbsp;создания воронок.</p>
           <ul class="hk-facts">
@@ -816,19 +855,20 @@ svg{flex:none}
               <button class="btn btn-s" type="button" data-hk="notify">Предупредить, когда будет поход</button>
             </div>
             <div class="hk-done" aria-live="polite">
-              <img src="img/frimi.webp" alt="">
+              <img class="fr" src="img/frimi.webp" alt="">
               <b id="hk-done-t">Вы в&nbsp;группе</b>
               <p id="hk-done-p">Напишем, когда группа соберётся и&nbsp;мы объявим тему.</p>
               <button class="btn" type="button" data-hk="undo">Передумал</button>
             </div>
+            <div class="hk-wait"><span class="hk-faces"><span class="hk-me" aria-hidden="true">А</span><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><span class="hk-more">+18</span></span><p id="hk-wait-t"><b>23&nbsp;участника</b> уже ждут старта</p></div>
           </section>
-          <section class="panel hk-lock only-g only-s" aria-label="Поход закрыт"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3 style="font-size:18px;margin:0 0 4px">Поход открыт с&nbsp;уровня Бунтаря</h3><p style="margin:0;color:var(--ink2)">Записаться можно, когда вы&nbsp;в&nbsp;Альянсе по&nbsp;подписке.</p><a class="btn btn-p" href="#">Вступить в&nbsp;Альянс</a></div></section>
-          <section class="panel hk-lock only-x" aria-label="Поход закрыт"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3 style="font-size:18px;margin:0 0 4px">Альянс закрыт до&nbsp;1&nbsp;декабря 2027</h3><p style="margin:0;color:var(--ink2)">Пока Альянс закрыт, записаться в&nbsp;поход нельзя.</p></div></section>
+          <section class="panel hk-lock only-g only-s" aria-label="Закрыто"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3>Поход открыт с&nbsp;уровня Бунтаря</h3><p>Записаться можно, когда вы&nbsp;в&nbsp;Альянсе по&nbsp;подписке.</p><a class="btn btn-p" href="#">Вступить в&nbsp;Альянс</a></div></section>
+          <section class="panel hk-lock only-x" aria-label="Закрыто"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3>Альянс закрыт до&nbsp;1&nbsp;декабря 2027</h3><p>Пока Альянс закрыт, записаться в&nbsp;поход нельзя.</p></div></section>
         </div>
       </div>
     </div>
     <div class="pult" id="pult"></div>
-    <p class="note">Макет: страница похода. Пока группа собирается, человек отвечает «Да, иду» или «Предупредить, когда будет поход»; проверка оплаты появится, когда поход запустят. Гостю и&nbsp;Стартовому поход закрыт, он с&nbsp;уровня Бунтаря. Пульт: Гость, Стартовый, Бунтарь, закрыто на&nbsp;год.</p>
+    <p class="note">Макет: страница похода. Пока группа собирается, человек отвечает «Да, иду» или «Предупредить, когда будет поход»; проверка оплаты появится, когда поход запустят. Внизу карточки — сколько человек уже ждут старта. Гостю и&nbsp;Стартовому поход закрыт, он с&nbsp;уровня Бунтаря. Пульт: Гость, Стартовый, Бунтарь, закрыто на&nbsp;год.</p>
   </div>
 </div>
 
@@ -1032,13 +1072,15 @@ cg.addEventListener('click', e => {
   const f = document.getElementById('hk-form'); if (!f) return;
   const T = { go: ['Вы в группе', 'Напишем, когда группа соберётся и мы объявим тему.'],
               notify: ['Предупредим', 'Напишем, как только объявим следующий поход.'] };
+  const w = document.getElementById('hk-wait-t');
   f.addEventListener('click', e => {
     const b = e.target.closest('[data-hk]'); if (!b) return;
     const k = b.dataset.hk;
-    if (k === 'undo') { f.classList.remove('sent'); return; }
+    if (k === 'undo') { f.classList.remove('sent', 'joined'); if (w) w.innerHTML = '<b>23&nbsp;участника</b> уже ждут старта'; return; }
     document.getElementById('hk-done-t').textContent = T[k][0];
     document.getElementById('hk-done-p').textContent = T[k][1];
     f.classList.add('sent');
+    if (k === 'go' && w) { f.classList.add('joined'); w.innerHTML = '<b>Вы и&nbsp;ещё 23&nbsp;участника</b> ждёте старта'; }
   });
 })();
 </script>
