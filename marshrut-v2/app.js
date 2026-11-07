@@ -658,8 +658,8 @@
   const myPl = () => PL_KEY[P().pearl] || 'pawn';
   const curPl = () => ui.plvl || myPl();
   const tabs = () => `<div class="vtabs" role="tablist" aria-label="Что показать">
-      <button role="tab" class="vt${ui.tab === 'route' ? ' on' : ''}" aria-selected="${ui.tab === 'route'}" data-act="tab" data-v="route">${svg('route')}Маршрут уроков</button>
-      <button role="tab" class="vt${ui.tab === 'pearl' ? ' on' : ''}" aria-selected="${ui.tab === 'pearl'}" data-act="tab" data-v="pearl">${svg('flag')}ПЭРЛ: задания уровня</button>
+      <button role="tab" class="vt${ui.tab === 'route' ? ' on' : ''}" aria-selected="${ui.tab === 'route'}" data-act="tab" data-v="route">${svg('route')}<span class="vt-l">Маршрутная карта бизнеса</span><span class="vt-s">Бизнес</span></button>
+      <button role="tab" class="vt${ui.tab === 'pearl' ? ' on' : ''}" aria-selected="${ui.tab === 'pearl'}" data-act="tab" data-v="pearl">${svg('flag')}<span class="vt-l">Маршрутная карта личности</span><span class="vt-s">Личность</span></button>
     </div>`;
   const cpKind = (t) => /^Челлендж/.test(t) ? 'Челлендж' : /^Вызов/.test(t) ? 'Вызов' : /^Тест-драйв/.test(t) ? 'Тест-драйв' : '';
   const plKey = (lv, i, j, x) => `${lv}:${i}:${j}:${x}`;

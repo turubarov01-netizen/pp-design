@@ -354,3 +354,5 @@ button.ps-h:hover b { color: var(--blue-ink); }
   .phead h2 { font-size: 22px; }
 }
 .tag.kind { background: var(--tint-2); color: var(--blue-ink); }
+.vt-s { display: none; }
+@media (max-width: 560px) { .vt-l { display: none; } .vt-s { display: inline; } }
