@@ -68,7 +68,7 @@
     at30: 'Идёт шаг 30, один шаг пропущен',
   };
 
-  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, open: new Set(), shut: new Set(), answer: '', toast: null, flash: null, stage: {}, sf: {}, q: {}, life: null };
+  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, open: new Set(), shut: new Set(), answer: '', toast: null, flash: null, stage: {}, sf: {}, q: {}, life: null, tab: 'route', plvl: null, pdone: new Set() };
   const P = () => PROFILES.find((p) => p.id === ui.pid);
   const ten = () => P().route.ten;
   const rest = () => P().route.rest;
@@ -652,18 +652,63 @@
     </aside>`;
   }
 
+  /* Переключатель «Маршрут / ПЭРЛ» и карта ПЭРЛ: уровни, этапы, задания личного роста, вызовы и челленджи */
+  const PL_KEY = { 'Пешка': 'pawn', 'Раб': 'slave', 'Бунтарь': 'rebel', 'Мечтатель': 'dreamer' };
+  const PL_ORD = ['pawn', 'slave', 'rebel', 'dreamer'];
+  const myPl = () => PL_KEY[P().pearl] || 'pawn';
+  const curPl = () => ui.plvl || myPl();
+  const tabs = () => `<div class="vtabs" role="tablist" aria-label="Что показать">
+      <button role="tab" class="vt${ui.tab === 'route' ? ' on' : ''}" aria-selected="${ui.tab === 'route'}" data-act="tab" data-v="route">${svg('route')}Маршрут уроков</button>
+      <button role="tab" class="vt${ui.tab === 'pearl' ? ' on' : ''}" aria-selected="${ui.tab === 'pearl'}" data-act="tab" data-v="pearl">${svg('flag')}ПЭРЛ: задания уровня</button>
+    </div>`;
+  const cpKind = (t) => /^Челлендж/.test(t) ? 'Челлендж' : /^Вызов/.test(t) ? 'Вызов' : /^Тест-драйв/.test(t) ? 'Тест-драйв' : '';
+  const plKey = (lv, i, j, x) => `${lv}:${i}:${j}:${x}`;
+  function plStats(lv) {
+    const L = window.PEARL[lv]; let req = 0, reqD = 0, tk = 0, tkD = 0, bn = 0, bnD = 0, ph = 0;
+    L.st.forEach((st, i) => {
+      st.cp.forEach((c, x) => { const d = ui.pdone.has(plKey(lv, i, 'c', x)); if (c[1]) { req++; if (d) reqD++; } else { bn++; if (d) bnD++; } if (d) ph += c[2]; });
+      st.sub.forEach((sb, j) => sb.tk.forEach((t, x) => { const d = ui.pdone.has(plKey(lv, i, j, x)); tk++; if (d) { tkD++; ph += 100; } }));
+    });
+    return { req, reqD, tk, tkD, bn, bnD, ph };
+  }
+  function pearlView() {
+    const lv = curPl(), L = window.PEARL[lv], m = plStats(lv), n = PL_ORD.indexOf(lv) + 1;
+    const met = (lab, v, d, hot) => `<div class="pm${hot ? ' hot' : ''}"><span>${lab}</span><b>${v}</b>${d >= 0 ? `<i><u style="width:${d}%"></u></i>` : ''}</div>`;
+    const pc = (a, b) => (b ? Math.round((a / b) * 100) : 0);
+    const row = (key, t, tags, ph) => { const d = ui.pdone.has(key);
+      return `<li><button class="pr${d ? ' done' : ''}" data-act="pdo" data-v="${key}" aria-pressed="${d}"><span class="pr-n">${d ? svg('check') : ''}</span><span class="pr-t">${esc(t)}</span><span class="pr-g">${tags}<em class="ph">+${ph.toLocaleString('ru-RU').replace(/\u00a0|\s/g, NB)}</em></span></button></li>`; };
+    const stages = L.st.map((st, i) => `<section class="card pst">
+        <p class="eyebrow">Этап ${i + 1}</p><h3>${esc(st.t)}</h3>
+        <div class="pst-g">
+          <div><h4>Личный рост</h4>${st.sub.map((sb, j) => `<p class="psub">${esc(sb.t)}</p><ul class="pl">${sb.tk.map((t, x) => row(plKey(lv, i, j, x), t, '', 100)).join('')}</ul>`).join('')}</div>
+          <div><h4>Вызовы и чекпоинты</h4><ul class="pl">${st.cp.map((c, x) => { const k = cpKind(c[0]);
+            const tags = (c[1] ? '<span class="tag club">Обязательный</span>' : '<span class="tag pers">Бонус</span>') + (k ? `<span class="tag kind">${k}</span>` : '') + (c[3] ? '<span class="tag warn">Командный</span>' : '');
+            return row(plKey(lv, i, 'c', x), c[0], tags, c[2]); }).join('')}</ul></div>
+        </div></section>`).join('');
+    return `<section class="card phead">
+        <p class="eyebrow">П.Э.Р.Л. · уровень ${n} из${NB}4</p>
+        <h2>Путь: ${esc(L.t)}</h2>
+        <p class="g-d">Задания формируют новый способ действовать. Чекпоинты подтверждают измеримый результат и${NB}открывают переход дальше.</p>
+        <div class="plv" role="group" aria-label="Уровень">${PL_ORD.map((k) => `<button class="chip${k === lv ? ' on' : ''}" data-act="plvl" data-v="${k}" aria-pressed="${k === lv}">${esc(window.PEARL[k].t)}${k === myPl() ? '<small>ваш</small>' : ''}</button>`).join('')}</div>
+        <div class="pms">${met('Обязательные', `${m.reqD} из${NB}${m.req}`, pc(m.reqD, m.req), true)}${met('Задания', `${m.tkD} из${NB}${m.tk}`, pc(m.tkD, m.tk))}${met('Бонусные', `${m.bnD} из${NB}${m.bn}`, pc(m.bnD, m.bn))}${met('Фениксов получено', m.ph.toLocaleString('ru-RU').replace(/\u00a0|\s/g, NB), -1)}</div>
+      </section>
+      ${stages}
+      <section class="card pexam"><p class="eyebrow">Переход на следующий уровень</p><p>Когда все обязательные чекпоинты закрыты, экзамен уровня: босс «${esc(L.boss)}»${L.ritual ? `, обряд «${esc(L.ritual)}»` : ''}.</p></section>`;
+  }
+
   const app = document.getElementById('app');
   function render() {
     app.innerHTML = `${demoBar()}<div class="kab">${side()}<div class="main">${topBar()}
       <main class="content">
-        ${guide()}
+        ${tabs()}
+        ${ui.tab === 'pearl' ? `<div class="pv">${pearlView()}</div>` : `${guide()}
         <div class="split">
           <section class="card path-c" aria-label="Маршрут"><ol class="path">
             ${prepBlock()}
             ${levelGroups()}
           </ol></section>
           ${aside()}
-        </div>
+        </div>`}
       </main></div></div>${mnav()}${ui.toast ? `<div class="toast" role="status">${esc(ui.toast)}</div>` : ''}`;
   }
 
@@ -677,7 +722,10 @@
     const b = e.target.closest('[data-act]');
     if (!b || b.tagName === 'SELECT' || b.tagName === 'TEXTAREA') return;
     const a = b.dataset.act, v = b.dataset.v;
-    if (a === 'pid') { ui.pid = v; setSit(SIT[ui.sit] ? ui.sit : 'fresh'); }
+    if (a === 'tab') { ui.tab = v; render(); window.scrollTo(0, 0); return; }
+    if (a === 'plvl') { ui.plvl = v; render(); return; }
+    if (a === 'pdo') { ui.pdone.has(v) ? ui.pdone.delete(v) : ui.pdone.add(v); render(); return; }
+    if (a === 'pid') { ui.plvl = null; ui.pid = v; setSit(SIT[ui.sit] ? ui.sit : 'fresh'); }
     else if (a === 'row') {
       const pos = +v, k = seq()[pos - 1], s = state(pos);
       if (actionable(s)) { ui.openL = k; ui.answer = ''; render(); scrollTo('l' + pos); return; }

@@ -303,3 +303,54 @@ button.ps-h:hover b { color: var(--blue-ink); }
   .lc { margin-left: 0; padding: 12px; }
   .lc-f, .lc-r { grid-template-columns: 1fr; }
 }
+
+/* Переключатель «Маршрут уроков / ПЭРЛ» и карта ПЭРЛ (08.11.2026) */
+.vtabs { display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 16px; border-radius: 14px; background: rgba(255,255,255,.8); border: 1px solid var(--line); }
+.vt { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: var(--ink-2); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.vt svg { width: 16px; height: 16px; }
+.vt:hover { background: var(--tint); color: var(--ink); }
+.vt.on { background: var(--blue); color: #fff; }
+.vt:focus-visible, .chip:focus-visible, .pr:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.pv { display: grid; gap: 16px; }
+.phead { padding: 22px 24px; }
+.phead h2 { margin: 6px 0 0; font-size: 26px; line-height: 1.15; }
+.plv { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 16px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line); background: #fff; color: var(--ink-2); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.chip small { font-size: 11px; font-weight: 700; color: var(--blue-ink); background: var(--tint-2); padding: 2px 6px; border-radius: 6px; }
+.chip.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.chip.on small { background: rgba(255,255,255,.18); color: #fff; }
+.pms { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.pm { padding: 10px 12px; border-radius: 12px; background: var(--tint); }
+.pm span { display: block; font-size: 12px; font-weight: 650; color: var(--muted); }
+.pm b { display: block; margin-top: 2px; font-size: 20px; font-variant-numeric: tabular-nums; }
+.pm.hot b { color: var(--blue-ink); }
+.pm i { display: block; height: 4px; margin-top: 8px; border-radius: 2px; background: var(--tint-2); overflow: hidden; }
+.pm u { display: block; height: 100%; background: var(--blue); transition: width .4s var(--ease); }
+.pst { padding: 20px 24px; }
+.pst h3 { margin: 4px 0 14px; font-size: 20px; }
+.pst-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+.pst h4 { margin: 0 0 8px; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.psub { margin: 10px 0 4px; font-size: 14px; font-weight: 650; color: var(--ink-2); }
+.pl { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.pr { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 4px 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+.pr:hover { background: var(--tint); }
+.pr-n { display: grid; place-items: center; width: 20px; height: 20px; margin-top: 1px; border-radius: 6px; border: 1.5px solid rgba(47,123,255,.35); background: #fff; color: #fff; }
+.pr-n svg { width: 14px; height: 14px; }
+.pr.done .pr-n { background: var(--ok); border-color: var(--ok); }
+.pr.done .pr-t { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(91,100,122,.4); }
+.pr-t { line-height: 1.35; }
+.pr-g { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.ph { font-style: normal; font-size: 12px; font-weight: 700; color: #a1560a; font-variant-numeric: tabular-nums; }
+.pexam { padding: 18px 24px; }
+.pexam p:last-child { margin: 6px 0 0; color: var(--ink-2); }
+@media (max-width: 760px) {
+  .pst-g { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .pms { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .vtabs { display: flex; width: 100%; }
+  .vt { flex: 1; justify-content: center; padding: 0 8px; font-size: 13px; }
+  .phead, .pst, .pexam { padding: 16px; }
+  .phead h2 { font-size: 22px; }
+}
+.tag.kind { background: var(--tint-2); color: var(--blue-ink); }
