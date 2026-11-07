@@ -300,21 +300,15 @@ svg{flex:none}
 .pm-reg{display:grid;place-items:center;background:var(--blue-soft);color:var(--blue-ink)}.pm-reg svg{width:18px;height:18px}
 .item[data-p=reg] .act.gh{background:transparent;color:var(--blue-ink);border:1px solid rgba(47,123,255,.4);box-shadow:none}
 .mtask.onb{grid-template-columns:minmax(0,1fr);margin-bottom:10px}
-.mm2{border-radius:16px;background:#fff;border:1px solid rgba(109,75,216,.14);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 8px 20px rgba(60,40,140,.06);overflow:hidden}
-.mm-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px;background:linear-gradient(135deg,#141E2B,#1d2a3d);color:#fff}
-.mm-club{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#DFC880}
-.mm-till{font-size:12.5px;color:rgba(255,255,255,.7)}
-.mm-row{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:start;padding:14px 16px}
-.mm-row+.mm-row{border-top:1px solid rgba(109,75,216,.1)}
-.mm-ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center}.mm-ic svg{width:20px;height:20px}
-.mm-ic.lv{background:#F1ECFF;color:#6d4bd8}.mm-ic.st{background:var(--blue-soft);color:var(--blue-ink)}
-.mm-k{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
-.mm-v{display:block;font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.2;margin-top:2px}
-.mm-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:10px}
-.mm-steps span{font-size:10.5px;color:var(--ink3);padding-top:7px;position:relative;white-space:nowrap}
-.mm-steps span::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;border-radius:2px;background:rgba(47,123,255,.14)}
-.mm-steps .on{color:var(--blue-ink);font-weight:700}.mm-steps .on::before{background:var(--blue)}
-.mm-acts{display:flex;gap:8px;margin-top:14px}.mm-acts .mm-btn{margin-top:0;flex:1}
+.mm-hd{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:-4px 0 10px}
+.mm-club{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#6d4bd8}
+.mm-till{font-size:12.5px;color:var(--ink3)}
+.mm2{display:grid;grid-template-columns:1fr 1fr;border-radius:14px;background:#fff;border:1px solid rgba(109,75,216,.13)}
+.mm-c{padding:10px 14px;min-width:0}.mm-c+.mm-c{border-left:1px solid rgba(109,75,216,.1)}
+.mm-k{display:block;font-size:11px;font-weight:600;color:var(--ink3)}
+.mm-v{display:inline-block;font-size:17px;font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-top:1px}
+.mm-steps{display:inline-flex;gap:3px;margin-left:8px;vertical-align:middle}.mm-steps i{width:12px;height:4px;border-radius:2px;background:rgba(47,123,255,.16)}.mm-steps i.on{background:var(--blue)}
+.mm-acts{display:flex;gap:8px;margin-top:10px}.mm-acts .mm-btn{margin-top:0;flex:1}
 .mm-btn.gh{background:transparent;border:1px solid rgba(47,123,255,.35)}
 /* что показывается по дням и состоянию (пульт макета) */
 .d4,.d4b,.d4x{display:none}
@@ -471,18 +465,10 @@ svg{flex:none}
         <div class="col">
           <section class="panel member" id="d-mem" aria-label="Моё членство">
             <div class="ph"><h3>Моё членство</h3></div>
+            <div class="mm-hd"><span class="mm-club">ПП-клуб</span><span class="mm-till">до&nbsp;1&nbsp;декабря</span></div>
             <div class="mm2">
-              <div class="mm-top"><span class="mm-club">ПП-клуб</span><span class="mm-till">до&nbsp;1&nbsp;декабря</span></div>
-              <div class="mm-row">
-                <span class="mm-ic lv" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.8 8 9 4.6-1.2 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span>
-                <div><span class="mm-k">Уровень</span><b class="mm-v">Бунтарь</b></div>
-              </div>
-              <div class="mm-row">
-                <span class="mm-ic st" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-4 3 3 5-6"/><path d="M14 8h4v4"/></svg></span>
-                <div><span class="mm-k">Уровень бизнеса</span><b class="mm-v">PMF</b>
-                  <div class="mm-steps" aria-label="Стадия 1 из 3"><span class="on">PMF</span><span>Scaling</span><span>Enterprise</span></div>
-                </div>
-              </div>
+              <div class="mm-c"><span class="mm-k">Уровень</span><b class="mm-v">Бунтарь</b></div>
+              <div class="mm-c"><span class="mm-k">Уровень бизнеса</span><b class="mm-v">PMF</b><span class="mm-steps" title="PMF → Scaling → Enterprise" aria-label="Стадия 1 из 3: PMF, дальше Scaling и Enterprise"><i class="on"></i><i></i><i></i></span></div>
             </div>
             <div class="mm-acts"><a class="btn btn-s mm-btn" href="#">Продлить</a><a class="btn btn-s mm-btn gh" href="#">Апгрейд</a></div>
           </section>
