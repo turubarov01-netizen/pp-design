@@ -867,6 +867,23 @@ body.six .ob-wait{display:none}
 .ob-send{display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap}
 .ob-send .btn{height:46px;padding:0 22px}
 .ob-send small{flex-basis:100%;font-size:13px;color:var(--ink3);line-height:1.45}
+/* предложение обмена */
+.ob-offer{display:none}
+.k-m.six.ob-offering .ob-market{display:none}
+.k-m.six.ob-offering .ob-offer{display:block}
+.k-m.six.ob-form .ob-offer{display:none}
+.ob-offer h2{font-size:28px;margin:0 0 6px}
+.of-sub{margin:0;color:var(--ink2);font-size:15px;line-height:1.5}
+.of-st{display:none}
+.c-live .of-ok,.c-none .of-no,.c-back .of-no,.c-mod .of-wait{display:block}
+.of-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;position:relative}
+.of-side{border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:4px}
+.of-side small{font-size:12.5px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em}
+.of-side img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;margin:4px 0 6px}
+.of-side b{font-size:16px}.of-side span{font-size:13.5px;color:var(--ink3)}
+.of-x{left:50%;top:50%}
+.of-sent{display:none;height:40px;margin-top:12px;width:100%;pointer-events:none}
+.ob-card.sent [data-offer]{display:none}.ob-card.sent .of-sent{display:flex;align-items:center;justify-content:center}
 /* модерация */
 .md-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
 .md-head h2{font-size:32px;margin:0}
@@ -900,7 +917,7 @@ body.six .ob-wait{display:none}
 .md-side ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
 .md-side li{display:flex;gap:10px;font-size:14.5px;line-height:1.45;color:var(--ink2)}
 .md-side li svg{width:18px;height:18px;flex:none;color:var(--blue);margin-top:1px}
-@media (max-width:900px){.k-m.six .hk-side{order:-1}.ob-grid{grid-template-columns:minmax(0,1fr)}.ob-mk-head h2,.md-head h2{font-size:26px}.ob-two{grid-template-columns:1fr}.ob-photos{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:900px){.k-m.six .hk-side{order:-1}.of-pair{grid-template-columns:1fr}.ob-grid{grid-template-columns:minmax(0,1fr)}.ob-mk-head h2,.md-head h2{font-size:26px}.ob-two{grid-template-columns:1fr}.ob-photos{grid-template-columns:repeat(2,minmax(0,1fr))}
   .md-bd{grid-template-columns:minmax(0,1fr)}.md-auth{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:14px}}
 </style>
 </head>
@@ -960,7 +977,7 @@ body.six .ob-wait{display:none}
 
         <section class="panel ob-market" aria-label="Предложения обмена">
           <div class="ob-mk-head">
-            <div><h2>Обмен жизнями</h2><p>6 предложений от&nbsp;участников Альянса</p></div>
+            <div><h2>Обмен жизнями</h2><p>6 предложений от&nbsp;участников Альянса. Только обмен: вы&nbsp;предлагаете своё взамен.</p></div>
             <div class="ob-chips" role="group" aria-label="Что показать">
               <button type="button" data-f="all" aria-pressed="true">Все</button>
               <button type="button" data-f="flat" aria-pressed="false">Квартиры</button>
@@ -968,66 +985,102 @@ body.six .ob-wait{display:none}
             </div>
           </div>
           <div class="ob-grid">
-            <article class="ob-card" data-kind="flat">
+            <article class="ob-card" data-kind="flat" data-img="swap-bali" data-t="Вилла с&nbsp;бассейном" data-who="Марина К." data-place="Чангу, Бали">
               <div class="ph"><img src="img/swap-bali.webp" alt="" loading="lazy"><span class="ob-kind">Квартира</span></div>
               <div class="bd">
                 <h4>Вилла с&nbsp;бассейном</h4><span class="ob-place">Чангу, Бали · 3 спальни · до&nbsp;6 гостей</span>
                 <p class="ob-row">Свободно: <b>1&nbsp;февраля – 15&nbsp;марта</b></p>
                 <p class="ob-row">Хочет: <b>Москва или Петербург</b></p>
                 <div class="ob-who"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy"><div><b>Марина К.</b><small>в&nbsp;Альянсе 1,5 года</small></div></div>
-                <a class="btn btn-p" href="#">Предложить обмен</a>
+                <button class="btn btn-p" type="button" data-offer>Предложить обмен</button>
+                <span class="btn btn-s of-sent" aria-live="polite">Предложение отправлено</span>
               </div>
             </article>
-            <article class="ob-card" data-kind="flat">
+            <article class="ob-card" data-kind="flat" data-img="swap-flat" data-t="Квартира на&nbsp;Патриарших" data-who="Олег С." data-place="Москва">
               <div class="ph"><img src="img/swap-flat.webp" alt="" loading="lazy"><span class="ob-kind">Квартира</span></div>
               <div class="bd">
                 <h4>Квартира на&nbsp;Патриарших</h4><span class="ob-place">Москва · 2 комнаты · до&nbsp;4 гостей</span>
                 <p class="ob-row">Свободно: <b>весь январь</b></p>
                 <p class="ob-row">Хочет: <b>Бали, Дубай</b></p>
                 <div class="ob-who"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy"><div><b>Олег С.</b><small>в&nbsp;Альянсе 1 год</small></div></div>
-                <a class="btn btn-p" href="#">Предложить обмен</a>
+                <button class="btn btn-p" type="button" data-offer>Предложить обмен</button>
+                <span class="btn btn-s of-sent" aria-live="polite">Предложение отправлено</span>
               </div>
             </article>
-            <article class="ob-card" data-kind="car">
+            <article class="ob-card" data-kind="car" data-img="swap-car" data-t="Mercedes-AMG SL" data-who="Денис Р." data-place="Москва">
               <div class="ph"><img src="img/swap-car.webp" alt="" loading="lazy"><span class="ob-kind">Машина</span></div>
               <div class="bd">
                 <h4>Mercedes-AMG SL</h4><span class="ob-place">Москва · кабриолет · 2024</span>
                 <p class="ob-row">Свободно: <b>выходные декабря</b></p>
                 <p class="ob-row">Хочет: <b>Porsche или Bentley</b></p>
                 <div class="ob-who"><img src="https://randomuser.me/api/portraits/men/52.jpg" alt="" loading="lazy"><div><b>Денис Р.</b><small>в&nbsp;Альянсе 9 месяцев</small></div></div>
-                <a class="btn btn-p" href="#">Предложить обмен</a>
+                <button class="btn btn-p" type="button" data-offer>Предложить обмен</button>
+                <span class="btn btn-s of-sent" aria-live="polite">Предложение отправлено</span>
               </div>
             </article>
-            <article class="ob-card" data-kind="flat">
+            <article class="ob-card" data-kind="flat" data-img="swap-dubai" data-t="Апартаменты у&nbsp;моря" data-who="Алина В." data-place="Дубай Марина">
               <div class="ph"><img src="img/swap-dubai.webp" alt="" loading="lazy"><span class="ob-kind">Квартира</span></div>
               <div class="bd">
                 <h4>Апартаменты у&nbsp;моря</h4><span class="ob-place">Дубай Марина · 1 спальня · вид на&nbsp;море</span>
                 <p class="ob-row">Свободно: <b>10&nbsp;января – 10&nbsp;февраля</b></p>
                 <p class="ob-row">Хочет: <b>Москва</b></p>
                 <div class="ob-who"><img src="https://randomuser.me/api/portraits/women/57.jpg" alt="" loading="lazy"><div><b>Алина В.</b><small>в&nbsp;Альянсе 1 год</small></div></div>
-                <a class="btn btn-p" href="#">Предложить обмен</a>
+                <button class="btn btn-p" type="button" data-offer>Предложить обмен</button>
+                <span class="btn btn-s of-sent" aria-live="polite">Предложение отправлено</span>
               </div>
             </article>
-            <article class="ob-card" data-kind="flat">
+            <article class="ob-card" data-kind="flat" data-img="swap-loft" data-t="Двухуровневый лофт" data-who="Ирина Л." data-place="Петербург">
               <div class="ph"><img src="img/swap-loft.webp" alt="" loading="lazy"><span class="ob-kind">Квартира</span></div>
               <div class="bd">
                 <h4>Двухуровневый лофт</h4><span class="ob-place">Петербург · студия · 2 этажа</span>
                 <p class="ob-row">Свободно: <b>март</b></p>
                 <p class="ob-row">Хочет: <b>Бали, Тбилиси</b></p>
                 <div class="ob-who"><img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" loading="lazy"><div><b>Ирина Л.</b><small>в&nbsp;Альянсе 7 месяцев</small></div></div>
-                <a class="btn btn-p" href="#">Предложить обмен</a>
+                <button class="btn btn-p" type="button" data-offer>Предложить обмен</button>
+                <span class="btn btn-s of-sent" aria-live="polite">Предложение отправлено</span>
               </div>
             </article>
-            <article class="ob-card" data-kind="car">
+            <article class="ob-card" data-kind="car" data-img="swap-911" data-t="Porsche 911 GT3" data-who="Артём Н." data-place="Москва">
               <div class="ph"><img src="img/swap-911.webp" alt="" loading="lazy"><span class="ob-kind">Машина</span></div>
               <div class="bd">
                 <h4>Porsche 911 GT3</h4><span class="ob-place">Москва · купе · 2023</span>
                 <p class="ob-row">Свободно: <b>январь</b></p>
                 <p class="ob-row">Хочет: <b>Mercedes G-класс</b></p>
                 <div class="ob-who"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><div><b>Артём Н.</b><small>в&nbsp;Альянсе 1,5 года</small></div></div>
-                <a class="btn btn-p" href="#">Предложить обмен</a>
+                <button class="btn btn-p" type="button" data-offer>Предложить обмен</button>
+                <span class="btn btn-s of-sent" aria-live="polite">Предложение отправлено</span>
               </div>
             </article>
+          </div>
+        </section>
+
+        <section class="panel ob-offer" aria-label="Предложить обмен">
+          <h2>Предложить обмен</h2>
+          <div class="of-st of-ok">
+            <p class="of-sub">Обмен только на&nbsp;обмен: вы&nbsp;даёте свою карточку взамен.</p>
+            <div class="of-pair">
+              <div class="of-side"><small>Вы получаете</small><img id="of-img" src="img/swap-bali.webp" alt=""><b id="of-t">Вилла с&nbsp;бассейном</b><span id="of-who">Марина К. · Чангу, Бали</span></div>
+              <span class="ob-swap of-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg></span>
+              <div class="of-side"><small>Вы даёте</small><img src="img/swap-flat2.webp" alt=""><b>Квартира у&nbsp;Чистых прудов</b><span>Ваша карточка · Москва</span></div>
+            </div>
+            <div class="ob-two">
+              <label class="ob-f"><span>Меняемся с</span><input type="text" value="1 февраля"></label>
+              <label class="ob-f"><span>по</span><input type="text" value="15 февраля"></label>
+            </div>
+            <label class="ob-f"><span>Сообщение</span><textarea placeholder="Пара слов о&nbsp;себе и&nbsp;о&nbsp;поездке"></textarea></label>
+            <div class="ob-send">
+              <button class="btn btn-p" type="button" data-ob="offer-send">Отправить предложение</button>
+              <button class="btn btn-s" type="button" data-ob="back">Назад</button>
+              <small>Если владелец согласится, обмен появится у&nbsp;вас обоих, а&nbsp;детали обсудите в&nbsp;сообщениях.</small>
+            </div>
+          </div>
+          <div class="of-st of-no">
+            <p class="of-sub">В&nbsp;обмене предлагают только своё взамен. Выложите свою квартиру или машину: когда карточка пройдёт модерацию, сможете предложить обмен.</p>
+            <div class="ob-send"><button class="btn btn-p" type="button" data-ob="new">Выложить квартиру или машину</button><button class="btn btn-s" type="button" data-ob="back">Назад</button></div>
+          </div>
+          <div class="of-st of-wait">
+            <p class="of-sub">Ваша карточка на&nbsp;модерации. Предложить обмен сможете, как только её опубликуют.</p>
+            <div class="ob-send"><button class="btn btn-s" type="button" data-ob="back">Назад</button></div>
           </div>
         </section>
 
@@ -1096,7 +1149,7 @@ body.six .ob-wait{display:none}
       </div>
     </div>
     <div class="pult" id="pult"></div>
-    <p class="note">Макет: «Обмен жизнями». Видят все от&nbsp;Бунтаря; открыт годовым членам, которые в&nbsp;Альянсе не&nbsp;меньше 6&nbsp;месяцев (защита от&nbsp;мошенников). Пульт «Обмен»: месячное членство — замок; годовое 2&nbsp;мес. — отсчёт; годовое 6+ мес. — витрина и&nbsp;своя карточка (нет / на&nbsp;модерации / вернули / опубликована). «Выложить квартиру или машину» открывает форму, «Отправить на&nbsp;модерацию» — карточка уходит Саше и&nbsp;Игорю. Механика самого обмена ещё не&nbsp;выбрана.</p>
+    <p class="note">Макет: «Обмен жизнями». Видят все от&nbsp;Бунтаря; открыт годовым членам, которые в&nbsp;Альянсе не&nbsp;меньше 6&nbsp;месяцев (защита от&nbsp;мошенников). Пульт «Обмен»: месячное членство — замок; годовое 2&nbsp;мес. — отсчёт; годовое 6+ мес. — витрина и&nbsp;своя карточка (нет / на&nbsp;модерации / вернули / опубликована). «Выложить квартиру или машину» открывает форму, «Отправить на&nbsp;модерацию» — карточка уходит Саше и&nbsp;Игорю. «Предложить обмен» — только своя опубликованная карточка взамен.</p>
   </div>
 </div>
 
@@ -1317,11 +1370,22 @@ cg.addEventListener('click', e => {
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-ob]'); if (!b) return;
     const k = b.dataset.ob, wrap = document.querySelector('.main>.wrap');
-    if (k === 'new') B.classList.add('ob-form');
+    if (k === 'new') { B.classList.remove('ob-offering'); B.classList.add('ob-form'); }
+    if (k === 'back') B.classList.remove('ob-offering');
+    if (k === 'offer-send') { B.classList.remove('ob-offering'); if (window.__obCard) window.__obCard.classList.add('sent'); }
     if (k === 'cancel') B.classList.remove('ob-form');
     if (k === 'send') { B.classList.remove('ob-form'); setC('mod'); }
     if (wrap) wrap.scrollTop = 0;
   });
+  // «Предложить обмен»: подставляем выбранную карточку
+  document.querySelectorAll('[data-offer]').forEach(b => b.addEventListener('click', () => {
+    const c = b.closest('.ob-card'); window.__obCard = c;
+    document.getElementById('of-img').src = 'img/' + c.dataset.img + '.webp';
+    document.getElementById('of-t').innerHTML = c.dataset.t;
+    document.getElementById('of-who').innerHTML = c.dataset.who + ' · ' + c.dataset.place;
+    B.classList.add('ob-offering');
+    const wrap = document.querySelector('.main>.wrap'); if (wrap) wrap.scrollTop = 0;
+  }));
   // модерация
   document.querySelectorAll('.md-item').forEach(it => it.addEventListener('click', e => {
     const b = e.target.closest('[data-md]'); if (!b) return;
