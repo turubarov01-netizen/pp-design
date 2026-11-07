@@ -723,7 +723,9 @@ svg{flex:none}
 @media (max-width:600px){.ntp{inset:0;top:0;right:0;width:100%;max-height:none;border-radius:0;border:0;animation-name:ntUp}.ntp-hd{padding-top:18px}@keyframes ntUp{from{opacity:0;transform:translateY(16px)}}}
 @media (prefers-reduced-motion:reduce){.ntp{animation:none}}
 
-@media (max-width:900px){.grid>.col>.meet{order:-2}.grid>.col>.frimi{order:-1}.club-h{display:block;min-width:0;flex:1 1 auto;font-size:15.5px}.club-h small{display:block}.club-h,.club-h small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.club-h small{font-size:12px}}
+@media (max-width:900px){.grid>.col>.meet{order:-2}.grid>.col>.frimi{order:-1}.grid>.col>#d-map{order:20}.club-h{display:block;min-width:0;flex:1 1 auto;font-size:15.5px}.club-h small{display:block}.club-h,.club-h small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.club-h small{font-size:12px}}
+
+@media (min-width:901px){.main{height:100vh;display:flex;flex-direction:column;overflow:hidden}.main>.top{flex:none}.main>.wrap{flex:1 1 auto;min-height:0;width:100%;padding-top:0;padding-bottom:0}.grid{height:100%;align-items:stretch}.grid>.col,.grid>.col:last-child{position:static;height:100%;max-height:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;margin:0 -10px;padding:28px 10px 32px}.grid>.col::-webkit-scrollbar{display:none}.grid>.col>*{flex-shrink:0}.main>.pult{flex:none;width:100%;padding-top:10px;padding-bottom:10px;border-top:1px solid var(--line)}}
 </style>
 </head>
 <body>
@@ -781,7 +783,7 @@ svg{flex:none}
                 <b class="rt-gt">Первая $1&#8239;000</b>
                 <span class="rt-gs"><b>34%</b> · осталось $660 и&nbsp;55&nbsp;дней</span>
                 <div class="rt-next"><span class="rt-k">Следующая награда</span>
-                  <div class="rt-nx"><span class="rt-em">⭐</span><b><function nt at 0x106afdd00></b><em>68%</em></div>
+                  <div class="rt-nx"><span class="rt-em">⭐</span><b><function nt at 0x105f41d00></b><em>68%</em></div>
                   <i class="rt-bar"><s style="width:68%"></s></i>
                   <small>$340 из&nbsp;$500 · осталось $160</small>
                 </div>
@@ -823,6 +825,19 @@ svg{flex:none}
               <div class="nb-a"><a class="btn btn-s" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 6 6 0 0 1-5-3l-2.5-4.5a1.5 1.5 0 0 1 2.6-1.5L8 14"/></svg>Привет</a><a class="btn btn-s gh" href="#" aria-label="Добавить в друзья"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5 6-5s5.4 1.4 6 5M18 8v6M15 11h6"/></svg></a><a class="btn btn-p only-m" href="#">Написать</a></div></li><li class="nb-c"><span class="nb-ph"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" loading="lazy"><i class="nb-on" title="в сети"></i></span><b>Наталья Волкова</b><small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 17.2c5-1 1.5-6.4 6.6-8.6"/></svg>Кашкайш · 18&nbsp;км</small><p>Психолог, веду группы</p>
               <div class="nb-a"><a class="btn btn-s" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 6 6 0 0 1-5-3l-2.5-4.5a1.5 1.5 0 0 1 2.6-1.5L8 14"/></svg>Привет</a><a class="btn btn-s gh" href="#" aria-label="Добавить в друзья"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5 6-5s5.4 1.4 6 5M18 8v6M15 11h6"/></svg></a><a class="btn btn-p only-m" href="#">Написать</a></div></li></ul>
             <p class="nb-note no-m">Участники ПП и&nbsp;Альянса видят друг друга. «Написать» открывается с&nbsp;подпиской.</p>
+          </section>
+          <section class="panel fmap big" id="d-map" aria-label="Карта фриманов">
+            <div class="ph"><h3>Карта фриманов</h3><span class="fm-sub">Кто чем может помочь</span></div>
+            <div class="fm-box">
+              <div id="fm-map" class="fm-map"></div>
+              <div class="fm-load" id="fm-load">Загрузка карты...</div>
+              <div class="fm-stats" id="fm-stats" hidden>
+                <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span><b id="fm-c">0</b><small id="fm-cl">стран</small></span></div>
+                <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span><b id="fm-t">0</b><small id="fm-tl">городов</small></span></div>
+              </div>
+            </div>
+            <div class="fm-cta v-g"><p>Участники клуба видят профили друг друга, пишут и&nbsp;находят, кто рядом и&nbsp;кто чем может помочь.</p><a class="btn btn-p" href="#">Вступить в&nbsp;членство</a></div>
+            <div class="fm-cta v-s"><p>Профили участников открыты. Писать участникам можно с&nbsp;подпиской.</p><a class="btn btn-s" href="#">Апгрейд</a></div>
           </section>
         </div>
         <div class="col">
@@ -940,24 +955,9 @@ svg{flex:none}
             <a class="btn btn-s dl-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
           </form>
         </dialog>
-      <div class="wide">
-          <section class="panel fmap big" id="d-map" aria-label="Карта фриманов">
-            <div class="ph"><h3>Карта фриманов</h3><span class="fm-sub">Кто чем может помочь</span></div>
-            <div class="fm-box">
-              <div id="fm-map" class="fm-map"></div>
-              <div class="fm-load" id="fm-load">Загрузка карты...</div>
-              <div class="fm-stats" id="fm-stats" hidden>
-                <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span><b id="fm-c">0</b><small id="fm-cl">стран</small></span></div>
-                <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span><b id="fm-t">0</b><small id="fm-tl">городов</small></span></div>
-              </div>
-            </div>
-            <div class="fm-cta v-g"><p>Участники клуба видят профили друг друга, пишут и&nbsp;находят, кто рядом и&nbsp;кто чем может помочь.</p><a class="btn btn-p" href="#">Вступить в&nbsp;членство</a></div>
-            <div class="fm-cta v-s"><p>Профили участников открыты. Писать участникам можно с&nbsp;подпиской.</p><a class="btn btn-s" href="#">Апгрейд</a></div>
-          </section>
-      </div>
     </div>
     <div class="pult" id="pult"></div>
-    <p class="note">Макет: кабинет клуба Альянса (раздел 7 задания), вход из&nbsp;«Моих продуктов». Приветствия нет, оно на&nbsp;главной. Пульт: пакет Гость, Стартовый, Бунтарь, закрыто на&nbsp;год и&nbsp;«Поход идёт». Меню по&nbsp;таблице доступа: Гостю нет сообщений, кланов, книжного клуба, инвестиций и&nbsp;обмена жизнями; Стартовому нет сообщений, инвестиций и&nbsp;обмена жизнями; при закрытии на&nbsp;год маршрут под замком, похода нет. Рюкзак, Лагерь и&nbsp;Лавка только когда идёт поход. «Мой ритм»: цель со&nbsp;спидометром (флажок — ближайшая цель человека), доход за&nbsp;30&nbsp;дней, дни фокуса, задачи, желания и&nbsp;«Сегодня в&nbsp;работе». «Жизнь клуба»: пульс, топ активных, результаты без имён, вкладки сами меняются раз в&nbsp;10&nbsp;секунд. Слева под «Жизнью клуба» «Фриманы рядом» («Написать» только с&nbsp;подпиской). Справа, колонка листается отдельно: ближайшая встреча с&nbsp;Фрими и&nbsp;отсчётом как в&nbsp;ПП, лагерь в&nbsp;походе, календарь, Оракул, Слово дня, Мечта фримана. Внизу большой глобус. Люди, суммы и&nbsp;тексты для примера.</p>
+    <p class="note">Макет: кабинет клуба Альянса (раздел 7 задания), вход из&nbsp;«Моих продуктов». Приветствия нет, оно на&nbsp;главной. Пульт: пакет Гость, Стартовый, Бунтарь, закрыто на&nbsp;год и&nbsp;«Поход идёт». Меню по&nbsp;таблице доступа: Гостю нет сообщений, кланов, книжного клуба, инвестиций и&nbsp;обмена жизнями; Стартовому нет сообщений, инвестиций и&nbsp;обмена жизнями; при закрытии на&nbsp;год маршрут под замком, похода нет. Рюкзак, Лагерь и&nbsp;Лавка только когда идёт поход. «Мой ритм»: цель со&nbsp;спидометром (флажок — ближайшая цель человека), доход за&nbsp;30&nbsp;дней, дни фокуса, задачи, желания и&nbsp;«Сегодня в&nbsp;работе». «Жизнь клуба»: пульс, топ активных, результаты без имён, вкладки сами меняются раз в&nbsp;10&nbsp;секунд. Слева под «Жизнью клуба» «Фриманы рядом» («Написать» только с&nbsp;подпиской). Справа, колонка листается отдельно: ближайшая встреча с&nbsp;Фрими и&nbsp;отсчётом как в&nbsp;ПП, лагерь в&nbsp;походе, календарь, Оракул, Слово дня, Мечта фримана. В конце левой колонки большой глобус. Люди, суммы и&nbsp;тексты для примера.</p>
   </div>
 </div>
 
