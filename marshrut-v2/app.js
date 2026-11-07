@@ -38,6 +38,7 @@
     ] },
     { k: 'tr', t: 'Трекер Фримана', where: 'Трекер Фримана', items: [
       { k: 'wish', go: 'Трекер Фримана → Желания', t: 'Заполните 10 своих желаний: у каждого категория, горизонт 1, 5 или 10 лет и стоимость', n: 10 },
+      { k: 'life', inline: true, t: 'Посчитайте стоимость жизни: сколько стоит жизнь мечты и через сколько лет она наступит' },
       { k: 'focus', go: 'Трекер Фримана → Фокус', t: 'Выберите одно из 10 желаний и поставьте его в фокус' },
       { k: 'fsteps', go: 'Трекер Фримана → Фокус', t: 'Пропишите минимум 5 потенциальных шагов по фокусу', n: 5 },
       { k: 'fday', go: 'Трекер Фримана → Фокус дня', t: 'Выполните фокус' },
@@ -67,7 +68,7 @@
     at30: 'Идёт шаг 30, один шаг пропущен',
   };
 
-  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, open: new Set(), shut: new Set(), answer: '', toast: null, flash: null, stage: {}, sf: {}, q: {} };
+  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, open: new Set(), shut: new Set(), answer: '', toast: null, flash: null, stage: {}, sf: {}, q: {}, life: null };
   const P = () => PROFILES.find((p) => p.id === ui.pid);
   const ten = () => P().route.ten;
   const rest = () => P().route.rest;
@@ -312,6 +313,7 @@
   const CRIT = {
     inc: ['Внесён 1 месяц дохода', 'Внесены 2 месяца', 'Внесены 3 месяца', 'У дохода указаны источники', 'Ведётся полный учёт: доходы и расходы'],
     biz: ['Внесён 1 месяц', 'Внесены 3 месяца', 'Есть выручка и прибыль', 'Указаны источники выручки', 'Внесён текущий месяц'],
+    life: ['Указаны возраст и доход', 'Вписаны машина и дом мечты', 'Вписаны путешествия и одежда', 'Стоимость жизни рассчитана', 'Записан вывод: что вы поняли'],
     wish: ['3 желания', '5 желаний', '10 желаний', 'У всех категория и горизонт', 'У всех указана стоимость'],
     focus: ['Фокус выбран', 'У фокуса есть стоимость', 'Есть срок', 'Описан результат: как поймёте, что достигли', 'Фокус на горизонте одного года'],
     fsteps: ['1 шаг', '3 шага', '5 шагов', 'У шагов есть сроки', 'Шаги разбиты на этапы'],
@@ -333,7 +335,7 @@
   const GEN_CRIT = ['Результат описан', 'Есть цифры', 'Есть ссылка на таблицу или документ', 'Результат совпадает с целью этапа', 'Принято без доработок'];
   const starsOf = (q) => (!q || !q.t ? 0 : q.s >= 5 ? 5 : q.t >= 5 ? 4 : q.s >= 2 ? 3 : q.t >= 2 ? 2 : 1);
   const seed = (x) => { let h = 7; for (const c of x + ui.pid) h = (h * 31 + c.charCodeAt(0)) % 9973; return h; };
-  const qScore = (k) => (k === 'fday' || k === 'habitdone' ? starsOf(ui.q[k]) : !ui.prep[k] ? 0 : 2 + (seed(k) % 4));
+  const qScore = (k) => (k === 'life' ? lifeStars() : k === 'fday' || k === 'habitdone' ? starsOf(ui.q[k]) : !ui.prep[k] ? 0 : 2 + (seed(k) % 4));
   const lesScore = (k) => (hwOf(k) && hwOf(k).one ? 5 : 2 + (seed(k) % 4));
   const qIcons = (n, sm) => `<span class="st-i ${sm ? 'sm' : ''}" role="img" aria-label="${n} из${NB}5 звёзд">${Array.from({ length: 5 }, (_, i) => `<i class="${i < n ? 'on' : ''}">${svg('star')}</i>`).join('')}</span>`;
   function qLine(k) {
@@ -346,6 +348,65 @@
   const hwOf = (k) => (window.HW && k in window.HW ? window.HW[k] : undefined);
   const critOne = (t) => `<details class="crit"><summary>За что звёзды${svg('chev', 'chev')}</summary><ol><li>${qIcons(5, true)}<span>${esc(t)}</span></li></ol></details>`;
   const critList = (c, title) => `<details class="crit"><summary>${title || 'Как оценивается'}${svg('chev', 'chev')}</summary><ol>${c.map((t, i) => `<li>${qIcons(i + 1, true)}<span>${t}</span></li>`).join('')}</ol></details>`;
+
+  /* «Стоимость жизни»: упражнение делается прямо в маршруте (Игорь, голосовое 08.11.2026).
+     Поля, формула и выводы из спеки 020 и маршрутной карты /lab/route-map */
+  const LIFE_INC = { olga: 500, denis: 2000, marina: 2000, artem: 9500, irina: 25000 };
+  const lifeDef = () => ({ age: '', car: '', home: '', trip: '', tripn: '2', cloth: '', inc: String(LIFE_INC[ui.pid] || 500), note: '', calc: false });
+  const L0 = () => (ui.life = ui.life || lifeDef());
+  const num = (v) => Math.max(0, +String(v).replace(/\s/g, '') || 0);
+  function lifeCalc(l) {
+    const total = num(l.car) + num(l.home) + num(l.trip) * num(l.tripn) + num(l.cloth);
+    const inc = num(l.inc), years = inc > 0 ? total / inc / 12 : Infinity;
+    const end = isFinite(years) ? Math.ceil(num(l.age) + years) : null;
+    return { total, inc, years, end };
+  }
+  function lifeVerdict(years, end) {
+    if (!isFinite(years)) return 'Пока дохода нет, к${NB}такой жизни не${NB}прийти никогда. Цель на${NB}первые 30 дней: первые деньги. Добро пожаловать в${NB}Альянс.';
+    if (years <= 3) return 'Жизнь мечты уже рядом. Возможно, вы мечтаете слишком скромно: попробуйте увеличить список желаний в${NB}десять раз и${NB}посчитать заново.';
+    if (end <= 50) return `Хороший темп: к${NB}жизни мечты вы придёте в${NB}${end}. Альянс поможет дойти быстрее и${NB}не${NB}потерять по${NB}пути здоровье, семью и${NB}радость.`;
+    if (end <= 70) return `Вы придёте к${NB}ней в${NB}${end}, когда сил и${NB}времени на${NB}такую жизнь останется меньше. Хотите жить так раньше, нужна другая стратегия. Пора что-то менять.`;
+    return `При нынешнем доходе вы не${NB}успеете прожить такую жизнь: вам будет ${end}. И${NB}это если откладывать 100% дохода: не${NB}есть, не${NB}пить, ничего не${NB}тратить. Пора что-то менять. Добро пожаловать в${NB}Альянс.`;
+  }
+  function lifeStars() {
+    const l = ui.life; if (!l) return 0;
+    let n = 0;
+    if (num(l.age) && num(l.inc)) n = 1; else return 0;
+    if (num(l.car) && num(l.home)) n = 2; else return n;
+    if (num(l.trip) && num(l.cloth)) n = 3; else return n;
+    if (l.calc) n = 4; else return n;
+    if (l.note.trim().length >= 10) n = 5;
+    return n;
+  }
+  function lifeResult() {
+    const l = L0(); if (!l.calc) return '';
+    const r = lifeCalc(l);
+    const rows = isFinite(r.years)
+      ? `<div><b>${usd(r.total)}</b><span>стоит жизнь мечты</span></div><div><b>${Math.ceil(r.years)} ${yrs(Math.ceil(r.years))}</b><span>копить при доходе ${usd(r.inc)} в${NB}месяц, если откладывать всё</span></div><div><b>${r.end} ${yrs(r.end)}</b><span>будет вам, когда придёте к${NB}ней</span></div>`
+      : `<div><b>${usd(r.total)}</b><span>стоит жизнь мечты</span></div><div><b>Никогда</b><span>при нулевом доходе</span></div>`;
+    return `<div class="lc-r">${rows}</div><p class="lc-v">${lifeVerdict(r.years, r.end)}</p>`;
+  }
+  const yrs = (n) => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? 'год' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'года' : 'лет'; };
+  function lifeCard() {
+    const l = L0();
+    const f = (k, label, step) => `<label class="ans-f"><span>${label}</span><input type="number" inputmode="numeric" min="0" step="${step}" data-lf="${k}" value="${esc(l[k])}"></label>`;
+    return `<div class="lc" id="lifecalc">
+      <p class="lc-n">Найдите цены в${NB}интернете и${NB}впишите. Доход взяли из${NB}анкеты онбординга, его можно поправить.</p>
+      <div class="lc-f">
+        ${f('age', 'Сколько вам лет', 1)}
+        ${f('inc', 'Ваш доход сейчас, $ в месяц', 50)}
+        ${f('car', 'Машина мечты, $', 5000)}
+        ${f('home', 'Квартира или дом мечты, $', 10000)}
+        ${f('trip', 'Путешествие мечты на всю семью, $', 500)}
+        <label class="ans-f"><span>Сколько раз в${NB}год путешествуете</span><select data-lf="tripn">${[1, 2, 3, 4].map((n) => `<option ${String(n) === l.tripn ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+        ${f('cloth', 'Одежда в год, $', 500)}
+      </div>
+      <div class="ans-a"><button class="btn sm" data-act="lifego">${l.calc ? 'Пересчитать' : 'Рассчитать'}</button></div>
+      <div id="lc-out">${lifeResult()}</div>
+      ${l.calc ? `<label class="ans"><span class="ans-l">Что вы поняли</span><textarea data-lf="note" rows="3" placeholder="Главный вывод из${NB}расчёта">${esc(l.note)}</textarea></label>
+      <div class="ans-a"><button class="btn sm" data-act="lifesave">Сохранить</button></div>` : ''}
+    </div>`;
+  }
 
   /* Подготовка к росту: первая в маршруте, сворачивается */
   function prepBlock() {
@@ -365,7 +426,8 @@
         const c = i.n ? Math.min(ui.cnt[i.k] || 0, i.n) : null;
         const sub = i.k === 'biz' && on && P().step <= 2 ? 'Отмечено: стартап, точка ноль' : i.k === 'biz' ? i.alt : c != null && !on ? `${c} из${NB}${i.n}` : i.club ? 'В клубе и выше' : '';
         const st = qLine(i.k);
-        return `<li class="${on ? 'ok' : ''}"><button class="pi" data-act="go" data-v="${i.k}"><span class="pi-c" title="${on ? 'Засчитано' : 'Ещё не сделано'}">${on ? svg('check') : ''}</span><span class="pi-t">${esc(i.t)}${sub ? `<em>${esc(sub)}</em>` : ''}${st}</span><span class="pi-go">${on ? 'Открыть' : 'Перейти'}${svg('arrow')}</span></button></li>`;
+        const lOpen = i.inline && ui.open.has('life');
+        return `<li class="${on ? 'ok' : ''}"><button class="pi" data-act="go" data-v="${i.k}" ${i.inline ? `aria-expanded="${lOpen}"` : ''}><span class="pi-c" title="${on ? 'Засчитано' : 'Ещё не сделано'}">${on ? svg('check') : ''}</span><span class="pi-t">${esc(i.t)}${sub ? `<em>${esc(sub)}</em>` : ''}${st}</span><span class="pi-go">${i.inline ? (lOpen ? 'Свернуть' : on ? 'Открыть' : 'Посчитать') : on ? 'Открыть' : 'Перейти'}${svg(i.inline ? 'chev' : 'arrow')}</span></button>${lOpen ? lifeCard() : ''}</li>`;
       }).join('')}</ul>` : '';
       return `<div class="ps ${ok ? 'ok' : ''}"><button class="ps-h" data-act="grp" data-v="ps-${s.k}" aria-expanded="${sOpen}"><b><span class="ps-n">${ok ? svg('check') : si + 1}</span>${esc(s.t)}</b><span>${avgChip(items.filter((i) => ui.prep[i.k] || qScore(i.k)).map((i) => qScore(i.k)))}${ok ? 'Готово' : `${doneI} из${NB}${items.length}`}${svg('chev', 'chev')}</span></button>${rows}</div>`;
     }).join('');
@@ -635,6 +697,14 @@
     else if (a === 'stok') { ui.stage[v] = 'ok'; custom(); toast(`Этап ${v} пройден`); }
     else if (a === 'hcnext') { ui.fm++; render(); return; }
     else if (a === 'hcwrite') { toast(`Здесь откроется чат: ${FREEMEN[ui.fm % FREEMEN.length].n}`); render(); return; }
+    else if (a === 'go' && v === 'life') { ui.open.has('life') ? ui.open.delete('life') : ui.open.add('life'); render(); return; }
+    else if (a === 'lifego') { L0().calc = true; render(); return; }
+    else if (a === 'lifesave') {
+      const was6 = gate6();
+      if (lifeStars() < 4) { toast('Сначала рассчитайте стоимость жизни'); return; }
+      ui.prep.life = true; ui.open.delete('life'); custom(); toast('Стоимость жизни посчитана');
+      if (!was6 && gate6()) toast('Подготовка пройдена. Шаг 6 открыт');
+    }
     else if (a === 'go') { const it = PREP.flatMap((s) => s.items).find((i) => i.k === v); toast(`Здесь откроется: ${it.go}`); render(); return; }
     else if (a === 'auto') {
       const was6 = gate6();
@@ -653,10 +723,12 @@
   });
   app.addEventListener('change', (e) => {
     const a = e.target.dataset.act;
+    if (e.target.dataset.lf) { L0()[e.target.dataset.lf] = e.target.value; if (ui.life.calc) { const o = app.querySelector('#lc-out'); if (o) o.innerHTML = lifeResult(); } return; }
     if (a === 'sit') { setSit(e.target.value); render(); }
     if (a === 'access') { ui.access = e.target.value; custom(); const c = curPos(); if (c) ui.openL = seq()[c - 1]; render(); }
   });
   app.addEventListener('input', (e) => {
+    if (e.target.dataset.lf) { L0()[e.target.dataset.lf] = e.target.value; if (ui.life.calc && e.target.dataset.lf !== 'note') { const o = app.querySelector('#lc-out'); if (o) o.innerHTML = lifeResult(); } return; }
     if (e.target.dataset.sf) { const [et, k] = e.target.dataset.sf.split(':'); (ui.sf[et] = ui.sf[et] || {})[k] = e.target.value; return; }
     if (e.target.dataset.act !== 'answer') return;
     ui.answer = e.target.value;
