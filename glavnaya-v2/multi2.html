@@ -314,6 +314,18 @@ svg{flex:none}
 .rt-ic svg{width:26px;height:26px}
 .rt-tx{flex:1;min-width:0}.rt-tx b{display:block;font-size:17px;font-weight:700}.rt-tx p{margin:2px 0 0;font-size:13.5px;color:var(--ink3)}
 @media (max-width:520px){.route{flex-wrap:wrap}.route .btn{width:100%}}
+.mm-club{margin:-6px 0 2px;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#6d4bd8}
+.fmap .ph{flex-wrap:wrap}.fm-sub{font-size:13px;color:var(--ink3)}
+.fm-box{position:relative;border-radius:16px;overflow:hidden;background:radial-gradient(70% 80% at 50% 45%,#F4F7FD,#E6ECF7);height:420px}
+.fm-globe{position:absolute;left:50%;top:50%;width:min(96%,440px);height:auto;transform:translate(-50%,-46%)}
+.fm-globe .sea{fill:#fff;stroke:#D3DCEB}.fm-globe .land{fill:#E3E8F0;stroke:#fff;stroke-width:.6}.fm-globe .grat{fill:none;stroke:#E9EEF6;stroke-width:.6}
+.fm-globe .dot{fill:var(--blue);stroke:#fff;stroke-width:2}
+.fm-stats{position:absolute;top:14px;left:14px;display:flex;gap:8px}
+.fm-stats div{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:12px;padding:8px 12px;box-shadow:0 4px 14px rgba(20,30,60,.08)}
+.fm-stats b{display:block;font-size:20px;font-weight:800;line-height:1.1}.fm-stats small{font-size:11.5px;color:var(--ink3)}
+.fm-cta{position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 8px 24px rgba(20,30,60,.1)}
+.fm-cta p{flex:1;margin:0;font-size:13.5px;color:var(--ink2,#3a4150)}
+@media (max-width:600px){.fm-box{height:380px}.fm-cta{flex-direction:column;align-items:stretch}.fm-cta .btn{text-align:center}}
 /* что показывается по дням и состоянию (пульт макета) */
 .d4,.d4b,.d4x{display:none}
 .day4 .d4,.day4 .d4b{display:block}
@@ -344,7 +356,7 @@ svg{flex:none}
   .panel.vid{padding:0}.vid .vh{padding:14px 12px 12px 16px}
   .screen .cap span,.screen .cap{font-size:12px}
   .hello h2{font-size:25px}
-  #d-hello{order:1}#d-vid{order:2}#d-day{order:3}#d-route{order:3}#d-notif{order:4}#d-mem{order:5}#d-chats{order:6}#d-setup{order:7}#d-promos{order:8}#d-cal{order:9}#d-minis{order:10}
+  #d-hello{order:1}#d-vid{order:2}#d-day{order:3}#d-route{order:3}#d-notif{order:4}#d-mem{order:5}#d-chats{order:6}#d-setup{order:7}#d-promos{order:8}#d-map{order:8}#d-cal{order:9}#d-minis{order:10}
   .hello-f img{width:84px}
   .promo{padding:24px 20px}.po-offer h3{font-size:30px}.po-btn{width:100%}.po-pr{min-height:0}.po-pr .po-txt{max-width:none}.po-pr .po-eye,.po-pr h3{max-width:60%}.po-pr h3{font-size:60px}.po-pr h3 span{font-size:40px}
   .po-img{top:18px;right:-14px;bottom:auto;height:auto;width:46%;max-width:190px;z-index:0;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
@@ -381,6 +393,7 @@ svg{flex:none}
     <a class="nav on" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Мой дашборд</a>
     <button class="nav" aria-expanded="true" aria-controls="prods" data-toggle="prods"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Мои продукты<svg class="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button>
     <div class="sub open" id="prods">
+      <a class="nav prod" href="#"><img src="img/pp-logo.png" alt="">ПП-клуб</a>
       <a class="nav prod" href="#"><img src="img/mesto-logo.webp" alt="">Место притяжения</a>
       <a class="nav prod" href="#"><img src="img/ii-mark.png" alt="">ИИнструменты</a>
       <a class="nav" href="#">Все продукты</a>
@@ -463,12 +476,21 @@ svg{flex:none}
               <img class="po-img" src="img/proryv-igor.webp" alt="" width="986" height="1060">
             </div>
           </section>
+
+          <section class="panel fmap" id="d-map" aria-label="Карта фриманов">
+            <div class="ph"><h3>Карта фриманов</h3><span class="fm-sub">Кто чем может помочь</span></div>
+            <div class="fm-box">
+              <svg class="fm-globe" id="fm-globe" viewBox="0 0 600 600" role="img" aria-label="Глобус с участниками"></svg>
+              <div class="fm-stats"><div><b>14</b><small>стран</small></div><div><b>38</b><small>городов</small></div></div>
+              <div class="fm-cta"><p>Участники клуба видят друг друга на&nbsp;карте и&nbsp;находят, кто рядом и&nbsp;кто чем может помочь.</p><a class="btn btn-p" href="#">Вступить в&nbsp;членство</a></div>
+            </div>
+          </section>
         </div>
 
         <div class="col">
           <section class="panel member" id="d-mem" aria-label="Моё членство">
             <div class="ph"><h3>Моё членство</h3></div>
-            <div class="mm"><b>Гость</b><small>без срока</small></div>
+            <p class="mm-club">ПП-клуб</p><div class="mm"><b>Гость</b><small>без срока</small></div>
             <a class="btn btn-s mm-btn" href="#">Апгрейд</a>
           </section>
 
@@ -494,7 +516,7 @@ svg{flex:none}
       </div>
     </div>
     <div class="pult" id="pult"></div>
-    <p class="note">Макет: тест пройден, доступ бесплатный (Гость), два продукта — Место притяжения и ИИнструменты, настройка закончена. Имя и даты для примера, уроки и задания те же, что на экранах продуктов. Под «Моим днём» блок «Ваш маршрут готов», в меню «Мой маршрут», сервисы открыты. В неделе для Гостя ветки ПП: старт Точки Сборки и первый бесплатный разбор по средам. Пульт переключает день: с 4-го дня внизу промо.</p>
+    <p class="note">Макет: тест пройден, доступ бесплатный (Гость), два продукта — Место притяжения и ИИнструменты, настройка закончена. Имя и даты для примера, уроки и задания те же, что на экранах продуктов. Под «Моим днём» блок «Ваш маршрут готов», в меню «Мой маршрут», сервисы открыты. В меню у Гостя появляется ПП-клуб, внизу карта фриманов с кнопкой «Вступить в членство» (страны, города и точки для примера). В неделе для Гостя ветки ПП: старт Точки Сборки и первый бесплатный разбор по средам. Пульт переключает день: с 4-го дня внизу промо.</p>
   </div>
 </div>
 
@@ -585,6 +607,29 @@ cg.addEventListener('click', e => {
   pop.style.top = row + 'px'; pop.classList.add('open');
   pop.querySelector('.x').onclick = () => { pop.classList.remove('open'); b.setAttribute('aria-pressed', 'false'); sel = null; };
 });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script><script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script>
+// глобус как на живом кабинете (MembersMap): светлая карта, синие точки городов; города для примера
+(async () => {
+  const svg = d3.select('#fm-globe'); if (svg.empty() || !window.d3) return;
+  const pts = [[37.6,55.75],[30.3,59.94],[-9.14,38.72],[76.9,43.24],[55.27,25.2],[98.3,7.88],[44.8,41.7],[115.2,-8.65],[13.4,52.52],[33.04,34.68],[44.5,40.18],[49.1,55.8],[60.6,56.84],[82.9,55.0],[2.35,48.86],[-3.7,40.42],[100.5,13.75],[69.24,41.3],[27.56,53.9],[28.98,41.0]];
+  const proj = d3.geoOrthographic().scale(290).translate([300,300]).clipAngle(90).rotate([-50,-38]);
+  const path = d3.geoPath(proj);
+  svg.append('path').attr('class','sea').datum({type:'Sphere'}).attr('d',path);
+  svg.append('path').attr('class','grat').datum(d3.geoGraticule10()).attr('d',path);
+  try {
+    const w = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json')).json();
+    svg.append('path').attr('class','land').datum(topojson.feature(w, w.objects.land)).attr('d',path);
+  } catch (e) {}
+  const g = svg.append('g');
+  const draw = () => { g.selectAll('circle').data(pts).join('circle').attr('class','dot').attr('r',(d,i)=>i<2?9:i<6?7:5.5)
+    .attr('cx',d=>proj(d)[0]).attr('cy',d=>proj(d)[1]).attr('display',d=>d3.geoDistance(d,[-proj.rotate()[0],-proj.rotate()[1]])>1.5?'none':null); };
+  draw();
+  if (!document.documentElement.classList.contains('shot') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    d3.timer(t => { const r = proj.rotate(); proj.rotate([-50 + t*0.004, r[1]]); svg.selectAll('.sea,.grat,.land').attr('d',path); draw(); });
+  }
+})();
 </script>
 </body>
 </html>
