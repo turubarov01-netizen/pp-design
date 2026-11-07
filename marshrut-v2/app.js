@@ -1,15 +1,17 @@
 (function () {
   'use strict';
-  /* Прототип маршрутной карты v2 (07.11.2026): десятка по ответам онбординга,
-     уроки 1–5 сразу и в любом порядке, 6-й после заданий 1–5 и «Подготовки к росту»,
+  /* Прототип маршрутной карты v2.1 (07.11.2026, правки Игоря):
+     сверху Фрими с одним следующим действием; первой идёт «Подготовка к росту»;
+     пройденные шаги свёрнуты (виден только предыдущий), пропущенные всегда видны;
+     места в маршруте называются шагами, у урока остаётся свой номер библиотеки.
+     Правила: шаги 1–5 сразу и в любом порядке, 6-й после заданий 1–5 и подготовки,
      11-й после установочной. Данные: data.js из build_proto2.py */
   const L = window.LESSONS;
   const PROFILES = window.PROFILES;
   const NB = ' ';
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const plural = (n, a, b, c) => { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? b : c; };
-  const lessonsWord = (n) => `${n}${NB}${plural(n, 'урок', 'урока', 'уроков')}`;
-  const nb = (s) => s.replace(/ (в|и|с|к|о|у|а|на|по|до|за|из|от|не|без|для|при|или) /g, ` $1${NB}`);
+  const stepsWord = (n) => `${n}${NB}${plural(n, 'шаг', 'шага', 'шагов')}`;
 
   const ETAPY = {
     start: { name: 'Старт', res: 'Пройдены уроки о системе ПЭРЛ и устройстве Альянса.' },
@@ -55,21 +57,21 @@
 
   const SIT = {
     fresh: 'Только прошёл онбординг',
-    some: 'Посмотрел часть уроков 1–5',
+    some: 'Посмотрел часть шагов 1–5',
     gate6: 'Задания 1–5 сданы, подготовка не закончена',
-    at7: 'Подготовка готова, идёт урок 7',
-    wall: '10 бесплатных уроков пройдены',
+    at7: 'Подготовка готова, идёт шаг 7',
+    wall: '10 бесплатных шагов пройдены',
     bought: 'Купил доступ после 10-го, установочной не было',
-    going: 'Стартовый доступ, установочная пройдена',
+    at30: 'Идёт шаг 30, один шаг пропущен',
   };
 
-  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, openPrep: false, openEt: new Set(), answer: '', toast: null, flash: null };
+  const ui = { pid: 'olga', sit: 'fresh', access: 'free', watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: {}, setup: 'no', openL: null, open: new Set(), shut: new Set(), answer: '', toast: null, flash: null };
   const P = () => PROFILES.find((p) => p.id === ui.pid);
   const ten = () => P().route.ten;
   const rest = () => P().route.rest;
   const seq = () => ten().map((x) => x.k).concat(rest().map((x) => x.k));
 
-  /* Состояние подготовки */
+  /* Подготовка */
   const itemOn = (i) => !(i.club && ui.access !== 'club');
   const secDone = (s) => s.items.filter(itemOn).every((i) => ui.prep[i.k]);
   const prepDoneN = () => PREP.filter(secDone).length;
@@ -77,39 +79,53 @@
   const firstFiveDone = () => ten().slice(0, 5).filter((x) => ui.done.has(x.k)).length;
   const gate6 = () => firstFiveDone() === 5 && prepDone();
   const paid = () => ui.access !== 'free';
+  const passed = (k) => ui.done.has(k) || ui.skip.has(k);
 
-  /* Состояние урока по месту в маршруте (1-based) */
+  /* Состояние шага по месту в маршруте (1-based) */
   function state(pos) {
     const k = seq()[pos - 1];
     if (ui.done.has(k)) return 'done';
+    if (ui.skip.has(k)) return 'skip';
     if (pos <= 5) return ui.watched.has(k) ? 'watched' : 'open';
     if (!gate6()) return 'gate';
     if (pos > 10 && !paid()) return 'paid';
     if (pos > 10 && ui.setup !== 'yes') return 'setup';
-    const prev = seq()[pos - 2];
-    if (pos > 6 && !ui.done.has(prev)) return 'next';
+    if (pos > 6 && !passed(seq()[pos - 2])) return 'next';
     return ui.watched.has(k) ? 'watched' : 'open';
   }
-  const actionable = (s) => s === 'open' || s === 'watched';
-  function defaultOpen() {
-    const s = seq();
-    for (let i = 1; i <= s.length; i++) if (actionable(state(i))) return s[i - 1];
+  const actionable = (s) => s === 'open' || s === 'watched' || s === 'skip';
+  /* Текущий шаг — первый открытый, не считая пропущенных */
+  function curPos() {
+    const n = seq().length;
+    for (let i = 1; i <= n; i++) { const s = state(i); if (s === 'open' || s === 'watched') return i; }
     return null;
   }
+  function lastDone() {
+    const c = curPos() || seq().length + 1;
+    for (let i = c - 1; i >= 1; i--) if (state(i) === 'done') return i;
+    return null;
+  }
+  const doneTotal = () => seq().filter((k) => ui.done.has(k)).length;
 
   function setSit(k) {
-    const t = ten().map((x) => x.k), r = rest().map((x) => x.k);
+    const all = seq();
+    const t = all.slice(0, 10);
     const full = () => { ALL_ITEMS.forEach((i) => (ui.prep[i] = true)); ui.cnt = { wish: 10, tasks: 5 }; };
-    Object.assign(ui, { sit: k, watched: new Set(), done: new Set(), prep: {}, cnt: { wish: 0, tasks: 0 }, setup: 'no', access: 'free', answer: '', openEt: new Set() });
-    const doneN = (n, extra) => { t.concat(r).slice(0, n).forEach((x) => { ui.done.add(x); ui.watched.add(x); }); (extra || []).forEach((x) => ui.watched.add(x)); };
-    if (k === 'some') { doneN(0); [t[0], t[2], t[3]].forEach((x) => ui.watched.add(x)); ui.done.add(t[0]); ui.prep.inc = true; ui.cnt = { wish: 3, tasks: 1 }; }
+    Object.assign(ui, { sit: k, watched: new Set(), done: new Set(), skip: new Set(), prep: {}, cnt: { wish: 0, tasks: 0 }, setup: 'no', access: 'free', answer: '', open: new Set(), shut: new Set() });
+    const doneN = (n) => all.slice(0, n).forEach((x) => { ui.done.add(x); ui.watched.add(x); });
+    if (k === 'some') { [t[0], t[2], t[3]].forEach((x) => ui.watched.add(x)); ui.done.add(t[0]); ui.done.add(t[2]); ui.prep.inc = true; ui.cnt = { wish: 3, tasks: 1 }; }
     if (k === 'gate6') { doneN(5); Object.assign(ui.prep, { inc: true, biz: true, focus: true, zv: true, wheel: true, habit: true, chat: true }); ui.cnt = { wish: 6, tasks: 3 }; }
     if (k === 'at7') { doneN(6); full(); }
     if (k === 'wall') { doneN(10); full(); }
     if (k === 'bought') { doneN(10); full(); ui.access = 'starter'; }
-    if (k === 'going') { doneN(12); full(); ui.access = 'starter'; ui.setup = 'yes'; }
-    ui.openPrep = k === 'gate6' || k === 'some';
-    ui.openL = defaultOpen();
+    if (k === 'at30') {
+      const n = Math.min(29, all.length - 2);
+      doneN(n); full(); ui.access = 'starter'; ui.setup = 'yes';
+      const s = all[n - 6]; ui.done.delete(s); ui.skip.add(s);
+    }
+    /* Пока подготовка не готова, Фрими ведёт в неё, карточку шага не раскрываем */
+    const c = curPos();
+    ui.openL = prepDone() && c ? all[c - 1] : null;
   }
 
   /* Иконки */
@@ -128,7 +144,7 @@
     chev: '<path d="m6 9 6 6 6-6"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
     x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
-    pen: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    skip: '<path d="M12 8v5"/><path d="M12 16.5h.01"/><circle cx="12" cy="12" r="9"/>',
   };
   const svg = (k, cls) => `<svg class="${cls || ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
   const SIDE = [['dash', 'Дашборд Альянса'], ['route', 'Мой маршрут'], ['todo', 'Трекер Фримана'], ['cal', 'Календарь'], ['feed', 'Лента'], ['msg', 'Сообщения'], ['lib', 'Библиотека'], ['people', 'Члены Альянса']];
@@ -147,73 +163,85 @@
         <div class="pf" role="group" aria-label="Анкета онбординга">${PROFILES.map((p) => `<button data-act="pid" data-v="${p.id}" aria-pressed="${p.id === ui.pid}"><b>${esc(p.name)}</b><span>${esc(p.who)}</span></button>`).join('')}</div>
         <label>Ситуация<select data-act="sit">${opts(SIT, ui.sit)}${SIT[ui.sit] ? '' : '<option selected>Свой сценарий</option>'}</select></label>
         <label>Доступ<select data-act="access">${opts(ACCESS, ui.access)}</select></label>
-        <p class="demo-note">Участники вымышленные, ответы анкет составлены по образцу реальных. Десятку собирает правило: фундамент, затем уроки под отмеченные барьеры, затем начало этапа по шагу бизнеса. Пункты подготовки можно отмечать кликом.</p>
+        <p class="demo-note">Участники вымышленные, ответы анкет составлены по образцу реальных. Пункты подготовки отмечаются кликом.</p>
       </div></details>`;
   }
 
-  /* Карточка «По анкете онбординга» */
-  function profileCard() {
-    const p = P(), r = p.route;
-    const et = ETAPY[r.start];
-    const bars = p.bars.slice().sort((a, b) => (a === p.main ? -1 : b === p.main ? 1 : 0));
-    const done = seq().filter((k) => ui.done.has(k)).length;
-    const total = seq().length;
-    return `<section class="card anketa">
-      <div class="an-h">
-        <p class="eyebrow">Маршрут собран по анкете онбординга</p>
-        <h2>${esc(p.name)}, ваш маршрут начинается с${NB}этапа ${r.start} «${esc(et.name)}»</h2>
-        <p class="an-sub">${esc(nb(SEG[p.seg] + '. ' + p.goal + '.'))} Первые 10${NB}уроков подобраны под ваши ответы, дальше уроки идут по этапам бизнеса.</p>
+  /* Одно следующее действие: его говорит Фрими */
+  function nextAction() {
+    const p = P(), c = curPos();
+    const free5 = 5 - firstFiveDone();
+    if (!prepDone()) return { img: 'focus-flag', eb: firstFiveDone() ? `Осталось подготовиться` : 'С чего начать', t: 'Начните с подготовки к росту', d: `${prepDoneN()} из${NB}4 разделов готово. Без подготовки не${NB}откроется шаг 6. Шаги 1–5 можно смотреть уже сейчас, в${NB}любом порядке.`, cta: 'Продолжить подготовку', act: 'goprep' };
+    if (free5 > 0) return { img: 'idea', eb: 'Подготовка готова', t: `Сдайте задания шагов 1–5`, d: `Осталось ${stepsWord(free5)}. После них откроется шаг 6.`, cta: 'Открыть шаг', act: 'gocur' };
+    if (c) return { img: c <= 10 ? 'idea' : 'focus-flag', eb: `Шаг ${c} из${NB}${seq().length}`, t: L[seq()[c - 1]].t, d: c <= 10 && ten()[c - 1].kind === 'bar' ? ten()[c - 1].why + '.' : `Посмотрите урок и${NB}сдайте задание, затем откроется следующий шаг.`, cta: ui.watched.has(seq()[c - 1]) ? 'Сдать задание' : 'Смотреть урок', act: 'gocur' };
+    if (!paid()) return { img: 'focus-cup', eb: '10 бесплатных шагов пройдены', t: 'Откройте весь маршрут', d: `Дальше ${stepsWord(seq().length - 10)} со${NB}стартовым доступом. После покупки нужна установочная сессия.`, cta: 'Открыть весь маршрут', act: 'buy' };
+    if (ui.setup !== 'yes') return { img: 'focus-flag', eb: 'Перед шагом 11', t: 'Пройдите установочную сессию', d: `${p.seg === 'E' ? 'Эксперты' : 'Предприниматели'} встречаются по${NB}${p.seg === 'E' ? 'вторникам' : 'средам'}. После неё откроется шаг 11.`, cta: ui.setup === 'booked' ? 'Вы записаны' : `Записаться на${NB}${DAY[p.seg]}`, act: ui.setup === 'booked' ? 'gowall' : 'book' };
+    return { img: 'hooray', eb: 'Маршрут пройден', t: 'Все шаги пройдены', d: 'Наставник подберёт следующие уроки.', cta: '', act: '' };
+  }
+
+  function guide() {
+    const p = P(), a = nextAction();
+    const done = doneTotal(), total = seq().length;
+    const bars = p.bars.slice().sort((x, y) => (x === p.main ? -1 : y === p.main ? 1 : 0));
+    return `<section class="card guide">
+      <div class="g-main">
+        <img class="g-fr" src="img/frimi-${a.img}.webp" alt="" width="132" height="132">
+        <div class="g-say">
+          <p class="eyebrow">${esc(p.name)} · ${a.eb}</p>
+          <h2>${esc(a.t)}</h2>
+          <p class="g-d">${a.d}</p>
+          ${a.cta ? `<button class="btn" data-act="${a.act}">${a.act === 'gocur' ? svg('play', 'ic-f') : ''}${a.cta}</button>` : ''}
+        </div>
       </div>
-      <dl class="an-rows">
-        <div><dt>Ветка</dt><dd>${SEG[p.seg]}</dd></div>
-        <div><dt>Шаг бизнеса, 0–15</dt><dd><span class="num">${p.step}</span></dd></div>
-        <div><dt>Уровень ПЭРЛ</dt><dd>${esc(p.pearl)}</dd></div>
-        <div><dt>Доход</dt><dd>${esc(p.inc).replace(/ /g, NB)}</dd></div>
-      </dl>
-      <div class="an-bars"><span class="an-l">Что мешает, по${NB}вашим словам</span>
-        <ul>${bars.map((c) => `<li class="${c === p.main ? 'main' : ''}">${c === p.main ? '<b>Главное</b>' : ''}${esc(p.bar_labels[c])}</li>`).join('')}</ul>
+      <div class="g-foot">
+        <div class="mini"><span class="num">${done} из${NB}${total}</span><i><u style="width:${(done / total) * 100}%"></u></i><span>шагов пройдено</span></div>
+        <details class="why"><summary>Почему такой маршрут${svg('chev', 'chev')}</summary>
+          <div class="why-b">
+            <p>Собран по вашей анкете: ${SEG[p.seg].toLowerCase()}, шаг бизнеса ${p.step}, уровень ПЭРЛ «${esc(p.pearl)}». Шаг 1 у${NB}всех один, шаги 2–5 закрывают то, что мешает, шаги 6–10 начинают этап ${p.route.start} «${esc(ETAPY[p.route.start].name)}».</p>
+            <ul>${bars.map((c) => `<li class="${c === p.main ? 'main' : ''}">${c === p.main ? '<b>Главное</b>' : ''}${esc(p.bar_labels[c])}</li>`).join('')}</ul>
+          </div>
+        </details>
       </div>
-      <div class="mini"><span class="num">${done} из${NB}${total}</span><i><u style="width:${(done / total) * 100}%"></u></i><span>уроков пройдено</span></div>
     </section>`;
   }
 
-  /* Строка и карточка урока */
+  /* Строка и карточка шага */
   const libOf = (k) => (L[k].n ? `Урок №${L[k].n}` : 'Ролик YouTube');
   const WHY = (x) => x.kind === 'bar' ? `<span class="tag pers">${esc(x.why)}</span>` : x.kind === 'base' ? `<span class="tag club">${esc(x.why.split(':')[0])}</span>` : `<span class="tag etap">${esc(x.why)}</span>`;
-  function lesson(pos) {
+  function step(pos) {
     const k = seq()[pos - 1];
     const s = state(pos);
-    const meta10 = pos <= 10 ? ten()[pos - 1] : null;
-    const tag = meta10 ? WHY(meta10) : '';
+    const tag = (pos <= 10 ? WHY(ten()[pos - 1]) : '') + (s === 'skip' ? '<span class="tag warn">Пропущен</span>' : '');
     if (ui.openL === k && actionable(s)) return nowCard(pos, k, s, tag);
-    const node = s === 'done' ? svg('check') : ['gate', 'paid', 'setup'].includes(s) ? svg('lock') : `<span class="num">${pos}</span>`;
+    const node = s === 'done' ? svg('check') : s === 'skip' ? svg('skip') : ['gate', 'paid', 'setup'].includes(s) ? svg('lock') : `<span class="num">${pos}</span>`;
     const what = {
       done: 'Задание сдано',
+      skip: 'Задание не сдано, можно вернуться',
       watched: 'Видео просмотрено, осталось задание',
       open: pos <= 5 ? 'Можно смотреть сейчас' : 'Открыт',
-      gate: 'Откроется после заданий 1–5 и подготовки',
+      gate: 'После заданий 1–5 и подготовки',
       paid: 'Со стартовым доступом',
-      setup: 'Откроется после установочной сессии',
-      next: `Откроется после урока ${pos - 1}`,
+      setup: 'После установочной сессии',
+      next: `После шага ${pos - 1}`,
     }[s];
-    const cls = s === 'done' ? 'is-done' : actionable(s) ? 'is-open' : s === 'next' ? 'is-next' : 'is-paid';
+    const cls = s === 'done' ? 'is-done' : s === 'skip' ? 'is-skip' : actionable(s) ? 'is-open' : s === 'next' ? 'is-next' : 'is-paid';
     return `<li class="ls ${cls}" id="l${pos}">
       <span class="nd">${node}</span>
-      <button class="ls-b" data-act="row" data-v="${pos}" ${actionable(s) || s === 'done' ? '' : 'aria-disabled="true"'}><span class="ls-t">${esc(L[k].t)}</span><span class="ls-m"><span class="lib">${libOf(k)}</span>${tag}<span>${what}</span></span></button>
+      <button class="ls-b" data-act="row" data-v="${pos}" ${actionable(s) || s === 'done' ? '' : 'aria-disabled="true"'}><span class="ls-k">Шаг ${pos}</span><span class="ls-t">${esc(L[k].t)}</span><span class="ls-m"><span class="lib">${libOf(k)}</span>${tag}<span>${what}</span></span></button>
     </li>`;
   }
 
   function nowCard(pos, k, s, tag) {
-    const watched = s === 'watched';
+    const watched = s === 'watched' || s === 'skip';
     const step1 = `<li class="${watched ? 'ok' : 'todo'}"><span class="chk-n">${watched ? svg('check') : '1'}</span>
         <div class="chk-b"><b>Посмотреть урок</b><span>${watched ? 'Видео просмотрено' : libOf(k)}</span></div>
         ${watched ? '<button class="btn soft sm" data-act="watch">Пересмотреть</button>' : `<button class="btn sm" data-act="watch">${svg('play', 'ic-f')}Смотреть</button>`}</li>`;
     const step2 = `<li class="${watched ? 'todo' : 'wait'}"><span class="chk-n">2</span>
-        <div class="chk-b"><b>Задание урока</b><span>${esc(DEF_TASK)}</span>
+        <div class="chk-b"><b>Задание</b><span>${esc(DEF_TASK)}</span>
         ${watched ? `<label class="ans"><span class="ans-l">Ваш результат</span><textarea data-act="answer" rows="3" placeholder="Что сделали и что поняли">${esc(ui.answer)}</textarea></label>
-          <div class="ans-a"><button class="btn sm" data-act="submit" ${ui.answer.trim().length < 3 ? 'disabled' : ''}>Сдать задание</button><span class="small mut">${pos <= 5 ? 'Задания уроков 1–5 и подготовка открывают 6-й урок.' : 'После задания откроется следующий урок.'}</span></div>` : '<span class="wait-n">Откроется после просмотра</span>'}
+          <div class="ans-a"><button class="btn sm" data-act="submit" ${ui.answer.trim().length < 3 ? 'disabled' : ''}>Сдать задание</button></div>` : '<span class="wait-n">Откроется после просмотра</span>'}
         </div></li>`;
-    const eyebrow = pos <= 5 ? `Урок ${pos} · можно в${NB}любом порядке` : `Сейчас · урок ${pos} маршрута`;
+    const eyebrow = pos <= 5 ? `Шаг ${pos} · можно в${NB}любом порядке` : s === 'skip' ? `Шаг ${pos} · пропущен` : `Сейчас · шаг ${pos}`;
     return `<li class="ls is-now ${pos <= 10 && ten()[pos - 1].kind === 'bar' ? 'pers' : ''} ${ui.flash === k ? 'enter' : ''}" id="l${pos}">
       <span class="nd"><span class="num">${pos}</span></span>
       <div class="now"><div class="now-h"><p class="eyebrow">${eyebrow}</p><h3>${esc(L[k].t)}</h3><div class="ls-m"><span class="lib">${libOf(k)}</span>${tag}</div></div>
@@ -221,121 +249,136 @@
     </li>`;
   }
 
-  const head = (id, nd, title, meta, open, cls, act) => `<li class="st ${cls || ''}" id="${id}"><span class="nd sq">${nd}</span>
-    <button class="st-b" ${act ? `data-act="${act}"` : 'disabled'} aria-expanded="${open}"><span class="st-t">${title}</span><span class="st-m">${meta}</span>${act ? svg('chev', 'chev') : ''}</button></li>`;
+  /* Группа шагов со сворачиванием: пройденные прячутся, виден только предыдущий; пропущенные видны всегда */
+  function group(gid, nd, title, meta, positions, extraCls) {
+    const ld = lastDone(), c = curPos();
+    const allDone = positions.every((p) => state(p) === 'done');
+    const hasCur = positions.some((p) => p === c || actionable(state(p)));
+    const defOpen = positions.some((p) => actionable(state(p)));
+    const open = ui.open.has(gid) || (defOpen && !ui.shut.has(gid));
+    const doneN = positions.filter((p) => state(p) === 'done').length;
+    const m = allDone ? `<span>Пройдено, ${stepsWord(positions.length)}</span>` : meta;
+    let out = `<li class="st ${allDone ? 'is-passed' : hasCur ? 'is-cur' : ''} ${extraCls || ''}" id="g-${gid}"><span class="nd sq">${allDone ? svg('check') : nd}</span>
+      <button class="st-b" data-act="grp" data-v="${gid}" aria-expanded="${open}"><span class="st-t">${title}</span><span class="st-m">${m}</span>${svg('chev', 'chev')}</button></li>`;
+    if (!open) return out;
+    const showAll = ui.open.has('done-' + gid);
+    const hidden = positions.filter((p) => state(p) === 'done' && !(p === ld && p > 5) && !showAll);
+    if (hidden.length) out += `<li class="ls fold"><span class="nd nd-dot">${svg('check')}</span><button class="fold-b" data-act="fold" data-v="done-${gid}">Пройдено ${stepsWord(hidden.length)} · показать</button></li>`;
+    else if (showAll && doneN > 1) out += `<li class="ls fold"><span class="nd nd-dot">${svg('check')}</span><button class="fold-b" data-act="fold" data-v="done-${gid}">Свернуть пройденные</button></li>`;
+    let locked = 0;
+    const moreOpen = ui.open.has('more-' + gid);
+    const visible = positions.filter((p) => !hidden.includes(p));
+    const lockedAll = visible.filter((p) => ['next', 'gate', 'paid', 'setup'].includes(state(p)));
+    visible.forEach((p) => {
+      const isLocked = lockedAll.includes(p);
+      if (isLocked) { locked++; if (locked > 3 && !moreOpen) return; }
+      out += step(p);
+    });
+    if (lockedAll.length > 3 && !moreOpen) out += `<li class="ls fold"><span class="nd nd-dot">${svg('lock')}</span><button class="fold-b" data-act="fold" data-v="more-${gid}">Ещё ${stepsWord(lockedAll.length - 3)} · показать</button></li>`;
+    return out;
+  }
 
-  /* Подготовка к росту */
+  /* Подготовка к росту: первая в маршруте, сворачивается */
   function prepBlock() {
-    const n = prepDoneN();
-    const all = prepDone();
-    const meta = all ? '<span>Готово. Нужна для 6-го урока</span>' : `<span>${n} из${NB}4 · нужна для 6-го урока</span>`;
-    let out = head('sprep', all ? svg('check') : svg('user'), 'Подготовка к росту', meta, ui.openPrep, all ? 'is-passed' : 'is-cur', 'prep');
-    if (!ui.openPrep) return out;
+    const n = prepDoneN(), all = prepDone();
+    const open = ui.open.has('prep') || (!all && !ui.shut.has('prep'));
+    let out = `<li class="st ${all ? 'is-passed' : 'is-cur'}" id="sprep"><span class="nd sq">${all ? svg('check') : svg('user')}</span>
+      <button class="st-b" data-act="grp" data-v="prep" aria-expanded="${open}"><span class="st-t">Подготовка к росту</span><span class="st-m"><span>${all ? 'Готово' : `${n} из${NB}4 · нужна для шага 6`}</span></span>${svg('chev', 'chev')}</button></li>`;
+    if (!open) return out;
     const secs = PREP.map((s, si) => {
       const ok = secDone(s);
-      const rows = s.items.filter(itemOn).map((i) => {
+      const items = s.items.filter(itemOn);
+      const doneI = items.filter((i) => ui.prep[i.k]).length;
+      const firstOpen = PREP.find((x) => !secDone(x));
+      const sOpen = ui.open.has('ps-' + s.k) || (firstOpen === s && !ui.shut.has('ps-' + s.k));
+      const rows = sOpen ? `<ul>${items.map((i) => {
         const on = !!ui.prep[i.k];
         const c = i.n ? Math.min(ui.cnt[i.k] || 0, i.n) : null;
         const sub = i.k === 'biz' && on && P().step <= 2 ? 'Отмечено: стартап, точка ноль' : i.k === 'biz' ? i.alt : c != null && !on ? `${c} из${NB}${i.n}` : i.club ? 'В клубе и выше' : '';
         return `<li class="${on ? 'ok' : ''}"><button class="pi" data-act="pi" data-v="${i.k}" aria-pressed="${on}"><span class="pi-c">${on ? svg('check') : ''}</span><span class="pi-t">${esc(i.t)}${sub ? `<em>${esc(sub)}</em>` : ''}</span></button></li>`;
-      }).join('');
-      const doneI = s.items.filter(itemOn).filter((i) => ui.prep[i.k]).length, allI = s.items.filter(itemOn).length;
-      return `<div class="ps ${ok ? 'ok' : ''}"><div class="ps-h"><b><span class="ps-n">${ok ? svg('check') : si + 1}</span>${esc(s.t)}</b><span>${ok ? 'Готово' : `${doneI} из${NB}${allI}`} · ${esc(s.where)}</span></div><ul>${rows}</ul></div>`;
+      }).join('')}</ul>` : '';
+      return `<div class="ps ${ok ? 'ok' : ''}"><button class="ps-h" data-act="grp" data-v="ps-${s.k}" aria-expanded="${sOpen}"><b><span class="ps-n">${ok ? svg('check') : si + 1}</span>${esc(s.t)}</b><span>${ok ? 'Готово' : `${doneI} из${NB}${items.length}`}${sOpen ? ` · ${esc(s.where)}` : ''}${svg('chev', 'chev')}</span></button>${rows}</div>`;
     }).join('');
-    out += `<li class="ls prep-body"><span class="nd nd-ghost"></span><div class="prep-c">${secs}${setupCard(true)}</div></li>`;
+    out += `<li class="ls prep-body"><span class="nd nd-ghost"></span><div class="prep-c">${secs}${setupCard()}</div></li>`;
     return out;
   }
 
-  /* Установочная: обязательна для 11-го урока */
-  function setupCard(inPrep) {
-    const day = DAY[P().seg];
-    const who = P().seg === 'E' ? 'Эксперты' : 'Предприниматели';
-    const lbl = `<b><span class="ps-n">5</span>Установочная сессия</b>`;
-    if (ui.setup === 'yes') return `<div class="ps ok setup"><div class="ps-h"><b><span class="ps-n">${svg('check')}</span>Установочная сессия</b><span>Пройдена</span></div></div>`;
-    if (!paid()) return `<div class="ps setup locked"><div class="ps-h">${lbl}<span>${svg('lock')}Нужно активировать доступ</span></div><p>Встреча с${NB}наставником: проверяем ваши цифры и${NB}собираем стратегию. ${who} встречаются по${NB}${P().seg === 'E' ? 'вторникам' : 'средам'}. Без неё не${NB}откроется 11-й урок маршрута.</p><button class="btn sm" data-act="buy">Повысить доступ</button></div>`;
-    if (ui.setup === 'booked') return `<div class="ps setup"><div class="ps-h">${lbl}<span>Вы записаны</span></div><p>Встреча в${NB}${day}, ссылка придёт в${NB}Telegram. 11-й урок откроется после встречи.</p><button class="btn soft sm" data-act="attend">Прототип: встреча прошла</button></div>`;
-    return `<div class="ps setup ${inPrep ? '' : 'cta'}"><div class="ps-h">${lbl}<span>Нужна для 11-го урока</span></div><p>${who} встречаются по${NB}${P().seg === 'E' ? 'вторникам' : 'средам'}. Проверяем ваши цифры и собираем стратегию на${NB}ближайшие месяцы.</p><button class="btn sm" data-act="book">${svg('cal')}Записаться на${NB}${day}</button></div>`;
+  /* Установочная: обязательна для шага 11 */
+  function setupCard(flat) {
+    const p = P(), day = DAY[p.seg];
+    const who = p.seg === 'E' ? 'Эксперты' : 'Предприниматели';
+    const when = `${who} встречаются по${NB}${p.seg === 'E' ? 'вторникам' : 'средам'}`;
+    const lbl = `<b>${flat ? '' : '<span class="ps-n">5</span>'}Установочная сессия</b>`;
+    if (ui.setup === 'yes') return `<div class="ps ok setup"><div class="ps-h st-static"><b><span class="ps-n">${svg('check')}</span>Установочная сессия</b><span>Пройдена</span></div></div>`;
+    if (!paid()) return `<div class="ps setup locked"><div class="ps-h st-static">${lbl}<span>${svg('lock')}Нужно активировать доступ</span></div><p>Встреча с${NB}наставником: проверяем ваши цифры и${NB}собираем стратегию. ${when}. Без неё не${NB}откроется шаг 11.</p><button class="btn sm" data-act="buy">Повысить доступ</button></div>`;
+    if (ui.setup === 'booked') return `<div class="ps setup ${flat ? 'flat' : ''}"><div class="ps-h st-static">${lbl}<span>Вы записаны</span></div><p>Встреча в${NB}${day}, ссылка придёт в${NB}Telegram. Шаг 11 откроется после встречи.</p><button class="btn soft sm" data-act="attend">Прототип: встреча прошла</button></div>`;
+    return `<div class="ps setup ${flat ? 'flat' : ''}"><div class="ps-h st-static">${lbl}<span>Нужна для шага 11</span></div><p>${when}. Проверяем ваши цифры и${NB}собираем стратегию на${NB}ближайшие месяцы.</p><button class="btn sm" data-act="book">${svg('cal')}Записаться на${NB}${day}</button></div>`;
   }
 
-  /* Ворота перед 6-м уроком */
+  /* Ворота перед шагом 6: только пока закрыты */
   function gate6Card() {
+    if (gate6()) return '';
     const f = firstFiveDone(), n = prepDoneN();
-    if (gate6()) return `<li class="ls is-done gate-ok"><span class="nd">${svg('check')}</span><div class="ls-b static"><span class="ls-t">Урок 6 открыт</span><span class="ls-m"><span>Задания уроков 1–5 сданы, подготовка пройдена</span></span></div></li>`;
     const row = (ok, t, sub, act) => `<li class="${ok ? 'ok' : ''}"><span class="gi">${ok ? svg('check') : svg('x')}</span><span class="gi-t">${t}<em>${sub}</em></span>${!ok && act ? act : ''}</li>`;
     return `<li class="wall gate" id="gate6"><span class="nd">${svg('lock')}</span><div class="wall-b">
-      <h3>Урок 6 откроется, когда будет готово всё ниже</h3>
+      <h3>Шаг 6 откроется, когда будет готово всё ниже</h3>
       <ul class="gl">
-        ${row(f === 5, 'Задания уроков 1–5', `${f} из${NB}5 сдано`)}
-        ${row(prepDone(), 'Подготовка к росту', `${n} из${NB}4 раздела`, `<button class="btn sm soft" data-act="toprep">Продолжить</button>`)}
+        ${row(f === 5, 'Задания шагов 1–5', `${f} из${NB}5 сдано`)}
+        ${row(prepDone(), 'Подготовка к росту', `${n} из${NB}4 раздела`, `<button class="btn sm soft" data-act="goprep">Продолжить</button>`)}
       </ul></div></li>`;
   }
 
-  /* Граница после 10-го */
   function wall11() {
-    const left = seq().length - 10;
+    if (doneTotal() < 10) return paid() ? '' :`<li class="wall" id="wall"><span class="nd">${svg('lock')}</span><div class="wall-b"><h3>Шаги 11–${seq().length} со${NB}стартовым доступом</h3><p>Первые 10${NB}шагов бесплатно. После покупки нужна установочная сессия.</p></div></li>`;
     if (!paid()) return `<li class="wall" id="wall"><span class="nd">${svg('lock')}</span><div class="wall-b">
-      <h3>Дальше ${lessonsWord(left)} со${NB}стартовым доступом</h3>
-      <p>Первые 10${NB}уроков открыты бесплатно. После покупки нужна установочная сессия: без неё 11-й урок не${NB}откроется.</p>
+      <h3>Дальше ${stepsWord(seq().length - 10)} со${NB}стартовым доступом</h3>
+      <p>Первые 10${NB}шагов открыты бесплатно. После покупки нужна установочная сессия: без неё шаг 11 не${NB}откроется.</p>
       <button class="btn" data-act="buy">Открыть весь маршрут</button></div></li>`;
     if (ui.setup === 'yes') return '';
     return `<li class="wall gate" id="wall"><span class="nd">${svg('lock')}</span><div class="wall-b">
-      <h3>Урок 11 откроется после установочной сессии</h3>${setupCard(false).replace('class="ps setup', 'class="ps setup flat').replace('<span class="ps-n">5</span>', '')}</div></li>`;
+      <h3>Шаг 11 откроется после установочной сессии</h3>${setupCard(true)}</div></li>`;
   }
 
-  function etapBlocks() {
-    const t = 10;
+  function etapGroups() {
     const groups = [];
     rest().forEach((x, i) => {
       const last = groups[groups.length - 1];
-      if (!last || last.etap !== x.etap) groups.push({ etap: x.etap, from: t + i + 1, items: [] });
-      groups[groups.length - 1].items.push(t + i + 1);
+      if (!last || last.etap !== x.etap) groups.push({ etap: x.etap, items: [] });
+      groups[groups.length - 1].items.push(11 + i);
     });
-    const curPos = seq().findIndex((k, i) => actionable(state(i + 1)) && i >= 10) + 1;
     return groups.map((g) => {
       const e = ETAPY[g.etap];
-      const doneN = g.items.filter((p) => state(p) === 'done').length;
-      const isCur = curPos && g.items.includes(curPos);
-      const open = ui.openEt.has(g.etap) || isCur;
-      const passed = doneN === g.items.length;
       const label = g.etap === 'start' ? 'Старт' : `Этап ${g.etap} · ${esc(e.name)}`;
-      const meta = `<span>${lessonsWord(g.items.length)}${doneN ? ` · ${doneN} пройдено` : ''}</span><span class="res">Этап готов, когда: ${esc(e.res)}</span>`;
-      let h = head(`e${g.etap}`, passed ? svg('check') : g.etap === 'start' ? 'С' : g.etap, label, meta, open, passed ? 'is-passed' : isCur ? 'is-cur' : '', 'et" data-v="' + g.etap);
-      if (open) h += g.items.map(lesson).join('');
-      return h;
+      const first = g.items[0], lastP = g.items[g.items.length - 1];
+      return group('e' + g.etap, g.etap === 'start' ? 'С' : g.etap, label, `<span>${first === lastP ? `Шаг ${first}` : `Шаги ${first}–${lastP}`}</span><span class="res">Этап готов, когда: ${esc(e.res)}</span>`, g.items);
     }).join('');
   }
 
   function aside() {
-    const p = P();
     return `<aside class="col">
-      <section class="card sec rules"><p class="eyebrow">Как открываются уроки</p>
+      <section class="card sec rules"><p class="eyebrow">Как открываются шаги</p>
         <ol>
-          <li><b>Уроки 1–5</b><span>сразу, в${NB}любом порядке, без подготовки. В${NB}каждом есть задание.</span></li>
-          <li><b>Урок 6 и дальше</b><span>когда сданы задания уроков 1–5 и${NB}пройдена «Подготовка к росту».</span></li>
-          <li><b>Урок 11</b><span>со${NB}стартовым доступом и после установочной сессии.</span></li>
-          <li><b>Дальше</b><span>по${NB}очереди: следующий урок открывается после задания предыдущего.</span></li>
+          <li><b>Шаги 1–5</b><span>сразу, в${NB}любом порядке. В${NB}каждом есть задание.</span></li>
+          <li><b>Шаг 6</b><span>когда сданы задания 1–5 и${NB}пройдена подготовка.</span></li>
+          <li><b>Шаг 11</b><span>со${NB}стартовым доступом и после установочной.</span></li>
+          <li><b>Дальше</b><span>по${NB}очереди, после задания предыдущего шага.</span></li>
         </ol></section>
-      <section class="card sec"><p class="eyebrow">Почему такая десятка</p>
-        <p class="small">1-й урок у${NB}всех один: система ПЭРЛ. Уроки 2–5 закрывают то, что вы отметили в${NB}анкете, начиная с${NB}главного. Уроки 6–10 начинают этап ${p.route.start}, к${NB}которому вас ведёт шаг бизнеса ${p.step}.</p></section>
     </aside>`;
   }
 
   const app = document.getElementById('app');
   function render() {
-    const t = ten();
-    const first = head('s1', '1–5', 'Знакомство: уроки 1–5', '<span>Можно смотреть сразу и в любом порядке</span>', true, firstFiveDone() === 5 ? 'is-passed' : 'is-cur');
-    const second = head('s2', '6–10', `Начало пути: уроки 6–10`, `<span>По очереди, начало этапа ${P().route.start}</span>`, true, gate6() ? (t.slice(5).every((x) => ui.done.has(x.k)) ? 'is-passed' : 'is-cur') : '');
     app.innerHTML = `${demoBar()}<div class="kab">${side()}<div class="main">${topBar()}
       <main class="content">
-        ${profileCard()}
+        ${guide()}
         <div class="split">
           <section class="card path-c" aria-label="Маршрут"><ol class="path">
-            ${first}${[1, 2, 3, 4, 5].map(lesson).join('')}
             ${prepBlock()}
+            ${group('g15', '1–5', 'Знакомство: шаги 1–5', '<span>Можно смотреть сразу и в любом порядке</span>', [1, 2, 3, 4, 5])}
             ${gate6Card()}
-            ${second}${[6, 7, 8, 9, 10].map(lesson).join('')}
+            ${group('g610', '6–10', 'Начало пути: шаги 6–10', `<span>По очереди, начало этапа ${P().route.start}</span>`, [6, 7, 8, 9, 10])}
             ${wall11()}
-            ${etapBlocks()}
+            ${paid() ? etapGroups() : ''}
           </ol></section>
           ${aside()}
         </div>
@@ -346,51 +389,58 @@
   function toast(t) { ui.toast = t; clearTimeout(tt); tt = setTimeout(() => { ui.toast = null; const el = app.querySelector('.toast'); if (el) el.remove(); }, 3200); }
   function scrollTo(id) { requestAnimationFrame(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }); }); }
   const custom = () => { ui.sit = 'custom'; };
+  const toggle = (id, defOpen) => { if (defOpen) { ui.shut.has(id) ? ui.shut.delete(id) : ui.shut.add(id); ui.open.delete(id); } else { ui.open.has(id) ? ui.open.delete(id) : ui.open.add(id); ui.shut.delete(id); } };
 
   app.addEventListener('click', (e) => {
     const b = e.target.closest('[data-act]');
     if (!b || b.tagName === 'SELECT' || b.tagName === 'TEXTAREA') return;
     const a = b.dataset.act, v = b.dataset.v;
-    if (a === 'pid') { ui.pid = v; setSit(ui.sit === 'custom' ? 'fresh' : ui.sit); }
+    if (a === 'pid') { ui.pid = v; setSit(SIT[ui.sit] ? ui.sit : 'fresh'); }
     else if (a === 'row') {
       const pos = +v, k = seq()[pos - 1], s = state(pos);
       if (actionable(s)) { ui.openL = k; ui.answer = ''; render(); scrollTo('l' + pos); return; }
-      if (s === 'done') toast('Задание этого урока уже сдано');
-      else if (s === 'gate') { toast('Сначала задания уроков 1–5 и подготовка'); scrollTo('gate6'); }
+      if (s === 'done') toast('Задание этого шага уже сдано');
+      else if (s === 'gate') { toast('Сначала задания 1–5 и подготовка'); scrollTo('gate6'); }
       else if (s === 'paid') toast('Открывается со стартовым доступом');
       else if (s === 'setup') { toast('Сначала установочная сессия'); scrollTo('wall'); }
-      else toast(`Откроется после урока ${pos - 1}`);
+      else toast(`Откроется после шага ${pos - 1}`);
       return;
     }
+    else if (a === 'grp') { const el = b.getAttribute('aria-expanded') === 'true'; if (el) { ui.open.delete(v); ui.shut.add(v); } else { ui.shut.delete(v); ui.open.add(v); } }
+    else if (a === 'fold') { ui.open.has(v) ? ui.open.delete(v) : ui.open.add(v); }
     else if (a === 'watch') { ui.watched.add(ui.openL); custom(); }
     else if (a === 'submit') {
       const k = ui.openL; const was6 = gate6();
-      ui.done.add(k); ui.watched.add(k); ui.answer = ''; custom();
-      ui.openL = defaultOpen(); ui.flash = ui.openL;
-      if (!was6 && gate6()) toast('Урок 6 открыт');
-      else if (seq().indexOf(k) < 5 && firstFiveDone() === 5 && !prepDone()) toast('Задания 1–5 сданы. Осталась подготовка к росту');
+      ui.done.add(k); ui.skip.delete(k); ui.watched.add(k); ui.answer = ''; custom();
+      const c = curPos(); ui.openL = c ? seq()[c - 1] : null; ui.flash = ui.openL;
+      if (!was6 && gate6()) toast('Шаг 6 открыт');
+      else if (seq().indexOf(k) < 5 && firstFiveDone() === 5 && !prepDone()) toast('Задания 1–5 сданы. Осталась подготовка');
       else toast('Задание сдано');
     }
-    else if (a === 'prep') ui.openPrep = !ui.openPrep;
-    else if (a === 'toprep') { ui.openPrep = true; render(); scrollTo('sprep'); return; }
+    else if (a === 'goprep') { ui.shut.delete('prep'); ui.open.add('prep'); render(); scrollTo('sprep'); return; }
+    else if (a === 'gocur') {
+      const c = curPos() || (ten().slice(0, 5).findIndex((x) => !ui.done.has(x.k)) + 1);
+      if (c) { ui.openL = seq()[c - 1]; render(); scrollTo('l' + c); return; }
+    }
+    else if (a === 'gowall') { scrollTo('wall'); return; }
     else if (a === 'pi') {
       const was6 = gate6();
       ui.prep[v] = !ui.prep[v];
       const it = PREP.flatMap((s) => s.items).find((i) => i.k === v);
       if (it.n) ui.cnt[v] = ui.prep[v] ? it.n : Math.max(0, it.n - 2);
-      custom(); ui.openL = defaultOpen();
-      if (!was6 && gate6()) toast('Подготовка пройдена. Урок 6 открыт');
+      custom();
+      const c = curPos(); if (c && prepDone()) ui.openL = seq()[c - 1];
+      if (!was6 && gate6()) toast('Подготовка пройдена. Шаг 6 открыт');
     }
-    else if (a === 'et') { ui.openEt.has(v) ? ui.openEt.delete(v) : ui.openEt.add(v); }
-    else if (a === 'buy') { ui.access = 'starter'; custom(); ui.openL = defaultOpen(); toast('Стартовый доступ открыт. Запишитесь на установочную'); render(); scrollTo(firstFiveDone() === 5 && ui.done.size >= 10 ? 'wall' : 'sprep'); return; }
+    else if (a === 'buy') { ui.access = 'starter'; custom(); toast('Стартовый доступ открыт. Запишитесь на установочную'); render(); scrollTo(doneTotal() >= 10 ? 'wall' : 'sprep'); return; }
     else if (a === 'book') { ui.setup = 'booked'; custom(); toast(`Вы записаны на ${DAY[P().seg]}`); }
-    else if (a === 'attend') { ui.setup = 'yes'; custom(); ui.openL = defaultOpen(); toast('Установочная пройдена'); }
+    else if (a === 'attend') { ui.setup = 'yes'; custom(); const c = curPos(); if (c) ui.openL = seq()[c - 1]; toast('Установочная пройдена'); }
     render();
   });
   app.addEventListener('change', (e) => {
     const a = e.target.dataset.act;
     if (a === 'sit') { setSit(e.target.value); render(); }
-    if (a === 'access') { ui.access = e.target.value; custom(); ui.openL = defaultOpen(); render(); }
+    if (a === 'access') { ui.access = e.target.value; custom(); const c = curPos(); if (c) ui.openL = seq()[c - 1]; render(); }
   });
   app.addEventListener('input', (e) => {
     if (e.target.dataset.act !== 'answer') return;
