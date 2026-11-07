@@ -374,7 +374,7 @@ svg{flex:none}
 .only-g,.only-s,.only-m,.only-x,.only-hike{display:none!important}
 .k-g .only-g,.k-s .only-s,.k-m .only-m,.k-x .only-x{display:revert!important}
 .k-g .panel.only-g,.k-s .panel.only-s,.k-m .panel.only-m,.k-x .panel.only-x{display:block!important}
-.k-x a.nav.only-x,.k-x a.r-tile.only-x{display:flex!important}
+.k-x a.nav.only-x,.k-x a.rt-t.only-x{display:flex!important}
 .k-m .btn.only-m{display:inline-flex!important}
 .hike .only-hike{display:flex!important}.hike .panel.only-hike{display:block!important}
 .hike .no-hike{display:none!important}
@@ -389,69 +389,147 @@ svg{flex:none}
 .fmap.big .fm-box{height:520px}
 @media (max-width:760px){.fmap.big .fm-box{height:380px}}
 /* К1 Мой ритм */
-.rhythm .ph{align-items:center}
-.r-add{height:40px;padding:0 16px;gap:6px;font-size:14px}.r-add svg{width:16px;height:16px}
-.r-k{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
-.r-top{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px}
-.r-goal,.r-inc{display:flex;flex-direction:column;gap:8px;padding:16px 18px;border:1px solid var(--line);border-radius:18px;background:#fff;color:var(--ink);min-width:0;transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
-.r-goal:hover,.r-inc:hover{border-color:rgba(47,123,255,.4);box-shadow:0 6px 18px rgba(47,123,255,.08)}
-.r-flag{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:13px;font-weight:600;color:var(--blue-ink);background:rgba(47,123,255,.08);border-radius:999px;padding:4px 10px}
-.r-flag svg{width:14px;height:14px}
-.r-goal .dial{max-width:260px;width:100%;margin:6px auto 0}
-.r-read{text-align:center;margin-top:-4px}.r-read b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}.r-read span{font-size:13px;color:var(--ink3)}
-.r-wish{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
-.r-wish li{display:grid;grid-template-columns:minmax(0,1fr) 72px 36px;gap:10px;align-items:center;font-size:13px}
-.r-wish span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.r-wish i{height:6px;border-radius:3px;background:rgba(47,123,255,.12);overflow:hidden}.r-wish i b{display:block;height:100%;background:var(--blue);border-radius:3px}
-.r-wish em{font-style:normal;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
-.r-per{display:inline-flex;align-self:flex-start;gap:2px;padding:3px;border-radius:10px;background:var(--bg2,#EEF2FB);font-size:12px;font-weight:600;color:var(--ink3)}
-.r-per span{padding:4px 9px;border-radius:8px}.r-per .on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,30,60,.08)}
-.r-sum{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin-top:6px}
-.r-sub{font-size:13px;color:var(--ink3)}
-.r-bars{display:flex;align-items:flex-end;gap:5px;height:110px;margin-top:auto;padding-top:10px}
-.r-bars i{flex:1;border-radius:4px 4px 2px 2px;background:linear-gradient(180deg,#5b8cff,#2f7bff)}.r-bars i.z{background:rgba(47,123,255,.14)}
-.r-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
-.r-st{display:grid;grid-template-columns:36px minmax(0,1fr);grid-template-areas:"i n" "i l";column-gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--ink)}
-.r-st:hover{border-color:rgba(47,123,255,.4)}
-.r-si{grid-area:i;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(47,123,255,.08);color:var(--blue-ink)}.r-si svg{width:18px;height:18px}
-.r-st b{grid-area:n;font-size:18px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}.r-st small{grid-area:l;font-size:12.5px;color:var(--ink3)}
-.r-tk2{margin:18px 0 8px}
-.r-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.r-tile{display:flex;flex-direction:column;gap:3px;padding:14px;border-radius:16px;background:linear-gradient(160deg,#F5F8FF,#EDF2FF);border:1px solid rgba(47,123,255,.14);color:var(--ink);min-width:0}
-.r-tile:hover{border-color:rgba(47,123,255,.4)}
-.r-ti{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;margin-bottom:6px}.r-ti svg{width:15px;height:15px}
-.r-tile.off .r-ti{background:var(--ink3)}
-.r-tk{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-ink)}
-.r-tile b{font-size:15px;line-height:1.3}.r-tile small{font-size:12.5px;color:var(--ink3)}
+.rt-ph{align-items:center}
+.rt-acts{display:flex;gap:8px}
+.rt-btn{height:38px;padding:0 14px;gap:6px;font-size:13.5px}.rt-btn svg{width:15px;height:15px}
+.rt-k{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}.rt-k svg{width:14px;height:14px}
+.rt-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px;align-items:center;padding:20px 22px;border-radius:22px;color:var(--ink);
+  background:radial-gradient(120% 140% at 0% 0%,rgba(61,139,255,.13),transparent 55%),radial-gradient(120% 140% at 100% 100%,rgba(123,97,255,.12),transparent 55%),#fff;
+  border:1px solid rgba(47,123,255,.16);transition:border-color .25s var(--ease),box-shadow .25s var(--ease)}
+.rt-hero:hover{border-color:rgba(47,123,255,.38);box-shadow:0 10px 30px rgba(47,123,255,.1)}
+.rt-dial{position:relative;max-width:300px;width:100%;margin:0 auto}
+.rt-dial .dial{width:100%}
+.rt-glow{filter:drop-shadow(0 4px 10px rgba(79,110,255,.35))}
+.rt-read{text-align:center;margin-top:2px}
+.rt-read b{display:block;font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.rt-read span{font-size:13px;color:var(--ink3)}
+.rt-lim{display:flex;justify-content:space-between;margin:-6px 2% 0;font-size:11.5px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.rt-goal{min-width:0;display:flex;flex-direction:column;gap:6px}
+.rt-flag{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:12.5px;font-weight:600;color:var(--blue-ink);background:rgba(47,123,255,.09);border-radius:999px;padding:4px 10px}.rt-flag svg{width:13px;height:13px}
+.rt-gt{font-size:24px;font-weight:800;letter-spacing:-.015em;line-height:1.15;margin-top:2px}
+.rt-gs{font-size:13.5px;color:var(--ink2)}.rt-gs b{color:var(--blue-ink)}
+.rt-rew{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.rt-rew li{display:grid;grid-template-columns:34px minmax(0,1fr) 40px;gap:10px;align-items:center}
+.rt-em{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-size:17px;box-shadow:0 2px 6px rgba(11,16,32,.05)}
+.rt-rew li div{min-width:0}.rt-rew li b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rt-rew li small{display:block;font-size:11.5px;color:var(--ink3);margin:1px 0 4px}
+.rt-rew i{display:block;height:5px;border-radius:3px;background:rgba(47,123,255,.12);overflow:hidden}.rt-rew i s{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#3D8BFF,#7B61FF)}
+.rt-rew em{font-style:normal;font-size:12.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink2)}
+.rt-rew li.done .rt-em{background:#EAF7EF;border-color:rgba(46,160,90,.25)}.rt-rew li.done i s{background:#2EA05A}.rt-rew li.done em{color:#1E7B45}
+.rt-row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px;margin-top:12px}
+.rt-inc{display:flex;flex-direction:column;gap:6px;padding:16px 18px 12px;border:1px solid var(--line);border-radius:20px;background:#fff;color:var(--ink);min-width:0;transition:border-color .2s var(--ease)}
+.rt-inc:hover{border-color:rgba(47,123,255,.38)}
+.rt-inc-hd{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.rt-per{display:inline-flex;gap:2px;padding:3px;border-radius:10px;background:var(--bg2,#EEF2FB);font-size:11.5px;font-weight:600;color:var(--ink3)}
+.rt-per span{padding:3px 8px;border-radius:7px}.rt-per .on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,30,60,.08)}
+.rt-sum{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px}.rt-sum b{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.rt-delta{display:inline-flex;align-items:center;gap:3px;font-size:12.5px;font-weight:700;color:#1E7B45;background:#EAF7EF;border-radius:999px;padding:3px 8px}.rt-delta svg{width:12px;height:12px}
+.rt-plot{position:relative;height:108px;margin-top:4px}
+.rt-chart{width:100%;height:100%;display:block;overflow:visible}
+.rt-gl{stroke:rgba(47,123,255,.1);stroke-dasharray:3 4;vector-effect:non-scaling-stroke}
+.rt-dot{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#2F7BFF;border:3px solid #fff;box-shadow:0 0 0 4px rgba(47,123,255,.18)}
+.rt-axis{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3)}
+.rt-stats{display:flex;flex-direction:column;gap:8px;min-width:0}
+.rt-st{flex:1;display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--ink);transition:border-color .2s var(--ease)}
+.rt-st:hover{border-color:rgba(47,123,255,.38)}
+.rt-si{width:38px;height:38px;border-radius:12px;display:grid;place-items:center}.rt-si svg{width:19px;height:19px}
+.rt-st.fire .rt-si{background:#FFF1E6;color:#E2571E}.rt-st.ok .rt-si{background:#EAF7EF;color:#1E8A4C}.rt-st.wish .rt-si{background:#F1ECFF;color:#6B4FE0}
+.rt-st b{display:block;font-size:16px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums}.rt-st small{display:block;font-size:12px;color:var(--ink3)}
+.rt-wk{display:flex;gap:3px}.rt-wk i{width:7px;height:18px;border-radius:4px;background:rgba(226,87,30,.14)}.rt-wk i.on{background:#F07A3A}.rt-wk i.now{background:#F07A3A;box-shadow:0 0 0 2px #FFD9C2}
+.rt-ring{--c:#1E8A4C;width:30px;height:30px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),rgba(11,16,32,.07) 0);-webkit-mask:radial-gradient(circle,transparent 9px,#000 9.5px);mask:radial-gradient(circle,transparent 9px,#000 9.5px)}
+.rt-st.wish .rt-ring{--c:#6B4FE0}
+.rt-tk2{display:block;margin:20px 0 10px}
+.rt-today{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);grid-template-rows:auto auto;gap:10px}
+.rt-t{display:flex;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:18px;background:#fff;color:var(--ink);min-width:0;transition:border-color .2s var(--ease),transform .2s var(--ease)}
+.rt-t:hover{border-color:rgba(47,123,255,.38)}
+.rt-t > div{flex:1;min-width:0}
+.rt-t b{display:block;font-size:15px;font-weight:700;line-height:1.3}.rt-t small{display:block;font-size:12.5px;color:var(--ink3);margin-top:1px}
+.rt-tk{display:block;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--blue-ink);margin-bottom:2px}
+.rt-t > svg{width:18px;height:18px;color:var(--ink3);flex:none}
+.rt-t.lesson{grid-row:span 2;flex-direction:column;align-items:stretch;gap:4px;padding:10px 10px 14px}
+.rt-t.lesson .rt-tk,.rt-t.lesson b,.rt-t.lesson small{padding:0 6px}.rt-t.lesson .rt-tk{margin-top:8px}
+.rt-cover{position:relative;display:grid;place-items:center;height:118px;border-radius:13px;overflow:hidden;background:radial-gradient(90% 120% at 20% 10%,#5B8CFF 0%,transparent 60%),radial-gradient(90% 120% at 90% 100%,#8A6CFF 0%,transparent 60%),#1E2A6B}
+.rt-cover::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 14px)}
+.rt-play{position:relative;z-index:1;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.95);color:var(--blue);box-shadow:0 6px 18px rgba(0,0,0,.25);transition:transform .2s var(--ease)}.rt-play svg{width:18px;height:18px;margin-left:2px}
+.rt-t.lesson:hover .rt-play{transform:scale(1.07)}
+.rt-cover em{position:absolute;z-index:1;right:8px;bottom:8px;font-style:normal;font-size:11.5px;font-weight:700;color:#fff;background:rgba(11,16,32,.55);border-radius:6px;padding:2px 6px}
+.rt-t.off .rt-cover{background:#C9CEDB}.rt-t.off .rt-play{color:var(--ink3)}.rt-t.off .rt-play svg{margin:0}
+.rt-chk{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid rgba(47,123,255,.45);background:#fff}
+.rt-done{height:34px;padding:0 12px;font-size:13px;gap:5px;flex:none}.rt-done svg{width:14px;height:14px}
+.rt-nic{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#EAF7EF;color:#1E8A4C}.rt-nic svg{width:16px;height:16px}
 /* К2 Жизнь клуба */
-.life .ph{flex-wrap:wrap;gap:10px}
+.lf-ph{flex-wrap:wrap;gap:10px;align-items:center}
 .lf-tabs{display:inline-flex;gap:2px;padding:3px;border-radius:12px;background:var(--bg2,#EEF2FB)}
-.lf-tabs button{border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--ink3);padding:7px 12px;border-radius:9px;cursor:pointer;min-height:36px}
+.lf-tabs button{position:relative;overflow:hidden;border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--ink3);padding:7px 12px;border-radius:9px;cursor:pointer;min-height:36px;transition:color .2s}
 .lf-tabs button[aria-selected=true]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,30,60,.08)}
-.lf-pane{list-style:none;margin:0;padding:0}
-.lf-pane li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
-ol.lf-pane li{grid-template-columns:22px auto minmax(0,1fr) auto}
-.lf-pane li:last-child{border-bottom:0}.lf-pane small{color:var(--ink3);font-size:12.5px;white-space:nowrap}
-.lf-av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(47,123,255,.1);color:var(--blue-ink);font-weight:700;font-size:13px}
+.lf-tabs button[aria-selected=true]::after{content:"";position:absolute;left:10px;right:10px;bottom:3px;height:2px;border-radius:2px;background:var(--blue);transform-origin:left;transform:scaleX(0);animation:lfprog 10s linear forwards}
+.shot .lf-tabs button::after{display:none}
+@keyframes lfprog{to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.lf-tabs button::after{display:none}}
+.lf-pane{animation:lfin .35s var(--ease)}
+@keyframes lfin{from{opacity:0;transform:translateY(4px)}}
+.lf-live{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#1E7B45;margin:0 0 6px}
+.lf-live i{width:8px;height:8px;border-radius:50%;background:#2EA05A;box-shadow:0 0 0 0 rgba(46,160,90,.5);animation:lfpulse 2s infinite}
+@keyframes lfpulse{70%{box-shadow:0 0 0 7px rgba(46,160,90,0)}100%{box-shadow:0 0 0 0 rgba(46,160,90,0)}}
+.lf-feed{list-style:none;margin:0;padding:0}
+.lf-feed li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.4}
+.lf-feed li:last-child{border-bottom:0}.lf-feed small,.lf-rest small{color:var(--ink3);font-size:12.5px;white-space:nowrap}
+.lf-av{position:relative;width:40px;height:40px;flex:none}.lf-av img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.lf-b{position:absolute;right:-3px;bottom:-3px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;border:2px solid #fff;color:#fff}.lf-b svg{width:11px;height:11px}
+.lf-b.b{background:#2F7BFF}.lf-b.v{background:#7B61FF}.lf-b.g{background:#2EA05A}.lf-b.a{background:#E8A21A}
+.lf-pod{list-style:none;margin:4px 0 6px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end}
+.lf-pod li{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+.lf-pa{position:relative;margin-bottom:6px}.lf-pa img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 4px 12px rgba(11,16,32,.12)}
+.lf-pod .p1 .lf-pa img{width:72px;height:72px;border-color:#F3D27A}
+.lf-pa svg{position:absolute;left:50%;top:-16px;width:22px;height:22px;transform:translateX(-50%);color:#E3A92B;fill:#F3D27A}
+.lf-pod b{font-size:14px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lf-pod small{font-size:12px;color:var(--ink3)}
+.lf-st{display:grid;place-items:center;width:100%;margin-top:8px;border-radius:12px 12px 4px 4px;font-weight:800;font-size:18px;color:var(--blue-ink);background:linear-gradient(180deg,rgba(47,123,255,.14),rgba(47,123,255,.05))}
+.lf-pod .p1 .lf-st{height:64px;background:linear-gradient(180deg,rgba(243,210,122,.55),rgba(243,210,122,.15));color:#8A6A0C}.lf-pod .p2 .lf-st{height:46px}.lf-pod .p3 .lf-st{height:34px}
+.lf-rest{list-style:none;margin:0;padding:0}
+.lf-rest li{display:grid;grid-template-columns:22px 32px minmax(0,1fr) 90px 34px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.lf-rest img,.lf-me{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.lf-me{display:grid;place-items:center;background:var(--blue);color:#fff;font-weight:700;font-size:13px}
+.lf-rest i{display:block;height:6px;border-radius:3px;background:rgba(47,123,255,.1);overflow:hidden}.lf-rest i s{display:block;height:100%;background:var(--blue);border-radius:3px}
+.lf-rest small{text-align:right;font-variant-numeric:tabular-nums}
+.lf-rest li.me{background:rgba(47,123,255,.06);border-radius:12px;border-top-color:transparent;padding:8px 8px;margin:4px -8px 0}
 .lf-n{font-weight:800;color:var(--ink3);text-align:center;font-variant-numeric:tabular-nums}
-.lf-total{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,#EAF6EE,#F4FBF6);border:1px solid rgba(46,160,90,.2);margin-bottom:6px}
-.lf-total small{font-size:13px;color:var(--ink2)}.lf-total b{font-size:30px;font-weight:800;letter-spacing:-.02em;color:#1E7B45}.lf-total span{font-size:12px;color:var(--ink3)}
-.lf-res{list-style:none;margin:0;padding:0}
-.lf-res li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}.lf-res li:last-child{border-bottom:0}
-.lf-res b{color:#1E7B45}.lf-res small{margin-left:auto;color:var(--ink3);font-size:12.5px}
-.lf-dot{width:8px;height:8px;border-radius:50%;background:#2EA05A;box-shadow:0 0 0 3px rgba(46,160,90,.18)}
-/* К3 встреча */
-.meet{position:relative;overflow:hidden;border:1px solid rgba(201,162,39,.35)}
-.mt-fr{position:absolute;right:-6px;bottom:-8px;width:92px;pointer-events:none}
-.mt-hd{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.lf-total{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:16px 18px;border-radius:18px;background:radial-gradient(120% 140% at 0% 0%,rgba(46,160,90,.16),transparent 60%),#F4FBF6;border:1px solid rgba(46,160,90,.22);margin-bottom:10px}
+.lf-total small{display:block;font-size:13px;color:var(--ink2)}.lf-total b{display:block;font-size:34px;font-weight:800;letter-spacing:-.02em;color:#17693A;line-height:1.15}
+.lf-total span{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;color:#1E7B45;font-weight:600}.lf-total span svg{width:12px;height:12px}
+.lf-wkb{display:flex;gap:6px;align-items:flex-end;height:70px}
+.lf-wkb span{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;width:30px}.lf-wkb i{display:block;width:100%;border-radius:6px 6px 3px 3px;background:rgba(46,160,90,.3)}.lf-wkb span:last-child i{background:#2EA05A}
+.lf-wkb small{font-size:10.5px;color:var(--ink3);white-space:nowrap}
+.lf-res{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lf-res li{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#fff;min-width:0}
+.lf-coin{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#EAF7EF;color:#1E8A4C}.lf-coin svg{width:17px;height:17px}
+.lf-res li div{flex:1;min-width:0}.lf-res small{display:block;font-size:11.5px;color:var(--ink3)}.lf-res b{display:block;font-size:16px;font-weight:800;color:#17693A;font-variant-numeric:tabular-nums}
+.lf-res em{display:block;font-style:normal;font-size:11.5px;color:var(--ink3);margin-top:1px}
+/* К3 встреча, как отсчёт в ПП */
+.meet{position:relative;overflow:hidden;border:1px solid rgba(201,162,39,.35);background:radial-gradient(120% 90% at 100% 0%,rgba(243,210,122,.18),transparent 55%),var(--panel)}
+.mt-fr{position:absolute;right:10px;top:46px;width:74px;pointer-events:none}
+.mt-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .mtk{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-ink)}
-.mt-chip{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px;border-radius:999px;background:rgba(201,162,39,.14);color:#8A6A0C;font-size:12px;font-weight:700;white-space:nowrap}.mt-chip svg{width:14px;height:14px}
-.mt-t{display:block;font-size:20px;font-weight:800;line-height:1.2;margin-top:8px;padding-right:70px}
-.mt-when{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-top:8px}.mt-when b{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums}.mt-when span{font-size:13.5px;color:var(--ink2)}
-.mt-tag{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(201,162,39,.14);border:1px solid rgba(201,162,39,.4);color:#7A5C08}
-.mt-go{display:flex;width:calc(100% - 70px);height:44px;margin-top:14px}
-.mt-cal{display:inline-flex;gap:6px;width:calc(100% - 70px);height:40px;margin-top:8px;font-size:13.5px}.mt-cal svg{width:15px;height:15px}
-.meet.only-x .mt-go,.meet.only-x .mt-cal{width:100%}.meet.only-x .mt-t{padding-right:0}
+.mt-all{font-size:12.5px;font-weight:600;color:var(--blue-ink)}
+.mt-hd{display:flex;align-items:center;gap:14px;margin-top:14px}
+.meet.fr .mt-hd{padding-right:72px}
+.mt-tl{flex:none;width:56px;padding:8px 0 7px;border-radius:14px;text-align:center;background:#fff;border:1px solid rgba(201,162,39,.4);box-shadow:0 3px 10px rgba(138,106,12,.1)}
+.mt-tl b{display:block;font-size:24px;font-weight:800;line-height:1}.mt-tl span{display:block;margin-top:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8A6A0C}
+.mt-tx{min-width:0}.mt-tx b{display:block;font-size:18px;font-weight:800;line-height:1.25}.mt-tx span{display:block;margin-top:3px;font-size:13px;color:var(--ink2)}
+.mt-tag{display:inline-block;margin-top:12px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(201,162,39,.14);border:1px solid rgba(201,162,39,.4);color:#7A5C08}
+.mt-cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:14px}
+.mt-cd div{padding:10px 4px 8px;border-radius:14px;background:#fff;border:1px solid var(--line);text-align:center}
+.mt-cd b{display:block;font-size:24px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.mt-cd span{display:block;margin-top:4px;font-size:11px;color:var(--ink3)}
+.mt-cd div:last-child b{color:var(--blue)}
+.mt-go{display:flex;width:100%;height:44px;margin-top:14px}
+.mt-cal{display:flex;width:100%;gap:6px;height:40px;margin-top:8px;font-size:13.5px}.mt-cal svg{width:15px;height:15px}
+.mt-who{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12.5px;color:var(--ink3)}
+.mt-av{display:flex}.mt-av img{width:24px;height:24px;border-radius:50%;object-fit:cover;border:2px solid #fff;margin-left:-6px}.mt-av img:first-child{margin-left:0}
+/* правая колонка листается отдельно */
+@media (min-width:1101px){
+  .grid>.col:last-child{position:sticky;top:82px;max-height:calc(100vh - 100px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;margin:-10px -10px 0;padding:10px 10px 24px}
+  .grid>.col:last-child::-webkit-scrollbar{display:none}
+  .grid>.col:last-child>*{flex-shrink:0}
+}
 /* К5–К8 */
 .oracle{display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:center}
 .or-card{width:76px;height:106px;border-radius:12px;background:linear-gradient(160deg,#2B2A6E,#14133A);display:grid;place-items:center;color:#E9D08A;font-size:30px;box-shadow:0 8px 18px rgba(20,19,58,.28);border:2px solid rgba(233,208,138,.5)}
@@ -470,22 +548,31 @@ ol.lf-pane li{grid-template-columns:22px auto minmax(0,1fr) auto}
 .cp-list li:last-child{border-bottom:0}.cp-list b{text-align:right;font-variant-numeric:tabular-nums}
 .cp-note{display:block;margin-top:8px;font-size:12px;color:var(--ink3)}
 /* К9 Фриманы рядом */
-.nb{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.nb-c{display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px 14px;border:1px solid var(--line);border-radius:18px;background:#fff;min-width:0}
-.nb-c img{width:64px;height:64px;border-radius:50%;object-fit:cover;margin-bottom:8px}
-.nb-c b{font-size:15px}.nb-c small{font-size:12.5px;color:var(--blue-ink);margin-top:2px}.nb-c p{font-size:13px;color:var(--ink2);margin:6px 0 10px;line-height:1.4}
+.nb-all{display:inline-flex;align-items:center;gap:2px;font-size:13px;font-weight:600;color:var(--blue-ink)}.nb-all svg{width:15px;height:15px}
+.nb{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.nb-c{display:flex;flex-direction:column;align-items:center;text-align:center;padding:18px 14px 14px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,rgba(47,123,255,.06),#fff 46%);min-width:0;transition:border-color .2s var(--ease),transform .2s var(--ease)}
+.nb-c:hover{border-color:rgba(47,123,255,.35);transform:translateY(-2px)}
+.nb-ph{position:relative;margin-bottom:10px}.nb-ph img{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 6px 16px rgba(11,16,32,.12)}
+.nb-on{position:absolute;right:3px;bottom:3px;width:14px;height:14px;border-radius:50%;background:#2EA05A;border:3px solid #fff}
+.nb-c b{font-size:15px}.nb-c small{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;color:var(--blue-ink);margin-top:3px}.nb-c small svg{width:13px;height:13px}
+.nb-c p{font-size:13px;color:var(--ink2);margin:6px 0 12px;line-height:1.4}
 .nb-a{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:auto}
-.nb-a .btn{height:36px;padding:0 12px;font-size:13px;gap:5px}.nb-a .btn svg{width:15px;height:15px}.nb-a .btn.gh{width:36px;padding:0}
-.nb-note{margin-top:10px;font-size:12.5px;color:var(--ink3)}
-@media (max-width:1100px){.nb{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.nb-a .only-m{order:-1;flex-basis:100%}.nb-a .btn{height:36px;padding:0 12px;font-size:13px;gap:5px}.nb-a .btn svg{width:15px;height:15px}.nb-a .btn.gh{width:36px;padding:0}
+.nb-note{margin-top:12px;font-size:12.5px;color:var(--ink3)}
+@media (max-width:1100px){.rt-hero{grid-template-columns:1fr}.rt-row{grid-template-columns:1fr}.lf-res{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){
-  .r-top{grid-template-columns:1fr}.r-stats{grid-template-columns:1fr}.r-tiles{grid-template-columns:1fr}
-  .r-st{padding:10px 12px}
-  .r-add{height:38px;padding:0 12px}
-  .lf-tabs{width:100%}.lf-tabs button{flex:1;padding:7px 6px}
-  .nb{grid-template-columns:1fr 1fr;gap:8px}.nb-c{padding:12px 8px}.nb-c p{display:none}
+  .rt-ph{flex-wrap:wrap;gap:10px}.rt-acts{width:100%}.rt-btn{flex:1}
+  .rt-hero{padding:16px 14px;gap:18px}.rt-gt{font-size:21px}
+  .rt-today{grid-template-columns:1fr}.rt-t.lesson{grid-row:auto}.rt-cover{height:132px}
+  .rt-t.focus{flex-wrap:wrap}.rt-t.focus .rt-done{width:100%}
+  .lf-tabs{width:100%}.lf-tabs button{flex:1;padding:7px 4px;font-size:12.5px}
+  .lf-total{flex-direction:column;align-items:stretch}.lf-wkb{height:56px;justify-content:space-between}.lf-wkb span{width:auto;flex:1}
+  .lf-res{grid-template-columns:1fr 1fr}
+  .lf-rest li{grid-template-columns:20px 32px minmax(0,1fr) 54px 30px;gap:8px}
+  .nb{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}.nb::-webkit-scrollbar{display:none}
+  .nb-c{flex:0 0 72%;scroll-snap-align:start}
+  .mt-cd b{font-size:22px}
 }
-@media (max-width:360px){.nb{grid-template-columns:1fr}}
 .dial { position: relative; }
 .dial svg { display: block; width: 100%; height: auto; overflow: visible; }
 .dial .trackarc { stroke: rgba(47, 123, 255, .1); }
@@ -594,74 +681,93 @@ ol.lf-pane li{grid-template-columns:22px auto minmax(0,1fr) auto}
       <div class="grid">
         <div class="col">
           <section class="panel rhythm" id="k-rhythm" aria-label="Мой ритм">
-            <div class="ph"><h3>Мой ритм</h3><a class="btn btn-p r-add" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Внести доход</a></div>
-            <div class="r-top">
-              <a class="r-goal" href="#" aria-label="Цель: настройка">
-                <span class="r-k">Цель</span>
-                <div class="r-flag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg>Флажок: первая $1&#8239;000 до&nbsp;31&nbsp;декабря</div>
-                <div class="dial"><svg viewBox="0 0 340 186" role="img" aria-label="Флажок: 34 процента"><defs><linearGradient id="gFact" gradientUnits="userSpaceOnUse" x1="34" y1="0" x2="306" y2="0"><stop offset="0" stop-color="#2f7bff"/><stop offset="1" stop-color="#7b61ff"/></linearGradient></defs><path class="trackarc" d="M34.00 166.00A136 136 0 0 1 306.00 166.00" fill="none" stroke-width="16" stroke-linecap="round"/><path d="M34.00 166.00A136 136 0 0 1 104.48 46.82" fill="none" stroke="url(#gFact)" stroke-width="16" stroke-linecap="round"/><line class="tick" x1="21.0" y1="166.0" x2="12.0" y2="166.0" stroke-width="1.6"/><line class="tick" x1="22.8" y1="142.7" x2="17.9" y2="141.9" stroke-width="1"/><line class="tick" x1="28.3" y1="120.0" x2="23.5" y2="118.4" stroke-width="1"/><line class="tick" x1="37.2" y1="98.4" x2="32.8" y2="96.1" stroke-width="1"/><line class="tick" x1="49.5" y1="78.4" x2="45.4" y2="75.5" stroke-width="1"/><line class="tick" x1="64.6" y1="60.6" x2="58.3" y2="54.3" stroke-width="1.6"/><line class="tick" x1="82.4" y1="45.5" x2="79.5" y2="41.4" stroke-width="1"/><line class="tick" x1="102.4" y1="33.2" x2="100.1" y2="28.8" stroke-width="1"/><line class="tick" x1="124.0" y1="24.3" x2="122.4" y2="19.5" stroke-width="1"/><line class="tick" x1="146.7" y1="18.8" x2="145.9" y2="13.9" stroke-width="1"/><line class="tick" x1="170.0" y1="17.0" x2="170.0" y2="8.0" stroke-width="1.6"/><line class="tick" x1="193.3" y1="18.8" x2="194.1" y2="13.9" stroke-width="1"/><line class="tick" x1="216.0" y1="24.3" x2="217.6" y2="19.5" stroke-width="1"/><line class="tick" x1="237.6" y1="33.2" x2="239.9" y2="28.8" stroke-width="1"/><line class="tick" x1="257.6" y1="45.5" x2="260.5" y2="41.4" stroke-width="1"/><line class="tick" x1="275.4" y1="60.6" x2="281.7" y2="54.3" stroke-width="1.6"/><line class="tick" x1="290.5" y1="78.4" x2="294.6" y2="75.5" stroke-width="1"/><line class="tick" x1="302.8" y1="98.4" x2="307.2" y2="96.1" stroke-width="1"/><line class="tick" x1="311.7" y1="120.0" x2="316.5" y2="118.4" stroke-width="1"/><line class="tick" x1="317.2" y1="142.7" x2="322.1" y2="141.9" stroke-width="1"/><line class="tick" x1="319.0" y1="166.0" x2="328.0" y2="166.0" stroke-width="1.6"/><text x="8" y="184">0</text><text x="332" y="184" text-anchor="end">$1&#8239;000</text><g class="needle" style="transform:rotate(-28.8deg)"><line x1="170" y1="166" x2="170" y2="46"/><circle cx="170" cy="166" r="8"/><circle cx="170" cy="166" r="3"/></g></svg></div>
-                <div class="r-read"><b>$340</b><span>из&nbsp;$1&#8239;000 · 34%</span></div>
-                <ul class="r-wish">
-                  <li><span>Ноутбук для монтажа</span><i><b style="width:60%"></b></i><em>60%</em></li>
-                  <li><span>Поездка в&nbsp;Грузию</span><i><b style="width:25%"></b></i><em>25%</em></li>
-                </ul>
+            <div class="ph rt-ph"><h3>Мой ритм</h3><div class="rt-acts"><a class="btn btn-s rt-btn" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg>Фокус дня</a><a class="btn btn-p rt-btn" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Внести доход</a></div></div>
+            <a class="rt-hero" href="#" aria-label="Цель и награды">
+              <div class="rt-dial">
+                <div class="dial"><svg viewBox="0 -8 340 196" role="img" aria-label="Цель: 34 процента"><defs><linearGradient id="gFact" gradientUnits="userSpaceOnUse" x1="34" y1="0" x2="306" y2="0"><stop offset="0" stop-color="#3D8BFF"/><stop offset="1" stop-color="#7B61FF"/></linearGradient></defs><path class="trackarc" d="M34.00 166.00A136 136 0 0 1 306.00 166.00" fill="none" stroke-width="20" stroke-linecap="round"/><path class="rt-glow" d="M34.00 166.00A136 136 0 0 1 104.48 46.82" fill="none" stroke="url(#gFact)" stroke-width="20" stroke-linecap="round"/><line class="tick" x1="19.0" y1="166.0" x2="9.0" y2="166.0" stroke-width="1.8"/><line class="tick" x1="20.9" y1="142.4" x2="15.9" y2="141.6" stroke-width="1.1"/><line class="tick" x1="26.4" y1="119.3" x2="21.6" y2="117.8" stroke-width="1.1"/><line class="tick" x1="35.5" y1="97.4" x2="31.0" y2="95.2" stroke-width="1.1"/><line class="tick" x1="47.8" y1="77.2" x2="43.8" y2="74.3" stroke-width="1.1"/><line class="tick" x1="63.2" y1="59.2" x2="56.2" y2="52.2" stroke-width="1.8"/><line class="tick" x1="81.2" y1="43.8" x2="78.3" y2="39.8" stroke-width="1.1"/><line class="tick" x1="101.4" y1="31.5" x2="99.2" y2="27.0" stroke-width="1.1"/><line class="tick" x1="123.3" y1="22.4" x2="121.8" y2="17.6" stroke-width="1.1"/><line class="tick" x1="146.4" y1="16.9" x2="145.6" y2="11.9" stroke-width="1.1"/><line class="tick" x1="170.0" y1="15.0" x2="170.0" y2="5.0" stroke-width="1.8"/><line class="tick" x1="193.6" y1="16.9" x2="194.4" y2="11.9" stroke-width="1.1"/><line class="tick" x1="216.7" y1="22.4" x2="218.2" y2="17.6" stroke-width="1.1"/><line class="tick" x1="238.6" y1="31.5" x2="240.8" y2="27.0" stroke-width="1.1"/><line class="tick" x1="258.8" y1="43.8" x2="261.7" y2="39.8" stroke-width="1.1"/><line class="tick" x1="276.8" y1="59.2" x2="283.8" y2="52.2" stroke-width="1.8"/><line class="tick" x1="292.2" y1="77.2" x2="296.2" y2="74.3" stroke-width="1.1"/><line class="tick" x1="304.5" y1="97.4" x2="309.0" y2="95.2" stroke-width="1.1"/><line class="tick" x1="313.6" y1="119.3" x2="318.4" y2="117.8" stroke-width="1.1"/><line class="tick" x1="319.1" y1="142.4" x2="324.1" y2="141.6" stroke-width="1.1"/><line class="tick" x1="321.0" y1="166.0" x2="331.0" y2="166.0" stroke-width="1.8"/><g class="needle" style="transform:rotate(-28.8deg)"><line x1="170" y1="166" x2="170" y2="52"/><circle cx="170" cy="166" r="9"/><circle cx="170" cy="166" r="3.5"/></g></svg></div>
+                <div class="rt-lim"><span>0</span><span>$1&#8239;000</span></div>
+                <div class="rt-read"><b>$340</b><span>из&nbsp;$1&#8239;000 за&nbsp;цель</span></div>
+              </div>
+              <div class="rt-goal">
+                <span class="rt-flag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg>Флажок · до&nbsp;31&nbsp;декабря</span>
+                <b class="rt-gt">Первая $1&#8239;000</b>
+                <span class="rt-gs"><b>34%</b> · осталось $660 и&nbsp;55&nbsp;дней</span>
+                <ul class="rt-rew" aria-label="Награды за цель"><li class="done"><span class="rt-em">🎯</span><div><b>Новые наушники</b><small>$250</small><i><s style="width:100%"></s></i></div><em>есть</em></li><li class=""><span class="rt-em">⭐</span><div><b>Ноутбук для монтажа</b><small>$500</small><i><s style="width:68%"></s></i></div><em>68%</em></li><li class=""><span class="rt-em">🏆</span><div><b>Поездка в&nbsp;Грузию</b><small>$1&#8239;000</small><i><s style="width:34%"></s></i></div><em>34%</em></li></ul>
+              </div>
+            </a>
+            <div class="rt-row">
+              <a class="rt-inc" href="#" aria-label="Доход за 30 дней">
+                <div class="rt-inc-hd"><span class="rt-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3"/><rect x="4" y="8" width="16" height="11" rx="2.5"/><circle cx="16" cy="13.5" r="1.2" fill="currentColor"/></svg>Доход</span><span class="rt-per" role="group" aria-label="Период"><span class="on">30&nbsp;дней</span><span>3&nbsp;мес</span><span>Год</span></span></div>
+                <div class="rt-sum"><b>$340</b><span class="rt-delta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6.5 11.5 12 6l5.5 5.5"/></svg>$90 к&nbsp;прошлому месяцу</span></div>
+                <div class="rt-plot"><svg class="rt-chart" viewBox="0 0 320 120" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="gArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D8BFF" stop-opacity=".28"/><stop offset="1" stop-color="#3D8BFF" stop-opacity="0"/></linearGradient></defs><line x1="0" x2="320" y1="24" y2="24" class="rt-gl"/><line x1="0" x2="320" y1="56" y2="56" class="rt-gl"/><line x1="0" x2="320" y1="88" y2="88" class="rt-gl"/><path d="M8.0 110.0C22.0 107.5 69.1 99.0 91.9 94.8C114.6 90.6 123.3 90.2 144.3 84.7C165.2 79.2 189.7 72.1 217.7 61.9C245.6 51.8 296.3 30.3 312.0 24.0 L312.0 120 L8.0 120 Z" fill="url(#gArea)"/><path d="M8.0 110.0C22.0 107.5 69.1 99.0 91.9 94.8C114.6 90.6 123.3 90.2 144.3 84.7C165.2 79.2 189.7 72.1 217.7 61.9C245.6 51.8 296.3 30.3 312.0 24.0" fill="none" stroke="#2F7BFF" stroke-width="2.6" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><span class="rt-dot" style="left:97.5%;top:20.0%"></span></div>
+                <div class="rt-axis"><span>8 окт</span><span>22 окт</span><span>сегодня</span></div>
               </a>
-              <a class="r-inc" href="#" aria-label="Доход: финансы трекера">
-                <span class="r-k">Доход</span>
-                <div class="r-per" role="group" aria-label="Период"><span class="on">30&nbsp;дней</span><span>3&nbsp;месяца</span><span>Год</span></div>
-                <b class="r-sum">$340</b>
-                <small class="r-sub">за&nbsp;30&nbsp;дней, внесено вами</small>
-                <div class="r-bars" aria-hidden="true"><i style="height:4%" class="z"></i><i style="height:4%" class="z"></i><i style="height:40%" class=""></i><i style="height:4%" class="z"></i><i style="height:27%" class=""></i><i style="height:4%" class="z"></i><i style="height:4%" class="z"></i><i style="height:60%" class=""></i><i style="height:4%" class="z"></i><i style="height:4%" class="z"></i><i style="height:4%" class="z"></i><i style="height:100%" class=""></i></div>
-              </a>
+              <div class="rt-stats">
+                <a class="rt-st fire" href="#"><span class="rt-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-3.5 2-5 1 1.5 2 2 2 2s-.5-4 1-7z"/></svg></span><div><b>4 дня</b><small>фокуса подряд</small></div><span class="rt-wk" aria-label="Неделя фокуса"><i class="on" title="пн"></i><i class="on" title="вт"></i><i class="on" title="ср"></i><i class="on" title="чт"></i><i class="now" title="пт"></i><i class="" title="сб"></i><i class="" title="вс"></i></span></a>
+                <a class="rt-st ok" href="#"><span class="rt-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><b>7 задач</b><small>3 сделано за&nbsp;неделю</small></div><span class="rt-ring" style="--p:43" aria-hidden="true"></span></a>
+                <a class="rt-st wish" href="#"><span class="rt-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><div><b>3 из 12</b><small>желаний сбылось</small></div><span class="rt-ring" style="--p:25" aria-hidden="true"></span></a>
+              </div>
             </div>
-            <div class="r-stats"><a class="r-st" href="#"><span class="r-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-3.5 2-5 1 1.5 2 2 2 2s-.5-4 1-7z"/></svg></span><b>4</b><small>дня фокуса подряд</small></a><a class="r-st" href="#"><span class="r-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/></svg></span><b>7</b><small>задач в&nbsp;работе</small></a><a class="r-st" href="#"><span class="r-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><b>3 из 12</b><small>желаний выполнено</small></a></div>
-            <p class="r-k r-tk2">Сегодня в&nbsp;работе</p>
-            <div class="r-tiles">
-              <a class="r-tile no-x" href="#"><span class="r-ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></svg></span><span class="r-tk">Урок</span><b>Оффер, который продаёт</b><small>Маршрут Альянса · смотреть</small></a><a class="r-tile only-x off" href="#"><span class="r-ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span class="r-tk">Урок</span><b>Урок: закрыт</b><small>Маршрут под&nbsp;замком</small></a>
-              <a class="r-tile " href="#"><span class="r-ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg></span><span class="r-tk">Фокус дня</span><b>Позвонить трём клиентам</b><small>Перейти</small></a>
-              <a class="r-tile " href="#"><span class="r-ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0"/></svg></span><span class="r-tk">Уведомление</span><b>Домашка проверена</b><small>Вчера, 21:40</small></a>
+            <p class="rt-k rt-tk2">Сегодня в&nbsp;работе</p>
+            <div class="rt-today">
+              <a class="rt-t lesson no-x" href="#"><span class="rt-cover"><span class="rt-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></svg></span><em>18&nbsp;мин</em></span><span class="rt-tk">Урок · 4 из 12</span><b>Оффер, который продаёт</b><small>Маршрут Альянса</small></a>
+              <a class="rt-t lesson off only-x" href="#"><span class="rt-cover"><span class="rt-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></span><span class="rt-tk">Урок</span><b>Маршрут закрыт</b><small>Откроется вместе с&nbsp;доступом</small></a>
+              <a class="rt-t focus" href="#"><span class="rt-chk" aria-hidden="true"></span><div><span class="rt-tk">Фокус дня · шаг 16 из 100</span><b>Позвонить трём клиентам</b><small>Цель «10 клиентов в&nbsp;месяц»</small></div><span class="btn btn-s rt-done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Сделал</span></a>
+              <a class="rt-t ntf" href="#"><span class="rt-nic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><span class="rt-tk">Уведомление</span><b>Домашка проверена</b><small>Игорь Граф · вчера, 21:40</small></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></a>
             </div>
           </section>
           <section class="panel life" id="k-life" aria-label="Жизнь клуба">
-            <div class="ph"><h3>Жизнь клуба</h3><div class="lf-tabs" role="tablist"><button role="tab" aria-selected="true" data-lf="pulse">Пульс Альянса</button><button role="tab" aria-selected="false" data-lf="top">Топ активных</button><button role="tab" aria-selected="false" data-lf="res">Результаты</button></div></div>
-            <ul class="lf-pane" data-pane-lf="pulse"><li><span class="lf-av">О</span><div><b>Ольга М.</b> сделала шаг к&nbsp;цели</div><small>5 мин</small></li><li><span class="lf-av">Д</span><div><b>Дмитрий К.</b> прошёл урок «Оффер, который продаёт»</div><small>12 мин</small></li><li><span class="lf-av">И</span><div><b>Ирина С.</b> закрыла привычку «Утренняя прогулка»</div><small>25 мин</small></li><li><span class="lf-av">М</span><div><b>Максим Л.</b> сдал задание недели</div><small>40 мин</small></li><li><span class="lf-av">Е</span><div><b>Елена В.</b> записалась в&nbsp;комнату «Оффер»</div><small>1 ч</small></li></ul>
-            <ol class="lf-pane" data-pane-lf="top" hidden><li><span class="lf-n">1</span><span class="lf-av">И</span><div><b>Ирина С.</b></div><small>128&nbsp;действий за&nbsp;30&nbsp;дней</small></li><li><span class="lf-n">2</span><span class="lf-av">Д</span><div><b>Дмитрий К.</b></div><small>117&nbsp;действий за&nbsp;30&nbsp;дней</small></li><li><span class="lf-n">3</span><span class="lf-av">О</span><div><b>Ольга М.</b></div><small>96&nbsp;действий за&nbsp;30&nbsp;дней</small></li><li><span class="lf-n">4</span><span class="lf-av">М</span><div><b>Максим Л.</b></div><small>88&nbsp;действий за&nbsp;30&nbsp;дней</small></li><li><span class="lf-n">5</span><span class="lf-av">А</span><div><b>Анна Смирнова (вы)</b></div><small>41&nbsp;действий за&nbsp;30&nbsp;дней</small></li></ol>
+            <div class="ph lf-ph"><h3>Жизнь клуба</h3><div class="lf-tabs" role="tablist"><button role="tab" aria-selected="true" data-lf="pulse">Пульс Альянса</button><button role="tab" aria-selected="false" data-lf="top">Топ за&nbsp;30&nbsp;дней</button><button role="tab" aria-selected="false" data-lf="res">Результаты</button></div></div>
+            <div class="lf-pane" data-pane-lf="pulse"><p class="lf-live"><i></i>Сейчас на&nbsp;платформе 37&nbsp;фриманов</p><ul class="lf-feed"><li><span class="lf-av"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy"><i class="lf-b b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg></i></span><div><b>Ольга М.</b> сделала шаг к&nbsp;цели «Запуск курса»</div><small>5 мин</small></li><li><span class="lf-av"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy"><i class="lf-b v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></svg></i></span><div><b>Дмитрий К.</b> прошёл урок «Оффер, который продаёт»</div><small>12 мин</small></li><li><span class="lf-av"><img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" loading="lazy"><i class="lf-b g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></i></span><div><b>Ирина С.</b> закрыла привычку «Утренняя прогулка»</div><small>25 мин</small></li><li><span class="lf-av"><img src="https://randomuser.me/api/portraits/men/52.jpg" alt="" loading="lazy"><i class="lf-b a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3"/><rect x="4" y="8" width="16" height="11" rx="2.5"/><circle cx="16" cy="13.5" r="1.2" fill="currentColor"/></svg></i></span><div><b>Максим Л.</b> внёс доход за&nbsp;неделю</div><small>40 мин</small></li><li><span class="lf-av"><img src="https://randomuser.me/api/portraits/women/90.jpg" alt="" loading="lazy"><i class="lf-b b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></i></span><div><b>Елена В.</b> записалась в&nbsp;комнату «Оффер»</div><small>1 ч</small></li></ul></div>
+            <div class="lf-pane" data-pane-lf="top" hidden><ol class="lf-pod"><li class="p2"><span class="lf-pa"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy"></span><b>Дмитрий К.</b><small>117&nbsp;действий</small><span class="lf-st">2</span></li><li class="p1"><span class="lf-pa"><img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" loading="lazy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span><b>Ирина С.</b><small>128&nbsp;действий</small><span class="lf-st">1</span></li><li class="p3"><span class="lf-pa"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy"></span><b>Ольга М.</b><small>96&nbsp;действий</small><span class="lf-st">3</span></li></ol><ul class="lf-rest"><li><span class="lf-n">4</span><img src="https://randomuser.me/api/portraits/men/52.jpg" alt="" loading="lazy"><b>Максим Л.</b><i><s style="width:69%"></s></i><small>88</small></li><li><span class="lf-n">5</span><img src="https://randomuser.me/api/portraits/women/90.jpg" alt="" loading="lazy"><b>Елена В.</b><i><s style="width:66%"></s></i><small>84</small></li><li class="me"><span class="lf-n">23</span><span class="lf-me">А</span><b>Вы</b><i><s style="width:32%"></s></i><small>41</small></li></ul></div>
             <div class="lf-pane" data-pane-lf="res" hidden>
-              <div class="lf-total"><small>В&nbsp;этом месяце участниками заработано</small><b>$134&#8239;000</b><span>по&nbsp;всей платформе, в&nbsp;долларах</span></div>
-              <ul class="lf-res"><li><span class="lf-dot"></span>Участник сделал <b>+$134</b><small>только что</small></li><li><span class="lf-dot"></span>Участник сделал <b>+$520</b><small>3 мин</small></li><li><span class="lf-dot"></span>Участник сделал <b>+$80</b><small>9 мин</small></li><li><span class="lf-dot"></span>Участник сделал <b>+$1&#8239;200</b><small>20 мин</small></li><li><span class="lf-dot"></span>Участник сделал <b>+$260</b><small>41 мин</small></li></ul>
+              <div class="lf-total"><div><small>В&nbsp;ноябре участники заработали</small><b>$134&#8239;000</b><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6.5 11.5 12 6l5.5 5.5"/></svg>$12&#8239;400 за&nbsp;эту неделю · вся платформа</span></div><div class="lf-wkb" aria-hidden="true"><span><i style="height:52%"></i><small>1 нед</small></span><span><i style="height:70%"></i><small>2 нед</small></span><span><i style="height:64%"></i><small>3 нед</small></span><span><i style="height:100%"></i><small>эта</small></span></div></div>
+              <ul class="lf-res"><li><span class="lf-coin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M14.6 9.2c-.5-.8-1.5-1.2-2.6-1.2-1.6 0-2.7.8-2.7 2s1.1 1.6 2.7 2 2.8.9 2.8 2.1-1.2 2-2.8 2c-1.2 0-2.2-.5-2.7-1.3M12 6.5V8m0 8v1.5"/></svg></span><div><small>Участник сделал</small><b>+$1&#8239;200</b><em>только что</em></div></li><li><span class="lf-coin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M14.6 9.2c-.5-.8-1.5-1.2-2.6-1.2-1.6 0-2.7.8-2.7 2s1.1 1.6 2.7 2 2.8.9 2.8 2.1-1.2 2-2.8 2c-1.2 0-2.2-.5-2.7-1.3M12 6.5V8m0 8v1.5"/></svg></span><div><small>Участник сделал</small><b>+$520</b><em>3 мин</em></div></li><li><span class="lf-coin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M14.6 9.2c-.5-.8-1.5-1.2-2.6-1.2-1.6 0-2.7.8-2.7 2s1.1 1.6 2.7 2 2.8.9 2.8 2.1-1.2 2-2.8 2c-1.2 0-2.2-.5-2.7-1.3M12 6.5V8m0 8v1.5"/></svg></span><div><small>Участник сделал</small><b>+$260</b><em>9 мин</em></div></li><li><span class="lf-coin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M14.6 9.2c-.5-.8-1.5-1.2-2.6-1.2-1.6 0-2.7.8-2.7 2s1.1 1.6 2.7 2 2.8.9 2.8 2.1-1.2 2-2.8 2c-1.2 0-2.2-.5-2.7-1.3M12 6.5V8m0 8v1.5"/></svg></span><div><small>Участник сделал</small><b>+$134</b><em>20 мин</em></div></li><li><span class="lf-coin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M14.6 9.2c-.5-.8-1.5-1.2-2.6-1.2-1.6 0-2.7.8-2.7 2s1.1 1.6 2.7 2 2.8.9 2.8 2.1-1.2 2-2.8 2c-1.2 0-2.2-.5-2.7-1.3M12 6.5V8m0 8v1.5"/></svg></span><div><small>Участник сделал</small><b>+$80</b><em>41 мин</em></div></li><li><span class="lf-coin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M14.6 9.2c-.5-.8-1.5-1.2-2.6-1.2-1.6 0-2.7.8-2.7 2s1.1 1.6 2.7 2 2.8.9 2.8 2.1-1.2 2-2.8 2c-1.2 0-2.2-.5-2.7-1.3M12 6.5V8m0 8v1.5"/></svg></span><div><small>Участник сделал</small><b>+$2&#8239;400</b><em>1 ч</em></div></li></ul>
             </div>
+          </section>
+          <section class="panel nearby" id="k-near" aria-label="Фриманы рядом">
+            <div class="ph"><h3>Знакомьтесь — рядом с&nbsp;вами</h3><a class="nb-all" href="#d-map">Все на&nbsp;карте <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></a></div>
+            <ul class="nb"><li class="nb-c"><span class="nb-ph"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy"><i class="nb-on" title="в сети"></i></span><b>Мария Петрова</b><small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 17.2c5-1 1.5-6.4 6.6-8.6"/></svg>Лиссабон · 4&nbsp;км</small><p>Маркетолог, запускаю онлайн-курсы</p>
+              <div class="nb-a"><a class="btn btn-s" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 6 6 0 0 1-5-3l-2.5-4.5a1.5 1.5 0 0 1 2.6-1.5L8 14"/></svg>Привет</a><a class="btn btn-s gh" href="#" aria-label="Добавить в друзья"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5 6-5s5.4 1.4 6 5M18 8v6M15 11h6"/></svg></a><a class="btn btn-p only-m" href="#">Написать</a></div></li><li class="nb-c"><span class="nb-ph"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy"></span><b>Алексей Морозов</b><small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 17.2c5-1 1.5-6.4 6.6-8.6"/></svg>Лиссабон · 7&nbsp;км</small><p>Строю студию дизайна интерьеров</p>
+              <div class="nb-a"><a class="btn btn-s" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 6 6 0 0 1-5-3l-2.5-4.5a1.5 1.5 0 0 1 2.6-1.5L8 14"/></svg>Привет</a><a class="btn btn-s gh" href="#" aria-label="Добавить в друзья"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5 6-5s5.4 1.4 6 5M18 8v6M15 11h6"/></svg></a><a class="btn btn-p only-m" href="#">Написать</a></div></li><li class="nb-c"><span class="nb-ph"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" loading="lazy"><i class="nb-on" title="в сети"></i></span><b>Наталья Волкова</b><small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 17.2c5-1 1.5-6.4 6.6-8.6"/></svg>Кашкайш · 18&nbsp;км</small><p>Психолог, веду группы</p>
+              <div class="nb-a"><a class="btn btn-s" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 6 6 0 0 1-5-3l-2.5-4.5a1.5 1.5 0 0 1 2.6-1.5L8 14"/></svg>Привет</a><a class="btn btn-s gh" href="#" aria-label="Добавить в друзья"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5 6-5s5.4 1.4 6 5M18 8v6M15 11h6"/></svg></a><a class="btn btn-p only-m" href="#">Написать</a></div></li></ul>
+            <p class="nb-note no-m">Участники ПП и&nbsp;Альянса видят друг друга. «Написать» открывается с&nbsp;подпиской.</p>
           </section>
         </div>
         <div class="col">
           <section class="panel frimi only-x" aria-label="Доступ закрыт"><span class="fl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg>Доступ закрыт</span><div class="row"><div><h3>Альянс закрыт до&nbsp;1&nbsp;декабря 2027</h3><p>ПП и&nbsp;Альянс купить нельзя, другие продукты можно</p></div><img src="img/frimi.webp" alt="Фрими с флажком"></div><a class="btn btn-s" href="#">Другие продукты</a></section>
-          <section class="panel meet only-g" aria-label="Ближайшая встреча"><img class="mt-fr" src="img/frimi.webp" alt="Фрими">
-            <div class="mt-hd"><span class="mtk">Ближайшая встреча</span><span class="mt-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="mt-left" data-h="20">…</span></span></div>
-            <b class="mt-t">Комната: Оффер</b>
-            <div class="mt-when"><b>16:00</b><span>суббота, 7&nbsp;ноября · по&nbsp;Москве</span></div>
+          <section class="panel meet only-g fr" aria-label="Ближайшая встреча"><img class="mt-fr" src="img/frimi.webp" alt="Фрими">
+            <div class="mt-top"><span class="mtk">Ближайшая встреча</span><a class="mt-all" href="#">Все встречи</a></div>
+            <div class="mt-hd"><div class="mt-tl"><b>7</b><span>нояб</span></div><div class="mt-tx"><b>Комната: Оффер</b><span>суббота, 16:00 по&nbsp;Москве</span></div></div>
             <span class="mt-tag">первая бесплатно · зритель</span>
+            <div class="mt-cd" data-h="20" role="timer" aria-label="До встречи"><div><b class="d">0</b><span>дн.</span></div><div><b class="h">00</b><span>ч</span></div><div><b class="m">00</b><span>мин</span></div><div><b class="s">00</b><span>сек</span></div></div>
             <a class="btn btn-p mt-go" href="#">Записаться</a>
             <a class="btn btn-s mt-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
-          </section><section class="panel meet only-s" aria-label="Ближайшая встреча"><img class="mt-fr" src="img/frimi.webp" alt="Фрими">
-            <div class="mt-hd"><span class="mtk">Ближайшая встреча</span><span class="mt-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="mt-left" data-h="20">…</span></span></div>
-            <b class="mt-t">Комната: Оффер</b>
-            <div class="mt-when"><b>16:00</b><span>суббота, 7&nbsp;ноября · по&nbsp;Москве</span></div>
+            <div class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span>12&nbsp;участников записались</div>
+          </section><section class="panel meet only-s fr" aria-label="Ближайшая встреча"><img class="mt-fr" src="img/frimi.webp" alt="Фрими">
+            <div class="mt-top"><span class="mtk">Ближайшая встреча</span><a class="mt-all" href="#">Все встречи</a></div>
+            <div class="mt-hd"><div class="mt-tl"><b>7</b><span>нояб</span></div><div class="mt-tx"><b>Комната: Оффер</b><span>суббота, 16:00 по&nbsp;Москве</span></div></div>
             <span class="mt-tag">зритель</span>
+            <div class="mt-cd" data-h="20" role="timer" aria-label="До встречи"><div><b class="d">0</b><span>дн.</span></div><div><b class="h">00</b><span>ч</span></div><div><b class="m">00</b><span>мин</span></div><div><b class="s">00</b><span>сек</span></div></div>
             <a class="btn btn-p mt-go" href="#">Записаться</a>
             <a class="btn btn-s mt-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
-          </section><section class="panel meet only-m" aria-label="Ближайшая встреча"><img class="mt-fr" src="img/frimi.webp" alt="Фрими">
-            <div class="mt-hd"><span class="mtk">Ближайшая встреча</span><span class="mt-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="mt-left" data-h="20">…</span></span></div>
-            <b class="mt-t">Комната: Оффер</b>
-            <div class="mt-when"><b>16:00</b><span>суббота, 7&nbsp;ноября · по&nbsp;Москве</span></div>
+            <div class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span>12&nbsp;участников записались</div>
+          </section><section class="panel meet only-m fr" aria-label="Ближайшая встреча"><img class="mt-fr" src="img/frimi.webp" alt="Фрими">
+            <div class="mt-top"><span class="mtk">Ближайшая встреча</span><a class="mt-all" href="#">Все встречи</a></div>
+            <div class="mt-hd"><div class="mt-tl"><b>7</b><span>нояб</span></div><div class="mt-tx"><b>Комната: Оффер</b><span>суббота, 16:00 по&nbsp;Москве</span></div></div>
             <span class="mt-tag">участник</span>
+            <div class="mt-cd" data-h="20" role="timer" aria-label="До встречи"><div><b class="d">0</b><span>дн.</span></div><div><b class="h">00</b><span>ч</span></div><div><b class="m">00</b><span>мин</span></div><div><b class="s">00</b><span>сек</span></div></div>
             <a class="btn btn-p mt-go" href="#">Записаться</a>
             <a class="btn btn-s mt-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
+            <div class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span>12&nbsp;участников записались</div>
           </section><section class="panel meet only-x" aria-label="Ближайшая встреча">
-            <div class="mt-hd"><span class="mtk">Ближайшая встреча</span><span class="mt-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="mt-left" data-h="92">…</span></span></div>
-            <b class="mt-t">Открытая встреча с&nbsp;Игорем</b>
-            <div class="mt-when"><b>19:00</b><span>вторник, 10&nbsp;ноября · по&nbsp;Москве</span></div>
+            <div class="mt-top"><span class="mtk">Ближайшая встреча</span><a class="mt-all" href="#">Все встречи</a></div>
+            <div class="mt-hd"><div class="mt-tl"><b>10</b><span>нояб</span></div><div class="mt-tx"><b>Открытая встреча с&nbsp;Игорем</b><span>вторник, 19:00 по&nbsp;Москве</span></div></div>
             <span class="mt-tag">бесплатно для всех</span>
+            <div class="mt-cd" data-h="92" role="timer" aria-label="До встречи"><div><b class="d">0</b><span>дн.</span></div><div><b class="h">00</b><span>ч</span></div><div><b class="m">00</b><span>мин</span></div><div><b class="s">00</b><span>сек</span></div></div>
             <a class="btn btn-p mt-go" href="#">Записаться</a>
             <a class="btn btn-s mt-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
+            <div class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span>48&nbsp;участников записались</div>
           </section>
           <section class="panel camp only-hike no-x" aria-label="Мой лагерь">
             <div class="ph"><h3>Мой лагерь</h3><span class="fm-sub">поход идёт</span></div>
@@ -691,15 +797,6 @@ ol.lf-pane li{grid-template-columns:22px auto minmax(0,1fr) auto}
         </div>
       </div>
       <div class="wide">
-          <section class="panel nearby" id="k-near" aria-label="Фриманы рядом">
-            <div class="ph"><h3>Знакомьтесь — рядом с&nbsp;вами</h3><span class="fm-sub">участники обоих клубов</span></div>
-            <ul class="nb"><li class="nb-c"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy"><b>Мария Петрова</b><small>Лиссабон · 4&nbsp;км</small><p>Маркетолог, запускаю онлайн-курсы</p>
-              <div class="nb-a"><a class="btn btn-s" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 6 6 0 0 1-5-3l-2.5-4.5a1.5 1.5 0 0 1 2.6-1.5L8 14"/></svg>Привет</a><a class="btn btn-s gh" href="#" aria-label="Добавить в друзья"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5 6-5s5.4 1.4 6 5M18 8v6M15 11h6"/></svg></a><a class="btn btn-p only-m" href="#">Написать</a></div></li><li class="nb-c"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy"><b>Алексей Морозов</b><small>Лиссабон · 7&nbsp;км</small><p>Строю студию дизайна интерьеров</p>
-              <div class="nb-a"><a class="btn btn-s" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 6 6 0 0 1-5-3l-2.5-4.5a1.5 1.5 0 0 1 2.6-1.5L8 14"/></svg>Привет</a><a class="btn btn-s gh" href="#" aria-label="Добавить в друзья"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5 6-5s5.4 1.4 6 5M18 8v6M15 11h6"/></svg></a><a class="btn btn-p only-m" href="#">Написать</a></div></li><li class="nb-c"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" loading="lazy"><b>Наталья Волкова</b><small>Кашкайш · 18&nbsp;км</small><p>Психолог, веду группы</p>
-              <div class="nb-a"><a class="btn btn-s" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 6 6 0 0 1-5-3l-2.5-4.5a1.5 1.5 0 0 1 2.6-1.5L8 14"/></svg>Привет</a><a class="btn btn-s gh" href="#" aria-label="Добавить в друзья"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5 6-5s5.4 1.4 6 5M18 8v6M15 11h6"/></svg></a><a class="btn btn-p only-m" href="#">Написать</a></div></li><li class="nb-c"><img src="https://randomuser.me/api/portraits/men/75.jpg" alt="" loading="lazy"><b>Игорь Белов</b><small>Синтра · 25&nbsp;км</small><p>Агентство недвижимости</p>
-              <div class="nb-a"><a class="btn btn-s" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 6 6 0 0 1-5-3l-2.5-4.5a1.5 1.5 0 0 1 2.6-1.5L8 14"/></svg>Привет</a><a class="btn btn-s gh" href="#" aria-label="Добавить в друзья"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5 6-5s5.4 1.4 6 5M18 8v6M15 11h6"/></svg></a><a class="btn btn-p only-m" href="#">Написать</a></div></li></ul>
-            <p class="nb-note no-m">Кнопка «Написать» открывается с&nbsp;подпиской.</p>
-          </section>
           <section class="panel fmap big" id="d-map" aria-label="Карта фриманов">
             <div class="ph"><h3>Карта фриманов</h3><span class="fm-sub">Кто чем может помочь</span></div>
             <div class="fm-box">
@@ -716,7 +813,7 @@ ol.lf-pane li{grid-template-columns:22px auto minmax(0,1fr) auto}
       </div>
     </div>
     <div class="pult" id="pult"></div>
-    <p class="note">Макет: кабинет клуба Альянса (раздел 7 задания), вход из&nbsp;«Моих продуктов». Приветствия нет, оно на&nbsp;главной. Пульт: пакет Гость, Стартовый, Бунтарь, закрыто на&nbsp;год и&nbsp;«Поход идёт». Меню по&nbsp;таблице доступа: Гостю нет сообщений, кланов, книжного клуба, инвестиций и&nbsp;обмена жизнями; Стартовому нет сообщений, инвестиций и&nbsp;обмена жизнями; при закрытии на&nbsp;год маршрут под замком, похода нет. Рюкзак, Лагерь и&nbsp;Лавка только когда идёт поход. «Мой ритм»: цель со&nbsp;спидометром (флажок — ближайшая цель человека), доход за&nbsp;30&nbsp;дней, дни фокуса, задачи, желания и&nbsp;«Сегодня в&nbsp;работе». «Жизнь клуба»: пульс, топ активных, результаты без имён, вкладки сами меняются раз в&nbsp;10&nbsp;секунд. Справа: ближайшая встреча с&nbsp;Фрими и&nbsp;таймером, лагерь в&nbsp;походе, календарь, Оракул, Слово дня, Мечта фримана. Внизу «Фриманы рядом» («Написать» только с&nbsp;подпиской) и&nbsp;большой глобус. Люди, суммы и&nbsp;тексты для примера.</p>
+    <p class="note">Макет: кабинет клуба Альянса (раздел 7 задания), вход из&nbsp;«Моих продуктов». Приветствия нет, оно на&nbsp;главной. Пульт: пакет Гость, Стартовый, Бунтарь, закрыто на&nbsp;год и&nbsp;«Поход идёт». Меню по&nbsp;таблице доступа: Гостю нет сообщений, кланов, книжного клуба, инвестиций и&nbsp;обмена жизнями; Стартовому нет сообщений, инвестиций и&nbsp;обмена жизнями; при закрытии на&nbsp;год маршрут под замком, похода нет. Рюкзак, Лагерь и&nbsp;Лавка только когда идёт поход. «Мой ритм»: цель со&nbsp;спидометром (флажок — ближайшая цель человека), доход за&nbsp;30&nbsp;дней, дни фокуса, задачи, желания и&nbsp;«Сегодня в&nbsp;работе». «Жизнь клуба»: пульс, топ активных, результаты без имён, вкладки сами меняются раз в&nbsp;10&nbsp;секунд. Слева под «Жизнью клуба» «Фриманы рядом» («Написать» только с&nbsp;подпиской). Справа, колонка листается отдельно: ближайшая встреча с&nbsp;Фрими и&nbsp;отсчётом как в&nbsp;ПП, лагерь в&nbsp;походе, календарь, Оракул, Слово дня, Мечта фримана. Внизу большой глобус. Люди, суммы и&nbsp;тексты для примера.</p>
   </div>
 </div>
 
@@ -879,12 +976,13 @@ cg.addEventListener('click', e => {
   const show = k => { n = k; tabs.forEach((b, i) => b.setAttribute('aria-selected', i === k)); document.querySelectorAll('[data-pane-lf]').forEach(p => p.hidden = p.dataset.paneLf !== tabs[k].dataset.lf); };
   const run = () => { clearInterval(t); if (!new URLSearchParams(location.search).has('shot') && !matchMedia('(prefers-reduced-motion:reduce)').matches) t = setInterval(() => show((n + 1) % tabs.length), 10000); };
   tabs.forEach((b, i) => b.addEventListener('click', () => { show(i); run(); })); run();
-  // таймер до встречи, как на карточке встречи ПП; в макете сегодня пятница 6 ноября, отсчёт от открытия страницы
-  const t0 = Date.now();
-  const f = () => document.querySelectorAll('.mt-left').forEach(e => { const m = Math.max(0, Math.floor((+e.dataset.h * 3600e3 + 59 * 60e3 - (Date.now() - t0)) / 60000)), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60), mm = m % 60;
-    const txt = d > 0 ? `через ${d}\u00a0д ${h}\u00a0ч` : h >= 3 ? `через ${h}\u00a0ч` : h > 0 ? `через ${h}\u00a0ч ${mm}\u00a0мин` : `через ${mm}\u00a0мин`;
-    e.textContent = txt; });
-  f(); setInterval(f, 30000);
+  // отсчёт до встречи окошками, как до установочной в ПП; в макете сегодня пятница 6 ноября, отсчёт от открытия страницы
+  if (new URLSearchParams(location.search).has('shot')) document.body.classList.add('shot');
+  const t0 = Date.now(), p2 = v => String(v).padStart(2, '0');
+  const f = () => document.querySelectorAll('.mt-cd').forEach(e => { const sec = Math.max(0, Math.floor((+e.dataset.h * 3600e3 + 59 * 60e3 + 59e3 - (Date.now() - t0)) / 1000));
+    e.querySelector('.d').textContent = Math.floor(sec / 86400); e.querySelector('.h').textContent = p2(Math.floor(sec % 86400 / 3600));
+    e.querySelector('.m').textContent = p2(Math.floor(sec % 3600 / 60)); e.querySelector('.s').textContent = p2(sec % 60); });
+  f(); setInterval(f, 1000);
 })();
 </script>
 </body>
