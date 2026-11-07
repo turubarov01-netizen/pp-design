@@ -390,53 +390,62 @@ svg{flex:none}
 @media (max-width:760px){.fmap.big .fm-box{height:380px}}
 /* К1 Мой ритм */
 .rt-ph{align-items:center}
-.rt-acts{display:flex;gap:8px}
+.rt-acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.rt-q{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:11px;background:var(--blue-soft);color:var(--blue-ink);font-size:13px;font-weight:600;white-space:nowrap;transition:background .2s var(--ease),transform .15s var(--ease)}
+.rt-q:hover{background:rgba(47,123,255,.16)}.rt-q:active{transform:scale(.97)}.rt-q svg{width:15px;height:15px}
+.rt-q.p{background:var(--blue);color:#fff}.rt-q.p:hover{background:#1F6BF0}
 .rt-btn{height:38px;padding:0 14px;gap:6px;font-size:13.5px}.rt-btn svg{width:15px;height:15px}
 .rt-k{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}.rt-k svg{width:14px;height:14px}
-.rt-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px;align-items:center;padding:20px 22px;border-radius:22px;color:var(--ink);
-  background:radial-gradient(120% 140% at 0% 0%,rgba(61,139,255,.13),transparent 55%),radial-gradient(120% 140% at 100% 100%,rgba(123,97,255,.12),transparent 55%),#fff;
-  border:1px solid rgba(47,123,255,.16);transition:border-color .25s var(--ease),box-shadow .25s var(--ease)}
-.rt-hero:hover{border-color:rgba(47,123,255,.38);box-shadow:0 10px 30px rgba(47,123,255,.1)}
-.rt-dial{position:relative;max-width:300px;width:100%;margin:0 auto}
-.rt-dial .dial{width:100%}
+.rt-hero{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1fr) minmax(0,1.15fr);align-items:stretch;border-radius:22px;color:var(--ink);
+  background:radial-gradient(120% 140% at 0% 0%,rgba(61,139,255,.12),transparent 55%),radial-gradient(120% 140% at 100% 100%,rgba(123,97,255,.1),transparent 55%),#fff;border:1px solid rgba(47,123,255,.16)}
+.rt-hero>a{min-width:0;color:var(--ink);padding:18px 18px 16px;transition:background .2s var(--ease)}
+.rt-hero>a:hover{background:rgba(47,123,255,.035)}
+.rt-hero>a+a{border-left:1px solid rgba(47,123,255,.1)}
+.rt-dial{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:22px 0 0 22px}
+.rt-dial .dial{width:100%;max-width:230px}
+.segdone{stroke:#2EA05A}
 .rt-glow{filter:drop-shadow(0 4px 10px rgba(79,110,255,.35))}
-.rt-read{text-align:center;margin-top:2px}
-.rt-read b{display:block;font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1}
-.rt-read span{font-size:13px;color:var(--ink3)}
-.rt-lim{display:flex;justify-content:space-between;margin:-6px 2% 0;font-size:11.5px;color:var(--ink3);font-variant-numeric:tabular-nums}
-.rt-goal{min-width:0;display:flex;flex-direction:column;gap:6px}
-.rt-goal{padding-right:58px}
-.rt-flag{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:12.5px;font-weight:600;color:var(--blue-ink);background:rgba(47,123,255,.09);border-radius:999px;padding:4px 10px}.rt-flag svg{width:13px;height:13px}
-.rt-gt{font-size:24px;font-weight:800;letter-spacing:-.015em;line-height:1.15;margin-top:2px}
-.rt-gs{font-size:13.5px;color:var(--ink2)}.rt-gs b{color:var(--blue-ink)}
-.rt-rew{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
-.rt-rew li{display:grid;grid-template-columns:34px minmax(0,1fr) 40px;gap:10px;align-items:center}
-.rt-em{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-size:17px;box-shadow:0 2px 6px rgba(11,16,32,.05)}
-.rt-rew li div{min-width:0}.rt-rew li b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rt-rew li small{display:block;font-size:11.5px;color:var(--ink3);margin:1px 0 4px}
-.rt-rew i{display:block;height:5px;border-radius:3px;background:rgba(47,123,255,.12);overflow:hidden}.rt-rew i s{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#3D8BFF,#7B61FF)}
-.rt-rew em{font-style:normal;font-size:12.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink2)}
-.rt-rew li.done .rt-em{background:#EAF7EF;border-color:rgba(46,160,90,.25)}.rt-rew li.done i s{background:#2EA05A}.rt-rew li.done em{color:#1E7B45}
-.rt-row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px;margin-top:12px}
-.rt-inc{display:flex;flex-direction:column;gap:6px;padding:16px 18px 12px;border:1px solid var(--line);border-radius:20px;background:#fff;color:var(--ink);min-width:0;transition:border-color .2s var(--ease)}
-.rt-inc:hover{border-color:rgba(47,123,255,.38)}
+.rt-read{text-align:center;margin-top:-2px;line-height:1}
+.rt-read b{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.rt-read span{margin-left:6px;font-size:13px;color:var(--ink3)}
+.rt-ics{list-style:none;margin:12px 0 0;padding:0;display:flex;gap:10px}
+.rt-ics li{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px}
+.rt-ics span{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-size:18px;box-shadow:0 2px 6px rgba(11,16,32,.05)}
+.rt-ics li:not(.done):not(.now) span{filter:grayscale(1);opacity:.55}
+.rt-ics li.now span{border-color:rgba(47,123,255,.5);box-shadow:0 0 0 3px rgba(47,123,255,.12)}
+.rt-ics li.done span{background:#EAF7EF;border-color:rgba(46,160,90,.3)}
+.rt-ics i{position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:#2EA05A;color:#fff;border:2px solid #fff}.rt-ics i svg{width:10px;height:10px}
+.rt-ics small{font-size:10.5px;font-weight:600;color:var(--ink3);font-variant-numeric:tabular-nums}
+.rt-goal{position:relative;display:flex;flex-direction:column;gap:5px}
+.rt-flag{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:12px;font-weight:600;color:var(--blue-ink);background:rgba(47,123,255,.09);border-radius:999px;padding:4px 10px}.rt-flag svg{width:13px;height:13px}
+.rt-gt{font-size:22px;font-weight:800;letter-spacing:-.015em;line-height:1.15;margin-top:4px}
+.rt-gs{font-size:13px;color:var(--ink2)}.rt-gs b{color:var(--blue-ink)}
+.rt-next{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.rt-nx{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:9px;align-items:center}
+.rt-em{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:#fff;border:1px solid rgba(47,123,255,.3);font-size:15px}
+.rt-nx b{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rt-nx em{font-style:normal;font-size:13.5px;font-weight:800;color:var(--blue-ink);font-variant-numeric:tabular-nums}
+.rt-bar{display:block;height:7px;border-radius:4px;background:rgba(47,123,255,.12);overflow:hidden}.rt-bar s{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#3D8BFF,#7B61FF)}
+.rt-next small{font-size:12px;color:var(--ink3)}
+.rt-got{list-style:none;margin:6px 0 0;padding:0}.rt-got li{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink3)}.rt-got svg{width:12px;height:12px;color:#2EA05A}
+.rt-inc{display:flex;flex-direction:column;gap:6px;border-radius:0 22px 22px 0}
 .rt-inc-hd{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.rt-per{display:inline-flex;gap:2px;padding:3px;border-radius:10px;background:var(--bg2,#EEF2FB);font-size:11.5px;font-weight:600;color:var(--ink3)}
-.rt-per span{padding:3px 8px;border-radius:7px}.rt-per .on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,30,60,.08)}
-.rt-sum{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px}.rt-sum b{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
-.rt-delta{display:inline-flex;align-items:center;gap:3px;font-size:12.5px;font-weight:700;color:#1E7B45;background:#EAF7EF;border-radius:999px;padding:3px 8px}.rt-delta svg{width:12px;height:12px}
-.rt-plot{position:relative;height:108px;margin-top:4px}
-.rt-chart{width:100%;height:100%;display:block;overflow:visible}
+.rt-per{display:inline-flex;gap:2px;padding:3px;border-radius:10px;background:var(--bg2,#EEF2FB);font-size:11px;font-weight:600;color:var(--ink3)}
+.rt-per span{padding:3px 7px;border-radius:7px}.rt-per .on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,30,60,.08)}
+.rt-sum{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px}.rt-sum b{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.rt-delta{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:700;color:#1E7B45;background:#EAF7EF;border-radius:999px;padding:3px 8px}.rt-delta svg{width:12px;height:12px}
+.rt-plot{position:relative;flex:1;min-height:84px;margin-top:4px}
+.rt-chart{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
 .rt-gl{stroke:rgba(47,123,255,.1);stroke-dasharray:3 4;vector-effect:non-scaling-stroke}
 .rt-dot{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#2F7BFF;border:3px solid #fff;box-shadow:0 0 0 4px rgba(47,123,255,.18)}
 .rt-axis{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3)}
-.rt-stats{display:flex;flex-direction:column;gap:8px;min-width:0}
-.rt-st{flex:1;display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--ink);transition:border-color .2s var(--ease)}
+.rt-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.rt-st{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--ink);transition:border-color .2s var(--ease)}
 .rt-st:hover{border-color:rgba(47,123,255,.38)}
 .rt-si{width:38px;height:38px;border-radius:12px;display:grid;place-items:center}.rt-si svg{width:19px;height:19px}
 .rt-st.fire .rt-si{background:#FFF1E6;color:#E2571E}.rt-st.ok .rt-si{background:#EAF7EF;color:#1E8A4C}.rt-st.wish .rt-si{background:#F1ECFF;color:#6B4FE0}
-.rt-st b{display:block;font-size:16px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums}.rt-st small{display:block;font-size:12px;color:var(--ink3)}
-.rt-wk{display:flex;gap:3px}.rt-wk i{width:7px;height:18px;border-radius:4px;background:rgba(226,87,30,.14)}.rt-wk i.on{background:#F07A3A}.rt-wk i.now{background:#F07A3A;box-shadow:0 0 0 2px #FFD9C2}
-.rt-ring{--c:#1E8A4C;width:30px;height:30px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),rgba(11,16,32,.07) 0);-webkit-mask:radial-gradient(circle,transparent 9px,#000 9.5px);mask:radial-gradient(circle,transparent 9px,#000 9.5px)}
+.rt-st b{display:block;font-size:16px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}.rt-st small{display:block;font-size:12px;color:var(--ink3)}
+.rt-wk{display:flex;gap:3px}.rt-wk i{width:6px;height:18px;border-radius:4px;background:rgba(226,87,30,.14)}.rt-wk i.on{background:#F07A3A}.rt-wk i.now{background:#F07A3A;box-shadow:0 0 0 2px #FFD9C2}
+.rt-ring{--c:#1E8A4C;width:28px;height:28px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),rgba(11,16,32,.07) 0);-webkit-mask:radial-gradient(circle,transparent 8px,#000 8.5px);mask:radial-gradient(circle,transparent 8px,#000 8.5px)}
 .rt-st.wish .rt-ring{--c:#6B4FE0}
 .rt-tk2{display:block;margin:20px 0 10px}
 .rt-today{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);grid-template-rows:auto auto;gap:10px}
@@ -506,19 +515,41 @@ svg{flex:none}
 .lf-res em{display:block;font-style:normal;font-size:11.5px;color:var(--ink3);margin-top:1px}
 /* К3 встреча, как отсчёт в ПП */
 .meet{position:relative;overflow:hidden;border:1px solid rgba(201,162,39,.35);background:radial-gradient(120% 90% at 100% 0%,rgba(243,210,122,.18),transparent 55%),var(--panel)}
-.mt-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.meet .mtk{white-space:nowrap}
-.mt-chip{display:inline-flex;align-items:center;gap:6px;flex:none;height:28px;padding:0 11px;border-radius:999px;background:rgba(47,123,255,.09);color:var(--blue-ink);font-size:12.5px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}.mt-chip svg{width:14px;height:14px}
-.mt-chip.soon{background:rgba(201,162,39,.16);color:#7A5C08}
-.mt-ti{display:block;margin-top:8px;font-size:20px;font-weight:800;line-height:1.2;color:var(--ink)}.mt-ti:hover{text-decoration:underline;text-underline-offset:4px}
-.mt-time{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-top:10px}.mt-time b{font-size:28px;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums;line-height:1}.mt-time span{font-size:14px;color:var(--ink2)}
-.rt-fr{position:absolute;right:14px;top:12px;width:62px;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(20,40,90,.16))}
+/* встреча: строка-таймер как TimerRow ПП */
+.meet{padding:16px 16px 12px;background:linear-gradient(90deg,rgba(201,162,39,.12),rgba(201,162,39,0) 65%),#fff;border-color:rgba(201,162,39,.3)}
+.tr{display:grid;grid-template-columns:48px minmax(0,1fr) auto;grid-template-areas:"ring k l" "ring t l";column-gap:12px;align-items:center;color:var(--ink)}
+.tr:hover .tr-t{text-decoration:underline;text-underline-offset:3px}
+.tr-ring{grid-area:ring;position:relative;width:48px;height:48px}
+.tr-ring>svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}.tr-ring circle{fill:none;stroke-width:4}.tr-ring .trk{stroke:rgba(20,30,60,.07)}.tr-ring .arc{stroke:#D4A21A;stroke-linecap:round}
+.tr-ic{position:absolute;inset:0;display:grid;place-items:center;color:#B8860B}.tr-ic svg{width:20px;height:20px}
+.tr-k{grid-area:k;align-self:end;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#A87A06}
+.tr-t{grid-area:t;align-self:start;margin-top:3px;font-size:15px;font-weight:700;line-height:1.3}
+.tr-l{grid-area:l;text-align:right}.tr-l b{display:block;font-size:21px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}.tr-l span{display:block;margin-top:3px;font-size:12.5px;color:var(--ink3);white-space:nowrap}
+.mt-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,162,39,.2)}
+.mt-who{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink3);white-space:nowrap}
+.mt-av{display:flex}.mt-av img{width:26px;height:26px;border-radius:50%;object-fit:cover;border:2px solid #fff;margin-left:-7px}.mt-av img:first-child{margin-left:0}
+.mt-go{height:38px;padding:0 18px;margin-left:auto}
+/* окно записи */
+.mt-dlg{width:min(440px,calc(100vw - 24px));margin:auto;padding:0;border:0;border-radius:24px;background:#fff;color:var(--ink);box-shadow:0 30px 80px rgba(15,25,60,.28)}
+.mt-dlg::backdrop{background:rgba(15,22,45,.42);backdrop-filter:blur(3px)}
+.mt-dlg[open]{animation:dlIn .28s var(--ease)}@keyframes dlIn{from{opacity:0;transform:translateY(10px) scale(.98)}}
+.mt-dlg form{position:relative;display:flex;flex-direction:column;padding:22px 22px 20px}
+.mt-dlg .tr-k{display:block;align-self:stretch;padding-right:46px;text-align:left}.mt-dlg h3:focus{outline:none}
+.mt-dlg h3{margin:6px 40px 0 0;font-size:21px;font-weight:800;line-height:1.2}
+.dl-d{margin:6px 0 0;font-size:13.5px;color:var(--ink2)}
+.dl-x{position:absolute;right:14px;top:14px;width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(20,30,60,.06);color:var(--ink2);cursor:pointer}.dl-x svg{width:16px;height:16px}
+.dl-opts{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.dl-opt{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:center;padding:12px 14px;border:1.5px solid var(--line);border-radius:16px;cursor:pointer;transition:border-color .2s,background .2s}
+.dl-opt input{position:absolute;opacity:0;pointer-events:none}
+.dl-opt:has(input:checked){border-color:var(--blue);background:rgba(47,123,255,.05)}
+.dl-opt:has(input:focus-visible){outline:2px solid var(--blue);outline-offset:2px}
+.dl-ic{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--blue-soft);color:var(--blue-ink)}.dl-ic svg{width:19px;height:19px}
+.dl-opt b{display:block;font-size:15px;font-weight:700}.dl-opt small{display:block;margin-top:2px;font-size:12.5px;line-height:1.4;color:var(--ink3)}
+.dl-opt.off{cursor:default;opacity:.62}.dl-opt.off .dl-ic{background:rgba(20,30,60,.06);color:var(--ink3)}
+.dl-go{height:46px;margin-top:16px;font-size:15px}
+.dl-cal{height:42px;margin-top:8px;gap:6px}
+.rt-fr{position:absolute;left:12px;top:10px;width:50px;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(20,40,90,.16))}
 .mtk{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-ink)}
-.mt-all{font-size:12.5px;font-weight:600;color:var(--blue-ink)}
-.mt-tag{display:inline-block;margin-top:12px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(201,162,39,.14);border:1px solid rgba(201,162,39,.4);color:#7A5C08}
-.mt-go{display:flex;width:100%;height:44px;margin-top:14px}
-.mt-cal{display:flex;width:100%;gap:6px;height:40px;margin-top:8px;font-size:13.5px}.mt-cal svg{width:15px;height:15px}
-.mt-who{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:12px;font-size:12.5px;color:var(--ink3)}.mt-who>span{white-space:nowrap}.mt-who .mt-all{margin-left:auto;white-space:nowrap}
-.mt-av{display:flex}.mt-av img{width:24px;height:24px;border-radius:50%;object-fit:cover;border:2px solid #fff;margin-left:-6px}.mt-av img:first-child{margin-left:0}
 /* правая колонка листается отдельно */
 @media (min-width:1101px){
   .grid>.col:last-child{position:sticky;top:82px;max-height:calc(100vh - 100px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;margin:-10px -10px 0;padding:10px 10px 24px}
@@ -554,10 +585,16 @@ svg{flex:none}
 .nb-a{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:auto}
 .nb-a .only-m{order:-1;flex-basis:100%}.nb-a .btn{height:36px;padding:0 12px;font-size:13px;gap:5px}.nb-a .btn svg{width:15px;height:15px}.nb-a .btn.gh{width:36px;padding:0}
 .nb-note{margin-top:12px;font-size:12.5px;color:var(--ink3)}
-@media (max-width:1100px){.rt-hero{grid-template-columns:1fr}.rt-row{grid-template-columns:1fr}.lf-res{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.tr{grid-template-columns:46px minmax(0,1fr);grid-template-areas:"ring k" "ring l" "ring t";column-gap:12px}.tr-ring{width:46px;height:46px;align-self:start;margin-top:2px}.tr-l{display:flex;align-items:baseline;gap:6px;margin-top:3px;text-align:left}.tr-l b{font-size:22px}.tr-l span{margin:0}.tr-t{font-size:14px;font-weight:500;color:var(--ink2)}}
+.rhythm{container-type:inline-size}
+@container (max-width:680px){.rt-ph{flex-wrap:wrap;gap:10px}.rt-acts{justify-content:flex-start}.rt-st{grid-template-columns:1fr;gap:6px;padding:12px}.rt-st .rt-wk,.rt-st .rt-ring{display:none}.rt-st b{font-size:17px}.rt-st small{font-size:11.5px;line-height:1.3}}
+@container (max-width:640px){.rt-today{grid-template-columns:1fr}.rt-t.lesson{grid-row:auto}.rt-cover{height:150px}.rt-hero{grid-template-columns:1fr 1fr}.rt-inc{grid-column:1/-1;border-left:0!important;border-top:1px solid rgba(47,123,255,.1);border-radius:0 0 22px 22px}.rt-dial{border-radius:22px 0 0 0}.rt-gt{font-size:20px}}
+@container (max-width:420px){.rt-hero{grid-template-columns:1fr}.rt-hero>a+a{border-left:0;border-top:1px solid rgba(47,123,255,.1)}.rt-dial,.rt-inc{border-radius:0}}
+@media (max-width:1100px){.lf-res{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){
-  .rt-ph{flex-wrap:wrap;gap:10px}.rt-acts{width:100%}.rt-btn{flex:1}
-  .rt-hero{padding:16px 14px;gap:18px}.rt-gt{font-size:21px}
+  .rt-ph{flex-wrap:wrap;gap:10px}.rt-acts{width:calc(100% + 28px);margin:0 -14px;padding:0 14px 2px;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none}.rt-acts::-webkit-scrollbar{display:none}
+  .rt-hero{grid-template-columns:1fr}.rt-hero>a+a{border-left:0;border-top:1px solid rgba(47,123,255,.1)}.rt-hero>a{padding:16px 14px}.rt-dial,.rt-inc{border-radius:0}.rt-gt{font-size:20px}
+  .rt-stats{gap:8px}.rt-st{grid-template-columns:1fr;gap:6px;padding:12px}.rt-st .rt-wk,.rt-st .rt-ring{display:none}.rt-si{width:34px;height:34px}.rt-st b{font-size:17px}.rt-st small{font-size:11.5px;line-height:1.3}
   .rt-today{grid-template-columns:1fr}.rt-t.lesson{grid-row:auto}.rt-cover{height:132px}
   .rt-t.focus{flex-wrap:wrap}.rt-t.focus .rt-done{width:100%}
   .lf-tabs{width:100%}.lf-tabs button{flex:1;padding:7px 4px;font-size:12.5px}
@@ -675,32 +712,41 @@ svg{flex:none}
       <div class="grid">
         <div class="col">
           <section class="panel rhythm" id="k-rhythm" aria-label="Мой ритм">
-            <div class="ph rt-ph"><h3>Мой ритм</h3><div class="rt-acts"><a class="btn btn-s rt-btn" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg>Фокус дня</a><a class="btn btn-p rt-btn" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Внести доход</a></div></div>
-            <a class="rt-hero" href="#" aria-label="Цель и награды"><img class="rt-fr no-x" src="img/frimi.webp" alt="Фрими">
-              <div class="rt-dial">
-                <div class="dial"><svg viewBox="0 -8 340 196" role="img" aria-label="Цель: 34 процента"><defs><linearGradient id="gFact" gradientUnits="userSpaceOnUse" x1="34" y1="0" x2="306" y2="0"><stop offset="0" stop-color="#3D8BFF"/><stop offset="1" stop-color="#7B61FF"/></linearGradient></defs><path class="trackarc" d="M34.00 166.00A136 136 0 0 1 306.00 166.00" fill="none" stroke-width="20" stroke-linecap="round"/><path class="rt-glow" d="M34.00 166.00A136 136 0 0 1 104.48 46.82" fill="none" stroke="url(#gFact)" stroke-width="20" stroke-linecap="round"/><line class="tick" x1="19.0" y1="166.0" x2="9.0" y2="166.0" stroke-width="1.8"/><line class="tick" x1="20.9" y1="142.4" x2="15.9" y2="141.6" stroke-width="1.1"/><line class="tick" x1="26.4" y1="119.3" x2="21.6" y2="117.8" stroke-width="1.1"/><line class="tick" x1="35.5" y1="97.4" x2="31.0" y2="95.2" stroke-width="1.1"/><line class="tick" x1="47.8" y1="77.2" x2="43.8" y2="74.3" stroke-width="1.1"/><line class="tick" x1="63.2" y1="59.2" x2="56.2" y2="52.2" stroke-width="1.8"/><line class="tick" x1="81.2" y1="43.8" x2="78.3" y2="39.8" stroke-width="1.1"/><line class="tick" x1="101.4" y1="31.5" x2="99.2" y2="27.0" stroke-width="1.1"/><line class="tick" x1="123.3" y1="22.4" x2="121.8" y2="17.6" stroke-width="1.1"/><line class="tick" x1="146.4" y1="16.9" x2="145.6" y2="11.9" stroke-width="1.1"/><line class="tick" x1="170.0" y1="15.0" x2="170.0" y2="5.0" stroke-width="1.8"/><line class="tick" x1="193.6" y1="16.9" x2="194.4" y2="11.9" stroke-width="1.1"/><line class="tick" x1="216.7" y1="22.4" x2="218.2" y2="17.6" stroke-width="1.1"/><line class="tick" x1="238.6" y1="31.5" x2="240.8" y2="27.0" stroke-width="1.1"/><line class="tick" x1="258.8" y1="43.8" x2="261.7" y2="39.8" stroke-width="1.1"/><line class="tick" x1="276.8" y1="59.2" x2="283.8" y2="52.2" stroke-width="1.8"/><line class="tick" x1="292.2" y1="77.2" x2="296.2" y2="74.3" stroke-width="1.1"/><line class="tick" x1="304.5" y1="97.4" x2="309.0" y2="95.2" stroke-width="1.1"/><line class="tick" x1="313.6" y1="119.3" x2="318.4" y2="117.8" stroke-width="1.1"/><line class="tick" x1="319.1" y1="142.4" x2="324.1" y2="141.6" stroke-width="1.1"/><line class="tick" x1="321.0" y1="166.0" x2="331.0" y2="166.0" stroke-width="1.8"/><g class="needle" style="transform:rotate(-28.8deg)"><line x1="170" y1="166" x2="170" y2="52"/><circle cx="170" cy="166" r="9"/><circle cx="170" cy="166" r="3.5"/></g></svg></div>
-                <div class="rt-lim"><span>0</span><span>$1&#8239;000</span></div>
-                <div class="rt-read"><b>$340</b><span>из&nbsp;$1&#8239;000 за&nbsp;цель</span></div>
-              </div>
-              <div class="rt-goal">
+            <div class="ph rt-ph"><h3>Мой ритм</h3><div class="rt-acts" role="group" aria-label="Быстро записать">
+              <a class="rt-q p" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Доход</a>
+              <a class="rt-q" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg>Шаг к&nbsp;цели</a>
+              <a class="rt-q" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/></svg>Задача</a>
+              <a class="rt-q" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>Желание</a>
+              <a class="rt-q" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg>Дневник успеха</a>
+            </div></div>
+            <div class="rt-hero">
+              <a class="rt-dial" href="#" aria-label="Цель и награды"><img class="rt-fr no-x" src="img/frimi.webp" alt="Фрими">
+                <div class="dial"><svg viewBox="0 -8 340 196" role="img" aria-label="Цель: 34 процента, первая награда получена"><defs><linearGradient id="gFact" gradientUnits="userSpaceOnUse" x1="34" y1="0" x2="306" y2="0"><stop offset="0" stop-color="#3D8BFF"/><stop offset="1" stop-color="#7B61FF"/></linearGradient></defs><path class="trackarc" d="M34.00 166.00A136 136 0 0 1 70.28 73.53" fill="none" stroke-width="20" stroke-linecap="round"/><path class="trackarc" d="M77.53 66.28A136 136 0 0 1 164.87 30.10" fill="none" stroke-width="20" stroke-linecap="butt"/><path class="trackarc" d="M175.13 30.10A136 136 0 0 1 306.00 166.00" fill="none" stroke-width="20" stroke-linecap="round"/><path class="segdone" d="M34.00 166.00A136 136 0 0 1 70.28 73.53" fill="none"  stroke-width="20" stroke-linecap="round"/><path class="rt-glow" d="M77.53 66.28A136 136 0 0 1 100.04 49.38" fill="none" stroke="url(#gFact)" stroke-width="20" stroke-linecap="round"/><line class="tick" x1="19.0" y1="166.0" x2="9.0" y2="166.0" stroke-width="1.8"/><line class="tick" x1="20.9" y1="142.4" x2="15.9" y2="141.6" stroke-width="1.1"/><line class="tick" x1="26.4" y1="119.3" x2="21.6" y2="117.8" stroke-width="1.1"/><line class="tick" x1="35.5" y1="97.4" x2="31.0" y2="95.2" stroke-width="1.1"/><line class="tick" x1="47.8" y1="77.2" x2="43.8" y2="74.3" stroke-width="1.1"/><line class="tick" x1="63.2" y1="59.2" x2="56.2" y2="52.2" stroke-width="1.8"/><line class="tick" x1="81.2" y1="43.8" x2="78.3" y2="39.8" stroke-width="1.1"/><line class="tick" x1="101.4" y1="31.5" x2="99.2" y2="27.0" stroke-width="1.1"/><line class="tick" x1="123.3" y1="22.4" x2="121.8" y2="17.6" stroke-width="1.1"/><line class="tick" x1="146.4" y1="16.9" x2="145.6" y2="11.9" stroke-width="1.1"/><line class="tick" x1="170.0" y1="15.0" x2="170.0" y2="5.0" stroke-width="1.8"/><line class="tick" x1="193.6" y1="16.9" x2="194.4" y2="11.9" stroke-width="1.1"/><line class="tick" x1="216.7" y1="22.4" x2="218.2" y2="17.6" stroke-width="1.1"/><line class="tick" x1="238.6" y1="31.5" x2="240.8" y2="27.0" stroke-width="1.1"/><line class="tick" x1="258.8" y1="43.8" x2="261.7" y2="39.8" stroke-width="1.1"/><line class="tick" x1="276.8" y1="59.2" x2="283.8" y2="52.2" stroke-width="1.8"/><line class="tick" x1="292.2" y1="77.2" x2="296.2" y2="74.3" stroke-width="1.1"/><line class="tick" x1="304.5" y1="97.4" x2="309.0" y2="95.2" stroke-width="1.1"/><line class="tick" x1="313.6" y1="119.3" x2="318.4" y2="117.8" stroke-width="1.1"/><line class="tick" x1="319.1" y1="142.4" x2="324.1" y2="141.6" stroke-width="1.1"/><line class="tick" x1="321.0" y1="166.0" x2="331.0" y2="166.0" stroke-width="1.8"/><g class="needle" style="transform:rotate(-28.8deg)"><line x1="170" y1="166" x2="170" y2="52"/><circle cx="170" cy="166" r="9"/><circle cx="170" cy="166" r="3.5"/></g></svg></div>
+                <div class="rt-read"><b>$340</b><span>из&nbsp;$1&#8239;000</span></div>
+                <ul class="rt-ics" aria-label="Награды за цель"><li class="done" title="Новые наушники · $250"><span>🎯</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></i><small>$250</small></li><li class="now" title="Ноутбук для монтажа · $500"><span>⭐</span><small>$500</small></li><li class="" title="Поездка в&nbsp;Грузию · $1&#8239;000"><span>🏆</span><small>$1&#8239;000</small></li></ul>
+              </a>
+              <a class="rt-goal" href="#">
                 <span class="rt-flag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg>Флажок · до&nbsp;31&nbsp;декабря</span>
                 <b class="rt-gt">Первая $1&#8239;000</b>
                 <span class="rt-gs"><b>34%</b> · осталось $660 и&nbsp;55&nbsp;дней</span>
-                <ul class="rt-rew" aria-label="Награды за цель"><li class="done"><span class="rt-em">🎯</span><div><b>Новые наушники</b><small>$250</small><i><s style="width:100%"></s></i></div><em>есть</em></li><li class=""><span class="rt-em">⭐</span><div><b>Ноутбук для монтажа</b><small>$500</small><i><s style="width:68%"></s></i></div><em>68%</em></li><li class=""><span class="rt-em">🏆</span><div><b>Поездка в&nbsp;Грузию</b><small>$1&#8239;000</small><i><s style="width:34%"></s></i></div><em>34%</em></li></ul>
-              </div>
-            </a>
-            <div class="rt-row">
+                <div class="rt-next"><span class="rt-k">Следующая награда</span>
+                  <div class="rt-nx"><span class="rt-em">⭐</span><b>Ноутбук для монтажа</b><em>68%</em></div>
+                  <i class="rt-bar"><s style="width:68%"></s></i>
+                  <small>$340 из&nbsp;$500 · осталось $160</small>
+                </div>
+                <ul class="rt-got"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Новые наушники · получено</li></ul>
+              </a>
               <a class="rt-inc" href="#" aria-label="Доход за 30 дней">
                 <div class="rt-inc-hd"><span class="rt-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3"/><rect x="4" y="8" width="16" height="11" rx="2.5"/><circle cx="16" cy="13.5" r="1.2" fill="currentColor"/></svg>Доход</span><span class="rt-per" role="group" aria-label="Период"><span class="on">30&nbsp;дней</span><span>3&nbsp;мес</span><span>Год</span></span></div>
                 <div class="rt-sum"><b>$340</b><span class="rt-delta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6.5 11.5 12 6l5.5 5.5"/></svg>$90 к&nbsp;прошлому месяцу</span></div>
                 <div class="rt-plot"><svg class="rt-chart" viewBox="0 0 320 120" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="gArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D8BFF" stop-opacity=".28"/><stop offset="1" stop-color="#3D8BFF" stop-opacity="0"/></linearGradient></defs><line x1="0" x2="320" y1="24" y2="24" class="rt-gl"/><line x1="0" x2="320" y1="56" y2="56" class="rt-gl"/><line x1="0" x2="320" y1="88" y2="88" class="rt-gl"/><path d="M8.0 110.0C22.0 107.5 69.1 99.0 91.9 94.8C114.6 90.6 123.3 90.2 144.3 84.7C165.2 79.2 189.7 72.1 217.7 61.9C245.6 51.8 296.3 30.3 312.0 24.0 L312.0 120 L8.0 120 Z" fill="url(#gArea)"/><path d="M8.0 110.0C22.0 107.5 69.1 99.0 91.9 94.8C114.6 90.6 123.3 90.2 144.3 84.7C165.2 79.2 189.7 72.1 217.7 61.9C245.6 51.8 296.3 30.3 312.0 24.0" fill="none" stroke="#2F7BFF" stroke-width="2.6" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><span class="rt-dot" style="left:97.5%;top:20.0%"></span></div>
                 <div class="rt-axis"><span>8 окт</span><span>22 окт</span><span>сегодня</span></div>
               </a>
-              <div class="rt-stats">
-                <a class="rt-st fire" href="#"><span class="rt-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-3.5 2-5 1 1.5 2 2 2 2s-.5-4 1-7z"/></svg></span><div><b>4 дня</b><small>фокуса подряд</small></div><span class="rt-wk" aria-label="Неделя фокуса"><i class="on" title="пн"></i><i class="on" title="вт"></i><i class="on" title="ср"></i><i class="on" title="чт"></i><i class="now" title="пт"></i><i class="" title="сб"></i><i class="" title="вс"></i></span></a>
-                <a class="rt-st ok" href="#"><span class="rt-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><b>7 задач</b><small>3 сделано за&nbsp;неделю</small></div><span class="rt-ring" style="--p:43" aria-hidden="true"></span></a>
-                <a class="rt-st wish" href="#"><span class="rt-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><div><b>3 из 12</b><small>желаний сбылось</small></div><span class="rt-ring" style="--p:25" aria-hidden="true"></span></a>
-              </div>
+            </div>
+            <div class="rt-stats">
+              <a class="rt-st fire" href="#"><span class="rt-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-3.5 2-5 1 1.5 2 2 2 2s-.5-4 1-7z"/></svg></span><div><b>4 дня</b><small>фокуса подряд</small></div><span class="rt-wk" aria-label="Неделя фокуса"><i class="on" title="пн"></i><i class="on" title="вт"></i><i class="on" title="ср"></i><i class="on" title="чт"></i><i class="now" title="пт"></i><i class="" title="сб"></i><i class="" title="вс"></i></span></a>
+              <a class="rt-st ok" href="#"><span class="rt-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><b>7 задач</b><small>3 сделано за&nbsp;неделю</small></div><span class="rt-ring" style="--p:43" aria-hidden="true"></span></a>
+              <a class="rt-st wish" href="#"><span class="rt-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><div><b>3 из 12</b><small>желаний сбылось</small></div><span class="rt-ring" style="--p:25" aria-hidden="true"></span></a>
             </div>
             <p class="rt-k rt-tk2">Сегодня в&nbsp;работе</p>
             <div class="rt-today">
@@ -731,37 +777,37 @@ svg{flex:none}
         <div class="col">
           <section class="panel frimi only-x" aria-label="Доступ закрыт"><span class="fl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg>Доступ закрыт</span><div class="row"><div><h3>Альянс закрыт до&nbsp;1&nbsp;декабря 2027</h3><p>ПП и&nbsp;Альянс купить нельзя, другие продукты можно</p></div><img src="img/frimi.webp" alt="Фрими с флажком"></div><a class="btn btn-s" href="#">Другие продукты</a></section>
           <section class="panel meet only-g" aria-label="Ближайшая встреча">
-            <div class="mt-top"><span class="mtk">Ближайшая встреча</span><span class="mt-chip" data-h="20" role="timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>через 20&nbsp;ч</span></span></div>
-            <a class="mt-ti" href="#">Комната: Оффер</a>
-            <div class="mt-time"><b>16:00</b><span>сб 7 ноября · по&nbsp;Москве</span></div>
-            <span class="mt-tag">первая бесплатно · зритель</span>
-            <a class="btn btn-p mt-go" href="#">Записаться</a>
-            <a class="btn btn-s mt-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
-            <div class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span><span>12&nbsp;участников записались</span><a class="mt-all" href="#">Все встречи</a></div>
+            <a class="tr" href="#" data-dlg="only-g" role="timer" aria-label="Ближайшая встреча: Комната: Оффер">
+              <span class="tr-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="21" class="arc" stroke-dasharray="116.2 131.9"/></svg><span class="tr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="m16 10.5 5-3v9l-5-3"/></svg></span></span>
+              <span class="tr-k">Встреча</span>
+              <b class="tr-t">Комната: Оффер · 7 ноября</b>
+              <span class="tr-l"><b class="mt-left" data-h="20">20&nbsp;ч</b><span>сб, 16:00</span></span>
+            </a>
+            <div class="mt-foot"><span class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span><span>12&nbsp;записались</span></span><button class="btn btn-p mt-go" type="button" data-dlg="only-g">Записаться</button></div>
           </section><section class="panel meet only-s" aria-label="Ближайшая встреча">
-            <div class="mt-top"><span class="mtk">Ближайшая встреча</span><span class="mt-chip" data-h="20" role="timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>через 20&nbsp;ч</span></span></div>
-            <a class="mt-ti" href="#">Комната: Оффер</a>
-            <div class="mt-time"><b>16:00</b><span>сб 7 ноября · по&nbsp;Москве</span></div>
-            <span class="mt-tag">зритель</span>
-            <a class="btn btn-p mt-go" href="#">Записаться</a>
-            <a class="btn btn-s mt-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
-            <div class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span><span>12&nbsp;участников записались</span><a class="mt-all" href="#">Все встречи</a></div>
+            <a class="tr" href="#" data-dlg="only-s" role="timer" aria-label="Ближайшая встреча: Комната: Оффер">
+              <span class="tr-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="21" class="arc" stroke-dasharray="116.2 131.9"/></svg><span class="tr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="m16 10.5 5-3v9l-5-3"/></svg></span></span>
+              <span class="tr-k">Встреча</span>
+              <b class="tr-t">Комната: Оффер · 7 ноября</b>
+              <span class="tr-l"><b class="mt-left" data-h="20">20&nbsp;ч</b><span>сб, 16:00</span></span>
+            </a>
+            <div class="mt-foot"><span class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span><span>12&nbsp;записались</span></span><button class="btn btn-p mt-go" type="button" data-dlg="only-s">Записаться</button></div>
           </section><section class="panel meet only-m" aria-label="Ближайшая встреча">
-            <div class="mt-top"><span class="mtk">Ближайшая встреча</span><span class="mt-chip" data-h="20" role="timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>через 20&nbsp;ч</span></span></div>
-            <a class="mt-ti" href="#">Комната: Оффер</a>
-            <div class="mt-time"><b>16:00</b><span>сб 7 ноября · по&nbsp;Москве</span></div>
-            <span class="mt-tag">участник</span>
-            <a class="btn btn-p mt-go" href="#">Записаться</a>
-            <a class="btn btn-s mt-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
-            <div class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span><span>12&nbsp;участников записались</span><a class="mt-all" href="#">Все встречи</a></div>
+            <a class="tr" href="#" data-dlg="only-m" role="timer" aria-label="Ближайшая встреча: Комната: Оффер">
+              <span class="tr-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="21" class="arc" stroke-dasharray="116.2 131.9"/></svg><span class="tr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="m16 10.5 5-3v9l-5-3"/></svg></span></span>
+              <span class="tr-k">Встреча</span>
+              <b class="tr-t">Комната: Оффер · 7 ноября</b>
+              <span class="tr-l"><b class="mt-left" data-h="20">20&nbsp;ч</b><span>сб, 16:00</span></span>
+            </a>
+            <div class="mt-foot"><span class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span><span>12&nbsp;записались</span></span><button class="btn btn-p mt-go" type="button" data-dlg="only-m">Записаться</button></div>
           </section><section class="panel meet only-x" aria-label="Ближайшая встреча">
-            <div class="mt-top"><span class="mtk">Ближайшая встреча</span><span class="mt-chip" data-h="92" role="timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>через 92&nbsp;ч</span></span></div>
-            <a class="mt-ti" href="#">Открытая встреча с&nbsp;Игорем</a>
-            <div class="mt-time"><b>19:00</b><span>вт 10 ноября · по&nbsp;Москве</span></div>
-            <span class="mt-tag">бесплатно для всех</span>
-            <a class="btn btn-p mt-go" href="#">Записаться</a>
-            <a class="btn btn-s mt-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
-            <div class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span><span>48&nbsp;участников записались</span><a class="mt-all" href="#">Все встречи</a></div>
+            <a class="tr" href="#" data-dlg="only-x" role="timer" aria-label="Ближайшая встреча: Открытая встреча с&nbsp;Игорем">
+              <span class="tr-ring" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="trk" cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="21" class="arc" stroke-dasharray="59.7 131.9"/></svg><span class="tr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="m16 10.5 5-3v9l-5-3"/></svg></span></span>
+              <span class="tr-k">Встреча</span>
+              <b class="tr-t">Открытая встреча с&nbsp;Игорем · 10 ноября</b>
+              <span class="tr-l"><b class="mt-left" data-h="92">3&nbsp;д 20&nbsp;ч</b><span>вт, 19:00</span></span>
+            </a>
+            <div class="mt-foot"><span class="mt-who"><span class="mt-av"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"><img src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"></span><span>48&nbsp;записались</span></span><button class="btn btn-p mt-go" type="button" data-dlg="only-x">Записаться</button></div>
           </section>
           <section class="panel camp only-hike no-x" aria-label="Мой лагерь">
             <div class="ph"><h3>Мой лагерь</h3><span class="fm-sub">поход идёт</span></div>
@@ -790,6 +836,59 @@ svg{flex:none}
           </section>
         </div>
       </div>
+      <dialog class="mt-dlg" id="dlg-only-g" aria-label="Запись на встречу">
+          <form method="dialog">
+            <button class="dl-x" value="x" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            <span class="tr-k">Встреча · сб, 16:00 по&nbsp;Москве</span>
+            <h3 tabindex="-1" autofocus>Комната: Оффер</h3>
+            <p class="dl-d">7 ноября, начало в&nbsp;16:00. Ссылка на&nbsp;Zoom придёт за&nbsp;15&nbsp;минут.</p>
+            <div class="dl-opts" role="radiogroup" aria-label="Как пойдёте">
+              <label class="dl-opt"><input type="radio" name="r-only-g" value="guest" checked><span class="dl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span><span><b>Как гость</b><small>Первая встреча бесплатно. Смотрите и&nbsp;слушаете, камера и&nbsp;микрофон выключены</small></span></label>
+              <div class="dl-opt off" aria-disabled="true"><span class="dl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span><b>На&nbsp;разбор</b><small>Доступно участникам клуба</small></span></div>
+            </div>
+            <button class="btn btn-p dl-go" value="ok">Записаться</button>
+            <a class="btn btn-s dl-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
+          </form>
+        </dialog><dialog class="mt-dlg" id="dlg-only-s" aria-label="Запись на встречу">
+          <form method="dialog">
+            <button class="dl-x" value="x" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            <span class="tr-k">Встреча · сб, 16:00 по&nbsp;Москве</span>
+            <h3 tabindex="-1" autofocus>Комната: Оффер</h3>
+            <p class="dl-d">7 ноября, начало в&nbsp;16:00. Ссылка на&nbsp;Zoom придёт за&nbsp;15&nbsp;минут.</p>
+            <div class="dl-opts" role="radiogroup" aria-label="Как пойдёте">
+              <label class="dl-opt"><input type="radio" name="r-only-s" value="guest" checked><span class="dl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span><span><b>Как гость</b><small>Смотрите и&nbsp;слушаете, камера и&nbsp;микрофон выключены</small></span></label>
+              <div class="dl-opt off" aria-disabled="true"><span class="dl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span><b>На&nbsp;разбор</b><small>Доступно участникам клуба</small></span></div>
+            </div>
+            <button class="btn btn-p dl-go" value="ok">Записаться</button>
+            <a class="btn btn-s dl-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
+          </form>
+        </dialog><dialog class="mt-dlg" id="dlg-only-m" aria-label="Запись на встречу">
+          <form method="dialog">
+            <button class="dl-x" value="x" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            <span class="tr-k">Встреча · сб, 16:00 по&nbsp;Москве</span>
+            <h3 tabindex="-1" autofocus>Комната: Оффер</h3>
+            <p class="dl-d">7 ноября, начало в&nbsp;16:00. Ссылка на&nbsp;Zoom придёт за&nbsp;15&nbsp;минут.</p>
+            <div class="dl-opts" role="radiogroup" aria-label="Как пойдёте">
+              <label class="dl-opt"><input type="radio" name="r-only-m" value="guest" checked><span class="dl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span><span><b>Как гость</b><small>Смотрите и&nbsp;слушаете, камера и&nbsp;микрофон выключены</small></span></label>
+              <label class="dl-opt"><input type="radio" name="r-only-m" value="razbor"><span class="dl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span><b>На&nbsp;разбор</b><small>Выйти в&nbsp;эфир со&nbsp;своим вопросом, Игорь разберёт ваш случай</small></span></label>
+            </div>
+            <button class="btn btn-p dl-go" value="ok">Записаться</button>
+            <a class="btn btn-s dl-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
+          </form>
+        </dialog><dialog class="mt-dlg" id="dlg-only-x" aria-label="Запись на встречу">
+          <form method="dialog">
+            <button class="dl-x" value="x" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            <span class="tr-k">Встреча · вт, 19:00 по&nbsp;Москве</span>
+            <h3 tabindex="-1" autofocus>Открытая встреча с&nbsp;Игорем</h3>
+            <p class="dl-d">10 ноября, начало в&nbsp;19:00. Ссылка на&nbsp;Zoom придёт за&nbsp;15&nbsp;минут.</p>
+            <div class="dl-opts" role="radiogroup" aria-label="Как пойдёте">
+              <label class="dl-opt"><input type="radio" name="r-only-x" value="guest" checked><span class="dl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span><span><b>Как гость</b><small>Встреча открытая и&nbsp;бесплатная для всех</small></span></label>
+              <div class="dl-opt off" aria-disabled="true"><span class="dl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span><b>На&nbsp;разбор</b><small>Доступно участникам клуба</small></span></div>
+            </div>
+            <button class="btn btn-p dl-go" value="ok">Записаться</button>
+            <a class="btn btn-s dl-cal" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Добавить в&nbsp;мой календарь</a>
+          </form>
+        </dialog>
       <div class="wide">
           <section class="panel fmap big" id="d-map" aria-label="Карта фриманов">
             <div class="ph"><h3>Карта фриманов</h3><span class="fm-sub">Кто чем может помочь</span></div>
@@ -970,14 +1069,17 @@ cg.addEventListener('click', e => {
   const show = k => { n = k; tabs.forEach((b, i) => b.setAttribute('aria-selected', i === k)); document.querySelectorAll('[data-pane-lf]').forEach(p => p.hidden = p.dataset.paneLf !== tabs[k].dataset.lf); };
   const run = () => { clearInterval(t); if (!new URLSearchParams(location.search).has('shot') && !matchMedia('(prefers-reduced-motion:reduce)').matches) t = setInterval(() => show((n + 1) % tabs.length), 10000); };
   tabs.forEach((b, i) => b.addEventListener('click', () => { show(i); run(); })); run();
-  // отсчёт до встречи фишкой, как в карточке встречи ПП-клуба; в макете сегодня пятница 6 ноября, отсчёт от открытия страницы
+  // отсчёт до встречи как в строке «Сегодня» ПП-клуба: «3 д 20 ч», меньше суток — «20 ч 59 мин»; в макете отсчёт от открытия страницы
   if (new URLSearchParams(location.search).has('shot')) document.body.classList.add('shot');
-  const t0 = Date.now();
-  const f = () => document.querySelectorAll('.mt-chip').forEach(e => { const m = Math.max(1, Math.ceil((+e.dataset.h * 3600e3 + 59 * 60e3 - (Date.now() - t0)) / 60000));
-    const d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60), mm = m % 60, nb = ' ';
-    e.querySelector('span').textContent = d > 0 ? `через ${d}${nb}д ${h}${nb}ч` : h >= 3 ? `через ${h}${nb}ч` : h > 0 ? `через ${h}${nb}ч ${mm}${nb}мин` : `через ${mm}${nb}мин`;
-    e.classList.toggle('soon', m <= 15); });
+  const t0 = Date.now(), nb = ' ';
+  const f = () => document.querySelectorAll('.mt-left').forEach(e => { const m = Math.max(1, Math.ceil((+e.dataset.h * 3600e3 + 59 * 60e3 - (Date.now() - t0)) / 60000));
+    const d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60), mm = m % 60;
+    e.textContent = d > 0 ? `${d}${nb}д ${h}${nb}ч` : h >= 3 ? `${h}${nb}ч` : h > 0 ? `${h}${nb}ч ${mm}${nb}мин` : `${mm}${nb}мин`; });
   f(); setInterval(f, 30000);
+  // «Записаться» и строка встречи открывают окно записи
+  document.querySelectorAll('[data-dlg]').forEach(b => b.addEventListener('click', ev => { ev.preventDefault(); document.getElementById('dlg-' + b.dataset.dlg)?.showModal(); }));
+  document.querySelectorAll('.mt-dlg').forEach(d => d.addEventListener('click', ev => { if (ev.target === d) d.close(); }));
+  const q = new URLSearchParams(location.search).get('dlg'); if (q) document.getElementById('dlg-only-' + q)?.showModal();
 })();
 </script>
 </body>
