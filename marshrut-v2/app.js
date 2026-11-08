@@ -636,6 +636,7 @@
       <div class="hc-b ok"><em>Чем могу помочь</em><p>${esc(m.help)}</p></div>
       <div class="hc-b"><em>Кого ищу</em><p>${esc(m.look)}</p></div>
       <div class="hc-f"><button class="btn sm" data-act="hcwrite">${svg('msg')}Написать</button><button class="btn soft sm" data-act="hcnext">Другой фриман</button></div>${ui.hclock && ui.access !== 'club' ? `<div class="hc-lock">${svg('lock')}<p>Общаться с${NB}фриманами доступно членам Альянса</p><button class="btn sm" data-act="buy">Повысить доступ</button></div>` : ''}
+      ${ui.mefilled ? '' : `<div class="hc-me">${svg('user')}<p>Вы не${NB}показываетесь другим фриманам: в${NB}профиле не${NB}заполнено «Чем могу помочь» и${NB}«Кого ищу»</p><button class="btn soft sm" data-act="hcprofile">Заполнить профиль</button></div>`}
     </section>`;
   }
 
@@ -755,6 +756,7 @@
     else if (a === 'gowall') { scrollTo('wall'); return; }
     else if (a === 'stsend') { ui.stage[v] = 'sent'; custom(); toast(`Заявка по этапу ${v} отправлена куратору`); }
     else if (a === 'stok') { ui.stage[v] = 'ok'; custom(); toast(`Этап ${v} пройден`); }
+    else if (a === 'hcprofile') { ui.mefilled = true; toast('Здесь откроется профиль на полях «Чем могу помочь» и «Кого ищу»'); render(); return; }
     else if (a === 'hcnext') { ui.fm++; render(); return; }
     else if (a === 'hcwrite' && ui.access !== 'club') { ui.hclock = true; render(); return; }
     else if (a === 'hcwrite') { toast(`Здесь откроется чат: ${FREEMEN[ui.fm % FREEMEN.length].n}`); render(); return; }

@@ -360,3 +360,7 @@ button.ps-h:hover b { color: var(--blue-ink); }
 .hc-lock svg { width: 16px; height: 16px; color: var(--blue-ink); }
 .hc-lock p { margin: 0; font-size: 14px; font-weight: 600; color: var(--ink-2); }
 .hc-lock .btn { grid-column: 1 / -1; justify-self: start; }
+.hc-me { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px 10px; align-items: start; margin-top: 12px; padding: 12px; border-radius: 12px; border: 1px dashed rgba(60, 70, 120, .2); }
+.hc-me svg { width: 16px; height: 16px; margin-top: 2px; color: var(--blue-ink); }
+.hc-me p { margin: 0; font-size: 13px; line-height: 1.4; color: var(--ink-2); }
+.hc-me .btn { grid-column: 1 / -1; justify-self: start; }
