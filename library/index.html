@@ -63,7 +63,7 @@ svg{flex:none;width:18px;height:18px}
 .tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:7px;background:var(--blue-soft);color:var(--blue-ink)}
 .tag.gold{background:#FBF3E0;color:var(--gold-ink)}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh)}
-.btn{height:44px;padding:0 18px;border-radius:12px;background:var(--blue);color:#fff;font-weight:650;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn{white-space:nowrap;height:44px;padding:0 18px;border-radius:12px;background:var(--blue);color:#fff;font-weight:650;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
 .icobtn{width:44px;height:44px;border-radius:12px;background:#fff;border:1px solid var(--line);display:inline-grid;place-items:center;color:var(--ink2)}
 .player{position:relative;background:#000;aspect-ratio:16/9;overflow:hidden}
@@ -105,7 +105,7 @@ svg{flex:none;width:18px;height:18px}
 .A .lhead h2{font-size:26px;line-height:1.2;letter-spacing:-.015em;margin:10px 0 10px}
 .A .acts{display:flex;gap:8px;margin:16px 0 4px;flex-wrap:wrap}
 .A .tabs{display:flex;gap:4px;background:#E3E9F8;border-radius:12px;padding:4px;margin:20px 0 16px;width:max-content}
-.A .tabs b{height:36px;padding:0 16px;border-radius:9px;display:grid;place-items:center;font-size:14px;font-weight:600;color:var(--ink2)}
+.A .tabs b{white-space:nowrap;height:36px;padding:0 16px;border-radius:9px;display:grid;place-items:center;font-size:14px;font-weight:600;color:var(--ink2)}
 .A .tabs b.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(11,16,32,.08)}
 .A .artw{padding:20px;border-radius:22px}
 .A .next{padding:18px;border-radius:20px;position:sticky;top:82px}
@@ -244,6 +244,11 @@ svg{flex:none;width:18px;height:18px}
   .C .pn{position:fixed;left:10px;right:10px;bottom:72px;z-index:25;margin:0}
   .C .pn a{padding:10px 14px;box-shadow:0 10px 30px rgba(11,16,32,.14)}
 }
+@media (max-width:360px){
+  .btn{padding:0 12px;font-size:14px}
+  .A .tabs b{padding:0 8px;font-size:13px}
+  .A .acts{gap:6px}.icobtn{width:42px}
+}
 </style>
 </head>
 <body>
@@ -252,33 +257,33 @@ svg{flex:none;width:18px;height:18px}
 const Q=new URLSearchParams(location.search);
 const V=Q.get('v')||'a', S=Q.get('s')||'lib';
 if(Q.has('shot'))document.body.classList.add('shot');
-const M='https://media.wearefree.club/lesson-thumbnails/';
+const M='img/';
 const L={
- perl:{t:'Система ПЭРЛ. Пирамида этапов развития личности',m:15,img:M+'fa9376b5-661f-4227-a902-2ae0064dbde3-custom-1769777107750.png'},
- zver:{t:'Техника Зверя Или зачем его кормить',m:11,img:M+'52056f71-ccec-4181-81ea-fabd916eebf5-custom-1769785634599.jpeg'},
- man:{t:'Манифест предпринимателя. Как решиться открыть свой бизнес',m:45,img:M+'ff553ae6-d5ac-465c-9d06-2652c426f8c1-custom-1769780546492.png'},
- strah:{t:'Страх провала',m:37,img:M+'86ca5f50-6f77-4579-a8d6-829a4bb8256c-1769775965737.png'},
- uspeh:{t:'Как добиться успеха. 5 правил',m:10,img:M+'ed9b0830-d135-441a-b088-1e05f1b9f024-1769776589488.png'},
- koleso:{t:'Колесо Баланса',m:10,img:M+'6d543f62-8db3-440d-8c2a-5975af454839-1769776058800.png'},
- bedn:{t:'Вы всегда хотите быть бедными?',m:11,img:M+'011d94c9-4d7f-4230-8215-496dcc60a5a7-1770053684447.png'},
- invest:{t:'Где найти первые инвестиции в бизнес',m:14,img:M+'e5af8f74-c83b-4127-af7c-cf01ab2dd311-1770053291065.png'},
- celi:{t:'Всё про постановку целей',m:120,img:M+'43378e18-52b4-4d4c-8c36-bef18f17c27f-1783188426968.png'},
- nah:{t:'Тренинг: Точка Нахер.',m:399,img:M+'b4f49c6b-be50-438a-972b-115cabec2f32-custom-1769782293526.png'},
- bdi:{t:'Цели: Быть/Делать/Иметь',m:23,img:M+'f01b6cc3-b2ae-473e-8584-96bd3f8db63c-1777269336583.png'},
- prok:{t:'Прокрастинация — это не лень. Что на самом деле вас останавливает',m:185,img:M+'86eafd21-f6cf-45aa-b809-3f5efb1f1ef9-custom-1787332022669.jpeg'},
- perl5:{t:'ПЭРЛ. 5 часов разборов бизнеса',m:537,img:M+'8b7debf9-e110-4ec2-9f02-3b36190bd420-custom-1788675092413.jpeg'},
- bez:{t:'Жизнь без страха',m:143,img:M+'7dadafde-7a18-4076-96aa-d7fe8013e0dc-custom-1772007325548.jpeg'},
- vdrug:{t:'А вдруг не получиться?',m:12,img:M+'2e1dc6df-37b2-4e2b-b90d-269abc975c20-1770064154861.png'},
- memy:{t:'Мемы - вирус эволюции человека.',m:8,img:M+'4787024e-ab31-4814-a385-3bcd2469a3ed-1773000621103.png'},
- nisha:{t:'Выбор ниши',m:2,img:M+'0454c3c9-7b9e-4de0-8d10-f27bc14c8e18-custom-1769776262952.png'},
- ca:{t:'Целевая аудитория',m:11,img:M+'fa9898ff-8358-44f5-927a-00733f4047d5-custom-1769775180893.png'},
- b10:{t:'Бизнес на 10.000$. Как перейти из самозанятого в бизнесмена.',m:23,img:M+'65001be5-5823-4de6-842d-4a1f6b360bc9-1771858482257.png'},
- fund:{t:'Первые продажи в Инфобизнесе. Фундамент',m:79,img:'https://wearefree.club/lesson-covers/fundament-infobiznesa.jpg'},
- bogat:{t:'Как стать богатым экспертом',m:6,img:M+'2dcb83ca-3598-4b1d-a324-fac9e2bc37f4-1774960846241.png'},
- reels:{t:'Как снимать Reels',m:93,img:M+'e0a8fb5c-94a3-484b-a294-0bfc26285bd4-1770151300164.png'},
- idei:{t:'Идеи для Reels: триггер «сравнение»',txt:1,img:M+'bbef1892-79bd-4338-a322-2291ce820853-1784528414086.png'},
- kar:{t:'Карусели: с чего начать',txt:1,img:M+'1255e66c-76f2-411b-9311-69bf8e69c7c1-1784106017160.png'},
- direkt:{t:'Директ, который приносит клиентов (уровень 1)',txt:1,img:M+'26e219cf-1bd3-4e71-968f-bc8cef8fb8c0-1784017988344.png'},
+ perl:{t:'Система ПЭРЛ. Пирамида этапов развития личности',m:15,img:M+'fa9376b5-661f-4227-a902-2ae0064dbde3-custom-1769777107750.jpg'},
+ zver:{t:'Техника Зверя Или зачем его кормить',m:11,img:M+'52056f71-ccec-4181-81ea-fabd916eebf5-custom-1769785634599.jpg'},
+ man:{t:'Манифест предпринимателя. Как решиться открыть свой бизнес',m:45,img:M+'ff553ae6-d5ac-465c-9d06-2652c426f8c1-custom-1769780546492.jpg'},
+ strah:{t:'Страх провала',m:37,img:M+'86ca5f50-6f77-4579-a8d6-829a4bb8256c-1769775965737.jpg'},
+ uspeh:{t:'Как добиться успеха. 5 правил',m:10,img:M+'ed9b0830-d135-441a-b088-1e05f1b9f024-1769776589488.jpg'},
+ koleso:{t:'Колесо Баланса',m:10,img:M+'6d543f62-8db3-440d-8c2a-5975af454839-1769776058800.jpg'},
+ bedn:{t:'Вы всегда хотите быть бедными?',m:11,img:M+'011d94c9-4d7f-4230-8215-496dcc60a5a7-1770053684447.jpg'},
+ invest:{t:'Где найти первые инвестиции в бизнес',m:14,img:M+'e5af8f74-c83b-4127-af7c-cf01ab2dd311-1770053291065.jpg'},
+ celi:{t:'Всё про постановку целей',m:120,img:M+'43378e18-52b4-4d4c-8c36-bef18f17c27f-1783188426968.jpg'},
+ nah:{t:'Тренинг: Точка Нахер.',m:399,img:M+'b4f49c6b-be50-438a-972b-115cabec2f32-custom-1769782293526.jpg'},
+ bdi:{t:'Цели: Быть/Делать/Иметь',m:23,img:M+'f01b6cc3-b2ae-473e-8584-96bd3f8db63c-1777269336583.jpg'},
+ prok:{t:'Прокрастинация — это не лень. Что на самом деле вас останавливает',m:185,img:M+'86eafd21-f6cf-45aa-b809-3f5efb1f1ef9-custom-1787332022669.jpg'},
+ perl5:{t:'ПЭРЛ. 5 часов разборов бизнеса',m:537,img:M+'8b7debf9-e110-4ec2-9f02-3b36190bd420-custom-1788675092413.jpg'},
+ bez:{t:'Жизнь без страха',m:143,img:M+'7dadafde-7a18-4076-96aa-d7fe8013e0dc-custom-1772007325548.jpg'},
+ vdrug:{t:'А вдруг не получиться?',m:12,img:M+'2e1dc6df-37b2-4e2b-b90d-269abc975c20-1770064154861.jpg'},
+ memy:{t:'Мемы - вирус эволюции человека.',m:8,img:M+'4787024e-ab31-4814-a385-3bcd2469a3ed-1773000621103.jpg'},
+ nisha:{t:'Выбор ниши',m:2,img:M+'0454c3c9-7b9e-4de0-8d10-f27bc14c8e18-custom-1769776262952.jpg'},
+ ca:{t:'Целевая аудитория',m:11,img:M+'fa9898ff-8358-44f5-927a-00733f4047d5-custom-1769775180893.jpg'},
+ b10:{t:'Бизнес на 10.000$. Как перейти из самозанятого в бизнесмена.',m:23,img:M+'65001be5-5823-4de6-842d-4a1f6b360bc9-1771858482257.jpg'},
+ fund:{t:'Первые продажи в Инфобизнесе. Фундамент',m:79,img:M+'fundament-infobiznesa.jpg'},
+ bogat:{t:'Как стать богатым экспертом',m:6,img:M+'2dcb83ca-3598-4b1d-a324-fac9e2bc37f4-1774960846241.jpg'},
+ reels:{t:'Как снимать Reels',m:93,img:M+'e0a8fb5c-94a3-484b-a294-0bfc26285bd4-1770151300164.jpg'},
+ idei:{t:'Идеи для Reels: триггер «сравнение»',txt:1,img:M+'bbef1892-79bd-4338-a322-2291ce820853-1784528414086.jpg'},
+ kar:{t:'Карусели: с чего начать',txt:1,img:M+'1255e66c-76f2-411b-9311-69bf8e69c7c1-1784106017160.jpg'},
+ direkt:{t:'Директ, который приносит клиентов (уровень 1)',txt:1,img:M+'26e219cf-1bd3-4e71-968f-bc8cef8fb8c0-1784017988344.jpg'},
 };
 const RUB=[
  {n:'Обязательные к просмотру',c:10,ids:['perl','zver','man','strah','uspeh','koleso','bedn','invest','celi','nah'],done:2},
