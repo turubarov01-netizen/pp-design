@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Пульс Альянса · варианты оформления</title>
+<style>@font-face { font-family: "Medeo Sans"; src: url(fonts/MedeoSansVariable.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }</style>
+<style>
+@font-face { font-family: "Bebas Neue"; src: url(fonts/bebasneue-bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+:root {
+  --blue: #2f7bff; --blue-ink: #1d5fd6; --violet: #7b61ff; --green: #0e9f6e; --green-ink: #0b7d57;
+  --ink: #0b1020; --ink-2: #39425a; --muted: #5b647a; --faint: #8a93a8;
+  --line: rgba(47,123,255,.12); --line-2: rgba(16,24,48,.08);
+  --surface: rgba(255,255,255,.78); --radius: 20px; --ease: cubic-bezier(.22,1,.36,1);
+  --grad: linear-gradient(135deg, #2f7bff 0%, #5a6dff 55%, #7b61ff 100%);
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Medeo Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.5; color: var(--ink);
+  background: linear-gradient(135deg, #f0f5ff 0%, #e8effc 50%, #f5f0ff 100%); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.page { max-width: 1104px; margin: 0 auto; padding: 32px 32px 64px; }
+.page > header { margin-bottom: 28px; }
+.page > header h1 { margin: 0 0 6px; font-size: 26px; font-weight: 750; letter-spacing: -.02em; }
+.page > header p { margin: 0; color: var(--muted); max-width: 68ch; }
+.vlabel { display: flex; align-items: baseline; gap: 12px; margin: 44px 0 12px; }
+.vlabel b { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue-ink); }
+.vlabel span { font-size: 14px; color: var(--muted); }
+
+/* общая оболочка: как .kab-pulse на дашборде */
+.pulse { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(47,123,255,.08), 0 2px 8px rgba(0,0,0,.03), inset 0 1px 0 rgba(255,255,255,.8);
+  padding: 22px 24px; max-width: 1040px; }
+.p-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.p-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.p-title h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.p-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: rgba(47,123,255,.1); color: var(--blue-ink); white-space: nowrap; }
+.p-link { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px; border-radius: 12px; color: var(--blue-ink); font-size: 14px; font-weight: 600; text-decoration: none; transition: background-color .18s var(--ease); }
+.p-link:hover { background: rgba(47,123,255,.08); }
+.p-link:active { background: rgba(47,123,255,.14); }
+.p-link svg { width: 14px; height: 14px; }
+.num { font-variant-numeric: tabular-nums; }
+.today { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; background: rgba(16,24,48,.05); color: var(--muted); }
+.today.up { background: rgba(14,159,110,.1); color: var(--green-ink); }
+
+/* ---------- Вариант A: табло + таблица кланов ---------- */
+.va .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 18px; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); }
+.va .kpi { padding: 16px 20px 16px 0; min-width: 0; }
+.va .kpi + .kpi { padding-left: 20px; border-left: 1px solid var(--line-2); }
+.va .kpi-l { font-size: 13px; color: var(--muted); }
+.va .kpi-v { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.va .kpi-v b { font-size: 30px; font-weight: 750; line-height: 1.1; letter-spacing: -.02em; }
+.va .kpi-v b.money { color: var(--green); }
+.va .kpi-s { margin-top: 4px; font-size: 13px; color: var(--muted); }
+.va .kpi-s b { color: var(--ink-2); font-weight: 600; }
+.va table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 14px; }
+.va th { text-align: left; font-size: 12px; font-weight: 600; color: var(--faint); padding: 0 12px 8px 0; white-space: nowrap; }
+.va th.r, .va td.r { text-align: right; }
+.va td { padding: 9px 12px 9px 0; border-top: 1px solid var(--line-2); vertical-align: middle; }
+.va tr.clan td:first-child a { font-weight: 600; text-decoration: none; }
+.va tr.clan:hover td { background: rgba(47,123,255,.035); }
+.va tr.clan td:first-child a:hover { color: var(--blue-ink); }
+.va td.plus { color: var(--green-ink); font-weight: 600; }
+.va td.plus.zero { color: var(--faint); font-weight: 400; }
+.va .rev { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+.va .bar { width: 96px; height: 6px; border-radius: 3px; background: rgba(47,123,255,.08); overflow: hidden; flex: none; }
+.va .bar i { display: block; height: 100%; border-radius: 3px; background: var(--grad); }
+.va tr.free td { color: var(--muted); }
+.va tr.free td:first-child { font-weight: 600; }
+.va .note { margin-top: 10px; font-size: 12px; color: var(--faint); }
+
+/* ---------- Вариант B: Сегодня / Месяц + доля кланов ---------- */
+.seg { display: inline-flex; padding: 3px; border-radius: 12px; background: rgba(47,123,255,.08); }
+.seg button { border: 0; background: none; font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); padding: 6px 14px; min-height: 32px; border-radius: 9px; cursor: pointer; transition: background-color .18s var(--ease), color .18s; }
+.seg button[aria-pressed="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(16,24,48,.1); }
+.seg button:hover:not([aria-pressed="true"]) { color: var(--ink-2); }
+.vb .p-tools { display: flex; align-items: center; gap: 8px; }
+.vb .big { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 28px; margin-top: 20px; align-items: end; }
+.vb .big .l { font-size: 13px; color: var(--muted); margin-bottom: 2px; }
+.vb .big .v { font-family: "Bebas Neue", "Medeo Sans", sans-serif; font-weight: 700; font-size: 56px; line-height: .9; letter-spacing: .01em; }
+.vb .big .v.money { color: var(--green); }
+.vb .big .s { margin-top: 8px; font-size: 13px; color: var(--muted); display: flex; gap: 6px 10px; flex-wrap: wrap; align-items: center; }
+.vb .big .s b { color: var(--ink-2); font-weight: 600; }
+.vb .share { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line-2); }
+.vb .share-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--muted); }
+.vb .share-h b { color: var(--ink); font-weight: 650; font-size: 14px; }
+.vb .stack { display: flex; height: 12px; border-radius: 6px; overflow: hidden; margin-top: 10px; gap: 2px; background: rgba(16,24,48,.04); }
+.vb .stack i { display: block; height: 100%; }
+.vb .legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 20px; margin-top: 14px; }
+.vb .lg { display: flex; gap: 10px; align-items: flex-start; min-width: 0; text-decoration: none; padding: 6px 8px; margin: -6px -8px; border-radius: 10px; transition: background-color .18s var(--ease); }
+.vb a.lg:hover { background: rgba(47,123,255,.06); }
+.vb .dot { width: 10px; height: 10px; border-radius: 3px; flex: none; margin-top: 5px; }
+.vb .lg-n { font-size: 14px; font-weight: 600; line-height: 1.3; }
+.vb .lg-m { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.vb .lg-m b { color: var(--ink-2); font-weight: 600; }
+.vb .lg.dim .lg-n { color: var(--muted); }
+
+/* ---------- Вариант C: сводка слева + рейтинг кланов справа ---------- */
+.vc { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 0; padding: 0; overflow: hidden; }
+.vc .side { padding: 22px 24px; background: linear-gradient(160deg, rgba(47,123,255,.07), rgba(123,97,255,.06)); border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 18px; }
+.vc .side .p-title { margin-bottom: 2px; }
+.vc .row { display: flex; gap: 12px; align-items: flex-start; }
+.vc .ic { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; flex: none; background: var(--grad); color: #fff; box-shadow: 0 6px 16px rgba(47,123,255,.25); }
+.vc .ic.g { background: linear-gradient(135deg, #12b981, #0e9f6e); box-shadow: 0 6px 16px rgba(14,159,110,.22); }
+.vc .ic svg { width: 17px; height: 17px; }
+.vc .rl { font-size: 13px; color: var(--muted); }
+.vc .rv { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.vc .rv b { font-size: 24px; font-weight: 750; letter-spacing: -.02em; line-height: 1.2; }
+.vc .rv b.money { color: var(--green); }
+.vc .rs { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+.vc .rs b { color: var(--ink-2); font-weight: 600; }
+.vc .main { padding: 22px 24px; min-width: 0; }
+.vc .main-h { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.vc .main-h h4 { margin: 0; font-size: 15px; font-weight: 650; }
+.vc .main-h small { font-size: 13px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+.vc ol { list-style: none; margin: 12px 0 0; padding: 0; }
+.vc li a, .vc li > div { display: grid; grid-template-columns: 24px minmax(0, 1fr) 150px 108px; gap: 12px; align-items: center; padding: 10px 8px; margin: 0 -8px; border-radius: 12px; text-decoration: none; transition: background-color .18s var(--ease); }
+.vc li a:hover { background: rgba(47,123,255,.06); }
+.vc li a:active { background: rgba(47,123,255,.1); }
+.vc li + li { border-top: 1px solid var(--line-2); }
+.vc .pos { font-size: 13px; font-weight: 700; color: var(--faint); text-align: center; }
+.vc .cn { font-size: 14px; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vc .cm { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+.vc .cm .plus { color: var(--green-ink); font-weight: 600; }
+.vc .people { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
+.vc .people .bar { flex: 1; height: 6px; border-radius: 3px; background: rgba(47,123,255,.08); overflow: hidden; }
+.vc .people .num { width: 34px; text-align: right; flex: none; }
+.vc .people .bar i { display: block; height: 100%; background: var(--grad); border-radius: 3px; }
+.vc .cr { text-align: right; font-size: 14px; font-weight: 650; }
+.vc .cr.zero { color: var(--faint); font-weight: 400; }
+.vc li.free .cn { color: var(--muted); }
+.vc .colh { display: grid; grid-template-columns: 24px minmax(0, 1fr) 150px 108px; gap: 12px; font-size: 12px; color: var(--faint); font-weight: 600; padding: 0 0 2px; margin-top: 14px; }
+.vc .colh span:last-child { text-align: right; }
+
+/* ---------- телефон ---------- */
+@media (max-width: 760px) {
+  .page { padding: 20px 14px 48px; }
+  .pulse { padding: 18px 16px; }
+  .p-link { min-height: 44px; }
+  .va .kpis { grid-template-columns: 1fr; }
+  .va .kpi, .va .kpi + .kpi { padding: 12px 0; border-left: 0; }
+  .va .kpi + .kpi { border-top: 1px solid var(--line-2); }
+  .va .kpi-v b { font-size: 26px; }
+  .va th.hide, .va td.hide { display: none; }
+  .va .bar { width: 48px; }
+  .vb .big { grid-template-columns: 1fr 1fr; gap: 18px 16px; }
+  .vb .big > div:first-child { grid-column: 1 / -1; }
+  .vb .big .v { font-size: 46px; }
+  .vb .legend { grid-template-columns: 1fr; }
+  .vb .p-tools { width: 100%; justify-content: space-between; }
+  .vc { grid-template-columns: 1fr; padding: 0; }
+  .vc .cn { white-space: normal; }
+  .va .bar { display: none; }
+  .va .p-head .p-link { margin-left: -12px; }
+  .vc .side { border-right: 0; border-bottom: 1px solid var(--line); padding: 18px 16px; }
+  .vc .main { padding: 16px; }
+  .vc li a, .vc li > div, .vc .colh { grid-template-columns: 20px minmax(0, 1fr) 84px; }
+  .vc .people { display: none; }
+  .vc .colh span:nth-child(3) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="page">
+<header>
+  <h1>Пульс Альянса: три варианта</h1>
+  <p>Цифры с&nbsp;живого дашборда 9&nbsp;ноября. Блок стоит в&nbsp;основной колонке под «Моим днём», ширина как на&nbsp;сайте.</p>
+</header>
+
+<!-- ============ A ============ -->
+<div class="vlabel"><b>Вариант A</b><span>Табло и&nbsp;таблица кланов. Спокойный, плотный, сравнивать кланы удобнее всего</span></div>
+<section class="pulse va" aria-label="Пульс Альянса">
+  <div class="p-head">
+    <div class="p-title"><h3>Пульс Альянса</h3><span class="p-badge">Платформа</span></div>
+    <a class="p-link" href="#">Все кланы <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-l">Новые члены за&nbsp;месяц</div>
+      <div class="kpi-v"><b class="num">+38</b><span class="today up">+1 сегодня</span></div>
+      <div class="kpi-s">Всего на&nbsp;платформе <b class="num">1&nbsp;167</b></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-l">Продажи за&nbsp;месяц</div>
+      <div class="kpi-v"><b class="num">11</b><span class="today">0 сегодня</span></div>
+      <div class="kpi-s"><b class="num">6</b> старт · <b class="num">5</b> клуб и&nbsp;ПП</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-l">Поступило за&nbsp;месяц</div>
+      <div class="kpi-v"><b class="num money">920&nbsp;$</b><span class="today">0&nbsp;$ сегодня</span></div>
+      <div class="kpi-s num">74&nbsp;013&nbsp;₽</div>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>Клан</th><th class="r hide">Человек</th><th class="r">За&nbsp;месяц</th><th class="r">Выручка за&nbsp;месяц</th></tr></thead>
+    <tbody>
+      <tr class="clan"><td><a href="#">Клан Кристины</a></td><td class="r num hide">44</td><td class="r num plus">+3</td><td class="r"><div class="rev"><span class="num">30&nbsp;479&nbsp;₽</span><span class="bar"><i style="width:100%"></i></span></div></td></tr>
+      <tr class="clan"><td><a href="#">Клан Сфера</a></td><td class="r num hide">135</td><td class="r num plus">+25</td><td class="r"><div class="rev"><span class="num">30&nbsp;411&nbsp;₽</span><span class="bar"><i style="width:99.8%"></i></span></div></td></tr>
+      <tr class="clan"><td><a href="#">Клан Александра Турубарова</a></td><td class="r num hide">521</td><td class="r num plus">+7</td><td class="r"><div class="rev"><span class="num">11&nbsp;874&nbsp;₽</span><span class="bar"><i style="width:39%"></i></span></div></td></tr>
+      <tr class="clan"><td><a href="#">КАПИТАЛ Клан Алексея Секриярова</a></td><td class="r num hide">11</td><td class="r num plus zero">0</td><td class="r"><div class="rev"><span class="num">0&nbsp;₽</span><span class="bar"><i style="width:0"></i></span></div></td></tr>
+      <tr class="clan"><td><a href="#">Клан Юлии</a></td><td class="r num hide">2</td><td class="r num plus zero">0</td><td class="r"><div class="rev"><span class="num">0&nbsp;₽</span><span class="bar"><i style="width:0"></i></span></div></td></tr>
+      <tr class="free"><td>Без клана</td><td class="r num hide">454</td><td class="r num plus">+3</td><td class="r"><div class="rev"><span class="num">29&nbsp;$</span><span class="bar"><i style="width:7.7%"></i></span></div></td></tr>
+    </tbody>
+  </table>
+  <p class="note">Кланы по&nbsp;выручке за&nbsp;месяц. «Без клана»: пришли без метки клана.</p>
+</section>
+
+<!-- ============ B ============ -->
+<div class="vlabel"><b>Вариант B</b><span>Переключатель «Сегодня / Месяц», крупные цифры и&nbsp;доля кланов одной полосой</span></div>
+<section class="pulse vb" aria-label="Пульс Альянса">
+  <div class="p-head">
+    <div class="p-title"><h3>Пульс Альянса</h3><span class="p-badge">Платформа</span></div>
+    <div class="p-tools">
+      <div class="seg" role="group" aria-label="Период"><button type="button" aria-pressed="false">Сегодня</button><button type="button" aria-pressed="true">Месяц</button></div>
+      <a class="p-link" href="#">Все кланы <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+  <div class="big">
+    <div>
+      <div class="l">Поступило денег</div>
+      <div class="v money num">920&nbsp;$</div>
+      <div class="s"><span class="num">74&nbsp;013&nbsp;₽</span><span class="today">0&nbsp;$ сегодня</span></div>
+    </div>
+    <div>
+      <div class="l">Новые члены</div>
+      <div class="v num">+38</div>
+      <div class="s"><span>из&nbsp;<b class="num">1&nbsp;167</b></span><span class="today up">+1 сегодня</span></div>
+    </div>
+    <div>
+      <div class="l">Продажи</div>
+      <div class="v num">11</div>
+      <div class="s"><span><b class="num">6</b> старт · <b class="num">5</b> клуб и&nbsp;ПП</span></div>
+    </div>
+  </div>
+  <div class="share">
+    <div class="share-h"><b>Кто принёс деньги за&nbsp;месяц</b><span>3 из&nbsp;5 кланов с&nbsp;выручкой</span></div>
+    <div class="stack" role="img" aria-label="Доля кланов в выручке месяца">
+      <i style="flex:30479;background:#2f7bff"></i><i style="flex:30411;background:#7b61ff"></i><i style="flex:11874;background:#12b981"></i><i style="flex:2333;background:#b7c0d6"></i>
+    </div>
+    <div class="legend">
+      <a class="lg" href="#"><span class="dot" style="background:#2f7bff"></span><div><div class="lg-n">Клан Кристины</div><div class="lg-m"><b class="num">30&nbsp;479&nbsp;₽</b> · 44 чел. (+3)</div></div></a>
+      <a class="lg" href="#"><span class="dot" style="background:#7b61ff"></span><div><div class="lg-n">Клан Сфера</div><div class="lg-m"><b class="num">30&nbsp;411&nbsp;₽</b> · 135 чел. (+25)</div></div></a>
+      <a class="lg" href="#"><span class="dot" style="background:#12b981"></span><div><div class="lg-n">Клан Александра Турубарова</div><div class="lg-m"><b class="num">11&nbsp;874&nbsp;₽</b> · 521 чел. (+7)</div></div></a>
+      <div class="lg dim"><span class="dot" style="background:#b7c0d6"></span><div><div class="lg-n">Без клана</div><div class="lg-m"><b class="num">29&nbsp;$</b> · 454 чел. (+3)</div></div></div>
+      <a class="lg dim" href="#"><span class="dot" style="background:rgba(16,24,48,.08)"></span><div><div class="lg-n">КАПИТАЛ Клан Алексея Секриярова</div><div class="lg-m"><b class="num">0&nbsp;₽</b> · 11 чел.</div></div></a>
+      <a class="lg dim" href="#"><span class="dot" style="background:rgba(16,24,48,.08)"></span><div><div class="lg-n">Клан Юлии</div><div class="lg-m"><b class="num">0&nbsp;₽</b> · 2 чел.</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ C ============ -->
+<div class="vlabel"><b>Вариант C</b><span>Сводка слева, рейтинг кланов справа. Для фаундера кланы на&nbsp;первом месте</span></div>
+<section class="pulse vc" aria-label="Пульс Альянса">
+  <div class="side">
+    <div class="p-title"><h3>Пульс Альянса</h3><span class="p-badge">Платформа</span></div>
+    <div class="row">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      <div><div class="rl">Новые члены за&nbsp;месяц</div><div class="rv"><b class="num">+38</b><span class="today up">+1 сегодня</span></div><div class="rs">Всего <b class="num">1&nbsp;167</b></div></div>
+    </div>
+    <div class="row">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+      <div><div class="rl">Продажи за&nbsp;месяц</div><div class="rv"><b class="num">11</b><span class="today">0 сегодня</span></div><div class="rs"><b class="num">6</b> старт · <b class="num">5</b> клуб и&nbsp;ПП</div></div>
+    </div>
+    <div class="row">
+      <span class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg></span>
+      <div><div class="rl">Поступило за&nbsp;месяц</div><div class="rv"><b class="num money">920&nbsp;$</b><span class="today">0&nbsp;$ сегодня</span></div><div class="rs num">74&nbsp;013&nbsp;₽</div></div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="main-h">
+      <h4>Кланы <small>за&nbsp;месяц</small></h4>
+      <a class="p-link" href="#">Все кланы <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="colh"><span></span><span>Клан</span><span>Человек</span><span>Выручка</span></div>
+    <ol>
+      <li><a href="#"><span class="pos">1</span><div style="min-width:0"><div class="cn">Клан Кристины</div><div class="cm"><span class="plus">+3</span> за&nbsp;месяц</div></div><div class="people"><span class="bar"><i style="width:8.4%"></i></span><span class="num">44</span></div><div class="cr num">30&nbsp;479&nbsp;₽</div></a></li>
+      <li><a href="#"><span class="pos">2</span><div style="min-width:0"><div class="cn">Клан Сфера</div><div class="cm"><span class="plus">+25</span> за&nbsp;месяц</div></div><div class="people"><span class="bar"><i style="width:25.9%"></i></span><span class="num">135</span></div><div class="cr num">30&nbsp;411&nbsp;₽</div></a></li>
+      <li><a href="#"><span class="pos">3</span><div style="min-width:0"><div class="cn">Клан Александра Турубарова</div><div class="cm"><span class="plus">+7</span> за&nbsp;месяц</div></div><div class="people"><span class="bar"><i style="width:100%"></i></span><span class="num">521</span></div><div class="cr num">11&nbsp;874&nbsp;₽</div></a></li>
+      <li><a href="#"><span class="pos">4</span><div style="min-width:0"><div class="cn">КАПИТАЛ Клан Алексея Секриярова</div><div class="cm">без новых</div></div><div class="people"><span class="bar"><i style="width:2.1%"></i></span><span class="num">11</span></div><div class="cr num zero">0&nbsp;₽</div></a></li>
+      <li><a href="#"><span class="pos">5</span><div style="min-width:0"><div class="cn">Клан Юлии</div><div class="cm">без новых</div></div><div class="people"><span class="bar"><i style="width:.4%"></i></span><span class="num">2</span></div><div class="cr num zero">0&nbsp;₽</div></a></li>
+      <li class="free"><div><span class="pos"></span><div style="min-width:0"><div class="cn">Без клана</div><div class="cm"><span class="plus">+3</span> за&nbsp;месяц</div></div><div class="people"><span class="bar"><i style="width:87.1%;background:#b7c0d6"></i></span><span class="num">454</span></div><div class="cr num">29&nbsp;$</div></div></li>
+    </ol>
+  </div>
+</section>
+</main>
+<script>
+// переключатель в варианте B: показывает, как ведёт себя кнопка
+document.querySelectorAll('.seg').forEach(seg => seg.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+}));
+</script>
+</body>
+</html>
