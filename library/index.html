@@ -192,9 +192,24 @@ svg{flex:none;width:18px;height:18px}
 .D .grp .pg{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink3);white-space:nowrap}
 .D .grp .pg i{width:90px;height:6px;border-radius:3px;background:#DCE4F7;overflow:hidden}.D .grp .pg i b{display:block;height:100%;background:var(--ok)}
 .D .grp a{margin-left:auto;color:var(--blue-ink);font-size:14px;font-weight:600}
-.D .rail{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 70px)/6);gap:14px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;padding-bottom:4px}
-.D .rail::-webkit-scrollbar{display:none}
-.D .cd{scroll-snap-align:start;min-width:0}
+.D .gd{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px 14px}
+.D .gd .x{display:none}.D .gd.open .x{display:block}
+.D .more{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:44px;margin-top:14px;border-radius:14px;border:1px solid var(--line);background:#fff;color:var(--blue-ink);font:inherit;font-size:14px;font-weight:650;cursor:pointer}
+.D .more svg{width:16px;height:16px;transform:rotate(90deg);transition:transform .25s cubic-bezier(.22,1,.36,1)}
+.D .more.open svg{transform:rotate(-90deg)}
+.D .more:hover{background:var(--blue-soft)}
+.D .cd{min-width:0;display:block}
+.D .fxnote{font-size:13px;color:var(--ink3);margin-top:12px}
+/* страница рубрики */
+.D .rhd{padding:18px 20px;border-radius:20px;margin-top:4px}
+.D .rhd .ttl{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.D .rhd h2{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.D .rhd .ttl small{font-size:15px;color:var(--ink3)}
+.D .rhd .seg{margin-top:14px}
+.D .flt{margin:16px 0 14px}
+.D .chip{cursor:pointer}
+.D .gd .cd[hidden]{display:none}
+.D .empty{grid-column:1/-1;padding:30px 0;text-align:center;color:var(--ink3);font-size:14px}
 .D .cd .thumb{aspect-ratio:1/1}
 .D .cd h4{font-size:14px;font-weight:600;line-height:1.3;margin:9px 2px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .D .cd .st{font-size:12px;color:var(--ink3);margin:3px 2px 0}
@@ -342,7 +357,15 @@ svg{flex:none;width:18px;height:18px}
   .C .pn a{padding:10px 14px;box-shadow:0 10px 30px rgba(11,16,32,.14)}
 
   .top .fx{height:34px;font-size:13px;padding:0 11px 0 8px}
-  .D .rail{grid-auto-columns:43%;gap:10px;margin:0 -14px;padding:0 14px 4px;scroll-padding:0 14px}
+  .D .gd{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 8px}
+  .D .cd .thumb{border-radius:12px}
+  .D .cd h4{font-size:12.5px;margin:7px 1px 0}
+  .D .cd .st{font-size:11.5px;margin:2px 1px 0}
+  .D .gd .done-b{left:5px;top:5px;padding:3px;border-radius:6px}.D .gd .done-b span{display:none}
+  .D .gd .thumb .prc{left:5px;bottom:5px;height:21px;font-size:11px;padding:0 6px 0 4px}.D .gd .thumb .prc svg{width:12px;height:12px}
+  .D .gd .thumb .lock svg{width:20px;height:20px}
+  .D .rhd{padding:14px 16px;border-radius:18px}.D .rhd h2{font-size:24px}
+  .D .flt{margin:14px -14px 12px;padding:2px 14px}
   .D .grp{margin:16px 0 8px}
   .D .lg .note{margin-left:0}
   .D .rubs{grid-template-columns:1fr 1fr;gap:10px}
@@ -410,6 +433,32 @@ const L={
  kar:{t:'Карусели: с чего начать',txt:1,img:M+'1255e66c-76f2-411b-9311-69bf8e69c7c1-1784106017160.jpg'},
  direkt:{t:'Директ, который приносит клиентов (уровень 1)',txt:1,img:M+'26e219cf-1bd3-4e71-968f-bc8cef8fb8c0-1784017988344.jpg'},
 };
+/* рубрика «Стартап»: 26 уроков из lesson_subcategory_relations, порядок display_order, обложки wearefree.club/lesson-covers (10.11.2026) */
+const SM='img/st-';
+Object.assign(L,{
+ lic:{t:'Образовательная лицензия',txt:1,img:SM+'ba69b5a7.webp'},
+ osn:{t:'Основы бизнеса',m:13,img:SM+'b1266e50.webp'},
+ bmod:{t:'Бизнес-модели',m:17,img:SM+'0ed77120.webp'},
+ bez0:{t:'Как продавать без Товара и стартового капитала',m:12,img:SM+'8e4c4397.webp'},
+ testn:{t:'Тест ниши',m:5,img:SM+'dbe9ed8a.webp'},
+ konk:{t:'Анализ конкурентов',m:2,img:SM+'d31a8b67.webp'},
+ privl:{t:'Как привлечь инвестиции',m:15,img:SM+'03867506.webp'},
+ partn:{t:'Как выбрать бизнес-партнёра?',m:27,img:SM+'aff47108.webp'},
+ fin:{t:'Финансы в бизнесе. Топовые ошибки начинающих',m:4,img:SM+'fdcb1592.webp'},
+ komp:{t:'Ключевая и неключевая компетенция: как отстроиться от конкурентов и заставить людей говорить о себе',m:20,img:SM+'4fac87e8.webp'},
+ vnek:{t:'Внеконкурентная бизнес модель',m:30,img:SM+'2c4063ee.webp'},
+ lin:{t:'Линейка продуктов',m:20,img:SM+'a654924d.webp'},
+ exp:{t:'Отношения Эксперт-Продюсер',m:25,img:SM+'63fe969a.webp'},
+ suz:{t:'Как правильно сузить нишу?',m:10,img:SM+'4acdfd60.webp'},
+ plan:{t:'Пошаговый план работы над курсом',m:27,img:SM+'8237a9fc.webp'},
+ prog:{t:'Идеальная программа курса',m:9,img:SM+'788076ed.webp'},
+ snim:{t:'Как снимать уроки',m:5,img:SM+'79852118.webp'},
+ bm4:{t:'4 бизнес-модели, чтобы сделать бизнес прибыльным',m:3,img:SM+'d3a1c156.webp'},
+ vybn:{t:'Как выбрать нишу?',m:38,img:SM+'8d93b2e3.webp'},
+ d21:{t:'Как заработать денег за 21 день',m:15,img:SM+'2f51b0a5.webp'},
+});
+/* состояния демо: ok пройден, on смотрю сейчас, op открыт, lk закрыт (цена coin_price) */
+const ST=[['lic','op'],['perl5','op'],['nah','lk',25000],['man','on'],['osn','op'],['bmod','lk',3000],['ca','ok'],['bez0','lk',100],['nisha','ok'],['testn','op'],['konk','op'],['privl','lk',3000],['invest','ok'],['partn','lk',4000],['fin','lk',4500],['komp','lk',5000],['vnek','lk',3500],['lin','lk',6500],['exp','lk',2000],['suz','op'],['plan','lk',8000],['prog','lk',4000],['snim','lk',4000],['bm4','op'],['vybn','lk',1500],['d21','lk',2000]];
 const RUB=[
  {n:'Обязательные к просмотру',c:10,ids:['perl','zver','man','strah','uspeh','koleso','bedn','invest','celi','nah'],done:2},
  {n:'Мышление',c:47,ids:['bdi','prok','perl5','bez','vdrug','memy'],done:5},
@@ -451,7 +500,7 @@ const fmt=n=>n.toLocaleString('ru-RU');
 const pl=(n,a,b,c)=>{const m=n%10,h=n%100;return m===1&&h!==11?a:(m>=2&&m<=4&&(h<10||h>=20)?b:c)};
 const FX=`<span class="fx">${I.fire}<b>4 750</b><span class="w">Фениксов</span></span>`;
 const dur=l=>l.txt?'Статья':(l.m>=60?Math.floor(l.m/60)+' ч'+(l.m%60?' '+(l.m%60)+' мин':''):l.m+' мин');
-const thumb=(id,o={})=>{const l=L[id];return `<div class="thumb"><img src="${l.img}" alt="">${(o.done!==undefined?o.done:DONE[id])&&!o.nob?`<span class="done-b">${I.check}Пройден</span>`:''}${o.nodur?'':`<span class="dur">${dur(l)}</span>`}${o.p?`<span class="bar"><b style="width:${o.p}%"></b></span>`:''}</div>`};
+const thumb=(id,o={})=>{const l=L[id];return `<div class="thumb"><img src="${l.img}" alt="">${(o.done!==undefined?o.done:DONE[id])&&!o.nob?`<span class="done-b">${I.check}<span>Пройден</span></span>`:''}${o.nodur?'':`<span class="dur">${dur(l)}</span>`}${o.p?`<span class="bar"><b style="width:${o.p}%"></b></span>`:''}</div>`};
 const meta=(id)=>{const l=L[id];return `<div class="meta"><span>${I.clock}${dur(l)}</span></div>`};
 
 const player=(cls='')=>`<div class="player ${cls}"><img src="${L.man.img}" alt=""><span class="pb">${I.play}</span><div class="ctl">${I.play}<span>18:04 / 44:43</span><span class="tr"><b></b></span>1x ${I.vol}${I.full}</div></div>`;
@@ -534,36 +583,49 @@ function lessonC(){const r=RUB[0];return `
  </div>`}
 
 /* ---------- В2 · доработанный В ---------- */
-const DD={perl:1,zver:1,nisha:1,ca:1};
+const DD={perl:1,zver:1,nisha:1,ca:1,invest:1};
+const tg=b=>{const o=b.previousElementSibling.classList.toggle('open');b.classList.toggle('open',o);b.firstChild.nodeValue=o?'Свернуть ':b.dataset.a};
+const more=n=>`<button class="more" data-a="Показать все ${n} " onclick="tg(this)">Показать все ${n} ${I.next}</button>`;
+const rc=([k,s,p])=>`<a class="cd" data-s="${s==='on'?'op':s}" href="?v=d&s=lesson">${s==='lk'?lthumb(k,p):thumb(k,{done:s==='ok',nodur:1,p:s==='on'?50:0})}<h4>${L[k].t}</h4><div class="st${s==='on'?' now':''}">${s==='on'?'Осталось 22 мин':dur(L[k])}</div></a>`;
+const fl=(c,k)=>{c.parentNode.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c));document.querySelectorAll('.D .gd .cd').forEach(e=>e.hidden=k!=='all'&&e.dataset.s!==k)};
 /* рубрики и число уроков из lesson_subcategory_relations (09.11.2026); пройдено/открыто демо */
 const RD=[{n:"Мышление",c:47,d:1,o:5},{n:"Стартап",c:26,d:3,o:8},{n:"Маркетинг",c:51,d:0,o:3},{n:"Команда",c:18,d:0,o:0},{n:"Продажи",c:31,d:0,o:1},{n:"Финансы",c:17,d:0,o:0},{n:"Инфобизнес",c:29,d:0,o:1},{n:"Юридическая безопасность",c:6,d:0,o:0},{n:"Слеты",c:5,d:0,o:0},{n:"Тренинги",c:4,d:0,o:2},{n:"AI",c:3,d:0,o:0},{n:"Круглый стол",c:1,d:0,o:0}];
 const dots=r=>{const s=Array(r.c).fill('');for(let j=0;j<r.d+r.o;j++)s[(j*7+3)%r.c]=j<r.d?'k':'o';return s.map(x=>`<i class="${x}"></i>`).join('')};
 const lthumb=(id,p)=>`<div class="thumb lk"><img src="${L[id].img}" alt=""><span class="lock">${I.lock}</span><span class="prc">${I.fire}${fmt(p)}</span></div>`;
 function libD(){
- const card=id=>`<a class="cd" href="?v=d&s=lesson">${thumb(id,{done:DD[id],p:id==='man'?50:0})}<h4>${L[id].t}</h4><div class="st${id==='man'?' now':''}">${id==='man'?'Осталось 22 мин':dur(L[id])}</div></a>`;
+ const card=(id,i)=>`<a class="cd${i>=6?' x':''}" href="?v=d&s=lesson">${thumb(id,{done:DD[id],nodur:1,p:id==='man'?50:0})}<h4>${L[id].t}</h4><div class="st${id==='man'?' now':''}">${id==='man'?'Осталось 22 мин':dur(L[id])}</div></a>`;
  const LK=[['reels',2000],['kar',3000],['idei',3000],['bez',5000],['vdrug',3500],['memy',2000]];
+ const OP=['nisha','ca','bdi','prok','perl5','fund','lic','testn','konk','osn','suz','bm4','b10','bogat'];
  return `
  <div class="search"><div class="in">${I.search}Поиск по всей базе</div><button class="fb">${I.filter}</button></div>
- <div class="sh"><h2>Доступные мне уроки</h2><small>24 урока · пройдено 4</small></div>
- <div class="grp"><h3>Обязательные к просмотру</h3><span class="pg"><i><b style="width:20%"></b></i>2 из 10</span></div>
- <div class="rail">${RUB[0].ids.map(card).join('')}</div>
- <div class="grp"><h3>Открыто по маршрутной карте</h3><span class="pg">14 уроков</span><a href="#">Все</a></div>
- <div class="rail">${['nisha','ca','bdi','prok','perl5','fund'].map(card).join('')}</div>
+ <div class="sh"><h2>Доступные мне уроки</h2><small>24 урока · пройдено 5</small></div>
+ <div class="grp"><h3>Обязательные к просмотру</h3><span class="pg"><i><b style="width:30%"></b></i>3 из 10</span></div>
+ <div class="gd">${RUB[0].ids.map(card).join('')}</div>${more(10)}
+ <div class="grp"><h3>Открыто по маршрутной карте</h3><span class="pg">14 уроков</span></div>
+ <div class="gd">${OP.map(card).join('')}</div>${more(14)}
  <div class="sh"><h2>Вся база знаний</h2><small>158 уроков</small></div>
- <div class="panel base"><div class="seg"><b class="k" style="flex:4"></b><b class="o" style="flex:20"></b><b style="flex:134"></b></div>
-  <div class="lg"><span><i class="k"></i>Пройдено 4</span><span><i class="o"></i>Открыто 20</span><span><i></i>Закрыто 134</span><span class="note">Закрытые открываются по маршрутной карте или за Фениксы</span></div></div>
- <div class="rubs">${RD.map(r=>`<a class="panel rub" href="?v=d&s=lesson"><div class="rh"><h4>${r.n}</h4><small>${r.c} ${pl(r.c,'урок','урока','уроков')}</small></div><div class="dots">${dots(r)}</div>
+ <div class="panel base"><div class="seg"><b class="k" style="flex:5"></b><b class="o" style="flex:19"></b><b style="flex:134"></b></div>
+  <div class="lg"><span><i class="k"></i>Пройдено 5</span><span><i class="o"></i>Открыто 19</span><span><i></i>Закрыто 134</span><span class="note">Закрытые открываются по маршрутной карте или за Фениксы</span></div></div>
+ <div class="rubs">${RD.map(r=>`<a class="panel rub" href="?v=d&s=rub"><div class="rh"><h4>${r.n}</h4><small>${r.c} ${pl(r.c,'урок','урока','уроков')}</small></div><div class="dots">${dots(r)}</div>
   <div class="rf">${r.d?`<span class="k">пройдено <b>${r.d}</b></span>`:''}${r.o?`<span class="o">открыто <b>${r.o}</b></span>`:''}<span>закрыто <b>${r.c-r.d-r.o}</b></span></div></a>`).join('')}</div>
- <div class="sh"><h2>Можно открыть за Фениксы</h2><a href="#">Все</a></div>
- <div class="rail">${LK.map(([id,p])=>`<a class="cd" href="#">${lthumb(id,p)}<h4>${L[id].t}</h4><div class="st">${dur(L[id])}</div></a>`).join('')}</div>`}
+ <div class="sh"><h2>Можно открыть за Фениксы</h2></div>
+ <div class="gd">${LK.map(([id,p])=>`<a class="cd" href="#">${lthumb(id,p)}<h4>${L[id].t}</h4><div class="st">${dur(L[id])}</div></a>`).join('')}</div>
+ <div class="fxnote">Остальные закрытые уроки в каждой рубрике, фильтр «За Фениксы»</div>`}
+function rubD(){return `
+ <div class="crumb"><a href="?v=d">Библиотека</a> ${I.next} <b>Стартап</b></div>
+ <section class="panel rhd"><div class="ttl"><h2>Стартап</h2><small>26 уроков</small></div>
+  <div class="seg"><b class="k" style="flex:3"></b><b class="o" style="flex:8"></b><b style="flex:15"></b></div>
+  <div class="lg"><span><i class="k"></i>Пройдено 3</span><span><i class="o"></i>Открыто 8</span><span><i></i>Закрыто 15</span><span class="note">Закрытые открываются по маршрутной карте или за Фениксы</span></div></section>
+ <div class="chips flt">${[['all','Все',26],['op','Открытые',8],['ok','Пройденные',3],['lk','За Фениксы',15]].map(([k,t,c],i)=>`<span class="chip${i?'':' on'}" onclick="fl(this,'${k}')">${t}<small>${c}</small></span>`).join('')}</div>
+ <div class="gd">${ST.map(rc).join('')}</div>`}
 function lessonD(){
- const P=[['nisha','ok',2],['ca','ok',11],['man','on',45],['3 типа клиентов','lk',2000],['Основы бизнеса','op',13],['Бизнес-модели','lk',3000],['invest','ok',14],['Как привлечь инвестиции','lk',3000],['УТП и Оффер. Как написать?','op',20],['Как продавать без Товара и стартового капитала','lk',100],['Внеконкурентная бизнес модель','lk',3500],['b10','op',23],['Как выбрать бизнес-партнёра?','lk',4000],['Финансы в бизнесе. Топовые ошибки начинающих','lk',4500],['Как прогнозировать рекламный бюджет?','lk',2500],['Ключевая и неключевая компетенция: как отстроиться от конкурентов и заставить людей говорить о себе','lk',5000],['bogat','op',6],['Типовые ошибки в пакетах','lk',3500]];
+ const P=ST;
  const ic={ok:I.check,on:I.play,op:I.play,lk:I.lock};
  const HW=[['file','Оформить шапку профиля в запрещенной соцсети (скриншот)'],['link','Сделать пост/хайлайт о себе. (ссылка)'],['link','Написать 3-5 постов на неделю на темы, с которыми можно к вам обращаться. (ссылка)'],['link','Сделайте закреплённый Reel или пост-карусель «Обо мне» (ссылка)'],['link','Напишите Хайлайт с одним популярным запросом (ссылка)'],['text','Соберите 2 хайлайта с «Запросами»'],['text','Сделайте 2 закреплённый Reel с «Запросами»']];
  const inp=(t,i)=>i===0?`<div class="in file">${I.check}shapka-profilya.png<small>Заменить</small></div>`:t==='file'?`<div class="in drop">${I.up}Загрузить скриншот</div>`:t==='link'?`<div class="in">${I.link}Вставьте ссылку</div>`:`<div class="in ta">Ваш ответ</div>`;
  return `
  <div class="lay"><div>
-  <div class="crumb">Библиотека ${I.next} <b>Стартап</b> · урок 3 из 26</div>
+  <div class="crumb"><a href="?v=d">Библиотека</a> ${I.next} <a href="?v=d&s=rub"><b>Стартап</b></a> · урок 4 из 26</div>
   <div class="stage"><div class="player"><img src="${L.man.img}" alt=""><span class="pb">${I.play}</span><div class="ctl">${I.play}<span>22:21 / 44:43</span><span class="tr"><b style="width:50%"></b></span>1x ${I.vol}${I.full}</div></div>
    <div class="mid"><b>Вы посмотрели половину. Как вам урок?</b><div class="stars">${I.starO.repeat(5)}</div><span class="later">Позже</span></div></div>
   <h2 class="t">${L.man.t}</h2>
@@ -578,28 +640,28 @@ function lessonD(){
    ${HW.map(([t,l],i)=>`<div class="fld${i===0?' ok':''}"><span class="n">${i===0?I.check:i+1}</span><label>${l}</label>${inp(t,i)}</div>`).join('')}
    <div class="send"><span class="req">Все пункты обязательные</span><span class="btn">Сдать задание</span></div></section>
   <section class="panel rt2"><h3>Перед тем как уйти, оцените урок</h3><p>Средняя оценка 4.9 · 8 оценок</p><div class="stars">${I.starO.repeat(5)}</div><div class="lb"><span>Слабо</span><span>Отлично</span></div></section>
-  <div class="pn"><a href="#"><small>← Предыдущий</small><b>${L.ca.t}</b></a><a class="nx" href="#"><small>Следующий открытый →</small><b>Основы бизнеса</b></a></div>
+  <div class="pn"><a href="#"><small>← Предыдущий открытый</small><b>${L.perl5.t}</b></a><a class="nx" href="#"><small>Следующий открытый →</small><b>Основы бизнеса</b></a></div>
  </div>
  <aside class="panel pl"><div class="hd"><h3>Стартап</h3><small>26 уроков</small></div>
   <div class="seg"><b class="k" style="flex:3"></b><b class="o" style="flex:8"></b><b style="flex:15"></b></div>
   <div class="lg"><span><i class="k"></i>Пройдено 3</span><span><i class="o"></i>Открыто 8</span><span><i></i>Закрыто 15</span></div>
-  <div class="lst">${P.map(([k,s,v],i)=>`<a class="r ${s}${i>=7?' mx':''}" href="#"><span class="ic">${ic[s]}</span><h4>${L[k]?L[k].t:k}</h4>${s==='lk'?`<span class="prc">${I.fire}${fmt(v)}</span>`:`<span class="d">${s==='on'?'Сейчас':dur({m:v})}</span>`}</a>`).join('')}</div>
-  <a class="all" href="#"><span class="d">Ещё 8 уроков</span><span class="m">Показать все 26 уроков</span></a></aside>
+  <div class="lst">${P.map(([k,s,v],i)=>`<a class="r ${s}${i>=7?' mx':''}" href="?v=d&s=lesson"><span class="ic">${ic[s]}</span><h4>${L[k].t}</h4>${s==='lk'?`<span class="prc">${I.fire}${fmt(v)}</span>`:`<span class="d">${s==='on'?'Сейчас':dur(L[k])}</span>`}</a>`).join('')}</div>
+  <a class="all" href="?v=d&s=rub"><span class="d">Открыть рубрику целиком</span><span class="m">Показать все 26 уроков</span></a></aside>
  </div>`}
 
-const R={a:[libA,lessonA],b:[libB,lessonB],c:[libC,lessonC],d:[libD,lessonD]};
-const isL=S==='lesson';
+const R={a:[libA,lessonA],b:[libB,lessonB],c:[libC,lessonC],d:[libD,lessonD,rubD]};
+const SC=S==='lesson'?1:(S==='rub'&&V==='d'?2:0), isL=SC>0;
 document.getElementById('root').innerHTML=`
 <div class="app ${V==='d'?'C D':V.toUpperCase()}">
  <aside class="side"><div class="logo"><img src="fa-logo.webp" alt="">Альянс</div>
   <a class="nav" href="#">${I.home}Мой дашборд</a><a class="nav" href="#">${I.grid}Мои продукты</a><a class="nav on" href="?v=${V}">${I.book}Библиотека</a><a class="nav" href="#">${I.heart}Служба заботы</a><a class="nav" href="#">${I.tool}Сервисы</a></aside>
  <div class="main">
-  <header class="top">${isL?`<a class="back" href="?v=${V}">${I.back}</a>`:''}<h1>${isL?'Урок':'Библиотека'}</h1>${V==='d'?FX:''}<span class="tb">${I.bell}<i>9+</i></span><span class="ava">АТ</span></header>
-  <div class="wrap">${R[V][isL?1:0]()}</div>
+  <header class="top">${isL?`<a class="back" href="?v=${V}">${I.back}</a>`:''}<h1>${SC===1?'Урок':'Библиотека'}</h1>${V==='d'?FX:''}<span class="tb">${I.bell}<i>9+</i></span><span class="ava">АТ</span></header>
+  <div class="wrap">${R[V][SC]()}</div>
  </div>
 </div>
 <nav class="bnav"><a href="#">${I.home}Дашборд</a><a class="on" href="?v=${V}">${I.grid}Продукты</a><a href="#">${I.tool}Сервисы</a><a href="#">${I.menu}Меню</a></nav>
-<div class="sw">${['a','b','c','d'].map(v=>`<a class="${v===V?'on':''}" href="?v=${v}&s=${S}">${{a:'А',b:'Б',c:'В',d:'В2'}[v]}</a>`).join('')}<i></i><a class="${isL?'':'on'}" href="?v=${V}&s=lib">Библиотека</a><a class="${isL?'on':''}" href="?v=${V}&s=lesson">Урок</a></div>`;
+<div class="sw">${['a','b','c','d'].map(v=>`<a class="${v===V?'on':''}" href="?v=${v}&s=${S}">${{a:'А',b:'Б',c:'В',d:'В2'}[v]}</a>`).join('')}<i></i><a class="${SC===0?'on':''}" href="?v=${V}&s=lib">Библиотека</a>${V==='d'?`<a class="${SC===2?'on':''}" href="?v=d&s=rub">Рубрика</a>`:''}<a class="${SC===1?'on':''}" href="?v=${V}&s=lesson">Урок</a></div>`;
 /* висячие короткие слова */
 (function nb(el){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){n.nodeValue=n.nodeValue.replace(/(^|[\s(«—])([А-Яа-яЁёA-Za-z]{1,3}|\d+)\s/g,'$1$2 ').replace(/(^|[\s(«—])([А-Яа-яЁёA-Za-z]{1,3}|\d+)\s/g,'$1$2 ').replace(/\s—/g,' —')}})(document.getElementById('root'));
 </script>
