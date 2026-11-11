@@ -401,6 +401,7 @@ svg{flex:none;width:18px;height:18px}
 }
 /* ===== Урок в раскладке YouTube + описание в стиле «Фокус» (?v=d&s=yt, 11.11.2026) ===== */
 .wrap:has(.Y){max-width:1760px}
+.Y .ya .pl{position:static;top:auto;max-height:calc(100vh - 160px)}
 .Y{--f-dark:#16263D;--f-grey:#5B6B7E;--f-blue:#2A6FE3;--f-shadow:0 20px 50px rgba(20,40,70,.08)}
 .Y .yl{display:flex;gap:24px;align-items:flex-start}
 .Y .ym{flex:1;min-width:0}
@@ -768,6 +769,7 @@ function lessonD(){
 
 /* ===== Урок в раскладке YouTube (?v=d&s=yt). Текст описания — дословно из урока «Целевая аудитория» (lesson_blocks, 11.11.2026) ===== */
 function lessonY(){
+ const SI={ok:I.check,on:I.play,op:I.play,lk:I.lock};
  const sv=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
  const ic={
   users:sv('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
@@ -841,10 +843,10 @@ function lessonY(){
 
   <aside class="ya">
    <div class="ypn"><a class="pv" href="#">${I.next}Предыдущий</a><a class="nx" href="#">Следующий${I.next}</a></div>
-   <div class="ypl"><div class="hd"><h3>Стартап</h3><small>${P.length} уроков</small></div>
+   <div class="panel pl"><div class="hd"><h3>Стартап</h3><small>${P.length} уроков</small></div>
     <div class="seg"><b class="k" style="flex:3"></b><b class="o" style="flex:8"></b><b style="flex:15"></b></div>
     <div class="lg"><span><i class="k"></i>Пройдено 3</span><span><i class="o"></i>Открыто 8</span><span><i></i>Закрыто 15</span></div>
-    <div class="lst">${P.map(row).join('')}</div>
+    <div class="lst">${P.map(([k,s,v],i)=>`<a class="r ${s}${i>=7?' mx':''}" href="?v=d&s=yt"><span class="ic">${SI[s]}</span><h4>${L[k].t}</h4>${s==='lk'?`<span class="prc">${I.fire}${fmt(v)}</span>`:`<span class="d">${s==='on'?'Сейчас':dur(L[k])}</span>`}</a>`).join('')}</div>
     <a class="all" href="?v=d&s=rub"><span class="d">Открыть рубрику целиком</span><span class="m">Показать все ${P.length} уроков</span></a></div>
   </aside>
  </div></div>`}
@@ -865,7 +867,7 @@ document.getElementById('root').innerHTML=`
 /* висячие короткие слова */
 (function nb(el){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){n.nodeValue=n.nodeValue.replace(/(^|[\s(«—])([А-Яа-яЁёA-Za-z]{1,3}|\d+)\s/g,'$1$2 ').replace(/(^|[\s(«—])([А-Яа-яЁёA-Za-z]{1,3}|\d+)\s/g,'$1$2 ').replace(/\s—/g,' —')}})(document.getElementById('root'));
 /* плейлист: текущий урок виден без прокрутки */
-(function(){const l=document.querySelector('.Y .ypl .lst'),c=l&&l.querySelector('.yr.on');if(l&&c&&getComputedStyle(l).overflowY!=='visible')l.scrollTop=c.offsetTop-l.offsetTop-l.clientHeight/2+c.clientHeight/2})();
+(function(){const l=document.querySelector('.Y .pl .lst'),c=l&&l.querySelector('.r.on');if(l&&c&&getComputedStyle(l).overflowY!=='visible')l.scrollTop=c.offsetTop-l.offsetTop-l.clientHeight/2+c.clientHeight/2})();
 </script>
 </body>
 </html>
