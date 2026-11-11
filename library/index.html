@@ -401,6 +401,9 @@ svg{flex:none;width:18px;height:18px}
 }
 /* ===== Урок в раскладке YouTube + описание в стиле «Фокус» (?v=d&s=yt, 11.11.2026) ===== */
 .wrap:has(.Y){max-width:1760px}
+.Y .ytop{display:flex;align-items:center;gap:14px;margin-bottom:12px}.Y .ytop .crumb{margin:0}
+.Y .yback{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px 0 10px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:600;color:var(--ink);flex:none}
+.Y .yback svg{width:18px;height:18px}.Y .yback:hover{background:var(--blue-soft)}
 .Y .ya .pl{position:static;top:auto;max-height:calc(100vh - 160px)}
 .Y{--f-dark:#16263D;--f-grey:#5B6B7E;--f-blue:#2A6FE3;--f-shadow:0 20px 50px rgba(20,40,70,.08)}
 .Y .yl{display:flex;gap:24px;align-items:flex-start}
@@ -498,7 +501,7 @@ svg{flex:none;width:18px;height:18px}
  .Y .ym>*,.Y .ya{min-width:0;max-width:100%}
  .Y .ym{display:contents}
  .Y .ya{width:auto;position:static;order:3;margin-top:20px}
- .Y .ym>*{order:4}.Y .ym>.crumb{order:0}.Y .ym>.yp{order:1}.Y .ym>.yinfo{order:2}
+ .Y .ym>*{order:4}.Y .ym>.ytop{order:0}.Y .ym>.yp{order:1}.Y .ym>.yinfo{order:2}
  .Y .ypl{max-height:none}.Y .ypl .lst{overflow:visible}
  .Y .yr.mx{display:none}.Y .ypl .all .d{display:none}.Y .ypl .all .m{display:inline}
 }
@@ -506,6 +509,7 @@ svg{flex:none;width:18px;height:18px}
  .Y .yp{border-radius:0;margin:0 -14px;max-width:none}
  .Y h1.yt{font-size:20px}
  .Y .yhead{display:block}
+ .Y .yback{display:none}
  .Y .yrub{margin:0 0 12px}
  .Y .yrow{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:0 14px 2px}
  .Y .yrow>*{flex:none}
@@ -802,7 +806,8 @@ function lessonY(){
  return `
  <div class="Y"><div class="yl">
   <div class="ym">
-   <div class="crumb"><a href="?v=d">Библиотека</a> ${I.next} <a href="?v=d&s=rub"><b>Стартап</b></a> · урок ${cur+1} из ${P.length}</div>
+   <div class="ytop"><a class="yback" href="javascript:history.back()">${I.back}Назад</a>
+<div class="crumb"><a href="?v=d">Библиотека</a> ${I.next} <a href="?v=d&s=rub"><b>Стартап</b></a> · урок ${cur+1} из ${P.length}</div></div>
    <div class="yp"><img src="${L.ca.img}" alt=""><span class="pb">${I.play}</span><div class="ctl">${I.play}<span>0:00 / 11:08</span><span class="tr"><b></b></span>${I.vol}${I.full}</div></div>
    <div class="yinfo">
     <h1 class="yt">ЦА и аватар. Как правильно сделать анализ и выбрать</h1>
@@ -841,7 +846,6 @@ function lessonY(){
   </div>
 
   <aside class="ya">
-   <div class="ypn"><a class="pv" href="#">${I.next}Предыдущий</a><a class="nx" href="#">Следующий${I.next}</a></div>
    <div class="panel pl"><div class="hd"><h3>Стартап</h3><small>${P.length} уроков</small></div>
     <div class="seg"><b class="k" style="flex:3"></b><b class="o" style="flex:8"></b><b style="flex:15"></b></div>
     <div class="lg"><span><i class="k"></i>Пройдено 3</span><span><i class="o"></i>Открыто 8</span><span><i></i>Закрыто 15</span></div>
