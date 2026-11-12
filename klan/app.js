@@ -24,6 +24,7 @@ const P = {
   plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
   dl: '<path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/>',
   arrow: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  chart: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
   spark: '<path d="M9.94 14.06 4 20"/><path d="m14 4 6 6"/><path d="M12 2v2"/><path d="M22 12h-2"/><path d="m18 8-6 6"/>',
 };
 const ic = (n, c = 'i') => `<svg class="${c}" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
@@ -32,6 +33,7 @@ const rub = n => n.toLocaleString('ru-RU').replace(/,/g, ' ') + ' ₽';
 const MENU = [
   { id: 'dashboard', t: 'Обзор', i: 'dash' },
   { id: 'league', t: 'Лига кланов', i: 'trophy' },
+  { id: 'analytics', t: 'Аналитика', i: 'up' },
   { g: 'Клиенты' },
   { id: 'leads', t: 'Клиенты', i: 'users' },
   { id: 'onboarding', t: 'Онбординг', i: 'clip' },
@@ -49,7 +51,7 @@ const MENU = [
   { id: 'gone', t: 'Точки А', i: 'target', gone: 1 },
   { id: 'gone', t: 'Задания ПЭРЛ', i: 'tri', gone: 1 },
   { id: 'gone', t: 'Встречи с клиентами', i: 'cal', gone: 1 },
-  { id: 'gone', t: 'Привлечение', i: 'up', gone: 1 },
+  { id: 'gone', t: 'Привлечение', i: 'chart', gone: 1 },
 ];
 
 const CLANS = [
@@ -173,6 +175,59 @@ pages.onboarding = () => `
     </tbody></table></div>
   </section>`;
 
+const CAMPS = [
+  ['Reels «Как найти первых клиентов»', 'Reels', 'съёмка', 5000, 640, 48, 6, 59400],
+  ['Мастер-класс 8 ноября', 'Мероприятие', 'аренда зала', 12000, 85, 31, 5, 49500],
+  ['Выступление на бизнес-завтраке', 'Выступление', 'участие', 15000, 120, 22, 4, 39600],
+  ['Реклама в Telegram-канале', 'Реклама', 'пост в канале', 8000, 210, 9, 1, 9900],
+  ['Флайеры в коворкинге', 'Флайеры', 'печать', 3000, 14, 3, 0, 0],
+];
+pages.analytics = () => {
+  const row = c => {
+    const cpl = Math.round(c[3] / c[5]);
+    const roi = c[7] ? (c[7] / c[3]).toFixed(1).replace('.', ',') : null;
+    return `<tr class="row"><td><div style="font-weight:600">${c[0]}</div><div class="muted" style="font-size:12.5px">${c[2]} · ${rub(c[3])}</div></td><td><span class="badge blue">${c[1]}</span></td><td class="r num">${rub(c[3])}</td><td class="r num">${c[4]}</td><td class="r num">${c[5]}</td><td class="r num">${c[6]}</td><td class="r num">${c[7] ? rub(c[7]) : '—'}</td><td class="r num" style="font-weight:650">${rub(cpl)}</td><td class="r num">${roi ? `<span class="badge ${+roi.replace(',', '.') >= 2 ? 'ok' : 'warn'}">×${roi}</span>` : '<span class="badge bad">0</span>'}</td></tr>`;
+  };
+  return `
+  <div class="ph"><div><h1>Аналитика</h1><p>Откуда приходят клиенты клана, сколько стоит каждый и сколько он приносит.</p></div><div class="acts"><div class="chips">${['7 дней', '30 дней', '90 дней', 'Всё время'].map((t, i) => `<button class="chip" aria-pressed="${i === 1}">${t}</button>`).join('')}</div></div></div>
+  ${demoNote('Кампания — это любой способ привлечь людей: Reels, выступление, своё мероприятие, флайеры, реклама. У каждой своя ссылка, по ней система считает, кто пришёл и кто оплатил. Расход директор записывает к кампании сам: съёмка, печать, аренда зала, участие в конференции. Из этого считается цена клиента и окупаемость.')}
+  <section class="card">
+    <div class="ch"><h2>Воронка за 30 дней</h2></div>
+    <div class="grid4">
+      ${[['Посетители страниц', '2 140', 'уникальные, без тестовых'], ['Новые клиенты', '186', '8,7% посетителей'], ['Завели аккаунт', '121', '65% новых'], ['Оплатили', '19', '16% с аккаунтом · 188&nbsp;100&nbsp;₽']].map(([l, v, s]) => `<div><div class="muted" style="font-size:13px">${l}</div><div style="font-size:28px;font-weight:750;letter-spacing:-.02em" class="num">${v}</div><div class="faint" style="font-size:12.5px">${s}</div></div>`).join('')}
+    </div>
+  </section>
+  <section class="card">
+    <div class="ch"><h2>Кампании и события</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" type="button">${ic('plus')}Записать расход</button><button class="btn pri sm" type="button">${ic('plus')}Новая кампания</button></div></div>
+    <div class="tscroll"><table class="tbl"><thead><tr><th>Кампания</th><th>Тип</th><th class="r">Потрачено</th><th class="r">Переходы</th><th class="r">Клиенты</th><th class="r">Оплатили</th><th class="r">Выручка</th><th class="r">Цена клиента</th><th class="r">Окупаемость</th></tr></thead><tbody>
+      ${CAMPS.map(row).join('')}
+      <tr class="row"><td><div style="font-weight:600">Без кампании</div><div class="muted" style="font-size:12.5px">сайт директора, сарафан, ручное добавление</div></td><td><span class="badge">—</span></td><td class="r num">—</td><td class="r num">1 071</td><td class="r num">73</td><td class="r num">3</td><td class="r num">${rub(29700)}</td><td class="r num">—</td><td class="r num">—</td></tr>
+      <tr><td style="font-weight:700">Итого</td><td></td><td class="r num" style="font-weight:700">${rub(43000)}</td><td class="r num" style="font-weight:700">2 140</td><td class="r num" style="font-weight:700">186</td><td class="r num" style="font-weight:700">19</td><td class="r num" style="font-weight:700">${rub(188100)}</td><td class="r num" style="font-weight:700">${rub(231)}</td><td class="r num" style="font-weight:700">×4,4</td></tr>
+    </tbody></table></div>
+  </section>
+  <div class="grid2" style="margin-top:16px">
+    <section class="card">
+      <div class="ch"><h2>Деньги с клиента</h2></div>
+      <div class="kv"><span class="k">Средний чек</span><span class="v num">9 900 ₽</span></div>
+      <div class="kv"><span class="k">LTV<small>сколько в среднем платит клиент за всё время</small></span><span class="v num">14 300 ₽</span></div>
+      <div class="kv"><span class="k">Покупают повторно</span><span class="v num">32%</span></div>
+      <div class="kv"><span class="k">Цена клиента<small>все расходы ÷ новые клиенты</small></span><span class="v num">231 ₽</span></div>
+      <div class="kv"><span class="k">Цена покупателя<small>все расходы ÷ оплатившие</small></span><span class="v num">2 263 ₽</span></div>
+      <div class="kv"><span class="k">Окупаемость расходов</span><span class="v plus num">×4,4</span></div>
+    </section>
+    <section class="card">
+      <div class="ch"><h2>Последние расходы</h2></div>
+      ${[['12.11', 'Флайеры в коворкинге', 'печать 200 шт.', 3000], ['08.11', 'Мастер-класс 8 ноября', 'аренда зала', 12000], ['05.11', 'Выступление на бизнес-завтраке', 'участие', 15000], ['01.11', 'Reels «Как найти первых клиентов»', 'съёмка и монтаж', 5000]].map(r => `<div class="kv"><span class="k">${r[1]}<small>${r[0]} · ${r[2]}</small></span><span class="v num">${rub(r[3])}</span></div>`).join('')}
+    </section>
+  </div>
+  <section class="card">
+    <div class="ch"><h2>Страницы</h2><span class="sub">как каждая страница доводит до оплаты</span></div>
+    <div class="tscroll"><table class="tbl"><thead><tr><th>Страница</th><th class="r">Посетители</th><th class="r">Нажали кнопку</th><th class="r">Долистали</th><th class="r">Создали аккаунт</th><th class="r">Конверсия</th><th class="r">Выручка</th></tr></thead><tbody>
+      ${[['Сайт Альянса · Анна', 1290, 214, 388, 61, '4,7%', 99000], ['Тест «Мой оффер»', 520, 301, 0, 44, '8,5%', 59400], ['Вебинар «Свой продукт за 30 дней»', 330, 96, 140, 16, '4,8%', 29700]].map(r => `<tr class="row"><td style="font-weight:600">${r[0]}</td><td class="r num">${r[1]}</td><td class="r num">${r[2]}</td><td class="r num">${r[3] || '—'}</td><td class="r num">${r[4]}</td><td class="r num">${r[5]}</td><td class="r num">${rub(r[6])}</td></tr>`).join('')}
+    </tbody></table></div>
+  </section>`;
+};
+
 pages.invites = () => `
   <div class="ph"><div><h1>Ссылки клана</h1><p>Постоянная ссылка и UTM/ref-ссылки клана «Вектор»: они закрепляют пришедшего за вами. Ниже видно, кто по ним пришёл.</p></div></div>
   <section class="card">
@@ -288,7 +343,7 @@ pages.handbook = () => `
 pages.gone = () => `
   <div class="ph"><div><h1>Убрали из меню</h1><p>Для сверки: что было в старом меню и почему ушло.</p></div></div>
   <section class="card">
-    ${[['target', 'Точки А', 'Механизм больше не нужен: первое задание изменилось.'], ['tri', 'Задания ПЭРЛ', 'Больше не нужны.'], ['cal', 'Встречи с клиентами', 'Вынесены в отдельный раздел платформы.'], ['up', 'Привлечение', 'Дублирует другие разделы. Цифры (посетители, новые клиенты, оплаты, источники) переезжают в отдельный механизм.']].map(([i, t, d]) => `
+    ${[['target', 'Точки А', 'Механизм больше не нужен: первое задание изменилось.'], ['tri', 'Задания ПЭРЛ', 'Больше не нужны.'], ['cal', 'Встречи с клиентами', 'Вынесены в отдельный раздел платформы.'], ['up', 'Привлечение', 'Дублировало другие разделы. Воронка, конверсии страниц и клики по ссылкам переехали в «Аналитику», туда же добавлены расходы и цена клиента.']].map(([i, t, d]) => `
       <div class="kv" style="justify-content:flex-start;gap:14px;align-items:flex-start">${ic(i)}<span class="k"><b style="color:var(--ink)">${t}</b><small style="font-size:13.5px;color:var(--muted)">${d}</small></span></div>`).join('')}
   </section>`;
 
