@@ -251,3 +251,20 @@ body.hide-notes .note { display: none; }
 .tbl th, .tbl td { padding-right: 24px; }
 .tbl th:last-child, .tbl td:last-child { padding-right: 0; }
 .note { margin-bottom: 20px; } .tabs { margin-bottom: 20px; }
+
+/* Пульс клана: как «Пульс Альянса» */
+.pulse4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); }
+.pk { padding: 16px 20px 16px 0; min-width: 0; }
+.pk + .pk { padding-left: 20px; border-left: 1px solid var(--line-2); }
+.pk .pl { font-size: 13px; color: var(--muted); }
+.pk .pv { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.pk .pv b { font-size: 28px; font-weight: 750; line-height: 1.1; letter-spacing: -.02em; }
+.pk .pv b.money { color: var(--green); }
+.pk .ps { margin-top: 4px; font-size: 13px; color: var(--muted); }
+.today { display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; background: var(--line-2); color: var(--muted); }
+.today.up { background: color-mix(in oklab, var(--green) 12%, transparent); color: var(--green-ink); }
+@media (max-width: 900px) {
+  .pulse4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pk:nth-child(3) { padding-left: 0; border-left: 0; }
+  .pk:nth-child(n+3) { border-top: 1px solid var(--line-2); }
+}
