@@ -397,3 +397,8 @@ a, button, .tile, .chip { touch-action: manipulation; }
 .ncf legend { float: left; width: 100%; }
 .ncf legend + * { clear: both; }
 .comp .marks .medal-ic { position: static; transform: none; }
+/* new-client mode switch */
+.nc-mode { padding-bottom: 22px; margin-bottom: 22px; border-bottom: 1px solid var(--line-2); }
+.nc-mode .flabel { display: block; font-size: 17px; font-weight: 700; margin-bottom: 12px; color: var(--ink); }
+.nc-mode .help { display: block; margin-top: 8px; }
+.ncf fieldset[hidden] { display: none; }

@@ -98,7 +98,7 @@ pages.dashboard = () => `
   <div class="ov-head"><div><h1>Мой клан</h1><p>Клан Вектор</p></div>
     <div class="seg" role="group" aria-label="Период">${[7, 30, 90].map(d => `<button type="button" aria-pressed="${d === 30}" onclick="setPulse(${d}, this)">${d}&nbsp;дн</button>`).join('')}</div></div>
   ${demoNote('Компактная главная под телефон: крупные ключевые цифры плитками, сезон — одна плитка, ссылки — список с кнопкой копирования. Расчёт с Head Office — в «Финансах».')}
-  <a class="btn pri ov-add" href="#new-client">${ic('plus')}Добавить клиента с оплатой</a>
+  <a class="btn pri ov-add" href="#new-client">${ic('plus')}Добавить клиента</a>
   <div class="tiles">
     <a class="tile season-t" href="#league"><span class="tl">Сезон 1</span><b class="tv num">8,4</b><span class="tm">${medal('b')} Бронза · 1 место</span><span class="tbar"><i style="width:28%"></i></span><span class="ts">до серебра 0,6</span></a>
     <div class="tiles-p" id="tiles">${tiles(30)}</div>
@@ -235,10 +235,15 @@ pages.analytics = () => {
 pages['new-client'] = () => `
   <div class="nc">
   <a class="back" href="#leads">${ic('arrow')}Клиенты</a>
-  <h1>Новый клиент с аккаунтом</h1>
-  <p class="muted lead">Для тех, кто уже заплатил вам: на встрече, наличными или переводом. Аккаунт появится сразу, оплата запишется, доступ откроется. Человеку придёт ссылка для входа, предложение купить он не увидит.</p>
-  ${demoNote('Человек входит по ссылке, попадает в кабинет и проходит онбординг как все, но шаг с оплатой пропускается: продукт уже оплачен. Оплата пишется как «получил клан», в расчёте с Head Office она идёт как 20% платформе.')}
-  <form class="card ncf" onsubmit="return ncSubmit(event)" novalidate>
+  <h1>Новый клиент</h1>
+  <p class="muted lead">Заведите человека сами: аккаунт появится сразу, ему придёт ссылка для входа в кабинет.</p>
+  ${demoNote('«Уже оплатил»: оплата пишется как «получил клан», доступ открывается, онбординг идёт без шага с оплатой; в расчёте с Head Office 20% платформе. «Без оплаты»: человек проходит онбординг как все и в конце получает предложение купить, клиент закреплён за кланом.')}
+  <form class="card ncf" onsubmit="return ncSubmit(event)" novalidate data-paid="1">
+    <div class="nc-mode">
+      <span class="flabel" id="nc-mode-l">Клиент уже заплатил вам?</span>
+      <div class="seg wide" role="group" aria-labelledby="nc-mode-l"><button type="button" aria-pressed="true" onclick="ncMode(1)">Уже оплатил</button><button type="button" aria-pressed="false" onclick="ncMode(0)">Без оплаты</button></div>
+      <small class="help" id="nc-mode-help">Доступ откроется сразу, предложения купить в онбординге не будет</small>
+    </div>
     <fieldset>
       <legend><span class="step">1</span>Кто</legend>
       <div class="fields">
@@ -248,7 +253,7 @@ pages['new-client'] = () => `
         <div class="field"><label for="nc-phone">Телефон</label><div class="input"><input id="nc-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7"></div></div>
       </div>
     </fieldset>
-    <fieldset>
+    <fieldset id="nc-pay">
       <legend><span class="step">2</span>Что оплатил</legend>
       <div class="fields">
         <div class="field"><label for="nc-prod">Продукт <i>*</i></label><div class="input"><select id="nc-prod"><option>ПП-клуб · месяц</option><option>ПП-клуб · год</option><option>Альянс · месяц</option><option>Альянс · год</option><option>Стартовый пакет</option><option>ИИнструменты</option><option>Место притяжения</option></select></div></div>
@@ -258,7 +263,7 @@ pages['new-client'] = () => `
       </div>
     </fieldset>
     <fieldset>
-      <legend><span class="step">3</span>Куда отправить вход</legend>
+      <legend><span class="step" id="nc-step-send">3</span>Куда отправить вход</legend>
       <div class="seg wide" role="group" aria-label="Куда отправить вход"><button type="button" aria-pressed="true">На почту</button><button type="button" aria-pressed="false">В Telegram</button><button type="button" aria-pressed="false">Скопирую ссылку</button></div>
       <small class="help">Ссылка одноразовая, действует 7 дней. Пароль человек задаст сам.</small>
     </fieldset>
@@ -272,6 +277,12 @@ pages['new-client'] = () => `
     <div class="ncf-foot"><a class="btn pri" href="#leads">К клиентам</a><button class="btn" type="button" onclick="route()">Добавить ещё</button></div>
   </div>
   </div>`;
+window.ncMode = paid => {
+  const f = document.querySelector('.ncf'); f.dataset.paid = paid ? '1' : '0';
+  document.getElementById('nc-pay').hidden = !paid;
+  document.getElementById('nc-step-send').textContent = paid ? '3' : '2';
+  document.getElementById('nc-mode-help').textContent = paid ? 'Доступ откроется сразу, предложения купить в онбординге не будет' : 'Человек пройдёт онбординг и в конце получит предложение купить';
+};
 window.ncSubmit = e => {
   e.preventDefault();
   const em = document.getElementById('nc-email');
@@ -297,11 +308,16 @@ window.ncSubmit = e => {
     document.querySelector('.ncf').hidden = true;
     const d = document.getElementById('nc-done'); d.hidden = false;
     d.querySelector('.muted').textContent = name + ' · ' + em.value;
-    d.querySelector('#nc-rows').innerHTML =
+    const paid = document.querySelector('.ncf').dataset.paid === '1';
+    d.querySelector('h2').textContent = paid ? 'Аккаунт создан, доступ открыт' : 'Аккаунт создан';
+    d.querySelector('#nc-rows').innerHTML = paid ? (
       kv('Доступ', prod + until) +
       kv('Оплата', `<span class="num">${rub(sum)}</span> ${howTxt}`) +
       kv('Деньги получил', 'клан') +
-      kv('Платформе по\u00a0расчёту', `<span class="num">20% · ${rub(Math.round(sum * 0.2))}</span>`) +
+      kv('Платформе по\u00a0расчёту', `<span class="num">20% · ${rub(Math.round(sum * 0.2))}</span>`)) : (
+      kv('Доступ', 'откроется после оплаты') +
+      kv('Онбординг', 'с\u00a0предложением купить') +
+      kv('Клиент', 'закреплён за\u00a0кланом')) +
       kv('Вход', toTxt);
     const c = d.querySelector('.qcopy.inl');
     if (c) c.onclick = () => { navigator.clipboard && navigator.clipboard.writeText('https://' + link).catch(() => {}); c.classList.add('done'); c.textContent = 'Скопировано'; setTimeout(() => { c.classList.remove('done'); c.textContent = link; }, 1500); };
