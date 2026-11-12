@@ -243,3 +243,11 @@ body.hide-notes .note { display: none; }
 }
 .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 700px) { .grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* единый шаг между блоками страницы */
+.wrap > :is(.card, .grid2, .grid3) + :is(.card, .grid2, .grid3) { margin-top: 20px; }
+.grid2, .grid3 { gap: 20px; }
+/* воздух между колонками таблиц */
+.tbl th, .tbl td { padding-right: 24px; }
+.tbl th:last-child, .tbl td:last-child { padding-right: 0; }
+.note { margin-bottom: 20px; } .tabs { margin-bottom: 20px; }

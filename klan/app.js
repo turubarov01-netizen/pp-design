@@ -90,7 +90,7 @@ pages.dashboard = () => `
       <ol class="mini">${CLANS.map((c, i) => `<li class="${c.me ? 'me' : ''}"><span class="pl">${i + 1}</span><span>${c.n}</span><span class="num">${String(c.pts).replace('.', ',')}</span></li>`).join('')}</ol>
     </div>
   </section>
-  <div class="grid2" style="margin-top:16px">
+  <div class="grid2">
     <section class="card">
       <div class="ch"><h2>Ссылки клана</h2><a class="btn ghost sm" href="#invites">Все ссылки ${ic('arrow')}</a></div>
       <div class="links">
@@ -205,7 +205,7 @@ pages.analytics = () => {
       <tr><td style="font-weight:700">Итого</td><td></td><td class="r num" style="font-weight:700">${rub(43000)}</td><td class="r num" style="font-weight:700">2 140</td><td class="r num" style="font-weight:700">186</td><td class="r num" style="font-weight:700">19</td><td class="r num" style="font-weight:700">${rub(188100)}</td><td class="r num" style="font-weight:700">${rub(231)}</td><td class="r num" style="font-weight:700">×4,4</td></tr>
     </tbody></table></div>
   </section>
-  <div class="grid2" style="margin-top:16px">
+  <div class="grid2">
     <section class="card">
       <div class="ch"><h2>Деньги с клиента</h2></div>
       <div class="kv"><span class="k">Средний чек</span><span class="v num">9 900 ₽</span></div>
@@ -223,7 +223,7 @@ pages.analytics = () => {
   <section class="card">
     <div class="ch"><h2>Страницы</h2><span class="sub">как каждая страница доводит до оплаты</span></div>
     <div class="tscroll"><table class="tbl"><thead><tr><th>Страница</th><th class="r">Посетители</th><th class="r">Нажали кнопку</th><th class="r">Долистали</th><th class="r">Создали аккаунт</th><th class="r">Конверсия</th><th class="r">Выручка</th></tr></thead><tbody>
-      ${[['Сайт Альянса · Анна', 1290, 214, 388, 61, '4,7%', 99000], ['Тест «Мой оффер»', 520, 301, 0, 44, '8,5%', 59400], ['Вебинар «Свой продукт за 30 дней»', 330, 96, 140, 16, '4,8%', 29700]].map(r => `<tr class="row"><td style="font-weight:600">${r[0]}</td><td class="r num">${r[1]}</td><td class="r num">${r[2]}</td><td class="r num">${r[3] || '—'}</td><td class="r num">${r[4]}</td><td class="r num">${r[5]}</td><td class="r num">${rub(r[6])}</td></tr>`).join('')}
+      ${[['Сайт Альянса · Анна', 1290, 214, 388, 61, '4,7%', 99000], ['Тест «Мой оффер»', 520, 301, 0, 44, '8,5%', 59400], ['Вебинар «Свой продукт за 30 дней»', 330, 96, 140, 16, '4,8%', 29700]].map(r => `<tr class="row"><td style="font-weight:600">${r[0]}</td><td class="r num">${r[1].toLocaleString("ru-RU")}</td><td class="r num">${r[2]}</td><td class="r num">${r[3] || '—'}</td><td class="r num">${r[4]}</td><td class="r num">${r[5]}</td><td class="r num">${rub(r[6])}</td></tr>`).join('')}
     </tbody></table></div>
   </section>`;
 };
