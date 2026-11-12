@@ -78,51 +78,36 @@ const demoNote = (html) => `<div class="note"><span class="tag">Обсудить
 const pages = {};
 
 const PULSE = {
-  7: [['Новые люди', 6, '+2 сегодня'], ['Оплаты', 5, '+1 сегодня'], ['Поступило', '49&nbsp;500&nbsp;₽', '+9&nbsp;900&nbsp;₽ сегодня']],
-  30: [['Новые люди', 23, '+2 сегодня'], ['Оплаты', 19, '+1 сегодня'], ['Поступило', '188&nbsp;100&nbsp;₽', '+9&nbsp;900&nbsp;₽ сегодня']],
-  90: [['Новые люди', 61, '+2 сегодня'], ['Оплаты', 44, '+1 сегодня'], ['Поступило', '402&nbsp;600&nbsp;₽', '+9&nbsp;900&nbsp;₽ сегодня']],
+  7: { n: 6, nt: 2, p: 5, pt: 1, m: '49&nbsp;500', mt: '9&nbsp;900', chk: '9&nbsp;900', share: '39&nbsp;600' },
+  30: { n: 23, nt: 2, p: 19, pt: 1, m: '188&nbsp;100', mt: '9&nbsp;900', chk: '9&nbsp;900', share: '150&nbsp;480' },
+  90: { n: 61, nt: 2, p: 44, pt: 1, m: '402&nbsp;600', mt: '9&nbsp;900', chk: '9&nbsp;150', share: '322&nbsp;080' },
 };
-const PULSE_SUB = { 7: ['пришли в клан', 'средний чек 9&nbsp;900&nbsp;₽', 'доля клана 39&nbsp;600&nbsp;₽'], 30: ['пришли в клан', 'средний чек 9&nbsp;900&nbsp;₽', 'доля клана 150&nbsp;480&nbsp;₽'], 90: ['пришли в клан', 'средний чек 9&nbsp;150&nbsp;₽', 'доля клана 322&nbsp;080&nbsp;₽'] };
-const pulseCells = d => PULSE[d].map(([l, v, t], i) => `<div class="pk"><div class="pl">${l} за ${d} дней</div><div class="pv"><b class="num${i === 2 ? ' money' : ''}">${v}</b><span class="today up">${t}</span></div><div class="ps">${PULSE_SUB[d][i]}</div></div>`).join('');
+const tiles = d => { const x = PULSE[d]; return `
+  <a class="tile" href="#leads"><span class="tl">Новые люди</span><b class="tv num">${x.n}</b><span class="tt up">+${x.nt} сегодня</span></a>
+  <a class="tile" href="#finance"><span class="tl">Оплаты</span><b class="tv num">${x.p}</b><span class="tt up">+${x.pt} сегодня</span><span class="ts">чек ${x.chk}&nbsp;₽</span></a>
+  <a class="tile wide money" href="#finance"><span class="tl">Поступило</span><b class="tv num">${x.m}&nbsp;₽</b><span class="tt up">+${x.mt}&nbsp;₽ сегодня</span><span class="ts">доля клана ${x.share}&nbsp;₽</span></a>`; };
 window.setPulse = (d, btn) => {
-  document.getElementById('pulse').innerHTML = pulseCells(d);
+  document.getElementById('tiles').innerHTML = tiles(d);
   btn.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === btn));
 };
+const QUICK = [['Сайт Альянса', 'wearefree.club/d/anna'], ['SCALE', 'wearefree.club/scale/anna'], ['Онбординг', 'wearefree.club/start?c=vektor'], ['Онбординг в Telegram', 't.me/freemen_alliance_bot?start=vektor'], ['Ссылка клана', 'wearefree.club/c/vektor'], ['Реферальная', 'wearefree.club/r/vektor']];
 pages.dashboard = () => `
-  <div class="ph"><div><h1>Мой клан</h1><p>Клан Вектор · директор Анна Миронова</p></div></div>
-  ${demoNote('Главная клана: сезон, пульс клана за 7, 30 или 90 дней и быстрые ссылки. Расчёт с Head Office — в «Финансах». Имён клиентов здесь нет, они в «Клиентах».')}
-  <section class="card">
-    <div class="ch"><h2>Сезон 1</h2><a class="btn ghost sm" href="#league">Лига кланов ${ic('arrow')}</a></div>
-    <div class="season">
-      <div class="sp"><b class="num">8,4</b><span>очка</span></div>
-      <div class="sm"><div class="st">🥉 Бронза · 1 место из 4</div><div class="muted">До серебра 0,6 очка · доля сейчас 80% · до конца сезона 48 дней</div>
-        <div class="comp" style="display:block;margin-top:10px"><div class="bar"><i style="width:28%"></i></div><div class="marks"><span style="left:0">0</span><span style="left:20%">🥉 6</span><span style="left:30%">🥈 9</span><span style="right:0">🥇 30 очков</span></div></div>
-      </div>
-    </div>
+  <div class="ov">
+  <div class="ov-head"><div><h1>Мой клан</h1><p>Клан Вектор</p></div>
+    <div class="seg" role="group" aria-label="Период">${[7, 30, 90].map(d => `<button type="button" aria-pressed="${d === 30}" onclick="setPulse(${d}, this)">${d}&nbsp;дн</button>`).join('')}</div></div>
+  ${demoNote('Компактная главная под телефон: крупные ключевые цифры плитками, сезон — одна плитка, ссылки — список с кнопкой копирования. Расчёт с Head Office — в «Финансах».')}
+  <div class="tiles">
+    <a class="tile season-t" href="#league"><span class="tl">Сезон 1</span><b class="tv num">8,4</b><span class="tm">🥉 Бронза · 1 место</span><span class="tbar"><i style="width:28%"></i></span><span class="ts">до серебра 0,6</span></a>
+    <div class="tiles-p" id="tiles">${tiles(30)}</div>
+  </div>
+  <section class="card ov-card">
+    <div class="ch"><h2>Ссылки клана</h2><a class="btn ghost sm" href="#invites">Все ${ic('arrow')}</a></div>
+    <ul class="qlinks">${QUICK.map(([n, u]) => `<li><div class="qn">${n}<span>${u}</span></div><button class="qcopy" type="button" aria-label="Копировать: ${n}">${ic('copy')}</button></li>`).join('')}</ul>
   </section>
-  <section class="card">
-    <div class="ch"><h2>Пульс клана</h2><div class="chips">${[7, 30, 90].map(d => `<button class="chip" type="button" aria-pressed="${d === 30}" onclick="setPulse(${d}, this)">${d} дней</button>`).join('')}</div></div>
-    <div class="pulse4 p3" id="pulse">${pulseCells(30)}</div>
-  </section>
-  <section class="card">
-    <div class="ch"><h2>Ссылки клана</h2><a class="btn ghost sm" href="#invites">Все ссылки ${ic('arrow')}</a></div>
-    <div class="links two">
-      ${[['Сайт Альянса', 'wearefree.club/d/anna'], ['Сайт SCALE для предпринимателей', 'wearefree.club/scale/anna'], ['Бесплатный онбординг', 'wearefree.club/start?c=vektor'], ['Онбординг в Telegram', 't.me/freemen_alliance_bot?start=vektor'], ['Постоянная ссылка клана', 'wearefree.club/c/vektor'], ['Реферальная ссылка', 'wearefree.club/r/vektor']].map(([n, u]) => `
-        <div class="lnk"><div><div class="n">${n}</div><div class="u">${u}</div></div><div class="a"><button class="btn sm" type="button">${ic('copy')}Копировать</button></div></div>`).join('')}
-    </div>
-  </section>
-  <div class="grid2">
-    <section class="card">
-      <div class="ch"><h2>Откуда пришли люди</h2><a class="btn ghost sm" href="#analytics">Аналитика ${ic('arrow')}</a></div>
-      ${[['Reels «Как найти первых клиентов»', 48, 6, '104 ₽'], ['Мастер-класс 8 ноября', 31, 5, '387 ₽'], ['Выступление на бизнес-завтраке', 22, 4, '682 ₽'], ['Без кампании', 73, 3, '—']].map(r => `<div class="kv"><span class="k">${r[0]}<small>${r[1]} ${plural(r[1], 'клиент', 'клиента', 'клиентов')} · ${r[2]} ${plural(r[2], 'оплатил', 'оплатили', 'оплатили')} · цена клиента ${r[3]}</small></span><span class="v num">${r[1]}</span></div>`).join('')}
-    </section>
-    <section class="card">
-      <div class="ch"><h2>Онбординг</h2><a class="btn ghost sm" href="#onboarding">Подробно ${ic('arrow')}</a></div>
-      <div class="fun">
-        ${[['Начали', 186], ['Получили маршрут', 104], ['Дошли до предложения', 77], ['Оплатили', 19]].map(([l, n]) => `<div class="r" style="grid-template-columns:170px minmax(0,1fr) 44px"><span>${l}</span><div class="bar"><i style="width:${Math.round(n / 186 * 100)}%"></i></div><span class="num" style="text-align:right;font-weight:650">${n}</span></div>`).join('')}
-      </div>
-      <p class="muted" style="margin:12px 0 0;font-size:13px">Сейчас проходят 24 человека · 6 застряли на шаге «Что держит»</p>
-    </section>
+  <div class="tiles two">
+    <a class="tile" href="#analytics"><span class="tl">Лучшая кампания</span><b class="tv sm">Reels</b><span class="ts">48&nbsp;клиентов · клиент за&nbsp;104&nbsp;₽</span></a>
+    <a class="tile" href="#onboarding"><span class="tl">Онбординг</span><b class="tv num">24</b><span class="ts">проходят сейчас · 6&nbsp;застряли</span></a>
+  </div>
   </div>`;
 
 pages.league = () => `
