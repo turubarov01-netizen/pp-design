@@ -25,10 +25,12 @@ const P = {
   dl: '<path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/>',
   arrow: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
   chart: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
   spark: '<path d="M9.94 14.06 4 20"/><path d="m14 4 6 6"/><path d="M12 2v2"/><path d="M22 12h-2"/><path d="m18 8-6 6"/>',
 };
 const ic = (n, c = 'i') => `<svg class="${c}" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
 const plural = (n, a, b, c) => { const m = n % 100, d = n % 10; return m > 10 && m < 20 ? c : d === 1 ? a : d >= 2 && d <= 4 ? b : c; };
+const medal = k => k === '—' ? '' : `<span class="medal-ic m-${k}" role="img" aria-label="${({g:'Золото',s:'Серебро',b:'Бронза'})[k]}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="14" r="7"/><path d="M8.5 7.5 6 2h4l2 4 2-4h4l-2.5 5.5"/></svg></span>`;
 const rub = n => n.toLocaleString('ru-RU').replace(/,/g, ' ') + ' ₽';
 
 const MENU = [
@@ -56,9 +58,9 @@ const MENU = [
 ];
 
 const CLANS = [
-  { n: 'Клан Вектор', pts: 8.4, m: '🥉', sales: 21, rev: 1188, me: 1 },
-  { n: 'Клан Север', pts: 5, m: '🥉', sales: 5, rev: 1100 },
-  { n: 'Клан Орбита', pts: 4.4, m: '🥉', sales: 8, rev: 378 },
+  { n: 'Клан Вектор', pts: 8.4, m: 'b', sales: 21, rev: 1188, me: 1 },
+  { n: 'Клан Север', pts: 5, m: 'b', sales: 5, rev: 1100 },
+  { n: 'Клан Орбита', pts: 4.4, m: 'b', sales: 8, rev: 378 },
   { n: 'Клан Пульсар', pts: 0, m: '—', sales: 0, rev: 0 },
 ];
 
@@ -96,8 +98,9 @@ pages.dashboard = () => `
   <div class="ov-head"><div><h1>Мой клан</h1><p>Клан Вектор</p></div>
     <div class="seg" role="group" aria-label="Период">${[7, 30, 90].map(d => `<button type="button" aria-pressed="${d === 30}" onclick="setPulse(${d}, this)">${d}&nbsp;дн</button>`).join('')}</div></div>
   ${demoNote('Компактная главная под телефон: крупные ключевые цифры плитками, сезон — одна плитка, ссылки — список с кнопкой копирования. Расчёт с Head Office — в «Финансах».')}
+  <a class="btn pri ov-add" href="#new-client">${ic('plus')}Добавить клиента с оплатой</a>
   <div class="tiles">
-    <a class="tile season-t" href="#league"><span class="tl">Сезон 1</span><b class="tv num">8,4</b><span class="tm">🥉 Бронза · 1 место</span><span class="tbar"><i style="width:28%"></i></span><span class="ts">до серебра 0,6</span></a>
+    <a class="tile season-t" href="#league"><span class="tl">Сезон 1</span><b class="tv num">8,4</b><span class="tm">${medal('b')} Бронза · 1 место</span><span class="tbar"><i style="width:28%"></i></span><span class="ts">до серебра 0,6</span></a>
     <div class="tiles-p" id="tiles">${tiles(30)}</div>
   </div>
   <section class="card ov-card">
@@ -116,29 +119,29 @@ pages.league = () => `
     <div class="ch"><h2>Ваш клан в этом сезоне</h2></div>
     <div class="grid3" style="align-items:end">
       <div><div class="season-pts num">8,4</div><div class="muted">очков</div></div>
-      <div><div style="font-size:22px;font-weight:700">🥉 Бронза</div><div class="muted">До серебра 0,6 очка</div></div>
+      <div><div style="font-size:22px;font-weight:700">${medal('b')} Бронза</div><div class="muted">До серебра 0,6 очка</div></div>
       <div><div style="font-size:22px;font-weight:700">80%</div><div class="muted">ваша доля сейчас</div></div>
     </div>
-    <div style="margin-top:18px"><div class="bar"><i style="width:28%"></i></div><div class="comp" style="display:block"><div class="marks"><span style="left:0">0</span><span style="left:20%">🥉 6</span><span style="left:30%">🥈 9</span><span style="right:0">🥇 30 очков</span></div></div></div>
+    <div style="margin-top:18px"><div class="bar"><i style="width:28%"></i></div><div class="comp" style="display:block"><div class="marks"><span style="left:0">0</span><span style="left:10%">${medal('b')} 3</span><span style="left:30%">${medal('s')} 9</span><span style="right:0">${medal('g')} 30 очков</span></div></div></div>
     <p class="muted" style="margin:12px 0 0;font-size:14px">Если сезон закончится так, доля снизится до 70%.</p>
   </section>
   <section class="card">
     <div class="ch"><h2>Таблица сезона 1</h2></div>
     <div class="tscroll"><table class="tbl"><thead><tr><th>Клан</th><th>Медаль</th><th class="r">Очки</th><th class="r">Продажи</th><th class="r">Выручка</th><th class="r">Доля</th></tr></thead><tbody>
-    ${CLANS.map(c => `<tr class="row"${c.me ? ' style="font-weight:650"' : ''}><td>${c.n}</td><td>${c.m}</td><td class="r num">${String(c.pts).replace('.', ',')}</td><td class="r num">${c.sales}</td><td class="r num">$${c.rev.toLocaleString('ru-RU')}</td><td class="r num">80% → 70%</td></tr>`).join('')}
+    ${CLANS.map(c => `<tr class="row"${c.me ? ' style="font-weight:650"' : ''}><td>${c.n}</td><td>${medal(c.m)}</td><td class="r num">${String(c.pts).replace('.', ',')}</td><td class="r num">${c.sales}</td><td class="r num">$${c.rev.toLocaleString('ru-RU')}</td><td class="r num">80% → 70%</td></tr>`).join('')}
     </tbody></table></div>
   </section>
   <section class="card">
     <div class="ch"><h2>Правила простыми словами</h2></div>
     <div class="rules">
       <div><h3>Очки за продажи</h3><ul><li>Месячная подписка или любой курс — 1</li><li>Годовое членство — 5</li><li>Стартовый и продления за $7–13 — 0,1</li></ul></div>
-      <div><h3>Медали за сезон (3 месяца)</h3><ul><li>🥇 Золото — от 30 очков</li><li>🥈 Серебро — от 9</li><li>🥉 Бронза — от 6</li></ul></div>
+      <div><h3>Медали за сезон (3 месяца)</h3><ul><li>${medal('g')} Золото — от 30 очков</li><li>${medal('s')} Серебро — от 9</li><li>${medal('b')} Бронза — от 3</li></ul></div>
       <div><h3>Что медаль делает с долей</h3><ul><li>Золото — доля +10%, до 80%</li><li>Серебро — доля та же</li><li>Бронза — −10%</li><li>Без медали — −20%</li><li>Меньше 60% доля не бывает</li></ul></div>
     </div>
   </section>`;
 
 pages.leads = () => `
-  <div class="ph"><div><h1>Клиенты клана</h1><p>Клан Вектор · 214 чел.</p></div><div class="acts"><button class="btn pri" type="button">${ic('plus')}Добавить клиента</button></div></div>
+  <div class="ph"><div><h1>Клиенты клана</h1><p>Клан Вектор · 214 чел.</p></div><div class="acts"><a class="btn pri" href="#new-client">${ic('plus')}Добавить клиента</a></div></div>
   ${demoNote('Сейчас страница грузится медленно: вместе со списком клана она тянет все карточки клиентов платформы, чтобы открыть одну. Это чиним отдельно от дизайна.')}
   <div class="tabs" role="group"><button aria-pressed="true">Клиенты<span class="cnt">214</span></button><button aria-pressed="false">Переписки</button><button aria-pressed="false">Поддержка<span class="cnt">3</span></button></div>
   <div class="stages">
@@ -227,6 +230,84 @@ pages.analytics = () => {
       ${[['Сайт Альянса · Анна', 1290, 214, 388, 61, '4,7%', 99000], ['Тест «Мой оффер»', 520, 301, 0, 44, '8,5%', 59400], ['Вебинар «Свой продукт за 30 дней»', 330, 96, 140, 16, '4,8%', 29700]].map(r => `<tr class="row"><td style="font-weight:600">${r[0]}</td><td class="r num">${r[1].toLocaleString("ru-RU")}</td><td class="r num">${r[2]}</td><td class="r num">${r[3] || '—'}</td><td class="r num">${r[4]}</td><td class="r num">${r[5]}</td><td class="r num">${rub(r[6])}</td></tr>`).join('')}
     </tbody></table></div>
   </section>`;
+};
+
+pages['new-client'] = () => `
+  <div class="nc">
+  <a class="back" href="#leads">${ic('arrow')}Клиенты</a>
+  <h1>Новый клиент с аккаунтом</h1>
+  <p class="muted lead">Для тех, кто уже заплатил вам: на встрече, наличными или переводом. Аккаунт появится сразу, оплата запишется, доступ откроется. Человеку придёт ссылка для входа, предложение купить он не увидит.</p>
+  ${demoNote('Человек входит по ссылке, попадает в кабинет и проходит онбординг как все, но шаг с оплатой пропускается: продукт уже оплачен. Оплата пишется как «получил клан», в расчёте с Head Office она идёт как 20% платформе.')}
+  <form class="card ncf" onsubmit="return ncSubmit(event)" novalidate>
+    <fieldset>
+      <legend><span class="step">1</span>Кто</legend>
+      <div class="fields">
+        <div class="field"><label for="nc-name">Имя и фамилия <i>*</i></label><div class="input"><input id="nc-name" autocomplete="name" required value="Ольга Кравец"></div></div>
+        <div class="field"><label for="nc-email">Почта <i>*</i></label><div class="input"><input id="nc-email" type="email" inputmode="email" autocomplete="email" required placeholder="name@mail.ru"></div><small class="help" id="nc-email-help">На неё создаём аккаунт и отправляем вход</small></div>
+        <div class="field"><label for="nc-tg">Telegram</label><div class="input"><input id="nc-tg" autocomplete="off" placeholder="@username"></div><small class="help">Чтобы отправить вход в Telegram</small></div>
+        <div class="field"><label for="nc-phone">Телефон</label><div class="input"><input id="nc-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7"></div></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><span class="step">2</span>Что оплатил</legend>
+      <div class="fields">
+        <div class="field"><label for="nc-prod">Продукт <i>*</i></label><div class="input"><select id="nc-prod"><option>ПП-клуб · месяц</option><option>ПП-клуб · год</option><option>Альянс · месяц</option><option>Альянс · год</option><option>Стартовый пакет</option><option>ИИнструменты</option><option>Место притяжения</option></select></div></div>
+        <div class="field"><label for="nc-sum">Сумма <i>*</i></label><div class="input"><input id="nc-sum" inputmode="numeric" value="14 990"><span class="suf">₽</span></div></div>
+        <div class="field"><label for="nc-date">Дата оплаты</label><div class="input"><input id="nc-date" type="date" value="2026-11-13"></div></div>
+        <div class="field"><span class="flabel" id="nc-how-l">Как заплатил</span><div class="seg wide" role="group" aria-labelledby="nc-how-l"><button type="button" aria-pressed="true">Наличные</button><button type="button" aria-pressed="false">Карта</button><button type="button" aria-pressed="false">Перевод</button></div></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><span class="step">3</span>Куда отправить вход</legend>
+      <div class="seg wide" role="group" aria-label="Куда отправить вход"><button type="button" aria-pressed="true">На почту</button><button type="button" aria-pressed="false">В Telegram</button><button type="button" aria-pressed="false">Скопирую ссылку</button></div>
+      <small class="help">Ссылка одноразовая, действует 7 дней. Пароль человек задаст сам.</small>
+    </fieldset>
+    <div class="ncf-foot"><button class="btn pri big" type="submit" id="nc-go">Создать аккаунт и отправить вход</button><a class="btn ghost" href="#leads">Отмена</a></div>
+  </form>
+  <div class="card ncd" id="nc-done" hidden tabindex="-1" aria-live="polite">
+    <div class="ok-ic">${ic('check')}</div>
+    <h2>Аккаунт создан</h2>
+    <p class="muted">Ольга Кравец · olga@mail.ru</p>
+    <div id="nc-rows"></div>
+    <div class="ncf-foot"><a class="btn pri" href="#leads">К клиентам</a><button class="btn" type="button" onclick="route()">Добавить ещё</button></div>
+  </div>
+  </div>`;
+window.ncSubmit = e => {
+  e.preventDefault();
+  const em = document.getElementById('nc-email');
+  const f = em.closest('.field');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em.value)) {
+    f.classList.add('err'); document.getElementById('nc-email-help').textContent = 'Нужна почта, на неё создаётся аккаунт'; em.focus(); return false;
+  }
+  const b = document.getElementById('nc-go'); b.disabled = true; b.textContent = 'Создаём аккаунт…';
+  const pressed = sel => (document.querySelector(sel + ' [aria-pressed="true"]') || {}).textContent || '';
+  const name = document.getElementById('nc-name').value.trim() || 'Без имени';
+  const prod = document.getElementById('nc-prod').value;
+  const sum = parseInt(document.getElementById('nc-sum').value.replace(/\D/g, ''), 10) || 0;
+  const how = pressed('.ncf fieldset:nth-of-type(2) .seg');
+  const to = pressed('.ncf fieldset:nth-of-type(3) .seg');
+  const dt = new Date(document.getElementById('nc-date').value || '2026-11-13');
+  if (/год/.test(prod)) dt.setFullYear(dt.getFullYear() + 1); else dt.setMonth(dt.getMonth() + 1);
+  const until = /месяц|год/.test(prod) ? ' до\u00a0' + dt.toLocaleDateString('ru-RU') : ', открыт';
+  const howTxt = { 'Наличные': 'наличными', 'Карта': 'картой', 'Перевод': 'переводом' }[how] || '';
+  const link = 'wearefree.club/in/7Kq2xM';
+  const toTxt = to === 'В Telegram' ? 'ссылка отправлена в\u00a0Telegram' : to === 'Скопирую ссылку' ? `<button type="button" class="qcopy inl" aria-label="Скопировать ссылку для входа">${link}</button>` : 'ссылка отправлена на\u00a0почту';
+  const kv = (k, v) => `<div class="kv"><span class="k">${k}</span><span class="v">${v}</span></div>`;
+  setTimeout(() => {
+    document.querySelector('.ncf').hidden = true;
+    const d = document.getElementById('nc-done'); d.hidden = false;
+    d.querySelector('.muted').textContent = name + ' · ' + em.value;
+    d.querySelector('#nc-rows').innerHTML =
+      kv('Доступ', prod + until) +
+      kv('Оплата', `<span class="num">${rub(sum)}</span> ${howTxt}`) +
+      kv('Деньги получил', 'клан') +
+      kv('Платформе по\u00a0расчёту', `<span class="num">20% · ${rub(Math.round(sum * 0.2))}</span>`) +
+      kv('Вход', toTxt);
+    const c = d.querySelector('.qcopy.inl');
+    if (c) c.onclick = () => { navigator.clipboard && navigator.clipboard.writeText('https://' + link).catch(() => {}); c.classList.add('done'); c.textContent = 'Скопировано'; setTimeout(() => { c.classList.remove('done'); c.textContent = link; }, 1500); };
+    d.focus();
+  }, 900);
+  return false;
 };
 
 pages.invites = () => `
@@ -368,18 +449,22 @@ function route() {
   const fn = pages[id] || pages.dashboard;
   document.getElementById('page').innerHTML = fn();
   document.querySelectorAll('.nav[data-id]').forEach(a => a.toggleAttribute('aria-current', false));
-  const cur = document.querySelector(`.nav[data-id="${id}"]:not(.gone)`) || (id === 'gone' && document.querySelector('.nav.gone'));
+  const navId = id === 'new-client' ? 'leads' : id;
+  const cur = document.querySelector(`.nav[data-id="${navId}"]:not(.gone)`) || (id === 'gone' && document.querySelector('.nav.gone'));
   if (cur) cur.setAttribute('aria-current', 'page');
-  const m = MENU.find(x => x.id === id);
+  const m = MENU.find(x => x.id === navId);
   document.getElementById('mtitle').textContent = m ? m.t : 'Мой клан';
   document.body.classList.remove('menu-open');
   window.scrollTo(0, 0);
+  document.querySelectorAll('.seg.wide').forEach(g => g.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; g.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); }));
+  document.querySelectorAll('.qcopy').forEach(b => b.addEventListener('click', () => { b.classList.add('done'); b.innerHTML = ic('check'); b.setAttribute('aria-label', 'Скопировано'); setTimeout(() => { b.classList.remove('done'); b.innerHTML = ic('copy'); }, 1500); }));
   document.querySelectorAll('.tabs, .chips').forEach(g => g.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     g.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
   }));
 }
 shell();
+window.route = route;
 window.addEventListener('hashchange', route);
 route();
 
