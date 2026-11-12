@@ -77,44 +77,51 @@ const demoNote = (html) => `<div class="note"><span class="tag">Обсудить
 /* ---------- страницы ---------- */
 const pages = {};
 
+const PULSE = {
+  7: [['Новые люди', 6, '+2 сегодня'], ['Оплаты', 5, '+1 сегодня'], ['Поступило', '49&nbsp;500&nbsp;₽', '+9&nbsp;900&nbsp;₽ сегодня']],
+  30: [['Новые люди', 23, '+2 сегодня'], ['Оплаты', 19, '+1 сегодня'], ['Поступило', '188&nbsp;100&nbsp;₽', '+9&nbsp;900&nbsp;₽ сегодня']],
+  90: [['Новые люди', 61, '+2 сегодня'], ['Оплаты', 44, '+1 сегодня'], ['Поступило', '402&nbsp;600&nbsp;₽', '+9&nbsp;900&nbsp;₽ сегодня']],
+};
+const PULSE_SUB = { 7: ['пришли в клан', 'средний чек 9&nbsp;900&nbsp;₽', 'доля клана 39&nbsp;600&nbsp;₽'], 30: ['пришли в клан', 'средний чек 9&nbsp;900&nbsp;₽', 'доля клана 150&nbsp;480&nbsp;₽'], 90: ['пришли в клан', 'средний чек 9&nbsp;150&nbsp;₽', 'доля клана 322&nbsp;080&nbsp;₽'] };
+const pulseCells = d => PULSE[d].map(([l, v, t], i) => `<div class="pk"><div class="pl">${l} за ${d} дней</div><div class="pv"><b class="num${i === 2 ? ' money' : ''}">${v}</b><span class="today up">${t}</span></div><div class="ps">${PULSE_SUB[d][i]}</div></div>`).join('');
+window.setPulse = (d, btn) => {
+  document.getElementById('pulse').innerHTML = pulseCells(d);
+  btn.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === btn));
+};
 pages.dashboard = () => `
-  <div class="ph"><div><h1>Мой клан</h1><p>Клан Вектор · директор Анна Миронова</p></div><div class="acts"><a class="btn sm" href="#league">🥉 1 место в лиге ${ic('arrow')}</a></div></div>
-  ${demoNote('Главная клана — пульс именно этого клана: главные цифры в моменте, расчёт с Head Office, откуда идут люди, онбординг и ссылки. Соревнование кланов — в «Лиге кланов». Имён клиентов здесь нет, они в «Клиентах».')}
+  <div class="ph"><div><h1>Мой клан</h1><p>Клан Вектор · директор Анна Миронова</p></div></div>
+  ${demoNote('Главная клана: сезон, пульс клана за 7, 30 или 90 дней и быстрые ссылки. Расчёт с Head Office — в «Финансах». Имён клиентов здесь нет, они в «Клиентах».')}
   <section class="card">
-    <div class="ch"><h2>Пульс клана</h2><div class="chips"><button class="chip" aria-pressed="false">Сегодня</button><button class="chip" aria-pressed="true">Ноябрь</button><button class="chip" aria-pressed="false">Всё время</button></div></div>
-    <div class="pulse4">
-      ${[['Новые люди', '23', '+2 сегодня', 'пришли в клан за месяц'], ['Всего в клане', '214', '+1 сегодня', '14 членов клуба'], ['Продажи', '19', '+1 сегодня', 'на 188&nbsp;100&nbsp;₽'], ['Доля клана', '150&nbsp;480&nbsp;₽', '+7&nbsp;426&nbsp;₽ сегодня', '80% с продаж месяца']].map(([l, v, t, s], i) => `<div class="pk"><div class="pl">${l}</div><div class="pv"><b class="num${i === 3 ? ' money' : ''}">${v}</b><span class="today up">${t}</span></div><div class="ps">${s}</div></div>`).join('')}
+    <div class="ch"><h2>Сезон 1</h2><a class="btn ghost sm" href="#league">Лига кланов ${ic('arrow')}</a></div>
+    <div class="season">
+      <div class="sp"><b class="num">8,4</b><span>очка</span></div>
+      <div class="sm"><div class="st">🥉 Бронза · 1 место из 4</div><div class="muted">До серебра 0,6 очка · доля сейчас 80% · до конца сезона 48 дней</div>
+        <div class="comp" style="display:block;margin-top:10px"><div class="bar"><i style="width:28%"></i></div><div class="marks"><span style="left:0">0</span><span style="left:20%">🥉 6</span><span style="left:30%">🥈 9</span><span style="right:0">🥇 30 очков</span></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="card">
+    <div class="ch"><h2>Пульс клана</h2><div class="chips">${[7, 30, 90].map(d => `<button class="chip" type="button" aria-pressed="${d === 30}" onclick="setPulse(${d}, this)">${d} дней</button>`).join('')}</div></div>
+    <div class="pulse4 p3" id="pulse">${pulseCells(30)}</div>
+  </section>
+  <section class="card">
+    <div class="ch"><h2>Ссылки клана</h2><a class="btn ghost sm" href="#invites">Все ссылки ${ic('arrow')}</a></div>
+    <div class="links two">
+      ${[['Сайт Альянса', 'wearefree.club/d/anna'], ['Сайт SCALE для предпринимателей', 'wearefree.club/scale/anna'], ['Бесплатный онбординг', 'wearefree.club/start?c=vektor'], ['Онбординг в Telegram', 't.me/freemen_alliance_bot?start=vektor'], ['Постоянная ссылка клана', 'wearefree.club/c/vektor'], ['Реферальная ссылка', 'wearefree.club/r/vektor']].map(([n, u]) => `
+        <div class="lnk"><div><div class="n">${n}</div><div class="u">${u}</div></div><div class="a"><button class="btn sm" type="button">${ic('copy')}Копировать</button></div></div>`).join('')}
     </div>
   </section>
   <div class="grid2">
     <section class="card">
-      <div class="ch"><h2>Расчёт с Head Office</h2><a class="btn ghost sm" href="#finance">Подробно ${ic('arrow')}</a></div>
-      <div class="owe"><b class="num">45&nbsp;600&nbsp;₽</b><span>Head Office должен вам</span></div>
-      <p class="muted" style="margin:6px 0 10px;font-size:13px">Период открыт с 24 мая · 21 оплата</p>
-      <div class="kv"><span class="k">Ваша доля с оплат, которые приняла платформа<small>80% минус налог 1%, вывод 1,5% и комиссия платёжки</small></span><span class="v plus num">+ 98 400 ₽</span></div>
-      <div class="kv"><span class="k">20% с оплат, которые приняли вы</span><span class="v minus num">− 42 800 ₽</span></div>
-      <div class="kv"><span class="k">Ручные строки</span><span class="v minus num">− 10 000 ₽</span></div>
-    </section>
-    <section class="card">
       <div class="ch"><h2>Откуда пришли люди</h2><a class="btn ghost sm" href="#analytics">Аналитика ${ic('arrow')}</a></div>
       ${[['Reels «Как найти первых клиентов»', 48, 6, '104 ₽'], ['Мастер-класс 8 ноября', 31, 5, '387 ₽'], ['Выступление на бизнес-завтраке', 22, 4, '682 ₽'], ['Без кампании', 73, 3, '—']].map(r => `<div class="kv"><span class="k">${r[0]}<small>${r[1]} ${plural(r[1], 'клиент', 'клиента', 'клиентов')} · ${r[2]} ${plural(r[2], 'оплатил', 'оплатили', 'оплатили')} · цена клиента ${r[3]}</small></span><span class="v num">${r[1]}</span></div>`).join('')}
-      <div class="kv"><span class="k">Окупаемость расходов за месяц</span><span class="v plus num">×4,4</span></div>
     </section>
-  </div>
-  <div class="grid2">
     <section class="card">
       <div class="ch"><h2>Онбординг</h2><a class="btn ghost sm" href="#onboarding">Подробно ${ic('arrow')}</a></div>
       <div class="fun">
         ${[['Начали', 186], ['Получили маршрут', 104], ['Дошли до предложения', 77], ['Оплатили', 19]].map(([l, n]) => `<div class="r" style="grid-template-columns:170px minmax(0,1fr) 44px"><span>${l}</span><div class="bar"><i style="width:${Math.round(n / 186 * 100)}%"></i></div><span class="num" style="text-align:right;font-weight:650">${n}</span></div>`).join('')}
       </div>
       <p class="muted" style="margin:12px 0 0;font-size:13px">Сейчас проходят 24 человека · 6 застряли на шаге «Что держит»</p>
-    </section>
-    <section class="card">
-      <div class="ch"><h2>Ссылки клана</h2><a class="btn ghost sm" href="#invites">Все ссылки ${ic('arrow')}</a></div>
-      <div class="links">
-        ${[['Сайт Альянса', 'wearefree.club/d/anna'], ['Сайт SCALE для предпринимателей', 'wearefree.club/scale/anna'], ['Бесплатный онбординг', 'wearefree.club/start?c=vektor'], ['Постоянная ссылка клана', 'wearefree.club/c/vektor']].map(([n, u]) => `
-          <div class="lnk"><div><div class="n">${n}</div><div class="u">${u}</div></div><div class="a"><button class="btn sm" type="button">${ic('copy')}Копировать</button></div></div>`).join('')}
-      </div>
     </section>
   </div>`;
 
