@@ -427,7 +427,7 @@ svg{flex:none}
 @media (max-width:420px){.screen .cap{display:none}}
 @media (max-width:360px){.frimi .row{grid-template-columns:1fr 80px}.frimi img{width:80px}.hello h2{font-size:22px}.ph{flex-wrap:wrap}.mtask{grid-template-columns:1fr}.mtask img{display:none}}
 </style>
-<link rel="stylesheet" href="slop.css?v=1">
+<link rel="stylesheet" href="slop.css?v=2">
 </head>
 <body>
 <div class="app">
@@ -723,7 +723,7 @@ cg.addEventListener('click', e => {
     document.getElementById('fm-t').textContent = T; document.getElementById('fm-tl').textContent = plural(T, ['город','города','городов']);
     document.getElementById('fm-stats').hidden = false;
     mapboxgl.accessToken = tok.token;
-    const map = new mapboxgl.Map({ container: 'fm-map', style: 'mapbox://styles/mapbox/light-v11', projection: 'globe', zoom: 1.5, center: [30, 30], cooperativeGestures: false });
+    const map = window.__fm = new mapboxgl.Map({ container: 'fm-map', style: 'mapbox://styles/mapbox/light-v11', projection: 'globe', zoom: 1.5, center: [30, 30], cooperativeGestures: false });
     map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), 'top-right');
     map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
     const F = ['Анна','Мария','Ольга','Екатерина','Наталья','Ирина','Светлана','Юлия','Алина','Дарья','Елена','Татьяна','Ксения','Виктория','Полина'];
@@ -759,6 +759,6 @@ cg.addEventListener('click', e => {
   } catch (e) { load.textContent = 'Карта не загрузилась'; }
 })();
 </script>
-<script src="slop.js?v=1"></script>
+<script src="slop.js?v=2"></script>
 </body>
 </html>

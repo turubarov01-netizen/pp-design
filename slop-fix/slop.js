@@ -14,10 +14,10 @@
   const STEPS = [
     ['Как есть', 'Исходный дашборд без правок.'],
     ['Лучшие практики', '«Подними дизайн по лучшим практикам»: одна шкала шрифтов, один стиль карточек, спокойный фон, одна главная кнопка.'],
-    ['Иерархия', '«Сделай иерархию и сгруппируй по смыслу»: действия вынесены наверх, связанные блоки собраны вместе.'],
-    ['Кнопка-награда', '«Главная кнопка при наведении говорит о выигрыше»: текст меняется на результат, значок летит по кругу.'],
-    ['Матовое стекло', '«Матовое стекло, сквозь которое видно фон»: панели и меню полупрозрачные поверх пейзажа.'],
-    ['Аккордеоны', '«Второстепенное в аккордеоны, порядок по ходу дела»: сверху то, что делать сейчас, остальное свёрнуто.'],
+    ['Иерархия', PAGE === 'main' ? 'Фрими и приветствие на месте, под ними три быстрых действия; маршрут в подвале «Моего дня», чаты внутри членства.' : 'Порядок прежний: «Мой ритм» и сегодняшние дела сверху, справа встреча, календарь и вдохновение. В шапке дата.'],
+    ['Кнопки-награды', 'Каждая кнопка при наведении поднимается и говорит о выигрыше: текст меняется на результат, значок летит по кругу.'],
+    ['Матовое стекло', 'Панели полупрозрачные поверх пейзажа, внутренние плитки, люди и карта в одном чистом стиле.'],
+    ['Календарь и видео', 'Ничего не свёрнуто. Календарь: неделя и ближайшие события, месяц по кнопке, события дня внутри карточки. Видео открывается на месте.'],
     ['Меню', '«Сгруппируй меню, подпиши группы, каждому пункту иконку»: меньше пунктов на виду.'],
     ['Поиск ⌘K', '«Поиск — маленький виджет с ⌘K, по нему окно быстрых действий». Нажмите ⌘K или на поиск.'],
   ];
@@ -44,94 +44,118 @@
 
   // ---------- шаг 2: иерархия ----------
   function step2() {
-    const top = $('header.top');
-    const bar = el('section', 'sl-bar');
     if (PAGE === 'main') {
+      // Фрими и приветствие остаются; быстрые действия встают прямо под приветствием
       const hello = $('#d-hello');
-      const when = hello ? hello.innerText.split('\n').map(s => s.trim()).filter(Boolean) : ['', ''];
-      bar.innerHTML = `<div class="sl-hi"><span>${when[0] || ''}</span><b>${when[1] || ''}</b></div>
-        <div class="sl-acts"><a class="sl-q p" href="#">${I.flag}Шаг на сегодня</a><a class="sl-q" href="#">${I.route}Мой маршрут</a><a class="sl-q" href="#">${I.cal}Календарь</a></div>`;
-      hello && hello.remove();
-      const col = $('.grid > .col');
-      col.prepend(bar);
+      const box = hello && hello.querySelector(':scope > div');
+      if (box) {
+        const acts = el('div', 'sl-acts', `<a class="sl-q p" href="#">${I.flag}Шаг на сегодня</a><a class="sl-q" href="#">${I.route}Мой маршрут</a><a class="sl-q" href="#">${I.cal}Календарь</a>`);
+        box.append(acts); hello.classList.add('sl-hello');
+      }
       // маршрут — подвал «Моего дня»
       const day = $('#d-day'), route = $('#d-route');
       if (day && route) { route.classList.add('sl-in'); day.append(route); }
-      // членство и чаты — одна карточка «Моё»
+      // членство и чаты — одна карточка
       const mem = $('#d-mem'), chats = $('#d-chats');
       if (mem && chats) { const a = [...chats.querySelectorAll('a.chat')].filter(x => x.offsetParent !== null); if (a.length) { mem.append(el('p', 'sl-sub', 'Чаты в Telegram'), ...a); } chats.remove(); }
-      // видео-подсказка уходит из ленты (вернётся в аккордеоне на шаге 5)
-      const vid = $('#d-vid'); if (vid) { vid.classList.add('sl-vid'); $('.grid > .col:last-child').append(vid); }
     } else {
-      const acts = $('.rt-acts');
-      const sub = $('h1.club-h small');
-      bar.innerHTML = `<div class="sl-hi"><span>${sub ? sub.textContent : ''}</span><b>Пятница, 6 ноября</b></div>`;
-      if (acts) { acts.classList.add('sl-acts'); bar.append(acts); }
-      const col = $('.grid > .col');
-      // «Сегодня в работе» — своя карточка первой; «Мой ритм» становится «Прогресс»
-      const today = $('.rt-today'), rh = $('#k-rhythm');
-      const tk = $('.rt-tk2'); tk && tk.remove();
-      const tp = el('section', 'panel sl-today', '<div class="ph"><h3>Сегодня</h3><span class="fm-sub">урок, шаг дня, уведомления</span></div>');
-      if (today) tp.append(today);
-      col.prepend(bar, tp);
-      const h = rh && rh.querySelector('.rt-ph h3'); if (h) h.textContent = 'Прогресс';
-      // справа: встреча + календарь = «Расписание»; оракул, слово, мечта = «Вдохновение»
-      const meet = vis('.panel.meet'), cal = $('#d-cal');
-      if (meet && cal) { const c = cal.querySelector('.cal'); const ph = cal.querySelector('.ph'); ph.classList.add('sl-calph'); meet.append(ph, c); cal.remove(); meet.classList.add('sl-sched'); }
-      const ins = el('section', 'panel sl-insp', '<div class="ph"><h3>Вдохновение</h3><span class="fm-sub">оракул, слово дня, мечта</span></div>');
-      const parts = $$('.panel.oracle, .panel.word, .panel.dream');
-      if (parts.length) { parts[0].before(ins); parts.forEach(p => { p.classList.add('sl-part'); ins.append(p); }); }
+      // порядок прежний: «Мой ритм» сверху, «Сегодня в работе» внутри него; дата в шапке
+      const sm = $('header.top h1 small');
+      if (sm) sm.innerHTML = 'Пятница, 6 ноября · ' + sm.innerHTML;
     }
   }
 
-  // ---------- шаг 3: кнопка-награда ----------
-  function delight(btn, a, b, icon) {
-    if (!btn) return;
-    btn.classList.add('sl-win');
-    btn.innerHTML = `<span class="sl-ico">${icon}</span><span class="sl-lbl"><span class="sl-a">${a}</span><span class="sl-b">${b}</span></span>`;
+  // ---------- шаг 3: кнопки-награды ----------
+  const norm = s => (s || '').replace(/ /g, ' ').replace(/\s+/g, ' ').trim();
+  function delight(btn, b, icon, primary) {
+    if (!btn || btn.classList.contains('sl-win')) return;
+    const own = btn.querySelector(':scope > svg');
+    const a = norm(btn.textContent);
+    const ic = own ? own.outerHTML : (icon || '');
+    btn.classList.add('sl-win'); if (primary) btn.classList.add('sl-prime');
+    btn.innerHTML = (ic ? `<span class="sl-ico">${ic}</span>` : '') + `<span class="sl-lbl"><span class="sl-a">${a}</span><span class="sl-b">${b}</span></span>`;
   }
   function step3() {
-    if (PAGE === 'main') {
-      const b = $('#d-day .v-m .item[data-p="fa"] .btn.act') || $('#d-day .item .btn.act');
-      delight(b, 'Выбрать шаг', 'Ещё шаг к цели', I.flag);
-      delight($('.sl-q.p'), 'Шаг на сегодня', 'Ближе к цели', I.flag);
-    } else {
-      delight(vis('.meet .mt-go'), 'Записаться', 'Место за мной', I.plane);
-      delight($('.sl-acts .rt-q.p') || $('.rt-q.p'), 'Доход', 'Ближе к $1 000', I.coin);
-    }
+    const M = PAGE === 'main' ? {
+      'Шаг на сегодня': ['Ближе к цели', I.flag, 1], 'Мой маршрут': ['Куда дальше', I.route], 'Календарь': ['5 событий', I.cal],
+      'Выбрать время': ['Место за мной', I.cal, 1], 'Выбрать шаг': ['Ещё шаг к цели', I.flag, 1], 'Открыть': ['Клиент ждёт', I.go],
+      'Собрать мой оффер': ['Оффер за 15 минут', I.spark, 1],
+    } : {
+      'Доход': ['К $1 000', I.coin, 1], 'Шаг к цели': ['17 из 100', null], 'Задача': ['В план', null], 'Желание': ['К мечте', null], 'Дневник успеха': ['Ещё победа', null],
+      'Записаться': ['Место за мной', I.plane, 1], 'Сделал': ['+1 к серии', null], 'Открыть': ['Что скажет карта', I.spark], 'Хочу тоже!': ['В мои мечты', I.star],
+      'Привет': ['Помахать', null], 'Написать': ['Начать диалог', I.plane], 'Апгрейд': ['Новый уровень', I.spark],
+    };
+    $$('a.btn, button.btn, .rt-q, .rt-done, .sl-q, .po-btn, .oracle a, .oracle button, .dream a').forEach(b => {
+      if (b.closest('.sl-steps, .sl-pal, aside.side')) return;
+      const m = M[norm(b.textContent)]; if (m) delight(b, m[0], m[1], m[2]);
+    });
   }
 
-  // ---------- шаг 5: аккордеоны ----------
-  function fold(sec, title, summary, open) {
+  // ---------- шаг 4: карта в тон стеклу ----------
+  function step4() {
+    const fog = PAGE === 'pp'
+      ? { color: 'rgb(18, 24, 34)', 'high-color': 'rgb(44, 52, 66)', 'horizon-blend': 0.08, 'space-color': 'rgb(20, 24, 32)', 'star-intensity': 0 }
+      : { color: 'rgb(246, 248, 252)', 'high-color': 'rgb(214, 226, 244)', 'horizon-blend': 0.06, 'space-color': 'rgb(234, 240, 250)', 'star-intensity': 0 };
+    let n = 0; const t = setInterval(() => {
+      const m = window.__fm; n++;
+      // карта всё время догружает плитки, поэтому ждём только стиль и туман из макета, затем ставим свой
+      try { if (m && m.isStyleLoaded() && m.getFog() && m.getFog().color !== fog.color) m.setFog(fog); } catch (e) {}
+      if (n > 120) clearInterval(t);
+    }, 150);
+  }
+
+  // ---------- шаг 5: без сворачивания: календарь и видео ----------
+  const EV = { 7: [['13:00', 'Нетворк участников']], 10: [['19:00', 'Открытая встреча с Игорем']], 11: [['17:00', 'Разборы по средам']], 12: [['18:00', 'Эфир «Как упаковать оффер»']], 14: [['12:00', 'Комнаты Альянса']], 18: [['17:00', 'Разборы по средам']], 21: [['12:00', 'Комнаты Альянса']], 25: [['17:00', 'Разборы по средам']] };
+  const WD = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'], WDF = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+  const wd = d => new Date(2026, 10, d).getDay();
+  function calCard(sec) {
     if (!sec) return;
-    const ph = sec.querySelector(':scope > .ph');
-    if (ph) ph.remove();
-    const body = el('div', 'sl-body');
-    while (sec.firstChild) body.append(sec.firstChild);
-    const head = el('button', 'sl-acc', `<span class="sl-acc-t"><b>${title}</b><small>${summary}</small></span><span class="sl-chev">${I.chev}</span>`);
-    head.type = 'button';
-    head.setAttribute('aria-expanded', open ? 'true' : 'false');
-    sec.classList.add('sl-fold'); if (open) sec.classList.add('open');
-    sec.append(head, body);
-    head.addEventListener('click', () => { const o = sec.classList.toggle('open'); head.setAttribute('aria-expanded', o ? 'true' : 'false'); });
+    const TODAY = 6;
+    sec.classList.add('sl-cal'); sec.innerHTML = '';
+    const dayBtn = (d, cls) => `<button type="button" class="${cls}${d === TODAY ? ' today' : ''}${d < TODAY ? ' past' : ''}${EV[d] ? ' has' : ''}" data-d="${d}" aria-pressed="false" aria-label="${d} ноября${EV[d] ? ', есть события' : ''}">`;
+    let week = ''; for (let d = 2; d <= 8; d++) week += dayBtn(d, 'sl-d') + `<small>${WD[wd(d)]}</small><b>${d}</b><i></i></button>`;
+    let month = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map(x => `<span class="sl-mw">${x}</span>`).join('') + '<span></span>'.repeat(6);
+    for (let d = 1; d <= 30; d++) month += dayBtn(d, 'sl-md') + `${d}<i></i></button>`;
+    sec.innerHTML = `<div class="ph"><h3>Календарь</h3><button type="button" class="sl-mon" aria-expanded="false"><span>Весь ноябрь</span>${I.chev}</button></div>
+      <div class="sl-week" role="group" aria-label="Эта неделя">${week}</div>
+      <div class="sl-month"><div><div class="sl-mg">${month}</div></div></div>
+      <div class="sl-agenda" aria-live="polite"></div>`;
+    const ag = sec.querySelector('.sl-agenda');
+    const row = (d, [t, n]) => `<a class="sl-ev" href="#"><span class="sl-leaf"><small>${WD[wd(d)]}</small><b>${d}</b></span><span class="sl-evt"><b>${n}</b><small>${t} · онлайн</small></span><em>${I.go}</em></a>`;
+    const upcoming = (from, k) => Object.keys(EV).map(Number).filter(d => d >= from).slice(0, k);
+    function show(d) {
+      sec.querySelectorAll('[data-d]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.d === d)));
+      let h;
+      if (d == null) h = `<p class="sl-ah">Ближайшие события</p>` + upcoming(TODAY, 3).map(x => EV[x].map(e => row(x, e)).join('')).join('');
+      else if (EV[d]) h = `<p class="sl-ah">${d} ноября, ${WDF[wd(d)]}</p>` + EV[d].map(e => row(d, e)).join('');
+      else { const nx = upcoming(d + 1, 1)[0]; h = `<p class="sl-ah">${d} ноября, ${WDF[wd(d)]}</p><p class="sl-none">В этот день событий нет${nx ? '. Ближайшее после:' : ''}</p>` + (nx ? EV[nx].map(e => row(nx, e)).join('') : ''); }
+      ag.innerHTML = h + `<a class="sl-all" href="#">Все события${I.go}</a>`;
+      ag.classList.remove('sl-swap'); void ag.offsetWidth; ag.classList.add('sl-swap');
+    }
+    let sel = null;
+    sec.addEventListener('click', e => {
+      const b = e.target.closest('[data-d]');
+      if (b) { const d = +b.dataset.d; sel = sel === d ? null : d; show(sel); return; }
+      const m = e.target.closest('.sl-mon');
+      if (m) { const o = sec.classList.toggle('sl-mopen'); m.setAttribute('aria-expanded', String(o)); m.querySelector('span').textContent = o ? 'Только неделя' : 'Весь ноябрь'; }
+    });
+    show(null);
+    if (Q.get('cal')) { const v = Q.get('cal'); if (v === 'm' || v.startsWith('m')) sec.querySelector('.sl-mon').click(); const n = parseInt(v.replace(/\D/g, ''), 10); if (n) { sel = n; show(n); } }
+  }
+  function vidCard(v) {
+    if (!v) return;
+    const t = v.querySelector('.vm-t'); const play = v.querySelector('.vm-play');
+    v.classList.add('sl-vc');
+    const pl = el('div', 'sl-vpl', `<div><div class="sl-vin"><div class="sl-vbox"><img src="img/proryv-igor.webp" alt=""><span class="sl-vbig"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span><span class="sl-vtime">4:12</span></div>
+      <ol class="sl-vch"><li><b>0:00</b>Мой день и шаг на сегодня</li><li><b>1:10</b>Маршрут и трекер</li><li><b>2:30</b>Календарь и встречи</li><li><b>3:20</b>Люди и карта фриманов</li></ol></div></div>`);
+    v.append(pl);
+    const tog = () => { const o = v.classList.toggle('sl-vopen'); play.setAttribute('aria-expanded', String(o)); play.setAttribute('aria-label', o ? 'Свернуть видео' : 'Смотреть видео'); };
+    play.addEventListener('click', tog); if (t) { t.addEventListener('click', tog); t.style.cursor = 'pointer'; }
+    if (Q.get('vid') === '1') tog();
   }
   function step5() {
-    if (PAGE === 'main') {
-      const pr = $('#d-promos');
-      if (pr) { pr.classList.add('panel'); fold(pr, 'Предложения для вас', '«Мой оффер» и «Прорыв за 30 дней»'); }
-      fold($('#d-map'), 'Карта фриманов', '43 страны · 129 городов · кто чем может помочь');
-      fold($('#d-cal'), 'Календарь', '5 событий в ноябре · ближайшее сб, 16:00');
-      fold($('.sl-vid'), 'Как пользоваться платформой', 'видео Игоря Графа · 4 минуты');
-      // порядок по ходу дня: что делать → своё → остальное
-      const L = $('.grid > .col'); ['#d-promos', '#d-map'].forEach(s => { const e = $(s); e && L.append(e); });
-    } else {
-      fold($('#k-life'), PAGE === 'pp' ? 'Жизнь ПП-клуба' : 'Жизнь клуба', '37 фриманов на платформе · топ и результаты за 30 дней');
-      fold($('#k-near'), 'Знакомьтесь — рядом с вами', '5 человек рядом · Лиссабон');
-      fold($('#d-map'), 'Карта фриманов', '43 страны · 129 городов');
-      fold($('.sl-insp'), 'Вдохновение', 'Карта дня Оракула, слово «Оффер», мечта участника');
-      const stats = $('.rt-stats'), hero = $('.rt-hero');
-      if (hero && stats) { const rh = $('#k-rhythm'); fold(rh, 'Прогресс', '$340 из $1 000 · 4 дня фокуса подряд · 7 задач за неделю', true); }
-    }
+    calCard($('#d-cal'));
+    if (PAGE === 'main') vidCard($('#d-vid'));
   }
 
   // ---------- шаг 6: меню ----------
@@ -218,7 +242,7 @@
   }
 
   function run() {
-    const fns = [null, null, step2, step3, null, step5, step6, step7];
+    const fns = [null, null, step2, step3, step4, step5, step6, step7];
     for (let i = 1; i <= STEP; i++) if (fns[i]) try { fns[i](); } catch (e) { console.error('step', i, e); }
     stepbar();
   }
