@@ -262,3 +262,29 @@ html:not([data-slop=pp]) .sl-pbox { background: rgba(255,255,255,.82); }
 .sl-week { transition: opacity .2s; }
 .sl-mopen .sl-week { display: none; }
 .sl-mopen .sl-mg { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* шаг 2 · «Мой ритм» как на сайте: циферблат и цель рядом, доход на всю ширину, иконки мельче */
+html.s2 .sl-rt .rt-acts { align-items: center; gap: 8px; }
+html.s2 .sl-rt .rt-q svg { width: 15px; height: 15px; }
+html.s2 .sl-rt .rt-q.sl-ic { width: 34px; padding: 0 !important; justify-content: center; gap: 0; }
+@container (min-width: 421px) {
+  html.s2 .sl-rt .rt-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) !important; }
+  html.s2 .sl-rt .rt-dial { border-radius: 22px 0 0 0; }
+  html.s2 .sl-rt .rt-goal { border-radius: 0 22px 0 0; justify-content: center; }
+  html.s2 .sl-rt .rt-inc { grid-column: 1 / -1; border-left: 0 !important; border-top: 1px solid var(--sl-line) !important; border-radius: 0 0 22px 22px; }
+}
+html.s2 .sl-rt :is(.rt-next, .rt-got) { display: none; }
+html.s2 .sl-rt .rt-gt { font-size: 26px; }
+html.s2 .sl-rt .sl-gbar { display: block; height: 6px; margin-top: 10px; border-radius: 99px; background: var(--sl-line); overflow: hidden; max-width: 320px; }
+html.s2 .sl-rt .sl-gbar s { display: block; height: 100%; border-radius: inherit; background: var(--sl-acc); }
+html.s2 .sl-rt .rt-dial .dial { max-width: 200px; }
+html.s2 .sl-rt .rt-fr { width: 38px; }
+html.s2 .sl-rt .rt-ics { gap: 8px; margin-top: 10px; }
+html.s2 .sl-rt .rt-ics span { width: 28px; height: 28px; border-radius: 9px; font-size: 14px; box-shadow: none; }
+html.s2 .sl-rt .rt-ics i { width: 14px; height: 14px; top: -4px; right: -4px; }
+html.s2 .sl-rt .rt-ics i svg { width: 8px; height: 8px; }
+html.s2 .sl-rt .rt-ics small { font-size: 10px; }
+html.s2 .sl-rt .rt-plot { min-height: 92px; }
+html.s2 .sl-rt .rt-st { grid-template-columns: 30px minmax(0, 1fr) auto; }
+html.s2 .sl-rt .rt-si { width: 30px; height: 30px; border-radius: 9px; }
+html.s2 .sl-rt .rt-si svg { width: 15px; height: 15px; }
