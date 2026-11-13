@@ -14,10 +14,10 @@
   const STEPS = [
     ['Как есть', 'Исходный дашборд без правок.'],
     ['Лучшие практики', '«Подними дизайн по лучшим практикам»: одна шкала шрифтов, один стиль карточек, спокойный фон, одна главная кнопка.'],
-    ['Иерархия', PAGE === 'main' ? 'Фрими и приветствие на месте, под ними три быстрых действия; маршрут в подвале «Моего дня», чаты внутри членства.' : 'Порядок прежний. «Мой ритм» как на сайте: две кнопки словами, остальные иконками; циферблат и цель рядом, доход на всю ширину. В шапке дата.'],
+    ['Иерархия', PAGE === 'main' ? 'Фрими и приветствие на месте, под ними три быстрых действия. «Мой день» как на сайте: «Сегодня» слева, «Ближайшие 7 дней» справа, на телефоне свайп. Маршрут в подвале, чаты внутри членства.' : 'Порядок прежний. «Мой ритм» как на сайте: две кнопки словами, остальные иконками; циферблат и цель рядом, доход на всю ширину. В шапке дата.'],
     ['Кнопки-награды', 'Каждая кнопка при наведении поднимается и говорит о выигрыше: текст меняется на результат, значок летит по кругу.'],
     ['Матовое стекло', 'Панели полупрозрачные поверх пейзажа, внутренние плитки, люди и карта в одном чистом стиле.'],
-    ['Календарь и видео', 'Ничего не свёрнуто. Календарь: неделя и ближайшие события, месяц по кнопке, события дня внутри карточки. Видео открывается на месте.'],
+    ['Календарь и видео', 'Ничего не свёрнуто. Календарь — числа месяца с точками событий, события дня показываются в карточке по нажатию и не дублируют «Мой день». Видео открывается на месте.'],
     ['Меню', '«Сгруппируй меню, подпиши группы, каждому пункту иконку»: меньше пунктов на виду.'],
     ['Поиск ⌘K', '«Поиск — маленький виджет с ⌘K, по нему окно быстрых действий». Нажмите ⌘K или на поиск.'],
   ];
@@ -52,12 +52,16 @@
         const acts = el('div', 'sl-acts', `<a class="sl-q p" href="#">${I.flag}Шаг на сегодня</a><a class="sl-q" href="#">${I.route}Мой маршрут</a><a class="sl-q" href="#">${I.cal}Календарь</a>`);
         box.append(acts); hello.classList.add('sl-hello');
       }
+      myDay();
       // маршрут — подвал «Моего дня»
       const day = $('#d-day'), route = $('#d-route');
       if (day && route) { route.classList.add('sl-in'); day.append(route); }
       // членство и чаты — одна карточка
       const mem = $('#d-mem'), chats = $('#d-chats');
-      if (mem && chats) { const a = [...chats.querySelectorAll('a.chat')].filter(x => x.offsetParent !== null); if (a.length) { mem.append(el('p', 'sl-sub', 'Чаты в Telegram'), ...a); } chats.remove(); }
+      if (mem && chats) { const a = [...chats.querySelectorAll('a.chat')].filter(x => x.offsetParent !== null); if (a.length) {
+        // настоящие аватарки из Telegram: чат — золотая спираль клуба, бот — Игорь и Саша
+        a.forEach(r => { const t = norm(r.textContent); const ic = r.querySelector('img, i.fa'); const av = el('img', 'sl-tga'); av.alt = ''; av.src = /Бот/.test(t) ? 'img/tg-bot.jpg' : 'img/tg-chat.jpg'; if (ic) ic.replaceWith(av); else r.prepend(av); r.classList.add('sl-tg'); });
+        const list = el('div', 'sl-tgl'); list.append(...a); mem.append(el('p', 'sl-sub', 'Чаты в Telegram'), list); } chats.remove(); }
     } else {
       // порядок прежний: «Мой ритм» сверху, «Сегодня в работе» внутри него; дата в шапке
       const sm = $('header.top h1 small');
@@ -78,6 +82,42 @@
         if (gs && pc) gs.after(el('i', 'sl-gbar', `<s style="width:${pc}%"></s>`));
       }
     }
+  }
+
+  // «Мой день» как на сайте (Саша 09.11): слева «Сегодня» плашками, справа «Ближайшие 7 дней» списком;
+  // на телефоне две карточки со свайпом и точками
+  function myDay() {
+    const day = $('#d-day'); if (!day) return;
+    const td = day.querySelector('[data-pane="today"]'), wk = day.querySelector('[data-pane="week"]');
+    if (!td || !wk) return;
+    wk.hidden = false;
+    const byDay = {};
+    [...wk.querySelectorAll('.day-group')].filter(g => g.offsetParent !== null).forEach(g => {
+      const n = parseInt(norm(g.querySelector('.day-name span')?.textContent), 10);
+      if (!n || n <= 6) return;
+      g.querySelectorAll('li.item').forEach(li => (byDay[n] = byDay[n] || []).push({ t: norm(li.querySelector('.tm')?.textContent) || '—', n: norm(li.querySelector('.tx b')?.textContent), p: norm(li.querySelector('.pchip')?.textContent) || 'Альянс', k: li.dataset.p || 'fa' }));
+    });
+    wk.hidden = true;
+    for (let d = 7; d <= 13; d++) (EV[d] || []).forEach(([t, n]) => { const a = byDay[d] = byDay[d] || []; if (!a.some(x => x.n === n)) a.push({ t, n, p: 'Альянс', k: 'fa' }); });
+    const days = Object.keys(byDay).map(Number).filter(d => d <= 13).sort((a, b) => a - b);
+    const title = d => d === 7 ? 'Завтра' : WDF[wd(d)].replace(/^./, c => c.toUpperCase());
+    const next = days.map(d => `<div class="sl-dn"><p class="sl-dnd">${title(d)} <span>${d}&nbsp;ноября</span></p>` +
+      byDay[d].sort((a, b) => a.t.localeCompare(b.t)).map(x => `<a class="sl-dnev" href="#" data-p="${x.k}"><span class="sl-dnt">${x.t}</span><span class="sl-dntt"><b>${x.n}</b><span class="sl-dnp"><i></i>${x.p}</span></span>${I.chev}</a>`).join('') + `</div>`).join('');
+    const split = el('div', 'sl-split');
+    const a = el('div', 'sl-pane sl-ptoday'); a.setAttribute('aria-label', 'Сегодня'); a.append(td); td.hidden = false;
+    const b = el('div', 'sl-pane sl-pnext', `<p class="day-name">Ближайшие 7 дней</p>${next || '<p class="sl-none">На ближайшие 7 дней ничего не запланировано.</p>'}`); b.setAttribute('aria-label', 'Ближайшие 7 дней');
+    // действие плашки — круглая кнопка со стрелкой, как на сайте; подпись остаётся для экранного диктора
+    td.querySelectorAll('li.item a.act').forEach(x => { const t = norm(x.textContent); x.classList.add('sl-round'); x.setAttribute('aria-label', t); x.title = t; x.innerHTML = I.chev; });
+    split.append(a, b); wk.replaceWith(split);
+    const dots = el('div', 'sl-dots', '<button type="button" aria-label="Сегодня" aria-selected="true"><i></i></button><button type="button" aria-label="Ближайшие 7 дней" aria-selected="false"><i></i></button>');
+    split.after(dots);
+    const btns = dots.querySelectorAll('button');
+    split.addEventListener('scroll', () => { const i = split.scrollLeft > split.clientWidth * .35 ? 1 : 0; btns.forEach((x, j) => x.setAttribute('aria-selected', String(i === j))); }, { passive: true });
+    btns.forEach((x, i) => x.addEventListener('click', () => split.scrollTo({ left: split.children[i].offsetLeft - split.offsetLeft, behavior: 'smooth' })));
+    const tabs = day.querySelector('.day-tabs');
+    if (tabs) tabs.replaceWith(el('a', 'sl-callink', 'Календарь'));
+    day.querySelector('.sl-callink')?.setAttribute('href', '#');
+    day.classList.add('sl-myday');
   }
 
   // ---------- шаг 3: кнопки-награды ----------
@@ -128,34 +168,26 @@
     const TODAY = 6;
     sec.classList.add('sl-cal'); sec.innerHTML = '';
     const dayBtn = (d, cls) => `<button type="button" class="${cls}${d === TODAY ? ' today' : ''}${d < TODAY ? ' past' : ''}${EV[d] ? ' has' : ''}" data-d="${d}" aria-pressed="false" aria-label="${d} ноября${EV[d] ? ', есть события' : ''}">`;
-    let week = ''; for (let d = 2; d <= 8; d++) week += dayBtn(d, 'sl-d') + `<small>${WD[wd(d)]}</small><b>${d}</b><i></i></button>`;
     let month = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map(x => `<span class="sl-mw">${x}</span>`).join('') + '<span></span>'.repeat(6);
     for (let d = 1; d <= 30; d++) month += dayBtn(d, 'sl-md') + `${d}<i></i></button>`;
-    sec.innerHTML = `<div class="ph"><h3>Календарь</h3><button type="button" class="sl-mon" aria-expanded="false"><span>Весь ноябрь</span>${I.chev}</button></div>
-      <div class="sl-week" role="group" aria-label="Эта неделя">${week}</div>
-      <div class="sl-month"><div><div class="sl-mg">${month}</div></div></div>
+    sec.innerHTML = `<div class="ph"><h3>Ноябрь</h3><a class="sl-calall" href="#">Весь календарь</a></div>
+      <div class="sl-mg">${month}</div>
       <div class="sl-agenda" aria-live="polite"></div>`;
     const ag = sec.querySelector('.sl-agenda');
-    const row = (d, [t, n]) => `<a class="sl-ev" href="#"><span class="sl-leaf"><small>${WD[wd(d)]}</small><b>${d}</b></span><span class="sl-evt"><b>${n}</b><small>${t} · онлайн</small></span><em>${I.go}</em></a>`;
-    const upcoming = (from, k) => Object.keys(EV).map(Number).filter(d => d >= from).slice(0, k);
+    const row = (d, [t, n]) => `<a class="sl-ev" href="#"><span class="sl-evtm">${t}</span><span class="sl-evt"><b>${n}</b><small>онлайн</small></span><em>${I.go}</em></a>`;
     function show(d) {
       sec.querySelectorAll('[data-d]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.d === d)));
-      let h;
-      if (d == null) h = `<p class="sl-ah">Ближайшие события</p>` + upcoming(TODAY, 3).map(x => EV[x].map(e => row(x, e)).join('')).join('');
-      else if (EV[d]) h = `<p class="sl-ah">${d} ноября, ${WDF[wd(d)]}</p>` + EV[d].map(e => row(d, e)).join('');
-      else { const nx = upcoming(d + 1, 1)[0]; h = `<p class="sl-ah">${d} ноября, ${WDF[wd(d)]}</p><p class="sl-none">В этот день событий нет${nx ? '. Ближайшее после:' : ''}</p>` + (nx ? EV[nx].map(e => row(nx, e)).join('') : ''); }
-      ag.innerHTML = h + `<a class="sl-all" href="#">Все события${I.go}</a>`;
+      if (d == null) { ag.innerHTML = ''; sec.classList.remove('sl-picked'); return; }
+      sec.classList.add('sl-picked');
+      ag.innerHTML = `<p class="sl-ah">${d} ноября, ${WDF[wd(d)]}</p>` + (EV[d] ? EV[d].map(e => row(d, e)).join('') : '<p class="sl-none">В этот день событий нет</p>');
       ag.classList.remove('sl-swap'); void ag.offsetWidth; ag.classList.add('sl-swap');
     }
     let sel = null;
     sec.addEventListener('click', e => {
       const b = e.target.closest('[data-d]');
-      if (b) { const d = +b.dataset.d; sel = sel === d ? null : d; show(sel); return; }
-      const m = e.target.closest('.sl-mon');
-      if (m) { const o = sec.classList.toggle('sl-mopen'); m.setAttribute('aria-expanded', String(o)); m.querySelector('span').textContent = o ? 'Только неделя' : 'Весь ноябрь'; }
+      if (b) { const d = +b.dataset.d; sel = sel === d ? null : d; show(sel); }
     });
-    show(null);
-    if (Q.get('cal')) { const v = Q.get('cal'); if (v === 'm' || v.startsWith('m')) sec.querySelector('.sl-mon').click(); const n = parseInt(v.replace(/\D/g, ''), 10); if (n) { sel = n; show(n); } }
+    if (Q.get('cal')) { const n = parseInt(Q.get('cal').replace(/\D/g, ''), 10); if (n) { sel = n; show(n); } }
   }
   function vidCard(v) {
     if (!v) return;

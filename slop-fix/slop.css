@@ -288,3 +288,59 @@ html.s2 .sl-rt .rt-plot { min-height: 92px; }
 html.s2 .sl-rt .rt-st { grid-template-columns: 30px minmax(0, 1fr) auto; }
 html.s2 .sl-rt .rt-si { width: 30px; height: 30px; border-radius: 9px; }
 html.s2 .sl-rt .rt-si svg { width: 15px; height: 15px; }
+
+/* шаг 2 · чаты внутри «Моего членства»: ровный список, настоящие аватарки из Telegram */
+.sl-tgl { display: flex; flex-direction: column; }
+html[data-slop] #d-mem a.sl-tg.chat { display: flex !important; align-items: center; gap: 12px; padding: 10px 8px !important; margin: 0 -8px; border: 0 !important; border-radius: 12px; background: transparent !important; box-shadow: none !important; font-size: 14px; font-weight: 600; color: var(--sl-ink); text-decoration: none; }
+html[data-slop] #d-mem a.sl-tg.chat + a.sl-tg.chat { border-top: 1px solid var(--sl-line) !important; border-radius: 0 0 12px 12px; }
+html[data-slop] #d-mem a.sl-tg.chat:hover { background: var(--sl-tile-h, rgba(47,123,255,.06)) !important; }
+#d-mem .sl-tga { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex: none; border: 0; padding: 0; background: none; }
+html[data-slop] #d-mem a.sl-tg.chat span { margin-right: auto; }
+html[data-slop] #d-mem a.sl-tg.chat > svg { width: 16px; height: 16px; color: var(--sl-acc); flex: none; }
+
+/* шаг 2 · «Мой день» в две колонки, как на сайте: «Сегодня» плашками, «Ближайшие 7 дней» списком */
+.sl-myday .ph { align-items: center; }
+.sl-callink { margin-left: auto; font-size: 13.5px; font-weight: 600; color: var(--sl-acc-txt, var(--sl-acc)); text-decoration: none; }
+.sl-callink:hover { text-decoration: underline; text-underline-offset: 3px; }
+.sl-split { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); align-items: start; }
+.sl-pane { min-width: 0; }
+.sl-pnext { border-left: 1px solid var(--sl-line); padding-left: 24px; margin-left: 24px; }
+.sl-pnext > .day-name { margin: 0 0 12px; }
+.sl-dn + .sl-dn { margin-top: 14px; }
+.sl-dnd { margin: 0 0 4px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--sl-ink3); }
+.sl-dnd span { font-weight: 500; letter-spacing: 0; text-transform: none; margin-left: 4px; }
+.sl-dnev { display: grid; grid-template-columns: 46px minmax(0, 1fr) 16px; gap: 10px; align-items: start; padding: 8px 8px; margin: 0 -8px; border-radius: 12px; color: var(--sl-ink); text-decoration: none; transition: background-color .2s; }
+.sl-dnev:hover { background: var(--sl-soft); }
+.sl-dnt { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; padding-top: 1px; }
+.sl-dntt b { display: block; font-size: 14px; font-weight: 600; line-height: 1.3; }
+.sl-dnp { display: inline-flex; align-items: center; gap: 6px; margin-top: 2px; font-size: 12.5px; color: var(--sl-ink3); }
+.sl-dnp i { width: 6px; height: 6px; border-radius: 50%; background: #C9A227; }
+.sl-dnev[data-p="reg"] .sl-dnp i { background: #2EA05A; }
+.sl-dnev[data-p="pp"] .sl-dnp i { background: #7B61FF; }
+.sl-dnev > svg { width: 16px; height: 16px; color: var(--sl-ink3); margin-top: 3px; transform: rotate(-90deg); transition: transform .28s cubic-bezier(.22,1,.36,1), color .2s; }
+.sl-dnev:hover > svg { color: var(--sl-ink); transform: rotate(-90deg) translateY(2px); }
+.sl-dots { display: none; }
+@media (max-width: 600px) {
+  .sl-split { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; margin: 0 -4px; padding: 0 4px; }
+  .sl-split::-webkit-scrollbar { display: none; }
+  .sl-pane { flex: 0 0 86%; scroll-snap-align: start; border-radius: 18px; padding: 16px 12px; background: var(--sl-tile, rgba(47,123,255,.035)); border: 1px solid var(--sl-line); }
+  .sl-pnext { margin-left: 0; padding-left: 12px; }
+  .sl-dots { display: flex; justify-content: center; gap: 4px; margin-top: 8px; }
+  .sl-dots button { width: 28px; height: 28px; border: 0; background: none; display: grid; place-items: center; cursor: pointer; }
+  .sl-dots i { width: 7px; height: 7px; border-radius: 4px; background: var(--sl-line); transition: width .2s, background-color .2s; }
+  .sl-dots button[aria-selected="true"] i { width: 18px; background: var(--sl-ink2); }
+}
+
+/* шаг 5 · календарь: числа месяца с точками событий, события дня — в карточке по нажатию */
+.sl-cal .ph { align-items: center; }
+.sl-calall { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--sl-acc); text-decoration: none; }
+html .sl-cal > .sl-mg { opacity: 1; transform: none; margin-top: 4px; padding-top: 0; border-top: 0; }
+.sl-cal .sl-agenda:empty { display: none; }
+.sl-evtm { width: 46px; flex: none; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+html[data-slop] .sl-ptoday li.item a.act.sl-round { width: 40px !important; height: 40px !important; min-width: 0 !important; padding: 0 !important; border-radius: 50% !important; display: grid !important; place-items: center; flex: none; align-self: center; }
+.sl-ptoday a.sl-round svg { width: 18px !important; height: 18px !important; transform: rotate(-90deg); margin: 0 !important; }
+html.s3 .sl-ptoday a.sl-round:hover svg { transform: rotate(-90deg) translateY(2px); }
+@media (max-width: 600px) {
+  html[data-slop] .sl-ptoday li.item { grid-template-columns: 38px 32px minmax(0, 1fr) 40px !important; gap: 8px !important; }
+  html[data-slop] .sl-ptoday li.item a.act.sl-round { grid-column: auto !important; justify-self: end !important; }
+}
