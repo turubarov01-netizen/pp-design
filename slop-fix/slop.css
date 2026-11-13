@@ -1,0 +1,176 @@
+/* Пошаговые правки поверх макетов. html.sN — включены шаги 1..N. */
+#pult, p.note { display: none !important; }
+html { --sl-ink: #0B1020; --sl-ink2: #4A5163; --sl-ink3: #7A8194; --sl-line: rgba(11,16,32,.08); --sl-card: #fff; --sl-bg: #F5F6F8; --sl-acc: #2F7BFF; --sl-acc-ink: #fff; --sl-soft: rgba(11,16,32,.04); --sl-glass: rgba(255,255,255,.58); --sl-glass-b: rgba(255,255,255,.55); }
+html[data-slop=pp] { --sl-ink: #F2EEE4; --sl-ink2: #BDB9B0; --sl-ink3: #8A8E97; --sl-line: rgba(255,255,255,.08); --sl-card: #131B26; --sl-bg: #0B0F15; --sl-acc: #E2BC5A; --sl-acc-ink: #1A1406; --sl-soft: rgba(255,255,255,.05); --sl-glass: rgba(14,20,30,.55); --sl-glass-b: rgba(255,255,255,.09); }
+
+/* ---------- панель шагов ---------- */
+.sl-steps { position: fixed; left: calc(50% + 124px); bottom: 18px; transform: translateX(-50%); z-index: 120; display: flex; align-items: center; gap: 14px; padding: 8px 10px 8px 8px; border-radius: 18px; background: rgba(11,16,32,.92); color: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.28); font: 500 13px/1.3 "Medeo Sans", system-ui, sans-serif; max-width: calc(100vw - 40px); }
+.sl-steps a { color: inherit; text-decoration: none; }
+.sl-pages { display: flex; gap: 2px; background: rgba(255,255,255,.08); border-radius: 12px; padding: 3px; }
+.sl-pages a { padding: 6px 10px; border-radius: 9px; color: rgba(255,255,255,.7); }
+.sl-pages a.on { background: #fff; color: #0B1020; font-weight: 600; }
+.sl-nums { display: flex; gap: 4px; }
+.sl-nums a { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-variant-numeric: tabular-nums; color: rgba(255,255,255,.55); background: rgba(255,255,255,.06); }
+.sl-nums a.done { color: #fff; background: rgba(255,255,255,.14); }
+.sl-nums a.on { background: #2F7BFF; color: #fff; font-weight: 700; }
+.sl-cap { display: flex; flex-direction: column; min-width: 0; width: 420px; }
+.sl-cap b { font-weight: 650; }
+.sl-cap span { color: rgba(255,255,255,.62); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sl-arr { display: flex; gap: 4px; }
+.sl-arr a { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,.1); font-size: 16px; }
+.sl-arr a:hover { background: rgba(255,255,255,.2); }
+.sl-arr a.off { opacity: .3; pointer-events: none; }
+.wrap { padding-bottom: 96px !important; }
+.grid > .col { padding-bottom: 96px !important; }
+
+/* =========================================================
+   ШАГ 1. Лучшие практики: одна шкала шрифтов, один стиль карточек
+   ========================================================= */
+html.s1 body { background: var(--sl-bg); color: var(--sl-ink); }
+html.s1 .side { background: var(--sl-card); border-right: 1px solid var(--sl-line); }
+html.s1 .top { background: color-mix(in srgb, var(--sl-bg) 88%, transparent); border-bottom: 1px solid var(--sl-line); }
+html.s1 .top h1 { font-size: 20px; font-weight: 650; letter-spacing: -.01em; }
+html.s1 .top h1 small { font-size: 12px; font-weight: 500; color: var(--sl-ink3); }
+/* одна карточка */
+html.s1 .panel { background: var(--sl-card) !important; border: 1px solid var(--sl-line) !important; border-radius: 16px !important; box-shadow: 0 1px 2px rgba(11,16,32,.04) !important; padding: 22px 24px !important; }
+html.s1[data-slop=pp] .panel { box-shadow: none !important; }
+html.s1 .promo { border-radius: 16px !important; box-shadow: none !important; }
+/* шкала: 20 / 16 / 14 / 12 */
+html.s1 .ph { margin-bottom: 14px; align-items: center; }
+html.s1 .ph h3 { font-size: 16px !important; font-weight: 650 !important; letter-spacing: -.005em; }
+html.s1 .fm-sub, html.s1 .ph > a, html.s1 .ph > span { font-size: 12px !important; color: var(--sl-ink3) !important; font-weight: 500 !important; }
+html.s1 .rt-k, html.s1 .rt-tk, html.s1 .tr-k, html.s1 .navh, html.s1 .mm-k, html.s1 .day-name { font-size: 11px !important; letter-spacing: .06em !important; font-weight: 600 !important; color: var(--sl-ink3) !important; }
+html.s1 body, html.s1 .panel { font-size: 14px; }
+html.s1 b, html.s1 .mm-v, html.s1 .mt-left { font-variant-numeric: tabular-nums; }
+/* внутренние плашки — без собственных теней и цветных фонов */
+html.s1 .rt-hero, html.s1 .rt-stats > *, html.s1 .rt-t, html.s1 .mm2, html.s1 .ro-rec a { box-shadow: none !important; border-color: var(--sl-line) !important; border-radius: 12px !important; }
+html.s1:not([data-slop=pp]) .rt-hero, html.s1:not([data-slop=pp]) .rt-t { background: #fff !important; }
+/* одна главная кнопка, остальные спокойные */
+html.s1 .rt-q { background: transparent !important; color: var(--sl-ink2) !important; border: 1px solid var(--sl-line); height: 34px; border-radius: 10px; }
+html.s1 .rt-q.p { background: var(--sl-acc) !important; color: var(--sl-acc-ink) !important; border-color: transparent; }
+html.s1 .btn-s { background: var(--sl-soft) !important; color: var(--sl-ink) !important; }
+html.s1 .btn { border-radius: 10px; }
+html.s1 .nav { color: var(--sl-ink2); border-radius: 10px; }
+html.s1 .nav.on { background: var(--sl-soft) !important; color: var(--sl-ink) !important; font-weight: 600; }
+html.s1 .tb { background: transparent; border-color: var(--sl-line); }
+
+/* =========================================================
+   ШАГ 2. Иерархия: действия наверху, связанное вместе
+   ========================================================= */
+.sl-bar { display: flex; align-items: center; gap: 16px; padding: 4px 2px 6px; }
+.sl-hi { display: flex; flex-direction: column; margin-right: auto; flex: none; white-space: nowrap; }
+.sl-hi span { font-size: 12px; color: var(--sl-ink3); font-weight: 500; }
+.sl-hi b { font-size: 22px; font-weight: 700; letter-spacing: -.02em; color: var(--sl-ink); }
+.sl-bar .sl-acts { display: flex; flex-wrap: nowrap; gap: 6px; justify-content: flex-end; min-width: 0; }
+.sl-bar .rt-q { padding: 0 10px !important; }
+.sl-bar .sl-acts > * { flex: none; }
+html[data-slop=fa] .sl-bar, html[data-slop=pp] .sl-bar { flex-wrap: wrap; row-gap: 12px; }
+html[data-slop=fa] .sl-bar .sl-acts, html[data-slop=pp] .sl-bar .sl-acts { width: 100%; justify-content: flex-start; }
+.sl-q { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 13px; border-radius: 10px; border: 1px solid var(--sl-line); background: var(--sl-card); color: var(--sl-ink); font-size: 13px; font-weight: 600; text-decoration: none; }
+.sl-q svg, .sl-bar .rt-q svg { width: 16px; height: 16px; }
+.sl-q.p { background: var(--sl-acc); color: var(--sl-acc-ink); border-color: transparent; }
+.sl-bar .rt-q { height: 36px !important; background: var(--sl-card) !important; }
+.sl-bar .rt-q.p { background: var(--sl-acc) !important; }
+.sl-today .rt-today { margin: 0 !important; }
+#d-day .sl-in { border: 0 !important; border-top: 1px solid var(--sl-line) !important; border-radius: 0 !important; box-shadow: none !important; background: transparent !important; padding: 16px 0 0 !important; margin-top: 16px; }
+.sl-sub { margin: 16px 0 6px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--sl-ink3); }
+.sl-sched .sl-calph { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--sl-line); }
+.sl-insp .sl-part { border: 0 !important; padding: 14px 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; border-top: 1px solid var(--sl-line) !important; }
+.sl-insp .sl-part .ph h3 { font-size: 14px !important; }
+
+/* =========================================================
+   ШАГ 3. Кнопка-награда
+   ========================================================= */
+.sl-win { position: relative; overflow: hidden; gap: 8px !important; }
+.sl-win .sl-ico { width: 16px; height: 16px; display: inline-grid; place-items: center; flex: none; }
+.sl-win .sl-ico svg { width: 16px; height: 16px; }
+.sl-win .sl-lbl { position: relative; display: inline-grid; justify-items: center; height: 1.3em; overflow: hidden; line-height: 1.3em; }
+.sl-win .sl-a, .sl-win .sl-b { grid-area: 1/1; transition: transform .32s cubic-bezier(.22,1,.36,1), opacity .25s; white-space: nowrap; }
+.sl-win .sl-b { transform: translateY(110%); opacity: 0; }
+.sl-win:hover .sl-a, .sl-win.hv .sl-a { transform: translateY(-110%); opacity: 0; }
+.sl-win:hover .sl-b, .sl-win.hv .sl-b { transform: translateY(0); opacity: 1; }
+.sl-win:hover .sl-ico svg, .sl-win.hv .sl-ico svg { animation: sl-fly 1.4s cubic-bezier(.5,0,.5,1) infinite; }
+.sl-win:hover, .sl-win.hv { box-shadow: 0 6px 18px color-mix(in srgb, var(--sl-acc) 35%, transparent); transform: translateY(-1px); }
+@keyframes sl-fly { 0% { transform: translate(0,0); opacity: 1 } 45% { transform: translate(14px,-14px) rotate(-8deg); opacity: 0 } 46% { transform: translate(-14px,14px); opacity: 0 } 100% { transform: translate(0,0); opacity: 1 } }
+@media (prefers-reduced-motion: reduce) { .sl-win .sl-ico svg { animation: none !important; } }
+
+/* =========================================================
+   ШАГ 4. Матовое стекло
+   ========================================================= */
+html.s4 body { background: #9db4cc url(img/wall-light.jpg) center/cover fixed no-repeat !important; }
+html.s4[data-slop=pp] body { background: #05070c url(img/wall-dark.jpg) center/cover fixed no-repeat !important; }
+html.s4 .app, html.s4 .main, html.s4 .wrap { background: transparent !important; }
+html.s4 .side, html.s4 .top { background: var(--sl-glass) !important; backdrop-filter: blur(28px) saturate(1.5); -webkit-backdrop-filter: blur(28px) saturate(1.5); border-color: var(--sl-glass-b) !important; }
+html.s4 .panel { background: var(--sl-glass) !important; backdrop-filter: blur(24px) saturate(1.5); -webkit-backdrop-filter: blur(24px) saturate(1.5); border-color: var(--sl-glass-b) !important; box-shadow: 0 8px 30px rgba(11,16,32,.08) !important; }
+html.s4:not([data-slop=pp]) .rt-hero, html.s4:not([data-slop=pp]) .rt-t, html.s4:not([data-slop=pp]) .rt-stats > *, html.s4:not([data-slop=pp]) .mm2 { background: rgba(255,255,255,.55) !important; border-color: rgba(255,255,255,.6) !important; }
+html.s4[data-slop=pp] .rt-hero, html.s4[data-slop=pp] .rt-t, html.s4[data-slop=pp] .rt-stats > * { background: rgba(255,255,255,.04) !important; }
+html.s4 .sl-q:not(.p), html.s4 .sl-bar .rt-q:not(.p) { background: var(--sl-glass) !important; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-color: var(--sl-glass-b) !important; }
+html.s4 .sl-hi b { text-shadow: 0 1px 12px rgba(255,255,255,.5); }
+html.s4[data-slop=pp] .sl-hi b { text-shadow: 0 1px 12px rgba(0,0,0,.5); }
+
+/* =========================================================
+   ШАГ 5. Аккордеоны
+   ========================================================= */
+.sl-fold { padding: 0 !important; overflow: hidden; }
+.sl-fold > .sl-acc { all: unset; box-sizing: border-box; width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px 22px; cursor: pointer; }
+.sl-fold > .sl-acc:hover { background: var(--sl-soft); }
+.sl-fold > .sl-acc:focus-visible { outline: 2px solid var(--sl-acc); outline-offset: -2px; border-radius: 16px; }
+.sl-acc-t { display: flex; flex-direction: column; margin-right: auto; min-width: 0; }
+.sl-acc-t b { font-size: 15px; font-weight: 650; color: var(--sl-ink); }
+.sl-acc-t small { font-size: 12px; color: var(--sl-ink3); margin-top: 2px; }
+.sl-chev { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; color: var(--sl-ink3); background: var(--sl-soft); transition: transform .25s cubic-bezier(.22,1,.36,1); flex: none; }
+.sl-chev svg { width: 16px; height: 16px; }
+.sl-fold.open .sl-chev { transform: rotate(180deg); }
+.sl-fold > .sl-body { display: none; padding: 0 22px 20px; }
+.sl-fold.open > .sl-body { display: block; }
+#d-promos.sl-fold > .sl-body { display: none; flex-direction: column; gap: 14px; }
+#d-promos.sl-fold.open > .sl-body { display: flex; }
+
+/* =========================================================
+   ШАГ 6. Меню
+   ========================================================= */
+.sl-nav { display: flex; flex-direction: column; gap: 1px; }
+.sl-nav .navh { margin: 18px 12px 6px !important; }
+.sl-nav .navh:first-child { margin-top: 10px !important; }
+.sl-n { gap: 11px; }
+.sl-n svg { width: 18px; height: 18px; flex: none; }
+.sl-n span { margin-right: auto; }
+.sl-pi { width: 18px; height: 18px; border-radius: 5px; }
+.sl-tag { font-style: normal; font-size: 10px; font-weight: 700; letter-spacing: .04em; padding: 2px 6px; border-radius: 6px; background: var(--sl-soft); color: var(--sl-ink3); text-transform: uppercase; }
+.sl-cnt { font-style: normal; font-size: 11px; font-weight: 700; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; display: inline-grid; place-items: center; background: var(--sl-acc); color: var(--sl-acc-ink); }
+.sl-more { color: var(--sl-ink3) !important; }
+.sl-more > svg:last-child { width: 14px; height: 14px; transition: transform .25s; }
+.side.sl-open .sl-more > svg:last-child { transform: rotate(180deg); }
+.sl-moreg { display: none; flex-direction: column; gap: 1px; padding-left: 10px; }
+.side.sl-open .sl-moreg { display: flex; }
+
+/* =========================================================
+   ШАГ 7. Поиск ⌘K
+   ========================================================= */
+.sl-k { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 8px 0 12px; border-radius: 10px; border: 1px solid var(--sl-line); background: var(--sl-card); color: var(--sl-ink3); font: 500 13px "Medeo Sans", system-ui, sans-serif; cursor: pointer; margin-right: 6px; }
+html.s4 .sl-k { background: var(--sl-glass); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-color: var(--sl-glass-b); }
+.sl-k svg { width: 16px; height: 16px; }
+.sl-k kbd, .sl-pal kbd { font: 600 11px "Medeo Sans", system-ui, sans-serif; padding: 2px 6px; border-radius: 6px; background: var(--sl-soft); color: var(--sl-ink2); border: 1px solid var(--sl-line); }
+.sl-k:hover { color: var(--sl-ink); border-color: color-mix(in srgb, var(--sl-acc) 40%, transparent); }
+.sl-pal { position: fixed; inset: 0; z-index: 100; display: none; align-items: flex-start; justify-content: center; padding-top: 12vh; background: rgba(11,16,32,.28); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.sl-pal.open { display: flex; animation: sl-in .18s ease-out; }
+@keyframes sl-in { from { opacity: 0 } }
+.sl-pbox { width: 600px; max-width: calc(100vw - 32px); border-radius: 18px; overflow: hidden; background: var(--sl-glass); backdrop-filter: blur(30px) saturate(1.6); -webkit-backdrop-filter: blur(30px) saturate(1.6); border: 1px solid var(--sl-glass-b); box-shadow: 0 30px 80px rgba(0,0,0,.3); color: var(--sl-ink); animation: sl-pop .22s cubic-bezier(.22,1,.36,1); }
+html:not([data-slop=pp]) .sl-pbox { background: rgba(255,255,255,.82); }
+@keyframes sl-pop { from { transform: translateY(8px) scale(.98); opacity: 0 } }
+.sl-pin { display: flex; align-items: center; gap: 10px; padding: 16px 18px; border-bottom: 1px solid var(--sl-line); }
+.sl-pin svg { width: 18px; height: 18px; color: var(--sl-ink3); }
+.sl-pin input { flex: 1; border: 0; outline: 0; background: transparent; font: 500 16px "Medeo Sans", system-ui, sans-serif; color: var(--sl-ink); }
+.sl-plist { max-height: 52vh; overflow: auto; padding: 6px 8px 8px; }
+.sl-pg { margin: 10px 10px 4px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--sl-ink3); }
+.sl-pi2 { display: flex; align-items: center; gap: 12px; padding: 10px 10px; border-radius: 10px; color: var(--sl-ink); text-decoration: none; font-size: 14px; font-weight: 500; }
+.sl-pi2 > svg { width: 18px; height: 18px; color: var(--sl-ink3); flex: none; }
+.sl-pi2 span { margin-right: auto; }
+.sl-pi2 small { color: var(--sl-ink3); font-size: 12px; }
+.sl-pi2 em { opacity: 0; width: 16px; }
+.sl-pi2 em svg { width: 16px; height: 16px; }
+.sl-pi2.on, .sl-pi2:hover { background: var(--sl-soft); }
+.sl-pi2.on em { opacity: .6; }
+.sl-pi2.on > svg { color: var(--sl-acc); }
+.sl-pfoot { display: flex; gap: 16px; padding: 10px 18px; border-top: 1px solid var(--sl-line); font-size: 12px; color: var(--sl-ink3); }
+.sl-pfoot kbd { margin-right: 3px; }
