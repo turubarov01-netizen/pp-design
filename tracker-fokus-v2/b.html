@@ -30,15 +30,30 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .hero { margin-top: 18px; display: grid; grid-template-columns: 1.55fr 1fr; gap: 18px; align-items: start; }
 
 /* ---------- колода целей ---------- */
-.deck { position: relative; perspective: 1600px; }
-.deck.multi { padding-top: 72px; }
-.ghost { position: absolute; left: 0; right: 0; top: 0; height: 120px; border-radius: 28px; background: var(--navy3); color: oklch(0.95 0.02 85); padding: 12px 22px; font-size: 13px; font-weight: 650; text-align: left; display: flex; align-items: flex-start; justify-content: space-between; transition: transform .35s var(--ease), background .25s; }
-.ghost.g1 { top: 34px; left: 14px; right: 14px; background: var(--navy2); transform: rotate(-.6deg); }
-.ghost.g2 { top: 0; left: 30px; right: 30px; transform: rotate(.8deg); }
-.ghost:hover { transform: translateY(-6px); }
-.face.front { display: flex; flex-direction: column; }
-.front .pips { margin-bottom: auto; }
-.ghost span { opacity: .75; font-weight: 500; }
+.deck { position: relative; min-width: 0; }
+.track { --cw: 100%; position: relative; display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px calc(50% - var(--cw) / 2) 10px; overscroll-behavior-x: contain; outline: none; }
+.track::-webkit-scrollbar { display: none; }
+.deck.multi .track { --cw: 620px; cursor: grab; }
+.track.drag { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+.slide { flex: 0 0 var(--cw); min-width: 0; scroll-snap-align: center; transition: transform .45s var(--ease), opacity .45s var(--ease); }
+.deck.multi .slide:not(.on) { transform: scale(.93); opacity: .55; cursor: pointer; }
+.deck.multi .slide:not(.on) .gcard { pointer-events: none; }
+.deck.multi .slide:not(.on):hover { opacity: .75; }
+.arr { position: absolute; top: calc(50% - 50px); z-index: 5; width: 52px; height: 52px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); color: var(--navy); display: grid; place-items: center; box-shadow: 0 10px 24px oklch(0.22 0.13 268 / .15); transition: transform .3s var(--ease), opacity .2s; }
+.arr svg { width: 22px; height: 22px; }
+.arr:hover { transform: scale(1.08); }
+.arr[disabled] { opacity: 0; pointer-events: none; }
+.arr.l { left: calc(50% - 310px - 26px); } .arr.r { right: calc(50% - 310px - 26px); }
+.switch { margin-top: 6px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sw { display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 6px 16px 6px 14px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); text-align: left; transition: background .25s, border-color .25s, color .25s; }
+.sw span { font-size: 14px; font-weight: 650; }
+.sw b { font: 400 20px/1 "Bebas", sans-serif; color: var(--navy); padding-top: 3px; }
+.sw em { font-style: normal; font-size: 12px; color: var(--ink2); }
+.sw.ok em { color: oklch(0.5 0.13 150); }
+.sw.on { background: var(--navy); border-color: var(--navy); color: var(--cream); }
+.sw.on b { color: var(--yellow); } .sw.on em { color: oklch(0.82 0.04 268); } .sw.on.ok em { color: oklch(0.8 0.12 150); }
+.hero.multi { grid-template-columns: 1fr; }
+.below.multi { grid-template-columns: 1fr 1fr 1fr; }
 .gcard { position: relative; z-index: 2; perspective: 1800px; }
 .inner { position: relative; display: grid; transform-style: preserve-3d; transition: transform .9s var(--ease); }
 .gcard.flipped .inner { transform: rotateY(180deg); }
@@ -162,7 +177,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .mate b { font-weight: 650; }
 .conf { position: fixed; z-index: 60; pointer-events: none; width: 8px; height: 12px; border-radius: 2px; }
 
-@media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr; } .below.multi { grid-template-columns: 1fr 1fr; } .below.multi .combo { grid-column: 1 / -1; } }
+@media (hover: none) { .arr { display: none; } }
 @media (max-width: 760px) {
   .wrap { padding: 16px 12px 120px; }
   .top h1 { font-size: 24px; }
@@ -171,7 +187,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .head { grid-template-columns: 1fr 120px; }
   .head h2 { font-size: 21px; }
   .ringwrap { width: 120px; height: 120px; } .ringwrap img { width: 116px; bottom: 4px; } .ringwrap circle { stroke-width: 9; }
-  .lvl b { font-size: 52px; } .lvl span { font-size: 13px; }
+  .lvl { flex-direction: column; align-items: flex-start; gap: 6px; } .lvl b { font-size: 52px; } .lvl span { font-size: 13px; } .lvl span br { display: none; }
   .pips { gap: 3px; } .pips i { height: 6px; }
   .quest { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px; }
   .go { justify-content: center; }
@@ -182,7 +198,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .below { grid-template-columns: 1fr; }
   .coins { gap: 8px; } .coin { padding: 14px 6px 12px; } .disc { width: 66px; height: 66px; } .coin .nm { font-size: 13px; }
   .combo .fr { width: 112px; height: 112px; } .combo .x { font-size: 50px; }
-  .ghost { border-radius: 22px; }
+  .deck.multi { margin: 0 -12px; } .deck.multi .track { --cw: 80vw; gap: 10px; }
+  .arr { display: none; }
+  .switch { padding: 0 12px; justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .sw { flex: none; flex-direction: column; align-items: flex-start; gap: 0; border-radius: 16px; padding: 8px 12px; }
+  .below.multi { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
@@ -215,7 +235,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
   const FLAME = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3-1-3 0-6 1-9.5Z"/></svg>';
-  let flipped = false, shownXp = S.xp;
+  const flips = new Set(); let justStepped = -1, shownXp = S.xp;
 
   function countXp() {
     const el = $('#xp'), from = shownXp, to = S.xp; shownXp = to;
@@ -225,41 +245,85 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     requestAnimationFrame(tick);
   }
 
-  function front(g) {
+  function front(g, gi) {
     const R = 99, C = 2 * Math.PI * R, off = C * (1 - g.done / g.total);
     const pips = Array.from({ length: g.total }, (_, i) => `<i class="${i < g.done ? 'on' : i === g.planned ? 'now' : ''}"></i>`).join('');
     let act;
-    if (g.doneToday) act = `<div class="donebar"><span class="tick">${CHECK}</span>Шаг ${g.done} сделан сегодня<button id="turn2">Посмотреть карточку</button></div>`;
-    else if (g.planned != null) act = `<div class="quest"><div class="q"><div class="k">Квест на сегодня · шаг ${g.planned + 1}</div><div class="st">${S.stepTitle(g, g.planned)}</div></div><button class="go" id="go">${CHECK}Сделал шаг<span class="xp">+30</span></button></div><button class="later">Сегодня не получится</button>`;
+    if (g.doneToday) act = `<div class="donebar"><span class="tick">${CHECK}</span>Шаг ${g.done} сделан сегодня<button class="turn2" data-g="${gi}">Посмотреть карточку</button></div>`;
+    else if (g.planned != null) act = `<div class="quest"><div class="q"><div class="k">Квест на сегодня · шаг ${g.planned + 1}</div><div class="st">${S.stepTitle(g, g.planned)}</div></div><button class="go" data-g="${gi}">${CHECK}Сделал шаг<span class="xp">+30</span></button></div><button class="later">Сегодня не получится</button>`;
     else {
-      const cards = [0, 1, 2].map(k => g.done + k).filter(i => i < g.total).map(i => `<button class="qc" data-i="${i}"><span class="n">${i + 1}<em>шаг</em></span><b>${S.stepTitle(g, i)}</b><span class="take">Беру <i>+30</i></span></button>`).join('');
+      const cards = [0, 1, 2].map(k => g.done + k).filter(i => i < g.total).map(i => `<button class="qc" data-g="${gi}" data-i="${i}"><span class="n">${i + 1}<em>шаг</em></span><b>${S.stepTitle(g, i)}</b><span class="take">Беру <i>+30</i></span></button>`).join('');
       act = `<div class="hand-t">Утро. Вытяни квест на сегодня</div><div class="hand">${cards}</div>`;
     }
     return `<div class="face front">
-      <div class="head"><div><small>Цель ${S.goalsCount > 1 ? S.active + 1 + ' из ' + S.goalsCount : 'в фокусе'}</small><h2>${g.title}</h2>
+      <div class="head"><div><small>Цель ${S.goalsCount > 1 ? (gi + 1) + ' из ' + S.goalsCount : 'в фокусе'}</small><h2>${g.title}</h2>
         <div class="lvl"><b>${g.done}/${g.total}</b><span>шагов пройдено<br>до цели ${S.left(g)}</span></div></div>
         <div class="ringwrap"><svg viewBox="0 0 210 210"><circle class="tr" cx="105" cy="105" r="${R}"/><circle class="pr" cx="105" cy="105" r="${R}" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg><img src="img/focus-happy.webp" alt="Фрими"></div></div>
       <div class="pips">${pips}</div>${act}</div>`;
   }
-  function back(g) {
+  function back(g, gi) {
     const nx = g.done < g.total ? `<div class="next">Следующий шаг: <b>${S.stepTitle(g, g.done)}</b></div>` : '';
-    return `<div class="face back"><img src="img/love-f7.webp" alt=""><div class="plus">+30 XP</div><h3>Шаг ${g.done} пройден</h3><p>До цели «${g.short}» осталось ${S.left(g)}. Фрими уже на ${Math.round(g.done / g.total * 100)}% пути.</p>${nx}<button class="turn" id="turn">Перевернуть карточку</button></div>`;
+    return `<div class="face back"><img src="img/love-f7.webp" alt=""><div class="plus">+30 XP</div><h3>Шаг ${g.done} пройден</h3><p>До цели «${g.short}» осталось ${S.left(g)}. Фрими уже на ${Math.round(g.done / g.total * 100)}% пути.</p>${nx}<button class="turn" data-g="${gi}">Перевернуть карточку</button></div>`;
   }
 
-  function deck(why) {
-    const g = S.goal(), others = S.goals.map((x, i) => i).filter(i => i !== S.active);
-    const ghosts = S.goalsCount > 1 ? others.map((i, k) => `<button class="ghost g${k + 1}" data-i="${i}">${S.goals[i].short}<span>${S.goals[i].done}/${S.goals[i].total}</span></button>`).reverse().join('') : '';
-    $('#deck').className = 'deck' + (S.goalsCount > 1 ? ' multi' : '');
-    $('#deck').innerHTML = ghosts + `<div class="gcard" id="gcard"><div class="inner">${front(g)}${back(g)}</div></div>`;
-    if (why === 'step') { flipped = true; requestAnimationFrame(() => requestAnimationFrame(() => $('#gcard').classList.add('flipped'))); }
-    else if (flipped) $('#gcard').classList.add('flipped');
-    if (why === 'goal' && !RM) $('#gcard').animate([{ transform: 'translateY(30px) rotate(-2deg)', opacity: .4 }, { transform: 'none', opacity: 1 }], { duration: 500, easing: 'cubic-bezier(.22,1,.36,1)' });
-    $('#deck').querySelectorAll('.ghost').forEach(b => b.onclick = () => { flipped = false; S.setActive(+b.dataset.i); });
-    const go = $('#go'); if (go) go.onclick = () => { S.doStep(S.active); burst(); };
-    const tn = $('#turn'); if (tn) tn.onclick = () => { flipped = false; $('#gcard').classList.remove('flipped'); };
-    const t2 = $('#turn2'); if (t2) t2.onclick = () => { flipped = true; $('#gcard').classList.add('flipped'); };
-    $('#deck').querySelectorAll('.qc').forEach(b => b.onclick = () => { b.classList.add('pick'); setTimeout(() => S.plan(S.active, +b.dataset.i), RM ? 0 : 450); });
+  const ARR = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
+  let tr = null, dragged = false;
+  const slides = () => [...tr.children];
+  const nearest = () => { const c = tr.scrollLeft + tr.clientWidth / 2; let best = 0, bd = 1e9; slides().forEach((el, i) => { const d = Math.abs(el.offsetLeft + el.offsetWidth / 2 - c); if (d < bd) { bd = d; best = i; } }); return best; };
+  function jumpTo(i, smooth) {
+    i = Math.max(0, Math.min(S.goals.length - 1, i));
+    const el = tr.children[i];
+    tr.scrollTo({ left: el.offsetLeft - (tr.clientWidth - el.offsetWidth) / 2, behavior: smooth && !RM ? 'smooth' : 'instant' });
+    mark(i);
   }
+  function mark(i) {
+    S.active = i;
+    slides().forEach((el, k) => el.classList.toggle('on', k === i));
+    const l = $('.arr.l'), r = $('.arr.r'); if (l) { l.disabled = i === 0; r.disabled = i === S.goals.length - 1; }
+    switcher();
+  }
+  function switcher() {
+    const sw = $('#switch'); if (!sw) return;
+    sw.innerHTML = S.goals.map((g, i) => { const st = g.doneToday ? 'шаг сделан ✓' : g.planned != null ? 'шаг ' + (g.planned + 1) + ' в плане' : 'выбрать шаг'; return `<button class="sw ${i === S.active ? 'on' : ''} ${g.doneToday ? 'ok' : ''}" data-i="${i}"><span>${g.short}</span><b>${g.done}/${g.total}</b><em>${st}</em></button>`; }).join('');
+    sw.querySelectorAll('.sw').forEach(b => b.onclick = () => jumpTo(+b.dataset.i, true));
+  }
+
+  function deck() {
+    const multi = S.goalsCount > 1, d = $('#deck');
+    d.className = 'deck' + (multi ? ' multi' : '');
+    d.innerHTML = `<div class="track" id="track" tabindex="0" aria-label="Цели, листайте влево и вправо">${S.goals.map((g, i) => `<div class="slide" data-i="${i}"><div class="gcard ${flips.has(i) && i !== justStepped ? 'flipped' : ''}"><div class="inner">${front(g, i)}${back(g, i)}</div></div></div>`).join('')}</div>`
+      + (multi ? `<button class="arr l" aria-label="Предыдущая цель">${ARR('M15 18l-6-6 6-6')}</button><button class="arr r" aria-label="Следующая цель">${ARR('M9 18l6-6-6-6')}</button><div class="switch" id="switch"></div>` : '');
+    tr = $('#track');
+    jumpTo(S.active, false);
+    if (justStepped >= 0) { const c = tr.children[justStepped].querySelector('.gcard'); requestAnimationFrame(() => requestAnimationFrame(() => c.classList.add('flipped'))); justStepped = -1; }
+    if (!multi) return;
+    $('.arr.l').onclick = () => jumpTo(S.active - 1, true);
+    $('.arr.r').onclick = () => jumpTo(S.active + 1, true);
+    tr.onkeydown = e => { if (e.key === 'ArrowLeft') jumpTo(S.active - 1, true); if (e.key === 'ArrowRight') jumpTo(S.active + 1, true); };
+    let raf = 0; tr.onscroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { const n = nearest(); if (n !== S.active) mark(n); }); };
+    // мышью: тянуть карточки как пальцем
+    tr.onpointerdown = e => {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('.slide.on button')) return;
+      const x0 = e.clientX, s0 = tr.scrollLeft; dragged = false;
+      const mv = ev => { const dx = ev.clientX - x0; if (Math.abs(dx) > 5) { dragged = true; tr.classList.add('drag'); } if (dragged) tr.scrollLeft = s0 - dx; };
+      const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); if (dragged) { const n = nearest(); tr.classList.remove('drag'); jumpTo(n, true); } };
+      addEventListener('pointermove', mv); addEventListener('pointerup', up);
+    };
+  }
+
+  // клики внутри карусели
+  document.addEventListener('click', e => {
+    if (!tr || !tr.contains(e.target)) return;
+    if (dragged) { dragged = false; e.preventDefault(); return; }
+    const sl = e.target.closest('.slide');
+    if (sl && !sl.classList.contains('on')) { jumpTo(+sl.dataset.i, true); return; }
+    const b = e.target.closest('button'); if (!b) return;
+    const gi = +b.dataset.g;
+    if (b.classList.contains('go')) { justStepped = gi; flips.add(gi); S.doStep(gi); burst($('.slide.on .gcard')); }
+    else if (b.classList.contains('turn')) { flips.delete(gi); b.closest('.gcard').classList.remove('flipped'); }
+    else if (b.classList.contains('turn2')) { flips.add(gi); b.closest('.gcard').classList.add('flipped'); }
+    else if (b.classList.contains('qc')) { b.classList.add('pick'); setTimeout(() => S.plan(gi, +b.dataset.i), RM ? 0 : 450); }
+  }, true);
 
   let lastClosed = -1;
   function combo() {
@@ -293,7 +357,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
   function burst(from) {
     if (RM) return;
-    const el = from || $('#gcard'), r = el.getBoundingClientRect();
+    const el = from || $('.slide.on .gcard'), r = el.getBoundingClientRect();
     for (let i = 0; i < 30; i++) {
       const c = document.createElement('i'); c.className = 'conf';
       c.style.background = ['var(--yellow)', 'var(--fire)', 'oklch(0.99 0.005 85)', 'var(--navy2)'][i % 4];
@@ -306,12 +370,16 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
   let last = null;
   function all(why) { deck(why); combo(); coins(why, last); pack(); countXp(); last = null; }
+  if (S.goalsCount > 1) { $('.hero').classList.add('multi'); $('.below').classList.add('multi'); $('.below').prepend($('#combo')); }
   S.on(all);
   all();
-  if (!RM) {
-    const pr = document.querySelector('.ringwrap .pr'), full = pr.getAttribute('stroke-dasharray');
+  addEventListener('resize', () => tr && jumpTo(S.active, false));
+  if (!RM) document.querySelectorAll('.ringwrap .pr').forEach(pr => {
+    const full = pr.getAttribute('stroke-dasharray');
     pr.animate([{ strokeDashoffset: full }, { strokeDashoffset: pr.getAttribute('stroke-dashoffset') }], { duration: 1200, easing: 'cubic-bezier(.22,1,.36,1)' });
-    document.querySelectorAll('.pips i').forEach((p, i) => p.animate([{ transform: 'scaleY(0)' }, { transform: 'none' }], { duration: 400, delay: 200 + i * 30, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' }));
+  });
+  if (!RM) {
+    document.querySelectorAll('.slide.on .pips i').forEach((p, i) => p.animate([{ transform: 'scaleY(0)' }, { transform: 'none' }], { duration: 400, delay: 200 + i * 30, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' }));
   }
 })();
 </script>
