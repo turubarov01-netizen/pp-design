@@ -63,7 +63,7 @@
     return '<header class="ph"><div class="ava">О</div><div class="ph-t"><b>' + title + '</b><span>' + note + '</span></div></header>';
   }
   function summaryLine() {
-    return '<p class="sumline num">' + dayN + '-й день на маршруте · ' + lessonsDone + ' уроков · ' + stagesDone + ' этапа закрыто · этап ' + H.stage + '</p>';
+    return '<p class="sumline num">' + dayN + '-й день на маршруте · ' + lessonsDone + ' ' + plural(lessonsDone, 'урок', 'урока', 'уроков') + ' · ' + stagesDone + ' ' + plural(stagesDone, 'этап', 'этапа', 'этапов') + ' закрыто · этап ' + H.stage + '</p>';
   }
   function chips(active) {
     var list = [['all', 'Всё'], ['route', 'Маршрут'], ['money', 'Деньги'], ['life', 'Жизнь']];
@@ -107,25 +107,31 @@
     return out.join('');
   }
 
-  /* ───────── B. Две дороги: слева маршрут, справа жизнь, даты на линии ───────── */
+  /* ───────── B. Две дороги: слева маршрут, справа жизнь; дата на линии, под ней карточки дня ───────── */
+  function cardTw(e) {
+    var t = T[e.t];
+    return '<div class="tw-c ' + (e.big ? 'big ' : '') + (e.img ? 'pic ' : '') + 'c-' + t.c + '">' + (e.img ? photo(e, 'tw-img') : '') +
+      '<div class="tw-ti">' + ico(t.i) + '<b>' + esc(e.title) + '</b></div>' +
+      '<div class="tw-s">' + esc(subOf(e)) + (e.stars ? ' ' + stars(e.stars) : '') + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</div>' +
+      (e.t === 'post' ? '<div class="tw-lk">' + ico('feed') + 'Открыть в ленте ›</div>' : '') + '</div>';
+  }
   function vB() {
     var out = [head(H.name, 'Две дороги: маршрут и жизнь'), summaryLine(),
-      '<div class="tw-h"><span>' + ico('flag') + 'Маршрут</span><span>' + ico('star') + 'Жизнь</span></div>', '<div class="tw">'];
-    var curM = -1;
+      '<div class="tw-h"><span class="r">' + ico('flag') + '<b>Маршрут</b><small>уроки и этапы</small></span><span class="l"><b>Жизнь</b><small>деньги, мечты, разборы</small>' + ico('star') + '</span></div>', '<div class="tw">'];
+    var curM = -1, curD = '';
     H.past.forEach(function (e) {
-      var d = dt(e.d), t = T[e.t], m = d.getMonth();
+      var m = dt(e.d).getMonth();
       if (m !== curM) { curM = m; out.push('<div class="tw-m"><span>' + MON_N[m] + '</span></div>'); }
-      var card = '<div class="tw-c ' + (e.big ? 'big ' : '') + 'c-' + t.c + '">' + (e.img ? photo(e, 'tw-img') : '') +
-        '<div class="tw-ti">' + ico(t.i) + '<b>' + esc(e.title) + '</b></div>' +
-        '<div class="tw-s">' + esc(subOf(e)) + (e.stars ? ' ' + stars(e.stars) : '') + '</div></div>';
-      out.push('<div class="tw-r ' + t.road + '">' + (t.road === 'route' ? card : '<i></i>') +
-        '<time class="tw-d">' + dShort(e.d) + '</time>' + (t.road === 'life' ? card : '<i></i>') + '</div>');
+      if (e.d !== curD) { curD = e.d; out.push('<div class="tw-d"><time>' + dShort(e.d) + '</time></div>'); }
+      out.push('<div class="tw-r ' + T[e.t].road + '">' + cardTw(e) + '</div>');
     });
     out.push('<div class="tw-today">' + todayBar() + '</div>');
-    out.push('<div class="tw-r route fut"><div>' + nowCard() + '</div><span class="tw-d dot"></span><div class="tw-ghost">' + ico('plus') + 'Здесь появятся ваши мечты, деньги и разборы</div></div>');
-    out.push('<div class="tw-r route fut"><div class="tw-c c-violet dim"><div class="tw-ti">' + ico('target') + '<b>' + esc(H.goal.title) + '</b></div></div><span class="tw-d dot"></span><i></i></div>');
+    out.push('<div class="tw-r route fut">' + nowCard() + '</div>');
+    out.push('<div class="tw-r life fut"><div class="tw-ghost">' + ico('plus') + '<b>Сохранить событие</b><span>Пост уйдёт в ленту и встанет сюда</span></div></div>');
+    out.push('<div class="tw-d fut"><time>Впереди</time></div>');
+    out.push('<div class="tw-r route fut"><div class="tw-c c-violet dim"><div class="tw-ti">' + ico('target') + '<b>' + esc(H.goal.title) + '</b></div></div></div>');
     H.later.forEach(function (s) {
-      out.push('<div class="tw-r route fut"><div class="tw-c far"><div class="tw-ti">' + ico('lock') + '<b>Этап ' + s.stage + ' · ' + esc(s.title) + '</b></div></div><span class="tw-d dot"></span><i></i></div>');
+      out.push('<div class="tw-r route fut"><div class="tw-c far"><div class="tw-ti">' + ico('lock') + '<b>Этап ' + s.stage + ' · ' + esc(s.title) + '</b></div></div></div>');
     });
     out.push('</div>');
     return out.join('');
@@ -231,7 +237,7 @@
   var app = document.getElementById('app');
   app.innerHTML = (bare ? '' : '<div class="sw"><span class="sw-tag">Макет</span>' + Object.keys(V).map(function (k) {
     return '<a class="sw-b' + (k === v ? ' on' : '') + '" href="?v=' + k + '">' + V[k][0] + '</a>';
-  }).join('') + '</div>') + '<main class="phone v-' + v + '">' + V[v][1]() + '</main>';
+  }).join('') + '</div>') + '<main class="phone v-' + v + (bare ? '' : ' has-sw') + '">' + V[v][1]() + '</main>';
   app.querySelectorAll('.chip').forEach(function (c) {
     c.addEventListener('click', function () {
       app.querySelectorAll('.chip').forEach(function (x) { x.classList.toggle('on', x === c); });
