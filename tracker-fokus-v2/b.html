@@ -31,9 +31,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* ---------- колода целей ---------- */
 .deck { position: relative; perspective: 1600px; }
-.deck.multi { padding-top: 44px; }
+.deck.multi { padding-top: 72px; }
 .ghost { position: absolute; left: 0; right: 0; top: 0; height: 120px; border-radius: 28px; background: var(--navy3); color: oklch(0.95 0.02 85); padding: 12px 22px; font-size: 13px; font-weight: 650; text-align: left; display: flex; align-items: flex-start; justify-content: space-between; transition: transform .35s var(--ease), background .25s; }
-.ghost.g1 { top: 22px; left: 14px; right: 14px; background: var(--navy2); transform: rotate(-.6deg); }
+.ghost.g1 { top: 34px; left: 14px; right: 14px; background: var(--navy2); transform: rotate(-.6deg); }
 .ghost.g2 { top: 0; left: 30px; right: 30px; transform: rotate(.8deg); }
 .ghost:hover { transform: translateY(-6px); }
 .face.front { display: flex; flex-direction: column; }
@@ -72,7 +72,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .go:active { transform: scale(.97); }
 .go svg { width: 20px; height: 20px; }
 .go .xp { font: 400 18px/1 "Bebas", sans-serif; padding: 4px 7px 2px; border-radius: 7px; background: var(--navy); color: var(--yellow); }
-.later { margin-top: 10px; font-size: 13px; color: oklch(0.8 0.03 268); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: oklch(0.8 0.03 268 / .4); }
+.later { align-self: flex-start; margin-top: 10px; font-size: 13px; color: oklch(0.8 0.03 268); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: oklch(0.8 0.03 268 / .4); }
 .donebar { margin-top: 18px; border-radius: 20px; background: oklch(1 0 0 / .08); padding: 16px 18px; display: flex; align-items: center; gap: 12px; font-weight: 650; }
 .donebar .tick { width: 30px; height: 30px; border-radius: 50%; background: var(--yellow); color: var(--navy); display: grid; place-items: center; flex: none; }
 .donebar .tick svg { width: 16px; height: 16px; }
