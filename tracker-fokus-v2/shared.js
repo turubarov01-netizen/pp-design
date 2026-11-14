@@ -60,11 +60,11 @@
   S.plan = (gi, idx) => { const g = S.goals[gi]; g.planned = idx; S.mode = 'evening'; S.emit('plan'); };
   S.doStep = gi => { const g = S.goals[gi]; if (g.doneToday || g.planned == null) return; g.done++; g.doneToday = true; g.planned = null; S.xp += 30; S.emit('step'); };
   S.toggleHabit = id => { const h = S.habits.find(x => x.id === id); h.done = !h.done; h.week[5] = h.done ? 1 : 0; h.streak += h.done ? 1 : -1; S.xp += h.done ? 5 : -5; S.emit('habit'); };
-  S.QMAX = 3;
-  S.qActive = () => S.quests.filter(q => !q.off && q.stars < 5).slice(0, S.QMAX);
-  S.qWaiting = () => S.quests.filter(q => !q.off && q.stars < 5).length - S.qActive().length;
+  S.QMAX = 3; S.QSTAR = 3;
+  S.qActive = () => S.quests.filter(q => !q.off && q.stars < S.QSTAR).slice(0, S.QMAX);
+  S.qWaiting = () => S.quests.filter(q => !q.off && q.stars < S.QSTAR).length - S.qActive().length;
   S.qDone = () => S.quests.filter(q => q.today > 0).length;
-  S.questStep = id => { const q = S.quests.find(x => x.id === id); if (q.stars >= 5) return; q.stars++; q.today++; S.xp += 5; S.emit('quest', id); };
+  S.questStep = id => { const q = S.quests.find(x => x.id === id); if (q.stars >= S.QSTAR) return; q.stars++; q.today++; S.xp += 5; S.emit('quest', id); };
   S.questOff = (id, off = true) => { S.quests.find(x => x.id === id).off = off; S.emit('quest-off', id); };
   S.cheer = id => { const p = S.pulse.find(x => x.id === id); p.mine = !p.mine; p.cheers += p.mine ? 1 : -1; S.emit('cheer', id); };
   S.setActive = i => { S.active = i; S.emit('goal'); };

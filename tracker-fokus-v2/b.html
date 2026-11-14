@@ -449,7 +449,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   const XI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
   const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
   const nb = t => t.replace(/(^|[\s(«])(в|во|на|из|к|с|со|у|о|об|по|за|и|а|не|до|от|для|без)\s/gi, '$1$2\u00a0');
-  const stars = n => Array.from({ length: 5 }, (_, i) => STAR.replace('<svg', `<svg class="${i < n ? 'on' : i === n ? 'nx' : ''}"`)).join('');
+  const stars = n => Array.from({ length: S.QSTAR }, (_, i) => STAR.replace('<svg', `<svg class="${i < n ? 'on' : i === n ? 'nx' : ''}"`)).join('');
   function pack(why, id) {
     const act = S.qActive(), wait = S.qWaiting(), dn = S.qDone();
     $('#tks').textContent = `${dn} из ${S.QMAX} сегодня · задания из открытых уроков${wait ? `, ещё ${wait} ${wait === 1 ? 'урок ждёт' : 'урока ждут'}` : ''}`;
@@ -459,7 +459,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
       <button class="x" data-id="${q.id}" aria-label="Не буду делать: ${q.lesson}" title="Не буду делать">${XI}</button>
     </div>`).join('') : '<p class="empty">Открытых уроков нет. Загляни в маршрутную карту</p>';
     prevQ = act.map(q => q.id);
-    $('#pack').querySelectorAll('.ck').forEach(b => b.onclick = () => { const q = S.quests.find(x => x.id === b.dataset.id); toast(`+1 ★ за «${q.crit[q.stars]}»`); S.questStep(b.dataset.id); });
+    $('#pack').querySelectorAll('.ck').forEach(b => b.onclick = () => { const q = S.quests.find(x => x.id === b.dataset.id); toast(q.stars + 1 >= S.QSTAR ? `${S.QSTAR} ★ за «${q.lesson}». Квест закрыт, дальше по желанию в уроке` : `+1 ★ за «${q.crit[q.stars]}»`); S.questStep(b.dataset.id); });
     $('#pack').querySelectorAll('.x').forEach(b => b.onclick = () => { S.questOff(b.dataset.id); toast('Убрал из квестов дня', () => S.questOff(b.dataset.id, false)); });
     $('#pack').querySelectorAll('.open').forEach(b => b.onclick = () => toast(`Откроется урок «${b.dataset.t}» в библиотеке`));
   }
