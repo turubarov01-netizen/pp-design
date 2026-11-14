@@ -25,11 +25,12 @@
       { id: 'h2', t: 'Чтение 20' + NB + 'страниц', done: false, streak: 4, week: [1, 0, 1, 1, 1, 0, 0] },
       { id: 'h3', t: 'Пост в' + NB + 'канал', done: false, streak: 2, week: [1, 0, 1, 0, 1, 0, 0], perWeek: 3 },
     ],
+    // квесты дня: ближайшие шаги маршрутной карты (route_map_status), добавленное на разборе — первым
     tasks: [
-      { id: 't1', t: 'Ответить Игорю по' + NB + 'сценарию эфира', done: false, tag: 'сегодня', hot: true },
-      { id: 't2', t: 'Счёт партнёру за' + NB + 'ноябрь', done: false, tag: 'просрочено', hot: true },
-      { id: 't3', t: 'Записать подкаст с' + NB + 'Ксюшей', done: false },
-      { id: 't4', t: 'Проверить лендинг потока', done: true, hot: true },
+      { id: 't1', kind: 'mentor', t: 'Тест ниши', meta: 'Добавил Игорь на' + NB + 'разборе 12' + NB + 'ноября', stage: '1.2', done: false },
+      { id: 't2', kind: 'lesson', t: 'Как выбрать нишу?', meta: 'Ещё не' + NB + 'смотрел', stage: '1.1', done: false },
+      { id: 't3', kind: 'hw', t: 'Целевая аудитория', meta: 'Урок просмотрен, ответ не' + NB + 'сдан', stage: '1.1', done: false },
+      { id: 't4', kind: 'lesson', t: 'Выбор ниши', meta: 'Просмотрен', stage: '1.1', done: true },
     ],
     streak: 12, xp: 40, phoenix: 1,
     pulse: [
@@ -45,8 +46,7 @@
   S.day = () => {
     const step = S.goals.some(g => g.doneToday) ? 1 : 0;
     const hb = S.habits.filter(h => h.done).length / S.habits.length;
-    const hot = S.tasks.filter(t => t.hot);
-    const tk = hot.filter(t => t.done).length / hot.length;
+    const tk = S.tasks.filter(t => t.done).length / S.tasks.length;
     return { step, hb, tk, closed: step + (hb === 1 ? 1 : 0) + (tk === 1 ? 1 : 0), sum: (step + hb + tk) / 3 };
   };
   S.listeners = [];

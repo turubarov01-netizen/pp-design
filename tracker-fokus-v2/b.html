@@ -164,16 +164,33 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .coin .sk { font-size: 12px; color: var(--ink2); }
 
 .pack { border-radius: 22px; background: var(--card); border: 1px solid var(--line); padding: 6px; }
-.item { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; text-align: left; transition: background .2s; }
+.item { display: flex; align-items: center; gap: 4px; padding: 4px 4px 4px 8px; border-radius: 16px; transition: background .2s; }
 .item:hover { background: var(--tile); }
-.item .ck { width: 26px; height: 26px; border-radius: 50%; border: 2px solid oklch(0.22 0.13 268 / .3); display: grid; place-items: center; flex: none; transition: background .25s, border-color .25s; }
-.item .ck svg { width: 14px; height: 14px; opacity: 0; transform: scale(.4); transition: opacity .2s, transform .3s var(--ease); color: var(--cream); }
-.item.done .ck { background: var(--navy); border-color: var(--navy); }
+.item .ck { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 50%; }
+.item .ck::before { content: ""; grid-area: 1/1; width: 26px; height: 26px; border-radius: 50%; border: 2px solid oklch(0.22 0.13 268 / .3); transition: background .25s, border-color .25s; }
+.item .ck svg { grid-area: 1/1; position: relative; width: 14px; height: 14px; opacity: 0; transform: scale(.4); transition: opacity .2s, transform .3s var(--ease); color: var(--cream); }
+.item .ck:hover::before { border-color: var(--navy); }
+.item.done .ck::before { background: var(--navy); border-color: var(--navy); }
 .item.done .ck svg { opacity: 1; transform: none; }
-.item .tt { flex: 1; font-size: 15px; }
-.item.done .tt { color: var(--ink2); text-decoration: line-through; text-decoration-color: oklch(0.47 0.03 268 / .5); }
-.item .rw { font: 400 15px/1 "Bebas", sans-serif; color: var(--ink2); padding: 4px 6px 2px; border-radius: 6px; background: var(--tile); }
+.item .open { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 10px 6px 10px 2px; text-align: left; border-radius: 12px; }
+.item .tt { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.item .tt .kd { font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: oklch(0.55 0.12 60); }
+.item.q-mentor .tt .kd { color: oklch(0.5 0.15 268); }
+.item .tt b { font-size: 15px; font-weight: 650; line-height: 1.3; }
+.item .tt small { font-size: 12.5px; color: var(--ink2); }
+.item.done .tt b { color: var(--ink2); text-decoration: line-through; text-decoration-color: oklch(0.47 0.03 268 / .5); }
+.item.done .tt .kd { color: var(--ink2); }
+.item .rw { font: 400 15px/1 "Bebas", sans-serif; color: var(--ink2); padding: 4px 6px 2px; border-radius: 6px; background: var(--tile); flex: none; }
 .item.done .rw { background: var(--yellow); color: var(--navy); }
+.item .ar { width: 18px; height: 18px; flex: none; color: oklch(0.22 0.13 268 / .35); transition: transform .2s var(--ease), color .2s; }
+.item .ar svg { width: 100%; height: 100%; }
+.item .open:hover .ar { transform: translateX(3px); color: var(--navy); }
+.qfoot { display: flex; justify-content: space-between; align-items: center; gap: 6px 16px; flex-wrap: wrap; margin: 4px 6px 0; padding: 12px 8px 8px; border-top: 1px solid oklch(0.22 0.13 268 / .08); font-size: 13px; }
+.qlink { color: var(--navy); font-weight: 650; text-decoration: none; }
+.qlink.mute { color: var(--ink2); font-weight: 500; }
+.qlink:hover { text-decoration: underline; }
+#toast { position: fixed; left: 50%; bottom: 120px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--navy); color: var(--cream); font-size: 14px; padding: 12px 18px; border-radius: 14px; box-shadow: 0 12px 30px rgba(20,34,70,.25); transition: opacity .25s, transform .3s var(--ease); z-index: 60; width: max-content; max-width: calc(100vw - 32px); }
+#toast.on { opacity: 1; transform: translate(-50%, 0); }
 .tag { font-size: 11px; font-weight: 650; padding: 4px 8px; border-radius: 999px; background: oklch(0.94 0.05 75); color: oklch(0.45 0.12 60); white-space: nowrap; }
 .tag.red { background: oklch(0.94 0.04 25); color: oklch(0.5 0.17 25); }
 .mates { margin-top: 26px; }
@@ -225,7 +242,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
   <div class="below">
     <section class="sec"><h3>Привычки</h3><p class="sub" id="hbs"></p><div class="coins" id="coins"></div></section>
-    <section class="sec"><h3>Квесты дня</h3><p class="sub" id="tks"></p><div class="pack" id="pack"></div></section>
+    <section class="sec"><h3>Квесты дня</h3><p class="sub" id="tks"></p><div class="pack"><div id="pack"></div><div class="qfoot"><a href="#" class="qlink" data-go="map">Вся маршрутная карта →</a><a href="#" class="qlink mute" data-go="tasks">Свои задачи — во&nbsp;вкладке «Задачи»</a></div></div></section>
   </div>
   <section class="sec mates"><h3>Попутчики сегодня</h3><p class="sub">Кто из Альянса тоже сделал шаг</p><div class="list" id="mates"></div></section>
 </div>
@@ -351,14 +368,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   }
   let lastClosed = -1;
   function combo() {
-    const d = S.day(), hb = S.habits.filter(h => h.done).length, hot = S.tasks.filter(t => t.hot), tk = hot.filter(t => t.done).length;
+    const d = S.day(), hb = S.habits.filter(h => h.done).length, tk = S.tasks.filter(t => t.done).length;
     const vid = ['sleep', 'repair', 'repair', 'breakfast'][d.closed];
     const msg = ['Начни с шага к цели, Фрими ждёт', 'Разогрев. Ещё два блока до комбо', 'Почти комбо, остался один блок', 'Комбо дня! Бонус начислен'][d.closed];
     $('#combo').innerHTML = `<div class="ct"><div><small>Комбо дня</small><div class="x">${d.closed}<em>/3</em></div><div class="msg">${msg}</div></div><span class="fr" id="cfr"></span></div>
       <div class="segs">
         <div class="seg s1 ${d.step ? 'full' : ''}"><span>Шаг к цели</span><em>${d.step ? 'сделан' : 'ждёт'}</em><i><u style="width:${d.step * 100}%"></u></i></div>
         <div class="seg s2 ${d.hb === 1 ? 'full' : ''}"><span>Привычки</span><em>${hb} из ${S.habits.length}</em><i><u style="width:${d.hb * 100}%"></u></i></div>
-        <div class="seg s3 ${d.tk === 1 ? 'full' : ''}"><span>Важные квесты</span><em>${tk} из ${hot.length}</em><i><u style="width:${d.tk * 100}%"></u></i></div>
+        <div class="seg s3 ${d.tk === 1 ? 'full' : ''}"><span>Квесты дня</span><em>${tk} из ${S.tasks.length}</em><i><u style="width:${d.tk * 100}%"></u></i></div>
       </div>
       <div class="bonus"><b>+50</b> за полное комбо: закрой все три блока</div>`;
     $('#cfr').append(frimi(vid));
@@ -372,12 +389,23 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     $('#coins').innerHTML = S.habits.map(h => `<button class="coin ${h.done ? 'on' : ''} ${why === 'habit' && id === h.id ? 'spin' : ''}" data-id="${h.id}"><span class="disc">${FLAME}<b class="${String(h.streak).length > 2 ? 'd3' : ''}">${h.streak}</b></span><span class="nm">${h.t}</span><span class="wk">${h.week.map(w => `<i class="${w ? 'on' : ''}"></i>`).join('')}</span><span class="sk">${h.perWeek ? h.perWeek + ' раза в неделю' : 'серия ' + h.streak + ' дн.'}</span></button>`).join('');
     $('#coins').querySelectorAll('.coin').forEach(b => b.onclick = () => { last = b.dataset.id; S.toggleHabit(b.dataset.id); });
   }
+  const QK = { lesson: 'урок', hw: 'задание', mentor: 'с разбора' };
+  const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
   function pack() {
-    const list = [...S.tasks].sort((a, b) => a.done - b.done || b.hot - a.hot);
-    $('#tks').textContent = `${S.tasks.filter(t => t.done).length} из ${S.tasks.length} · важные идут в комбо`;
-    $('#pack').innerHTML = list.map(t => `<button class="item ${t.done ? 'done' : ''}" data-id="${t.id}"><span class="ck">${CHECK}</span><span class="tt">${t.t}</span>${t.tag && !t.done ? `<span class="tag ${t.tag === 'просрочено' ? 'red' : ''}">${t.tag}</span>` : ''}<span class="rw">+5</span></button>`).join('');
-    $('#pack').querySelectorAll('.item').forEach(b => b.onclick = () => S.toggleTask(b.dataset.id));
+    const list = [...S.tasks].sort((a, b) => a.done - b.done);
+    $('#tks').textContent = `${S.tasks.filter(t => t.done).length} из ${S.tasks.length} · ближайшие шаги маршрутной карты, все идут в комбо`;
+    $('#pack').innerHTML = list.map(t => `<div class="item q-${t.kind} ${t.done ? 'done' : ''}">
+      <button class="ck" data-id="${t.id}" aria-label="${t.done ? 'Отменить' : 'Выполнил'}: ${t.t.replace(/"/g, '')}">${CHECK}</button>
+      <button class="open" data-t="${t.t.replace(/"/g, '')}"><span class="tt"><span class="kd">${QK[t.kind]} · ${t.stage}</span><b>${t.t}</b><small>${t.meta}</small></span><span class="rw">+5</span><span class="ar">${ARROW}</span></button>
+    </div>`).join('');
+    $('#pack').querySelectorAll('.ck').forEach(b => b.onclick = () => S.toggleTask(b.dataset.id));
+    $('#pack').querySelectorAll('.open').forEach(b => b.onclick = () => toast(`Откроется урок «${b.dataset.t}» в библиотеке`));
   }
+  function toast(t) {
+    let el = $('#toast'); if (!el) { el = document.createElement('div'); el.id = 'toast'; document.body.append(el); }
+    el.textContent = t; el.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove('on'), 2200);
+  }
+  document.querySelectorAll('.qlink').forEach(a => a.onclick = e => { e.preventDefault(); toast(a.dataset.go === 'map' ? 'Откроется маршрутная карта' : 'Откроется вкладка «Задачи»'); });
   $('#mates').innerHTML = S.pulse.map(p => `<div class="mate"><i style="background:${p.c}">${p.n[0]}</i><span><b>${p.n.split(' ')[0]}</b> ${p.w}</span></div>`).join('');
 
   function burst(from) {
