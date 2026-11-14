@@ -258,7 +258,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     }
     return `<div class="face front">
       <div class="head"><div><small>Цель ${S.goalsCount > 1 ? (gi + 1) + ' из ' + S.goalsCount : 'в фокусе'}</small><h2>${g.title}</h2>
-        <div class="lvl"><b>${g.done}/${g.total}</b><span>шагов пройдено<br> до цели ${S.left(g)}</span></div></div>
+        <div class="lvl"><b>${g.done}/${g.total}</b><span>шагов пройдено<br> до&nbsp;цели ${S.left(g)}</span></div></div>
         <div class="ringwrap"><svg viewBox="0 0 210 210"><circle class="tr" cx="105" cy="105" r="${R}"/><circle class="pr" cx="105" cy="105" r="${R}" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg><img src="img/focus-happy.webp" alt="Фрими" draggable="false"></div></div>
       <div class="pips">${pips}</div>${act}</div>`;
   }
