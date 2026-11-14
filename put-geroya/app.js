@@ -108,10 +108,14 @@
   }
 
   /* ───────── B. Две дороги: слева маршрут, справа жизнь; дата на линии, под ней карточки дня ───────── */
+  var COV = { 1: 'goal', 2: 'manifest', 3: 'bogaty', 4: ['vybor', 'suzit', 'test'], 10: ['test', 'zagolovki', 'suzit'], 18: ['voronka', 'zagolovki', 'test'] };
+  function cov(k) { return '<img src="covers/' + k + '.webp" alt="">'; }
   function cardTw(e) {
-    var t = T[e.t], hero = e.big && !e.img;
+    var t = T[e.t], hero = e.big && !e.img, tile = '<span class="tw-ic">' + ico(t.i) + '</span>';
+    if (e.t === 'lesson' && COV[e.n]) tile = '<span class="tw-cv">' + cov(COV[e.n]) + '</span>';
+    if (e.t === 'lessons' && COV[e.from]) tile = '<span class="tw-cvs">' + COV[e.from].map(cov).join('') + '</span>';
     return '<div class="tw-c c-' + t.c + (hero ? ' hero' : '') + (e.img ? ' pic' : '') + '">' + (e.img ? photo(e, 'tw-img') : '') +
-      '<div class="tw-row"><span class="tw-ic">' + ico(t.i) + '</span><div class="tw-tx"><b>' + esc(e.title) + '</b>' +
+      '<div class="tw-row">' + tile + '<div class="tw-tx"><b>' + esc(e.title) + '</b>' +
       '<span class="tw-s">' + esc(subOf(e)) + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</span>' +
       (e.stars ? '<span class="tw-st">' + stars(e.stars) + '</span>' : '') +
       (e.t === 'post' ? '<span class="tw-lk">Открыть в ленте ›</span>' : '') + '</div></div></div>';
@@ -131,7 +135,7 @@
       out.push('<div class="tw-r ' + T[e.t].road + '">' + cardTw(e) + '</div>');
     });
     out.push('</div><div class="tw-today">' + todayBar() + '</div><div class="tw tw-fut">');
-    out.push('<div class="tw-r route">' + nowCard() + '</div>');
+    out.push('<div class="tw-r route"><div class="tw-now">' + cov('voronka') + nowCard() + '</div></div>');
     out.push('<div class="tw-r life"><div class="tw-ghost"><span class="tw-ic">' + ico('plus') + '</span><div class="tw-tx"><b>Сохранить событие</b><span class="tw-s">Пост уйдёт в ленту и встанет сюда</span></div></div></div>');
     out.push('<div class="tw-d"><time>Впереди</time></div>');
     out.push('<div class="tw-r route"><div class="tw-c goal c-violet"><div class="tw-row"><span class="tw-ic">' + ico('target') + '</span><div class="tw-tx"><b>' + esc(H.goal.title) + '</b><span class="tw-s">Экзамен этапа ' + H.goal.stage + '</span></div></div></div></div>');
