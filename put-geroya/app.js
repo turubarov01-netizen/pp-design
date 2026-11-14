@@ -107,27 +107,75 @@
     return out.join('');
   }
 
-  /* ───────── B. Две дороги: слева маршрут, справа жизнь, даты на линии ───────── */
+  /* ───────── B. Две дороги v2: широкие карточки, пары «урок → результат», этапы-вершины, перемотка ───────── */
+  var COV = { 1: 'goal', 2: 'manifest', 3: 'bogaty', 4: ['vybor', 'suzit', 'test'], 10: ['test', 'zagolovki', 'suzit'], 18: ['voronka', 'zagolovki', 'test'] };
+  function covImg(k, cls) { return '<img class="' + cls + '" src="covers/' + k + '.webp" alt="">'; }
+  function cardB(e) {
+    var t = T[e.t], media = '', foot = '';
+    if (e.t === 'lesson' && COV[e.n]) media = covImg(COV[e.n], 'tb-cov');
+    else if (e.t === 'lessons' && COV[e.from]) media = '<span class="tb-stack">' + COV[e.from].map(function (k) { return covImg(k, 'tb-sq'); }).join('') + '<b>+' + (e.to - e.from - 2) + '</b></span>';
+    else if (!e.img) media = '<span class="tb-ico">' + ico(t.i) + '</span>';
+    if (e.t === 'post') foot = '<span class="tb-link">' + ico('feed') + 'Пост в ленте ›</span>';
+    if (e.t === 'meet') foot = '<span class="tb-link">' + ico('rec') + 'Смотреть запись</span>';
+    return '<div class="tb-c c-' + t.c + (e.big ? ' big' : '') + (e.img ? ' pic' : '') + '">' + (e.img ? photo(e, 'tb-img') : '') +
+      '<div class="tb-row">' + media + '<div class="tb-tx"><time>' + dShort(e.d) + '</time><b>' + esc(e.title) + '</b>' +
+      '<span class="tb-s">' + esc(subOf(e)) + (e.stars ? ' · ' + stars(e.stars) : '') + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</span>' + foot + '</div></div></div>';
+  }
   function vB() {
-    var out = [head(H.name, 'Две дороги: маршрут и жизнь'), summaryLine(),
-      '<div class="tw-h"><span>' + ico('flag') + 'Маршрут</span><span>' + ico('star') + 'Жизнь</span></div>', '<div class="tw">'];
-    var curM = -1;
-    H.past.forEach(function (e) {
-      var d = dt(e.d), t = T[e.t], m = d.getMonth();
-      if (m !== curM) { curM = m; out.push('<div class="tw-m"><span>' + MON_N[m] + '</span></div>'); }
-      var card = '<div class="tw-c ' + (e.big ? 'big ' : '') + 'c-' + t.c + '">' + (e.img ? photo(e, 'tw-img') : '') +
-        '<div class="tw-ti">' + ico(t.i) + '<b>' + esc(e.title) + '</b></div>' +
-        '<div class="tw-s">' + esc(subOf(e)) + (e.stars ? ' ' + stars(e.stars) : '') + '</div></div>';
-      out.push('<div class="tw-r ' + t.road + '">' + (t.road === 'route' ? card : '<i></i>') +
-        '<time class="tw-d">' + dShort(e.d) + '</time>' + (t.road === 'life' ? card : '<i></i>') + '</div>');
+    var segC = { '1.1': 'blue', '1.2': 'violet', '1.3': 'teal' };
+    var out = [head(H.name, 'Путь героя · с ' + dLong(H.start) + ' 2026'), summaryLine()];
+    var months = {};
+    H.past.forEach(function (e) { var m = dt(e.d).getMonth(); (months[m] = months[m] || []).push(e); });
+    var curMon = dt(H.today).getMonth();
+    var MON_NOM = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+    out.push('<nav class="tb-sc">' + Object.keys(months).map(Number).map(function (m) {
+      return '<a href="#bm' + m + '" class="' + (m === curMon ? 'on' : '') + '"><span>' + months[m].filter(function (e) { return e.t !== 'lesson'; }).slice(0, 4).map(function (e) {
+        return '<i class="c-' + T[e.t].c + '"></i>'; }).join('') + '</span>' + MON_NOM[m] + '</a>';
+    }).join('') + '</nav>');
+    out.push('<div class="tb-h"><span>' + ico('flag') + 'Маршрут</span><span>Жизнь<button class="tb-add" aria-label="Добавить событие">' + ico('plus') + '</button></span></div>');
+    var shownM = {};
+    function monthTag(e) {
+      var m = dt(e.d).getMonth(); if (shownM[m]) return ''; shownM[m] = 1;
+      return '<div class="tb-m" id="bm' + m + '"><span>' + MON_N[m] + '</span></div>';
+    }
+    stagesOf().forEach(function (s) {
+      out.push('<section class="tb-seg c-' + segC[s.k] + (s.to ? '' : ' cur') + '"><div class="tb-seg-h">Этап ' + s.k + ' · ' + s.name + '</div>');
+      var ev = s.ev.filter(function (e) { return e.t !== 'stage'; }), used = {};
+      ev.forEach(function (e, i) {
+        if (used[i]) return; used[i] = 1;
+        var mate = -1;
+        for (var j = i + 1; j < ev.length; j++) {
+          if (!used[j] && T[ev[j].t].road !== T[e.t].road && days(e.d, ev[j].d) <= 6) { mate = j; break; }
+        }
+        out.push(monthTag(e));
+        if (mate >= 0) {
+          used[mate] = 1;
+          var a = T[e.t].road === 'route' ? e : ev[mate], b = a === e ? ev[mate] : e;
+          out.push('<div class="tb-r pair">' + cardB(a) + '<span class="tb-join" aria-hidden="true">→</span>' + cardB(b) + '</div>');
+        } else {
+          out.push('<div class="tb-r solo ' + T[e.t].road + '">' + cardB(e) + '</div>');
+        }
+      });
+      var close = s.ev.filter(function (e) { return e.t === 'stage'; })[0];
+      if (close) {
+        var nL = s.ev.reduce(function (a, e) { return a + (e.t === 'lesson' ? 1 : e.t === 'lessons' ? e.to - e.from + 1 : 0); }, 0);
+        var nE = s.ev.length - 1;
+        out.push(monthTag(close));
+        out.push('<div class="tb-peak"><span class="tb-peak-i">' + ico('peak') + '</span><div><small>Вершина · ' + dLong(close.d) + '</small><b>' + esc(close.title) + '</b><span>' +
+          days(s.from, s.to) + ' дней · ' + nL + ' ' + plural(nL, 'урок', 'урока', 'уроков') + ' · ' + nE + ' ' + plural(nE, 'событие', 'события', 'событий') + '</span></div></div>');
+      }
+      if (!s.to) {
+        out.push('<div class="tb-today">' + todayBar() + '</div>');
+        out.push('<div class="tb-r pair fut"><div class="tb-c c-blue now2"><div class="tb-row">' + covImg('voronka', 'tb-cov') + '<div class="tb-tx"><time>Шаг ' + H.now.n + ' · сейчас</time><b>' + esc(H.now.title) + '</b><button class="btn">Смотреть</button></div></div></div>' +
+          '<span class="tb-join ghost" aria-hidden="true">+</span><button class="tb-ghost">' + ico('plus') + '<b>Сохранить событие</b><span>Пост с фото уйдёт в ленту и встанет сюда</span></button></div>');
+        H.next.forEach(function (n) {
+          out.push('<div class="tb-r solo route fut"><div class="tb-c far"><div class="tb-row"><span class="tb-ico lock">' + ico('lock') + '</span><div class="tb-tx"><time>Шаг ' + n.n + '</time><b>' + esc(n.title) + '</b></div></div></div></div>');
+        });
+        out.push('<div class="tb-peak goal"><span class="tb-peak-i">' + ico('target') + '</span><div><small>Следующая вершина</small><b>' + esc(H.goal.title) + '</b></div></div>');
+      }
+      out.push('</section>');
     });
-    out.push('<div class="tw-today">' + todayBar() + '</div>');
-    out.push('<div class="tw-r route fut"><div>' + nowCard() + '</div><span class="tw-d dot"></span><div class="tw-ghost">' + ico('plus') + 'Здесь появятся ваши мечты, деньги и разборы</div></div>');
-    out.push('<div class="tw-r route fut"><div class="tw-c c-violet dim"><div class="tw-ti">' + ico('target') + '<b>' + esc(H.goal.title) + '</b></div></div><span class="tw-d dot"></span><i></i></div>');
-    H.later.forEach(function (s) {
-      out.push('<div class="tw-r route fut"><div class="tw-c far"><div class="tw-ti">' + ico('lock') + '<b>Этап ' + s.stage + ' · ' + esc(s.title) + '</b></div></div><span class="tw-d dot"></span><i></i></div>');
-    });
-    out.push('</div>');
+    out.push('<div class="tb-later">' + H.later.map(function (s) { return '<span>' + ico('lock') + s.stage + ' · ' + esc(s.title) + '</span>'; }).join('') + '</div>');
     return out.join('');
   }
 
