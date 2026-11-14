@@ -25,6 +25,8 @@
     lock: '<rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
     target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
+    chev: '<path d="M9 6l6 6-6 6"/>',
+    down: '<path d="M12 5v14M6 13l6 6 6-6"/>',
     rec: '<circle cx="12" cy="12" r="8.5"/><path d="M10 8.5v7l6-3.5z"/>',
   };
   function ico(k, cls) { return '<svg class="ic ' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true">' + I[k] + '</svg>'; }
@@ -107,43 +109,126 @@
     return out.join('');
   }
 
-  /* ───────── B. Две дороги: слева маршрут, справа жизнь; дата на линии, под ней карточки дня ───────── */
+  /* ───────── B. Две дороги: слева маршрут, справа жизнь; открывается на сегодняшнем дне ───────── */
   var COV = { 1: 'goal', 2: 'manifest', 3: 'bogaty', 4: ['vybor', 'suzit', 'test'], 10: ['test', 'zagolovki', 'suzit'], 18: ['voronka', 'zagolovki', 'test'] };
+  var ACT = { lesson: 1, lessons: 1, post: 1, meet: 1, stage: 1 };
   function cov(k) { return '<img src="covers/' + k + '.webp" alt="">'; }
   function cardTw(e) {
-    var t = T[e.t], hero = e.big && !e.img, tile = '<span class="tw-ic">' + ico(t.i) + '</span>';
+    var t = T[e.t], hero = e.big && !e.img, tile = '<span class="tw-ic">' + ico(t.i) + '</span>', act = ACT[e.t];
     if (e.t === 'lesson' && COV[e.n]) tile = '<span class="tw-cv">' + cov(COV[e.n]) + '</span>';
     if (e.t === 'lessons' && COV[e.from]) tile = '<span class="tw-cvs">' + COV[e.from].map(cov).join('') + '</span>';
-    return '<div class="tw-c c-' + t.c + (hero ? ' hero' : '') + (e.img ? ' pic' : '') + '">' + (e.img ? photo(e, 'tw-img') : '') +
+    return '<div class="tw-c c-' + t.c + (hero ? ' hero' : '') + (e.img ? ' pic' : '') + (act ? ' act" tabindex="0" role="button' : '') + '">' + (e.img ? photo(e, 'tw-img') : '') +
       '<div class="tw-row">' + tile + '<div class="tw-tx"><b>' + esc(e.title) + '</b>' +
       '<span class="tw-s">' + esc(subOf(e)) + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</span>' +
       (e.stars ? '<span class="tw-st">' + stars(e.stars) + '</span>' : '') +
-      (e.t === 'post' ? '<span class="tw-lk">Открыть в ленте ›</span>' : '') + '</div></div></div>';
+      (e.t === 'post' ? '<span class="tw-lk">Открыть в ленте ›</span>' : '') + '</div>' +
+      (act && e.t !== 'post' ? '<span class="tw-go">' + ico('chev') + '</span>' : '') + '</div></div>';
+  }
+  function statTw(n, suf, label) {
+    return '<div class="tw-k"><b class="num" data-n="' + n + '" data-s="' + suf + '">' + n + suf + '</b><span>' + label + '</span></div>';
   }
   function vB() {
-    var out = [head(H.name, 'Две дороги: маршрут и жизнь'), summaryLine(),
-      '<div class="tw-h"><span class="r"><i></i><b>Маршрут</b><small>уроки и этапы</small></span><span class="l"><b>Жизнь</b><i></i><small>деньги, мечты, разборы</small></span></div>', '<div class="tw">'];
+    var months = [];
+    H.past.forEach(function (e) { var m = dt(e.d).getMonth(); if (months.indexOf(m) < 0) months.push(m); });
+    var out = [head(H.name, 'Две дороги: маршрут и жизнь'),
+      '<div class="tw-h"><div class="tw-roads"><span class="r"><i></i><b>Маршрут</b><small>уроки и этапы</small></span><span class="l"><b>Жизнь</b><i></i><small>деньги, мечты, разборы</small></span></div>' +
+      '<nav class="tw-rail" aria-label="Перемотка по месяцам">' + months.map(function (m) {
+        return '<button class="tw-rb" data-go="m' + m + '">' + MON_N[m] + '</button>';
+      }).join('') + '<button class="tw-rb now" data-go="today">Сегодня</button></nav></div>', '<div class="tw tw-past">'];
     var curM = -1, curD = '';
     H.past.forEach(function (e) {
       var d = dt(e.d), m = d.getMonth();
       if (m !== curM) {
         curM = m;
         var n = H.past.filter(function (x) { return dt(x.d).getMonth() === m; }).length;
-        out.push('<div class="tw-m"><span><b>' + MON_N[m] + '</b><small>' + n + ' ' + plural(n, 'событие', 'события', 'событий') + '</small></span></div>');
+        out.push('<div class="tw-m" id="m' + m + '"><span><b>' + MON_N[m] + '</b><small>' + n + ' ' + plural(n, 'событие', 'события', 'событий') + '</small></span></div>');
       }
       if (e.d !== curD) { curD = e.d; out.push('<div class="tw-d"><time><b>' + d.getDate() + '</b> ' + MON_S[m] + '</time></div>'); }
       out.push('<div class="tw-r ' + T[e.t].road + '">' + cardTw(e) + '</div>');
     });
-    out.push('</div><div class="tw-today">' + todayBar() + '</div><div class="tw tw-fut">');
+    out.push('</div><div class="tw-today" id="today">' + todayBar() + '</div>');
+    out.push('<div class="tw-stats">' + statTw(dayN, '-й', 'день на маршруте') + statTw(lessonsDone, '', plural(lessonsDone, 'урок', 'урока', 'уроков')) +
+      statTw(stagesDone, '', plural(stagesDone, 'этап', 'этапа', 'этапов') + ' закрыто') + '<div class="tw-k"><b class="num">' + H.stage + '</b><span>этап сейчас</span></div></div>');
+    out.push('<div class="tw tw-fut">');
     out.push('<div class="tw-r route"><div class="tw-now">' + cov('voronka') + nowCard() + '</div></div>');
-    out.push('<div class="tw-r life"><div class="tw-ghost"><span class="tw-ic">' + ico('plus') + '</span><div class="tw-tx"><b>Сохранить событие</b><span class="tw-s">Пост уйдёт в ленту и встанет сюда</span></div></div></div>');
+    out.push('<div class="tw-r life"><div class="tw-ghost" tabindex="0" role="button"><span class="tw-ic">' + ico('plus') + '</span><div class="tw-tx"><b>Сохранить событие</b><span class="tw-s">Пост уйдёт в ленту и встанет сюда</span></div></div></div>');
     out.push('<div class="tw-d"><time>Впереди</time></div>');
     out.push('<div class="tw-r route"><div class="tw-c goal c-violet"><div class="tw-row"><span class="tw-ic">' + ico('target') + '</span><div class="tw-tx"><b>' + esc(H.goal.title) + '</b><span class="tw-s">Экзамен этапа ' + H.goal.stage + '</span></div></div></div></div>');
     H.later.forEach(function (s) {
       out.push('<div class="tw-r route"><div class="tw-c far"><div class="tw-row"><span class="tw-ic">' + ico('lock') + '</span><div class="tw-tx"><b>' + esc(s.title) + '</b><span class="tw-s">Этап ' + s.stage + '</span></div></div></div></div>');
     });
     out.push('</div>');
+    out.push('<div class="tw-fab"><button class="tw-fb back" hidden>' + ico('down') + 'Сегодня</button><button class="tw-fb add">' + ico('plus') + 'Событие</button></div>');
     return out.join('');
+  }
+  function initB() {
+    var root = document.querySelector('.v-b'), hd = root.querySelector('.tw-h'), rail = root.querySelector('.tw-rail');
+    var today = document.getElementById('today'), back = root.querySelector('.tw-fb.back'), ghost = root.querySelector('.tw-ghost');
+    var RM = matchMedia('(prefers-reduced-motion: reduce)').matches, moved = false, act = '';
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    function stuck() { return (parseFloat(getComputedStyle(hd).top) || 0) + hd.offsetHeight; }
+    function go(el, smooth, off) {
+      var y = el.getBoundingClientRect().top + scrollY - (off != null ? off : stuck() + 12);
+      scrollTo({ top: Math.max(0, y), behavior: smooth && !RM ? 'smooth' : 'auto' });
+    }
+    function toToday(smooth) { go(today, smooth, Math.max(stuck() + 24, innerHeight * .3)); }
+    function sync() {
+      var line = stuck() + 40, cur = '', tr = today.getBoundingClientRect();
+      root.querySelectorAll('.tw-m').forEach(function (m) { if (!cur || m.getBoundingClientRect().top <= line) cur = m.id; });
+      if (tr.top < innerHeight * .7) cur = 'today';
+      if (cur !== act) {
+        act = cur;
+        rail.querySelectorAll('.tw-rb').forEach(function (b) {
+          var on = b.dataset.go === cur; b.classList.toggle('on', on);
+          if (on) { b.setAttribute('aria-current', 'true'); rail.scrollTo({ left: b.offsetLeft - rail.clientWidth / 2 + b.offsetWidth / 2, behavior: RM ? 'auto' : 'smooth' }); } else b.removeAttribute('aria-current');
+        });
+      }
+      back.hidden = tr.top < innerHeight && tr.bottom > stuck();
+    }
+    var tick = false;
+    addEventListener('scroll', function () { moved = true; if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; sync(); }); } }, { passive: true });
+    addEventListener('resize', sync);
+    rail.addEventListener('click', function (ev) {
+      var b = ev.target.closest('.tw-rb'); if (!b) return;
+      if (b.dataset.go === 'today') toToday(true); else go(document.getElementById(b.dataset.go), true);
+    });
+    back.addEventListener('click', function () { toToday(true); });
+    root.querySelector('.tw-fb.add').addEventListener('click', function () {
+      toToday(true);
+      ghost.classList.remove('ping'); void ghost.offsetWidth; ghost.classList.add('ping');
+    });
+    root.querySelectorAll('[role=button]').forEach(function (el) {
+      el.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); el.click(); } });
+    });
+    if (location.hash !== '#top') {
+      toToday(false);
+      if (document.fonts) document.fonts.ready.then(function () { if (!moved) toToday(false); sync(); });
+    }
+    moved = false; sync();
+    /* Оживление: появление карточек при прокрутке вверх и счёт цифр «сегодня» */
+    if (RM) return;
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (list) {
+        var k = 0;
+        list.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          en.target.style.transitionDelay = (k++ * 45) + 'ms';
+          en.target.classList.add('in'); io.unobserve(en.target);
+        });
+      }, { rootMargin: '0px 0px -6% 0px' });
+      root.querySelectorAll('.tw-past > *').forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) { el.classList.add('rv'); io.observe(el); }
+      });
+    }
+    root.querySelectorAll('.tw-k b[data-n]').forEach(function (b) {
+      var n = +b.dataset.n, suf = b.dataset.s, t0 = performance.now();
+      (function f(t) {
+        var p = Math.min(1, (t - t0) / 900), e = 1 - Math.pow(1 - p, 3);
+        b.textContent = Math.round(n * e) + suf;
+        if (p < 1) requestAnimationFrame(f);
+      })(t0);
+    });
   }
 
   /* ───────── C. Карта похода: этапы как участки пути, достижения как медали на тропе ───────── */
@@ -255,5 +340,6 @@
     });
   });
   if (window.nbspRu) window.nbspRu.fix(app);
+  if (v === 'b') initB();
   if (v === 'c') { drawTrail(); addEventListener('resize', drawTrail); if (document.fonts) document.fonts.ready.then(drawTrail); }
 })();
