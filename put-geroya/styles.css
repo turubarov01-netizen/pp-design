@@ -182,6 +182,57 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .tw-fb[hidden] { display: none; }
 .rv { opacity: 0; transform: translateY(14px); }
 .rv.in { opacity: 1; transform: none; transition: opacity .34s var(--ease), transform .34s var(--ease); }
+
+/* ── Б v7: маршрутная карта слева, жизнь точками на линии ── */
+.tw-r.route > * { width: 80%; } .tw-r.wide > * { width: 88%; } .tw-r.full > * { width: 100%; }
+.tw-r.life > * { width: 43%; }
+.tw-r.life::before { content: ""; position: absolute; left: 50%; right: 43%; top: 50%; border-top: 2px dashed rgba(90, 100, 130, .45); }
+.tw-r.life > .tw-pin { width: 12px; } .tw-pin { position: absolute; left: 50%; top: 50%; z-index: 1; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--c, var(--life)); box-shadow: 0 0 0 3px #fff, 0 0 0 5px color-mix(in oklab, var(--c, #ea7a12) 25%, transparent); }
+.tw-r.life .tw-c { padding: 9px 10px; } .tw-r.life .tw-row { gap: 8px; } .tw-r.life .tw-ic { width: 28px; height: 28px; border-radius: 9px; } .tw-r.life .tw-ic .ic { width: 15px; height: 15px; }
+.tw-r.life .tw-tx > b { font-size: 13px; } .tw-r.life .tw-s { font-size: 11.5px; }
+@media (max-width: 899px) { .tw-r.life .tw-go { display: none; } }
+.tw-r.life .tw-img { height: 84px; width: calc(100% + 20px); margin: 0 -10px 9px; }
+.tw-g { position: relative; z-index: 1; display: table; margin: 16px 0 6px; padding: 3px 10px; border-radius: 10px; font-size: 11.5px; font-weight: 700; letter-spacing: .02em; color: var(--ink-2); background: rgba(255, 255, 255, .8); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 0 0 1px rgba(16, 24, 48, .06); }
+.rs-h { position: relative; z-index: 2; display: flex; align-items: center; gap: 12px; margin: 30px 0 6px; padding: 12px 14px; border-radius: 20px; background: rgba(255, 255, 255, .88); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); box-shadow: 0 1px 2px rgba(16, 24, 48, .05), 0 10px 26px -16px rgba(16, 24, 48, .35); scroll-margin-top: 130px; }
+.tw-past > .rs-h:first-child { margin-top: 14px; }
+.rs-n { flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; font-size: 15px; font-weight: 800; letter-spacing: -.02em; color: #fff; background: linear-gradient(140deg, #7b61ff, #5a3fe0); }
+.rs-n .ic { width: 20px; height: 20px; }
+.rs-h.cur .rs-n { background: linear-gradient(140deg, #3d8bff, #1f5fe0); }
+.rs-h.lock .rs-n { background: #e6e9f0; color: #8a93a6; }
+.rs-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rs-t b { font-size: 15px; font-weight: 800; letter-spacing: -.01em; line-height: 1.2; color: var(--ink); }
+.rs-t span { font-size: 12px; color: var(--muted); }
+.rs-bar { display: block; height: 4px; margin-top: 5px; border-radius: 2px; background: rgba(16, 24, 48, .08); overflow: hidden; }
+.rs-bar i { display: block; height: 100%; border-radius: 2px; background: linear-gradient(90deg, #7b61ff, #9d8bff); }
+.rs-h.cur .rs-bar i { background: linear-gradient(90deg, #2f7bff, #6aa5ff); }
+.rs-h.lock .rs-bar { display: none; }
+.rs-pill { flex: none; align-self: flex-start; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 9px; color: #5a3fe0; background: #efeaff; }
+.rs-h.cur .rs-pill { color: #fff; background: var(--blue); }
+.rs-h.lock .rs-pill { color: #8a93a6; background: #eef0f5; display: grid; place-items: center; padding: 4px; } .rs-h.lock .rs-pill .ic { width: 14px; height: 14px; }
+.rs-h.lock { background: rgba(245, 247, 251, .85); margin: 8px 0; } .rs-h.lock .rs-t b { color: var(--ink-2); }
+.tw-c.ls { padding: 8px 10px 8px 8px; border-radius: 16px; }
+.tw-c.ls .tw-row { align-items: center; }
+.ls-cv { position: relative; flex: none; width: 46px; height: 46px; border-radius: 11px; background: #e9edf5; }
+.ls-cv img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 11px; }
+.ls-ok, .ls-lk { position: absolute; right: -4px; bottom: -4px; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; color: #fff; background: #1fa463; box-shadow: 0 0 0 2px #fff; }
+.ls-ok .ic, .ls-lk .ic { width: 11px; height: 11px; stroke-width: 3; }
+.ls-lk { background: #9aa3b5; } .ls-lk .ic { stroke-width: 2.4; }
+.tw-c.ls .tw-tx > b { font-size: 13px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tw-c.ls .tw-s { font-size: 11.5px; }
+.tw-c.ls .tw-st { align-self: center; margin: 0 0 0 auto; flex: none; }
+.tw-c.ls.lock { background: rgba(245, 247, 251, .82); } .tw-c.ls.lock img { filter: grayscale(1); opacity: .55; } .tw-c.ls.lock .tw-tx > b { color: var(--ink-2); font-weight: 600; }
+.tw-c.ls.next { box-shadow: inset 0 0 0 1.5px rgba(47, 123, 255, .45); } .tw-c.ls.next .tw-s { color: var(--blue-ink); font-weight: 600; }
+.tw-r.peak { margin: 10px 0 4px; }
+@media (min-width: 900px) {
+  .v-b .tw-r.route > * { width: 64%; } .v-b .tw-r.wide > * { width: 64%; } .v-b .tw-r.full > * { width: 100%; }
+  .v-b .tw-r.life > * { width: 40%; } .v-b .tw-r.life > .tw-pin { width: 14px; height: 14px; margin: -7px 0 0 -7px; } .v-b .tw-r.life::before { right: 40%; }
+  .v-b .tw-r.life .tw-c { padding: 14px 16px; } .v-b .tw-r.life .tw-ic { width: 36px; height: 36px; } .v-b .tw-r.life .tw-tx > b { font-size: 15px; } .v-b .tw-r.life .tw-s { font-size: 13px; }
+  .v-b .tw-r.life .tw-img { height: 170px; width: calc(100% + 32px); margin: 0 -16px 12px; }
+  .v-b .tw-c.ls { padding: 10px 14px 10px 10px; } .v-b .ls-cv { width: 60px; height: 60px; } .v-b .ls-cv img { border-radius: 13px; }
+  .v-b .tw-c.ls .tw-tx > b { font-size: 15px; } .v-b .tw-c.ls .tw-s { font-size: 13px; }
+  .v-b .rs-h { padding: 16px 20px; gap: 16px; margin-top: 40px; } .v-b .rs-n { width: 52px; height: 52px; font-size: 18px; border-radius: 15px; } .v-b .rs-t b { font-size: 19px; } .v-b .rs-t span { font-size: 13.5px; }
+  .v-b .tw-g { font-size: 13px; margin-top: 20px; }
+}
 @media (prefers-reduced-motion: reduce) { .v-b .today-dot, .tw-ghost.ping { animation: none; } .tw-c.act, .tw-fb, .tw-go { transition: none; } }
 @media (min-width: 900px) {
   .phone.v-b { max-width: 1040px; padding: 32px 40px 80px; }

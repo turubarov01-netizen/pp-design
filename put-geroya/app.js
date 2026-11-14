@@ -27,6 +27,7 @@
     plus: '<path d="M12 5v14M5 12h14"/>',
     chev: '<path d="M9 6l6 6-6 6"/>',
     down: '<path d="M12 5v14M6 13l6 6 6-6"/>',
+    check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
     rec: '<circle cx="12" cy="12" r="8.5"/><path d="M10 8.5v7l6-3.5z"/>',
   };
   function ico(k, cls) { return '<svg class="ic ' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true">' + I[k] + '</svg>'; }
@@ -109,53 +110,97 @@
     return out.join('');
   }
 
-  /* ───────── B. Две дороги: слева маршрут, справа жизнь; открывается на сегодняшнем дне ───────── */
-  var COV = { 1: 'goal', 2: 'manifest', 3: 'bogaty', 4: ['vybor', 'suzit', 'test'], 10: ['test', 'zagolovki', 'suzit'], 18: ['voronka', 'zagolovki', 'test'] };
-  var ACT = { lesson: 1, lessons: 1, post: 1, meet: 1, stage: 1 };
+  /* ───────── B. Две дороги: слева настоящая маршрутная карта по этапам, справа жизнь точками на линии; открывается на сегодня ───────── */
+  var R = window.ROUTE, NOW_T = 'Воронка и замер показателей';
+  var ACT = { lesson: 1, post: 1, meet: 1, stage: 1 };
   function cov(k) { return '<img src="covers/' + k + '.webp" alt="">'; }
   function cardTw(e) {
     var t = T[e.t], hero = e.big && !e.img, tile = '<span class="tw-ic">' + ico(t.i) + '</span>', act = ACT[e.t];
-    if (e.t === 'lesson' && COV[e.n]) tile = '<span class="tw-cv">' + cov(COV[e.n]) + '</span>';
-    if (e.t === 'lessons' && COV[e.from]) tile = '<span class="tw-cvs">' + COV[e.from].map(cov).join('') + '</span>';
     return '<div class="tw-c c-' + t.c + (hero ? ' hero' : '') + (e.img ? ' pic' : '') + (act ? ' act" tabindex="0" role="button' : '') + '">' + (e.img ? photo(e, 'tw-img') : '') +
       '<div class="tw-row">' + tile + '<div class="tw-tx"><b>' + esc(e.title) + '</b>' +
-      '<span class="tw-s">' + esc(subOf(e)) + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</span>' +
-      (e.stars ? '<span class="tw-st">' + stars(e.stars) + '</span>' : '') +
+      '<span class="tw-s">' + (e.d ? '<time>' + dShort(e.d) + '</time> · ' : '') + esc(subOf(e)) + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</span>' +
       (e.t === 'post' ? '<span class="tw-lk">Открыть в ленте ›</span>' : '') + '</div>' +
       (act && e.t !== 'post' ? '<span class="tw-go">' + ico('chev') + '</span>' : '') + '</div></div>';
   }
   function statTw(n, suf, label) {
     return '<div class="tw-k"><b class="num" data-n="' + n + '" data-s="' + suf + '">' + n + suf + '</b><span>' + label + '</span></div>';
   }
-  function vB() {
-    var months = [];
-    H.past.forEach(function (e) { var m = dt(e.d).getMonth(); if (months.indexOf(m) < 0) months.push(m); });
-    var out = [head(H.name, 'Две дороги: маршрут и жизнь'),
-      '<div class="tw-h"><div class="tw-roads"><span class="r"><i></i><b>Маршрут</b><small>уроки и этапы</small></span><span class="l"><b>Жизнь</b><i></i><small>деньги, мечты, разборы</small></span></div>' +
-      '<nav class="tw-rail" aria-label="Перемотка по месяцам">' + months.map(function (m) {
-        return '<button class="tw-rb" data-go="m' + m + '">' + MON_N[m] + '</button>';
-      }).join('') + '<button class="tw-rb now" data-go="today">Сегодня</button></nav></div>', '<div class="tw tw-past">'];
-    var curM = -1, curD = '';
-    H.past.forEach(function (e) {
-      var d = dt(e.d), m = d.getMonth();
-      if (m !== curM) {
-        curM = m;
-        var n = H.past.filter(function (x) { return dt(x.d).getMonth() === m; }).length;
-        out.push('<div class="tw-m" id="m' + m + '"><span><b>' + MON_N[m] + '</b><small>' + n + ' ' + plural(n, 'событие', 'события', 'событий') + '</small></span></div>');
-      }
-      if (e.d !== curD) { curD = e.d; out.push('<div class="tw-d"><time><b>' + d.getDate() + '</b> ' + MON_S[m] + '</time></div>'); }
-      out.push('<div class="tw-r ' + T[e.t].road + '">' + cardTw(e) + '</div>');
+  function addDays(s, n) { var d = dt(s); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  /* Демо-прохождение Ольги: уроки сданы по порядку этапа, даты разложены внутри окна этапа */
+  var WIN = { start: ['2026-03-17', '2026-04-05'], '1.1': ['2026-04-06', '2026-04-30'], '1.2': ['2026-05-05', '2026-09-10'], '1.3': ['2026-09-16', '2026-11-13'] };
+  function routeItems() {
+    var all = R.items.map(function (x, i) { return { st: x[0], g: x[1], title: x[2], min: x[3], cv: x[4], i: i }; });
+    var nowI = all.filter(function (x) { return x.title === NOW_T; })[0].i;
+    R.stages.forEach(function (s) {
+      var done = all.filter(function (x) { return x.st === s.id && x.i < nowI; }), w = WIN[s.id], span = days(w[0], w[1]);
+      done.forEach(function (x, k) { x.d = addDays(w[0], Math.round(span * k / Math.max(1, done.length - 1))); x.stars = [5, 4, 5, 5, 4, 5, 4.5][x.i % 7]; });
     });
+    all.forEach(function (x) { x.state = x.i < nowI ? 'done' : x.i === nowI ? 'now' : x.i === nowI + 1 ? 'next' : 'lock'; });
+    return all;
+  }
+  function lessonTw(x) {
+    var meta = x.state === 'done' ? '<time>' + dShort(x.d) + '</time>' + (x.min ? ' · ' + x.min + ' мин' : '') : x.state === 'next' ? 'Следующий · откроется после текущего' : (x.min ? x.min + ' мин' : 'Урок маршрута');
+    return '<div class="tw-r route"><div class="tw-c ls ' + x.state + (x.state === 'lock' ? '' : ' act" tabindex="0" role="button') + '"><div class="tw-row">' +
+      '<span class="ls-cv">' + (x.cv ? '<img loading="lazy" src="' + x.cv + '" alt="">' : '') + (x.state === 'done' ? '<i class="ls-ok">' + ico('check') + '</i>' : x.state === 'lock' ? '<i class="ls-lk">' + ico('lock') + '</i>' : '') + '</span>' +
+      '<div class="tw-tx"><b>' + esc(x.title) + '</b><span class="tw-s">' + meta + '</span></div>' +
+      (x.state === 'done' ? '<span class="tw-st">' + stars(x.stars) + '</span>' : '') + '</div></div></div>';
+  }
+  function lifeTw(e) { return '<div class="tw-r life"><span class="tw-pin c-' + T[e.t].c + '"></span>' + cardTw(e) + '</div>'; }
+  function stageHead(s, list, state) {
+    var n = list.length, d = list.filter(function (x) { return x.state === 'done'; }).length, cl = H.past.filter(function (e) { return e.t === 'stage' && e.title.indexOf(s.id + ' ') > 0; })[0];
+    var note = s.id === 'start' ? n + ' ' + plural(n, 'урок', 'урока', 'уроков') + ' · вводное видео и клятва' :
+      state === 'done' ? n + ' ' + plural(n, 'урок', 'урока', 'уроков') + (cl ? ' · закрыт ' + dShort(cl.d) : '') : d + ' из ' + n + ' уроков сдано';
+    return '<div class="rs-h ' + state + '" id="st' + s.id.replace('.', '-') + '"><span class="rs-n">' + (s.id === 'start' ? ico('flag') : s.id) + '</span>' +
+      '<div class="rs-t"><b>' + (s.id === 'start' ? 'Старт' : 'Этап ' + s.id + ' · ' + esc(s.name)) + '</b><span>' + note + '</span>' +
+      '<i class="rs-bar"><i style="width:' + Math.round(d / n * 100) + '%"></i></i></div>' +
+      '<span class="rs-pill">' + (state === 'done' ? 'Пройден' : 'Сейчас') + '</span></div>';
+  }
+  function vB() {
+    var items = routeItems(), life = H.past.filter(function (e) { return T[e.t].road === 'life'; });
+    var done = items.filter(function (x) { return x.state === 'done'; }).length;
+    var out = [head(H.name, 'Маршрут и жизнь на одной линии'),
+      '<div class="tw-h"><div class="tw-roads"><span class="r"><i></i><b>Маршрут</b><small>этапы и уроки</small></span><span class="l"><b>Жизнь</b><i></i><small>деньги, мечты, разборы</small></span></div>' +
+      '<nav class="tw-rail" aria-label="Этапы маршрута">' + R.stages.map(function (s) {
+        return '<button class="tw-rb" data-go="st' + s.id.replace('.', '-') + '">' + (s.id === 'start' ? 'Старт' : s.id + ' ' + s.name) + '</button>';
+      }).join('') + '<button class="tw-rb now" data-go="today">Сегодня</button></nav></div>', '<div class="tw tw-past">'];
+    var li = 0, fut = [];
+    R.stages.forEach(function (s) {
+      var list = items.filter(function (x) { return x.st === s.id; }), past = list.filter(function (x) { return x.state === 'done'; });
+      var state = past.length === list.length ? 'done' : 'cur';
+      out.push(stageHead(s, list, state));
+      if (s.id === 'start') out.push('<div class="tw-r full">' + cardTw(H.past[0]) + '</div>');
+      var g = -1, last = '';
+      past.forEach(function (x) {
+        while (li < life.length && life[li].d <= x.d) out.push(lifeTw(life[li++]));
+        if (x.g !== g) { g = x.g; out.push('<div class="tw-g">' + esc(R.groups[s.id + '|' + g]) + '</div>'); }
+        out.push(lessonTw(x)); last = x.d;
+      });
+      var cl = H.past.filter(function (e) { return e.t === 'stage' && e.title.indexOf(s.id + ' ') > 0; })[0];
+      if (cl) {
+        while (li < life.length && life[li].d <= cl.d) out.push(lifeTw(life[li++]));
+        out.push('<div class="tw-r full peak">' + cardTw(cl) + '</div>');
+      }
+      if (state === 'cur') fut = list.filter(function (x) { return x.state !== 'done'; }).map(function (x) { x.g0 = g; return x; });
+    });
+    while (li < life.length) out.push(lifeTw(life[li++]));
     out.push('</div><div class="tw-today" id="today">' + todayBar() + '</div>');
-    out.push('<div class="tw-stats">' + statTw(dayN, '-й', 'день на маршруте') + statTw(lessonsDone, '', plural(lessonsDone, 'урок', 'урока', 'уроков')) +
+    out.push('<div class="tw-stats">' + statTw(dayN, '-й', 'день на маршруте') + statTw(done, '', plural(done, 'урок сдан', 'урока сдано', 'уроков сдано')) +
       statTw(stagesDone, '', plural(stagesDone, 'этап', 'этапа', 'этапов') + ' закрыто') + '<div class="tw-k"><b class="num">' + H.stage + '</b><span>этап сейчас</span></div></div>');
     out.push('<div class="tw tw-fut">');
-    out.push('<div class="tw-r route"><div class="tw-now">' + cov('voronka') + nowCard() + '</div></div>');
-    out.push('<div class="tw-r life"><div class="tw-ghost" tabindex="0" role="button"><span class="tw-ic">' + ico('plus') + '</span><div class="tw-tx"><b>Сохранить событие</b><span class="tw-s">Пост уйдёт в ленту и встанет сюда</span></div></div></div>');
-    out.push('<div class="tw-d"><time>Впереди</time></div>');
-    out.push('<div class="tw-r route"><div class="tw-c goal c-violet"><div class="tw-row"><span class="tw-ic">' + ico('target') + '</span><div class="tw-tx"><b>' + esc(H.goal.title) + '</b><span class="tw-s">Экзамен этапа ' + H.goal.stage + '</span></div></div></div></div>');
-    H.later.forEach(function (s) {
-      out.push('<div class="tw-r route"><div class="tw-c far"><div class="tw-row"><span class="tw-ic">' + ico('lock') + '</span><div class="tw-tx"><b>' + esc(s.title) + '</b><span class="tw-s">Этап ' + s.stage + '</span></div></div></div></div>');
+    var now = fut[0];
+    out.push('<div class="tw-r route wide"><div class="tw-now">' + (now.cv ? '<img src="' + now.cv + '" alt="">' : '') + '<div class="now"><div class="now-k">Урок сейчас · ' + esc(R.groups['1.3|' + now.g]) + '</div><div class="now-t">' + esc(now.title) +
+      '</div><div class="now-r"><span class="pill">' + now.min + ' мин · задание после урока</span><button class="btn">Смотреть</button></div></div></div></div>');
+    out.push('<div class="tw-r life"><span class="tw-pin c-orange"></span><div class="tw-ghost" tabindex="0" role="button"><span class="tw-ic">' + ico('plus') + '</span><div class="tw-tx"><b>Сохранить событие</b><span class="tw-s">Пост уйдёт в ленту и встанет на линию</span></div></div></div>');
+    out.push('<div class="tw-d"><time>Дальше по этапу 1.3</time></div>');
+    var g = now.g;
+    fut.slice(1).forEach(function (x) {
+      if (x.g !== g) { g = x.g; out.push('<div class="tw-g">' + esc(R.groups['1.3|' + g]) + '</div>'); }
+      out.push(lessonTw(x));
+    });
+    out.push('<div class="tw-r full"><div class="tw-c goal c-violet"><div class="tw-row"><span class="tw-ic">' + ico('target') + '</span><div class="tw-tx"><b>' + esc(H.goal.title) + '</b><span class="tw-s">Чекпоинт: закрывает этап 1.3 и уровень 1</span></div></div></div></div>');
+    out.push('<div class="tw-d"><time>Уровень 2 · Scaling</time></div>');
+    R.later.forEach(function (s) {
+      out.push('<div class="rs-h lock"><span class="rs-n">' + s.id + '</span><div class="rs-t"><b>Этап ' + s.id + ' · ' + esc(s.name) + '</b><span>' + s.n + ' ' + plural(s.n, 'урок', 'урока', 'уроков') + ' · откроется после уровня 1</span></div><span class="rs-pill">' + ico('lock') + '</span></div>');
     });
     out.push('</div>');
     out.push('<div class="tw-fab"><button class="tw-fb back" hidden>' + ico('down') + 'Сегодня</button><button class="tw-fb add">' + ico('plus') + 'Событие</button></div>');
@@ -174,7 +219,7 @@
     function toToday(smooth) { go(today, smooth, Math.max(stuck() + 24, innerHeight * .3)); }
     function sync() {
       var line = stuck() + 40, cur = '', tr = today.getBoundingClientRect();
-      root.querySelectorAll('.tw-m').forEach(function (m) { if (!cur || m.getBoundingClientRect().top <= line) cur = m.id; });
+      root.querySelectorAll('.tw-past .rs-h').forEach(function (m) { if (!cur || m.getBoundingClientRect().top <= line) cur = m.id; });
       if (tr.top < innerHeight * .7) cur = 'today';
       if (cur !== act) {
         act = cur;
@@ -216,7 +261,7 @@
           en.target.classList.add('in'); io.unobserve(en.target);
         });
       }, { rootMargin: '0px 0px -6% 0px' });
-      root.querySelectorAll('.tw-past > *').forEach(function (el) {
+      root.querySelectorAll('.tw-past > .tw-r, .tw-past > .rs-h').forEach(function (el) {
         var r = el.getBoundingClientRect();
         if (r.bottom < 0 || r.top > innerHeight) { el.classList.add('rv'); io.observe(el); }
       });
