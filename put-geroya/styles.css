@@ -334,3 +334,47 @@ div.hk-n:nth-of-type(even) { margin-left: 18%; flex-direction: row-reverse; text
 .ch-l li.lessons time { font-size: 13px; font-weight: 500; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ── Б v8: линия левее, этап липнет на линии, жизнь стикерами, урок сейчас с квадратной обложкой ── */
+.v-b { --sp: 30%; }
+.v-b .tw::before { left: var(--sp); }
+.tw-r.life > * { width: 62%; }
+.tw-r.life::before { left: var(--sp); right: 62%; border-top-color: rgba(176, 120, 40, .5); }
+.tw-pin { left: var(--sp); }
+.rs { position: relative; }
+.rs > .rs-h { background: rgba(255, 255, 255, .97); position: sticky; top: calc(var(--hh, 100px) + 6px); z-index: 5; margin-bottom: 8px; padding: 9px 12px; }
+.rs > .rs-h .rs-n { width: 38px; height: 38px; border-radius: 12px; font-size: 14px; }
+.rs > .rs-h .rs-t b { font-size: 14.5px; }
+.rs.cur > .rs-h { box-shadow: inset 0 0 0 1.5px rgba(47, 123, 255, .35), 0 10px 26px -16px rgba(16, 24, 48, .35); }
+/* стикеры-воспоминания */
+.tw-r.life .tw-c { background: color-mix(in oklab, var(--c) 10%, #fffdf5); border-radius: 4px 12px 8px 10px; backdrop-filter: none; -webkit-backdrop-filter: none;
+  box-shadow: 0 1px 1px rgba(70, 45, 0, .08), 0 10px 20px -12px rgba(70, 45, 0, .45); transform: rotate(-1.3deg); }
+.tw-r.life:nth-child(even) .tw-c { transform: rotate(1.1deg); }
+.tw-r.life .tw-c::before { content: ""; position: absolute; z-index: 2; top: -8px; left: 50%; width: 58px; height: 17px; margin-left: -29px; background: rgba(255, 233, 160, .78); transform: rotate(-4deg); box-shadow: 0 1px 2px rgba(0, 0, 0, .1); }
+.tw-r.life .tw-c.hero { background: linear-gradient(140deg, var(--c), color-mix(in oklab, var(--c) 72%, #2a1600)); }
+.tw-r.life .tw-c.pic { overflow: visible; background: #fff; padding: 9px 9px 11px; }
+.tw-r.life .tw-c.pic .tw-img { width: 100%; margin: 0 0 9px; height: 130px; border-radius: 2px; }
+.tw-r.life .tw-ic { background: rgba(255, 255, 255, .7); }
+.tw-r.life .tw-lk { color: color-mix(in oklab, var(--c) 80%, #000); }
+/* урок сейчас: квадратная обложка-иконка, рядом текст */
+.tw-c.nowc { padding: 14px; box-shadow: 0 0 0 1.5px rgba(47, 123, 255, .35), 0 14px 30px -16px rgba(47, 123, 255, .55); background: rgba(255, 255, 255, .94); }
+.tw-c.nowc .tw-row { align-items: flex-start; gap: 12px; }
+.ls-cv.big { width: 76px; height: 76px; border-radius: 16px; } .ls-cv.big img { border-radius: 16px; }
+.tw-c.nowc .now-k { font-size: 11px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; color: var(--blue-ink); }
+.tw-c.nowc .tw-tx > b { font-size: 16px; line-height: 1.25; }
+.tw-c.nowc .tw-s { font-size: 12.5px; }
+.tw-c.nowc .now-r { margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+/* сохранить событие: квадратная карточка с плюсом по центру */
+.tw-ghost { flex-direction: column; justify-content: center; text-align: center; gap: 6px; min-height: 150px; padding: 16px 12px; border-radius: 18px; }
+.tw-ghost b { font-size: 14px; font-weight: 750; color: var(--ink); }
+.gh-plus { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--life); color: #fff; box-shadow: 0 10px 22px -10px rgba(234, 122, 18, .8); }
+.gh-plus .ic { width: 26px; height: 26px; stroke-width: 2.4; }
+.tw-later { position: relative; margin-top: 8px; }
+@media (min-width: 900px) {
+  .v-b { --sp: 38%; }
+  .v-b .tw-r.life > * { width: 56%; } .v-b .tw-r.life > .tw-pin { width: 14px; } .v-b .tw-r.life::before { right: 56%; }
+  .v-b .rs > .rs-h { padding: 12px 18px; } .v-b .rs > .rs-h .rs-n { width: 46px; height: 46px; font-size: 16px; } .v-b .rs > .rs-h .rs-t b { font-size: 18px; }
+  .v-b .ls-cv.big { width: 120px; height: 120px; } .v-b .tw-c.nowc .tw-tx > b { font-size: 20px; } .v-b .tw-c.nowc .tw-s { font-size: 14px; }
+  .v-b .tw-r.life .tw-c.pic .tw-img { height: 220px; }
+  .v-b .tw-ghost { min-height: 180px; }
+}

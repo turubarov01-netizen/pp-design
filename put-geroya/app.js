@@ -119,8 +119,8 @@
     return '<div class="tw-c c-' + t.c + (hero ? ' hero' : '') + (e.img ? ' pic' : '') + (act ? ' act" tabindex="0" role="button' : '') + '">' + (e.img ? photo(e, 'tw-img') : '') +
       '<div class="tw-row">' + tile + '<div class="tw-tx"><b>' + esc(e.title) + '</b>' +
       '<span class="tw-s">' + (e.d ? '<time>' + dShort(e.d) + '</time> · ' : '') + esc(subOf(e)) + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</span>' +
-      (e.t === 'post' ? '<span class="tw-lk">Открыть в ленте ›</span>' : '') + '</div>' +
-      (act && e.t !== 'post' ? '<span class="tw-go">' + ico('chev') + '</span>' : '') + '</div></div>';
+      (e.t === 'post' ? '<span class="tw-lk">Открыть в ленте ›</span>' : e.t === 'meet' ? '<span class="tw-lk">Смотреть запись ›</span>' : '') + '</div>' +
+      (act && e.t !== 'post' && e.t !== 'meet' ? '<span class="tw-go">' + ico('chev') + '</span>' : '') + '</div></div>';
   }
   function statTw(n, suf, label) {
     return '<div class="tw-k"><b class="num" data-n="' + n + '" data-s="' + suf + '">' + n + suf + '</b><span>' + label + '</span></div>';
@@ -163,42 +163,45 @@
       '<nav class="tw-rail" aria-label="Этапы маршрута">' + R.stages.map(function (s) {
         return '<button class="tw-rb" data-go="st' + s.id.replace('.', '-') + '">' + (s.id === 'start' ? 'Старт' : s.id + ' ' + s.name) + '</button>';
       }).join('') + '<button class="tw-rb now" data-go="today">Сегодня</button></nav></div>', '<div class="tw tw-past">'];
-    var li = 0, fut = [];
+    var li = 0;
     R.stages.forEach(function (s) {
       var list = items.filter(function (x) { return x.st === s.id; }), past = list.filter(function (x) { return x.state === 'done'; });
       var state = past.length === list.length ? 'done' : 'cur';
-      out.push(stageHead(s, list, state));
+      out.push('<section class="rs ' + state + '" id="st' + s.id.replace('.', '-') + '">' + stageHead(s, list, state));
       if (s.id === 'start') out.push('<div class="tw-r full">' + cardTw(H.past[0]) + '</div>');
-      var g = -1, last = '';
+      var g = -1;
       past.forEach(function (x) {
         while (li < life.length && life[li].d <= x.d) out.push(lifeTw(life[li++]));
         if (x.g !== g) { g = x.g; out.push('<div class="tw-g">' + esc(R.groups[s.id + '|' + g]) + '</div>'); }
-        out.push(lessonTw(x)); last = x.d;
+        out.push(lessonTw(x));
       });
       var cl = H.past.filter(function (e) { return e.t === 'stage' && e.title.indexOf(s.id + ' ') > 0; })[0];
       if (cl) {
         while (li < life.length && life[li].d <= cl.d) out.push(lifeTw(life[li++]));
         out.push('<div class="tw-r full peak">' + cardTw(cl) + '</div>');
       }
-      if (state === 'cur') fut = list.filter(function (x) { return x.state !== 'done'; }).map(function (x) { x.g0 = g; return x; });
+      if (state === 'cur') {
+        while (li < life.length) out.push(lifeTw(life[li++]));
+        var fut = list.filter(function (x) { return x.state !== 'done'; }), now = fut[0];
+        out.push('<div class="tw-today" id="today">' + todayBar() + '</div>');
+        out.push('<div class="tw-stats">' + statTw(dayN, '-й', 'день на маршруте') + statTw(done, '', plural(done, 'урок сдан', 'урока сдано', 'уроков сдано')) +
+          statTw(stagesDone, '', plural(stagesDone, 'этап', 'этапа', 'этапов') + ' закрыто') + '<div class="tw-k"><b class="num">' + H.stage + '</b><span>этап сейчас</span></div></div>');
+        out.push('<div class="tw-r route wide"><div class="tw-c nowc"><div class="tw-row"><span class="ls-cv big">' + (now.cv ? '<img src="' + now.cv + '" alt="">' : '') + '</span>' +
+          '<div class="tw-tx"><span class="now-k">Урок сейчас · ' + esc(R.groups[s.id + '|' + now.g]) + '</span><b>' + esc(now.title) + '</b>' +
+          '<span class="tw-s">Управлять можно только тем, что можешь замерить. Как отделить мнения о своём бизнесе от фактов, внедрить замер…</span></div></div>' +
+          '<div class="now-r"><span class="pill">' + now.min + ' мин · задание после урока</span><button class="btn">Смотреть</button></div></div></div>');
+        out.push('<div class="tw-r life"><span class="tw-pin c-orange"></span><div class="tw-ghost" tabindex="0" role="button"><span class="gh-plus">' + ico('plus') + '</span><b>Сохранить событие</b><span class="tw-s">Пост уйдёт в ленту и встанет на линию</span></div></div>');
+        out.push('<div class="tw-d"><time>Дальше по этапу ' + s.id + '</time></div>');
+        g = now.g;
+        fut.slice(1).forEach(function (x) {
+          if (x.g !== g) { g = x.g; out.push('<div class="tw-g">' + esc(R.groups[s.id + '|' + g]) + '</div>'); }
+          out.push(lessonTw(x));
+        });
+        out.push('<div class="tw-r full"><div class="tw-c goal c-violet"><div class="tw-row"><span class="tw-ic">' + ico('target') + '</span><div class="tw-tx"><b>' + esc(H.goal.title) + '</b><span class="tw-s">Чекпоинт: закрывает этап ' + s.id + ' и уровень 1</span></div></div></div></div>');
+      }
+      out.push('</section>');
     });
-    while (li < life.length) out.push(lifeTw(life[li++]));
-    out.push('</div><div class="tw-today" id="today">' + todayBar() + '</div>');
-    out.push('<div class="tw-stats">' + statTw(dayN, '-й', 'день на маршруте') + statTw(done, '', plural(done, 'урок сдан', 'урока сдано', 'уроков сдано')) +
-      statTw(stagesDone, '', plural(stagesDone, 'этап', 'этапа', 'этапов') + ' закрыто') + '<div class="tw-k"><b class="num">' + H.stage + '</b><span>этап сейчас</span></div></div>');
-    out.push('<div class="tw tw-fut">');
-    var now = fut[0];
-    out.push('<div class="tw-r route wide"><div class="tw-now">' + (now.cv ? '<img src="' + now.cv + '" alt="">' : '') + '<div class="now"><div class="now-k">Урок сейчас · ' + esc(R.groups['1.3|' + now.g]) + '</div><div class="now-t">' + esc(now.title) +
-      '</div><div class="now-r"><span class="pill">' + now.min + ' мин · задание после урока</span><button class="btn">Смотреть</button></div></div></div></div>');
-    out.push('<div class="tw-r life"><span class="tw-pin c-orange"></span><div class="tw-ghost" tabindex="0" role="button"><span class="tw-ic">' + ico('plus') + '</span><div class="tw-tx"><b>Сохранить событие</b><span class="tw-s">Пост уйдёт в ленту и встанет на линию</span></div></div></div>');
-    out.push('<div class="tw-d"><time>Дальше по этапу 1.3</time></div>');
-    var g = now.g;
-    fut.slice(1).forEach(function (x) {
-      if (x.g !== g) { g = x.g; out.push('<div class="tw-g">' + esc(R.groups['1.3|' + g]) + '</div>'); }
-      out.push(lessonTw(x));
-    });
-    out.push('<div class="tw-r full"><div class="tw-c goal c-violet"><div class="tw-row"><span class="tw-ic">' + ico('target') + '</span><div class="tw-tx"><b>' + esc(H.goal.title) + '</b><span class="tw-s">Чекпоинт: закрывает этап 1.3 и уровень 1</span></div></div></div></div>');
-    out.push('<div class="tw-d"><time>Уровень 2 · Scaling</time></div>');
+    out.push('</div><div class="tw-later"><div class="tw-d"><time>Уровень 2 · Scaling — закрыт</time></div>');
     R.later.forEach(function (s) {
       out.push('<div class="rs-h lock"><span class="rs-n">' + s.id + '</span><div class="rs-t"><b>Этап ' + s.id + ' · ' + esc(s.name) + '</b><span>' + s.n + ' ' + plural(s.n, 'урок', 'урока', 'уроков') + ' · откроется после уровня 1</span></div><span class="rs-pill">' + ico('lock') + '</span></div>');
     });
@@ -211,7 +214,10 @@
     var today = document.getElementById('today'), back = root.querySelector('.tw-fb.back'), ghost = root.querySelector('.tw-ghost');
     var RM = matchMedia('(prefers-reduced-motion: reduce)').matches, moved = false, act = '';
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    function stuck() { return (parseFloat(getComputedStyle(hd).top) || 0) + hd.offsetHeight; }
+    function hh() { return (parseFloat(getComputedStyle(hd).top) || 0) + hd.offsetHeight; }
+    function stuck() { return hh() + 66; }
+    function setHH() { root.style.setProperty('--hh', hh() + 'px'); }
+    setHH(); addEventListener('resize', setHH);
     function go(el, smooth, off) {
       var y = el.getBoundingClientRect().top + scrollY - (off != null ? off : stuck() + 12);
       scrollTo({ top: Math.max(0, y), behavior: smooth && !RM ? 'smooth' : 'auto' });
@@ -219,7 +225,7 @@
     function toToday(smooth) { go(today, smooth, Math.max(stuck() + 24, innerHeight * .3)); }
     function sync() {
       var line = stuck() + 40, cur = '', tr = today.getBoundingClientRect();
-      root.querySelectorAll('.tw-past .rs-h').forEach(function (m) { if (!cur || m.getBoundingClientRect().top <= line) cur = m.id; });
+      root.querySelectorAll('.tw-past > .rs').forEach(function (m) { if (!cur || m.getBoundingClientRect().top <= line) cur = m.id; });
       if (tr.top < innerHeight * .7) cur = 'today';
       if (cur !== act) {
         act = cur;
@@ -235,7 +241,7 @@
     addEventListener('resize', sync);
     rail.addEventListener('click', function (ev) {
       var b = ev.target.closest('.tw-rb'); if (!b) return;
-      if (b.dataset.go === 'today') toToday(true); else go(document.getElementById(b.dataset.go), true);
+      if (b.dataset.go === 'today') toToday(true); else go(document.getElementById(b.dataset.go), true, hh() + 6);
     });
     back.addEventListener('click', function () { toToday(true); });
     root.querySelector('.tw-fb.add').addEventListener('click', function () {
@@ -261,7 +267,7 @@
           en.target.classList.add('in'); io.unobserve(en.target);
         });
       }, { rootMargin: '0px 0px -6% 0px' });
-      root.querySelectorAll('.tw-past > .tw-r, .tw-past > .rs-h').forEach(function (el) {
+      root.querySelectorAll('.tw-past .tw-r').forEach(function (el) {
         var r = el.getBoundingClientRect();
         if (r.bottom < 0 || r.top > innerHeight) { el.classList.add('rv'); io.observe(el); }
       });
