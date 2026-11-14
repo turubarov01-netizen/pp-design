@@ -12,10 +12,16 @@
   --navy: oklch(0.22 0.13 268); --navy2: oklch(0.32 0.11 268); --navy3: oklch(0.42 0.1 268); --yellow: oklch(0.83 0.13 80); --fire: oklch(0.7 0.17 50);
   --cream: oklch(0.972 0.013 85); --card: oklch(0.994 0.004 85); --ink: oklch(0.22 0.03 268); --ink2: oklch(0.47 0.03 268);
   --line: oklch(0.89 0.015 85); --tile: oklch(0.955 0.014 85);
+  --glass: rgba(255,255,255,.72); --glass-b: rgba(255,255,255,.62); --blur: blur(26px) saturate(1.4);
+  --nglass: oklch(0.22 0.13 268 / .8);
   --ease: cubic-bezier(.22,1,.36,1);
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--cream); color: var(--ink); font: 400 15px/1.45 "Medeo Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: transparent; color: var(--ink); font: 400 15px/1.45 "Medeo Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: #9db4cc url(img/wall-light.jpg) center / cover no-repeat; }
+.combo, .coin, .pack, .mate, .chip { background: var(--glass) !important; border-color: var(--glass-b) !important; -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); box-shadow: 0 10px 34px rgba(20,34,70,.08); }
+.sec h3 { text-shadow: 0 1px 12px rgba(255,255,255,.7); }
+.sec .sub { color: oklch(0.32 0.04 268); text-shadow: 0 1px 10px rgba(255,255,255,.8); }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 120px; }
 .top { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
@@ -32,8 +38,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ---------- колода целей ---------- */
 .deck { position: relative; perspective: 1600px; }
 .deck.multi { padding-top: 72px; }
-.ghost { position: absolute; left: 0; right: 0; top: 0; bottom: 14px; border-radius: 28px; background: var(--navy3); color: oklch(0.95 0.02 85); padding: 12px 22px; font-size: 13px; font-weight: 650; text-align: left; display: flex; align-items: flex-start; justify-content: space-between; transition: transform .35s var(--ease), background .25s; }
-.ghost.g1 { top: 34px; bottom: 6px; left: 14px; right: 14px; background: var(--navy2); transform: rotate(-.6deg); }
+.ghost { position: absolute; left: 0; right: 0; top: 0; bottom: 14px; border-radius: 28px; background: oklch(0.42 0.1 268 / .7); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); color: oklch(0.95 0.02 85); padding: 12px 22px; font-size: 13px; font-weight: 650; text-align: left; display: flex; align-items: flex-start; justify-content: space-between; transition: transform .35s var(--ease), background .25s; }
+.ghost.g1 { top: 34px; bottom: 6px; left: 14px; right: 14px; background: oklch(0.32 0.11 268 / .78); transform: rotate(-.6deg); }
 .ghost.g2 { top: 0; left: 30px; right: 30px; transform: rotate(.8deg); }
 .ghost:hover { transform: translateY(-6px); }
 .face.front { display: flex; flex-direction: column; }
@@ -45,11 +51,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .deck.multi .gcard.drag { cursor: grabbing; }
 .deck.multi .gcard.drag .inner { transition: none; }
 .gcard img { -webkit-user-drag: none; }
-.gcard { position: relative; z-index: 2; perspective: 1800px; }
+.gcard { position: relative; z-index: 2; perspective: 1800px; border-radius: 28px; -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); box-shadow: 0 18px 44px rgba(10,20,60,.22); }
 .inner { position: relative; display: grid; transform-style: preserve-3d; transition: transform .9s var(--ease); }
 .gcard.flipped .inner { transform: rotateY(180deg); }
-.face { grid-area: 1 / 1; position: relative; border-radius: 28px; background: radial-gradient(60% 70% at 85% 20%, oklch(0.42 0.14 268 / .9), transparent 70%), var(--navy); color: var(--cream); padding: 24px 26px 22px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; clip-path: inset(0 round 28px); }
-.face.back { transform: rotateY(180deg); background: radial-gradient(70% 60% at 50% 30%, oklch(0.45 0.15 268), transparent 70%), oklch(0.27 0.14 268); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.face { grid-area: 1 / 1; position: relative; border-radius: 28px; background: radial-gradient(60% 70% at 85% 20%, oklch(0.42 0.14 268 / .55), transparent 70%), var(--nglass); color: var(--cream); padding: 24px 26px 22px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; clip-path: inset(0 round 28px); }
+.face.back { transform: rotateY(180deg); background: radial-gradient(70% 60% at 50% 30%, oklch(0.45 0.15 268 / .7), transparent 70%), oklch(0.27 0.14 268 / .86); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .face > * { position: relative; }
 .head { display: grid; grid-template-columns: 1fr 210px; gap: 10px; align-items: center; }
 .head small { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--yellow); }
@@ -62,7 +68,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .ringwrap circle { fill: none; stroke-width: 12; }
 .ringwrap .tr { stroke: oklch(1 0 0 / .12); }
 .ringwrap .pr { stroke: var(--yellow); stroke-linecap: round; transition: stroke-dashoffset 1.1s var(--ease); }
-.ringwrap img { position: absolute; left: 50%; bottom: 8px; width: 196px; transform: translateX(-50%); filter: drop-shadow(0 12px 18px oklch(0.12 0.1 268 / .45)); }
+.ringwrap .ph { position: absolute; inset: 20px; border-radius: 50%; overflow: hidden; background: oklch(1 0 0 / .08); box-shadow: 0 10px 24px oklch(0.12 0.1 268 / .4); }
+.ringwrap .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ringwrap .ph.empty { display: grid; place-items: center; text-align: center; border: 2px dashed oklch(1 0 0 / .3); box-shadow: none; color: oklch(0.88 0.03 268); font-size: 13px; font-weight: 600; line-height: 1.25; padding: 14px; }
+.ringwrap .ph.empty b { display: block; font: 400 30px/1 "Bebas", sans-serif; color: var(--yellow); }
+.ringwrap .pct { position: absolute; right: 2px; bottom: 6px; font: 400 20px/1 "Bebas", sans-serif; padding: 5px 8px 3px; border-radius: 9px; background: var(--yellow); color: var(--navy); }
 .pips { margin-top: 18px; display: flex; gap: 5px; }
 .pips i { flex: 1; height: 8px; border-radius: 4px; background: oklch(1 0 0 / .14); }
 .pips i.on { background: var(--yellow); }
@@ -99,7 +109,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 @keyframes pick { to { transform: translateY(-30px) scale(1.06); opacity: 0; } }
 
 /* обратная сторона */
-.back img { width: 140px; filter: drop-shadow(0 14px 20px oklch(0.12 0.1 268 / .5)); }
+.back .bph { width: 132px; height: 132px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 5px var(--yellow), 0 14px 26px oklch(0.12 0.1 268 / .5); }
+.back .bph img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .back .plus { font: 400 80px/0.85 "Bebas", sans-serif; color: var(--yellow); margin-top: 4px; }
 .back h3 { margin: 6px 0 0; font-size: 26px; font-weight: 750; }
 .back p { margin: 6px 0 0; color: oklch(0.85 0.03 268); max-width: 420px; }
@@ -115,7 +126,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .combo .x { font: 400 64px/0.85 "Bebas", sans-serif; color: var(--navy); margin-top: 6px; }
 .combo .x em { font-style: normal; color: var(--fire); }
 .combo .msg { margin-top: 6px; font-size: 16px; font-weight: 650; color: var(--navy); max-width: 210px; }
-.combo .fr { width: 150px; height: 150px; object-fit: contain; margin: -10px -12px 0 0; transition: transform .5s var(--ease); }
+.combo .fr { width: 160px; height: 160px; flex: none; margin: -14px -14px 0 0; transition: transform .5s var(--ease); }
+.combo .fr > * { width: 100%; height: 100%; object-fit: contain; display: block; }
 .combo .fr.pop { animation: pop .7s var(--ease); }
 @keyframes pop { 30% { transform: scale(1.18) rotate(-6deg); } }
 .segs { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
@@ -176,7 +188,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .face { padding: 18px 16px 16px; border-radius: 24px; clip-path: inset(0 round 24px); }
   .head { grid-template-columns: 1fr 120px; }
   .head h2 { font-size: 21px; }
-  .ringwrap { width: 120px; height: 120px; } .ringwrap img { width: 116px; bottom: 4px; } .ringwrap circle { stroke-width: 9; }
+  .ringwrap { width: 120px; height: 120px; } .ringwrap .ph { inset: 12px; } .ringwrap .ph.empty { font-size: 0; padding: 0; } .ringwrap .ph.empty b { font-size: 26px; } .ringwrap .pct { font-size: 15px; padding: 4px 6px 2px; right: -4px; bottom: 0; } .ringwrap circle { stroke-width: 9; }
   .lvl { flex-direction: column; align-items: flex-start; gap: 6px; } .lvl b { font-size: 52px; } .lvl span { font-size: 13px; } .lvl span br { display: none; }
   .pips { gap: 3px; } .pips i { height: 6px; }
   .quest { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px; }
@@ -184,7 +196,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .hand { grid-template-columns: 1fr; gap: 8px; }
   .qc { min-height: 0; transform: none !important; flex-direction: row; align-items: center; gap: 10px; }
   .qc b { margin-top: 0; flex: 1; font-size: 14px; } .qc .take { margin-top: 0; padding-top: 0; }
-  .back img { width: 96px; } .back .plus { font-size: 56px; } .back h3 { font-size: 20px; } .back p { font-size: 14px; } .back .next { display: none; } .back .turn { margin-top: 10px; }
+  .back .bph { width: 84px; height: 84px; } .back .plus { font-size: 56px; } .back h3 { font-size: 20px; } .back p { font-size: 14px; } .back .next { display: none; } .back .turn { margin-top: 10px; }
   .below { grid-template-columns: 1fr; }
   .coins { gap: 8px; } .coin { padding: 14px 6px 12px; } .disc { width: 66px; height: 66px; } .coin .nm { font-size: 13px; }
   .combo .fr { width: 112px; height: 112px; } .combo .x { font-size: 50px; }
@@ -244,12 +256,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     return `<div class="face front">
       <div class="head"><div><small>Цель ${S.goalsCount > 1 ? S.active + 1 + ' из ' + S.goalsCount : 'в фокусе'}</small><h2>${g.title}</h2>
         <div class="lvl"><b>${g.done}/${g.total}</b><span>шагов пройдено<br> до&nbsp;цели ${S.left(g)}</span></div></div>
-        <div class="ringwrap"><svg viewBox="0 0 210 210"><circle class="tr" cx="105" cy="105" r="${R}"/><circle class="pr" cx="105" cy="105" r="${R}" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg><img src="img/focus-happy.webp" alt="Фрими" draggable="false"></div></div>
+        <div class="ringwrap"><svg viewBox="0 0 210 210"><circle class="tr" cx="105" cy="105" r="${R}"/><circle class="pr" cx="105" cy="105" r="${R}" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg>${g.img ? `<span class="ph"><img src="${g.img}" alt="${g.short}" draggable="false"></span>` : `<span class="ph empty"><span><b>+</b>фото из карты желаний</span></span>`}<span class="pct">${Math.round(g.done / g.total * 100)}%</span></div></div>
       <div class="pips">${pips}</div>${act}</div>`;
   }
   function back(g) {
     const nx = g.done < g.total ? `<div class="next">Следующий шаг: <b>${S.stepTitle(g, g.done)}</b></div>` : '';
-    return `<div class="face back"><img src="img/love-f7.webp" alt="" draggable="false"><div class="plus">+30 XP</div><h3>Шаг ${g.done} пройден</h3><p>До цели «${g.short}» осталось ${S.left(g)}. Фрими уже на ${Math.round(g.done / g.total * 100)}% пути.</p>${nx}<button class="turn" id="turn">Перевернуть карточку</button></div>`;
+    return `<div class="face back">${g.img ? `<div class="bph"><img src="${g.img}" alt="" draggable="false"></div>` : ""}<div class="plus">+30 XP</div><h3>Шаг ${g.done} пройден</h3><p>До цели «${g.short}» осталось ${S.left(g)}. Ты уже на ${Math.round(g.done / g.total * 100)}%&nbsp;пути.</p>${nx}<button class="turn" id="turn">Перевернуть карточку</button></div>`;
   }
 
   const n = () => S.goals.length;
@@ -317,18 +329,36 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') fly(e.key === 'ArrowLeft' ? -1 : 1, $('#gcard'));
   });
 
+  // анимированный Фрими в комбо, как FrimiVideo на сайте: Safari берёт mp4 с прозрачностью, остальные webm;
+  // не запустилось за 2,5 с или анимация выключена — картинка
+  const SAFARI = /AppleWebKit/.test(navigator.userAgent) && !/Chrome|Chromium|Edg|OPR|Android|Firefox/.test(navigator.userAgent);
+  let frNode = null, frName = '';
+  function frimi(name) {
+    if (frNode && frName === name) return frNode;
+    frName = name;
+    const still = () => { const im = new Image(); im.src = `img/frimi-${name}.webp`; im.alt = ''; return im; };
+    if (RM) return frNode = still();
+    const v = document.createElement('video');
+    Object.assign(v, { src: `img/frimi-${name}.${SAFARI ? 'mp4' : 'webm'}`, poster: `img/frimi-${name}.webp`, autoplay: true, muted: true, loop: true, playsInline: true });
+    v.setAttribute('aria-hidden', 'true');
+    const fail = () => { if (frNode === v) { frNode = still(); v.replaceWith(frNode); } };
+    const p = v.play(); if (p && p.catch) p.catch(fail);
+    setTimeout(() => { if (v.paused) fail(); }, 2500);
+    return frNode = v;
+  }
   let lastClosed = -1;
   function combo() {
     const d = S.day(), hb = S.habits.filter(h => h.done).length, hot = S.tasks.filter(t => t.hot), tk = hot.filter(t => t.done).length;
-    const img = ['sleepy', 'idea', 'focus-joy', 'hooray'][d.closed];
+    const vid = ['sleep', 'repair', 'repair', 'breakfast'][d.closed];
     const msg = ['Начни с шага к цели, Фрими ждёт', 'Разогрев. Ещё два блока до комбо', 'Почти комбо, остался один блок', 'Комбо дня! Бонус начислен'][d.closed];
-    $('#combo').innerHTML = `<div class="ct"><div><small>Комбо дня</small><div class="x">${d.closed}<em>/3</em></div><div class="msg">${msg}</div></div><img class="fr" id="cfr" src="img/${img}.webp" alt=""></div>
+    $('#combo').innerHTML = `<div class="ct"><div><small>Комбо дня</small><div class="x">${d.closed}<em>/3</em></div><div class="msg">${msg}</div></div><span class="fr" id="cfr"></span></div>
       <div class="segs">
         <div class="seg s1 ${d.step ? 'full' : ''}"><span>Шаг к цели</span><em>${d.step ? 'сделан' : 'ждёт'}</em><i><u style="width:${d.step * 100}%"></u></i></div>
         <div class="seg s2 ${d.hb === 1 ? 'full' : ''}"><span>Привычки</span><em>${hb} из ${S.habits.length}</em><i><u style="width:${d.hb * 100}%"></u></i></div>
         <div class="seg s3 ${d.tk === 1 ? 'full' : ''}"><span>Важные квесты</span><em>${tk} из ${hot.length}</em><i><u style="width:${d.tk * 100}%"></u></i></div>
       </div>
       <div class="bonus"><b>+50</b> за полное комбо: закрой все три блока</div>`;
+    $('#cfr').append(frimi(vid));
     if (lastClosed >= 0 && d.closed !== lastClosed && !RM) $('#cfr').classList.add('pop');
     if (lastClosed >= 0 && d.closed === 3 && lastClosed < 3) burst($('#cfr'));
     lastClosed = d.closed;
