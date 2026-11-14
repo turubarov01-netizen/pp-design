@@ -33,7 +33,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .chip .fl { color: var(--fire); } .chip .xp { color: var(--yellow); }
 .chip b { font: 400 20px/1 "Bebas", sans-serif; letter-spacing: .02em; padding-top: 3px; }
 
-.hero { margin-top: 18px; display: grid; grid-template-columns: 1.55fr 1fr; gap: 18px; align-items: start; }
+.board { margin-top: 18px; display: grid; grid-template-columns: 1.55fr 1fr; gap: 18px; align-items: start; }
+.board > .col { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
+.board .sec { margin: 0; }
+.board > .pulse { grid-column: 1 / -1; margin-top: 8px; }
 
 /* ---------- колода целей ---------- */
 .deck { position: relative; perspective: 1600px; }
@@ -142,7 +145,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .combo .bonus b { font: 400 18px/1 "Bebas", sans-serif; color: var(--navy); padding: 4px 7px 2px; background: var(--yellow); border-radius: 6px; }
 
 /* ---------- ниже ---------- */
-.below { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
 .sec h3 { margin: 0 0 4px; font-size: 20px; font-weight: 750; color: var(--navy); letter-spacing: -.01em; }
 .sec .sub { font-size: 13px; color: var(--ink2); margin: 0 0 12px; }
 .coins { display: flex; gap: 12px; }
@@ -174,14 +176,23 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .item.done .ck svg { opacity: 1; transform: none; }
 .item .open { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 10px 6px 10px 2px; text-align: left; border-radius: 12px; }
 .item .tt { flex: 1; min-width: 0; display: grid; gap: 2px; }
-.item .tt .kd { font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: oklch(0.55 0.12 60); }
-.item.q-mentor .tt .kd { color: oklch(0.5 0.15 268); }
+.item .tt .kd { font-size: 12px; font-weight: 600; color: oklch(0.5 0.1 60); }
+.item.q-mentor .tt .kd { color: oklch(0.45 0.15 268); }
 .item .tt b { font-size: 15px; font-weight: 650; line-height: 1.3; }
 .item .tt small { font-size: 12.5px; color: var(--ink2); }
 .item.done .tt b { color: var(--ink2); text-decoration: line-through; text-decoration-color: oklch(0.47 0.03 268 / .5); }
 .item.done .tt .kd { color: var(--ink2); }
 .item .rw { font: 400 15px/1 "Bebas", sans-serif; color: var(--ink2); padding: 4px 6px 2px; border-radius: 6px; background: var(--tile); flex: none; }
 .item.done .rw { background: var(--yellow); color: var(--navy); }
+.item .x { width: 40px; height: 40px; flex: none; display: grid; place-items: center; border-radius: 50%; color: oklch(0.22 0.13 268 / .3); transition: color .2s, background .2s; }
+.item .x svg { width: 16px; height: 16px; }
+.item .x:hover { color: oklch(0.5 0.17 25); background: oklch(0.94 0.04 25 / .7); }
+.item .st { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 12px; color: var(--ink2); }
+.item .st i { display: inline-flex; gap: 1px; color: oklch(0.85 0.02 85); } .item .st i svg { width: 12px; height: 12px; }
+.item .st i svg.on { color: var(--yellow); } .item .st i svg.nx { color: oklch(0.8 0.1 80); }
+.item .today { font: 400 13px/1 "Bebas", sans-serif; padding: 3px 6px 1px; border-radius: 6px; background: var(--yellow); color: var(--navy); }
+.item.in { animation: qin .45s var(--ease); }
+@keyframes qin { from { opacity: 0; transform: translateY(8px); } }
 .item .ar { width: 18px; height: 18px; flex: none; color: oklch(0.22 0.13 268 / .35); transition: transform .2s var(--ease), color .2s; }
 .item .ar svg { width: 100%; height: 100%; }
 .item .open:hover .ar { transform: translateX(3px); color: var(--navy); }
@@ -189,18 +200,41 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .qlink { color: var(--navy); font-weight: 650; text-decoration: none; }
 .qlink.mute { color: var(--ink2); font-weight: 500; }
 .qlink:hover { text-decoration: underline; }
-#toast { position: fixed; left: 50%; bottom: 120px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--navy); color: var(--cream); font-size: 14px; padding: 12px 18px; border-radius: 14px; box-shadow: 0 12px 30px rgba(20,34,70,.25); transition: opacity .25s, transform .3s var(--ease); z-index: 60; width: max-content; max-width: calc(100vw - 32px); }
-#toast.on { opacity: 1; transform: translate(-50%, 0); }
+#toast { position: fixed; left: 50%; bottom: 120px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--navy); color: var(--cream); font-size: 14px; padding: 12px 18px; border-radius: 14px; box-shadow: 0 12px 30px rgba(20,34,70,.25); transition: opacity .25s, transform .3s var(--ease); z-index: 60; width: max-content; max-width: calc(100vw - 32px); display: flex; align-items: center; gap: 14px; }
+#toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+#toast button { color: var(--yellow); font-weight: 650; font-size: 14px; }
+.empty { margin: 0; padding: 18px 14px; font-size: 14px; color: var(--ink2); }
 .tag { font-size: 11px; font-weight: 650; padding: 4px 8px; border-radius: 999px; background: oklch(0.94 0.05 75); color: oklch(0.45 0.12 60); white-space: nowrap; }
 .tag.red { background: oklch(0.94 0.04 25); color: oklch(0.5 0.17 25); }
-.mates { margin-top: 26px; }
-.mates .list { display: flex; gap: 10px; flex-wrap: wrap; }
-.mate { display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-size: 13px; }
-.mate i { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: var(--cream); font-style: normal; font-weight: 700; font-size: 12px; flex: none; }
-.mate b { font-weight: 650; }
+.cheered { display: flex; align-items: center; gap: 8px; margin: -4px 0 12px; font-size: 13px; color: var(--navy); }
+.cheered .av { display: flex; } .cheered .av i { width: 24px; height: 24px; margin-left: -6px; border: 2px solid oklch(0.99 0.005 85); } .cheered .av i:first-child { margin-left: 0; }
+.plist { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: stretch; }
+@media (max-width: 1100px) { .plist { grid-template-columns: 1fr 1fr; } }
+.mate { display: flex; flex-direction: column; padding: 14px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); font-size: 13px; }
+.mate .hd { display: flex; align-items: center; gap: 12px; }
+.mate i, .cheered i { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: var(--cream); font-style: normal; font-weight: 700; font-size: 15px; flex: none; }
+.cheered i { font-size: 10px; }
+.mate .who { min-width: 0; }
+.mate .who b { display: block; font-size: 15px; font-weight: 650; }
+.mate .who small { display: flex; align-items: center; gap: 4px; color: oklch(0.5 0.13 50); font-size: 12px; font-weight: 600; }
+.mate .who small svg { width: 12px; height: 12px; color: var(--fire); flex: none; }
+.mate .near { align-self: flex-start; margin-top: 10px; font-size: 11.5px; font-weight: 600; padding: 3px 8px; border-radius: 999px; background: oklch(0.22 0.13 268 / .06); color: var(--navy); }
+.mate .did { font-size: 13.5px; line-height: 1.4; margin-top: 8px; }
+.mate .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 12px; }
+.mate .cnt { font-size: 12px; color: var(--ink2); }
+.cheer { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border-radius: 999px; font-size: 13px; font-weight: 650; color: var(--navy); background: oklch(0.22 0.13 268 / .07); transition: background .2s, transform .2s var(--ease); }
+.cheer svg { width: 15px; height: 15px; }
+.cheer:hover { background: oklch(0.22 0.13 268 / .12); }
+.cheer:active { transform: scale(.95); }
+.cheer.on { background: var(--yellow); }
+.mate.pop .cheer { animation: chp .5s var(--ease); }
+@keyframes chp { 40% { transform: scale(1.12); } }
 .conf { position: fixed; z-index: 60; pointer-events: none; width: 8px; height: 12px; border-radius: 2px; }
 
-@media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .board { display: flex; flex-direction: column; gap: 22px; } .board > .col { display: contents; }
+  #deck { order: 1; } .combo { order: 2; } .hab { order: 3; } .qs { order: 4; } .pulse { order: 5; }
+}
 @media (max-width: 760px) {
   .wrap { padding: 16px 12px 120px; }
   .top h1 { font-size: 24px; }
@@ -217,7 +251,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .qc { min-height: 0; transform: none !important; flex-direction: row; align-items: center; gap: 10px; }
   .qc b { margin-top: 0; flex: 1; font-size: 14px; } .qc .take { margin-top: 0; padding-top: 0; }
   .back .bph { width: 84px; height: 84px; } .back .plus { font-size: 56px; } .back h3 { font-size: 20px; } .back p { font-size: 14px; } .back .next { display: none; } .back .turn { margin-top: 10px; }
-  .below { grid-template-columns: 1fr; }
+  .plist { grid-template-columns: 1fr; }
   .coins { gap: 8px; } .coin { padding: 14px 6px 12px; } .disc { width: 66px; height: 66px; } .disc b { font-size: 50px; padding-top: 5px; } .disc b.d3 { font-size: 34px; padding-top: 4px; } .disc svg { width: 26px; height: 26px; } .coin .nm { font-size: 13px; }
   .combo .fr { width: 132px; height: 132px; margin: -4px -8px 0 0; } .combo .x { font-size: 50px; }
   .ghost { border-radius: 22px; padding: 10px 18px; }
@@ -235,16 +269,17 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     </div>
   </div>
 
-  <div class="hero">
-    <div class="deck" id="deck"></div>
-    <aside class="combo" id="combo"></aside>
+  <div class="board">
+    <div class="col">
+      <div class="deck" id="deck"></div>
+      <section class="sec hab"><h3>Привычки</h3><p class="sub" id="hbs"></p><div class="coins" id="coins"></div></section>
+    </div>
+    <div class="col">
+      <aside class="combo" id="combo"></aside>
+      <section class="sec qs"><h3>Квесты дня</h3><p class="sub" id="tks"></p><div class="pack"><div id="pack"></div><div class="qfoot"><a href="#" class="qlink" data-go="map">Вся маршрутная карта →</a><a href="#" class="qlink mute" data-go="tasks">Свои задачи — во&nbsp;вкладке «Задачи»</a></div></div></section>
+    </div>
+    <section class="sec pulse"><h3>Пульс Альянса</h3><p class="sub">Кто идёт рядом с&nbsp;тобой. Поддержи&nbsp;— это видно человеку</p><div class="cheered" id="cheered"></div><div class="plist" id="mates"></div></section>
   </div>
-
-  <div class="below">
-    <section class="sec"><h3>Привычки</h3><p class="sub" id="hbs"></p><div class="coins" id="coins"></div></section>
-    <section class="sec"><h3>Квесты дня</h3><p class="sub" id="tks"></p><div class="pack"><div id="pack"></div><div class="qfoot"><a href="#" class="qlink" data-go="map">Вся маршрутная карта →</a><a href="#" class="qlink mute" data-go="tasks">Свои задачи — во&nbsp;вкладке «Задачи»</a></div></div></section>
-  </div>
-  <section class="sec mates"><h3>Попутчики сегодня</h3><p class="sub">Кто из Альянса тоже сделал шаг</p><div class="list" id="mates"></div></section>
 </div>
 
 <script>
@@ -368,14 +403,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   }
   let lastClosed = -1;
   function combo() {
-    const d = S.day(), hb = S.habits.filter(h => h.done).length, tk = S.tasks.filter(t => t.done).length;
+    const d = S.day(), hb = S.habits.filter(h => h.done).length, tk = S.qDone();
     const vid = ['sleep', 'repair', 'repair', 'breakfast'][d.closed];
     const msg = ['Начни с шага к цели, Фрими ждёт', 'Разогрев. Ещё два блока до комбо', 'Почти комбо, остался один блок', 'Комбо дня! Бонус начислен'][d.closed];
     $('#combo').innerHTML = `<div class="ct"><div><small>Комбо дня</small><div class="x">${d.closed}<em>/3</em></div><div class="msg">${msg}</div></div><span class="fr" id="cfr"></span></div>
       <div class="segs">
         <div class="seg s1 ${d.step ? 'full' : ''}"><span>Шаг к цели</span><em>${d.step ? 'сделан' : 'ждёт'}</em><i><u style="width:${d.step * 100}%"></u></i></div>
         <div class="seg s2 ${d.hb === 1 ? 'full' : ''}"><span>Привычки</span><em>${hb} из ${S.habits.length}</em><i><u style="width:${d.hb * 100}%"></u></i></div>
-        <div class="seg s3 ${d.tk === 1 ? 'full' : ''}"><span>Квесты дня</span><em>${tk} из ${S.tasks.length}</em><i><u style="width:${d.tk * 100}%"></u></i></div>
+        <div class="seg s3 ${d.tk === 1 ? 'full' : ''}"><span>Квесты дня</span><em>${tk} из ${S.QMAX}</em><i><u style="width:${d.tk * 100}%"></u></i></div>
       </div>
       <div class="bonus"><b>+50</b> за полное комбо: закрой все три блока</div>`;
     $('#cfr').append(frimi(vid));
@@ -389,25 +424,42 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     $('#coins').innerHTML = S.habits.map(h => `<button class="coin ${h.done ? 'on' : ''} ${why === 'habit' && id === h.id ? 'spin' : ''}" data-id="${h.id}"><span class="disc">${FLAME}<b class="${String(h.streak).length > 2 ? 'd3' : ''}">${h.streak}</b></span><span class="nm">${h.t}</span><span class="wk">${h.week.map(w => `<i class="${w ? 'on' : ''}"></i>`).join('')}</span><span class="sk">${h.perWeek ? h.perWeek + ' раза в неделю' : 'серия ' + h.streak + ' дн.'}</span></button>`).join('');
     $('#coins').querySelectorAll('.coin').forEach(b => b.onclick = () => { last = b.dataset.id; S.toggleHabit(b.dataset.id); });
   }
-  const QK = { lesson: 'урок', hw: 'задание', mentor: 'с разбора' };
+  const STAR = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z"/></svg>';
+  const XI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
   const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
-  function pack() {
-    const list = [...S.tasks].sort((a, b) => a.done - b.done);
-    $('#tks').textContent = `${S.tasks.filter(t => t.done).length} из ${S.tasks.length} · ближайшие шаги маршрутной карты, все идут в комбо`;
-    $('#pack').innerHTML = list.map(t => `<div class="item q-${t.kind} ${t.done ? 'done' : ''}">
-      <button class="ck" data-id="${t.id}" aria-label="${t.done ? 'Отменить' : 'Выполнил'}: ${t.t.replace(/"/g, '')}">${CHECK}</button>
-      <button class="open" data-t="${t.t.replace(/"/g, '')}"><span class="tt"><span class="kd">${QK[t.kind]} · ${t.stage}</span><b>${t.t}</b><small>${t.meta}</small></span><span class="rw">+5</span><span class="ar">${ARROW}</span></button>
-    </div>`).join('');
-    $('#pack').querySelectorAll('.ck').forEach(b => b.onclick = () => S.toggleTask(b.dataset.id));
+  const nb = t => t.replace(/(^|[\s(«])(в|во|на|из|к|с|со|у|о|об|по|за|и|а|не|до|от|для|без)\s/gi, '$1$2\u00a0');
+  const stars = n => Array.from({ length: 5 }, (_, i) => STAR.replace('<svg', `<svg class="${i < n ? 'on' : i === n ? 'nx' : ''}"`)).join('');
+  function pack(why, id) {
+    const act = S.qActive(), wait = S.qWaiting(), dn = S.qDone();
+    $('#tks').textContent = `${dn} из ${S.QMAX} сегодня · задания из открытых уроков${wait ? `, ещё ${wait} ${wait === 1 ? 'урок ждёт' : 'урока ждут'}` : ''}`;
+    $('#pack').innerHTML = act.length ? act.map(q => `<div class="item ${q.mentor ? 'q-mentor' : ''} ${(why === 'quest-off' || why === 'quest') && id !== q.id && !prevQ.includes(q.id) ? 'in' : ''}">
+      <button class="ck" data-id="${q.id}" aria-label="Сделал: ${q.crit[q.stars]}">${CHECK}</button>
+      <button class="open" data-t="${q.lesson}"><span class="tt"><span class="kd">${q.mentor ? 'С разбора · ' : ''}${nb(q.lesson)}</span><b>${nb(q.crit[q.stars])}</b><span class="st"><i>${stars(q.stars)}</i>задание на ${q.stars + 1}&nbsp;★${q.today ? `<span class="today">+${q.today} ★ сегодня</span>` : ''}</span></span><span class="ar">${ARROW}</span></button>
+      <button class="x" data-id="${q.id}" aria-label="Не буду делать: ${q.lesson}" title="Не буду делать">${XI}</button>
+    </div>`).join('') : '<p class="empty">Открытых уроков нет. Загляни в маршрутную карту</p>';
+    prevQ = act.map(q => q.id);
+    $('#pack').querySelectorAll('.ck').forEach(b => b.onclick = () => { const q = S.quests.find(x => x.id === b.dataset.id); toast(`+1 ★ за «${q.crit[q.stars]}»`); S.questStep(b.dataset.id); });
+    $('#pack').querySelectorAll('.x').forEach(b => b.onclick = () => { S.questOff(b.dataset.id); toast('Убрал из квестов дня', () => S.questOff(b.dataset.id, false)); });
     $('#pack').querySelectorAll('.open').forEach(b => b.onclick = () => toast(`Откроется урок «${b.dataset.t}» в библиотеке`));
   }
-  function toast(t) {
+  let prevQ = [];
+  const HAND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V6a1.5 1.5 0 0 1 3 0v4M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10V5.5a1.5 1.5 0 0 1 3 0V11M16 11V8a1.5 1.5 0 0 1 3 0v5.5A7.5 7.5 0 0 1 11.5 21h-.6a6 6 0 0 1-4.6-2.2L3.6 15.5a1.6 1.6 0 0 1 2.4-2.1L7 14.5"/></svg>';
+  const FL = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3-1-3 0-6 1-9.5Z"/></svg>';
+  const days = n => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'день' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'дня' : 'дней');
+  function pulse(why, id) {
+    const me = S.cheeredMe;
+    $('#cheered').innerHTML = me.length ? `<span class="av">${me.map(n => `<i style="background:${(S.pulse.find(p => p.n.startsWith(n)) || {}).c}">${n[0]}</i>`).join('')}</span><span>Тебя сегодня поддержали: ${me.join(' и&nbsp;')}</span>` : '';
+    $('#mates').innerHTML = S.pulse.map(p => `<div class="mate ${why === 'cheer' && id === p.id && p.mine ? 'pop' : ''}"><span class="hd"><i style="background:${p.c}">${p.n[0]}</i><span class="who"><b>${p.n}</b><small>${FL}${days(p.streak)} в&nbsp;пути</small></span></span><span class="near">${p.near}</span><span class="did">${p.w}</span><span class="row"><span class="cnt">${p.cheers ? 'поддержали: ' + p.cheers : 'ещё никто не поддержал'}</span><button class="cheer ${p.mine ? 'on' : ''}" data-id="${p.id}">${HAND}${p.mine ? 'Поддержал' : 'Поддержать'}</button></span></div>`).join('');
+    $('#mates').querySelectorAll('.cheer').forEach(b => b.onclick = () => S.cheer(b.dataset.id));
+  }
+  function toast(t, undo) {
     let el = $('#toast'); if (!el) { el = document.createElement('div'); el.id = 'toast'; document.body.append(el); }
-    el.textContent = t; el.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove('on'), 2200);
+    el.innerHTML = ''; el.append(t);
+    if (undo) { const u = document.createElement('button'); u.textContent = 'Вернуть'; u.onclick = () => { undo(); el.classList.remove('on'); }; el.append(u); }
+    el.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove('on'), undo ? 4000 : 2200);
   }
   document.querySelectorAll('.qlink').forEach(a => a.onclick = e => { e.preventDefault(); toast(a.dataset.go === 'map' ? 'Откроется маршрутная карта' : 'Откроется вкладка «Задачи»'); });
-  $('#mates').innerHTML = S.pulse.map(p => `<div class="mate"><i style="background:${p.c}">${p.n[0]}</i><span><b>${p.n.split(' ')[0]}</b> ${p.w}</span></div>`).join('');
-
+  
   function burst(from) {
     if (RM) return;
     const el = from || $('#gcard'), r = el.getBoundingClientRect();
@@ -422,7 +474,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   }
 
   let last = null;
-  function all(why) { deck(why); combo(); coins(why, last); pack(); countXp(); last = null; }
+  function all(why, id) { deck(why); combo(); coins(why, last); pack(why, id); pulse(why, id); countXp(); last = null; }
   S.on(all);
   all();
   if (!RM) {

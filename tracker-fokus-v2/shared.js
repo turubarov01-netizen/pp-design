@@ -25,19 +25,24 @@
       { id: 'h2', t: 'Чтение 20' + NB + 'страниц', done: false, streak: 4, week: [1, 0, 1, 1, 1, 0, 0] },
       { id: 'h3', t: 'Пост в' + NB + 'канал', done: false, streak: 2, week: [1, 0, 1, 0, 1, 0, 0], perWeek: 3 },
     ],
-    // квесты дня: ближайшие шаги маршрутной карты (route_map_status), добавленное на разборе — первым
-    tasks: [
-      { id: 't1', kind: 'mentor', t: 'Тест ниши', meta: 'Добавил Игорь на' + NB + 'разборе 12' + NB + 'ноября', stage: '1.2', done: false },
-      { id: 't2', kind: 'lesson', t: 'Как выбрать нишу?', meta: 'Ещё не' + NB + 'смотрел', stage: '1.1', done: false },
-      { id: 't3', kind: 'hw', t: 'Целевая аудитория', meta: 'Урок просмотрен, ответ не' + NB + 'сдан', stage: '1.1', done: false },
-      { id: 't4', kind: 'lesson', t: 'Выбор ниши', meta: 'Просмотрен', stage: '1.1', done: true },
-    ],
+    // квесты дня: задание следующей звезды из открытых уроков маршрута (звёзды и критерии — routeMapHw.ts).
+    // В работе до 3 уроков; остальные открытые ждут в очереди по приоритету (добавленное на разборе — первым).
+    quests: [
+      { id: 'q1', lesson: 'Тест ниши', stage: '1.2', mentor: 'Игорь, разбор 12' + NB + 'ноября', stars: 0, crit: ['10 звонков', '50 звонков', '50 объявлений', 'Есть предварительный интерес', 'Есть оплата'] },
+      { id: 'q2', lesson: 'Выбор ниши', stage: '1.1', stars: 1, crit: ['5 ниш из прошлого', '5 ниш из настоящего', '5 ниш из будущего', 'Каждая оценена по пяти критериям', 'Выбраны пять бизнес-идей'] },
+      { id: 'q3', lesson: 'Целевая аудитория', stage: '1.1', stars: 2, crit: ['10 страхов', '10 желаний', '10 болей', 'Подробный аватар, конкретный человек', 'Разговор с тремя людьми'] },
+      { id: 'q4', lesson: 'Жизнь без страха', stage: 'старт', stars: 0, crit: ['Записан страх', 'Страх конкретный: ситуация, а не тема', 'Заполнено «как не допустить»', 'Заполнено «что сделаю, если случится»', 'Так разобраны три страха'] },
+      { id: 'q5', lesson: 'Как добиться успеха. 5 правил', stage: '1.1', stars: 3, crit: ['Разобрано 1 правило', '2 правила', '3 правила', '4 правила', 'Все 5 правил'] },
+    ].map(q => ({ ...q, today: 0, off: false })),
     streak: 12, xp: 40, phoenix: 1,
+    // пульс: люди рядом по маршруту (тот же этап, отряд, город), серия дней и что сделали сегодня
     pulse: [
-      { n: 'Марина Ковалёва', c: '#B8572F', w: '2 шага к' + NB + 'цели «Запустить свой канал»' },
-      { n: 'Олег Саватеев', c: '#3E7A5A', w: 'закрыл все привычки' },
-      { n: 'Анна Литвин', c: '#6B4FA0', w: 'дошла до' + NB + 'середины цели «Книга»' },
-    ],
+      { id: 'p1', n: 'Марина Ковалёва', c: '#B8572F', streak: 21, near: 'этап 1.1, как у' + NB + 'тебя', w: '2 шага к' + NB + 'цели «Запустить свой канал»', cheers: 3 },
+      { id: 'p2', n: 'Олег Саватеев', c: '#3E7A5A', streak: 9, near: 'твой отряд', w: 'Сдал «Выбор ниши» на' + NB + '4' + NB + '★', cheers: 1 },
+      { id: 'p3', n: 'Анна Литвин', c: '#6B4FA0', streak: 34, near: 'тоже в' + NB + 'Лиссабоне', w: 'Дошла до' + NB + 'середины цели «Книга»', cheers: 6 },
+      { id: 'p4', n: 'Дмитрий Орлов', c: '#2F6FA8', streak: 2, near: 'этап 1.1, как у' + NB + 'тебя', w: 'Вернулся после паузы, закрыл все привычки', cheers: 0 },
+    ].map(p => ({ ...p, mine: false })),
+    cheeredMe: ['Марина', 'Олег'],
   };
   S.goal = () => S.goals[S.active];
   S.stepTitle = (g, i) => g.steps[i] || ('Шаг ' + (i + 1));
@@ -46,16 +51,22 @@
   S.day = () => {
     const step = S.goals.some(g => g.doneToday) ? 1 : 0;
     const hb = S.habits.filter(h => h.done).length / S.habits.length;
-    const tk = S.tasks.filter(t => t.done).length / S.tasks.length;
+    const tk = S.qDone() / S.QMAX;
     return { step, hb, tk, closed: step + (hb === 1 ? 1 : 0) + (tk === 1 ? 1 : 0), sum: (step + hb + tk) / 3 };
   };
   S.listeners = [];
   S.on = f => S.listeners.push(f);
-  S.emit = (why) => S.listeners.forEach(f => f(why));
+  S.emit = (why, id) => S.listeners.forEach(f => f(why, id));
   S.plan = (gi, idx) => { const g = S.goals[gi]; g.planned = idx; S.mode = 'evening'; S.emit('plan'); };
   S.doStep = gi => { const g = S.goals[gi]; if (g.doneToday || g.planned == null) return; g.done++; g.doneToday = true; g.planned = null; S.xp += 30; S.emit('step'); };
   S.toggleHabit = id => { const h = S.habits.find(x => x.id === id); h.done = !h.done; h.week[5] = h.done ? 1 : 0; h.streak += h.done ? 1 : -1; S.xp += h.done ? 5 : -5; S.emit('habit'); };
-  S.toggleTask = id => { const t = S.tasks.find(x => x.id === id); t.done = !t.done; S.xp += t.done ? 5 : -5; S.emit('task'); };
+  S.QMAX = 3;
+  S.qActive = () => S.quests.filter(q => !q.off && q.stars < 5).slice(0, S.QMAX);
+  S.qWaiting = () => S.quests.filter(q => !q.off && q.stars < 5).length - S.qActive().length;
+  S.qDone = () => S.quests.filter(q => q.today > 0).length;
+  S.questStep = id => { const q = S.quests.find(x => x.id === id); if (q.stars >= 5) return; q.stars++; q.today++; S.xp += 5; S.emit('quest', id); };
+  S.questOff = (id, off = true) => { S.quests.find(x => x.id === id).off = off; S.emit('quest-off', id); };
+  S.cheer = id => { const p = S.pulse.find(x => x.id === id); p.mine = !p.mine; p.cheers += p.mine ? 1 : -1; S.emit('cheer', id); };
   S.setActive = i => { S.active = i; S.emit('goal'); };
   window.FD = S;
 
