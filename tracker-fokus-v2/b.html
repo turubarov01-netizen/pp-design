@@ -33,6 +33,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .deck { position: relative; min-width: 0; }
 .track { --cw: 100%; position: relative; display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px calc(50% - var(--cw) / 2) 10px; overscroll-behavior-x: contain; outline: none; }
 .track::-webkit-scrollbar { display: none; }
+.track img { -webkit-user-drag: none; user-select: none; }
 .deck.multi .track { --cw: 620px; cursor: grab; }
 .track.drag { scroll-snap-type: none; cursor: grabbing; user-select: none; }
 .slide { flex: 0 0 var(--cw); min-width: 0; scroll-snap-align: center; transition: transform .45s var(--ease), opacity .45s var(--ease); }
@@ -257,8 +258,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     }
     return `<div class="face front">
       <div class="head"><div><small>Цель ${S.goalsCount > 1 ? (gi + 1) + ' из ' + S.goalsCount : 'в фокусе'}</small><h2>${g.title}</h2>
-        <div class="lvl"><b>${g.done}/${g.total}</b><span>шагов пройдено<br>до цели ${S.left(g)}</span></div></div>
-        <div class="ringwrap"><svg viewBox="0 0 210 210"><circle class="tr" cx="105" cy="105" r="${R}"/><circle class="pr" cx="105" cy="105" r="${R}" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg><img src="img/focus-happy.webp" alt="Фрими"></div></div>
+        <div class="lvl"><b>${g.done}/${g.total}</b><span>шагов пройдено<br> до цели ${S.left(g)}</span></div></div>
+        <div class="ringwrap"><svg viewBox="0 0 210 210"><circle class="tr" cx="105" cy="105" r="${R}"/><circle class="pr" cx="105" cy="105" r="${R}" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg><img src="img/focus-happy.webp" alt="Фрими" draggable="false"></div></div>
       <div class="pips">${pips}</div>${act}</div>`;
   }
   function back(g, gi) {
@@ -304,6 +305,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     // мышью: тянуть карточки как пальцем
     tr.onpointerdown = e => {
       if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('.slide.on button')) return;
+      e.preventDefault(); tr.focus({ preventScroll: true });
       const x0 = e.clientX, s0 = tr.scrollLeft; dragged = false;
       const mv = ev => { const dx = ev.clientX - x0; if (Math.abs(dx) > 5) { dragged = true; tr.classList.add('drag'); } if (dragged) tr.scrollLeft = s0 - dx; };
       const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); if (dragged) { const n = nearest(); tr.classList.remove('drag'); jumpTo(n, true); } };
