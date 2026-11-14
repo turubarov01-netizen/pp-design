@@ -126,7 +126,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .combo .x { font: 400 64px/0.85 "Bebas", sans-serif; color: var(--navy); margin-top: 6px; }
 .combo .x em { font-style: normal; color: var(--fire); }
 .combo .msg { margin-top: 6px; font-size: 16px; font-weight: 650; color: var(--navy); max-width: 210px; }
-.combo .fr { width: 160px; height: 160px; flex: none; margin: -14px -14px 0 0; transition: transform .5s var(--ease); }
+.combo .fr { width: 160px; height: 160px; flex: none; margin: -6px -10px 0 0; transition: transform .5s var(--ease); }
 .combo .fr > * { width: 100%; height: 100%; object-fit: contain; display: block; }
 .combo .fr.pop { animation: pop .7s var(--ease); }
 @keyframes pop { 30% { transform: scale(1.18) rotate(-6deg); } }
@@ -152,11 +152,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .coin.on .disc { background: radial-gradient(circle at 35% 30%, oklch(0.9 0.12 85), oklch(0.78 0.14 75)); box-shadow: inset 0 -5px 0 oklch(0.66 0.14 65), 0 8px 18px oklch(0.7 0.14 70 / .35); }
 .coin.spin .disc { animation: spin .7s var(--ease); }
 @keyframes spin { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
-.disc svg { width: 30px; height: 30px; color: oklch(0.72 0.01 85); }
+.disc svg { position: relative; z-index: 1; width: 32px; height: 32px; color: oklch(0.7 0.01 85); filter: drop-shadow(0 2px 3px oklch(0.4 0.02 85 / .18)); }
 .coin.on .disc svg { color: oklch(0.6 0.19 40); }
-.disc b { position: absolute; bottom: 9px; font: 400 17px/1 "Bebas", sans-serif; color: oklch(0.6 0.01 85); }
-.coin.on .disc b { color: oklch(0.32 0.1 60); }
-.coin .nm { font-size: 14px; font-weight: 650; text-align: center; line-height: 1.25; }
+/* серия — крупная полупрозрачная цифра фоном под огоньком; трёхзначные мельче */
+.disc b { position: absolute; inset: 0; display: grid; place-items: center; padding-top: 7px; font: 400 64px/1 "Bebas", sans-serif; letter-spacing: -.01em; color: oklch(0.55 0.01 85 / .22); pointer-events: none; }
+.disc b.d3 { font-size: 44px; padding-top: 5px; }
+.coin.on .disc b { color: oklch(0.5 0.14 55 / .32); }
+.coin .nm { font-size: 14px; font-weight: 650; text-align: center; line-height: 1.25; min-height: 2.5em; display: grid; place-items: center; margin-top: 2px; }
+.coin .wk { margin-top: auto; }
 .coin .wk { display: flex; gap: 3px; } .coin .wk i { width: 7px; height: 7px; border-radius: 50%; background: oklch(0.86 0.015 85); } .coin .wk i.on { background: var(--fire); }
 .coin .sk { font-size: 12px; color: var(--ink2); }
 
@@ -198,8 +201,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .qc b { margin-top: 0; flex: 1; font-size: 14px; } .qc .take { margin-top: 0; padding-top: 0; }
   .back .bph { width: 84px; height: 84px; } .back .plus { font-size: 56px; } .back h3 { font-size: 20px; } .back p { font-size: 14px; } .back .next { display: none; } .back .turn { margin-top: 10px; }
   .below { grid-template-columns: 1fr; }
-  .coins { gap: 8px; } .coin { padding: 14px 6px 12px; } .disc { width: 66px; height: 66px; } .coin .nm { font-size: 13px; }
-  .combo .fr { width: 112px; height: 112px; } .combo .x { font-size: 50px; }
+  .coins { gap: 8px; } .coin { padding: 14px 6px 12px; } .disc { width: 66px; height: 66px; } .disc b { font-size: 50px; padding-top: 5px; } .disc b.d3 { font-size: 34px; padding-top: 4px; } .disc svg { width: 26px; height: 26px; } .coin .nm { font-size: 13px; }
+  .combo .fr { width: 132px; height: 132px; margin: -4px -8px 0 0; } .combo .x { font-size: 50px; }
   .ghost { border-radius: 22px; padding: 10px 18px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
@@ -366,7 +369,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
   function coins(why, id) {
     $('#hbs').textContent = `${S.habits.filter(h => h.done).length} из ${S.habits.length} сегодня · монета за каждую`;
-    $('#coins').innerHTML = S.habits.map(h => `<button class="coin ${h.done ? 'on' : ''} ${why === 'habit' && id === h.id ? 'spin' : ''}" data-id="${h.id}"><span class="disc">${FLAME}<b>${h.streak}</b></span><span class="nm">${h.t}</span><span class="wk">${h.week.map(w => `<i class="${w ? 'on' : ''}"></i>`).join('')}</span><span class="sk">${h.perWeek ? h.perWeek + ' раза в неделю' : 'серия ' + h.streak + ' дн.'}</span></button>`).join('');
+    $('#coins').innerHTML = S.habits.map(h => `<button class="coin ${h.done ? 'on' : ''} ${why === 'habit' && id === h.id ? 'spin' : ''}" data-id="${h.id}"><span class="disc">${FLAME}<b class="${String(h.streak).length > 2 ? 'd3' : ''}">${h.streak}</b></span><span class="nm">${h.t}</span><span class="wk">${h.week.map(w => `<i class="${w ? 'on' : ''}"></i>`).join('')}</span><span class="sk">${h.perWeek ? h.perWeek + ' раза в неделю' : 'серия ' + h.streak + ' дн.'}</span></button>`).join('');
     $('#coins').querySelectorAll('.coin').forEach(b => b.onclick = () => { last = b.dataset.id; S.toggleHabit(b.dataset.id); });
   }
   function pack() {
