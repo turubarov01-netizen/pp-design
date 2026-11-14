@@ -1,0 +1,214 @@
+/* Слой шагов поверх вкладки «Фокус дня». html.sN — включены шаги 1..N. */
+
+/* ---------- поведение шага 0: свёрнутое по умолчанию ---------- */
+.x-done { display: none !important; }
+html.td-open .x-done { display: flex !important; }
+html.ws-open .ws { display: block; }
+html.ws-open .allsteps svg { transform: rotate(180deg); }
+html.rad-open .radl { display: flex; }
+.ws { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+.ws-k { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--mfg); }
+.ws-l { display: flex; flex-direction: column; gap: 4px; }
+.ws-r { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 10px; font-size: 14px; line-height: 1.35; }
+.ws-r > span:nth-child(2) { flex: 1; min-width: 0; }
+.ws-r.done > span:nth-child(2) { text-decoration: line-through; color: var(--mfg); }
+.ws-r.now { background: hsl(232 95% 17% / .06); }
+.ws-add { margin-top: 6px; display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 10px; border-radius: 10px; border: 1px dashed var(--border); font-size: 13px; }
+.ws-add svg { width: 15px; height: 15px; }
+
+/* ---------- панель шагов ---------- */
+.sl-steps { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 120; display: flex; align-items: center; gap: 14px; padding: 8px 10px 8px 8px; border-radius: 18px; background: rgba(11,16,32,.92); color: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.28); font: 500 13px/1.3 "Medeo Sans", system-ui, sans-serif; max-width: calc(100vw - 24px); }
+.sl-steps a { color: inherit; text-decoration: none; }
+.sl-nums { display: flex; gap: 4px; }
+.sl-nums a { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-variant-numeric: tabular-nums; color: rgba(255,255,255,.55); background: rgba(255,255,255,.06); }
+.sl-nums a.done { color: #fff; background: rgba(255,255,255,.14); }
+.sl-nums a.on { background: #2F7BFF; color: #fff; font-weight: 700; }
+.sl-cap { display: flex; flex-direction: column; min-width: 0; width: 440px; }
+.sl-cap b { font-weight: 650; }
+.sl-cap span { color: rgba(255,255,255,.62); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sl-cap:hover span { white-space: normal; }
+.sl-arr { display: flex; gap: 4px; }
+.sl-arr a { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,.1); font-size: 16px; }
+.sl-arr a:hover { background: rgba(255,255,255,.2); }
+.sl-arr a.off { opacity: .3; pointer-events: none; }
+@media (max-width: 767px) {
+  .sl-steps { flex-wrap: wrap; gap: 8px; bottom: 10px; padding: 8px; width: calc(100vw - 20px); justify-content: space-between; }
+  .sl-nums { gap: 3px; } .sl-nums a { width: 22px; height: 24px; font-size: 12px; }
+  .sl-arr a { width: 30px; height: 28px; }
+  .sl-cap { order: 3; width: 100%; } .sl-cap span { white-space: normal; font-size: 11px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+}
+
+/* =========================================================
+   ШАГ 1. Лучшие практики
+   ========================================================= */
+html.s1 { --line: hsl(229 20% 90%); --ink2: hsl(232 12% 38%); --tile: hsl(37 25% 95%); }
+/* шкала: 28 / 17 / 15 / 14 / 12 */
+html.s1 .ph h1 { font-size: 28px; font-weight: 700; letter-spacing: -.015em; }
+html.s1 .ph .sub { font-size: 14px; color: var(--ink2); }
+html.s1 .sc > header .lb { font-size: 17px; font-weight: 650; text-transform: none; letter-spacing: -.005em; color: var(--fg); line-height: 1.2; }
+html.s1 .sc > header .hn { font-size: 12px; margin-top: 3px; color: var(--ink2); line-height: 1.3; }
+html.s1 .sc > header .rt { font-size: 12px; color: var(--ink2); }
+html.s1 .tch h3 { font-size: 14px; font-weight: 650; text-transform: none; letter-spacing: 0; color: var(--fg); }
+html.s1 .tch p { font-size: 12px; color: var(--ink2); }
+html.s1 .tch > span { font-size: 14px; font-weight: 600; color: var(--ink2); }
+html.s1 .road-h p, html.s1 .ws-k, html.s1 .pd > p, html.s1 .plan .k { font-size: 12px; letter-spacing: .02em; text-transform: none; font-weight: 600; color: var(--ink2); }
+html.s1 .goal span { font-family: inherit; font-variant-numeric: tabular-nums; font-size: 12px; }
+html.s1 .run .g small, html.s1 .bar p, html.s1 .leg, html.s1 .vis { font-size: 12px; }
+/* одна карточка: тот же радиус и рамка, без серых шапок, полос и теней */
+html.s1 .hero, html.s1 .sc { border-radius: 18px; border-color: var(--line); box-shadow: none; }
+html.s1 .sc > header { background: none; border-bottom: 0; padding: 18px 20px 4px; }
+html.s1 .sc > header > i { display: none; }
+html.s1 .sc > .bd { padding: 12px 20px 20px; }
+html.s1 .tch { border-bottom: 0; padding-bottom: 0; margin-bottom: 10px; }
+/* одна плитка для вложенного */
+html.s1 .goal, html.s1 .plan, html.s1 .row, html.s1 .hab { border: 1px solid var(--line); background: var(--card); box-shadow: none; border-radius: 12px; }
+html.s1 .goal { background: var(--tile); border-color: transparent; }
+html.s1 .goal.on { background: var(--card); border-color: hsl(232 95% 17% / .35); box-shadow: none; }
+html.s1 .plan { background: var(--tile); border-color: transparent; padding: 12px 14px; }
+html.s1 .plan { font-size: 16px; font-weight: 600; }
+html.s1 .row.done { background: var(--tile); border-color: transparent; }
+html.s1 .hab.done { background: var(--tile); border-color: transparent; }
+html.s1 .rew { background: none; border-top: 1px solid var(--line); color: var(--ink2); font-weight: 500; }
+html.s1 .run { border-top-color: var(--line); }
+html.s1 .h-right { border-color: var(--line); }
+/* одна главная кнопка на экране: «Сделал шаг». Остальное спокойное */
+html.s1 .tabs { background: hsl(232 95% 17% / .05); }
+html.s1 .tab { color: var(--ink2); font-weight: 500; }
+html.s1 .tab.on { background: var(--card); color: var(--primary); font-weight: 650; box-shadow: 0 1px 2px rgba(2,12,84,.1); }
+html.s1 .seg button { color: var(--ink2); }
+html.s1 .seg button.on { background: var(--card); color: var(--primary); box-shadow: 0 1px 2px rgba(2,12,84,.1); }
+html.s1 .act { border-radius: 12px; height: 48px; padding: 0 16px; }
+html.s1 .act.m { background: var(--card); border: 1px solid var(--line); color: var(--primary); }
+html.s1 .btn { background: var(--card); border: 1px solid var(--line); color: var(--primary); font-weight: 600; }
+html.s1 .allsteps { font-weight: 600; }
+html.s1 .badge { border-radius: 999px; height: 22px; padding: 0 8px; font-size: 11px; }
+html.s1 .cb { border-radius: 5px; width: 18px; height: 18px; border-color: hsl(232 95% 17% / .45); }
+
+/* =========================================================
+   ШАГ 2. Иерархия
+   ========================================================= */
+html.s2 .ph .sub { display: none; }
+html.s2 .sl-xp { display: flex; gap: 14px; margin-top: 6px; font-size: 12px; font-weight: 500; color: var(--ink2); }
+html.s2 .sl-xp span { display: inline-flex; align-items: center; gap: 5px; }
+html.s2 .sl-xp svg { width: 13px; height: 13px; color: var(--warning); }
+html.s2 .run { padding: 14px 20px 16px; grid-template-columns: 240px 1fr; }
+html.s2 .run .g { font-size: 17px; }
+html.s2 #c-habits .rt { font-weight: 600; color: var(--success); }
+
+/* =========================================================
+   ШАГ 3. Кнопки-награды
+   ========================================================= */
+html.s3 :is(.act, .btn, .goal, .tab, .seg button, .allsteps, .ws-add, .sl-q, .tfoot button, .ghost) { transition: transform .28s cubic-bezier(.22,1,.36,1), box-shadow .28s cubic-bezier(.22,1,.36,1), background-color .2s, border-color .2s; }
+html.s3 :is(.act, .btn, .sl-q):hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(2,12,84,.16); }
+html.s3 :is(.act, .btn, .goal, .sl-q):active { transform: translateY(0) scale(.97); transition-duration: .08s; }
+html.s3 .goal:not(.on):hover { transform: translateY(-1px); background: var(--card); border-color: var(--line); }
+html.s3 .row, html.s3 .hab, html.s3 .ws-r { transition: border-color .2s, transform .28s cubic-bezier(.22,1,.36,1); }
+html.s3 .row:not(.done):hover, html.s3 .hab:not(.done):hover { border-color: hsl(232 95% 17% / .35); transform: translateX(2px); }
+html.s3 .cb { transition: transform .25s cubic-bezier(.22,1,.36,1), background-color .2s; }
+html.s3 :is(.row, .hab, .ws-r):hover .cb:not(.on) { transform: scale(1.12); background: hsl(232 95% 17% / .08); }
+html.s3 .tfoot button:hover svg { transform: translateX(3px); }
+html.s3 .tfoot button svg { transition: transform .28s cubic-bezier(.22,1,.36,1); }
+.sl-win { position: relative; overflow: hidden; gap: 8px !important; }
+.sl-win .sl-ico { width: 16px; height: 16px; display: inline-grid; place-items: center; flex: none; overflow: visible; }
+.sl-win .sl-ico svg { width: 16px; height: 16px; }
+.sl-win .sl-lbl { position: relative; display: inline-grid; justify-items: start; height: 1.3em; overflow: hidden; line-height: 1.3em; }
+.sl-win .sl-a, .sl-win .sl-b { grid-area: 1/1; transition: transform .34s cubic-bezier(.22,1,.36,1), opacity .25s; white-space: nowrap; }
+.sl-win .sl-b { transform: translateY(110%); opacity: 0; }
+.sl-win:hover .sl-a, .sl-win.hv .sl-a, .sl-win:focus-visible .sl-a { transform: translateY(-110%); opacity: 0; }
+.sl-win:hover .sl-b, .sl-win.hv .sl-b, .sl-win:focus-visible .sl-b { transform: translateY(0); opacity: 1; }
+.sl-win:hover .sl-ico svg, .sl-win.hv .sl-ico svg { animation: sl-fly 1.4s cubic-bezier(.5,0,.5,1) infinite; }
+@keyframes sl-fly { 0% { transform: none; } 30% { transform: translate(4px,-4px) rotate(-10deg); } 60% { transform: translate(-1px,1px) rotate(4deg); } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .sl-win:hover .sl-ico svg { animation: none; } html.s3 * { transition-duration: .01s !important; } }
+
+/* =========================================================
+   ШАГ 4. Матовое стекло на пейзаже
+   ========================================================= */
+html.s4 body { background: #dfe3e6 url(img/wall-light.jpg) center top / cover no-repeat; min-height: 100vh; }
+html.s4 { --glass: rgba(255,255,255,.62); --glass-b: rgba(255,255,255,.6); --tile: rgba(255,255,255,.55); --line: rgba(2,12,84,.09); }
+html.s4 .ph h1 { color: var(--primary); text-shadow: 0 1px 0 rgba(255,255,255,.5); }
+html.s4 .hero, html.s4 .sc { background: var(--glass); border: 1px solid var(--glass-b); backdrop-filter: blur(22px) saturate(1.3); -webkit-backdrop-filter: blur(22px) saturate(1.3); box-shadow: 0 10px 30px rgba(2,12,84,.08); }
+html.s4 .tabs { background: rgba(255,255,255,.45); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-b); }
+html.s4 .goal, html.s4 .plan, html.s4 .row, html.s4 .hab, html.s4 .row.done, html.s4 .hab.done, html.s4 .ws-r.now, html.s4 .seg { background: var(--tile); border-color: transparent; }
+html.s4 .goal.on, html.s4 .tab.on, html.s4 .seg button.on, html.s4 .act.m, html.s4 .btn, html.s4 .inp, html.s4 .sel { background: rgba(255,255,255,.85); }
+html.s4 .road .dot:not(.done):not(.now) { background: rgba(255,255,255,.9); }
+
+/* =========================================================
+   ШАГ 5. Ничего не свёрнуто
+   ========================================================= */
+html.s5 .rows { max-height: none; overflow: visible; }
+html.s5 .x-tg, html.s5 .radt { display: none; }
+html.s5 .ws { margin: 0; padding: 0; border: 0; }
+html.s5 .ws-k { display: none; }
+html.s5 .row.open { flex-wrap: wrap; border-color: hsl(232 95% 17% / .3); }
+html.s5 .row.open .more { display: block; flex-basis: 100%; padding: 6px 0 2px 28px; }
+.more p { margin: 0 0 6px; font-size: 13px; line-height: 1.45; color: var(--ink2); }
+.more p:first-child { font-size: 12px; font-weight: 600; }
+.more-a { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.sl-q { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 10px; background: var(--primary); color: var(--pfg); font-size: 13px; font-weight: 600; }
+.sl-q svg { width: 14px; height: 14px; }
+.sl-q.gh { background: var(--card); color: var(--primary); border: 1px solid var(--line); }
+html.s5 .vis .sel { display: none; }
+html.s5 .vis .segv { display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: var(--tile); }
+.segv button { padding: 4px 10px; border-radius: 7px; font-size: 12px; color: var(--ink2); }
+.segv button.on { background: var(--card); color: var(--primary); font-weight: 600; box-shadow: 0 1px 2px rgba(2,12,84,.1); }
+html.s5 .radl > div { border-left: 0; padding: 10px 12px; border-radius: 12px; background: var(--tile); }
+
+/* =========================================================
+   ШАГ 6. Вкладки
+   ========================================================= */
+html.s6 .tabs { position: sticky; top: 10px; z-index: 30; }
+html.s6 .tab .ti { display: inline-grid; width: 16px; height: 16px; }
+html.s6 .tab .ti svg { width: 16px; height: 16px; }
+html.s6 .tab .tc { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: hsl(0 84% 60%); color: #fff; font-size: 11px; font-weight: 700; }
+html.s6 .tab:not(.on) .ti { opacity: .7; }
+@media (max-width: 767px) {
+  html.s6 .tabs { display: flex; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
+  html.s6 .tabs::-webkit-scrollbar { display: none; }
+  html.s6 .tab { flex: none; padding: 8px 12px; font-size: 13px; scroll-snap-align: start; }
+  html.s6 .tab .lg { display: inline; } html.s6 .tab .sh { display: none; }
+}
+
+/* =========================================================
+   ШАГ 7. Быстрые действия ⌘K
+   ========================================================= */
+html.s7 .ph { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+html.s7 .ph h1 { flex: 1; }
+.sl-k { display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 8px 0 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink2); font-size: 14px; min-width: 260px; }
+html.s4 .sl-k { background: rgba(255,255,255,.7); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.sl-k svg { width: 16px; height: 16px; }
+.sl-k span { flex: 1; text-align: left; }
+.sl-k kbd, .sl-pal kbd { font: 600 11px/1 "Medeo Sans", system-ui; padding: 5px 7px; border-radius: 6px; background: hsl(232 95% 17% / .07); color: var(--ink2); }
+.sl-pal { position: fixed; inset: 0; z-index: 200; display: none; place-items: start center; padding-top: 12vh; background: rgba(2,12,84,.18); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.sl-pal.on { display: grid; animation: sl-in .22s cubic-bezier(.22,1,.36,1); }
+.sl-pw { width: min(560px, calc(100vw - 24px)); border-radius: 18px; background: var(--card); box-shadow: 0 24px 60px rgba(2,12,84,.25); padding: 8px; }
+.sl-pi { display: flex; align-items: center; gap: 10px; padding: 6px 10px 10px; border-bottom: 1px solid var(--line); }
+.sl-pi svg { width: 18px; height: 18px; color: var(--ink2); }
+.sl-pi input { flex: 1; border: 0; outline: 0; font: 500 16px/1.4 "Medeo Sans", system-ui; background: none; color: var(--fg); }
+.sl-pg { margin: 10px 10px 4px; font-size: 12px; font-weight: 600; color: var(--ink2); }
+.sl-pa { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 10px; border-radius: 10px; font-size: 14px; text-align: left; }
+.sl-pa svg { width: 16px; height: 16px; color: var(--primary); }
+.sl-pa span { flex: 1; }
+.sl-pa:hover, .sl-pa.on { background: hsl(232 95% 17% / .06); }
+@keyframes sl-in { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 767px) { .sl-k { min-width: 0; width: 100%; } html.s7 .ph h1 { flex-basis: 100%; } }
+
+/* =========================================================
+   ШАГ 8. Оживление (анимации в tr-slop.js)
+   ========================================================= */
+html.s8 .bar em { transform-origin: left; }
+html.s8 #pulse i { transform-origin: bottom; }
+
+/* ---------- телефон, шаги 1+ ---------- */
+@media (max-width: 767px) {
+  html.s1 .acts { grid-template-columns: 1fr; gap: 0; }
+  html.s1 .act { margin-top: 8px; }
+  html.s1 .seg button { white-space: nowrap; font-size: 11.5px; padding: 6px 8px; }
+  html.s1 .audio { flex: none; } html.s1 .seg { min-width: 0; } html.s1 .seg button { padding: 6px 6px; }
+  html.s2 .goals { padding-bottom: 2px; scroll-snap-type: x proximity; scrollbar-width: none; }
+  html.s2 .goals::-webkit-scrollbar { display: none; }
+  html.s2 .goal { flex: 0 0 72%; scroll-snap-align: start; }
+  html.s2 .run { grid-template-columns: 1fr; padding: 12px; }
+  html.s2 .bars { gap: 8px; }
+  html.s1 .sc > header { padding: 16px 16px 2px; } html.s1 .sc > .bd { padding: 10px 16px 16px; }
+  html.s1 .h-left { padding: 4px 12px 14px; }
+}

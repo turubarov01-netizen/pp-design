@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Трекер Фримана · Фокус дня · шаги</title>
+<style>
+@font-face { font-family: "Medeo Sans"; src: url(fonts/MedeoSansVariable.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+:root {
+  --bg: hsl(37 38% 96%); --fg: hsl(0 6% 3%); --card: #fff; --primary: hsl(232 95% 17%); --pfg: hsl(37 38% 94%);
+  --muted: hsl(37 15% 92%); --mfg: hsl(0 6% 40%); --border: hsl(229 20% 90%); --yellow: hsl(40 79% 64%);
+  --success: hsl(142 76% 36%); --warning: hsl(38 92% 50%); --danger: hsl(0 84% 60%);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 14px/1.45 "Medeo Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; padding: 0; }
+svg { flex: none; }
+.page { max-width: 1400px; margin: 0 auto; padding: 24px; padding-bottom: 120px; }
+.ph h1 { margin: 0; font-size: 30px; font-weight: 700; color: var(--primary); line-height: 1.2; }
+.ph .sub { margin: 2px 0 0; color: var(--mfg); font-size: 14px; }
+.tabs { margin-top: 16px; display: flex; gap: 4px; width: fit-content; max-width: 100%; background: hsl(232 95% 17% / .05); padding: 4px; border-radius: 12px; }
+.tab { padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; color: hsl(232 95% 17% / .6); white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+.tab.on { background: var(--primary); color: var(--pfg); }
+.tab .ti, .tab .tc { display: none; }
+.focus { margin-top: 24px; display: flex; flex-direction: column; gap: 16px; }
+
+/* ----- синяя карточка (FocusHero) ----- */
+.hero { overflow: hidden; border-radius: 22px; border: 1px solid var(--border); background: var(--card); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+.h-top { display: flex; align-items: center; gap: 12px; padding: 16px 20px 0; }
+.seg { display: inline-flex; gap: 3px; background: var(--muted); padding: 3px; border-radius: 12px; }
+.seg button { border-radius: 9px; padding: 6px 16px; font-size: 13px; }
+.seg button.on { background: var(--primary); color: var(--pfg); font-weight: 600; }
+.audio { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); display: grid; place-items: center; color: var(--primary); }
+.audio svg { width: 15px; height: 15px; }
+.h-date { margin-left: auto; font-size: 13px; color: var(--mfg); white-space: nowrap; }
+.h-grid { display: grid; grid-template-columns: 1.25fr 1fr; margin-top: 12px; }
+.h-left { padding: 4px 14px 14px 20px; min-width: 0; }
+.h-right { border-left: 1px solid var(--border); padding: 12px 14px; min-width: 0; }
+.goals { display: flex; gap: 6px; overflow-x: auto; }
+.goal { flex: 1 1 0; min-width: 0; text-align: left; border-radius: 12px; padding: 8px 10px; background: var(--muted); }
+.goal.on { background: hsl(232 95% 17% / .1); box-shadow: inset 0 0 0 1px hsl(232 95% 17% / .3); }
+.goal b { display: block; font-size: 14px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.goal span { display: block; margin-top: 2px; font: 400 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--primary); }
+.goal.on b { color: var(--primary); font-weight: 600; }
+.plan { margin-top: 12px; border-radius: 12px; background: var(--card); padding: 10px 12px; font-size: 14px; line-height: 1.35; }
+.plan .k { margin-bottom: 2px; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--primary); }
+.acts { display: grid; grid-template-columns: 1.3fr 1fr; gap: 8px; }
+.act { margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: 14px; padding: 12px 16px; font-size: 15px; font-weight: 700; white-space: nowrap; }
+.act.p { background: var(--primary); color: var(--pfg); }
+.act.o { border: 1px solid var(--border); background: var(--card); font-weight: 600; }
+.act.m { background: var(--muted); font-weight: 600; font-size: 14px; }
+.act svg { width: 16px; height: 16px; }
+.act.full { grid-column: 1 / -1; }
+.later { margin: 8px 0 0; text-align: center; font-size: 12px; opacity: .65; }
+.later u { margin-left: 6px; text-underline-offset: 2px; }
+.road-h { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.road-h p { margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--mfg); }
+.road-h b { font-size: 12px; font-weight: 600; color: var(--primary); white-space: nowrap; }
+.road { position: relative; margin-top: 16px; height: 170px; }
+.road svg.path { position: absolute; inset: 0; width: 100%; height: 100%; }
+.road .dot { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--card); border: 2px solid hsl(232 95% 17% / .25); }
+.road .dot.done { background: var(--primary); border-color: var(--primary); }
+.road .dot.now { width: 20px; height: 20px; margin: -10px 0 0 -10px; border: 3px solid var(--yellow); background: var(--primary); }
+.road img { position: absolute; width: 58px; height: 58px; object-fit: contain; }
+.run { border-top: 1px solid var(--border); padding: 12px 20px; display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: center; }
+.run .g { font-size: 15px; font-weight: 700; }
+.run .g small { display: block; font-size: 11px; font-weight: 400; color: var(--mfg); }
+.bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.bar p { margin: 0 0 4px; font-size: 11px; color: var(--mfg); display: flex; justify-content: space-between; }
+.bar i { display: block; height: 7px; border-radius: 9px; background: var(--muted); overflow: hidden; }
+.bar i em { display: block; height: 100%; background: var(--primary); border-radius: 9px; }
+.rew { display: flex; justify-content: space-between; gap: 12px; background: var(--muted); border-top: 1px solid var(--border); padding: 8px 20px; font-size: 12px; font-weight: 600; }
+.rew span { display: inline-flex; align-items: center; gap: 6px; }
+.rew svg { width: 14px; height: 14px; color: var(--warning); }
+.allsteps { margin: 0 auto; display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--primary); }
+.allsteps svg { width: 16px; height: 16px; }
+
+/* ----- карточки разделов (SectionCard) ----- */
+.cols { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; align-items: start; }
+.col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.sc { border-radius: 16px; border: 1px solid var(--border); background: var(--card); box-shadow: 0 1px 2px rgba(0,0,0,.05); overflow: hidden; }
+.sc > header { display: flex; align-items: center; gap: 12px; padding: 14px 16px 12px; border-bottom: 1px solid var(--border); background: hsl(37 15% 92% / .3); }
+.sc > header > i { width: 4px; height: 16px; border-radius: 9px; background: var(--primary); flex: none; }
+.sc > header > i.y { background: var(--yellow); } .sc > header > i.m { background: hsl(0 6% 40% / .4); }
+.sc > header div { flex: 1; min-width: 0; }
+.sc > header .lb { margin: 0; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; color: hsl(0 6% 3% / .7); line-height: 1; }
+.sc > header .hn { margin: 4px 0 0; font-size: 11px; color: var(--mfg); line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sc > header .rt { font-size: 11px; color: var(--mfg); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sc > .bd { padding: 16px; }
+.tcols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.tch { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.tch h3 { margin: 0; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: hsl(0 6% 3% / .7); line-height: 1; }
+.tch p { margin: 4px 0 0; font-size: 11px; color: var(--mfg); line-height: 1; }
+.tch > span { font-size: 14px; font-weight: 900; color: hsl(0 6% 3% / .7); font-variant-numeric: tabular-nums; }
+.rows { display: flex; flex-direction: column; gap: 6px; max-height: 256px; overflow-y: auto; }
+.row { display: flex; align-items: center; gap: 10px; border-radius: 8px; border: 1px solid var(--border); padding: 8px 12px; background: var(--card); }
+.row.done { background: hsl(37 15% 92% / .4); border-color: transparent; }
+.row .tt { flex: 1; min-width: 0; font-size: 14px; text-align: left; }
+.row.done .tt { text-decoration: line-through; color: var(--mfg); }
+.row .more { display: none; }
+.cb { width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--primary); display: grid; place-items: center; flex: none; background: var(--card); }
+.cb.on { background: var(--primary); color: var(--pfg); }
+.cb svg { width: 12px; height: 12px; display: none; } .cb.on svg { display: block; }
+.badge { display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--border); font-size: 10px; font-weight: 500; white-space: nowrap; }
+.badge.red { border-color: hsl(0 84% 60% / .4); color: var(--danger); }
+.badge.amb { border-color: hsl(38 92% 50% / .4); color: var(--warning); }
+.badge.grn { border-color: hsl(142 76% 36% / .4); color: var(--success); }
+.badge.pr { border-color: hsl(232 95% 17% / .5); background: hsl(232 95% 17% / .1); color: var(--primary); }
+.badge svg { width: 12px; height: 12px; }
+.ghost { margin-top: 4px; height: 28px; padding: 0 8px; border-radius: 6px; font-size: 11px; color: var(--mfg); }
+.tfoot { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.tfoot button { display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 8px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+.tfoot svg { width: 14px; height: 14px; }
+.hab { border-radius: 12px; border: 1px solid var(--border); padding: 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.hab.done { background: hsl(40 79% 64% / .08); border-color: hsl(40 79% 64% / .4); }
+.hab .tt { flex: 1; min-width: 120px; font-size: 14px; font-weight: 500; }
+.hab.done .tt { text-decoration: line-through; color: var(--mfg); }
+.wk { display: flex; gap: 4px; }
+.wk span { width: 12px; height: 12px; border-radius: 6px; background: var(--muted); }
+.wk span.on { background: var(--primary); }
+.wk span.td { box-shadow: 0 0 0 1px var(--bg), 0 0 0 2px var(--primary); }
+.habs { display: flex; flex-direction: column; gap: 8px; }
+.addh { margin-top: 12px; display: flex; gap: 8px; }
+.inp { flex: 1; min-width: 0; height: 36px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); padding: 0 12px; font: inherit; font-size: 14px; color: var(--mfg); display: flex; align-items: center; }
+.sel { height: 36px; border-radius: 10px; border: 1px solid var(--border); padding: 0 10px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; white-space: nowrap; }
+.sel svg { width: 14px; height: 14px; opacity: .5; }
+.btn { height: 36px; padding: 0 14px; border-radius: 10px; background: var(--primary); color: var(--pfg); font-size: 14px; font-weight: 500; white-space: nowrap; }
+.pulse { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+.pulse i { flex: 1; border-radius: 2px 2px 0 0; min-height: 3px; background: var(--muted); }
+.pulse i.mv { background: var(--primary); } .pulse i.pt { background: hsl(0 6% 40% / .4); } .pulse i.fu { opacity: .25; }
+.leg { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; font-size: 11px; color: var(--mfg); }
+.leg span { display: inline-flex; align-items: center; gap: 6px; }
+.leg i { width: 8px; height: 8px; border-radius: 2px; }
+.radt { width: 100%; display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--mfg); }
+.radt span:last-child { margin-left: auto; font-size: 12px; }
+.radl { display: none; margin-top: 12px; flex-direction: column; gap: 12px; }
+.radl > div { padding-left: 12px; border-left: 2px solid hsl(232 95% 17% / .5); }
+.radl p { margin: 0; font-size: 12px; color: var(--mfg); } .radl b { display: block; font-size: 14px; font-weight: 500; }
+.vis { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; font-size: 11px; color: var(--mfg); }
+.vis .sel { height: 28px; width: 200px; font-size: 12px; color: var(--fg); justify-content: space-between; }
+.vis .segv { display: none; }
+.pd { display: flex; flex-direction: column; gap: 8px; }
+.pd + .pd { margin-top: 16px; }
+.pd > p { margin: 0; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .05em; color: var(--mfg); }
+.pr { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; padding: 4px 8px; border-radius: 8px; }
+.pr.me { background: hsl(232 95% 17% / .1); }
+.av { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 600; color: #fff; flex: none; margin-top: 1px; }
+.pr > span:not(.av) { flex: 1; min-width: 0; } .pr b { font-weight: 500; } .pr small { display: block; font-size: 12px; color: var(--mfg); }
+.ws { display: none; }
+
+/* ----- телефон ----- */
+@media (max-width: 767px) {
+  .page { padding: 12px; padding-bottom: 150px; }
+  .ph h1 { font-size: 20px; } .ph .sub { display: none; }
+  .tabs { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; }
+  .tab { padding: 8px; font-size: 12px; justify-content: center; }
+  .tab .lg { display: none; } .tab .sh { display: inline; }
+  .focus { margin-top: 16px; }
+  .h-top { padding: 12px 12px 0; }
+  .seg { flex: 1; display: grid; grid-template-columns: 1fr 1fr; }
+  .seg button { padding: 6px 8px; font-size: 12px; }
+  .h-date { display: none; }
+  .h-grid, .cols, .tcols { grid-template-columns: 1fr; }
+  .h-left { padding: 4px 12px 12px; }
+  .h-right { border-left: 0; border-top: 1px solid var(--border); padding: 10px 12px; }
+  .road { height: 140px; }
+  .run { grid-template-columns: 1fr; padding: 10px 12px; }
+  .rew { padding: 8px 12px; }
+  .addh { flex-wrap: wrap; } .addh .inp { flex-basis: 100%; }
+}
+@media (min-width: 768px) { .tab .sh { display: none; } }
+</style>
+<link rel="stylesheet" href="tr-slop.css?v=1">
+</head>
+<body>
+<div class="page">
+  <div class="ph">
+    <h1>Трекер Фримана</h1>
+    <p class="sub">1000 целей → берёте в работу → 3 в фокусе → одно действие в день. Внутри каждой цели — её 100 шагов.</p>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab on" data-t="focus"><span class="ti"></span>Фокус дня</button>
+    <button class="tab" data-t="tasks"><span class="ti"></span>Задачи<span class="tc">2</span></button>
+    <button class="tab" data-t="growth"><span class="ti"></span>Финансы</button>
+    <button class="tab" data-t="diary"><span class="ti"></span><span class="lg">Дневник успеха</span><span class="sh">Дневник</span></button>
+    <button class="tab" data-t="wishes"><span class="ti"></span>1000 целей</button>
+    <button class="tab" data-t="zveryok"><span class="ti"></span>Зверёк</button>
+  </nav>
+
+  <div class="focus" id="focus">
+    <section class="hero" id="hero">
+      <div class="h-top">
+        <div class="seg" role="tablist"><button>Утро: выбираю шаг</button><button class="on">Вечер: отмечаю</button></div>
+        <button class="audio" aria-label="Послушать подсказку"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg></button>
+        <span class="h-date">Сб, 14 ноября</span>
+      </div>
+      <div class="h-grid">
+        <div class="h-left">
+          <div class="goals">
+            <button class="goal on"><b>Поток Фокуса на&nbsp;40 человек</b><span>42% · шаг 7</span></button>
+            <button class="goal"><b>Полумарафон весной</b><span>18% · шаг 4</span></button>
+            <button class="goal"><b>Дом у&nbsp;моря</b><span>5% · шаг 2</span></button>
+          </div>
+          <div class="plan"><div class="k">План на сегодня · шаг 7</div><div class="t">Созвониться с&nbsp;тремя выпускниками и&nbsp;собрать отзывы</div></div>
+          <div class="acts">
+            <button class="act p" id="a-done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Сделал шаг</button>
+            <button class="act m" id="a-rad">Записать РАД</button>
+          </div>
+          <p class="later">Не успели? Шаг вернётся в&nbsp;список.<u>Не&nbsp;сегодня</u></p>
+          <div class="ws" id="ws"></div>
+        </div>
+        <div class="h-right">
+          <div class="road-h"><p>Ваша дорога к&nbsp;цели</p><b>до&nbsp;вашей цели 13&nbsp;шагов</b></div>
+          <div class="road" id="road">
+            <svg class="path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M6 88 C 30 88, 30 62, 50 62 S 72 36, 50 34 S 28 10, 60 8 L 92 8" fill="none" stroke="hsl(232 95% 17% / .22)" stroke-width="1.4" stroke-dasharray="2 2.4" vector-effect="non-scaling-stroke" style="stroke-width:3px"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="run" id="run">
+        <div class="g">День в&nbsp;разгоне<small>отмечается само · 1&nbsp;из&nbsp;3</small></div>
+        <div class="bars">
+          <div class="bar"><p>Задачи<b>1/2</b></p><i><em style="width:50%"></em></i></div>
+          <div class="bar"><p>Привычки<b>2/2</b></p><i><em style="width:100%"></em></i></div>
+          <div class="bar"><p>Шаг к&nbsp;цели<b>0/1</b></p><i><em style="width:0%"></em></i></div>
+        </div>
+      </div>
+      <div class="rew"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>+40 XP сегодня</span><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-9z"/></svg>+1 / 3 фениксов</span></div>
+    </section>
+
+    <button class="allsteps" id="allsteps">Все шаги цели<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+
+    <div class="cols" id="cols">
+      <div class="col" id="colL">
+        <section class="sc" id="c-tasks">
+          <header><i class="m"></i><div><p class="lb">Задачи</p><p class="hn">На процент дня не влияют</p></div><span class="rt">2/6</span></header>
+          <div class="bd">
+            <div class="tcols">
+              <div>
+                <div class="tch"><div><h3>Важные и срочные</h3><p>Горит прямо сейчас</p></div><span>1/3</span></div>
+                <div class="rows">
+                  <div class="row"><span class="cb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><button class="tt">Ответить Игорю по&nbsp;сценарию эфира</button><span class="badge amb">сегодня</span><div class="more"></div></div>
+                  <div class="row"><span class="cb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><button class="tt">Счёт партнёру за&nbsp;ноябрь</button><span class="badge red">просрочено</span><div class="more"></div></div>
+                  <div class="row done x-done"><span class="cb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><button class="tt">Проверить лендинг потока</button></div>
+                </div>
+                <button class="ghost x-tg">Выполненные (1)</button>
+              </div>
+              <div>
+                <div class="tch"><div><h3>Остальные задачи</h3><p>Держим в&nbsp;поле зрения</p></div><span>1/3</span></div>
+                <div class="rows">
+                  <div class="row"><span class="cb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><button class="tt">Записать подкаст с&nbsp;Ксюшей</button></div>
+                  <div class="row"><span class="cb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><button class="tt">Разобрать почту за&nbsp;неделю</button></div>
+                  <div class="row done x-done"><span class="cb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><button class="tt">Обновить отзывы на&nbsp;сайте</button></div>
+                </div>
+                <button class="ghost x-tg">Выполненные (1)</button>
+              </div>
+            </div>
+            <div class="tfoot"><button>Перейти ко&nbsp;всем задачам<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+          </div>
+        </section>
+
+        <section class="sc" id="c-habits">
+          <header><i></i><div><p class="lb">Привычки</p><p class="hn">30% дня — за норму привычек</p></div><span class="rt">2/2 на сегодня</span></header>
+          <div class="bd">
+            <div class="habs">
+              <div class="hab done"><span class="cb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tt">Зарядка 15 минут</span><span class="badge pr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/></svg>Спорт</span><span class="badge">каждый день</span><span class="wk"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span class="on"></span><span class="on td"></span><span></span></span></div>
+              <div class="hab done"><span class="cb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tt">Чтение 20 страниц</span><span class="badge">каждый день</span><span class="wk"><span class="on"></span><span></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on td"></span><span></span></span></div>
+              <div class="hab"><span class="cb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span class="tt">Пост в&nbsp;канал</span><span class="badge grn">3/3 в&nbsp;неделю</span><span class="wk"><span class="on"></span><span></span><span class="on"></span><span></span><span class="on"></span><span class="td"></span><span></span></span></div>
+            </div>
+            <div class="addh"><span class="inp">Новая привычка…</span><span class="sel">каждый день<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span><button class="btn">Добавить</button></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="col" id="colR">
+        <section class="sc" id="c-pulse">
+          <header><i class="y"></i><div><p class="lb">Пульс · ноябрь</p></div></header>
+          <div class="bd"><div class="pulse" id="pulse"></div>
+            <div class="leg"><span><i style="background:var(--primary)"></i>шаг к&nbsp;цели</span><span><i style="background:hsl(0 6% 40% / .4)"></i>только задачи</span><span><i style="background:var(--muted)"></i>пропуск</span></div>
+          </div>
+        </section>
+        <section class="sc" id="c-rad">
+          <header><i class="m"></i><div><p class="lb">История РАД</p></div><span class="rt">6 записей</span></header>
+          <div class="bd" style="padding-top:12px">
+            <button class="radt" id="radt"><span>Показать разборы</span><span>▼</span></button>
+            <div class="radl" id="radl">
+              <div><p>13 ноября</p><b>Записал вводный урок потока</b><p>📊 Урок готов, 18 минут</p><p>🔍 Долго выбирал свет</p><p>🚀 Завтра монтаж</p></div>
+              <div><p>12 ноября</p><b>Пробежал 8 км</b><p>📊 Темп 5:40</p><p>🔍 Последние 2 км тяжело</p><p>🚀 В субботу 10 км</p></div>
+              <div><p>11 ноября</p><b>Собрал список выпускников</b><p>📊 34 контакта</p><p>🔍 Нет телефонов у пятерых</p><p>🚀 Написать в чат потока</p></div>
+            </div>
+          </div>
+        </section>
+        <section class="sc" id="c-ally">
+          <header><i></i><div><p class="lb">Пульс Альянса</p><p class="hn">Живая активность участников — детали видны только если человек их открыл</p></div></header>
+          <div class="bd">
+            <div class="vis"><span>Моя активность видна как:</span><span class="sel">С названиями<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+              <span class="segv"><button class="on">С названиями</button><button>Без деталей</button><button>Не показывать</button></span></div>
+            <div class="pd"><p>Сегодня</p>
+              <div class="pr me"><span class="av" style="background:#020C54">С</span><span><b>Вы</b><small>2 привычки</small></span></div>
+              <div class="pr"><span class="av" style="background:#B8572F">М</span><span><b>Марина Ковалёва</b><small>2 шага к&nbsp;цели · Запустить свой канал</small></span></div>
+              <div class="pr"><span class="av" style="background:#3E7A5A">О</span><span><b>Олег Саватеев</b><small>1 РАД · 1 привычка</small></span></div>
+            </div>
+            <div class="pd"><p>Вчера</p>
+              <div class="pr"><span class="av" style="background:#6B4FA0">А</span><span><b>Анна Литвин</b><small>3 шага к&nbsp;цели</small></span></div>
+              <div class="pr me"><span class="av" style="background:#020C54">С</span><span><b>Вы</b><small>1 шаг к&nbsp;цели · 1 РАД · 2 привычки</small></span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="tr-slop.js?v=1"></script>
+</body>
+</html>
