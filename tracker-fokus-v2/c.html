@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Фокус дня · В · Кольца</title>
+<script src="shared.js"></script>
+<style>
+@font-face { font-family: "Medeo Sans"; src: url(fonts/MedeoSansVariable.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Bebas"; src: url(fonts/bebasneue-bold.woff2) format("woff2"); font-display: swap; }
+:root {
+  --navy: oklch(0.22 0.13 268); --navy2: oklch(0.32 0.11 268); --yellow: oklch(0.83 0.13 80); --fire: oklch(0.7 0.17 50); --coral: oklch(0.68 0.16 32);
+  --cream: oklch(0.972 0.013 85); --card: oklch(0.994 0.004 85); --ink: oklch(0.22 0.03 268); --ink2: oklch(0.47 0.03 268);
+  --line: oklch(0.89 0.015 85); --tile: oklch(0.955 0.014 85);
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--cream); color: var(--ink); font: 400 15px/1.45 "Medeo Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 120px; }
+.top { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.top h1 { margin: 0; font-size: 30px; line-height: 1.1; font-weight: 750; color: var(--navy); letter-spacing: -.02em; }
+.top .date { color: var(--ink2); font-size: 14px; margin-bottom: 3px; }
+.chips { margin-left: auto; display: flex; gap: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-weight: 600; font-size: 14px; }
+.chip svg { width: 16px; height: 16px; }
+.chip .xp { color: var(--yellow); }
+.chip b { font: 400 20px/1 "Bebas", sans-serif; letter-spacing: .02em; padding-top: 3px; }
+
+/* ---------- сцена колец ---------- */
+.stage { margin-top: 18px; border-radius: 32px; background: var(--card); border: 1px solid var(--line); padding: 34px 40px; display: grid; grid-template-columns: 440px 1fr; gap: 44px; align-items: center; }
+.rings { position: relative; width: 440px; height: 440px; }
+.rings svg { position: absolute; inset: 0; transform: rotate(-90deg); overflow: visible; }
+.rings circle { fill: none; stroke-width: 30; stroke-linecap: round; }
+.rings .r1 { stroke: var(--navy); } .rings .t1 { stroke: oklch(0.22 0.13 268 / .1); }
+.rings .r2 { stroke: var(--yellow); } .rings .t2 { stroke: oklch(0.83 0.13 80 / .22); }
+.rings .r3 { stroke: var(--coral); } .rings .t3 { stroke: oklch(0.68 0.16 32 / .16); }
+.rings .r { transition: stroke-dashoffset 1s var(--ease); }
+.rings .r.closed { filter: drop-shadow(0 0 5px currentColor); }
+.rings img { position: absolute; left: 50%; top: 50%; width: 230px; transform: translate(-50%, -46%); transition: transform .5s var(--ease); }
+.rings img.pop { animation: pop .8s var(--ease); }
+@keyframes pop { 35% { transform: translate(-50%, -54%) scale(1.12) rotate(-5deg); } }
+.legend { display: flex; flex-direction: column; gap: 4px; }
+.lg { display: grid; grid-template-columns: 14px 1fr auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 14px; text-align: left; transition: background .2s; }
+.lg:hover { background: var(--tile); }
+.lg i { width: 14px; height: 14px; border-radius: 50%; }
+.lg span { font-size: 15px; font-weight: 600; }
+.lg b { font: 400 24px/1 "Bebas", sans-serif; color: var(--navy); padding-top: 3px; }
+.lg b.full::after { content: " ✓"; font-family: "Medeo Sans"; font-size: 15px; color: oklch(0.55 0.13 150); }
+
+.side small { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink2); }
+.tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab { height: 36px; padding: 0 14px; border-radius: 999px; background: var(--tile); font-size: 13px; font-weight: 650; color: var(--ink2); display: inline-flex; align-items: center; gap: 8px; transition: background .2s, color .2s; }
+.tab.on { background: var(--navy); color: var(--cream); }
+.tab em { font-style: normal; width: 8px; height: 8px; border-radius: 50%; background: oklch(0.22 0.13 268 / .2); }
+.tab.ok em { background: oklch(0.65 0.15 150); }
+.goal h2 { margin: 4px 0 0; font-size: 28px; line-height: 1.15; font-weight: 750; color: var(--navy); letter-spacing: -.015em; }
+.path { margin-top: 14px; display: flex; align-items: center; gap: 12px; }
+.path .dots { flex: 1; display: flex; gap: 4px; }
+.path .dots i { flex: 1; height: 8px; border-radius: 4px; background: oklch(0.22 0.13 268 / .1); }
+.path .dots i.on { background: var(--navy); }
+.path .dots i.now { background: var(--yellow); }
+.path b { font: 400 26px/1 "Bebas", sans-serif; color: var(--navy); padding-top: 3px; white-space: nowrap; }
+.today { margin-top: 22px; padding: 20px; border-radius: 22px; background: var(--navy); color: var(--cream); }
+.today .k { font-size: 13px; font-weight: 600; color: oklch(0.85 0.04 268); }
+.today .st { margin-top: 4px; font-size: 22px; line-height: 1.25; font-weight: 700; }
+.go { margin-top: 16px; width: 100%; height: 60px; border-radius: 18px; background: var(--yellow); color: var(--navy); font-size: 18px; font-weight: 750; display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+.go:hover { transform: translateY(-2px); box-shadow: 0 12px 26px oklch(0.6 0.13 70 / .4); }
+.go:active { transform: scale(.98); }
+.go svg { width: 22px; height: 22px; }
+.go i { font: 400 18px/1 "Bebas", sans-serif; font-style: normal; padding: 4px 7px 2px; border-radius: 7px; background: var(--navy); color: var(--yellow); }
+.later { margin-top: 10px; font-size: 13px; color: oklch(0.8 0.03 268); }
+.today.done { background: oklch(0.95 0.04 150); color: var(--ink); display: flex; align-items: center; gap: 16px; }
+.today.done img { width: 92px; flex: none; margin: -14px 0 -18px -6px; }
+.today.done .st { font-size: 20px; } .today.done .k { color: oklch(0.45 0.1 150); }
+.pick { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+.opt { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 16px; background: oklch(1 0 0 / .07); text-align: left; transition: background .2s, transform .3s var(--ease); }
+.opt:hover { background: oklch(1 0 0 / .14); transform: translateX(4px); }
+.opt .n { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: var(--navy); font: 400 22px/1 "Bebas", sans-serif; padding-top: 3px; flex: none; }
+.opt b { flex: 1; font-size: 16px; font-weight: 650; line-height: 1.3; }
+.opt span { font-size: 13px; color: var(--yellow); font-weight: 650; }
+
+/* ---------- ниже ---------- */
+.below { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr 1.05fr; gap: 18px; align-items: start; }
+.sec h3 { margin: 0 0 4px; font-size: 20px; font-weight: 750; color: var(--navy); letter-spacing: -.01em; display: flex; align-items: center; gap: 10px; }
+.sec h3 i { width: 12px; height: 12px; border-radius: 50%; }
+.sec .sub { font-size: 13px; color: var(--ink2); margin: 0 0 12px; }
+.box { border-radius: 22px; background: var(--card); border: 1px solid var(--line); padding: 6px; }
+.row { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; text-align: left; transition: background .2s; }
+.row:hover { background: var(--tile); }
+.ck { width: 28px; height: 28px; border-radius: 50%; border: 2.5px solid var(--c); display: grid; place-items: center; flex: none; transition: background .25s; }
+.ck svg { width: 15px; height: 15px; opacity: 0; transform: scale(.4); transition: opacity .2s, transform .3s var(--ease); color: var(--navy); }
+.row.done .ck { background: var(--c); }
+.row.done .ck svg { opacity: 1; transform: none; }
+.hb .ck { --c: var(--yellow); } .tk .ck { --c: var(--coral); } .tk .ck svg { color: var(--cream); }
+.row .tt { flex: 1; font-size: 15px; line-height: 1.3; }
+.row .tt em { display: block; font-style: normal; font-size: 12px; color: var(--ink2); margin-top: 2px; }
+.row.done.tk .tt { color: var(--ink2); text-decoration: line-through; text-decoration-color: oklch(0.47 0.03 268 / .5); }
+.row .wk { display: flex; gap: 3px; } .row .wk i { width: 7px; height: 7px; border-radius: 50%; background: oklch(0.88 0.015 85); } .row .wk i.on { background: var(--yellow); }
+.tag { font-size: 11px; font-weight: 650; padding: 4px 8px; border-radius: 999px; background: oklch(0.94 0.05 75); color: oklch(0.45 0.12 60); white-space: nowrap; }
+.tag.red { background: oklch(0.94 0.04 25); color: oklch(0.5 0.17 25); }
+
+.cal { border-radius: 22px; background: var(--navy); color: var(--cream); padding: 18px; }
+.cal .hd { display: flex; align-items: center; gap: 12px; }
+.cal .hd svg { width: 46px; height: 46px; color: var(--fire); flex: none; }
+.cal .hd b { font: 400 52px/0.85 "Bebas", sans-serif; color: var(--yellow); }
+.cal .hd span { font-size: 14px; line-height: 1.3; color: oklch(0.88 0.03 268); }
+.cal .hd em { font-style: normal; display: block; font-size: 12px; color: oklch(0.75 0.04 268); }
+.grid { margin-top: 14px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.grid .w { font-size: 11px; text-align: center; color: oklch(0.72 0.04 268); padding-bottom: 2px; }
+.day { aspect-ratio: 1.3; border-radius: 10px; display: grid; place-items: center; font-size: 12px; font-weight: 600; color: oklch(0.75 0.04 268); background: oklch(1 0 0 / .05); position: relative; }
+.day svg { width: 70%; height: 70%; color: var(--fire); }
+.day.f { background: oklch(0.7 0.17 50 / .16); }
+.day.miss { background: transparent; box-shadow: inset 0 0 0 1px oklch(1 0 0 / .1); }
+.day.tdy { box-shadow: 0 0 0 2px var(--yellow); }
+.day.tdy.lit svg { animation: flick 1.6s ease-in-out infinite; transform-origin: 50% 90%; }
+@keyframes flick { 50% { transform: scale(1.08, .94); } }
+.day.fut { background: transparent; color: oklch(0.55 0.04 268); }
+.cal .ft { margin-top: 12px; font-size: 12px; color: oklch(0.8 0.03 268); }
+
+.mates { margin-top: 26px; }
+.mates .list { display: flex; gap: 10px; flex-wrap: wrap; }
+.mate { display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-size: 13px; }
+.mate i { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: var(--cream); font-style: normal; font-weight: 700; font-size: 12px; flex: none; }
+.mate b { font-weight: 650; }
+.conf { position: fixed; z-index: 60; pointer-events: none; width: 8px; height: 12px; border-radius: 2px; }
+
+@media (max-width: 1080px) { .stage { grid-template-columns: 1fr; justify-items: center; } .side { width: 100%; } .below { grid-template-columns: 1fr 1fr; } .cal { grid-column: 1 / -1; } }
+@media (max-width: 760px) {
+  .wrap { padding: 16px 12px 120px; }
+  .top h1 { font-size: 24px; }
+  .chips { margin-left: 0; width: 100%; }
+  .stage { padding: 18px 14px; gap: 14px; border-radius: 26px; }
+  .rings { width: min(300px, 82vw); height: min(300px, 82vw); }
+  .rings circle { stroke-width: 22; }
+  .rings img { width: 46%; }
+  .legend { width: 100%; flex-direction: row; gap: 4px; }
+  .lg { flex: 1; grid-template-columns: 10px auto; grid-template-rows: auto auto; gap: 2px 6px; padding: 8px; }
+  .lg i { width: 10px; height: 10px; } .lg span { font-size: 12px; } .lg b { grid-column: 1 / -1; font-size: 22px; }
+  .goal h2 { font-size: 21px; }
+  .today { padding: 16px; } .today .st { font-size: 19px; }
+  .below { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div><h1>Фокус дня</h1><div class="date">Суббота, 14 ноября</div></div>
+    <div class="chips"><span class="chip"><svg class="xp" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg><b id="xp">40</b> XP сегодня</span></div>
+  </div>
+
+  <section class="stage">
+    <div>
+      <div class="rings" id="rings">
+        <svg viewBox="0 0 440 440">
+          <circle class="t1" cx="220" cy="220" r="200"/><circle class="r r1" id="r1" cx="220" cy="220" r="200"/>
+          <circle class="t2" cx="220" cy="220" r="164"/><circle class="r r2" id="r2" cx="220" cy="220" r="164"/>
+          <circle class="t3" cx="220" cy="220" r="128"/><circle class="r r3" id="r3" cx="220" cy="220" r="128"/>
+        </svg>
+        <img id="frimi" src="img/focus-happy.webp" alt="Фрими">
+      </div>
+    </div>
+    <div class="side">
+      <div id="tabs"></div>
+      <div class="goal" id="goal"></div>
+      <div id="today"></div>
+      <div class="legend" id="legend" style="margin-top:18px"></div>
+    </div>
+  </section>
+
+  <div class="below">
+    <section class="sec"><h3><i style="background:var(--yellow)"></i>Привычки</h3><p class="sub" id="hbs"></p><div class="box" id="hb"></div></section>
+    <section class="sec"><h3><i style="background:var(--coral)"></i>Задачи</h3><p class="sub" id="tks"></p><div class="box" id="tk"></div></section>
+    <section class="sec"><h3>Огонь серии</h3><p class="sub">Ноябрь · день горит, когда сделан шаг к цели</p><div class="cal" id="cal"></div></section>
+  </div>
+  <section class="sec mates"><h3>Попутчики сегодня</h3><p class="sub">Кто из Альянса тоже закрыл кольца</p><div class="list" id="mates"></div></section>
+</div>
+
+<script>
+(function () {
+  const S = window.FD, $ = s => document.querySelector(s);
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+  const FLAME = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3-1-3 0-6 1-9.5Z"/></svg>';
+  const R = { r1: 200, r2: 164, r3: 128 };
+  let shownXp = S.xp, prevClosed = null;
+
+  function vals() {
+    const st = S.goals.filter(g => g.doneToday).length / S.goals.length;
+    const hb = S.habits.filter(h => h.done).length / S.habits.length;
+    const hot = S.tasks.filter(t => t.hot); const tk = hot.filter(t => t.done).length / hot.length;
+    return { r1: st, r2: hb, r3: tk };
+  }
+  function rings(animateFromZero) {
+    const v = vals();
+    Object.keys(R).forEach(k => {
+      const c = $('#' + k), L = 2 * Math.PI * R[k], off = L * (1 - Math.max(v[k], 0.001));
+      c.setAttribute('stroke-dasharray', L);
+      if (animateFromZero && !RM) { c.style.transition = 'none'; c.setAttribute('stroke-dashoffset', L); c.getBoundingClientRect(); c.style.transition = ''; }
+      requestAnimationFrame(() => c.setAttribute('stroke-dashoffset', off));
+      c.classList.toggle("closed", v[k] >= 1); c.style.opacity = v[k] > 0 ? 1 : 0;
+      c.style.color = getComputedStyle(c).stroke;
+    });
+    const closed = Object.values(v).filter(x => x >= 1).length;
+    const fr = $('#frimi');
+    fr.src = 'img/' + (closed === 3 ? 'hooray' : closed ? 'focus-joy' : 'focus-happy') + '.webp';
+    if (prevClosed !== null && closed !== prevClosed && !RM) { fr.classList.remove('pop'); fr.getBoundingClientRect(); fr.classList.add('pop'); }
+    if (prevClosed !== null && closed === 3 && prevClosed < 3) burst($('#rings'));
+    prevClosed = closed;
+    const hot = S.tasks.filter(t => t.hot);
+    const L = [['var(--navy)', S.goals.length > 1 ? 'Шаги к целям' : 'Шаг к цели', `${S.goals.filter(g => g.doneToday).length}/${S.goals.length}`, v.r1 >= 1],
+      ['var(--yellow)', 'Привычки', `${S.habits.filter(h => h.done).length}/${S.habits.length}`, v.r2 >= 1],
+      ['var(--coral)', 'Важные задачи', `${hot.filter(t => t.done).length}/${hot.length}`, v.r3 >= 1]];
+    $('#legend').innerHTML = L.map(([c, t, n, f]) => `<div class="lg"><i style="background:${c}"></i><span>${t}</span><b class="${f ? 'full' : ''}">${n}</b></div>`).join('');
+  }
+
+  function side() {
+    const g = S.goal();
+    $('#tabs').innerHTML = S.goalsCount > 1 ? `<div class="tabs">${S.goals.map((x, i) => `<button class="tab ${i === S.active ? 'on' : ''} ${x.doneToday ? 'ok' : ''}" data-i="${i}"><em></em>${x.short}</button>`).join('')}</div>` : '';
+    $('#tabs').querySelectorAll('.tab').forEach(b => b.onclick = () => S.setActive(+b.dataset.i));
+    const dots = Array.from({ length: g.total }, (_, i) => `<i class="${i < g.done ? 'on' : i === g.planned ? 'now' : ''}"></i>`).join('');
+    $('#goal').innerHTML = `<small>${S.goalsCount > 1 ? 'Цель ' + (S.active + 1) + ' из ' + S.goalsCount : 'Цель в фокусе'}</small><h2>${g.title}</h2><div class="path"><div class="dots">${dots}</div><b>${g.done}/${g.total}</b></div>`;
+    let h;
+    if (g.doneToday) h = `<div class="today done"><img src="img/love-f7.webp" alt=""><div><div class="k">Шаг ${g.done} сделан · +30 XP</div><div class="st">Кольцо шага закрыто. До цели ${S.left(g)}</div></div></div>`;
+    else if (g.planned != null) h = `<div class="today"><div class="k">Сегодня · шаг ${g.planned + 1} из ${g.total}</div><div class="st">${S.stepTitle(g, g.planned)}</div><button class="go" id="go">${CHECK}Сделал шаг <i>+30</i></button><button class="later">Сегодня не получится</button></div>`;
+    else h = `<div class="today"><div class="k">Утро. Какой шаг закроет кольцо сегодня?</div><div class="pick">${[0, 1, 2].map(k => g.done + k).filter(i => i < g.total).map(i => `<button class="opt" data-i="${i}"><span class="n">${i + 1}</span><b>${S.stepTitle(g, i)}</b><span>+30</span></button>`).join('')}</div></div>`;
+    $('#today').innerHTML = h;
+    const go = $('#go'); if (go) go.onclick = () => S.doStep(S.active);
+    $('#today').querySelectorAll('.opt').forEach(b => b.onclick = () => S.plan(S.active, +b.dataset.i));
+  }
+
+  function lists() {
+    $('#hbs').textContent = `${S.habits.filter(h => h.done).length} из ${S.habits.length} · жёлтое кольцо`;
+    $('#hb').innerHTML = S.habits.map(h => `<button class="row hb ${h.done ? 'done' : ''}" data-id="${h.id}"><span class="ck">${CHECK}</span><span class="tt">${h.t}<em>${h.perWeek ? h.perWeek + ' раза в неделю' : 'серия ' + h.streak + ' дн.'}</em></span><span class="wk">${h.week.map(w => `<i class="${w ? 'on' : ''}"></i>`).join('')}</span></button>`).join('');
+    $('#hb').querySelectorAll('.row').forEach(b => b.onclick = () => S.toggleHabit(b.dataset.id));
+    const list = [...S.tasks].sort((a, b) => a.done - b.done || b.hot - a.hot);
+    $('#tks').textContent = `важные закрывают коралловое кольцо`;
+    $('#tk').innerHTML = list.map(t => `<button class="row tk ${t.done ? 'done' : ''}" data-id="${t.id}"><span class="ck">${CHECK}</span><span class="tt">${t.t}</span>${t.tag && !t.done ? `<span class="tag ${t.tag === 'просрочено' ? 'red' : ''}">${t.tag}</span>` : ''}</button>`).join('');
+    $('#tk').querySelectorAll('.row').forEach(b => b.onclick = () => S.toggleTask(b.dataset.id));
+  }
+
+  function cal() {
+    const lit = S.goals.some(g => g.doneToday), streak = S.streak + (lit ? 1 : 0);
+    // ноябрь 2026 начинается с воскресенья: 6 пустых клеток при неделе с понедельника
+    const cells = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(w => `<span class="w">${w}</span>`).concat(Array(6).fill('<span></span>'));
+    for (let d = 1; d <= 30; d++) {
+      let cls = 'day', inner = d;
+      if (d < 14) { if (d === 1) { cls += ' miss'; } else { cls += ' f'; inner = FLAME; } }
+      else if (d === 14) { cls += ' tdy' + (lit ? ' f lit' : ''); inner = lit ? FLAME : d; }
+      else cls += ' fut';
+      cells.push(`<span class="${cls}" title="${d} ноября">${inner}</span>`);
+    }
+    $('#cal').innerHTML = `<div class="hd">${FLAME}<div><b>${streak}</b></div><span>${lit ? 'дней подряд. Сегодня огонь горит' : 'дней подряд. Сделай шаг, чтобы не погас'}<em>рекорд 21 день</em></span></div><div class="grid">${cells.join('')}</div><div class="ft">Пропустил день: феникс сохранит серию (есть 1)</div>`;
+  }
+
+  function countXp() {
+    const el = $('#xp'), from = shownXp, to = S.xp; shownXp = to;
+    if (RM || from === to) { el.textContent = to; return; }
+    const t0 = performance.now();
+    const tick = t => { const k = Math.min(1, (t - t0) / 900), e = 1 - Math.pow(1 - k, 4); el.textContent = Math.round(from + (to - from) * e); if (k < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  }
+  function burst(el) {
+    if (RM) return;
+    const r = el.getBoundingClientRect();
+    for (let i = 0; i < 34; i++) {
+      const c = document.createElement('i'); c.className = 'conf';
+      c.style.background = ['var(--yellow)', 'var(--coral)', 'var(--navy)', 'var(--fire)'][i % 4];
+      c.style.left = (r.left + r.width / 2) + 'px'; c.style.top = (r.top + r.height / 2) + 'px';
+      document.body.append(c);
+      const a = Math.random() * Math.PI * 2, d = 140 + Math.random() * 180;
+      c.animate([{ transform: 'translate(0,0) rotate(0)', opacity: 1 }, { transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d + 80}px) rotate(${Math.random() * 540}deg)`, opacity: 0 }], { duration: 1200 + Math.random() * 600, easing: 'cubic-bezier(.2,.6,.3,1)' }).onfinish = () => c.remove();
+    }
+  }
+  $('#mates').innerHTML = S.pulse.map(p => `<div class="mate"><i style="background:${p.c}">${p.n[0]}</i><span><b>${p.n.split(' ')[0]}</b> ${p.w}</span></div>`).join('');
+
+  function all(why) { rings(false); side(); lists(); cal(); countXp(); if (why === 'step') burst($('#today')); }
+  S.on(all);
+  side(); lists(); cal(); rings(true);
+})();
+</script>
+</body>
+</html>
