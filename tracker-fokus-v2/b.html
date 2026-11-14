@@ -279,8 +279,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 @keyframes peek { 0%, 100% { transform: none; } 45% { transform: translateX(-38px); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
+<link rel="stylesheet" href="pp-dark.css">
 </head>
 <body>
+<script>if (new URLSearchParams(location.search).get('theme') === 'pp') document.body.classList.add('pp');</script>
 <div class="wrap">
   <div class="top">
     <div><h1>Фокус дня</h1><div class="date">Суббота, 14 ноября</div></div>

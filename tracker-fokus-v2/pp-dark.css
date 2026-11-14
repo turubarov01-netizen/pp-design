@@ -1,0 +1,85 @@
+/* Тёмный вариант «Фокуса дня» для кабинета ПП (Саша 14.11.2026). Цвета кабинета ПП:
+   фон #0D1117, карточка #141E2B, золото #F0D080 → #CCA830, текст белый 72% / 50%.
+   В прототипе включается ?theme=pp (класс pp на body), на сайте те же правила стоят под .ppl .f2 */
+body.pp {
+  --navy: #1A1406; --yellow: #F0D080; --gold2: #CCA830;
+  --cream: oklch(0.97 0.01 85); --card: #141E2B; --ink: oklch(0.97 0.006 85); --ink2: rgba(255,255,255,.62);
+  --line: rgba(255,255,255,.08); --tile: rgba(255,255,255,.06);
+  --glass: rgba(20,30,43,.78); --glass-b: rgba(255,255,255,.08);
+  --nglass: rgba(20,30,43,.94); --pblue: oklch(0.78 0.09 250);
+  color: var(--ink);
+}
+body.pp { background: #0D1117; }
+body.pp::before { background: #0D1117; }
+body.pp :is(.combo, .coin, .pack, .mate, .chip) { box-shadow: 0 10px 34px rgba(0,0,0,.28); }
+body.pp .sec h3, body.pp .sec .sub { text-shadow: none; }
+body.pp .sec .sub { color: var(--ink2); }
+body.pp :is(.top h1, .sec h3, .combo .x, .combo .msg, .qlink, .cheered, .cheer) { color: var(--ink); }
+body.pp .qlink { color: var(--yellow); }
+body.pp .qlink.mute { color: var(--ink2); }
+
+/* колода: тёмная карточка с золотым свечением */
+body.pp .gcard { box-shadow: 0 18px 44px rgba(0,0,0,.5); }
+body.pp .face { background: radial-gradient(60% 70% at 85% 20%, rgba(240,208,128,.13), transparent 70%), var(--nglass); box-shadow: inset 0 0 0 1px rgba(255,255,255,.07); }
+body.pp .face.back { background: radial-gradient(70% 60% at 50% 30%, rgba(240,208,128,.16), transparent 70%), #172231; }
+body.pp .ghost { background: rgba(30,43,60,.88); color: rgba(255,255,255,.86); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+body.pp .ghost.g1 { background: rgba(23,34,49,.94); }
+body.pp .lvl span, body.pp .hand-t, body.pp .back p { color: rgba(255,255,255,.7); }
+body.pp .ringwrap .ph { box-shadow: 0 10px 24px rgba(0,0,0,.45); }
+body.pp .later { color: rgba(255,255,255,.5); text-decoration-color: rgba(255,255,255,.25); }
+body.pp .back .bph { box-shadow: 0 0 0 5px var(--yellow), 0 14px 26px rgba(0,0,0,.5); }
+
+/* квест шага и рука из трёх карт: ступень светлее карточки, а не белая плашка */
+body.pp :is(.quest, .qc) { background: #1E2B3C; color: var(--ink); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+body.pp .qc .n, body.pp .qc .take { color: var(--yellow); }
+body.pp .qc .take i { color: var(--navy); }
+body.pp .qc:hover { box-shadow: 0 22px 34px rgba(0,0,0,.5), inset 0 0 0 1px rgba(240,208,128,.35); }
+body.pp .go { background: linear-gradient(135deg, var(--yellow), var(--gold2)); color: var(--navy); }
+body.pp .go:hover { box-shadow: 0 10px 24px rgba(204,168,48,.3); }
+body.pp .donebar { background: rgba(255,255,255,.06); }
+
+/* комбо */
+body.pp .seg.s1 u { background: var(--pblue); }
+body.pp .seg.full span::after { color: oklch(0.78 0.15 150); }
+
+/* монеты привычек */
+body.pp .coin:hover { border-color: rgba(240,208,128,.35) !important; }
+body.pp .disc { background: rgba(255,255,255,.07); box-shadow: inset 0 -5px 0 rgba(0,0,0,.32); }
+body.pp .disc svg { color: rgba(255,255,255,.35); filter: none; }
+body.pp .disc b { color: rgba(255,255,255,.07); }
+body.pp .coin.on .disc { background: radial-gradient(circle at 35% 30%, #F6DE96, #CCA830); box-shadow: inset 0 -5px 0 #9C7E1E, 0 8px 18px rgba(204,168,48,.3); }
+body.pp .coin.on .disc svg { color: oklch(0.55 0.19 40); }
+body.pp .coin.on .disc b { color: rgba(90,60,10,.3); }
+body.pp .coin .wk i { background: rgba(255,255,255,.14); }
+body.pp .coin .wk i.on { background: var(--fire); }
+
+/* квесты дня */
+body.pp .item .ck::before { border-color: rgba(255,255,255,.28); }
+body.pp .item .ck:hover::before { border-color: var(--yellow); }
+body.pp .item.done .ck::before { background: var(--yellow); border-color: var(--yellow); }
+body.pp .item .ck svg { color: var(--navy); }
+body.pp .item .tt .kd { color: #D9B864; }
+body.pp .item.q-mentor .tt .kd { color: var(--pblue); }
+body.pp .item.done .tt b { text-decoration-color: rgba(255,255,255,.35); }
+body.pp .item .x, body.pp .item .ar { color: rgba(255,255,255,.32); }
+body.pp .item .x:hover { color: #FF9A8F; background: rgba(255,110,100,.12); }
+body.pp .item .open:hover .ar { color: var(--yellow); }
+body.pp .item .st i { color: rgba(255,255,255,.2); }
+body.pp .item .st i svg.nx { color: rgba(240,208,128,.55); }
+body.pp .qfoot { border-top-color: rgba(255,255,255,.08); }
+body.pp .tag { background: rgba(240,208,128,.14); color: var(--yellow); }
+body.pp .tag.red { background: rgba(255,110,100,.14); color: #FF9A8F; }
+body.pp #toast { background: #1E2B3C; color: var(--ink); box-shadow: 0 12px 30px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.08); }
+
+/* пульс */
+body.pp .cheered .av i { border-color: #0D1117; }
+body.pp .mate .who small { color: #F2A65A; }
+body.pp .mate .near { background: rgba(255,255,255,.06); color: rgba(255,255,255,.78); }
+body.pp .cheer { background: rgba(255,255,255,.07); }
+body.pp .cheer:hover { background: rgba(255,255,255,.12); }
+body.pp .cheer.on { background: var(--yellow); color: var(--navy); }
+@media (max-width: 760px) {
+  body.pp .mate { border-bottom-color: rgba(255,255,255,.07) !important; }
+  body.pp .sdots i { background: rgba(255,255,255,.2); }
+  body.pp .sdots button[aria-selected="true"] i { background: var(--yellow); }
+}
