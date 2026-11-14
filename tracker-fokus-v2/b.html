@@ -33,9 +33,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .deck { position: relative; perspective: 1600px; }
 .deck.multi { padding-top: 44px; }
 .ghost { position: absolute; left: 0; right: 0; top: 0; height: 120px; border-radius: 28px; background: var(--navy3); color: oklch(0.95 0.02 85); padding: 12px 22px; font-size: 13px; font-weight: 650; text-align: left; display: flex; align-items: flex-start; justify-content: space-between; transition: transform .35s var(--ease), background .25s; }
-.ghost.g2 { top: 22px; left: 14px; right: 14px; background: var(--navy2); transform: rotate(-.6deg); }
-.ghost.g1 { left: 28px; right: 28px; transform: rotate(.8deg); }
+.ghost.g1 { top: 22px; left: 14px; right: 14px; background: var(--navy2); transform: rotate(-.6deg); }
+.ghost.g2 { top: 0; left: 30px; right: 30px; transform: rotate(.8deg); }
 .ghost:hover { transform: translateY(-6px); }
+.face.front { display: flex; flex-direction: column; }
+.front .pips { margin-bottom: auto; }
 .ghost span { opacity: .75; font-weight: 500; }
 .gcard { position: relative; z-index: 2; perspective: 1800px; }
 .inner { position: relative; display: grid; transform-style: preserve-3d; transition: transform .9s var(--ease); }
@@ -91,8 +93,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 @keyframes pick { to { transform: translateY(-30px) scale(1.06); opacity: 0; } }
 
 /* обратная сторона */
-.back img { width: 170px; filter: drop-shadow(0 14px 20px oklch(0.12 0.1 268 / .5)); }
-.back .plus { font: 400 92px/0.85 "Bebas", sans-serif; color: var(--yellow); margin-top: 4px; }
+.back img { width: 140px; filter: drop-shadow(0 14px 20px oklch(0.12 0.1 268 / .5)); }
+.back .plus { font: 400 80px/0.85 "Bebas", sans-serif; color: var(--yellow); margin-top: 4px; }
 .back h3 { margin: 6px 0 0; font-size: 26px; font-weight: 750; }
 .back p { margin: 6px 0 0; color: oklch(0.85 0.03 268); max-width: 420px; }
 .back .next { margin-top: 16px; padding: 12px 16px; border-radius: 16px; background: oklch(1 0 0 / .08); font-size: 14px; }
