@@ -109,29 +109,34 @@
 
   /* ───────── B. Две дороги: слева маршрут, справа жизнь; дата на линии, под ней карточки дня ───────── */
   function cardTw(e) {
-    var t = T[e.t];
-    return '<div class="tw-c ' + (e.big ? 'big ' : '') + (e.img ? 'pic ' : '') + 'c-' + t.c + '">' + (e.img ? photo(e, 'tw-img') : '') +
-      '<div class="tw-ti">' + ico(t.i) + '<b>' + esc(e.title) + '</b></div>' +
-      '<div class="tw-s">' + esc(subOf(e)) + (e.stars ? ' ' + stars(e.stars) : '') + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</div>' +
-      (e.t === 'post' ? '<div class="tw-lk">' + ico('feed') + 'Открыть в ленте ›</div>' : '') + '</div>';
+    var t = T[e.t], hero = e.big && !e.img;
+    return '<div class="tw-c c-' + t.c + (hero ? ' hero' : '') + (e.img ? ' pic' : '') + '">' + (e.img ? photo(e, 'tw-img') : '') +
+      '<div class="tw-row"><span class="tw-ic">' + ico(t.i) + '</span><div class="tw-tx"><b>' + esc(e.title) + '</b>' +
+      '<span class="tw-s">' + esc(subOf(e)) + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</span>' +
+      (e.stars ? '<span class="tw-st">' + stars(e.stars) + '</span>' : '') +
+      (e.t === 'post' ? '<span class="tw-lk">Открыть в ленте ›</span>' : '') + '</div></div></div>';
   }
   function vB() {
     var out = [head(H.name, 'Две дороги: маршрут и жизнь'), summaryLine(),
-      '<div class="tw-h"><span class="r">' + ico('flag') + '<b>Маршрут</b><small>уроки и этапы</small></span><span class="l"><b>Жизнь</b><small>деньги, мечты, разборы</small>' + ico('star') + '</span></div>', '<div class="tw">'];
+      '<div class="tw-h"><span class="r"><i></i><b>Маршрут</b><small>уроки и этапы</small></span><span class="l"><b>Жизнь</b><i></i><small>деньги, мечты, разборы</small></span></div>', '<div class="tw">'];
     var curM = -1, curD = '';
     H.past.forEach(function (e) {
-      var m = dt(e.d).getMonth();
-      if (m !== curM) { curM = m; out.push('<div class="tw-m"><span>' + MON_N[m] + '</span></div>'); }
-      if (e.d !== curD) { curD = e.d; out.push('<div class="tw-d"><time>' + dShort(e.d) + '</time></div>'); }
+      var d = dt(e.d), m = d.getMonth();
+      if (m !== curM) {
+        curM = m;
+        var n = H.past.filter(function (x) { return dt(x.d).getMonth() === m; }).length;
+        out.push('<div class="tw-m"><span><b>' + MON_N[m] + '</b><small>' + n + ' ' + plural(n, 'событие', 'события', 'событий') + '</small></span></div>');
+      }
+      if (e.d !== curD) { curD = e.d; out.push('<div class="tw-d"><time><b>' + d.getDate() + '</b> ' + MON_S[m] + '</time></div>'); }
       out.push('<div class="tw-r ' + T[e.t].road + '">' + cardTw(e) + '</div>');
     });
-    out.push('<div class="tw-today">' + todayBar() + '</div>');
-    out.push('<div class="tw-r route fut">' + nowCard() + '</div>');
-    out.push('<div class="tw-r life fut"><div class="tw-ghost">' + ico('plus') + '<b>Сохранить событие</b><span>Пост уйдёт в ленту и встанет сюда</span></div></div>');
-    out.push('<div class="tw-d fut"><time>Впереди</time></div>');
-    out.push('<div class="tw-r route fut"><div class="tw-c c-violet dim"><div class="tw-ti">' + ico('target') + '<b>' + esc(H.goal.title) + '</b></div></div></div>');
+    out.push('</div><div class="tw-today">' + todayBar() + '</div><div class="tw tw-fut">');
+    out.push('<div class="tw-r route">' + nowCard() + '</div>');
+    out.push('<div class="tw-r life"><div class="tw-ghost"><span class="tw-ic">' + ico('plus') + '</span><div class="tw-tx"><b>Сохранить событие</b><span class="tw-s">Пост уйдёт в ленту и встанет сюда</span></div></div></div>');
+    out.push('<div class="tw-d"><time>Впереди</time></div>');
+    out.push('<div class="tw-r route"><div class="tw-c goal c-violet"><div class="tw-row"><span class="tw-ic">' + ico('target') + '</span><div class="tw-tx"><b>' + esc(H.goal.title) + '</b><span class="tw-s">Экзамен этапа ' + H.goal.stage + '</span></div></div></div></div>');
     H.later.forEach(function (s) {
-      out.push('<div class="tw-r route fut"><div class="tw-c far"><div class="tw-ti">' + ico('lock') + '<b>Этап ' + s.stage + ' · ' + esc(s.title) + '</b></div></div></div>');
+      out.push('<div class="tw-r route"><div class="tw-c far"><div class="tw-row"><span class="tw-ic">' + ico('lock') + '</span><div class="tw-tx"><b>' + esc(s.title) + '</b><span class="tw-s">Этап ' + s.stage + '</span></div></div></div></div>');
     });
     out.push('</div>');
     return out.join('');
