@@ -156,7 +156,7 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .tw-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 0 0 14px; }
 .tw-k { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1px; padding: 10px 4px 9px; border-radius: 16px; background: rgba(255, 255, 255, .78); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); box-shadow: 0 1px 2px rgba(16, 24, 48, .05), 0 6px 16px -10px rgba(16, 24, 48, .18); }
 .tw-k b { font-size: 21px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; color: var(--ink); }
-.tw-k span { font-size: 11px; line-height: 1.25; color: var(--muted); font-weight: 600; }
+.tw-k span { font-size: 11px; line-height: 1.25; min-height: 2.5em; color: var(--muted); font-weight: 600; }
 .tw-k:first-child b { color: var(--blue-ink); }
 .tw-go { flex: none; align-self: center; margin-left: auto; color: var(--faint); transition: color .18s var(--ease), transform .18s var(--ease); }
 .tw-go .ic { width: 18px; height: 18px; }
@@ -378,3 +378,56 @@ div.hk-n:nth-of-type(even) { margin-left: 18%; flex-direction: row-reverse; text
   .v-b .tw-r.life .tw-c.pic .tw-img { height: 220px; }
   .v-b .tw-ghost { min-height: 180px; }
 }
+
+/* Спидометр прогноза дохода */
+.tw-gg { margin: 0 0 14px; padding: 14px 14px 12px; border-radius: 20px; background: rgba(255, 255, 255, .82); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); box-shadow: 0 1px 2px rgba(16, 24, 48, .05), 0 6px 16px -10px rgba(16, 24, 48, .18); }
+.gg-top { display: flex; align-items: center; gap: 14px; }
+.gg-svg { flex: none; width: 112px; height: 62px; }
+.gg-bg, .gg-fg { fill: none; stroke-width: 10; stroke-linecap: round; }
+.gg-bg { stroke: #e6ebf6; }
+.gg-fg { stroke: var(--route); }
+.gg-nd { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.gg-hub { fill: var(--ink); }
+.gg-tx { display: flex; flex-direction: column; min-width: 0; }
+.gg-tx b { font-size: 24px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.gg-tx > span { font-size: 13px; color: var(--muted); font-weight: 600; }
+.gg-p { margin-top: 3px; }
+.gg-p i { font-style: normal; color: var(--blue-ink); font-weight: 800; }
+.gg-lv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+.gg-lv span { display: flex; flex-direction: column; justify-content: space-between; gap: 1px; padding: 7px 8px; border-radius: 12px; background: #f3f5fb; font-size: 12px; font-weight: 700; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.gg-lv b { font-size: 10.5px; font-weight: 650; color: var(--faint); line-height: 1.2; }
+.gg-lv .on { background: #e9f1ff; box-shadow: inset 0 0 0 1.5px rgba(47, 123, 255, .45); color: var(--blue-ink); }
+.gg-lv .on b { color: var(--blue-ink); }
+@media (min-width: 760px) { .v-b .tw-gg { padding: 18px 20px 16px; margin-bottom: 20px; } .v-b .gg-svg { width: 140px; height: 78px; } .v-b .gg-tx b { font-size: 30px; } }
+
+/* Композер ленты */
+.cmp { position: fixed; inset: 0; z-index: 60; }
+.cmp-bg { position: absolute; inset: 0; background: rgba(11, 16, 32, .42); opacity: 0; transition: opacity .22s var(--ease); }
+.cmp-sh { position: absolute; left: 50%; bottom: 0; width: min(100%, 440px); transform: translate(-50%, 100%); transition: transform .28s var(--ease); background: #fff; border-radius: 24px 24px 0 0; padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; box-shadow: 0 -12px 40px -16px rgba(11, 16, 32, .35); }
+.cmp.on .cmp-bg { opacity: 1; }
+.cmp.on .cmp-sh { transform: translate(-50%, 0); }
+.cmp-top { display: flex; align-items: center; justify-content: space-between; }
+.cmp-top b { font-size: 17px; font-weight: 800; color: var(--ink); }
+.cmp-x { width: 44px; height: 44px; margin: -8px -8px -8px 0; display: grid; place-items: center; border-radius: 22px; color: var(--muted); }
+.cmp-x:hover { background: #f3f5fb; }
+.cmp-x .ic { width: 20px; height: 20px; }
+.cmp-lb { font-size: 13px; font-weight: 650; color: var(--ink-2); }
+.cmp-sh textarea { width: 100%; resize: none; font: inherit; font-size: 16px; line-height: 1.45; color: var(--ink); padding: 12px; border-radius: 14px; border: 1px solid #dfe5f2; background: #fafbfe; }
+.cmp-sh textarea:focus { outline: 2px solid var(--blue); outline-offset: 0; border-color: transparent; }
+.cmp-ph { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px; border-radius: 12px; background: #f3f5fb; color: var(--ink-2); font-size: 14px; font-weight: 650; }
+.cmp-ph .ic { width: 18px; height: 18px; }
+.cmp-ck { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: 16px; background: #fff7ee; box-shadow: inset 0 0 0 1px rgba(234, 122, 18, .25); cursor: pointer; }
+.cmp-ck input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.cmp-box { flex: none; width: 24px; height: 24px; border-radius: 7px; border: 2px solid #d7b48f; background: #fff; display: grid; place-items: center; color: #fff; transition: background-color .15s var(--ease), border-color .15s var(--ease); }
+.cmp-box .ic { width: 16px; height: 16px; stroke-width: 3; opacity: 0; }
+.cmp-ck input:checked + .cmp-box { background: var(--life); border-color: var(--life); }
+.cmp-ck input:checked + .cmp-box .ic { opacity: 1; }
+.cmp-ck input:focus-visible + .cmp-box { outline: 2px solid var(--blue); outline-offset: 2px; }
+.cmp-ct { display: flex; flex-direction: column; gap: 2px; }
+.cmp-ct b { font-size: 15px; font-weight: 750; color: var(--ink); }
+.cmp-ct span { font-size: 13px; line-height: 1.35; color: var(--muted); }
+.cmp-go { height: 48px; font-size: 16px; border-radius: 14px; }
+.cmp-toast { position: fixed; z-index: 70; left: 50%; top: calc(12px + env(safe-area-inset-top)); transform: translate(-50%, -140%); max-width: min(92vw, 420px); padding: 11px 16px; border-radius: 14px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 600; text-align: center; transition: transform .28s var(--ease); pointer-events: none; }
+.cmp-toast.on { transform: translate(-50%, 0); }
+.tw-r.fresh { animation: tw-ping .9s var(--ease) 2; }
+@media (prefers-reduced-motion: reduce) { .cmp-sh, .cmp-bg, .cmp-toast { transition: none; } }

@@ -26,6 +26,7 @@
     lock: '<rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
     target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
+    close: '<path d="M6 6l12 12M18 6L6 18"/>',
     chev: '<path d="M9 6l6 6-6 6"/>',
     down: '<path d="M12 5v14M6 13l6 6 6-6"/>',
     check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
@@ -123,6 +124,19 @@
       (e.t === 'post' ? '<span class="tw-lk">Открыть в ленте ›</span>' : e.t === 'meet' ? '<span class="tw-lk">Смотреть запись ›</span>' : '') + '</div>' +
       (act && e.t !== 'post' && e.t !== 'meet' ? '<span class="tw-go">' + ico('chev') + '</span>' : '') + '</div></div>';
   }
+  /* Спидометр как на платформе: прогноз дохода на год и доля цели уровня */
+  function gaugeTw() {
+    var F = H.fin, pct = Math.min(1, F.year / F.lv[F.cur].v), cx = 60, cy = 58;
+    function pt(f) { var a = Math.PI * (1 - f); return (cx + 46 * Math.cos(a)).toFixed(1) + ' ' + (cy - 46 * Math.sin(a)).toFixed(1); }
+    var nd = Math.PI * (1 - pct), nx = (cx + 34 * Math.cos(nd)).toFixed(1), ny = (cy - 34 * Math.sin(nd)).toFixed(1);
+    var svg = '<svg class="gg-svg" viewBox="0 0 120 66" aria-hidden="true"><path d="M' + pt(0) + ' A46 46 0 0 1 ' + pt(1) + '" class="gg-bg"/>' +
+      '<path d="M' + pt(0) + ' A46 46 0 0 1 ' + pt(pct) + '" class="gg-fg"/>' +
+      '<line x1="60" y1="58" x2="' + nx + '" y2="' + ny + '" class="gg-nd"/><circle cx="60" cy="58" r="4.5" class="gg-hub"/></svg>';
+    return '<div class="tw-gg"><div class="gg-top">' + svg + '<div class="gg-tx"><b>' + money(F.year) + '</b><span>прогноз на год</span>' +
+      '<span class="gg-p"><i>' + Math.round(pct * 100) + '%</i> цели уровня</span></div></div>' +
+      '<div class="gg-lv">' + F.lv.map(function (l, i) { return '<span class="' + (i === F.cur ? 'on' : i < F.cur ? 'ok' : '') + '"><b>' + esc(l.n) + '</b>' + l.s + '</span>'; }).join('') + '</div></div>';
+  }
+  function money(n) { return '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
   function statTw(n, suf, label) {
     return '<div class="tw-k"><b class="num" data-n="' + n + '" data-s="' + suf + '">' + n + suf + '</b><span>' + label + '</span></div>';
   }
@@ -185,8 +199,9 @@
         while (li < life.length) out.push(lifeTw(life[li++]));
         var fut = list.filter(function (x) { return x.state !== 'done'; }), now = fut[0];
         out.push('<div class="tw-today" id="today">' + todayBar() + '</div>');
-        out.push('<div class="tw-stats">' + statTw(dayN, '-й', 'день на маршруте') + statTw(done, '', plural(done, 'урок сдан', 'урока сдано', 'уроков сдано')) +
-          statTw(stagesDone, '', plural(stagesDone, 'этап', 'этапа', 'этапов') + ' закрыто') + '<div class="tw-k"><b class="num">' + H.stage + '</b><span>этап сейчас</span></div></div>');
+        out.push('<div class="tw-stats">' + statTw(dayN, '-й', 'день<br>на маршруте') + statTw(done, '', plural(done, 'урок<br>сдан', 'урока<br>сдано', 'уроков<br>сдано')) +
+          statTw(stagesDone, '', plural(stagesDone, 'этап<br>закрыт', 'этапа<br>закрыто', 'этапов<br>закрыто')) + '<div class="tw-k"><b class="num">' + H.stage + '</b><span>этап<br>сейчас</span></div></div>');
+        out.push(gaugeTw());
         out.push('<div class="tw-r route wide"><div class="tw-c nowc"><div class="tw-row"><span class="ls-cv big">' + (now.cv ? '<img src="' + now.cv + '" alt="">' : '') + '</span>' +
           '<div class="tw-tx"><span class="now-k">Урок сейчас · ' + esc(R.groups[s.id + '|' + now.g]) + '</span><b>' + esc(now.title) + '</b>' +
           '<span class="tw-s">Управлять можно только тем, что можешь замерить. Как отделить мнения о своём бизнесе от фактов, внедрить замер…</span></div></div>' +
@@ -208,6 +223,14 @@
     });
     out.push('</div>');
     out.push('<div class="tw-fab"><button class="tw-fb back" hidden>' + ico('down') + 'Сегодня</button><button class="tw-fb add">' + ico('plus') + 'Событие</button></div>');
+    /* Композер ленты. Из маршрутной карты открывается с галочкой, в самой ленте галочка снята */
+    out.push('<div class="cmp" hidden><div class="cmp-bg"></div><form class="cmp-sh" role="dialog" aria-modal="true" aria-labelledby="cmp-h">' +
+      '<div class="cmp-top"><b id="cmp-h">Новый пост в ленту</b><button type="button" class="cmp-x" aria-label="Закрыть">' + ico('close') + '</button></div>' +
+      '<label class="cmp-lb" for="cmp-t">Что произошло</label><textarea id="cmp-t" rows="4" placeholder="Например: провела первый платный разбор"></textarea>' +
+      '<button type="button" class="cmp-ph">' + ico('feed') + 'Фото или видео</button>' +
+      '<label class="cmp-ck"><input type="checkbox" id="cmp-c"><span class="cmp-box">' + ico('check') + '</span><span class="cmp-ct"><b>Зафиксировать в маршрутной карте</b><span>Пост встанет на линию «Путь героя». Без галочки он будет только в ленте</span></span></label>' +
+      '<button type="submit" class="btn cmp-go">Опубликовать</button></form></div>');
+    out.push('<div class="cmp-toast" role="status" aria-live="polite"></div>');
     return out.join('');
   }
   function initB() {
@@ -245,9 +268,30 @@
       if (b.dataset.go === 'today') toToday(true); else go(document.getElementById(b.dataset.go), true, hh() + 6);
     });
     back.addEventListener('click', function () { toToday(true); });
-    root.querySelector('.tw-fb.add').addEventListener('click', function () {
-      toToday(true);
-      ghost.classList.remove('ping'); void ghost.offsetWidth; ghost.classList.add('ping');
+    var cmp = root.querySelector('.cmp'), cmpT = cmp.querySelector('textarea'), cmpC = cmp.querySelector('#cmp-c'), toast = root.querySelector('.cmp-toast'), opener = null, tt;
+    function openCmp(fromMap, src) {
+      opener = src; cmpC.checked = fromMap; cmpT.value = ''; cmp.hidden = false;
+      requestAnimationFrame(function () { cmp.classList.add('on'); setTimeout(function () { cmpT.focus(); }, 260); });
+    }
+    function closeCmp() { cmp.classList.remove('on'); setTimeout(function () { cmp.hidden = true; }, 220); if (opener) opener.focus(); }
+    function say(t) { toast.textContent = t; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('on'); }, 2600); }
+    ghost.addEventListener('click', function () { openCmp(true, ghost); });
+    root.querySelector('.tw-fb.add').addEventListener('click', function () { openCmp(true, this); });
+    cmp.querySelector('.cmp-bg').addEventListener('click', closeCmp);
+    cmp.querySelector('.cmp-x').addEventListener('click', closeCmp);
+    cmp.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeCmp(); });
+    cmp.querySelector('form').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var txt = cmpT.value.trim() || 'Провела первый платный разбор', onMap = cmpC.checked;
+      closeCmp();
+      if (onMap) {
+        var w = document.createElement('div');
+        w.innerHTML = lifeTw({ d: H.today, t: 'post', title: txt.split('\n')[0].slice(0, 80), sub: 'Пост из ленты' });
+        var el = w.firstChild; el.classList.add('fresh');
+        ghost.parentNode.parentNode.insertBefore(el, ghost.parentNode);
+        if (window.nbspRu) window.nbspRu.fix(el);
+        say('Опубликовано в ленте и добавлено на маршрутную карту');
+      } else say('Опубликовано в ленте. На маршрутную карту не попало');
     });
     root.querySelectorAll('[role=button]').forEach(function (el) {
       el.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); el.click(); } });
