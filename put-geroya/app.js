@@ -1,6 +1,7 @@
 /* Макет «Путь героя»: четыре варианта шкалы жизненного пути поверх маршрутной карты. */
 (function () {
   var H = window.HERO;
+  (function () { var n = new Date(), t = n.getFullYear() + '-' + ('0' + (n.getMonth() + 1)).slice(-2) + '-' + ('0' + n.getDate()).slice(-2); if (t > H.today && t <= '2026-12-31') H.today = t; })(); /* «Сегодня» — настоящая дата, не раньше дня из демо-данных */
   var MON = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
   var MON_S = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
   var MON_N = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
@@ -135,13 +136,13 @@
       var done = all.filter(function (x) { return x.st === s.id && x.i < nowI; }), w = WIN[s.id], span = days(w[0], w[1]);
       done.forEach(function (x, k) { x.d = addDays(w[0], Math.round(span * k / Math.max(1, done.length - 1))); x.stars = [5, 4, 5, 5, 4, 5, 4.5][x.i % 7]; });
     });
-    all.forEach(function (x) { x.state = x.i < nowI ? 'done' : x.i === nowI ? 'now' : x.i === nowI + 1 ? 'next' : 'lock'; });
+    all.forEach(function (x) { x.near = Math.abs(x.i - nowI) <= 8; x.state = x.i < nowI ? 'done' : x.i === nowI ? 'now' : x.i === nowI + 1 ? 'next' : 'lock'; });
     return all;
   }
   function lessonTw(x) {
     var meta = x.state === 'done' ? '<time>' + dShort(x.d) + '</time>' + (x.min ? ' · ' + x.min + ' мин' : '') : x.state === 'next' ? 'Следующий · откроется после текущего' : (x.min ? x.min + ' мин' : 'Урок маршрута');
     return '<div class="tw-r route"><div class="tw-c ls ' + x.state + (x.state === 'lock' ? '' : ' act" tabindex="0" role="button') + '"><div class="tw-row">' +
-      '<span class="ls-cv">' + (x.cv ? '<img loading="lazy" src="' + x.cv + '" alt="">' : '') + (x.state === 'done' ? '<i class="ls-ok">' + ico('check') + '</i>' : x.state === 'lock' ? '<i class="ls-lk">' + ico('lock') + '</i>' : '') + '</span>' +
+      '<span class="ls-cv">' + (x.cv ? '<img' + (x.near ? '' : ' loading="lazy"') + ' src="' + x.cv + '" alt="">' : '') + (x.state === 'done' ? '<i class="ls-ok">' + ico('check') + '</i>' : x.state === 'lock' ? '<i class="ls-lk">' + ico('lock') + '</i>' : '') + '</span>' +
       '<div class="tw-tx"><b>' + esc(x.title) + '</b><span class="tw-s">' + meta + '</span></div>' +
       (x.state === 'done' ? '<span class="tw-st">' + stars(x.stars) + '</span>' : '') + '</div></div></div>';
   }
