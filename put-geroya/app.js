@@ -27,6 +27,9 @@
     target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
     close: '<path d="M6 6l12 12M18 6L6 18"/>',
+    ul: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
+    ol: '<path d="M10 6h10M10 12h10M10 18h10M4 5l1.5-1v5M3.5 14.5c.4-.9 2.6-1 2.6.4 0 1-2.6 2.1-2.6 3.1h2.8"/>',
+    quote: '<path d="M7 7h4v5c0 2.5-1.5 4-4 5M15 7h4v5c0 2.5-1.5 4-4 5"/>',
     chev: '<path d="M9 6l6 6-6 6"/>',
     down: '<path d="M12 5v14M6 13l6 6 6-6"/>',
     check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
@@ -225,11 +228,22 @@
     out.push('<div class="tw-fab"><button class="tw-fb back" hidden>' + ico('down') + 'Сегодня</button><button class="tw-fb add">' + ico('plus') + 'Событие</button></div>');
     /* Композер ленты. Из маршрутной карты открывается с галочкой, в самой ленте галочка снята */
     out.push('<div class="cmp" hidden><div class="cmp-bg"></div><form class="cmp-sh" role="dialog" aria-modal="true" aria-labelledby="cmp-h">' +
-      '<div class="cmp-top"><b id="cmp-h">Новый пост в ленту</b><button type="button" class="cmp-x" aria-label="Закрыть">' + ico('close') + '</button></div>' +
-      '<label class="cmp-lb" for="cmp-t">Что произошло</label><textarea id="cmp-t" rows="4" placeholder="Например: провела первый платный разбор"></textarea>' +
-      '<button type="button" class="cmp-ph">' + ico('feed') + 'Фото или видео</button>' +
+      '<div class="cmp-top"><b id="cmp-h">Новый пост</b><button type="button" class="cmp-x" aria-label="Закрыть">' + ico('close') + '</button></div>' +
+      '<div class="cmp-ed"><div class="cmp-tb" role="toolbar" aria-label="Форматирование">' +
+        '<button type="button" data-c="bold" title="Жирный (Ctrl+B)" aria-label="Жирный"><b>B</b></button>' +
+        '<button type="button" data-c="italic" title="Курсив (Ctrl+I)" aria-label="Курсив"><i>I</i></button>' +
+        '<button type="button" data-c="underline" title="Подчёркнутый (Ctrl+U)" aria-label="Подчёркнутый"><u>U</u></button><span class="cmp-sep"></span>' +
+        '<button type="button" data-c="insertUnorderedList" title="Маркированный список" aria-label="Маркированный список">' + ico('ul') + '</button>' +
+        '<button type="button" data-c="insertOrderedList" title="Нумерованный список" aria-label="Нумерованный список">' + ico('ol') + '</button>' +
+        '<button type="button" data-c="formatBlock:blockquote" title="Цитата" aria-label="Цитата">' + ico('quote') + '</button>' +
+        '<button type="button" data-c="formatBlock:h2" title="Заголовок" aria-label="Заголовок"><b>H</b></button></div>' +
+        '<div class="cmp-tx" id="cmp-t" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Текст поста" data-ph="Что у вас нового?"></div></div>' +
+      '<div class="cmp-ims"></div>' +
+      '<div class="cmp-tags"><div class="cmp-tg"></div><input type="text" class="cmp-ti" placeholder="Теги (до 5), Enter — добавить" aria-label="Теги"></div>' +
       '<label class="cmp-ck"><input type="checkbox" id="cmp-c"><span class="cmp-box">' + ico('check') + '</span><span class="cmp-ct"><b>Зафиксировать в маршрутной карте</b><span>Пост встанет на линию «Путь героя». Без галочки он будет только в ленте</span></span></label>' +
-      '<button type="submit" class="btn cmp-go">Опубликовать</button></form></div>');
+      '<div class="cmp-act"><input type="file" class="cmp-file" accept="image/*" multiple hidden><button type="button" class="cmp-ph">' + ico('feed') + '<span>Фото (0/4)</span></button>' +
+      '<button type="submit" class="btn cmp-go" disabled>Опубликовать</button></div>' +
+      '<p class="cmp-hint">Вставляйте изображения прямо из буфера обмена (Ctrl+V)</p></form></div>');
     out.push('<div class="cmp-toast" role="status" aria-live="polite"></div>');
     return out.join('');
   }
@@ -268,13 +282,46 @@
       if (b.dataset.go === 'today') toToday(true); else go(document.getElementById(b.dataset.go), true, hh() + 6);
     });
     back.addEventListener('click', function () { toToday(true); });
-    var cmp = root.querySelector('.cmp'), cmpT = cmp.querySelector('textarea'), cmpC = cmp.querySelector('#cmp-c'), toast = root.querySelector('.cmp-toast'), opener = null, tt;
+    var cmp = root.querySelector('.cmp'), cmpT = cmp.querySelector('.cmp-tx'), cmpC = cmp.querySelector('#cmp-c'), toast = root.querySelector('.cmp-toast'), opener = null, tt;
+    var ims = [], tags = [], imBox = cmp.querySelector('.cmp-ims'), phBtn = cmp.querySelector('.cmp-ph'), file = cmp.querySelector('.cmp-file'), go = cmp.querySelector('.cmp-go'), tgBox = cmp.querySelector('.cmp-tg'), ti = cmp.querySelector('.cmp-ti');
+    function drawIms() {
+      imBox.innerHTML = ims.map(function (u, i) { return '<div class="cmp-im"><img src="' + u + '" alt=""><button type="button" data-i="' + i + '" aria-label="Убрать фото">' + ico('close') + '</button></div>'; }).join('');
+      phBtn.querySelector('span').textContent = 'Фото (' + ims.length + '/4)'; phBtn.disabled = ims.length >= 4;
+    }
+    function addIm(f) { if (!f || !/^image\//.test(f.type)) return; if (ims.length >= 4) { say('Максимум 4 изображения'); return; } ims.push(URL.createObjectURL(f)); drawIms(); }
+    function drawTags() { tgBox.innerHTML = tags.map(function (t, i) { return '<span class="cmp-chip">#' + esc(t) + '<button type="button" data-i="' + i + '" aria-label="Убрать тег">' + ico('close') + '</button></span>'; }).join(''); ti.hidden = tags.length >= 5; }
+    function txt() { return cmpT.innerText.replace(/ /g, ' ').trim(); }
+    function sync() { go.disabled = !txt(); cmpT.classList.toggle('empty', !cmpT.textContent.trim() && !cmpT.querySelector('li,img')); }
     function openCmp(fromMap, src) {
-      opener = src; cmpC.checked = fromMap; cmpT.value = ''; cmp.hidden = false;
+      opener = src; cmpC.checked = fromMap; cmpT.innerHTML = ''; ims = []; tags = []; drawIms(); drawTags(); sync(); cmp.hidden = false;
       requestAnimationFrame(function () { cmp.classList.add('on'); setTimeout(function () { cmpT.focus(); }, 260); });
     }
     function closeCmp() { cmp.classList.remove('on'); setTimeout(function () { cmp.hidden = true; }, 220); if (opener) opener.focus(); }
     function say(t) { toast.textContent = t; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('on'); }, 2600); }
+    cmp.querySelector('.cmp-tb').addEventListener('mousedown', function (ev) { ev.preventDefault(); });
+    cmp.querySelector('.cmp-tb').addEventListener('click', function (ev) {
+      var bt = ev.target.closest('button'); if (!bt) return; cmpT.focus();
+      var c = bt.dataset.c.split(':');
+      if (c[0] === 'formatBlock') { var cur = (document.queryCommandValue('formatBlock') || '').toLowerCase(); document.execCommand('formatBlock', false, cur === c[1] ? '<p>' : '<' + c[1] + '>'); }
+      else document.execCommand(c[0], false, null);
+      sync();
+    });
+    cmpT.addEventListener('input', sync);
+    cmpT.addEventListener('paste', function (ev) {
+      var dt = ev.clipboardData; if (!dt) return;
+      var got = false; [].forEach.call(dt.items || [], function (it) { if (it.kind === 'file' && /^image\//.test(it.type)) { addIm(it.getAsFile()); got = true; } });
+      ev.preventDefault();
+      if (!got) document.execCommand('insertText', false, dt.getData('text/plain'));
+      sync();
+    });
+    phBtn.addEventListener('click', function () { file.click(); });
+    file.addEventListener('change', function () { [].slice.call(file.files, 0, 4 - ims.length).forEach(addIm); file.value = ''; });
+    imBox.addEventListener('click', function (ev) { var bt = ev.target.closest('button'); if (!bt) return; ims.splice(+bt.dataset.i, 1); drawIms(); });
+    ti.addEventListener('keydown', function (ev) {
+      if (ev.key !== 'Enter' && ev.key !== ',') return; ev.preventDefault();
+      var v = ti.value.replace(/^#/, '').trim(); if (v && tags.length < 5 && tags.indexOf(v) < 0) { tags.push(v); drawTags(); } ti.value = '';
+    });
+    tgBox.addEventListener('click', function (ev) { var bt = ev.target.closest('button'); if (!bt) return; tags.splice(+bt.dataset.i, 1); drawTags(); });
     ghost.addEventListener('click', function () { openCmp(true, ghost); });
     root.querySelector('.tw-fb.add').addEventListener('click', function () { openCmp(true, this); });
     cmp.querySelector('.cmp-bg').addEventListener('click', closeCmp);
@@ -282,11 +329,11 @@
     cmp.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeCmp(); });
     cmp.querySelector('form').addEventListener('submit', function (ev) {
       ev.preventDefault();
-      var txt = cmpT.value.trim() || 'Провела первый платный разбор', onMap = cmpC.checked;
+      var t = txt(); if (!t) return; var onMap = cmpC.checked, first = t.split('\n')[0], img = ims[0];
       closeCmp();
       if (onMap) {
         var w = document.createElement('div');
-        w.innerHTML = lifeTw({ d: H.today, t: 'post', title: txt.split('\n')[0].slice(0, 80), sub: 'Пост из ленты' });
+        w.innerHTML = lifeTw({ d: H.today, t: 'post', title: first.length > 80 ? first.slice(0, 79) + '…' : first, sub: 'Пост из ленты', img: img });
         var el = w.firstChild; el.classList.add('fresh');
         ghost.parentNode.parentNode.insertBefore(el, ghost.parentNode);
         if (window.nbspRu) window.nbspRu.fix(el);
