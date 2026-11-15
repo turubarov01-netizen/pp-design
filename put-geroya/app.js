@@ -122,7 +122,7 @@
   function cardTw(e) {
     var t = T[e.t], hero = e.big && !e.img, tile = '<span class="tw-ic">' + ico(t.i) + '</span>', act = ACT[e.t];
     return '<div class="tw-c c-' + t.c + (hero ? ' hero' : '') + (e.img ? ' pic' : '') + (act ? ' act" tabindex="0" role="button' : '') + '">' + (e.img ? photo(e, 'tw-img') : '') +
-      '<div class="tw-row">' + tile + '<div class="tw-tx"><b>' + esc(e.title) + '</b>' +
+      '<div class="tw-row">' + tile + '<div class="tw-tx"><b>' + esc(e.title) + '</b>' + (e.text ? '<span class="tw-ex">' + esc(e.text) + '</span>' : '') +
       '<span class="tw-s">' + (e.d ? '<time>' + dShort(e.d) + '</time> · ' : '') + esc(subOf(e)) + (e.me ? ' <span class="tag">вас разбирали</span>' : '') + '</span>' +
       (e.t === 'post' ? '<span class="tw-lk">Открыть в ленте ›</span>' : e.t === 'meet' ? '<span class="tw-lk">Смотреть запись ›</span>' : '') + '</div>' +
       (act && e.t !== 'post' && e.t !== 'meet' ? '<span class="tw-go">' + ico('chev') + '</span>' : '') + '</div></div>';
@@ -329,11 +329,14 @@
     cmp.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeCmp(); });
     cmp.querySelector('form').addEventListener('submit', function (ev) {
       ev.preventDefault();
-      var t = txt(); if (!t) return; var onMap = cmpC.checked, first = t.split('\n')[0], img = ims[0];
+      var t = txt(); if (!t) return; var onMap = cmpC.checked, img = ims[0];
+      var cl = cmpT.cloneNode(true); [].forEach.call(cl.querySelectorAll('li'), function (li) { li.insertBefore(document.createTextNode('• '), li.firstChild); });
+      document.body.appendChild(cl); cl.style.cssText = 'position:absolute;left:-9999px;white-space:pre-wrap'; var lines = cl.innerText.replace(/\u00a0/g, ' ').split('\n').map(function (x) { return x.trim(); }).filter(Boolean); cl.remove();
+      var first = lines[0] || t, rest = lines.slice(1).join('\n');
       closeCmp();
       if (onMap) {
         var w = document.createElement('div');
-        w.innerHTML = lifeTw({ d: H.today, t: 'post', title: first.length > 80 ? first.slice(0, 79) + '…' : first, sub: 'Пост из ленты', img: img });
+        w.innerHTML = lifeTw({ d: H.today, t: 'post', title: first, text: rest, sub: 'Пост из ленты', img: img });
         var el = w.firstChild; el.classList.add('fresh');
         ghost.parentNode.parentNode.insertBefore(el, ghost.parentNode);
         if (window.nbspRu) window.nbspRu.fix(el);

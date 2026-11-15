@@ -463,3 +463,8 @@ div.hk-n:nth-of-type(even) { margin-left: 18%; flex-direction: row-reverse; text
 .cmp-ph:hover { background: #e9edf7; }
 .cmp-ph .ic { width: 18px; height: 18px; }
 .cmp-ph:disabled { opacity: .45; cursor: default; }
+
+/* Пост на линии: первые строки текста, без обрезки по символам */
+.tw-tx > b { overflow-wrap: anywhere; }
+.tw-c.c-slate .tw-tx > b { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tw-ex { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; margin: 2px 0 3px; font-size: 13px; line-height: 1.4; color: var(--ink-2); }
