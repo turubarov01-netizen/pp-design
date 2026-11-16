@@ -89,6 +89,7 @@ a { color: inherit; }
 .pane { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 1px 2px rgba(11,16,32,.04); }
 .d-head { display: flex; align-items: center; gap: 12px; padding: 18px 24px; border-bottom: 1px solid var(--line); }
 .d-head .who { min-width: 0; flex: 1 1 180px; }
+.who-n { font-size: 16px; font-weight: 700; }
 .who-btn { border: 0; background: none; padding: 0; cursor: pointer; font-size: 16px; font-weight: 700; text-align: left; }
 .who-btn:hover { color: var(--acc); }
 .who-btn span { font-weight: 500; color: var(--acc); font-size: 13px; margin-left: 6px; }
@@ -211,6 +212,34 @@ a { color: inherit; }
 .hist .d { margin-left: auto; color: var(--ink3); font-size: 13px; white-space: nowrap; }
 .risk { display: flex; gap: 8px; align-items: center; padding: 12px 24px; background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; border-bottom: 1px solid var(--line); }
 
+/* строка фактов в шапке задания */
+.facts { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; font-size: 13px; color: var(--ink2); font-variant-numeric: tabular-nums; }
+.facts span { white-space: nowrap; }
+.facts span b { font-weight: 650; color: var(--ink); }
+.facts .warn-t b, .facts .warn-t { color: var(--warn); }
+.dos-btn { height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line2); background: var(--card); font-size: 13px; font-weight: 650; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; flex: none; transition: border-color .18s var(--ease), background-color .18s var(--ease); }
+.dos-btn:hover { border-color: rgba(11,16,32,.3); }
+.dos-btn svg { width: 16px; height: 16px; }
+.d-head .when { margin-left: 0; }
+.d-head .side { margin-left: auto; display: grid; justify-items: end; gap: 8px; }
+
+/* досье справа */
+.dw-bg { position: fixed; inset: 0; background: rgba(11,16,32,.28); opacity: 0; visibility: hidden; transition: opacity .28s var(--ease), visibility 0s linear .28s; z-index: 40; }
+.dw { position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 100vw); background: var(--card); box-shadow: -18px 0 48px rgba(11,16,32,.16); transform: translateX(104%); transition: transform .34s var(--ease), visibility 0s linear .34s; visibility: hidden; z-index: 41; display: flex; flex-direction: column; }
+body.dw-on .dw-bg { opacity: 1; visibility: visible; transition: opacity .28s var(--ease); }
+body.dw-on .dw { transform: none; visibility: visible; transition: transform .34s var(--ease); }
+body.dw-on { overflow: hidden; }
+.dw-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px 12px 24px; border-bottom: 1px solid var(--line); }
+.dw-head p { margin: 0; font-size: 13px; font-weight: 650; color: var(--ink3); text-transform: uppercase; letter-spacing: .05em; }
+.dw-x { margin-left: auto; width: 40px; height: 40px; border: 0; border-radius: 11px; background: var(--soft); cursor: pointer; display: grid; place-items: center; font-size: 20px; line-height: 1; color: var(--ink2); }
+.dw-x:hover { color: var(--ink); background: rgba(11,16,32,.08); }
+.dw-body { overflow-y: auto; flex: 1; overscroll-behavior: contain; }
+.dw .kpi { grid-template-columns: 1fr 1fr; }
+.dw .kpi > div { border-right: 1px solid var(--line) !important; }
+.dw .kpi > div:nth-child(2n) { border-right: 0 !important; }
+.dw .mini button.cur { border-color: var(--acc); background: var(--acc-soft); }
+.dw .mini button.cur .go { color: var(--ink3); }
+
 /* тост */
 .toast { position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 140%); background: var(--ink); color: #FDFDFE; padding: 10px 10px 10px 16px; border-radius: 14px; display: flex; gap: 12px; align-items: center; font-size: 14px; box-shadow: 0 14px 36px rgba(11,16,32,.28); transition: transform .28s var(--ease), opacity .2s var(--ease), visibility 0s linear .28s; z-index: 50; opacity: 0; visibility: hidden; max-width: calc(100vw - 24px); }
 .toast.on { transform: translate(-50%, 0); opacity: 1; visibility: visible; transition: transform .28s var(--ease), opacity .2s var(--ease); }
@@ -227,8 +256,11 @@ a { color: inherit; }
   .q.open .q-side { display: none; }
   .q:not(.open) .q-main { display: none; }
   .back-btn { display: grid; }
-  .d-head { padding: 14px 16px; flex-wrap: wrap; }
-  .d-head .when { margin-left: 0; text-align: left; width: 100%; padding-left: 48px; }
+  .d-head { padding: 14px 16px; flex-wrap: wrap; align-items: flex-start; }
+  .dw .kpi dd { font-size: 17px; }
+  .d-head .side { margin-left: 0; width: 100%; padding-left: 48px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .d-head .when { text-align: left; }
+  .dw-head { padding-left: 16px; }
   .d-head .av { display: none; }
   .sec { padding: 16px; }
   .act { padding: 12px 16px; }
@@ -267,7 +299,9 @@ a { color: inherit; }
   </div>
 </header>
 <main class="wrap" id="app"></main>
-<p class="note-proto">Прототип: решения не сохраняются, ссылки «Открыть урок», «Профиль», «Финансы» и «Маршрутная карта» в рабочей версии ведут на настоящие страницы.</p>
+<p class="note-proto">Прототип: решения не сохраняются, ссылки «Открыть урок», «Профиль», «Финансы», «Маршрутная карта», «Трекер» и «Написать в Telegram» в рабочей версии ведут на настоящие страницы.</p>
+<div class="dw-bg" data-close-dos></div>
+<aside class="dw" role="dialog" aria-modal="true" aria-label="Досье"><div class="dw-head"><p>Досье</p><button class="dw-x" id="dw-x" data-close-dos aria-label="Закрыть досье">×</button></div><div class="dw-body" id="dw-body"></div></aside>
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-t"></span><button id="toast-u">Отменить</button></div>
 
 <script>
@@ -411,6 +445,17 @@ function actions(i) {
   return `<div class="act">${withStars ? starsPicker(i) : '<span class="stars-cap" style="margin-right:auto"></span>'}<button class="btn sec2" data-do="ret">${no}</button><button class="btn acc" data-do="yes" ${withStars && !(S.pick[i.id] ?? i.ai) ? 'disabled' : ''}>${yes}</button></div>`;
 }
 
+function facts(p) {
+  const t = p.rev[2] != null && p.rev[1] ? Math.round((p.rev[2] - p.rev[1]) / p.rev[1] * 100) : null;
+  return `<div class="facts">
+    <span>${p.level + 1}.${NB}<b>${esc(LEVELS[p.level])}</b> ${p.levelPct}%</span>
+    <span>октябрь ${p.rev[2] == null ? '<b>не вносит</b>' : `<b>${rub(p.rev[2])}</b>${t != null ? `<span class="trend ${t >= 0 ? 'up' : 'down'}">${t >= 0 ? '+' : '−'}${Math.abs(t)}%</span>` : ''}`}</span>
+    <span class="${p.tracker < 5 ? 'warn-t' : ''}">трекер <b>${p.tracker}${NB}из${NB}14</b></span>
+    <span>маршрут <b>${p.route[0]}/${p.route[1]}</b></span>
+    ${p.risk ? `<span class="warn-t">⚠ ${esc(p.risk)}</span>` : ''}
+  </div>`;
+}
+
 function detail(i) {
   if (!i) return `<div class="pane"><div class="empty"><b>Всё проверено</b>В этой вкладке ничего не ждёт решения.</div></div>`;
   const p = P[i.p];
@@ -440,8 +485,8 @@ function detail(i) {
     <div class="d-head">
       <button class="back-btn" data-back aria-label="К списку">←</button>
       <span class="av">${ini(p.name)}</span>
-      <div class="who"><button class="who-btn" data-person="${p.id}">${esc(p.name)}<span>досье →</span></button><div class="sub">${p.prog === 'pp' ? 'План Продюсера' : 'Альянс'} · ${esc(p.clan)} · этап ${esc(p.stage)} · ${esc(LEVELS[p.level])}</div></div>
-      <div class="when">пришло ${dm(i.at)}<br>${['ok','no','back'].includes(i.st) || daysAgo(i.at) < 1 ? '' : waitTxt(i.at)}</div>
+      <div class="who"><div class="who-n">${esc(p.name)}</div><div class="sub">${p.prog === 'pp' ? 'План Продюсера' : 'Альянс'} · ${esc(p.clan)} · этап ${esc(p.stage)}</div>${facts(p)}</div>
+      <div class="side"><button class="dos-btn" data-person="${p.id}" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Досье</button><div class="when">пришло ${dm(i.at)}${['ok','no','back'].includes(i.st) || daysAgo(i.at) < 1 ? '' : ' · ' + waitTxt(i.at)}</div></div>
     </div>
     ${body}
     ${actions(i)}
@@ -482,7 +527,6 @@ const revCell = (p) => {
   return rub(p.rev[2]) + (t != null ? `<span class="trend ${t >= 0 ? 'up' : 'down'}">${t >= 0 ? '+' : '−'}${Math.abs(t)}%</span>` : '');
 };
 function renderPeople() {
-  if (S.person) return dossier(P[S.person]);
   const list = peopleList();
   const th = (k, t) => `<th><button data-sort="${k}" ${S.sort === k ? `aria-sort="${S.dir > 0 ? 'ascending' : 'descending'}"` : ''}>${t}${S.sort === k ? (S.dir > 0 ? ' ↑' : ' ↓') : ''}</button></th>`;
   const riskN = PEOPLE.filter((p) => inProg(p.id) && (p.risk || p.tracker < 5)).length;
@@ -512,8 +556,7 @@ function dossier(p) {
   const hist = ITEMS.filter((i) => i.p === p.id && ['ok', 'no', 'back'].includes(i.st));
   const maxRev = Math.max(...p.rev.map((v) => v || 0), 1);
   const ci = STAGES.indexOf(p.stage);
-  return `<p style="margin:0 0 12px"><button class="btn sec2" data-people-back>← Все люди</button></p>
-  <article class="pane">
+  return `<div>
     <div class="dos-top"><span class="av lg">${ini(p.name)}</span><div><h2>${esc(p.name)}</h2><div class="sub">${p.prog === 'pp' ? 'План Продюсера' : 'Альянс'} · клан ${esc(p.clan)} · с нами с ${dm(p.since)}</div></div></div>
     ${p.risk ? `<div class="risk">⚠ ${esc(p.risk)}</div>` : ''}
     <div class="links"><a href="#" data-ext>Профиль ↗</a><a href="#" data-ext>Финансы ↗</a><a href="#" data-ext>Маршрутная карта ↗</a><a href="#" data-ext>Трекер ↗</a><a href="#" data-ext>Написать в Telegram ↗</a></div>
@@ -527,10 +570,10 @@ function dossier(p) {
     </dl>
     <div class="sec"><p class="lbl">Маршрут</p><div class="route">${STAGES.map((s, k) => `<span class="${k < ci ? 'd' : k === ci ? 'c' : ''}">${s}</span>`).join('')}</div></div>
     <div class="sec"><p class="lbl">Ждёт вашего решения ${wait.length ? `<span class="n">${wait.length}</span>` : ''}</p>
-      ${wait.length ? `<div class="mini">${wait.map((i) => `<button data-goto="${i.id}"><span class="tag k-${i.kind}">${KIND[i.kind]}</span>${esc(i.lesson)}<span class="go">Проверить →</span></button>`).join('')}</div>` : '<p class="task">Ничего не ждёт.</p>'}</div>
+      ${wait.length ? `<div class="mini">${wait.map((i) => `<button data-goto="${i.id}" class="${S.tab === 'check' && S.sel === i.id ? 'cur' : ''}"><span class="tag k-${i.kind}">${KIND[i.kind]}</span>${esc(i.lesson)}<span class="go">${S.tab === 'check' && S.sel === i.id ? 'открыто' : 'Проверить →'}</span></button>`).join('')}</div>` : '<p class="task">Ничего не ждёт.</p>'}</div>
     <div class="sec"><p class="lbl">История решений</p>
       ${hist.length ? `<ul class="hist">${hist.map((i) => `<li><span class="tag ${i.st === 'ok' ? 'ok' : 'back'}">${i.st === 'ok' ? 'Принято' + (i.stars ? ' · ' + i.stars + '★' : '') : i.st === 'back' ? 'Вернули' : 'Не принято'}</span>${esc(i.lesson)}<span class="d">${dm(i.decidedAt || i.backAt)}</span></li>`).join('')}</ul>` : '<p class="task">Решений пока не было.</p>'}</div>
-  </article>`;
+  </div>`;
 }
 
 function render() {
@@ -538,7 +581,13 @@ function render() {
   document.querySelectorAll('[data-prog]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.prog === S.prog));
   counts();
   document.getElementById('app').innerHTML = S.tab === 'check' ? renderCheck() : renderPeople();
+  const on = !!S.person;
+  if (on) document.getElementById('dw-body').innerHTML = dossier(P[S.person]);
+  document.body.classList.toggle('dw-on', on);
 }
+let dwFrom = null;
+function openDos(id, from) { dwFrom = from || document.activeElement; S.person = id; render(); document.getElementById('dw-body').scrollTop = 0; setTimeout(() => document.getElementById('dw-x').focus(), 60); }
+function closeDos() { if (!S.person) return; S.person = null; render(); const back = dwFrom && document.body.contains(dwFrom) ? dwFrom : document.querySelector('.dos-btn'); back?.focus(); dwFrom = null; }
 
 function toast(text, undo) {
   const t = document.getElementById('toast');
@@ -567,6 +616,7 @@ function decide(i, ok, comment) {
 }
 
 document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-close-dos]')) { closeDos(); return; }
   const el = e.target.closest('button, a, tr[data-person]');
   if (!el) return;
   if (el.matches('[data-ext]')) { e.preventDefault(); toast('В рабочей версии откроется настоящая страница'); return; }
@@ -575,9 +625,8 @@ document.addEventListener('click', (e) => {
   if (el.dataset.group) { S.group = el.dataset.group; S.sel = null; S.returning = false; render(); return; }
   if (el.dataset.item) { S.sel = el.dataset.item; S.open = true; S.returning = false; render(); if (innerWidth <= 960) window.scrollTo(0, 0); return; }
   if (el.matches('[data-back]')) { S.open = false; render(); return; }
-  if (el.dataset.person) { S.tab = 'people'; S.person = el.dataset.person; render(); window.scrollTo(0, 0); return; }
-  if (el.matches('[data-people-back]')) { S.person = null; render(); return; }
-  if (el.dataset.goto) { const i = ITEMS.find((x) => x.id === el.dataset.goto); S.tab = 'check'; S.group = Object.keys(GROUP).find((g) => GROUP[g].includes(i.st)); S.sel = i.id; S.open = true; render(); window.scrollTo(0, 0); return; }
+  if (el.dataset.person) { openDos(el.dataset.person, el); return; }
+  if (el.dataset.goto) { const i = ITEMS.find((x) => x.id === el.dataset.goto); S.person = null; dwFrom = null; S.tab = 'check'; S.group = Object.keys(GROUP).find((g) => GROUP[g].includes(i.st)); S.sel = i.id; S.open = true; render(); window.scrollTo(0, 0); return; }
   if (el.dataset.sort) { const k = el.dataset.sort; S.dir = S.sort === k ? -S.dir : (k === 'name' ? 1 : -1); S.sort = k; render(); return; }
   if (el.dataset.pf) { S.pf = el.dataset.pf; render(); return; }
   const cur = ITEMS.find((i) => i.id === S.sel);
@@ -600,7 +649,8 @@ document.addEventListener('input', (e) => {
   if (e.target.id === 'q') { S.q = e.target.value; const pos = e.target.selectionStart; render(); const q = document.getElementById('q'); q.focus(); q.setSelectionRange(pos, pos); }
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && e.target.matches('tr[data-person]')) { S.person = e.target.dataset.person; render(); }
+  if (e.key === 'Escape' && S.person) { closeDos(); return; }
+  if (e.key === 'Enter' && e.target.matches('tr[data-person]')) openDos(e.target.dataset.person, e.target);
 });
 render();
 </script>
