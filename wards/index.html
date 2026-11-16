@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Подопечные · прототип</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family: "Medeo Sans"; src: url("../slop-fix/fonts/MedeoSansVariable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+:root {
+  --ink: #0B1020; --ink2: #4A5163; --ink3: #7A8194;
+  --line: rgba(11,16,32,.08); --line2: rgba(11,16,32,.14);
+  --bg: #F5F6F8; --card: #FDFDFE; --soft: rgba(11,16,32,.04);
+  --acc: #2F7BFF; --acc-soft: rgba(47,123,255,.09); --acc-ink: #FDFDFE;
+  --ok: #1B8F4E; --ok-soft: rgba(27,143,78,.10);
+  --warn: #B45309; --warn-soft: rgba(217,119,6,.12);
+  --back: #C2410C; --back-soft: rgba(194,65,12,.09);
+  --red: #E5484D; --star: #F5A524;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font: 400 15px/1.5 "Medeo Sans", system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* шапка */
+.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--line); }
+.top-in { max-width: 1240px; margin: 0 auto; padding: 14px 24px 0; }
+.top-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.top h1 { font-size: 22px; font-weight: 700; letter-spacing: -.015em; margin: 0; }
+.top h1 small { display: block; font-size: 12px; font-weight: 500; color: var(--ink3); letter-spacing: 0; }
+.prog { margin-left: auto; display: flex; gap: 4px; background: var(--soft); border-radius: 12px; padding: 3px; }
+.prog button { border: 0; background: transparent; padding: 6px 12px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--ink2); cursor: pointer; transition: background-color .18s var(--ease), color .18s var(--ease); }
+.prog button:hover { color: var(--ink); }
+.prog button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 2px rgba(11,16,32,.08); }
+.tabs { display: flex; gap: 28px; margin-top: 12px; }
+.tab { position: relative; border: 0; background: none; padding: 10px 0 12px; font-size: 16px; font-weight: 650; color: var(--ink3); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: color .18s var(--ease); }
+.tab:hover { color: var(--ink2); }
+.tab[aria-selected="true"] { color: var(--ink); }
+.tab[aria-selected="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; border-radius: 2px; background: var(--ink); }
+.n { min-width: 22px; height: 22px; padding: 0 7px; border-radius: 11px; background: var(--red); color: #FDFDFE; font-size: 12px; font-weight: 700; display: inline-grid; place-items: center; font-variant-numeric: tabular-nums; }
+.n.mute { background: var(--soft); color: var(--ink2); }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 18px 24px 80px; }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; border-radius: 8px; }
+
+/* очередь */
+.q { display: grid; grid-template-columns: 380px minmax(0,1fr); gap: 18px; align-items: start; }
+.q-side { position: sticky; top: 132px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line2); background: var(--card); font-size: 13px; font-weight: 600; color: var(--ink2); cursor: pointer; transition: background-color .18s var(--ease), color .18s var(--ease), border-color .18s var(--ease); }
+.chip:hover { color: var(--ink); border-color: rgba(11,16,32,.24); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #FDFDFE; }
+.chip .c { font-variant-numeric: tabular-nums; opacity: .7; }
+.chip[aria-pressed="true"] .c { opacity: .85; }
+.hint { font-size: 13px; color: var(--ink3); margin: 0 2px 10px; }
+.bulk { width: 100%; margin-bottom: 10px; }
+
+.list { display: grid; gap: 4px; max-height: calc(100vh - 250px); overflow-y: auto; padding: 2px; margin: -2px; }
+.item { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: start; text-align: left; width: 100%; padding: 12px; border: 1px solid transparent; border-radius: 14px; background: transparent; cursor: pointer; transition: background-color .18s var(--ease), border-color .18s var(--ease); }
+.item:hover { background: var(--card); border-color: var(--line); }
+.item[aria-current="true"] { background: var(--card); border-color: var(--line2); box-shadow: 0 1px 2px rgba(11,16,32,.05); }
+.item b { display: block; font-size: 14px; font-weight: 650; }
+.item .what { display: block; font-size: 13px; color: var(--ink2); margin-top: 1px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.item .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.age { font-size: 12px; color: var(--ink3); white-space: nowrap; font-variant-numeric: tabular-nums; padding-top: 2px; }
+.age.late { color: var(--warn); font-weight: 650; }
+
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 7px; font-size: 12px; font-weight: 600; background: var(--soft); color: var(--ink2); white-space: nowrap; }
+.tag.k-hw { background: var(--acc-soft); color: #1D5FD6; }
+.tag.k-stage { background: rgba(124,58,237,.10); color: #6D28D9; }
+.tag.k-pearl { background: rgba(13,148,136,.11); color: #0F766E; }
+.tag.k-zv { background: rgba(219,39,119,.09); color: #BE185D; }
+.tag.k-fin { background: var(--warn-soft); color: var(--warn); }
+.tag.ok { background: var(--ok-soft); color: var(--ok); }
+.tag.back { background: var(--back-soft); color: var(--back); }
+.tag.re { background: var(--ink); color: #FDFDFE; }
+
+.av { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; font-weight: 700; color: #1D5FD6; background: var(--acc-soft); flex: none; }
+.av.lg { width: 60px; height: 60px; font-size: 20px; }
+.av.sm { width: 32px; height: 32px; font-size: 12px; }
+
+.empty { padding: 48px 16px; text-align: center; color: var(--ink3); font-size: 14px; }
+.empty b { display: block; color: var(--ink); font-size: 16px; margin-bottom: 4px; }
+
+/* карточка задания */
+.pane { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 1px 2px rgba(11,16,32,.04); }
+.d-head { display: flex; align-items: center; gap: 12px; padding: 18px 24px; border-bottom: 1px solid var(--line); }
+.d-head .who { min-width: 0; flex: 1 1 180px; }
+.who-btn { border: 0; background: none; padding: 0; cursor: pointer; font-size: 16px; font-weight: 700; text-align: left; }
+.who-btn:hover { color: var(--acc); }
+.who-btn span { font-weight: 500; color: var(--acc); font-size: 13px; margin-left: 6px; }
+.d-head .sub { font-size: 13px; color: var(--ink3); }
+.d-head .when { margin-left: auto; text-align: right; font-size: 13px; color: var(--ink3); white-space: nowrap; }
+.back-btn { display: none; width: 36px; height: 36px; border: 0; border-radius: 10px; background: var(--soft); cursor: pointer; place-items: center; flex: none; }
+
+.sec { padding: 20px 24px; border-bottom: 1px solid var(--line); }
+.sec:last-of-type { border-bottom: 0; }
+.lbl { font-size: 12px; font-weight: 650; color: var(--ink3); text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+.task-title { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; }
+.task-title h2 { font-size: 18px; font-weight: 700; letter-spacing: -.01em; margin: 0; }
+.lnk { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: var(--acc); text-decoration: none; white-space: nowrap; }
+.lnk:hover { text-decoration: underline; }
+.task { margin: 0; color: var(--ink2); max-width: 72ch; }
+.crit { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 6px; }
+.crit li { display: grid; grid-template-columns: 76px 1fr auto; gap: 10px; align-items: center; font-size: 14px; color: var(--ink2); padding: 6px 10px; border-radius: 10px; background: var(--soft); }
+.crit .st { font-size: 12px; font-weight: 700; color: var(--star); letter-spacing: 1px; white-space: nowrap; }
+.crit .ai-ok { font-size: 12px; font-weight: 650; color: var(--ok); }
+.crit .ai-no { font-size: 12px; font-weight: 650; color: var(--ink3); }
+
+.answer { margin: 0; white-space: pre-line; max-width: 72ch; }
+.files { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.file { width: 92px; height: 68px; border-radius: 10px; background: repeating-linear-gradient(135deg, rgba(11,16,32,.05) 0 8px, rgba(11,16,32,.08) 8px 16px); display: grid; place-items: center; font-size: 11px; color: var(--ink3); border: 1px solid var(--line); }
+.photo { width: 220px; height: 160px; }
+.prev { margin-top: 14px; border-radius: 12px; background: var(--back-soft); padding: 12px 14px; font-size: 14px; }
+.prev b { color: var(--back); font-size: 13px; display: block; margin-bottom: 2px; }
+.prev details { margin-top: 8px; color: var(--ink2); }
+.prev summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--ink2); }
+
+.ai { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: start; }
+.ai .score { font-size: 22px; font-weight: 750; font-variant-numeric: tabular-nums; }
+.ai .score small { font-size: 13px; color: var(--ink3); font-weight: 500; }
+.ai p { margin: 0; color: var(--ink2); max-width: 70ch; }
+.ai.doubt { background: var(--warn-soft); border-radius: 12px; padding: 12px 14px; }
+
+.nums { display: flex; gap: 28px; flex-wrap: wrap; }
+.nums div { display: grid; }
+.nums dt { font-size: 12px; color: var(--ink3); font-weight: 600; }
+.nums dd { margin: 0; font-size: 20px; font-weight: 750; font-variant-numeric: tabular-nums; }
+
+/* решение */
+.act { position: sticky; bottom: 0; padding: 14px 24px; background: color-mix(in srgb, var(--card) 94%, transparent); backdrop-filter: blur(8px); border-top: 1px solid var(--line); border-radius: 0 0 18px 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.stars { display: inline-flex; gap: 2px; margin-right: 6px; }
+.stars button { width: 34px; height: 34px; border: 0; background: none; border-radius: 8px; cursor: pointer; display: grid; place-items: center; color: rgba(11,16,32,.18); transition: color .15s var(--ease), background-color .15s var(--ease); }
+.stars button:hover { background: var(--soft); }
+.stars button.on { color: var(--star); }
+.stars svg { width: 22px; height: 22px; fill: currentColor; }
+.stars-cap { font-size: 12px; color: var(--ink3); margin-right: auto; }
+.btn { height: 40px; padding: 0 16px; border-radius: 11px; border: 1px solid transparent; font-size: 14px; font-weight: 650; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: background-color .18s var(--ease), border-color .18s var(--ease), transform .12s var(--ease); }
+.btn:active { transform: scale(.98); }
+.btn.pri { background: var(--ink); color: #FDFDFE; }
+.btn.pri:hover { background: #222A3F; }
+.btn.acc { background: var(--acc); color: #FDFDFE; }
+.btn.acc:hover { background: #1F6CF0; }
+.btn.sec2 { background: var(--card); border-color: var(--line2); color: var(--ink); }
+.btn.sec2:hover { border-color: rgba(11,16,32,.3); }
+.btn:disabled { opacity: .45; cursor: default; transform: none; }
+.ret { width: 100%; display: grid; gap: 8px; }
+.ret textarea { width: 100%; min-height: 84px; resize: vertical; border: 1px solid var(--line2); border-radius: 12px; padding: 10px 12px; font: inherit; background: var(--card); color: var(--ink); }
+.ret textarea:focus { outline: 2px solid var(--acc); outline-offset: 0; border-color: transparent; }
+.ret .row { display: flex; gap: 8px; flex-wrap: wrap; }
+.done-note { font-size: 14px; color: var(--ink2); margin-right: auto; }
+.done-note b { color: var(--ok); }
+.done-note b.r { color: var(--back); }
+.undo { border: 0; background: none; color: var(--acc); font-weight: 650; font-size: 14px; cursor: pointer; padding: 4px; }
+
+/* люди */
+.p-tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.search { height: 38px; min-width: 240px; border: 1px solid var(--line2); border-radius: 11px; padding: 0 12px; font: inherit; background: var(--card); }
+.search:focus { outline: 2px solid var(--acc); outline-offset: 0; border-color: transparent; }
+.tbl { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+.tbl th { text-align: left; font-size: 12px; font-weight: 650; color: var(--ink3); padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.tbl th button { border: 0; background: none; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+.tbl th button:hover, .tbl th button[aria-sort] { color: var(--ink); }
+.tbl td { padding: 12px 14px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; font-variant-numeric: tabular-nums; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl tbody tr { cursor: pointer; transition: background-color .15s var(--ease); }
+.tbl tbody tr:hover { background: var(--soft); }
+.pc { display: flex; align-items: center; gap: 10px; }
+.pc b { font-weight: 650; display: block; }
+.pc small { color: var(--ink3); font-size: 12px; }
+.trend { font-size: 12px; font-weight: 650; margin-left: 4px; }
+.up { color: var(--ok); } .down { color: var(--back); }
+.bar { display: inline-block; width: 56px; height: 6px; border-radius: 3px; background: var(--soft); vertical-align: middle; margin-right: 6px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--acc); border-radius: 3px; }
+.warn-t { color: var(--warn); font-weight: 650; }
+.cards { display: none; }
+
+/* досье */
+.dos-top { display: flex; gap: 16px; align-items: center; padding: 22px 24px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.dos-top h2 { margin: 0; font-size: 22px; font-weight: 750; letter-spacing: -.015em; }
+.dos-top .sub { color: var(--ink3); font-size: 14px; }
+.links { display: flex; gap: 8px; flex-wrap: wrap; padding: 14px 24px; border-bottom: 1px solid var(--line); }
+.links a { height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line2); display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; text-decoration: none; transition: border-color .18s var(--ease); }
+.links a:hover { border-color: rgba(11,16,32,.3); }
+.kpi { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
+.kpi > div { padding: 18px 24px; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); }
+.kpi > div:nth-child(3n) { border-right: 0; }
+.kpi dt { font-size: 12px; color: var(--ink3); font-weight: 650; margin-bottom: 4px; }
+.kpi dd { margin: 0; font-size: 20px; font-weight: 750; font-variant-numeric: tabular-nums; }
+.kpi .s { font-size: 13px; color: var(--ink2); margin-top: 4px; }
+.prog-l { height: 6px; background: var(--soft); border-radius: 3px; margin-top: 8px; overflow: hidden; }
+.prog-l i { display: block; height: 100%; background: var(--acc); border-radius: 3px; }
+.months { display: flex; gap: 10px; align-items: flex-end; height: 54px; margin-top: 8px; }
+.months div { flex: 1; display: grid; gap: 4px; justify-items: center; font-size: 11px; color: var(--ink3); }
+.months i { display: block; width: 100%; max-width: 38px; background: var(--acc-soft); border-radius: 5px 5px 2px 2px; }
+.months div:last-child i { background: var(--acc); }
+.route { display: flex; gap: 6px; flex-wrap: wrap; }
+.route span { height: 28px; padding: 0 10px; border-radius: 8px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 650; background: var(--soft); color: var(--ink3); }
+.route span.d { background: var(--ok-soft); color: var(--ok); }
+.route span.c { background: var(--ink); color: #FDFDFE; }
+.mini { display: grid; gap: 6px; }
+.mini button { display: flex; align-items: center; gap: 10px; text-align: left; width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); cursor: pointer; font-size: 14px; transition: border-color .18s var(--ease); }
+.mini button:hover { border-color: var(--line2); }
+.mini button .go { margin-left: auto; color: var(--acc); font-weight: 650; font-size: 13px; white-space: nowrap; }
+.hist { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+.hist li { display: flex; gap: 10px; align-items: center; font-size: 14px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.hist li:last-child { border-bottom: 0; }
+.hist .d { margin-left: auto; color: var(--ink3); font-size: 13px; white-space: nowrap; }
+.risk { display: flex; gap: 8px; align-items: center; padding: 12px 24px; background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; border-bottom: 1px solid var(--line); }
+
+/* тост */
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 140%); background: var(--ink); color: #FDFDFE; padding: 10px 10px 10px 16px; border-radius: 14px; display: flex; gap: 12px; align-items: center; font-size: 14px; box-shadow: 0 14px 36px rgba(11,16,32,.28); transition: transform .28s var(--ease), opacity .2s var(--ease), visibility 0s linear .28s; z-index: 50; opacity: 0; visibility: hidden; max-width: calc(100vw - 24px); }
+.toast.on { transform: translate(-50%, 0); opacity: 1; visibility: visible; transition: transform .28s var(--ease), opacity .2s var(--ease); }
+.toast button { border: 0; background: rgba(253,253,254,.14); color: #FDFDFE; border-radius: 9px; padding: 6px 10px; font-weight: 650; cursor: pointer; }
+
+.note-proto { max-width: 1240px; margin: 0 auto; padding: 0 24px 40px; color: var(--ink3); font-size: 13px; }
+
+@media (max-width: 960px) {
+  .top-in { padding: 12px 16px 0; }
+  .wrap { padding: 14px 16px 80px; }
+  .q { grid-template-columns: 1fr; }
+  .q-side { position: static; }
+  .list { max-height: none; overflow: visible; }
+  .q.open .q-side { display: none; }
+  .q:not(.open) .q-main { display: none; }
+  .back-btn { display: grid; }
+  .d-head { padding: 14px 16px; flex-wrap: wrap; }
+  .d-head .when { margin-left: 0; text-align: left; width: 100%; padding-left: 48px; }
+  .d-head .av { display: none; }
+  .sec { padding: 16px; }
+  .act { padding: 12px 16px; }
+  .stars-cap { display: none; }
+  .tbl { display: none; }
+  .cards { display: grid; gap: 6px; }
+  .pcard { display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); cursor: pointer; }
+  .pcard .t { flex: 1; min-width: 0; }
+  .pcard b { display: block; font-size: 15px; }
+  .pcard small { display: block; color: var(--ink2); font-size: 13px; }
+  .search { min-width: 0; flex: 1; }
+  .kpi { grid-template-columns: 1fr 1fr; }
+  .kpi > div { padding: 14px 16px; border-right: 1px solid var(--line) !important; }
+  .kpi > div:nth-child(2n) { border-right: 0 !important; }
+  .dos-top, .links { padding: 16px; }
+  .prog { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="top-row">
+      <h1>Подопечные<small>Наставник: Игорь Граф · прототип на условных данных</small></h1>
+      <div class="prog" role="group" aria-label="Программа">
+        <button data-prog="all" aria-pressed="true">Все</button>
+        <button data-prog="alliance" aria-pressed="false">Альянс</button>
+        <button data-prog="pp" aria-pressed="false">План Продюсера</button>
+      </div>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="check" aria-selected="true">Проверить <span class="n" id="n-check">0</span></button>
+      <button class="tab" role="tab" data-tab="people" aria-selected="false">Люди <span class="n mute" id="n-people">0</span></button>
+    </div>
+  </div>
+</header>
+<main class="wrap" id="app"></main>
+<p class="note-proto">Прототип: решения не сохраняются, ссылки «Открыть урок», «Профиль», «Финансы» и «Маршрутная карта» в рабочей версии ведут на настоящие страницы.</p>
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-t"></span><button id="toast-u">Отменить</button></div>
+
+<script>
+const NB = ' ';
+const typo = (s) => String(s ?? '').replace(/(^|[\s(«])(в|во|и|с|со|к|ко|о|об|у|а|на|не|по|за|из|до|от|без|для|что|как|но|же|ли|бы|или|при|про|под|над|это|все|его|её|их)\s/gi, (m, a, w) => a + w + NB).replace(/(\d)\s(?=[^\s\d])/g, '$1' + NB);
+const esc = (s) => typo(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const ini = (n) => n.split(' ').map((w) => w[0]).slice(0, 2).join('');
+const rub = (n) => Math.round(n).toLocaleString('ru-RU').replace(/\s/g, NB) + NB + '₽';
+const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg>';
+const TODAY = new Date('2026-11-16T18:00:00');
+const dm = (d) => new Date(d).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }).replace(' ', NB);
+const day0 = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; };
+const daysAgo = (d) => Math.round((day0(TODAY) - day0(d)) / 864e5);
+const waitTxt = (d) => daysAgo(d) <= 0 ? 'сегодня' : 'ждёт ' + ageTxt(d).replace('вчера', '1' + NB + 'день');
+const ageTxt = (d) => { const n = daysAgo(d); return n <= 0 ? 'сегодня' : n === 1 ? 'вчера' : n + NB + (n % 10 === 1 && n % 100 !== 11 ? 'день' : [2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100) ? 'дня' : 'дней'); };
+
+const LEVELS = ['Product-Market Fit', 'Scaling', 'Enterprise'];
+const STAGES = ['Подготовка', '1.1', '1.2', '1.3', '2.1', '2.2', '2.3', '3.1'];
+
+const PEOPLE = [
+  { id: 'p1', name: 'Марина Соколова', prog: 'pp', clan: 'Авалон', since: '2026-09-12', level: 0, levelPct: 37, rev: [180000, 240000, 310000], pers: 140000, stage: '1.2', stLessons: [4, 7], tracker: 11, steps: 23, wishes: 14, focus: 2, route: [17, 48], pa: true, phone: true },
+  { id: 'p2', name: 'Олег Кравцов', prog: 'alliance', clan: 'Северный', since: '2026-08-03', level: 1, levelPct: 41, rev: [1200000, 1050000, 1380000], pers: 420000, stage: '2.1', stLessons: [2, 6], tracker: 13, steps: 31, wishes: 22, focus: 3, route: [26, 48], pa: true },
+  { id: 'p3', name: 'Дарья Ким', prog: 'pp', clan: 'Авалон', since: '2026-10-21', level: 0, levelPct: 7, rev: [0, 35000, 60000], pers: 60000, stage: '1.1', stLessons: [5, 6], tracker: 6, steps: 9, wishes: 8, focus: 1, route: [9, 48], pa: true },
+  { id: 'p4', name: 'Артём Белов', prog: 'alliance', clan: 'Северный', since: '2026-07-15', level: 0, levelPct: 100, rev: [3300000, 3600000, 3500000], pers: 610000, stage: '2.3', stLessons: [5, 5], tracker: 2, steps: 1, wishes: 31, focus: 3, route: [34, 48], pa: true, risk: 'Не заходил в трекер 9 дней' },
+  { id: 'p5', name: 'Светлана Орлова', prog: 'pp', clan: 'Авалон', since: '2026-10-02', level: 0, levelPct: 11, rev: [90000, 120000, 95000], pers: 95000, stage: '1.2', stLessons: [3, 7], tracker: 9, steps: 14, wishes: 11, focus: 2, route: [15, 48], pa: false },
+  { id: 'p6', name: 'Игнат Петренко', prog: 'alliance', clan: 'Феникс', since: '2026-09-28', level: 0, levelPct: 35, rev: [450000, 380000, 290000], pers: 120000, stage: '1.3', stLessons: [1, 4], tracker: 4, steps: 5, wishes: 9, focus: 1, route: [19, 48], pa: true, risk: 'Выручка падает третий месяц' },
+  { id: 'p7', name: 'Алина Захарова', prog: 'pp', clan: 'Феникс', since: '2026-11-04', level: 0, levelPct: 0, rev: [null, null, null], pers: null, stage: 'Подготовка', stLessons: [3, 5], tracker: 10, steps: 6, wishes: 5, focus: 1, route: [4, 48], pa: false },
+  { id: 'p8', name: 'Роман Ефимов', prog: 'alliance', clan: 'Феникс', since: '2026-06-30', level: 2, levelPct: 15, rev: [4300000, 4800000, 5150000], pers: 1250000, stage: '3.1', stLessons: [2, 6], tracker: 12, steps: 27, wishes: 40, focus: 3, route: [41, 48], pa: true },
+  { id: 'p9', name: 'Наталья Громова', prog: 'pp', clan: 'Авалон', since: '2026-09-01', level: 0, levelPct: 40, rev: [210000, 260000, 330000], pers: 180000, stage: '1.3', stLessons: [4, 4], tracker: 14, steps: 38, wishes: 19, focus: 3, route: [22, 48], pa: true },
+];
+const P = Object.fromEntries(PEOPLE.map((p) => [p.id, p]));
+const MONTHS = ['авг', 'сен', 'окт'];
+
+// st: new | re (пересдача) | ai (ИИ проверил, подтвердить) | doubt | back (вернули, ждём) | ok (принято) | no (не принято)
+let ITEMS = [
+  { id: 'i1', p: 'p1', kind: 'hw', st: 're', at: '2026-11-15T21:10', lesson: 'Выбор ниши', stage: '1.1',
+    task: 'Проведите 10 кастдевов: разговоры с потенциальными клиентами, чтобы понять свою аудиторию и что у неё болит. Zoom, телефон или вживую, переписка не считается. Встречи только через «Регистратор 24/7», после каждой отметьте «Завершена». По возможности сделайте продажу. Записи разговоров или фото встреч приложите к отчёту.',
+    crit: ['3 кастдева', '5 кастдевов', '10 кастдевов', 'Записи или фото приложены', 'Есть продажа'], aiMet: [1, 1, 1, 1, 0], ai: 4,
+    aiText: 'Провела 10 разговоров, все через Регистратор, у 8 есть записи. Продажи пока нет, но двое попросили прайс. Боли описаны конкретно.',
+    answer: 'Провела 10 кастдевов, 4 в Zoom, 6 по телефону. Главные боли: не понимают, как поднять чек, боятся продавать в лоб, нет системы заявок.\nДвое попросили прайс на сопровождение, жду ответа.', files: 8,
+    prev: { at: '2026-11-12', comment: 'Здесь 4 разговора из 10 и два из них в переписке. Доделайте до 10 живых разговоров и приложите записи.', answer: 'Провела 4 кастдева, двое в телеграме. Боли: нет заявок, страшно поднимать цену.' } },
+  { id: 'i2', p: 'p3', kind: 'hw', st: 'new', at: '2026-11-13T10:20', lesson: '3 способа ставить цель', stage: '1.1',
+    task: 'Определите, в каком вы состоянии: рост, провал или плато. Задания ниже зависят от ответа.',
+    branch: 'Ветка «Плато»: запишите 3 цели на месяц, к каждой первый шаг и дату; добавьте их в «1000 целей».',
+    crit: ['Определено состояние', 'Первое задание ветки', 'Второе задание ветки', 'Третье задание ветки', 'Все задания ветки'], aiMet: null, ai: null,
+    answer: 'Я на плато. Цели: 1) 5 консультаций по 6 000 ₽ до 15 декабря, первый шаг — пост с приглашением в среду. 2) Запустить телеграм-канал до 1 декабря. 3) Поднять чек до 8 000 ₽.', files: 0 },
+  { id: 'i3', p: 'p2', kind: 'stage', st: 'new', at: '2026-11-14T19:40', stage: '2.1', lesson: 'Финальная задача этапа 2.1',
+    task: 'Финальная задача этапа: структура компании нарисована, у каждой должности есть функция и измеримый результат, отмечено, кого нанять первым.',
+    crit: null, ai: null,
+    answer: 'Структура в файле. 3 отдела: продажи, производство, финансы. Первым нанимаю РОПа: сейчас продаю сам, это 60% моего времени. Результат РОПа: 12 сделок в месяц, конверсия из встречи 30%.', files: 2 },
+  { id: 'i4', p: 'p9', kind: 'hw', st: 'ai', at: '2026-11-15T12:05', lesson: 'Колесо баланса', stage: '1.1',
+    task: 'Оцените по десятибалльной шкале десять сфер в «Колесе баланса» на платформе. Десятка — это ваше собственное представление о норме в этой сфере сейчас, а не чужое. Найдите самые слабые сферы.',
+    crit: ['Колесо заполнено', 'Найдены слабые сферы', 'Выбрана одна сфера', 'Записан шаг', 'Шаг сделан'], aiMet: [1, 1, 1, 1, 1], ai: 5,
+    aiText: 'Колесо заполнено, слабая сфера «Здоровье» (3), шаг — записалась в зал и уже сходила дважды. Всё по заданию.',
+    answer: 'Здоровье 3, окружение 4. Начинаю со здоровья: записалась в зал, сходила 2 раза, фото в отчёте.', files: 2 },
+  { id: 'i5', p: 'p5', kind: 'hw', st: 'ai', at: '2026-11-14T08:30', lesson: 'Тест ниши', stage: '1.2',
+    task: 'Три задачи этапа: сделайте минимум 3 продажи своих услуг, поднимите средний чек на 30% (не меньше чем на 500 рублей), выполните план по доходу.',
+    crit: ['1 продажа', '3 продажи', 'Чек поднят на 30%', 'План по доходу выполнен', 'Показатели воронки за этап'], aiMet: [1, 1, 0, 0, 1], ai: 3,
+    aiText: '3 продажи есть, воронка расписана. Чек поднят с 5 000 до 5 500 ₽, это 10%, а нужно 30%. План по доходу не выполнен: 95 000 из 150 000 ₽.',
+    answer: '3 продажи по 5 500 ₽. Воронка: 40 охватов, 9 заявок, 5 созвонов, 3 оплаты. Чек пока поднять больше не получилось.', files: 1 },
+  { id: 'i6', p: 'p6', kind: 'hw', st: 'doubt', at: '2026-11-12T16:45', lesson: 'Как выбрать нишу?', stage: '1.1',
+    task: 'Накидайте 5 ниш из прошлого, 5 из настоящего и 5 из будущего. Оцените каждую по пяти критериям из урока «Как выбрать нишу?» и выберите пять бизнес-идей.',
+    crit: ['5 ниш из прошлого', '5 ниш из настоящего', '5 ниш из будущего', 'Каждая оценена по пяти критериям', 'Выбраны пять бизнес-идей'], aiMet: [1, 1, 1, 0, 1], ai: 3,
+    aiText: 'Ниш 15, идеи выбраны. Оценка по критериям есть только у шести ниш.', aiQ: 'Засчитать ли пятую звезду, если оценены не все ниши, а только те, из которых выбраны идеи?',
+    answer: 'Прошлое: стройка, логистика, ... Будущее: ИИ-сервисы для стройки. Оценил те, что в финал, остальные отпали сразу.', files: 1 },
+  { id: 'i7', p: 'p4', kind: 'fin', st: 'new', at: '2026-11-11T09:00', lesson: 'Переход на уровень 2. Scaling',
+    fin: { track: 'Выручка за 12 месяцев', fact: 41200000, goal: 40000000 } },
+  { id: 'i8', p: 'p7', kind: 'zv', st: 'new', at: '2026-11-16T11:15', lesson: 'Фотоотчёт: «Выходные в Казани»',
+    zv: { stars: 5, fed: '2026-11-12', insight: 'Съездили всей семьёй, первый раз за год без ноутбука.' } },
+  { id: 'i9', p: 'p8', kind: 'pearl', st: 'new', at: '2026-11-15T15:30', lesson: 'ПЭРЛ: Нанять первого руководителя',
+    task: 'Наймите руководителя отдела и передайте ему одну функцию полностью. Приложите договор или приказ.', crit: null, ai: null,
+    answer: 'Нанял коммерческого директора, с 1 ноября продажи полностью на нём. Приказ во вложении.', files: 1, phoenix: 300 },
+  { id: 'i10', p: 'p2', kind: 'hw', st: 'back', at: '2026-11-09T10:00', backAt: '2026-11-10', lesson: 'Структура компании', stage: '2.1',
+    task: 'Нарисуйте структуру своей компании.', comment: 'Нет функций у должностей и не отмечено, кого нанять первым.', answer: 'Схема в файле.', files: 1 },
+  { id: 'i11', p: 'p6', kind: 'hw', st: 'back', at: '2026-11-05T10:00', backAt: '2026-11-06', lesson: 'Тест ниши', stage: '1.2',
+    task: 'Три задачи этапа: 3 продажи, чек +30%, план по доходу.', comment: 'Продаж нет, есть только план. Вернитесь, когда будет хотя бы первая продажа.', answer: 'План продаж на ноябрь в таблице.', files: 1 },
+  { id: 'i12', p: 'p9', kind: 'hw', st: 'ok', at: '2026-11-10T10:00', decidedAt: '2026-11-11', stars: 5, lesson: 'Выбор ниши', stage: '1.1', task: 'Проведите 10 кастдевов.', answer: '10 кастдевов, 2 продажи.', files: 10 },
+  { id: 'i13', p: 'p1', kind: 'hw', st: 'ok', at: '2026-11-08T10:00', decidedAt: '2026-11-09', stars: 4, lesson: '3 способа ставить цель', stage: '1.1', task: 'Определите состояние и выполните задания ветки.', answer: 'Рост: 3 цели...', files: 0 },
+];
+
+const KIND = { hw: 'Домашка урока', stage: 'Экзамен этапа', pearl: 'Задание ПЭРЛ', zv: 'Фотоотчёт зверька', fin: 'Заявка на уровень' };
+const GROUP = { mine: ['new', 're', 'doubt'], ai: ['ai'], back: ['back'], done: ['ok', 'no'] };
+const GROUP_NAME = { mine: 'Ждут меня', ai: 'ИИ проверил', back: 'Жду пересдачу', done: 'Готово' };
+const GROUP_HINT = {
+  mine: 'Новые ответы и пересдачи. Сверху те, что ждут дольше всех.',
+  ai: 'ИИ поставил оценку и не сомневается. Достаточно подтвердить.',
+  back: 'Вы вернули задание, человек ещё не пересдал.',
+  done: 'Решения за последние 14 дней. Решение можно отменить.',
+};
+
+const S = { tab: 'check', prog: 'all', group: 'mine', sel: null, open: false, person: null, sort: 'wait', dir: -1, q: '', pf: 'all', returning: false, pick: {} };
+let lastUndo = null;
+
+const inProg = (pid) => S.prog === 'all' || P[pid].prog === S.prog;
+const itemsOf = (g) => ITEMS.filter((i) => GROUP[g].includes(i.st) && inProg(i.p)).sort((a, b) => g === 'done' || g === 'back' ? new Date(b.decidedAt || b.backAt || b.at) - new Date(a.decidedAt || a.backAt || a.at) : new Date(a.at) - new Date(b.at));
+const waitingOf = (pid) => ITEMS.filter((i) => i.p === pid && (GROUP.mine.includes(i.st) || GROUP.ai.includes(i.st))).length;
+
+function counts() {
+  const c = itemsOf('mine').length + itemsOf('ai').length;
+  document.getElementById('n-check').textContent = c;
+  document.getElementById('n-check').style.display = c ? '' : 'none';
+  document.getElementById('n-people').textContent = PEOPLE.filter((p) => inProg(p.id)).length;
+}
+
+function itemRow(i) {
+  const p = P[i.p];
+  const late = ['new', 're', 'doubt', 'ai'].includes(i.st) && daysAgo(i.at) >= 3;
+  const tags = [`<span class="tag k-${i.kind}">${KIND[i.kind]}</span>`];
+  if (i.st === 're') tags.push('<span class="tag re">Пересдача</span>');
+  if (i.st === 'doubt') tags.push('<span class="tag back">ИИ сомневается</span>');
+  if (i.st === 'ai') tags.push(`<span class="tag ok">ИИ: ${i.ai} из 5</span>`);
+  if (i.st === 'ok') tags.push(`<span class="tag ok">Принято${i.stars ? ' · ' + i.stars + '★' : ''}</span>`);
+  if (i.st === 'no') tags.push('<span class="tag back">Не принято</span>');
+  const when = i.st === 'back' ? 'вернули ' + ageTxt(i.backAt) + (daysAgo(i.backAt) > 1 ? ' назад' : '') : i.st === 'ok' || i.st === 'no' ? dm(i.decidedAt) : waitTxt(i.at);
+  return `<button class="item" data-item="${i.id}" ${S.sel === i.id && (S.open || innerWidth > 960) ? 'aria-current="true"' : ''}>
+    <span class="av">${ini(p.name)}</span>
+    <span><b>${esc(p.name)}</b><span class="what">${esc(i.lesson)}</span><span class="meta">${tags.join('')}</span></span>
+    <span class="age ${late ? 'late' : ''}">${esc(when)}</span>
+  </button>`;
+}
+
+function starsPicker(i) {
+  const v = S.pick[i.id] ?? i.ai ?? 0;
+  return `<span class="stars" role="group" aria-label="Звёзды">${[1,2,3,4,5].map((n) => `<button data-star="${n}" class="${n <= v ? 'on' : ''}" aria-label="${n} из 5">${STAR}</button>`).join('')}</span><span class="stars-cap">${v ? (i.ai && v === i.ai ? 'как у ИИ' : 'ваша оценка') : 'поставьте звёзды'}</span>`;
+}
+
+function actions(i) {
+  if (i.st === 'ok' || i.st === 'no') {
+    return `<div class="act"><span class="done-note">${i.st === 'ok' ? `<b>Принято</b> ${dm(i.decidedAt)}${i.stars ? ', ' + i.stars + ' из 5' : ''}. Человек получил уведомление.` : `<b class="r">Не принято</b> ${dm(i.decidedAt)}.`}</span><button class="undo" data-undo-item="${i.id}">Отменить решение</button></div>`;
+  }
+  if (i.st === 'back') {
+    return `<div class="act"><span class="done-note">Вы вернули ${dm(i.backAt)}. Ждём пересдачу ${ageTxt(i.backAt)}.</span><button class="btn sec2" data-remind="${i.id}">Напомнить в Telegram</button></div>`;
+  }
+  if (S.returning) {
+    const ph = i.kind === 'fin' ? 'Почему результат не подтвердился' : i.kind === 'stage' ? 'Что доработать, чтобы сдать этап' : 'Что доделать, чтобы задание приняли';
+    return `<div class="act"><div class="ret"><textarea id="ret-t" placeholder="${ph}"></textarea><div class="row"><button class="btn pri" data-do="return" disabled>${i.kind === 'fin' ? 'Не подтверждать' : i.kind === 'stage' ? 'Этап не сдан' : 'Вернуть'}</button><button class="btn sec2" data-do="cancel">Отмена</button></div></div></div>`;
+  }
+  const yes = { hw: 'Принять', stage: 'Этап сдан', pearl: 'Принять', zv: 'Подтвердить', fin: 'Подтвердить результат' }[i.kind];
+  const no = { hw: 'Вернуть с комментарием', stage: 'Не сдан', pearl: 'Вернуть с комментарием', zv: 'Вернуть', fin: 'Не подтвердился' }[i.kind];
+  const withStars = i.kind === 'hw';
+  return `<div class="act">${withStars ? starsPicker(i) : '<span class="stars-cap" style="margin-right:auto"></span>'}<button class="btn sec2" data-do="ret">${no}</button><button class="btn acc" data-do="yes" ${withStars && !(S.pick[i.id] ?? i.ai) ? 'disabled' : ''}>${yes}</button></div>`;
+}
+
+function detail(i) {
+  if (!i) return `<div class="pane"><div class="empty"><b>Всё проверено</b>В этой вкладке ничего не ждёт решения.</div></div>`;
+  const p = P[i.p];
+  let body = '';
+  if (i.kind === 'fin') {
+    body = `<div class="sec"><p class="lbl">Что проверить</p><div class="task-title"><h2>${esc(i.lesson)}</h2></div>
+      <dl class="nums"><div><dt>${esc(i.fin.track)}</dt><dd>${rub(i.fin.fact)}</dd></div><div><dt>Цель уровня</dt><dd>${rub(i.fin.goal)}</dd></div><div><dt>Выполнено</dt><dd class="up">${Math.round(i.fin.fact / i.fin.goal * 100)}%</dd></div></dl>
+      <p class="task" style="margin-top:12px">Сверьте цифры с записями в «Финансах». После подтверждения остаётся экзамен перед людьми, потом откроется уровень.</p>
+      <p style="margin:10px 0 0"><a class="lnk" href="#" data-ext>Открыть финансы человека ↗</a></p></div>`;
+  } else if (i.kind === 'zv') {
+    body = `<div class="sec"><p class="lbl">Что проверить</p><div class="task-title"><h2>${esc(i.lesson)}</h2></div>
+      <p class="task">Фото исполненного желания-награды. Зверёк покормлен ${dm(i.zv.fed)}, фото пришло в течение недели, поэтому ${i.zv.stars} звёзд уже начислены. Если вернёте, звёзды снимутся.</p></div>
+      <div class="sec"><p class="lbl">Ответ</p><div class="files"><div class="file photo">фото</div></div><p class="answer" style="margin-top:12px">${esc(i.zv.insight)}</p></div>`;
+  } else {
+    const crit = i.crit ? `<ol class="crit">${i.crit.map((c, k) => `<li><span class="st">${'★'.repeat(k + 1)}</span><span>${esc(c)}</span>${i.aiMet ? (i.aiMet[k] ? '<span class="ai-ok">ИИ: есть</span>' : '<span class="ai-no">ИИ: нет</span>') : ''}</li>`).join('')}</ol>` : '';
+    body = `<div class="sec"><p class="lbl">Что требовалось${i.stage ? ` · этап ${i.stage}` : ''}</p>
+        <div class="task-title"><h2>${esc(i.lesson)}</h2>${i.kind === 'hw' ? '<a class="lnk" href="#" data-ext>Открыть урок ↗</a>' : ''}</div>
+        <p class="task">${esc(i.task)}</p>${i.branch ? `<p class="task" style="margin-top:8px"><b>Человек выбрал:</b> ${esc(i.branch)}</p>` : ''}${crit}
+        ${i.phoenix ? `<p class="task" style="margin-top:10px">После принятия: +${i.phoenix} Фениксов</p>` : ''}</div>
+      <div class="sec"><p class="lbl">Ответ ${i.st === 're' ? '<span class="tag re">Пересдача</span>' : ''}</p><p class="answer">${esc(i.answer)}</p>
+        ${i.files ? `<div class="files">${Array.from({ length: Math.min(i.files, 4) }, (_, k) => `<div class="file">${k === 3 && i.files > 4 ? '+' + (i.files - 3) : 'скриншот'}</div>`).join('')}</div>` : ''}
+        ${i.prev ? `<div class="prev"><b>Вы вернули ${dm(i.prev.at)}</b>${esc(i.prev.comment)}<details><summary>Прошлый ответ</summary><p class="answer" style="margin-top:6px">${esc(i.prev.answer)}</p></details></div>` : ''}
+        ${i.comment ? `<div class="prev"><b>Ваш комментарий при возврате</b>${esc(i.comment)}</div>` : ''}</div>
+      ${i.ai ? `<div class="sec"><p class="lbl">Оценка ИИ</p><div class="ai ${i.st === 'doubt' ? 'doubt' : ''}"><span class="score">${i.ai}<small> из 5</small></span><p>${esc(i.aiText)}${i.aiQ ? `<br><b>Вопрос вам:</b> ${esc(i.aiQ)}` : ''}</p></div></div>` : ''}`;
+  }
+  return `<article class="pane" aria-label="Задание">
+    <div class="d-head">
+      <button class="back-btn" data-back aria-label="К списку">←</button>
+      <span class="av">${ini(p.name)}</span>
+      <div class="who"><button class="who-btn" data-person="${p.id}">${esc(p.name)}<span>досье →</span></button><div class="sub">${p.prog === 'pp' ? 'План Продюсера' : 'Альянс'} · ${esc(p.clan)} · этап ${esc(p.stage)} · ${esc(LEVELS[p.level])}</div></div>
+      <div class="when">пришло ${dm(i.at)}<br>${['ok','no','back'].includes(i.st) || daysAgo(i.at) < 1 ? '' : waitTxt(i.at)}</div>
+    </div>
+    ${body}
+    ${actions(i)}
+  </article>`;
+}
+
+function renderCheck() {
+  const list = itemsOf(S.group);
+  if (!list.find((i) => i.id === S.sel)) { S.sel = list[0]?.id ?? null; S.returning = false; }
+  const cur = ITEMS.find((i) => i.id === S.sel);
+  const aiN = itemsOf('ai').length;
+  return `<div class="q ${S.open ? 'open' : ''}">
+    <aside class="q-side">
+      <div class="chips" role="group" aria-label="Статус">${Object.keys(GROUP).map((g) => `<button class="chip" data-group="${g}" aria-pressed="${S.group === g}">${GROUP_NAME[g]} <span class="c">${itemsOf(g).length}</span></button>`).join('')}</div>
+      <p class="hint">${esc(GROUP_HINT[S.group])}</p>
+      ${S.group === 'ai' && aiN > 1 ? `<button class="btn sec2 bulk" data-bulk>Подтвердить все ${aiN} по оценке ИИ</button>` : ''}
+      <div class="list">${list.length ? list.map(itemRow).join('') : `<div class="empty"><b>Пусто</b>${S.group === 'mine' ? 'Новых ответов нет.' : 'Здесь ничего нет.'}</div>`}</div>
+    </aside>
+    <section class="q-main">${detail(cur)}</section>
+  </div>`;
+}
+
+const SORTS = {
+  name: (p) => p.name, level: (p) => p.level * 1000 + p.levelPct, rev: (p) => p.rev[2] ?? -1,
+  stage: (p) => STAGES.indexOf(p.stage), tracker: (p) => p.tracker, route: (p) => p.route[0], wait: (p) => waitingOf(p.id) * 1000 - p.tracker,
+};
+function peopleList() {
+  let list = PEOPLE.filter((p) => inProg(p.id));
+  if (S.q) list = list.filter((p) => p.name.toLowerCase().includes(S.q.toLowerCase()));
+  if (S.pf === 'wait') list = list.filter((p) => waitingOf(p.id));
+  if (S.pf === 'risk') list = list.filter((p) => p.risk || p.tracker < 5);
+  const f = SORTS[S.sort];
+  return list.sort((a, b) => { const x = f(a), y = f(b); return (x > y ? 1 : x < y ? -1 : 0) * S.dir; });
+}
+const revCell = (p) => {
+  if (p.rev[2] == null) return '<span style="color:var(--ink3)">не вносит</span>';
+  const t = p.rev[1] ? Math.round((p.rev[2] - p.rev[1]) / p.rev[1] * 100) : null;
+  return rub(p.rev[2]) + (t != null ? `<span class="trend ${t >= 0 ? 'up' : 'down'}">${t >= 0 ? '+' : '−'}${Math.abs(t)}%</span>` : '');
+};
+function renderPeople() {
+  if (S.person) return dossier(P[S.person]);
+  const list = peopleList();
+  const th = (k, t) => `<th><button data-sort="${k}" ${S.sort === k ? `aria-sort="${S.dir > 0 ? 'ascending' : 'descending'}"` : ''}>${t}${S.sort === k ? (S.dir > 0 ? ' ↑' : ' ↓') : ''}</button></th>`;
+  const riskN = PEOPLE.filter((p) => inProg(p.id) && (p.risk || p.tracker < 5)).length;
+  return `<div class="p-tools">
+      <input class="search" type="search" placeholder="Найти по имени" value="${S.q}" id="q" aria-label="Поиск">
+      <div class="chips" style="margin:0">
+        <button class="chip" data-pf="all" aria-pressed="${S.pf === 'all'}">Все</button>
+        <button class="chip" data-pf="wait" aria-pressed="${S.pf === 'wait'}">Ждут решения</button>
+        <button class="chip" data-pf="risk" aria-pressed="${S.pf === 'risk'}">Требуют внимания <span class="c">${riskN}</span></button>
+      </div>
+    </div>
+    <table class="tbl"><thead><tr>${th('name', 'Человек')}${th('level', 'Уровень')}${th('rev', 'Выручка за октябрь')}${th('stage', 'Этап')}${th('tracker', 'Трекер, 14 дней')}${th('route', 'Маршрут')}${th('wait', 'Ждёт')}</tr></thead>
+    <tbody>${list.map((p) => `<tr data-person="${p.id}" tabindex="0">
+      <td><div class="pc"><span class="av sm">${ini(p.name)}</span><div><b>${esc(p.name)}</b><small>${p.prog === 'pp' ? 'ПП' : 'Альянс'} · ${esc(p.clan)}</small></div></div></td>
+      <td>${p.level + 1}. ${LEVELS[p.level]}<br><span class="bar"><i style="width:${p.levelPct}%"></i></span><small style="color:var(--ink3)">${p.levelPct}%</small></td>
+      <td>${revCell(p)}</td>
+      <td>${esc(p.stage)}<br><small style="color:var(--ink3)">уроки ${p.stLessons[0]} из ${p.stLessons[1]}</small></td>
+      <td class="${p.tracker < 5 ? 'warn-t' : ''}">${p.tracker} из 14</td>
+      <td><span class="bar"><i style="width:${Math.round(p.route[0] / p.route[1] * 100)}%"></i></span>${p.route[0]}/${p.route[1]}</td>
+      <td>${waitingOf(p.id) ? `<span class="n">${waitingOf(p.id)}</span>` : ''}</td></tr>`).join('')}</tbody></table>
+    <div class="cards">${list.map((p) => `<button class="pcard" data-person="${p.id}"><span class="av">${ini(p.name)}</span><span class="t"><b>${esc(p.name)}</b><small>${p.level + 1}. ${LEVELS[p.level]} · этап${NB}${esc(p.stage)} · трекер${NB}${p.tracker}/14</small><small>${p.rev[2] != null ? 'Октябрь ' + rub(p.rev[2]) : 'Финансы не вносит'}${p.risk ? ' · <span class="warn-t">' + esc(p.risk) + '</span>' : ''}</small></span>${waitingOf(p.id) ? `<span class="n">${waitingOf(p.id)}</span>` : ''}</button>`).join('')}</div>
+    ${list.length ? '' : '<div class="empty"><b>Никого не нашли</b>Попробуйте другой фильтр.</div>'}`;
+}
+
+function dossier(p) {
+  const wait = ITEMS.filter((i) => i.p === p.id && (GROUP.mine.includes(i.st) || GROUP.ai.includes(i.st)));
+  const hist = ITEMS.filter((i) => i.p === p.id && ['ok', 'no', 'back'].includes(i.st));
+  const maxRev = Math.max(...p.rev.map((v) => v || 0), 1);
+  const ci = STAGES.indexOf(p.stage);
+  return `<p style="margin:0 0 12px"><button class="btn sec2" data-people-back>← Все люди</button></p>
+  <article class="pane">
+    <div class="dos-top"><span class="av lg">${ini(p.name)}</span><div><h2>${esc(p.name)}</h2><div class="sub">${p.prog === 'pp' ? 'План Продюсера' : 'Альянс'} · клан ${esc(p.clan)} · с нами с ${dm(p.since)}</div></div></div>
+    ${p.risk ? `<div class="risk">⚠ ${esc(p.risk)}</div>` : ''}
+    <div class="links"><a href="#" data-ext>Профиль ↗</a><a href="#" data-ext>Финансы ↗</a><a href="#" data-ext>Маршрутная карта ↗</a><a href="#" data-ext>Трекер ↗</a><a href="#" data-ext>Написать в Telegram ↗</a></div>
+    <dl class="kpi">
+      <div><dt>Финансовый уровень</dt><dd>${p.level + 1}. ${LEVELS[p.level]}</dd><div class="prog-l"><i style="width:${p.levelPct}%"></i></div><div class="s">${p.levelPct >= 100 ? 'цель уровня выполнена, ждёт подтверждения' : 'к цели уровня: ' + p.levelPct + '%'}</div></div>
+      <div><dt>Выручка, 3 месяца</dt>${p.rev[2] == null ? '<dd style="color:var(--ink3);font-size:16px">не вносит</dd><div class="s">Точка А не заполнена</div>' : `<dd>${rub(p.rev[2])}</dd><div class="months">${p.rev.map((v, k) => `<div><i style="height:${Math.max(4, Math.round((v || 0) / maxRev * 34))}px"></i>${MONTHS[k]}</div>`).join('')}</div>`}</div>
+      <div><dt>Личный доход, октябрь</dt><dd>${p.pers == null ? '—' : rub(p.pers)}</dd><div class="s">Точка А ${p.pa ? 'заполнена' : 'не заполнена'}</div></div>
+      <div><dt>Этап маршрута</dt><dd>${esc(p.stage)}</dd><div class="s">уроки этапа ${p.stLessons[0]} из ${p.stLessons[1]} · всего ${p.route[0]} из ${p.route[1]}</div></div>
+      <div><dt>Трекер за 14 дней</dt><dd class="${p.tracker < 5 ? 'warn-t' : ''}">${p.tracker} из 14</dd><div class="s">шагов к целям: ${p.steps}</div></div>
+      <div><dt>Цели</dt><dd>${p.wishes}</dd><div class="s">в фокусе: ${p.focus}</div></div>
+    </dl>
+    <div class="sec"><p class="lbl">Маршрут</p><div class="route">${STAGES.map((s, k) => `<span class="${k < ci ? 'd' : k === ci ? 'c' : ''}">${s}</span>`).join('')}</div></div>
+    <div class="sec"><p class="lbl">Ждёт вашего решения ${wait.length ? `<span class="n">${wait.length}</span>` : ''}</p>
+      ${wait.length ? `<div class="mini">${wait.map((i) => `<button data-goto="${i.id}"><span class="tag k-${i.kind}">${KIND[i.kind]}</span>${esc(i.lesson)}<span class="go">Проверить →</span></button>`).join('')}</div>` : '<p class="task">Ничего не ждёт.</p>'}</div>
+    <div class="sec"><p class="lbl">История решений</p>
+      ${hist.length ? `<ul class="hist">${hist.map((i) => `<li><span class="tag ${i.st === 'ok' ? 'ok' : 'back'}">${i.st === 'ok' ? 'Принято' + (i.stars ? ' · ' + i.stars + '★' : '') : i.st === 'back' ? 'Вернули' : 'Не принято'}</span>${esc(i.lesson)}<span class="d">${dm(i.decidedAt || i.backAt)}</span></li>`).join('')}</ul>` : '<p class="task">Решений пока не было.</p>'}</div>
+  </article>`;
+}
+
+function render() {
+  document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', t.dataset.tab === S.tab));
+  document.querySelectorAll('[data-prog]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.prog === S.prog));
+  counts();
+  document.getElementById('app').innerHTML = S.tab === 'check' ? renderCheck() : renderPeople();
+}
+
+function toast(text, undo) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-t').textContent = text;
+  document.getElementById('toast-u').style.display = undo ? '' : 'none';
+  lastUndo = undo || null;
+  t.classList.add('on');
+  clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 5000);
+}
+document.getElementById('toast-u').onclick = () => { if (lastUndo) { lastUndo(); lastUndo = null; render(); } document.getElementById('toast').classList.remove('on'); };
+
+function decide(i, ok, comment) {
+  const prev = { st: i.st, stars: i.stars, decidedAt: i.decidedAt, backAt: i.backAt, comment: i.comment };
+  const g = S.group;
+  const list = itemsOf(g); const idx = list.findIndex((x) => x.id === i.id);
+  if (ok) { i.st = 'ok'; i.stars = i.kind === 'hw' ? (S.pick[i.id] ?? i.ai) : null; i.decidedAt = TODAY.toISOString(); }
+  else if (i.kind === 'hw' || i.kind === 'pearl' || i.kind === 'zv') { i.st = 'back'; i.backAt = TODAY.toISOString(); i.comment = comment; }
+  else { i.st = 'no'; i.decidedAt = TODAY.toISOString(); i.comment = comment; }
+  S.returning = false;
+  const rest = itemsOf(g);
+  S.sel = rest[Math.min(idx, rest.length - 1)]?.id ?? null;
+  if (!S.sel) S.open = false;
+  const name = P[i.p].name.split(' ')[0];
+  toast(ok ? `Принято. ${name} получит уведомление` : `Вернули. ${name} получит комментарий`, () => { Object.assign(i, prev); S.sel = i.id; });
+  render();
+}
+
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('button, a, tr[data-person]');
+  if (!el) return;
+  if (el.matches('[data-ext]')) { e.preventDefault(); toast('В рабочей версии откроется настоящая страница'); return; }
+  if (el.dataset.tab) { S.tab = el.dataset.tab; S.person = null; S.open = false; render(); window.scrollTo(0, 0); return; }
+  if (el.dataset.prog) { S.prog = el.dataset.prog; S.sel = null; render(); return; }
+  if (el.dataset.group) { S.group = el.dataset.group; S.sel = null; S.returning = false; render(); return; }
+  if (el.dataset.item) { S.sel = el.dataset.item; S.open = true; S.returning = false; render(); if (innerWidth <= 960) window.scrollTo(0, 0); return; }
+  if (el.matches('[data-back]')) { S.open = false; render(); return; }
+  if (el.dataset.person) { S.tab = 'people'; S.person = el.dataset.person; render(); window.scrollTo(0, 0); return; }
+  if (el.matches('[data-people-back]')) { S.person = null; render(); return; }
+  if (el.dataset.goto) { const i = ITEMS.find((x) => x.id === el.dataset.goto); S.tab = 'check'; S.group = Object.keys(GROUP).find((g) => GROUP[g].includes(i.st)); S.sel = i.id; S.open = true; render(); window.scrollTo(0, 0); return; }
+  if (el.dataset.sort) { const k = el.dataset.sort; S.dir = S.sort === k ? -S.dir : (k === 'name' ? 1 : -1); S.sort = k; render(); return; }
+  if (el.dataset.pf) { S.pf = el.dataset.pf; render(); return; }
+  const cur = ITEMS.find((i) => i.id === S.sel);
+  if (el.dataset.star && cur) { const n = +el.dataset.star; S.pick[cur.id] = (S.pick[cur.id] ?? cur.ai) === n ? n - 1 : n; render(); return; }
+  if (el.dataset.do === 'yes' && cur) { decide(cur, true); return; }
+  if (el.dataset.do === 'ret') { S.returning = true; render(); document.getElementById('ret-t')?.focus(); return; }
+  if (el.dataset.do === 'cancel') { S.returning = false; render(); return; }
+  if (el.dataset.do === 'return' && cur) { decide(cur, false, document.getElementById('ret-t').value.trim()); return; }
+  if (el.dataset.undoItem) { const i = ITEMS.find((x) => x.id === el.dataset.undoItem); i.st = i.ai ? 'ai' : 'new'; S.group = i.ai ? 'ai' : 'mine'; S.sel = i.id; toast('Решение отменено, задание снова ждёт проверки'); render(); return; }
+  if (el.dataset.remind) { toast('Напоминание уйдёт человеку в Telegram'); return; }
+  if (el.matches('[data-bulk]')) {
+    const list = itemsOf('ai'); const saved = list.map((i) => ({ i, st: i.st }));
+    list.forEach((i) => { i.st = 'ok'; i.stars = i.ai; i.decidedAt = TODAY.toISOString(); });
+    S.sel = null; toast(`Подтверждено ${list.length} по оценке ИИ`, () => saved.forEach(({ i, st }) => { i.st = st; i.stars = null; }));
+    render(); return;
+  }
+});
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'ret-t') document.querySelector('[data-do="return"]').disabled = e.target.value.trim().length < 2;
+  if (e.target.id === 'q') { S.q = e.target.value; const pos = e.target.selectionStart; render(); const q = document.getElementById('q'); q.focus(); q.setSelectionRange(pos, pos); }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.target.matches('tr[data-person]')) { S.person = e.target.dataset.person; render(); }
+});
+render();
+</script>
+</body>
+</html>
