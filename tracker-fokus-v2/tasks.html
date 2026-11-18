@@ -173,7 +173,7 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 .inv .acts .yes { background: var(--navy); color: var(--cream); }
 .inv .acts .no { background: var(--tile); }
 
-#toast { position: fixed; left: 50%; bottom: 110px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--navy); color: var(--cream); font-size: 14px; padding: 12px 18px; border-radius: 14px; box-shadow: 0 12px 30px rgba(20,34,70,.25); transition: opacity .25s, transform .35s var(--ease); display: flex; gap: 14px; align-items: center; z-index: 70; }
+#toast { position: fixed; left: 50%; bottom: 110px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--navy); color: var(--cream); font-size: 14px; padding: 12px 18px; border-radius: 14px; box-shadow: 0 12px 30px rgba(20,34,70,.25); transition: opacity .25s, transform .35s var(--ease); display: flex; gap: 14px; align-items: center; z-index: 90; }
 #toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 #toast button { color: var(--yellow); font-weight: 650; }
 
@@ -217,6 +217,121 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 
+/* ---------- окно задачи: шторка справа ---------- */
+.scrim { position: fixed; inset: 0; z-index: 80; background: rgba(14,22,48,.22); opacity: 0; pointer-events: none; transition: opacity .3s var(--ease); }
+.scrim.on { opacity: 1; pointer-events: auto; }
+.pane { position: fixed; z-index: 81; top: 12px; right: 12px; bottom: 12px; width: min(520px, calc(100vw - 24px)); border-radius: 28px; display: flex; flex-direction: column; overflow: hidden; transform: translateX(calc(100% + 24px)); transition: transform .45s var(--ease); background: oklch(0.985 0.008 85 / .94); border: 1px solid var(--glass-b); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); box-shadow: 0 30px 80px rgba(14,22,48,.28); }
+.pane.on { transform: none; }
+.pane .ph { display: flex; align-items: center; gap: 8px; padding: 16px 16px 0 22px; }
+.pane .ph .src { font-size: 12px; font-weight: 650; padding: 4px 10px; border-radius: 999px; background: oklch(0.22 0.13 268 / .07); color: var(--navy); }
+.pane .ph .src.crm { background: oklch(0.94 0.05 75); color: oklch(0.45 0.12 60); }
+.pane .ph .ib { margin-left: auto; display: flex; gap: 4px; }
+.pane .ph .ib button { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: var(--ink2); transition: background .2s, color .2s; }
+.pane .ph .ib button:hover { background: var(--tile); color: var(--ink); }
+.pane .ph .ib svg { width: 18px; height: 18px; }
+.pane .pb { flex: 1; overflow-y: auto; padding: 10px 22px 24px; scrollbar-width: thin; }
+.pane h2 { margin: 4px 0 0; font-size: 24px; line-height: 1.22; font-weight: 750; color: var(--navy); letter-spacing: -.015em; text-wrap: balance; }
+.pane.done h2 { color: var(--ink2); text-decoration: line-through; text-decoration-thickness: 2px; }
+.pane .facts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.pane .fact { height: 34px; padding: 0 12px; border-radius: 11px; background: var(--tile); font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 7px; }
+.pane .fact svg { width: 15px; height: 15px; color: var(--ink2); }
+.pane .fact.ov { color: var(--red); } .pane .fact.ov svg { color: var(--red); }
+.pane .fact.today { color: oklch(0.52 0.14 60); }
+.pane .fact i { width: 9px; height: 9px; border-radius: 50%; background: var(--sc); }
+.pane .blk { margin-top: 22px; }
+.pane .blk > h5 { margin: 0 0 9px; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink2); }
+.pane .blk > h5 em { font-style: normal; font: 400 16px/1 "Bebas", sans-serif; letter-spacing: .02em; color: var(--ink); padding-top: 2px; }
+.pane .blk > h5 button { margin-left: auto; text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 650; color: var(--navy); height: 30px; padding: 0 10px; border-radius: 9px; }
+.pane .blk > h5 button:hover { background: var(--tile); }
+/* квадрант */
+.qseg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; border-radius: 15px; background: var(--tile); }
+.qseg button { min-height: 44px; border-radius: 11px; font-size: 12px; font-weight: 650; line-height: 1.2; padding: 4px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink2); transition: background .2s, color .2s, box-shadow .2s; }
+.qseg button i { width: 8px; height: 8px; border-radius: 50%; background: var(--qc); }
+.qseg button:hover { color: var(--ink); }
+.qseg button.on { background: var(--card); color: var(--ink); box-shadow: 0 2px 10px rgba(20,34,70,.1), inset 0 0 0 1.5px var(--qc); }
+/* статус */
+.st { display: flex; gap: 4px; flex-wrap: wrap; }
+.st button { height: 34px; padding: 0 12px; border-radius: 10px; font-size: 13px; font-weight: 600; background: var(--tile); color: var(--ink2); }
+.st button.on { background: var(--navy); color: var(--cream); }
+.st button:disabled { opacity: .45; cursor: default; }
+.pane .note { margin: 7px 0 0; font-size: 12.5px; color: var(--ink2); }
+.pane .desc { font-size: 15px; line-height: 1.55; margin: 0; }
+.pane .desc.empty { color: var(--ink2); }
+/* подзадачи */
+.prog { height: 6px; border-radius: 3px; background: var(--tile); overflow: hidden; margin-bottom: 8px; }
+.prog b { display: block; height: 100%; width: var(--p); background: oklch(0.55 0.14 150); border-radius: 3px; transition: width .5s var(--ease); }
+.subs { display: flex; flex-direction: column; }
+.subs label { display: flex; align-items: center; gap: 11px; min-height: 42px; padding: 4px 6px; border-radius: 11px; font-size: 14.5px; cursor: pointer; }
+.subs label:hover { background: var(--tile); }
+.subs input { width: 20px; height: 20px; accent-color: oklch(0.55 0.14 150); flex: none; }
+.subs label.on span { color: var(--ink2); text-decoration: line-through; }
+.subs label .x { margin-left: auto; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; color: var(--ink2); opacity: 0; }
+.subs label:hover .x { opacity: 1; }
+.subs label .x svg { width: 14px; height: 14px; }
+.inl { display: flex; gap: 6px; margin-top: 6px; }
+.inl input { flex: 1; min-width: 0; height: 42px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); padding: 0 12px; font-size: 14px; outline: none; }
+.inl input:focus { border-color: var(--navy); }
+.inl button { height: 42px; padding: 0 14px; border-radius: 12px; background: var(--tile); font-weight: 650; font-size: 13.5px; }
+/* участники */
+.ppl { display: flex; flex-direction: column; gap: 2px; }
+.ppl .p { display: flex; align-items: center; gap: 11px; min-height: 46px; padding: 4px 6px; border-radius: 12px; }
+.ppl .p i { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-style: normal; font-weight: 700; font-size: 13px; flex: none; }
+.ppl .p b { font-size: 14.5px; font-weight: 620; display: block; }
+.ppl .p small { font-size: 12.5px; color: var(--ink2); }
+.roles { display: none; margin-top: 8px; gap: 6px; flex-direction: column; padding: 10px; border-radius: 16px; background: var(--tile); }
+.roles.on { display: flex; animation: min .25s var(--ease); }
+.roles .inl { margin: 0 0 4px; }
+.roles button.r { text-align: left; padding: 10px 12px; border-radius: 12px; background: var(--card); display: flex; flex-direction: column; gap: 1px; transition: box-shadow .2s; }
+.roles button.r:hover { box-shadow: inset 0 0 0 1.5px var(--navy); }
+.roles button.r b { font-size: 14px; font-weight: 650; }
+.roles button.r small { font-size: 12.5px; color: var(--ink2); }
+/* обсуждение */
+.coms { display: flex; flex-direction: column; gap: 12px; }
+.cm { display: grid; grid-template-columns: 32px 1fr; gap: 10px; }
+.cm > i { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-style: normal; font-weight: 700; font-size: 12px; }
+.cm .bub { background: var(--card); border: 1px solid var(--line); border-radius: 4px 16px 16px 16px; padding: 9px 12px; font-size: 14.5px; }
+.cm .bub .w { display: flex; gap: 8px; align-items: baseline; font-size: 12.5px; margin-bottom: 2px; }
+.cm .bub .w b { font-weight: 650; } .cm .bub .w span { color: var(--ink2); }
+.cm.me .bub { background: oklch(0.22 0.13 268 / .06); }
+.voice { display: flex; align-items: center; gap: 10px; margin-top: 2px; }
+.voice button { width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: var(--cream); display: grid; place-items: center; flex: none; }
+.voice button svg { width: 14px; height: 14px; }
+.voice .wave { flex: 1; height: 26px; display: flex; align-items: center; gap: 2px; }
+.voice .wave s { flex: 1; border-radius: 2px; background: oklch(0.22 0.13 268 / .28); text-decoration: none; }
+.voice .wave s.p { background: var(--navy); }
+.voice em { font-style: normal; font-size: 12px; color: var(--ink2); font-variant-numeric: tabular-nums; }
+.shot { margin-top: 6px; display: block; width: 100%; max-width: 240px; aspect-ratio: 16/10; border-radius: 12px; background: linear-gradient(135deg, oklch(0.9 0.04 250), oklch(0.85 0.06 80)); position: relative; overflow: hidden; }
+.shot::after { content: "скриншот.png · 240 КБ"; position: absolute; left: 8px; bottom: 8px; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 8px; background: rgba(255,255,255,.85); color: var(--ink); }
+.cempty { font-size: 14px; color: var(--ink2); margin: 0; }
+/* низ шторки: поле сообщения и главная кнопка */
+.pf { border-top: 1px solid var(--line); padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 10px; background: oklch(0.985 0.008 85 / .7); }
+.comp { display: flex; align-items: flex-end; gap: 4px; border-radius: 16px; border: 1px solid var(--line); background: var(--card); padding: 4px 4px 4px 14px; }
+.comp:focus-within { border-color: var(--navy); }
+.comp textarea { flex: 1; min-width: 0; border: 0; outline: none; background: none; resize: none; font-size: 14.5px; line-height: 1.4; padding: 9px 0; max-height: 120px; }
+.comp button { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: var(--ink2); flex: none; transition: background .2s, color .2s; }
+.comp button:hover { background: var(--tile); color: var(--ink); }
+.comp button svg { width: 18px; height: 18px; }
+.comp button.send { background: var(--navy); color: var(--cream); }
+.comp button.send:disabled { opacity: .3; cursor: default; }
+.comp button.rec { color: var(--red); background: oklch(0.58 0.19 25 / .1); animation: rec 1.2s ease-in-out infinite; }
+@keyframes rec { 50% { box-shadow: 0 0 0 5px oklch(0.58 0.19 25 / .12); } }
+.pf .hint2 { font-size: 11.5px; color: var(--ink2); margin: -4px 0 0 4px; }
+.pf .main { height: 50px; border-radius: 15px; background: var(--navy); color: var(--cream); font-weight: 750; font-size: 15.5px; display: flex; align-items: center; justify-content: center; gap: 9px; transition: transform .25s var(--ease), background .25s; }
+.pf .main:hover { transform: translateY(-1px); }
+.pf .main svg { width: 18px; height: 18px; }
+.pf .main.back { background: var(--tile); color: var(--ink); }
+.pf .main.wait { background: oklch(0.94 0.05 75); color: oklch(0.45 0.12 60); cursor: default; transform: none; }
+@media (max-width: 760px) {
+  .pane { top: auto; right: 0; left: 0; bottom: 0; width: 100%; height: calc(100dvh - 28px); border-radius: 26px 26px 0 0; transform: translateY(102%); }
+  .pane::before { content: ""; position: absolute; top: 7px; left: 50%; width: 40px; height: 5px; margin-left: -20px; border-radius: 3px; background: oklch(0.22 0.03 268 / .18); }
+  .pane .ph { padding: 18px 10px 0 16px; }
+  .pane .pb { padding: 8px 16px 20px; }
+  .pane h2 { font-size: 21px; }
+  .qseg button { font-size: 11px; min-height: 48px; }
+  .subs label .x { opacity: 1; }
+  .pf { padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); }
+}
+
 /* ---------- тёмный вариант для кабинета ПП (?theme=pp) ---------- */
 body.pp {
   --navy: #1A1406; --yellow: #F0D080; --gold2: #CCA830; --red: #FF8A7A; --violet: oklch(0.75 0.12 300);
@@ -253,6 +368,30 @@ body.pp .fold > button:hover { background: rgba(255,255,255,.04); }
 body.pp .fold.d .ic { color: oklch(0.75 0.15 150); }
 body.pp #toast { background: #1E2B3C; box-shadow: 0 12px 30px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.08); }
 body.pp .menu button:hover { background: rgba(255,255,255,.06); }
+body.pp .scrim { background: rgba(0,0,0,.45); }
+body.pp .pane { background: rgba(17,25,36,.95); box-shadow: 0 30px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.06); }
+body.pp .pane h2 { color: var(--ink); }
+body.pp .pane .ph .src { background: rgba(143,179,255,.13); color: oklch(0.82 0.08 250); }
+body.pp .pane .ph .src.crm { background: rgba(240,208,128,.13); color: var(--yellow); }
+body.pp .pane .fact.today { color: var(--yellow); }
+body.pp .qseg button.on { background: #22324A; box-shadow: inset 0 0 0 1.5px var(--qc); }
+body.pp .st button.on { background: var(--yellow); color: #1A1406; }
+body.pp .pane .blk > h5 button { color: var(--yellow); }
+body.pp .subs input { accent-color: oklch(0.72 0.15 150); }
+body.pp .prog b { background: oklch(0.72 0.15 150); }
+body.pp .inl input, body.pp .comp { background: #1A2636; }
+body.pp .inl input:focus, body.pp .comp:focus-within { border-color: var(--yellow); }
+body.pp .roles button.r { background: #1A2636; } body.pp .roles button.r:hover { box-shadow: inset 0 0 0 1.5px var(--yellow); }
+body.pp .cm .bub { background: #1A2636; } body.pp .cm.me .bub { background: rgba(240,208,128,.08); border-color: rgba(240,208,128,.14); }
+body.pp .voice button { background: var(--yellow); color: #1A1406; }
+body.pp .voice .wave s { background: rgba(255,255,255,.22); } body.pp .voice .wave s.p { background: var(--yellow); }
+body.pp .shot { background: linear-gradient(135deg, #2A3B55, #4A3F22); }
+body.pp .shot::after { background: rgba(13,17,23,.8); color: var(--ink); }
+body.pp .pf { background: rgba(13,17,23,.5); }
+body.pp .comp button.send, body.pp .pf .main { background: linear-gradient(135deg, var(--yellow), var(--gold2)); color: #1A1406; }
+body.pp .pf .main.back { background: var(--tile); color: var(--ink); }
+body.pp .pf .main.wait { background: rgba(240,208,128,.12); color: var(--yellow); }
+body.pp .pane::before { background: rgba(255,255,255,.2); }
 @media (max-width: 760px) {
   body.pp .tabs button[aria-selected="true"] { background: var(--yellow); color: var(--navy); border-color: var(--yellow); }
   body.pp .tabs button[aria-selected="true"] em { color: var(--navy); }
@@ -295,6 +434,8 @@ body.pp .menu button:hover { background: rgba(255,255,255,.06); }
 
 <div class="menu glass" id="menu"></div>
 <div id="toast"><span id="toastT"></span><button id="toastU">Вернуть</button></div>
+<div class="scrim" id="scrim"></div>
+<aside class="pane" id="pane" role="dialog" aria-modal="true" aria-labelledby="pTitle"></aside>
 
 <div class="demo">
   <div><button data-v="a">А · Матрица</button><button data-v="b">Б · Сегодня + доска</button></div>
@@ -366,7 +507,7 @@ body.pp .menu button:hover { background: rgba(255,255,255,.06); }
       <button class="ck" data-ck aria-label="${t.done ? 'Вернуть в работу' : 'Сделано'}">${CHECK}</button>
       <div class="body" data-open><div class="tt">${t.t}</div>${meta(t) ? `<div class="meta">${meta(t)}</div>` : ''}</div>
       <button class="mv" data-mv aria-label="Перенести">${SVG.mv}</button>
-      <div class="more">${t.desc ? `<p>${t.desc}</p>` : ''}${subs}<div class="row">${moves}<button class="ghost">Открыть целиком</button></div></div>
+      <div class="more">${t.desc ? `<p>${t.desc}</p>` : ''}${subs}<div class="row">${moves}<button class="ghost" data-full>Открыть целиком</button></div></div>
     </div>`;
   }
 
@@ -421,9 +562,119 @@ body.pp .menu button:hover { background: rgba(255,255,255,.06); }
     if (el && !RM && !t.done) { el.classList.add('gone'); setTimeout(fin, 420); } else fin();
   }
 
+  // ---------- окно задачи (шторка) ----------
+  const PI = {
+    x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    pen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg>',
+    clip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 11-8.5 8.5a5 5 0 0 1-7-7L14 4a3.3 3.3 0 0 1 4.7 4.7L10.2 17a1.7 1.7 0 0 1-2.4-2.4L15.5 7"/></svg>',
+    mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+    send: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7Z"/></svg>',
+    sphere: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
+  };
+  const ROLE = { co: ['Соисполнитель', 'делает вместе с тобой'], obs: ['Наблюдатель', 'видит ход и пишет в обсуждении'], del: ['Делегировать', 'задача уходит к нему, ты остаёшься автором'] };
+  const PEOPLE = { О: 'Ольга Ветрова', И: 'Игорь Граф', М: 'Марина Лебедева', А: 'Анна Смирнова', Я: 'Ты' };
+  AV['Я'] = 'oklch(0.45 0.13 268)';
+  // доп. данные для окна
+  Object.assign(find(3), { sphere: ['Бизнес', 'oklch(0.55 0.14 250)'], people: [['О', 'co']], st: 'in_progress',
+    coms: [{ w: 'О', ago: 'вчера, 19:40', t: 'Прогрев пишу я, к четвергу пришлю первые два письма.' }, { w: 'Я', ago: 'вчера, 21:05', voice: '0:42' }] });
+  Object.assign(find(4), { sphere: ['Бизнес', 'oklch(0.55 0.14 250)'], st: 'new',
+    coms: [{ w: 'И', ago: 'сегодня, 10:12', t: 'Цифры возьми из её отчёта в Финансах, не из анкеты. Пример оформления ниже.', shot: true }] });
+  Object.assign(find(7), { people: [['М', 'obs']] });
+  let paneId = null, recOn = false, recT = 0;
+
+  function paneHTML(t) {
+    const mentor = t.from === 'mentor';
+    const st = t.done ? 'done' : (t.st || 'new');
+    const src = mentor ? `<span class="src">от наставника · ${t.mentor}</span>` : t.from === 'crm' ? '<span class="src crm">из CRM</span>' : '<span class="src">Моя задача</span>';
+    const dl = t.d == null ? `<button class="fact" data-p="date">${SVG.cal}Без срока</button>`
+      : `<button class="fact ${t.d < 0 && !t.done ? 'ov' : t.d === 0 ? 'today' : ''}" data-p="date">${SVG.cal}${t.d < 0 ? 'просрочено · ' : ''}${dlTxt(t.d)}</button>`;
+    const sph = t.sphere ? `<button class="fact" data-p="sphere" style="--sc:${t.sphere[1]}"><i></i>${t.sphere[0]}</button>` : `<button class="fact" data-p="sphere">${PI.sphere}Сфера</button>`;
+    const sts = [['new', 'Новая'], ['in_progress', 'В работе'], mentor ? ['pending_approval', 'На проверке'] : ['done', 'Готово']];
+    const subs = t.sub || [];
+    const sd = subs.filter(s => s[1]).length;
+    const people = [['Я', mentor ? 'me-m' : 'me'], ...(mentor ? [['И', 'author']] : []), ...(t.people || [])];
+    const roleTxt = r => r === 'me' ? 'автор' : r === 'me-m' ? 'исполнитель' : r === 'author' ? 'поставил задачу, принимает работу' : ROLE[r][0].toLowerCase();
+    const coms = t.coms || [];
+    const main = t.done ? `<button class="main back" data-p="undone">Вернуть в работу</button>`
+      : st === 'pending_approval' ? `<div class="main wait">На проверке у наставника</div>`
+      : mentor ? `<button class="main" data-p="approve">${PI.send}Отправить на проверку</button>`
+      : `<button class="main" data-p="done">${CHECK}Сделано</button>`;
+    return `
+      <div class="ph">${src}<div class="ib"><button data-p="edit" aria-label="Редактировать">${PI.pen}</button><button data-p="close" aria-label="Закрыть">${PI.x}</button></div></div>
+      <div class="pb">
+        <h2 id="pTitle">${t.t}</h2>
+        <div class="facts">${dl}${sph}</div>
+        <div class="blk"><h5>Где задача</h5><div class="qseg">${Q.map(q => `<button data-q="${q.k}" class="${t.b === q.k ? 'on' : ''}" style="--qc:var(--${q.k})"><i></i>${q.k === 'q4' ? 'Список' : q.t.replace(', но', ',').replace(' и ', ' и&nbsp;')}</button>`).join('')}</div></div>
+        <div class="blk"><h5>Статус</h5><div class="st">${sts.map(([k, l]) => `<button data-st="${k}" class="${st === k || (st === 'done' && k === 'done') ? 'on' : ''}" ${t.done ? 'disabled' : ''}>${l}</button>`).join('')}</div>${mentor ? '<p class="note">Готовой задачу отмечает наставник, когда примет работу.</p>' : ''}</div>
+        <div class="blk"><h5>Описание<button data-p="edit">Изменить</button></h5><p class="desc ${t.desc ? '' : 'empty'}">${t.desc || 'Нажми «Изменить», чтобы расписать, что именно нужно сделать.'}</p></div>
+        <div class="blk"><h5>Подзадачи ${subs.length ? `<em>${sd}/${subs.length}</em>` : ''}</h5>
+          ${subs.length ? `<div class="prog" style="--p:${Math.round(sd / subs.length * 100)}%"><b></b></div>` : ''}
+          <div class="subs">${subs.map((s, i) => `<label class="${s[1] ? 'on' : ''}"><input type="checkbox" data-ps="${i}" ${s[1] ? 'checked' : ''}><span>${s[0]}</span><button class="x" data-psx="${i}" aria-label="Удалить подзадачу">${PI.x}</button></label>`).join('')}</div>
+          <form class="inl" data-psadd><input placeholder="Новая подзадача" autocomplete="off"><button>Добавить</button></form></div>
+        <div class="blk"><h5>Участники<button data-p="invite">Позвать</button></h5>
+          <div class="ppl">${people.map(([w, r]) => `<div class="p"><i style="background:${AV[w]}">${w}</i><div><b>${PEOPLE[w]}</b><small>${roleTxt(r)}</small></div></div>`).join('')}</div>
+          <div class="roles" id="roles"><form class="inl" onsubmit="return false"><input id="whoIn" placeholder="Имя участника Альянса" value="Анна Смирнова" autocomplete="off"></form>
+            ${Object.entries(ROLE).map(([k, [a, b]]) => `<button class="r" data-role="${k}"><b>${a}</b><small>${b}</small></button>`).join('')}</div></div>
+        <div class="blk"><h5>Обсуждение ${coms.length ? `<em>${coms.length}</em>` : ''}</h5>
+          <div class="coms">${coms.length ? coms.map(c => `<div class="cm ${c.w === 'Я' ? 'me' : ''}"><i style="background:${AV[c.w]}">${c.w}</i><div class="bub"><div class="w"><b>${PEOPLE[c.w]}</b><span>${c.ago}</span></div>${c.t ? `<div>${c.t}</div>` : ''}${c.voice ? `<div class="voice"><button aria-label="Слушать">${PI.play}</button><span class="wave">${Array.from({ length: 28 }, (_, i) => `<s class="${i < 9 ? 'p' : ''}" style="height:${30 + Math.round(Math.abs(Math.sin(i * 1.7)) * 70)}%"></s>`).join('')}</span><em>${c.voice}</em></div>` : ''}${c.shot ? '<span class="shot"></span>' : ''}</div></div>`).join('') : '<p class="cempty">Пока пусто. Напиши, запиши голосовое или вставь скриншот.</p>'}</div></div>
+      </div>
+      <div class="pf">
+        <div class="comp"><textarea id="comIn" rows="1" placeholder="Написать в обсуждение…"></textarea><button data-p="clip" aria-label="Прикрепить файл">${PI.clip}</button><button data-p="mic" class="${recOn ? 'rec' : ''}" aria-label="${recOn ? 'Остановить запись' : 'Голосовое'}">${PI.mic}</button><button class="send" data-p="send" disabled aria-label="Отправить">${PI.send}</button></div>
+        <p class="hint2">Скриншот можно вставить через ⌘V</p>
+        ${main}
+      </div>`;
+  }
+  function paintPane(keepScroll) {
+    const t = find(paneId); if (!t) return;
+    const pb = $('#pane .pb'), y = pb ? pb.scrollTop : 0;
+    $('#pane').innerHTML = paneHTML(t); $('#pane').classList.toggle('done', !!t.done);
+    if (keepScroll) $('#pane .pb').scrollTop = y;
+  }
+  function openFull(id) {
+    paneId = +id; recOn = false; paintPane();
+    $('#pane').classList.add('on'); $('#scrim').classList.add('on');
+    setTimeout(() => $('#pane [data-p="close"]')?.focus(), 50);
+  }
+  function closeFull() { $('#pane').classList.remove('on'); $('#scrim').classList.remove('on'); paneId = null; render(); }
+  function addCom(c) { const t = find(paneId); (t.coms = t.coms || []).push({ w: 'Я', ago: 'только что', ...c }); paintPane(); const pb = $('#pane .pb'); pb.scrollTop = pb.scrollHeight; }
+  $('#scrim').onclick = closeFull;
+  addEventListener('keydown', e => { if (e.key === 'Escape' && paneId) closeFull(); });
+  $('#pane').addEventListener('click', e => {
+    const t = find(paneId); if (!t) return;
+    const p = e.target.closest('[data-p]')?.dataset.p;
+    const q = e.target.closest('[data-q]'); if (q) { if (q.dataset.q !== t.b) { move(t, q.dataset.q); paintPane(true); } return; }
+    const s = e.target.closest('[data-st]'); if (s) { t.st = s.dataset.st; if (s.dataset.st === 'done') { complete(t); } paintPane(true); return; }
+    const sx = e.target.closest('[data-psx]'); if (sx) { e.preventDefault(); const was = t.sub.splice(+sx.dataset.psx, 1)[0]; paintPane(true); toast('Подзадача удалена', () => { t.sub.splice(+sx.dataset.psx, 0, was); paintPane(true); }); return; }
+    const ps = e.target.closest('[data-ps]'); if (ps) { t.sub[+ps.dataset.ps][1] = ps.checked ? 1 : 0; paintPane(true); return; }
+    const r = e.target.closest('[data-role]'); if (r) { const k = r.dataset.role; (t.people = t.people || []).push(['А', k]); paintPane(true); toast(k === 'del' ? 'Задача передана Анне Смирновой, ты остаёшься автором' : `Анна Смирнова — ${ROLE[k][0].toLowerCase()}. Ей придёт приглашение`); return; }
+    if (p === 'close') closeFull();
+    else if (p === 'invite') { $('#roles').classList.toggle('on'); }
+    else if (p === 'done') { complete(t); closeFull(); }
+    else if (p === 'undone') { complete(t); paintPane(true); }
+    else if (p === 'approve') { t.st = 'pending_approval'; paintPane(true); toast('Отправлено Игорю Графу на проверку'); }
+    else if (p === 'edit') toast('Название, описание и срок правятся прямо здесь, в живой версии');
+    else if (p === 'date') toast('Откроется календарь со сроком');
+    else if (p === 'sphere') toast('Откроется выбор сферы: Бизнес, Здоровье, Семья…');
+    else if (p === 'clip') addCom({ shot: true });
+    else if (p === 'mic') { if (!recOn) { recOn = true; recT = Date.now(); paintPane(true); } else { recOn = false; const s2 = Math.max(1, Math.round((Date.now() - recT) / 1000)); addCom({ voice: `0:${String(s2).padStart(2, '0')}` }); } }
+    else if (p === 'send') { const v = $('#comIn').value.trim(); if (v) addCom({ t: v.replace(/</g, '&lt;') }); }
+  });
+  $('#pane').addEventListener('input', e => { if (e.target.id === 'comIn') { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; $('#pane .send').disabled = !e.target.value.trim(); } });
+  $('#pane').addEventListener('keydown', e => { if (e.target.id === 'comIn' && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#pane .send').click(); } });
+  $('#pane').addEventListener('paste', e => { if (e.target.id === 'comIn' && [...(e.clipboardData?.items || [])].some(i => i.type.startsWith('image/'))) { e.preventDefault(); addCom({ shot: true }); } });
+  $('#pane').addEventListener('submit', e => { if (e.target.matches('[data-psadd]')) { e.preventDefault(); const i = e.target.querySelector('input'), v = i.value.trim(); if (!v) return; const t = find(paneId); (t.sub = t.sub || []).push([v, 0]); paintPane(true); $('#pane [data-psadd] input').focus(); } });
+  // телефон: шторку можно смахнуть вниз за верх
+  let sy = null;
+  $('#pane').addEventListener('touchstart', e => { if (e.target.closest('.ph')) sy = e.touches[0].clientY; }, { passive: true });
+  $('#pane').addEventListener('touchmove', e => { if (sy == null) return; const dy = Math.max(0, e.touches[0].clientY - sy); $('#pane').style.transform = `translateY(${dy}px)`; }, { passive: true });
+  $('#pane').addEventListener('touchend', e => { if (sy == null) return; const dy = e.changedTouches[0].clientY - sy; sy = null; $('#pane').style.transform = ''; if (dy > 90) closeFull(); });
+
   // клики
   document.addEventListener('click', e => {
+    if (e.target.closest('#pane')) return;
     const tEl = e.target.closest('.t'), tc = e.target.closest('.tcard');
+    if (e.target.closest('[data-full]') && tEl) { openFull(tEl.dataset.id); return; }
     if (e.target.closest('[data-tdone]') && tc) { complete(find(tc.dataset.id), tc); return; }
     if (e.target.closest('[data-ck]') && tEl) { const t = find(tEl.dataset.id); if (!t.done && !RM) { tEl.querySelector('.ck::before'); } complete(t); return; }
     if (e.target.closest('[data-mv]') && tEl) { openMenu(find(tEl.dataset.id), e.target.closest('[data-mv]')); return; }
