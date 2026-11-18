@@ -490,7 +490,7 @@
   // демо-панель
   const href = (p, extra = {}) => { const qq = new URLSearchParams(); const n = 'n' in extra ? extra.n : (MANY ? 'many' : ''); const th = 'theme' in extra ? extra.theme : (DARK ? 'dark' : ''); if (n) qq.set('n', n); if (th) qq.set('theme', th); const s = qq.toString(); return 'wishes-' + p + '.html' + (s ? '?' + s : ''); };
   const bar = document.createElement('nav'); bar.className = 'demo'; bar.setAttribute('aria-label', 'Варианты прототипа');
-  bar.innerHTML = `<div>${[['a', 'А'], ['b', 'Б'], ['c', 'В'], ['d', 'Г · Полки + Карта']].map(([p, l]) => `<a href="${href(p)}" class="${p === 'd' ? 'on' : ''}">${l}</a>`).join('')}</div>
+  bar.innerHTML = `<div>${[['a', 'А'], ['b', 'Б'], ['c', 'В'], ['d', 'Г · Полки + Карта'], ['e', 'Д']].map(([p, l]) => `<a href="${href(p)}" class="${p === 'd' ? 'on' : ''}">${l}</a>`).join('')}</div>
     <div><a href="${href('d', { n: '' })}" class="${!MANY ? 'on' : ''}">10 целей</a><a href="${href('d', { n: 'many' })}" class="${MANY ? 'on' : ''}">Сотни</a></div>
     <div><a href="${href('d', { theme: '' })}" class="${!DARK ? 'on' : ''}">Светлая</a><a href="${href('d', { theme: 'dark' })}" class="${DARK ? 'on' : ''}">Тёмная</a></div>`;
   document.body.append(bar);
