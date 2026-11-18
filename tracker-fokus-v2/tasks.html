@@ -332,7 +332,7 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
   .pf { padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); }
 }
 
-/* ---------- тёмный вариант для кабинета ПП (?theme=pp) ---------- */
+/* ---------- тёмная тема по выбору человека (?theme=dark) ---------- */
 body.pp {
   --navy: #1A1406; --yellow: #F0D080; --gold2: #CCA830; --red: #FF8A7A; --violet: oklch(0.75 0.12 300);
   --cream: oklch(0.97 0.01 85); --card: #141E2B; --ink: oklch(0.97 0.006 85); --ink2: rgba(255,255,255,.6);
@@ -402,7 +402,7 @@ body.pp .pane::before { background: rgba(255,255,255,.2); }
 <script>
   const P = new URLSearchParams(location.search);
   document.body.classList.add(P.get('v') === 'a' ? 'v-a' : 'v-b');
-  if (P.get('theme') === 'pp') document.body.classList.add('pp');
+  if (["pp","dark"].includes(P.get("theme"))) document.body.classList.add('pp');
 </script>
 <div class="wrap">
   <div class="top">
@@ -439,7 +439,7 @@ body.pp .pane::before { background: rgba(255,255,255,.2); }
 
 <div class="demo">
   <div><button data-v="a">А · Матрица</button><button data-v="b">Б · Сегодня + доска</button></div>
-  <div><button data-t="">Альянс</button><button data-t="pp">ПП</button></div>
+  <div><button data-t="">Светлая</button><button data-t="dark">Тёмная</button></div>
 </div>
 
 <script>
