@@ -269,7 +269,7 @@
     if (a === 'share') { toast('Опубликовано в ленте «Исполняется прямо сейчас»'); addFeed(); }
     if (a === 'del') remove(g);
   });
-  function addStep(g, t) { const fi = g.steps.findIndex(s => s.fin); const s = { t, w: 10, done: false, fin: false }; if (fi >= 0) g.steps.splice(fi, 0, s); else g.steps.push(s); emit('step', g.id); }
+  function addStep(g, t) { const fi = g.steps.findIndex(s => s.fin); const s = { t, w: 1, done: false, fin: false }; if (fi >= 0) g.steps.splice(fi, 0, s); else g.steps.push(s); emit('step', g.id); }
   sheet.addEventListener('submit', e => {
     e.preventDefault(); const g = list.find(x => x.id === cur); if (!g) return;
     if (e.target.matches('[data-addst]')) { const inp = e.target.querySelector('input'); const t = inp.value.trim(); if (!t) return; addStep(g, t[0].toUpperCase() + t.slice(1)); setTimeout(() => sheet.querySelector('.addst input')?.focus(), 0); return; }
@@ -310,6 +310,7 @@
     $('#sums').innerHTML = `<div class="sm"><b>${short(wish)}</b><span>${nb('на такую сумму твои желания')}</span></div><div class="sm g"><b>${d.length}</b><span>${nb('исполнено' + (got ? ', на ' + short(got) : ''))}</span></div><div class="sm"><b>${work().length}<em>/${MAXP}</em></b><span>в работе</span></div>`;
   }
   function renderMap() {
+    const ls = document.getElementById("lgStar"); if (ls && !ls.innerHTML) ls.innerHTML = IC.star;
     const L = live(), total = L.length, h0 = selH == null ? curH() : selH;
     $('#hs').innerHTML = Array.from({ length: 10 }, (_, h) => {
       let mini = '', cnt = 0, dn = 0;
@@ -321,7 +322,7 @@
       const n = h0 * 100 + k + 1, g = L[n - 1];
       if (g) { cnt++; if (g.st === 'done') dn++; }
       if (!g) cells += n === total + 1 ? `<button class="cl next" data-focuscap aria-label="Записать цель №${n}">${n}</button>` : `<span class="cl e"></span>`;
-      else cells += `<button class="cl c-${g.cat} ${g.st === 'done' ? 'done' : g.st === 'work' ? 'work' : 'g'} ${g.fresh ? 'fresh' : ''}" data-open="${g.id}" data-tip="${g.id}" aria-label="№${n} ${esc(g.t)}">${n}${g.focus ? '<i class="fs"></i>' : ''}</button>`;
+      else cells += `<button class="cl c-${g.cat} ${g.st === 'done' ? 'done' : g.st === 'work' ? 'work' : 'g'} ${g.fresh ? 'fresh' : ''}" data-open="${g.id}" data-tip="${g.id}" aria-label="№${n} ${esc(g.t)}${g.st === 'done' ? ', исполнена' : ''}${g.focus ? ', в фокусе дня' : ''}">${g.st === 'done' ? IC.cup : n}${g.focus && g.st !== 'done' ? `<i class="fs">${IC.star}</i>` : ''}</button>`;
     }
     $('#grid').innerHTML = cells;
     $('#hhT').textContent = `Цели ${h0 * 100 + 1}–${h0 * 100 + 100}`;

@@ -350,7 +350,14 @@ main { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
 .cl.work { box-shadow: 0 0 0 2px oklch(0.83 0.13 80 / .7); color: var(--yellow); }
 .cl.done { color: oklch(0.32 0.08 70); box-shadow: 0 0 8px oklch(0.8 0.14 82 / .5); }
 .cl.next { font-size: 12.5px; border-width: 1.5px; }
-.cl .fs { position: absolute; top: 2px; right: 2px; width: 5px; height: 5px; border-radius: 50%; background: var(--yellow); }
+.cl .fs { position: absolute; top: -5px; right: -5px; width: 13px; height: 13px; border-radius: 50%; background: var(--yellow); color: var(--navy); display: grid; place-items: center; box-shadow: 0 1px 3px rgba(20,34,70,.3); }
+.cl .fs svg { width: 8px; height: 8px; }
+.cl.done svg { width: 62%; height: 62%; filter: drop-shadow(0 0 3px oklch(0.98 0.08 90 / .9)); }
+.cl.done { animation: glow 2.8s ease-in-out infinite; }
+@keyframes glow { 0%,100% { box-shadow: 0 0 6px oklch(0.8 0.14 82 / .45); } 50% { box-shadow: 0 0 13px oklch(0.84 0.15 85 / .85); } }
+@media (prefers-reduced-motion: reduce) { .cl.done { animation: none; } }
+.lg .l4 { width: 13px; height: 13px; border-radius: 50%; background: var(--yellow); color: var(--navy); display: inline-grid; place-items: center; }
+.lg .l4 svg { width: 8px; height: 8px; }
 .cl:not(.e):hover, .cl:focus-visible { transform: scale(1.22); }
 .gw .link { margin-top: 8px; font-size: 13px; min-height: 28px; }
 .pc { border-radius: 20px; overflow: hidden; background: var(--card); border: 1px solid var(--line); display: flex; flex-direction: column; min-height: 100%; }
@@ -427,7 +434,7 @@ main { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
       <div>
         <div class="mh"><div class="big" id="big"></div><div class="sums" id="sums"></div></div>
         <div class="hs" id="hs" role="group" aria-label="Сотни целей"></div>
-        <div class="lg"><span><i class="lc c-be"></i>Быть</span><span><i class="lc c-do"></i>Делать</span><span><i class="lc c-have"></i>Иметь</span><span><i class="l2"></i>в работе</span><span><i class="l3"></i>исполнена</span></div>
+        <div class="lg"><span><i class="lc c-be"></i>Быть</span><span><i class="lc c-do"></i>Делать</span><span><i class="lc c-have"></i>Иметь</span><span><i class="l2"></i>в работе</span><span><i class="l3"></i>исполнена</span><span><i class="l4" id="lgStar"></i>в фокусе дня</span></div>
       </div>
       <div class="gw">
         <div class="hh"><h3 id="hhT"></h3><span id="hhS"></span></div>
