@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1000 целей · А · Полки</title>
+<link rel="stylesheet" href="wishes.css">
+<style>
+/* мозаика-счётчик в шапке: 100 клеток, каждая — 10 целей */
+.mstrip { margin-left: auto; border-radius: 20px; padding: 10px 14px 11px; min-width: 330px; }
+.mstrip .t { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink2); }
+.mstrip .t b { font: 400 26px/1 "Bebas", sans-serif; color: var(--ink); letter-spacing: .01em; }
+.mstrip .t .gd { color: var(--gold-ink); font-weight: 650; margin-left: auto; }
+.mstrip .cells { margin-top: 7px; display: grid; grid-template-columns: repeat(50, 1fr); gap: 2px; }
+.mstrip .cells i { aspect-ratio: 1; border-radius: 2px; background: oklch(0.22 0.13 268 / .09); }
+.mstrip .cells i.w { background: oklch(0.22 0.13 268 / .55); }
+.mstrip .cells i.p { background: linear-gradient(90deg, oklch(0.22 0.13 268 / .55) var(--p), oklch(0.22 0.13 268 / .09) var(--p)); }
+.mstrip .cells i.d { background: var(--gold); box-shadow: 0 0 6px oklch(0.8 0.14 82 / .8); }
+
+.layout { margin-top: 26px; display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 22px; align-items: start; }
+main { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+
+/* в работе: карточки целей как в Фокусе дня */
+.wlane { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.wc { position: relative; border-radius: 26px; padding: 18px 18px 16px; color: var(--cream); background: radial-gradient(60% 70% at 85% 15%, oklch(0.42 0.14 268 / .55), transparent 70%), var(--nglass); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); box-shadow: 0 18px 40px rgba(10,20,60,.2); display: flex; flex-direction: column; gap: 12px; text-align: left; transition: transform .35s var(--ease); min-height: 236px; }
+.wc:hover { transform: translateY(-3px); }
+.wc .hd { display: flex; gap: 12px; align-items: center; }
+.wc .k { font-size: 11.5px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: var(--yellow); }
+.wc h4 { margin: 3px 0 0; font-size: 17px; line-height: 1.25; font-weight: 700; }
+.wc .pips { display: flex; gap: 3px; }
+.wc .pips i { flex: 1; height: 6px; border-radius: 3px; background: oklch(1 0 0 / .14); }
+.wc .pips i.on { background: var(--yellow); }
+.wc .nx { font-size: 13px; color: oklch(0.86 0.03 268); line-height: 1.35; }
+.wc .nx b { color: var(--cream); font-weight: 650; }
+.wc .row { margin-top: auto; display: flex; align-items: center; gap: 8px; }
+.wc .row .btn { height: 40px; padding: 0 14px; font-size: 14px; background: var(--yellow); color: var(--navy); }
+.wc .row .lvl { margin-left: auto; font: 400 24px/1 "Bebas", sans-serif; color: var(--yellow); }
+.wc .row .lvl em { font-style: normal; font-size: 14px; color: oklch(0.8 0.03 268); }
+.wc.slot { background: none; border: 1.5px dashed oklch(0.22 0.13 268 / .3); color: var(--ink2); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; justify-content: center; align-items: center; text-align: center; font-size: 14px; gap: 6px; }
+.wc.slot b { font: 400 34px/1 "Bebas", sans-serif; color: var(--navy); }
+.wc.slot:hover { transform: none; background: rgba(255,255,255,.35); }
+
+/* полки Быть / Делать / Иметь */
+.tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.srch { flex: 1; min-width: 200px; height: 44px; border-radius: 14px; display: flex; align-items: center; gap: 8px; padding: 0 14px; }
+.srch svg { width: 17px; height: 17px; color: var(--ink2); flex: none; }
+.srch input { flex: 1; min-width: 0; border: 0; background: none; outline: none; font-size: 15px; }
+.sph { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.sph button { height: 36px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; background: var(--glass); border: 1px solid var(--glass-b); transition: background .2s, color .2s; }
+.sph button[aria-pressed="true"] { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+.shelf { border-radius: 26px; padding: 16px 16px 14px; }
+.shelf .sh { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding: 0 2px; }
+.shelf .sh .dot { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; background: color-mix(in oklch, var(--c) 14%, transparent); color: var(--c); font: 400 20px/1 "Bebas", sans-serif; padding-top: 2px; }
+.shelf .sh h4 { margin: 0; font-size: 17px; font-weight: 750; }
+.shelf .sh small { display: block; font-size: 12.5px; color: var(--ink2); }
+.shelf .sh .n { margin-left: auto; font: 400 24px/1 "Bebas", sans-serif; color: var(--c); }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.gc { max-width: 100%; min-height: 40px; padding: 8px 13px 8px 11px; border-radius: 14px; background: var(--row); border: 1px solid oklch(0.89 0.015 85 / .9); display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; line-height: 1.25; text-align: left; transition: transform .25s var(--ease), box-shadow .2s, border-color .2s; }
+.gc::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c); flex: none; }
+.gc:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(20,34,70,.1); border-color: color-mix(in oklch, var(--c) 40%, transparent); }
+.gc em { font-style: normal; font-weight: 500; font-size: 12px; color: var(--ink2); white-space: nowrap; }
+.gc .lk { width: 13px; height: 13px; color: var(--ink2); flex: none; }
+.gc.fresh { animation: fresh 1.2s var(--ease); }
+@keyframes fresh { 0% { transform: scale(.6); opacity: 0; } 40% { transform: scale(1.06); box-shadow: 0 0 0 3px var(--c); opacity: 1; } }
+.more { min-height: 40px; padding: 0 14px; border-radius: 14px; font-size: 13.5px; font-weight: 700; color: var(--c); background: color-mix(in oklch, var(--c) 10%, transparent); display: inline-flex; align-items: center; gap: 6px; }
+.more svg { width: 15px; height: 15px; }
+.empty { font-size: 13.5px; color: var(--ink2); padding: 6px 2px; }
+
+/* стена исполненного */
+.wall { border-radius: 26px; padding: 18px; background: radial-gradient(70% 90% at 100% 0%, oklch(0.93 0.07 88 / .9), transparent 70%), var(--glass); }
+.wall .sh { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.wall .sh .ic { width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; background: var(--gold); color: oklch(0.3 0.08 70); }
+.wall .sh .ic svg { width: 22px; height: 22px; }
+.wall .sh h4 { margin: 0; font-size: 18px; font-weight: 750; }
+.wall .sh small { display: block; font-size: 12.5px; color: var(--ink2); }
+.wall .sh .n { margin-left: auto; font: 400 34px/1 "Bebas", sans-serif; color: var(--gold-ink); }
+.tro { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.tp { border-radius: 18px; padding: 12px 14px 12px; text-align: left; background: linear-gradient(160deg, oklch(0.97 0.04 88), oklch(0.92 0.07 85)); border: 1px solid oklch(0.86 0.08 85); display: flex; flex-direction: column; gap: 6px; min-height: 96px; transition: transform .3s var(--ease); }
+.tp:hover { transform: translateY(-3px) rotate(-.4deg); }
+.tp .d { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--gold-ink); display: flex; align-items: center; gap: 5px; }
+.tp .d svg { width: 13px; height: 13px; }
+.tp b { font-size: 14.5px; line-height: 1.28; font-weight: 700; color: oklch(0.3 0.05 70); }
+.tp.new { animation: fresh 1.2s var(--ease); }
+.wall .none { font-size: 14px; color: var(--ink2); }
+
+@media (max-width: 980px) { .layout { grid-template-columns: 1fr; } .wlane { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .mstrip { margin-left: 0; width: 100%; min-width: 0; }
+  .layout { margin-top: 20px; }
+  main { gap: 22px; }
+  .wlane { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; margin: 0 -12px; padding: 2px 12px 8px; scrollbar-width: none; }
+  .wlane::-webkit-scrollbar { display: none; }
+  .wc { flex: 0 0 86%; scroll-snap-align: start; min-height: 220px; }
+  .srch { min-width: 0; flex-basis: 100%; }
+  .sph { margin: 0 -12px; padding: 0 12px; }
+  .shelf { padding: 14px 12px 12px; border-radius: 22px; }
+  .gc { font-size: 13.5px; }
+  .tro { grid-template-columns: 1fr 1fr; }
+}
+
+.pp .mstrip .cells i { background: rgba(255,255,255,.08); }
+.pp .mstrip .cells i.w { background: rgba(143,179,255,.55); }
+.pp .mstrip .cells i.p { background: linear-gradient(90deg, rgba(143,179,255,.55) var(--p), rgba(255,255,255,.08) var(--p)); }
+.pp .wc { background: radial-gradient(60% 70% at 85% 15%, rgba(240,208,128,.12), transparent 70%), #172231; box-shadow: 0 18px 40px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.07); }
+.pp .wc .row .btn { color: #1A1406; }
+.pp .wc.slot { background: none; box-shadow: none; border-color: rgba(255,255,255,.18); }
+.pp .wc.slot b { color: var(--yellow); }
+.pp .sph button[aria-pressed="true"] { background: var(--yellow); color: #1A1406; border-color: var(--yellow); }
+.pp .gc { border-color: rgba(255,255,255,.06); }
+.pp .wall { background: radial-gradient(70% 90% at 100% 0%, rgba(240,208,128,.14), transparent 70%), var(--glass); }
+.pp .wall .sh .ic { color: #1A1406; }
+.pp .tp { background: linear-gradient(160deg, rgba(240,208,128,.14), rgba(240,208,128,.06)); border-color: rgba(240,208,128,.22); }
+.pp .tp b { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><h1>1000 целей</h1><div class="lead" id="lead"></div></div>
+    <div class="mstrip glass" id="mstrip" aria-label="Путь к 1000"></div>
+  </header>
+  <div id="capHost"></div>
+  <div class="layout">
+    <main>
+      <section>
+        <div class="sec-h"><h3>В работе</h3><p id="workHint"></p></div>
+        <div class="wlane" id="wlane"></div>
+      </section>
+      <section>
+        <div class="tools"><label class="srch glass"><span id="sIc"></span><input id="q" placeholder="Найти цель" autocomplete="off"></label></div>
+        <div class="sph" id="sph" style="margin-top:10px"></div>
+      </section>
+      <div id="shelves" style="display:flex;flex-direction:column;gap:14px;margin-top:-14px"></div>
+      <section class="wall glass" id="wall"></section>
+    </main>
+    <aside class="side">
+      <div class="sec-h"><h3>Исполняется прямо сейчас</h3></div>
+      <div class="feed" id="feed"></div>
+    </aside>
+  </div>
+</div>
+<script src="wishes.js"></script>
+<script>
+(function () {
+  const { S, nb, esc, T, CAT, IC, openSheet } = WI;
+  const $ = s => document.querySelector(s);
+  $('#capHost').innerHTML = WI.capHTML();
+  $('#sIc').innerHTML = IC.search;
+  const LIM = matchMedia('(max-width: 760px)').matches ? 6 : 14;
+  const open = { be: false, do: false, have: false };
+  let q = '', sph = '';
+  let freshId = null, newTro = null;
+
+  function head() {
+    const tot = S.total(), dn = S.done().length;
+    $('#lead').textContent = nb(tot < 30 ? 'Пиши всё, чего хочется: быть, делать, иметь. Три цели бери в работу, остальное пусть ждёт на полках.' : 'Записано ' + tot + '. Три цели в работе, остальные ждут на полках.');
+    const w = Math.floor(tot / 10), part = tot % 10, d = Math.ceil(dn / 10);
+    const cells = Array.from({ length: 100 }, (_, i) => i < d ? '<i class="d"></i>' : i < w ? '<i class="w"></i>' : i === w && part ? `<i class="p" style="--p:${part * 10}%"></i>` : '<i></i>').join('');
+    $('#mstrip').innerHTML = `<div class="t"><b>${tot}</b>из 1000 записано<span class="gd">${dn} исполнено</span></div><div class="cells">${cells}</div>`;
+  }
+
+  function work() {
+    const ws = S.work();
+    $('#workHint').textContent = nb(ws.length + ' из ' + S.MAXW + '. Шаги к этим целям приходят в Фокус дня');
+    const R = 30, C = 2 * Math.PI * R;
+    const cards = ws.map(g => {
+      const pips = Array.from({ length: Math.min(g.sn, 20) }, (_, i) => `<i class="${i < Math.round(g.sd / g.sn * Math.min(g.sn, 20)) ? 'on' : ''}"></i>`).join('');
+      const ph = g.img ? `<img src="${g.img}" alt="">` : `<b>${esc(g.t[0])}</b>`;
+      return `<div class="wc" role="button" tabindex="0" data-id="${g.id}">
+        <div class="hd"><span class="ring" style="width:68px;height:68px"><svg viewBox="0 0 68 68"><circle class="tr" cx="34" cy="34" r="${R}" stroke-width="5"/><circle class="pr" cx="34" cy="34" r="${R}" stroke-width="5" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - g.sd / g.sn)}"/></svg><span class="ph c-${g.cat} cover" style="inset:8px">${ph}</span></span>
+        <div><div class="k">${CAT[g.cat].l} · ${esc(g.sph)}</div><h4>${T(g.t)}</h4></div></div>
+        <div class="pips">${pips}</div>
+        <div class="nx">Следующий шаг: <b>${T(g.steps[g.sd] || 'добавь шаг')}</b></div>
+        <div class="row"><button class="btn" data-step="${g.id}">${IC.check}Шаг сделан</button><span class="lvl">${g.sd}<em>/${g.sn}</em></span></div></div>`;
+    });
+    for (let i = ws.length; i < S.MAXW; i++) cards.push(`<button class="wc slot" data-slot><b>+</b>${nb('Свободное место. Возьми цель с полки')}</button>`);
+    $('#wlane').innerHTML = cards.join('');
+  }
+
+  function sphBar() {
+    const all = [...new Set(S.live().map(g => g.sph))].filter(s => s !== 'Не выбрана');
+    $('#sph').innerHTML = ['', ...all].map(s => `<button data-s="${s}" aria-pressed="${s === sph}">${s || 'Все сферы'}</button>`).join('');
+  }
+
+  function shelves() {
+    const ql = q.trim().toLowerCase();
+    $('#shelves').innerHTML = Object.entries(CAT).map(([k, v]) => {
+      let items = S.open(k).filter(g => (!sph || g.sph === sph) && (!ql || g.t.toLowerCase().includes(ql)));
+      const tot = items.length;
+      items = items.slice().reverse();  // свежие первыми
+      const lim = open[k] || ql ? items.length : LIM;
+      const shown = items.slice(0, lim);
+      const chips = shown.map(g => `<button class="gc c-${k} ${g.id === freshId ? 'fresh' : ''}" data-id="${g.id}">${g.secret ? '<svg class="lk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>' : ''}<span>${T(g.t)}</span>${g.hor && g.hor !== '1 год' ? `<em>${g.hor}</em>` : ''}</button>`).join('');
+      const more = tot > lim ? `<button class="more c-${k}" data-more="${k}">ещё ${tot - lim}${IC.chev}</button>` : open[k] && tot > LIM ? `<button class="more c-${k}" data-more="${k}">свернуть</button>` : '';
+      return `<section class="shelf glass c-${k}"><div class="sh"><span class="dot">${v.l[0]}</span><div><h4>${v.l}</h4><small>${v.h}</small></div><span class="n">${tot}</span></div><div class="chips">${chips || `<span class="empty">${ql || sph ? 'Ничего не нашлось' : nb('Пока пусто. Запиши первую цель сверху')}</span>`}${more}</div></section>`;
+    }).join('');
+  }
+
+  function wall() {
+    const ds = S.done().slice().reverse();
+    const lim = S.MANY ? 8 : 12;
+    const tiles = ds.slice(0, lim).map(g => `<button class="tp ${g.id === newTro ? 'new' : ''}" data-id="${g.id}"><span class="d">${IC.star}${esc(g.doneAt)}</span><b>${T(g.t)}</b></button>`).join('');
+    $('#wall').innerHTML = `<div class="sh"><span class="ic">${IC.cup}</span><div><h4>Исполнено</h4><small>${nb('Каждая исполненная цель остаётся здесь')}</small></div><span class="n">${ds.length}</span></div>
+      ${ds.length ? `<div class="tro">${tiles}</div>${ds.length > lim ? `<button class="link" style="margin-top:12px">Показать все ${ds.length}</button>` : ''}` : `<p class="none">${nb('Первая исполненная цель появится здесь. Отметь её в карточке цели.')}</p>`}`;
+  }
+
+  function render() { head(); work(); sphBar(); shelves(); wall(); }
+  render();
+  S.on((why, id) => { freshId = why === 'add' ? id : null; newTro = why === 'done' ? id : null; render(); });
+
+  document.addEventListener('click', e => {
+    const st = e.target.closest('[data-step]'); if (st) { e.stopPropagation(); S.step(st.dataset.step); return; }
+    const m = e.target.closest('[data-more]'); if (m) { open[m.dataset.more] = !open[m.dataset.more]; shelves(); return; }
+    const s = e.target.closest('#sph [data-s]'); if (s) { sph = s.dataset.s; sphBar(); shelves(); return; }
+    if (e.target.closest('[data-slot]')) { document.querySelector('#shelves').scrollIntoView({ behavior: 'smooth', block: 'start' }); WI.toast('Нажми на цель на полке и выбери «Взять в работу»'); return; }
+    const g = e.target.closest('[data-id]'); if (g && !e.target.closest('.sheet')) openSheet(g.dataset.id);
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('.wc[data-id]')) openSheet(e.target.dataset.id); });
+  $('#q').addEventListener('input', e => { q = e.target.value; shelves(); });
+})();
+</script>
+</body>
+</html>

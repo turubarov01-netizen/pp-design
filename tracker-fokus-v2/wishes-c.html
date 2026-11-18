@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1000 целей · В · Лента желаний</title>
+<link rel="stylesheet" href="wishes.css">
+<style>
+.stats { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.stat { height: 36px; padding: 0 14px; border-radius: 999px; display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; }
+.stat b { font: 400 20px/1 "Bebas", sans-serif; padding-top: 3px; }
+.stat.g b { color: var(--gold-ink); }
+.layout { margin-top: 22px; display: grid; grid-template-columns: minmax(0, 640px) 320px; gap: 26px; justify-content: center; align-items: start; }
+.fbar { position: sticky; top: 10px; z-index: 20; border-radius: 18px; padding: 6px; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.fbar::-webkit-scrollbar { display: none; }
+.fbar button { flex: none; height: 38px; padding: 0 14px; border-radius: 12px; font-size: 13.5px; font-weight: 650; display: inline-flex; gap: 6px; align-items: center; color: var(--ink2); transition: background .2s, color .2s; }
+.fbar button em { font-style: normal; font-weight: 500; opacity: .75; }
+.fbar button[aria-selected="true"] { background: var(--navy); color: var(--cream); }
+.cards { margin-top: 14px; display: flex; flex-direction: column; gap: 16px; }
+
+.wc { border-radius: 28px; overflow: hidden; box-shadow: 0 14px 40px rgba(20,34,70,.1); transition: transform .35s var(--ease); }
+.wc .cover { aspect-ratio: 16 / 8; cursor: pointer; }
+.wc .cover .lt { font-size: 210px; bottom: -22%; }
+.wc .cover:not(:has(> img)) { aspect-ratio: 16 / 5; }
+.wc .cover:not(:has(> img)) .lt { font-size: 150px; bottom: -30%; color: rgba(255,255,255,.2); }
+.side { position: sticky; top: 12px; }
+.wc .cover .gen-b { position: absolute; right: 12px; top: 12px; height: 36px; padding: 0 12px; border-radius: 11px; background: rgba(0,0,0,.26); color: #fff; font-size: 12.5px; font-weight: 650; display: inline-flex; align-items: center; gap: 6px; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: background .2s; }
+.wc .cover .gen-b:hover { background: rgba(0,0,0,.4); }
+.wc .cover .gen-b svg { width: 15px; height: 15px; }
+.wc .cover .no { position: absolute; left: 16px; top: 14px; font: 400 18px/1 "Bebas", sans-serif; letter-spacing: .05em; color: rgba(255,255,255,.8); }
+.wc .cover .pbar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: rgba(255,255,255,.25); }
+.wc .cover .pbar b { display: block; height: 100%; background: var(--yellow); transition: width .6s var(--ease); }
+.wc .cover .badge { position: absolute; left: 14px; top: 12px; height: 30px; padding: 0 11px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 750; }
+.wc .cover .badge svg { width: 15px; height: 15px; }
+.wc .cover .badge.w { background: var(--navy); color: var(--yellow); }
+.wc .cover .badge.d { background: var(--gold); color: oklch(0.3 0.08 70); }
+.wc .in { padding: 16px 18px 16px; }
+.wc h3 { margin: 0; font-size: 21px; line-height: 1.22; font-weight: 750; letter-spacing: -.01em; cursor: pointer; overflow-wrap: anywhere; }
+.wc .meta { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.wc .acts { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.wc .acts .btn { height: 42px; }
+.wc .acts .sp { margin-left: auto; font-size: 13px; color: var(--ink2); }
+.wc.done { box-shadow: 0 0 0 2px var(--gold), 0 14px 40px rgba(150,110,20,.18); }
+.wc.fresh { animation: fresh 1s var(--ease); }
+@keyframes fresh { from { transform: translateY(-16px) scale(.97); opacity: 0; } }
+.pg { align-self: center; height: 46px; }
+.empty { border-radius: 22px; padding: 22px; font-size: 14px; color: var(--ink2); text-align: center; }
+
+@media (max-width: 980px) { .layout { grid-template-columns: minmax(0, 640px); } }
+@media (max-width: 760px) {
+  .stats { margin-left: 0; width: 100%; gap: 6px; } .stat { height: 32px; padding: 0 11px; font-size: 13px; } .stat b { font-size: 18px; }
+  .layout { margin-top: 16px; }
+  .fbar { margin: 0 -12px; border-radius: 0; border-left: 0; border-right: 0; top: 0; }
+  .wc { border-radius: 24px; }
+  .wc .cover { aspect-ratio: 16 / 9; }
+  .wc .cover .lt { font-size: 170px; }
+  .wc h3 { font-size: 19px; }
+  .wc .acts .btn { flex: 1; padding: 0 12px; }
+  .wc .acts .sp { flex-basis: 100%; margin: 0; }
+}
+.pp .fbar button[aria-selected="true"] { background: var(--yellow); color: #1A1406; }
+.pp .wc { box-shadow: 0 14px 40px rgba(0,0,0,.35); }
+.pp .wc.done { box-shadow: 0 0 0 2px rgba(240,208,128,.6), 0 14px 40px rgba(0,0,0,.35); }
+.pp .wc .cover .badge.w { background: #172231; }
+.pp .wc .cover .badge.d { color: #1A1406; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><div><h1>1000 целей</h1><div class="lead">${''}</div></div><div class="stats" id="stats"></div></header>
+  <div id="capHost"></div>
+  <div class="layout">
+    <main>
+      <div class="fbar glass" id="fbar" role="tablist"></div>
+      <div class="cards" id="cards"></div>
+    </main>
+    <aside class="side"><div class="sec-h"><h3>Исполняется прямо сейчас</h3></div><div class="feed" id="feed"></div></aside>
+  </div>
+</div>
+<script src="wishes.js"></script>
+<script>
+(function () {
+  const { S, nb, esc, T, CAT, IC, openSheet } = WI;
+  const $ = s => document.querySelector(s);
+  $('#capHost').innerHTML = WI.capHTML();
+  document.querySelector('.top .lead').textContent = nb('Каждая цель — своя карточка. Картинку можно сгенерировать в один клик.');
+  const PER = 8;
+  let tab = 'all', page = 1, freshId = null;
+
+  function stats() {
+    $('#stats').innerHTML = `<span class="stat glass"><b>${S.total()}</b>записано</span><span class="stat glass"><b>${S.work().length}/${S.MAXW}</b>в работе</span><span class="stat glass g"><b>${S.done().length}</b>исполнено</span>`;
+  }
+  function bar() {
+    const L = S.live(), cnt = { all: L.length, be: 0, do: 0, have: 0, work: S.work().length, done: S.done().length };
+    L.forEach(g => cnt[g.cat]++);
+    $('#fbar').innerHTML = [['all', 'Все'], ['work', 'В работе'], ['be', 'Быть'], ['do', 'Делать'], ['have', 'Иметь'], ['done', 'Исполнено']].map(([k, l]) => `<button role="tab" data-t="${k}" aria-selected="${k === tab}">${l}<em>${cnt[k]}</em></button>`).join('');
+  }
+  function card(g) {
+    const L = S.live(), n = L.indexOf(g) + 1;
+    const badge = g.st === 'work' ? `<span class="badge w">${IC.star}В работе · ${S.pct(g)}%</span>` : g.st === 'done' ? `<span class="badge d">${IC.cup}Исполнено ${esc(g.doneAt)}</span>` : `<span class="no">№ ${n}</span>`;
+    const cover = WI.coverHTML(g).replace('</div>', `${badge}${g.img ? '' : `<button class="gen-b" data-gen="${g.id}">${IC.wand}Сгенерировать картинку</button>`}${g.st === 'work' ? `<span class="pbar"><b style="width:${S.pct(g)}%"></b></span>` : ''}</div>`);
+    let acts;
+    if (g.st === 'work') acts = `<button class="btn pri" data-step="${g.id}">${IC.check}Шаг сделан</button><span class="sp">${nb('Следующий: ' + (g.steps[g.sd] || '—'))}</span>`;
+    else if (g.st === 'done') acts = `<button class="btn soft" data-open="${g.id}">Вспомнить, как это было</button>`;
+    else acts = `<button class="btn pri" data-take="${g.id}">${IC.star}Взять в работу</button><button class="btn soft" data-open="${g.id}">Подробнее</button>`;
+    return `<article class="wc glass ${g.st === 'done' ? 'done' : ''} ${g.id === freshId ? 'fresh' : ''}" data-card="${g.id}">${cover.replace('class="cover', `data-open="${g.id}" class="cover`)}
+      <div class="in"><h3 data-open="${g.id}">${T(g.t)}</h3><div class="meta"><span class="pill c-${g.cat}"><i></i>${CAT[g.cat].l}</span><span class="tag">${IC.clock}${esc(g.hor)}</span>${g.cost ? `<span class="tag">${S.rub(g.cost)}</span>` : ''}${g.secret ? `<span class="tag">${IC.lock}секретная</span>` : ''}</div>
+      <div class="acts">${acts}</div></div></article>`;
+  }
+  function cards() {
+    let it = S.live().filter(g => tab === 'all' || g.cat === tab || g.st === tab);
+    // в работе первыми, потом свежие
+    it = it.slice().reverse().sort((a, b) => (b.st === 'work') - (a.st === 'work'));
+    const shown = it.slice(0, page * PER);
+    $('#cards').innerHTML = (shown.map(card).join('') || `<div class="empty glass">${nb(tab === 'done' ? 'Исполненных пока нет. Первая станет праздником.' : 'Здесь пока пусто.')}</div>`)
+      + (it.length > shown.length ? `<button class="btn soft pg" data-page>Показать ещё ${Math.min(PER, it.length - shown.length)} · осталось ${it.length - shown.length}</button>` : '');
+  }
+  function render() { stats(); bar(); cards(); }
+  render();
+  S.on((why, id) => { freshId = why === 'add' ? id : null; if (why === 'add') { tab = 'all'; } render(); });
+
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-t]'); if (t) { tab = t.dataset.t; page = 1; bar(); cards(); return; }
+    if (e.target.closest('[data-page]')) { page++; cards(); return; }
+    const gb = e.target.closest('[data-gen]'); if (gb) { e.stopPropagation(); gb.textContent = 'Рисую…'; S.genImg(gb.dataset.gen, gb.closest('.cover')); return; }
+    const st = e.target.closest('[data-step]'); if (st) { S.step(st.dataset.step); return; }
+    const tk = e.target.closest('[data-take]'); if (tk) { S.take(tk.dataset.take); return; }
+    const o = e.target.closest('[data-open]'); if (o && !e.target.closest('.sheet')) openSheet(o.dataset.open);
+  });
+})();
+</script>
+</body>
+</html>
