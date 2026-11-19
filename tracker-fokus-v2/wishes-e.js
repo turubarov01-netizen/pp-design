@@ -2,7 +2,8 @@
    редактирование карточки, карта желаний и обои. ?n=many — сотни целей; ?theme=dark — тёмная тема. Цели и имена вымышленные. */
 (function () {
   const Q = new URLSearchParams(location.search);
-  const MANY = Q.get('n') === 'many';
+  const GUEST = Q.get('tier') === 'guest';
+  const MANY = Q.get('n') === 'many' && !GUEST;
   const DARK = ['dark', 'pp'].includes(Q.get('theme'));
   if (DARK) document.documentElement.classList.add('pp');
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -17,7 +18,9 @@
   const SPHERES = ['Мышление', 'Бизнес', 'Любовь', 'Лайфстайл', 'Здоровье', 'Окружение', 'Семья', 'Общество', 'Творчество', 'Капитал'];
   const HORS = ['1 год', '3 года', '5 лет', '10 лет'];
   const CUR = { RUB: { s: '₽', r: 1 }, USD: { s: '$', r: 92, pre: 1 }, EUR: { s: '€', r: 100 } };
-  const MAXP = 15, MAXF = 3;
+  // лимиты как в tracker_limits: бесплатный уровень 10 / 1 / 1, полный доступ 1000 / 15 / 3
+  const MAXW = GUEST ? 10 : 1000, MAXP = GUEST ? 1 : 15, MAXF = GUEST ? 1 : 3;
+  const UPGRADE = 'https://wearefree.club/upgrade?tier=slave&cur=usd';
 
   const IC = {
     clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
@@ -128,6 +131,10 @@
     ['Свободным в английском', 'Студию для съёмок', 'Пройти Камино де Сантьяго'].forEach((t, i) => { const g = byText(t); if (!g) return; g.st = 'work'; g.steps = [{ t: 'Разобраться, с чего начать', w: 10, done: true, fin: false }, { t: 'Посчитать деньги и время', w: 10, done: i < 2, fin: false }, { t: 'Сделать первый маленький шаг', w: 20, done: i < 1, fin: false }, { t: 'Цель исполнена', w: 60, done: false, fin: true }]; });
   }
 
+  // фото у демо-целей, чтобы коллаж был не пустым
+  [['Пройти Камино де Сантьяго', 'camino'], ['Выучить пять песен на гитаре', 'guitar'], ['Корги по имени Бублик', 'corgi'], ['Встретить рассвет на Эльбрусе', 'elbrus'], ['Свозить родителей в Японию', 'japan'], ['Кофемашину как в кофейне', 'coffee'], ['Прыгнуть с парашютом', 'skydive'], ['Нырнуть с аквалангом в Красном море', 'dive'], ['Дачу с баней', 'banya'], ['Студию для съёмок', 'studio'], ['Провести неделю в Марокко', 'morocco'], ['Спикером на большой сцене', 'stage']].forEach(([t, f]) => { const g = byText(t); if (g && !g.img) g.img = 'img/wish-' + f + '.jpg'; });
+
+  if (GUEST) list.filter(g => g.st === 'work').slice(MAXP).forEach(g => { g.st = 'list'; g.focus = false; g.steps = []; });
   // ---------- состояние ----------
   const live = () => list.filter(g => !g.gone);
   const num = g => live().indexOf(g) + 1;
@@ -144,11 +151,11 @@
     emit('add', g.id); return g;
   }
   function split(g) {
-    if (g.st !== 'work' && work().length >= MAXP) { toast(nb('В работе уже ' + MAXP + ' целей. Исполни одну или убери из работы, чтобы разбить новую')); return false; }
+    if (g.st !== 'work' && work().length >= MAXP) { if (GUEST) { upsell('work'); return false; } toast(nb('В работе уже ' + MAXP + ' целей. Исполни одну или убери из работы, чтобы разбить новую')); return false; }
     g.st = 'work'; emit('split', g.id); return true;
   }
   function setFocus(g) {
-    if (!g.focus && focusN() >= MAXF) { toast(nb('В фокусе дня уже ' + MAXF + ' цели. Убери одну, чтобы поставить эту')); return; }
+    if (!g.focus && focusN() >= MAXF) { if (GUEST) { upsell('focus'); return; } toast(nb('В фокусе дня уже ' + MAXF + ' цели. Убери одну, чтобы поставить эту')); return; }
     if (!g.focus && g.st !== 'work' && !split(g)) return;
     g.focus = !g.focus; emit('focus', g.id); toast(g.focus ? nb('Цель в фокусе дня: её шаги придут в Фокус дня') : 'Убрано из фокуса дня');
   }
@@ -243,7 +250,7 @@
   }
   function closeSheet() { scrim.classList.remove('on'); sheet.classList.remove('on'); cur = null; draft = null; }
   scrim.onclick = closeSheet;
-  addEventListener('keydown', e => { if (e.key === 'Escape') { closeSheet(); cele.classList.remove('on'); closeWp(); } });
+  addEventListener('keydown', e => { if (e.key === 'Escape') { closeSheet(); cele.classList.remove('on'); closeWp(); closeImp(); closeUs(); } });
   function readDraft() { const f = sheet.querySelector('[data-ef]'); if (!f || !draft) return; draft.t = f.t.value; draft.sph = f.sph.value; draft.hor = f.hor.value; draft.cost = +f.cost.value.replace(/\D/g, '') || 0; draft.cur = f.cur.value; }
   sheet.addEventListener('click', e => {
     const b = e.target.closest('[data-a],[data-ecat]'); if (!b || !cur) return;
@@ -298,7 +305,7 @@
   document.addEventListener('click', e => { const b = e.target.closest('.cheer'); if (!b) return; const f = FEED[+b.dataset.i]; f.mine = !f.mine; f.ch += f.mine ? 1 : -1; renderFeed(); });
 
   // ---------- страница ----------
-  let view = 'list', selH = null, fH = null, q = '', fS = '', sort = 'new', shelfN = { be: 16, do: 16, have: 16 }, workAll = false, wallAll = false, bTab = 'all', bN = 40, bSeed = 0;
+  let view = 'list', selH = null, fH = null, q = '', fS = '', sort = 'prio', shelfN = { be: 16, do: 16, have: 16 }, workAll = false, wallAll = false, bTab = 'all', bN = 40, bSeed = 0;
   const LIM = 16;
   const curH = () => Math.min(9, Math.floor(live().length / 100));
 
@@ -356,7 +363,8 @@
       ${W.length > 6 ? `<button class="more" data-wall-w>${workAll ? 'Свернуть' : 'Показать все ' + W.length}</button>` : ''}`;
   }
   const match = g => (!q || g.t.toLowerCase().includes(q)) && (!fS || g.sph === fS) && (fH == null || Math.floor((num(g) - 1) / 100) === fH);
-  const sorters = { new: (a, b) => num(b) - num(a), num: (a, b) => num(a) - num(b), cost_desc: (a, b) => inRub(b) - inRub(a), cost_asc: (a, b) => (inRub(a) || 1e15) - (inRub(b) || 1e15) };
+  const started = g => g.st === 'work' && g.steps.some(s => s.done);
+  const sorters = { prio: (a, b) => (started(b) - started(a)) || (started(a) && started(b) ? ((b.focus ? 1 : 0) - (a.focus ? 1 : 0)) || (pct(b) - pct(a)) : 0) || (num(b) - num(a)), new: (a, b) => num(b) - num(a), num: (a, b) => num(a) - num(b), cost_desc: (a, b) => inRub(b) - inRub(a), cost_asc: (a, b) => (inRub(a) || 1e15) - (inRub(b) || 1e15) };
   function chip(g) {
     const n = num(g), p = g.st === 'work' ? pct(g) : null;
     const meta = p != null ? `<span class="cm"><span class="pg"><i style="--p:${p}%"></i>${p}%</span>${g.focus ? `<span class="fz">${IC.star}фокус</span>` : ''}${g.cost ? `<span class="cc">${money(g.cost, g.cur)}</span>` : ''}</span>` : '';
@@ -389,12 +397,49 @@
 
   // ---------- карта желаний (картинками) ----------
   function bShuffle(a) { let s = bSeed * 9301 + 49297; const r = () => (s = (s * 16807) % 2147483647) / 2147483647; const x = a.slice(); if (bSeed) for (let i = x.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [x[i], x[j]] = [x[j], x[i]]; } return x; }
-  function boardItems() { const L = live().filter(g => bTab === 'all' ? true : bTab === 'done' ? g.st === 'done' : g.cat === bTab && g.st !== 'done'); return bShuffle(L.slice().sort((a, b) => (!!b.img - !!a.img) || (b.st === 'work') - (a.st === 'work'))); }
+  const inTab = (g, k) => k === 'all' ? true : k === 'done' ? g.st === 'done' : g.cat === k && g.st !== 'done';
+  function boardItems() { const L = live().filter(g => g.img && inTab(g, bTab)); return bShuffle(L.slice().sort((a, b) => ((b.st === 'work') - (a.st === 'work')) || ((b.st === 'done') - (a.st === 'done')))); }
+  const SZ = ['xl', '', 't', '', 'w', '', '', 't', 'w', '', '', ''];
+  // раскладка без дыр: крупные плитки только там, где после них хватает мелких, чтобы закрыть ряды
+  function boardCols() { const b = $('#board'); return b ? Math.max(1, getComputedStyle(b).gridTemplateColumns.split(' ').filter(Boolean).length) : 5; }
+  // раскладка без дыр: проигрываем укладку сетки (dense) заранее и дотягиваем последний ряд
+  const SPAN = { xl: [2, 2], w: [2, 1], t: [1, 2], '': [1, 1] };
+  function pack(items, c) {
+    const g = []; const free = (r, col, w, h) => { for (let y = r; y < r + h; y++) for (let x = col; x < col + w; x++) if (x >= c || (g[y] && g[y][x] != null)) return false; return true; };
+    const pos = items.map((it, i) => { const w = Math.min(it.w, c), h = it.h; for (let r = 0; ; r++) for (let col = 0; col < c; col++) if (free(r, col, w, h)) { for (let y = r; y < r + h; y++) { g[y] = g[y] || []; for (let x = col; x < col + w; x++) g[y][x] = i; } return { r, col, w, h }; } });
+    return { g, pos };
+  }
+  function fitSizes(n) {
+    const c = boardCols();
+    let sz = Array.from({ length: n }, (_, i) => c < 3 ? '' : c === 3 ? (i % 6 === 0 && n - i >= 6 ? 'xl' : '') : SZ[i % SZ.length]);
+    if (c >= 4) for (let i = Math.max(1, n - c); i < n; i++) sz[i] = '';
+    let items = sz.map(k => ({ k, w: SPAN[k][0], h: SPAN[k][1] }));
+    for (let tries = 0; tries < 6; tries++) {
+      const { g } = pack(items, c); const last = g.length - 1;
+      const holesAbove = g.slice(0, last).some(row => { for (let x = 0; x < c; x++) if (row[x] == null) return true; return false; });
+      if (!holesAbove) {
+        // дыры только в последнем ряду — растягиваем его плитки на всю ширину
+        const row = g[last] || [], ids = [...new Set(row.filter(v => v != null))].filter(i => items[i].h === 1);
+        let gap = c - row.filter(v => v != null).length;
+        for (let j = ids.length - 1; gap > 0 && ids.length; j = (j - 1 + ids.length) % ids.length) { items[ids[j]].w++; gap--; }
+        break;
+      }
+      // дыра выше последнего ряда — крупную плитку ближе к концу делаем обычной
+      let k = -1; for (let i = n - 1; i > 0; i--) if (items[i].w > 1 || items[i].h > 1) { k = i; break; }
+      if (k < 0) break; items[k] = { k: '', w: 1, h: 1 };
+    }
+    return items;
+  }
+  let bRz; addEventListener('resize', () => { clearTimeout(bRz); bRz = setTimeout(() => { if (view === 'board') renderBoard(); }, 200); });
   function renderBoard() {
-    const L = live(), cnt = { all: L.length, done: done().length, be: 0, do: 0, have: 0 }; L.forEach(g => { if (g.st !== 'done') cnt[g.cat]++; });
+    const L = live().filter(g => g.img), cnt = {}; ['all', 'be', 'do', 'have', 'done'].forEach(k => { cnt[k] = L.filter(g => inTab(g, k)).length; });
+    const noImg = live().filter(g => !g.img && inTab(g, bTab)).length;
     $('#btabs').innerHTML = [['all', 'Все'], ['be', 'Быть'], ['do', 'Делать'], ['have', 'Иметь'], ['done', 'Исполнено']].map(([k, l]) => `<button data-bt="${k}" aria-selected="${k === bTab}">${l}<em>${cnt[k]}</em></button>`).join('');
     const it = boardItems(), shown = it.slice(0, bN);
-    $('#board').innerHTML = shown.map((g, i) => `<button class="bt ${g.img ? 'im' : ''} ${g.st === 'done' ? 'dn' : ''} ${g.img && i % 3 === 0 ? 'wd' : ''}" data-open="${g.id}">${coverHTML(g)}<span class="sh"></span><span class="no">№${num(g)}</span>${g.st === 'done' ? `<span class="bd2 d">${IC.cup}исполнено</span>` : g.st === 'work' ? `<span class="bd2 w">${pct(g)}%</span>` : ''}<b>${T(g.t)}</b></button>`).join('') || `<p class="none">Здесь пока пусто.</p>`;
+    $('#bnote').innerHTML = noImg ? nb(`В коллаже только цели с фото. Ещё ${noImg} без фото: открой цель и добавь фото, она появится здесь.`) : '';
+    const szs = fitSizes(shown.length);
+    $('#board').innerHTML = shown.map((g, i) => `<button style="grid-column: span ${szs[i].w}; grid-row: span ${szs[i].h}" class="bt ${szs[i].k} ${g.st === 'done' ? 'dn' : ''}" data-open="${g.id}">${coverHTML(g)}<span class="sh"></span><span class="no">№${num(g)}</span>${g.st === 'done' ? `<span class="bd2 d">${IC.cup}исполнено</span>` : g.st === 'work' ? `<span class="bd2 w">${pct(g)}%</span>` : ''}<b>${T(g.t)}</b></button>`).join('') || `<p class="none">${nb('Здесь пока нет целей с фото. Открой любую цель и добавь фото, она появится в коллаже.')}</p>`;
+    const wpb = document.querySelector('[data-wp]'); if (wpb) wpb.disabled = !cnt.all;
     $('#bmore').innerHTML = it.length > shown.length ? `<button class="more" data-bmore>Показать ещё · осталось ${it.length - shown.length}</button>` : '';
   }
 
@@ -405,7 +450,7 @@
   function openWp() {
     wp.innerHTML = `<div class="wbox"><div class="wtop"><h3>Обои с желаниями</h3><button class="x2" data-wx aria-label="Закрыть">${IC.x}</button></div>
       <div class="seg" role="group" aria-label="Формат"><button type="button" data-wf="phone" aria-pressed="${wpFmt === 'phone'}">На телефон</button><button type="button" data-wf="desk" aria-pressed="${wpFmt === 'desk'}">На компьютер</button></div>
-      <div class="cvs"><canvas id="wpc"></canvas></div><p class="note">${nb('Первыми идут цели с картинками и те, что в работе. «Перемешать» — другой набор.')}</p>
+      <div class="cvs"><canvas id="wpc"></canvas></div><p class="note">${nb('На обоях только цели с фото. «Перемешать» — другой набор.')}</p>
       <div class="acts"><button class="btn soft" data-wsh>${IC.shuf}Перемешать</button><button class="btn pri" data-wdl>${IC.dl}Скачать картинкой</button></div></div>`;
     wp.classList.add('on'); drawWp();
   }
@@ -448,9 +493,53 @@
     if (e.target.closest('[data-wdl]')) { $('#wpc').toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `karta-zhelaniy-${wpFmt === 'phone' ? 'telefon' : 'komputer'}.png`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); toast('Картинка скачана. Поставь её на обои'); }); }
   });
 
+  // ---------- лимит бесплатного уровня ----------
+  const us = document.createElement('div'); us.className = 'wp'; us.setAttribute('role', 'dialog'); us.setAttribute('aria-modal', 'true'); us.setAttribute('aria-label', 'Лимит бесплатного уровня');
+  document.body.append(us);
+  const UPT = { wish: `Записано ${MAXW} из ${MAXW} желаний`, work: 'В работе может быть 1 цель', focus: 'В фокусе дня может быть 1 цель' };
+  function upsell(kind, pre) {
+    us.innerHTML = `<div class="wbox ubox"><button class="x2" data-ux aria-label="Закрыть">${IC.x}</button><span class="uic">${IC.lock}</span>
+      <h3>${T(UPT[kind])}</h3>
+      <p>${T((pre ? pre + ' ' : '') + 'У тебя бесплатный уровень доступа: 10 желаний, 1 цель в работе и 1 в фокусе дня.')}</p>
+      <ul><li>${IC.check}${nb('все 1000 желаний')}</li><li>${IC.check}${nb('до 15 целей в работе')}</li><li>${IC.check}${nb('до 3 целей в фокусе дня')}</li></ul>
+      <div class="acts"><button class="btn soft" data-ux>Не сейчас</button><a class="btn pri" href="${UPGRADE}" target="_blank" rel="noopener">Открыть за $20</a></div></div>`;
+    us.classList.add('on'); setTimeout(() => us.querySelector('a.btn').focus(), 60);
+  }
+  function closeUs() { us.classList.remove('on'); }
+  us.addEventListener('click', e => { if (e.target === us || e.target.closest('[data-ux]')) closeUs(); });
+
+  // ---------- импорт ----------
+  const im = document.createElement('div'); im.className = 'wp'; im.setAttribute('role', 'dialog'); im.setAttribute('aria-modal', 'true'); im.setAttribute('aria-label', 'Импорт целей');
+  document.body.append(im);
+  const cleanLine = l => l.replace(/^\s*(?:[-–—•*·▪●○◦]|\[[ xх]?\]|\d+[.)])\s*/i, '').trim();
+  function openImp() {
+    im.innerHTML = `<div class="wbox ibox"><div class="wtop"><h3>Импорт целей</h3><button class="x2" data-ix aria-label="Закрыть">${IC.x}</button></div>
+      <p class="note">${nb('По одной в строке, хоть сотни сразу. Категории проставит ИИ')}</p>
+      <label class="fld"><textarea id="impT" rows="8" placeholder="Поплавать с китами&#10;Посетить Японию&#10;Выучить испанский…"></textarea><small id="impN"></small></label>
+      <label class="fld"><span>Срок</span><select id="impH">${HORS.map(h => `<option>${h}</option>`).join('')}</select></label>
+      <div class="acts"><button class="btn soft" data-ix>Отмена</button><button class="btn pri" data-igo disabled>Импортировать</button></div></div>`;
+    im.classList.add('on'); setTimeout(() => $('#impT').focus(), 60);
+  }
+  function closeImp() { im.classList.remove('on'); }
+  const impLines = () => ($('#impT')?.value || '').split('\n').map(cleanLine).filter(Boolean);
+  im.addEventListener('input', () => { const n = impLines().length; im.querySelector('[data-igo]').disabled = !n; $('#impN').textContent = n ? 'Строк: ' + n : ''; });
+  im.addEventListener('click', e => {
+    if (e.target === im || e.target.closest('[data-ix]')) { closeImp(); return; }
+    if (e.target.closest('[data-igo]')) {
+      const A = impLines(), hor = $('#impH').value; if (!A.length) return;
+      const room = Math.max(0, MAXW - live().length); if (!room) { closeImp(); upsell('wish'); return; }
+      const L = A.slice(0, room);
+      const by = { be: 0, do: 0, have: 0 };
+      L.forEach(t => { const c = guess(t), g = add(t[0].toUpperCase() + t.slice(1), c); g.hor = hor; by[c]++; });
+      closeImp(); render();
+      if (L.length < A.length) { upsell('wish', `Добавлено ${L.length} из ${A.length}: больше не помещается.`); return; }
+      toast(nb(`Добавлено ${L.length} желаний, категории проставил ИИ: ${CAT.be.l} ${by.be}, ${CAT.do.l} ${by.do}, ${CAT.have.l} ${by.have}`));
+    }
+  });
+
   // ---------- сборка ----------
   function render() {
-    renderTop();
+    renderTop(); renderLim();
     document.querySelectorAll('[data-v]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === view)));
     $('#vList').hidden = view !== 'list'; $('#vBoard').hidden = view !== 'board';
     if (view === 'list') { renderMap(); renderWork(); renderShelves(); renderWall(); } else renderBoard();
@@ -470,10 +559,11 @@
     setCat('do');
     inp.addEventListener('input', () => { btn.disabled = !inp.value.trim(); if (!manual && inp.value.trim()) setCat(guess(inp.value)); });
     seg.forEach(b => b.onclick = () => { manual = true; setCat(b.dataset.cat); inp.focus(); });
-    f.addEventListener('submit', e => { e.preventDefault(); const t = inp.value.trim(); if (!t) return; const g = add(t[0].toUpperCase() + t.slice(1), cat); inp.value = ''; btn.disabled = true; manual = false; toast(nb('Желание №' + num(g) + ' записано в «' + CAT[cat].l + '». Нажми на него, чтобы добавить стоимость и картинку')); });
+    f.addEventListener('submit', e => { e.preventDefault(); const t = inp.value.trim(); if (!t) return; if (live().length >= MAXW) { upsell('wish'); return; } const g = add(t[0].toUpperCase() + t.slice(1), cat); inp.value = ''; btn.disabled = true; manual = false; toast(nb('Желание №' + num(g) + ' записано в «' + CAT[cat].l + '». Нажми на него, чтобы добавить стоимость и картинку')); });
   }
-  $('#capHost').innerHTML = `<form class="cap glass" id="cap"><input placeholder="Новая цель или желание…" autocomplete="off" aria-label="Новая цель"><div class="seg" role="group" aria-label="Категория">${Object.entries(CAT).map(([k, v]) => `<button type="button" class="c-${k}" data-cat="${k}"><i></i>${v.l}</button>`).join('')}</div><button class="add" disabled>${IC.plus}<span>Записать</span></button></form>`;
+  $('#capHost').innerHTML = `<form class="cap glass" id="cap"><input placeholder="Новая цель или желание…" autocomplete="off" aria-label="Новая цель"><div class="seg" role="group" aria-label="Категория">${Object.entries(CAT).map(([k, v]) => `<button type="button" class="c-${k}" data-cat="${k}"><i></i>${v.l}</button>`).join('')}</div><button class="add" disabled>${IC.plus}<span>Записать</span></button><button type="button" class="imp" data-imp aria-label="Импорт">${IC.up}<span>Импорт</span></button></form>`;
   $('#sicon').innerHTML = IC.search;
+  function renderLim() { const el = $('#limLine'); if (!el) return; if (!GUEST) { el.textContent = ''; return; } const n = live().length; el.innerHTML = `${nb('Записано ' + n + ' из ' + MAXW + ' желаний. Все 1000 открыты членам Альянса.')} <a href="${UPGRADE}" target="_blank" rel="noopener">Открыть</a>`; }
 
   document.addEventListener('click', e => {
     if (e.target.closest('.sheet,.wp,.cele')) return;
@@ -492,6 +582,7 @@
     if (t.closest('[data-bmore]')) { bN += 40; renderBoard(); return; }
     if (t.closest('[data-bsh]')) { bSeed++; renderBoard(); return; }
     if (t.closest('[data-wp]')) { openWp(); return; }
+    if (t.closest('[data-imp]')) { openImp(); return; }
     const fs = t.closest('[data-fs]'); if (fs) { setFocus(list.find(g => g.id === fs.dataset.fs)); return; }
     const st = t.closest('[data-step]'); if (st) { stepDone(list.find(g => g.id === st.dataset.step)); return; }
     const o = t.closest('[data-open]'); if (o) openSheet(o.dataset.open);
@@ -503,12 +594,14 @@
   $('#sort').addEventListener('change', e => { sort = e.target.value; renderShelves(); });
 
   // демо-панель
-  const href = (p, extra = {}) => { const qq = new URLSearchParams(); const n = 'n' in extra ? extra.n : (MANY ? 'many' : ''); const th = 'theme' in extra ? extra.theme : (DARK ? 'dark' : ''); if (n) qq.set('n', n); if (th) qq.set('theme', th); const s = qq.toString(); return 'wishes-' + p + '.html' + (s ? '?' + s : ''); };
+  const href = (p, extra = {}) => { const qq = new URLSearchParams(); const n = 'n' in extra ? extra.n : (MANY ? 'many' : ''); const th = 'theme' in extra ? extra.theme : (DARK ? 'dark' : ''); const tr = 'tier' in extra ? extra.tier : (GUEST ? 'guest' : ''); if (n) qq.set('n', n); if (th) qq.set('theme', th); if (tr) qq.set('tier', tr); const s = qq.toString(); return 'wishes-' + p + '.html' + (s ? '?' + s : ''); };
   const bar = document.createElement('nav'); bar.className = 'demo'; bar.setAttribute('aria-label', 'Варианты прототипа');
   bar.innerHTML = `<div>${[['a', 'А'], ['b', 'Б'], ['c', 'В'], ['d', 'Г'], ['e', 'Д · компактная']].map(([p, l]) => `<a href="${href(p)}" class="${p === 'e' ? 'on' : ''}">${l}</a>`).join('')}</div>
     <div><a href="${href('e', { n: '' })}" class="${!MANY ? 'on' : ''}">10 целей</a><a href="${href('e', { n: 'many' })}" class="${MANY ? 'on' : ''}">Сотни</a></div>
+    <div><a href="${href('e', { tier: '' })}" class="${!GUEST ? 'on' : ''}">Член Альянса</a><a href="${href('e', { tier: 'guest', n: '' })}" class="${GUEST ? 'on' : ''}">Бесплатный</a></div>
     <div><a href="${href('e', { theme: '' })}" class="${!DARK ? 'on' : ''}">Светлая</a><a href="${href('e', { theme: 'dark' })}" class="${DARK ? 'on' : ''}">Тёмная</a></div>`;
   document.body.append(bar);
 
+  ls.push(() => renderLim());
   bindCap(); renderFeed(); render();
 })();

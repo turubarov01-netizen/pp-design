@@ -154,17 +154,25 @@ main { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
 .btabs button em { font-style: normal; font-weight: 500; opacity: .75; }
 .btabs button[aria-selected="true"] { background: var(--navy); color: var(--cream); }
 .bbar .sp { margin-left: auto; display: flex; gap: 8px; }
-.board { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); grid-auto-rows: 118px; grid-auto-flow: dense; gap: 10px; }
-.bt { position: relative; border-radius: 22px; overflow: hidden; grid-row: span 2; text-align: left; box-shadow: 0 10px 26px rgba(20,34,70,.14); transition: transform .3s var(--ease); }
-.bt.im { grid-row: span 3; }
-.bt.wd { grid-column: span 2; }
+.board { margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 150px; grid-auto-flow: dense; gap: 6px; }
+.bt { position: relative; border-radius: 14px; overflow: hidden; text-align: left; box-shadow: 0 6px 16px rgba(20,34,70,.12); transition: transform .3s var(--ease); }
+.bt.xl { grid-column: span 2; grid-row: span 2; }
+.bt.w { grid-column: span 2; }
+.bt.t { grid-row: span 2; }
+.bt .cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.bt:hover .cover img { transform: scale(1.04); }
+.bt:not(.xl) b { font-size: 13.5px; -webkit-line-clamp: 2; left: 11px; right: 11px; bottom: 10px; }
+.bt:not(.xl) .no { font-size: 13px; height: 22px; padding: 0 7px; left: 8px; top: 8px; }
+.bnote { margin: 12px 0 0; font-size: 13px; color: var(--ink2, #5b6475); }
+.bnote:empty { display: none; }
+.bbar .btn:disabled { opacity: .45; pointer-events: none; }
 .bt:hover { transform: translateY(-3px); }
 .bt .cover { position: absolute; inset: 0; }
 .bt .cover .lt { font-size: 190px; bottom: -18%; }
 .bt .cover .sp { display: none; }
 .bt .sh { position: absolute; inset: 35% 0 0; background: linear-gradient(transparent, rgba(0,0,0,.7)); }
 .bt b { position: absolute; left: 14px; right: 14px; bottom: 12px; color: #fff; font-size: 15px; line-height: 1.25; font-weight: 700; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.bt .no { position: absolute; left: 14px; top: 12px; font: 400 16px/1 "Bebas", sans-serif; color: rgba(255,255,255,.85); letter-spacing: .04em; }
+.bt .no { position: absolute; left: 10px; top: 10px; height: 24px; padding: 0 8px; border-radius: 999px; display: inline-flex; align-items: center; font: 400 15px/1 "Bebas", sans-serif; color: #fff; letter-spacing: .04em; background: rgba(12,18,40,.48); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .bt .bd2 { position: absolute; right: 10px; top: 10px; height: 26px; padding: 0 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 800; }
 .bt .bd2 svg { width: 13px; height: 13px; }
 .bt .bd2.d { background: var(--gold); color: oklch(0.3 0.08 70); }
@@ -240,6 +248,31 @@ main { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
 .imgrow .btn { height: 40px; font-size: 13.5px; padding: 0 13px; cursor: pointer; }
 .ef .acts { margin-top: 4px; }
 
+/* лимит бесплатного уровня */
+.limline { margin: 8px 4px 0; font-size: 13px; color: var(--ink2); }
+.limline:empty { display: none; }
+.limline a { color: var(--navy); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.ubox { width: min(440px, 100%); position: relative; padding: 26px 24px 22px; gap: 10px; }
+.ubox .x2 { position: absolute; right: 14px; top: 14px; }
+.ubox .uic { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; background: var(--yellow); color: var(--navy); }
+.ubox .uic svg { width: 22px; height: 22px; }
+.ubox h3 { margin: 4px 0 0; font-size: 21px; font-weight: 800; line-height: 1.2; padding-right: 40px; }
+.ubox p { margin: 0; font-size: 15px; line-height: 1.45; color: var(--ink2); }
+.ubox ul { list-style: none; margin: 2px 0 0; padding: 0; display: grid; gap: 6px; }
+.ubox li { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 650; }
+.ubox li svg { width: 16px; height: 16px; color: var(--green, #1F8C86); flex: none; }
+.ubox .acts { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+.ubox a.btn { text-decoration: none; }
+@media (max-width: 760px) { .bt:not(.xl):has(.bd2) .no { display: none; } }
+/* импорт */
+.cap .imp { height: 48px; padding: 0 16px; border-radius: 15px; background: var(--tile); color: var(--ink); font-weight: 700; display: inline-flex; align-items: center; gap: 7px; flex: none; transition: transform .25s var(--ease); }
+.cap .imp:hover { transform: translateY(-1px); }
+.cap .imp svg { width: 17px; height: 17px; }
+.ibox { width: min(520px, 100%); }
+.ibox .note { margin: -4px 0 0; font-size: 14px; color: var(--ink2); }
+.ibox .acts { display: flex; justify-content: flex-end; gap: 8px; }
+.ibox .btn:disabled { opacity: .45; pointer-events: none; }
+@media (max-width: 760px) { .cap .imp { width: 44px; height: 44px; padding: 0; justify-content: center; } .cap .imp span { display: none; } }
 /* обои */
 .wp { position: fixed; inset: 0; z-index: 85; display: grid; place-items: center; padding: 16px; background: rgba(12,18,40,.55); opacity: 0; pointer-events: none; transition: opacity .3s; }
 .wp.on { opacity: 1; pointer-events: auto; }
@@ -281,8 +314,10 @@ main { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
   .tro { grid-template-columns: 1fr 1fr; }
   .bbar .sp { margin-left: 0; width: 100%; } .bbar .sp .btn { flex: 1; padding: 0 10px; }
   .btabs { width: 100%; }
-  .board { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 96px; gap: 8px; }
-  .bt { border-radius: 18px; } .bt b { font-size: 13.5px; left: 11px; right: 11px; bottom: 10px; }
+  .board { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 100px; gap: 4px; }
+  .bt { border-radius: 10px; } .bt b { font-size: 12.5px; left: 8px; right: 8px; bottom: 7px; }
+  .bt:not(.xl) b { font-size: 11.5px; left: 7px; right: 7px; bottom: 6px; } .bt:not(.xl) .no { font-size: 12px; left: 7px; top: 6px; }
+  .bt .bd2 { height: 20px; padding: 0 7px; font-size: 10px; right: 6px; top: 6px; }
   .two { grid-template-columns: 1fr; }
   .cvs canvas.ph { height: 48vh; }
   .wbox { padding: 16px; border-radius: 24px; }
@@ -428,6 +463,7 @@ main { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
   <header class="top"><div><h1>1000 целей</h1><div class="lead" id="lead"></div></div>
     <div class="vsw glass" role="tablist" aria-label="Вид"><button role="tab" data-v="list">Список</button><button role="tab" data-v="board">Карта желаний</button></div></header>
   <div id="capHost"></div>
+  <p class="limline" id="limLine"></p>
 
   <div id="vList">
     <section class="map glass">
@@ -449,7 +485,7 @@ main { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
         <section id="work"></section>
         <section class="tools" id="tools">
           <div class="tl"><label class="srch glass"><span id="sicon"></span><input id="q" placeholder="Найти цель" autocomplete="off" aria-label="Поиск по целям"></label>
-            <select class="sel glass" id="sort" aria-label="Порядок"><option value="new">Сначала новые</option><option value="num">По номеру</option><option value="cost_desc">Дороже сверху</option><option value="cost_asc">Дешевле сверху</option></select>
+            <select class="sel glass" id="sort" aria-label="Порядок"><option value="prio">Приоритетные</option><option value="new">Сначала новые</option><option value="num">По номеру</option><option value="cost_desc">Дороже сверху</option><option value="cost_asc">Дешевле сверху</option></select>
             <span id="hchip"></span></div>
           <div class="sph" id="sph" role="group" aria-label="Сфера Колеса баланса"></div>
         </section>
@@ -463,6 +499,7 @@ main { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
   <div id="vBoard" hidden>
     <div class="bbar"><div class="btabs glass" id="btabs" role="tablist"></div>
       <div class="sp"><button class="btn soft" data-bsh>Перемешать</button><button class="btn pri" data-wp>Сделать обои</button></div></div>
+    <p class="bnote" id="bnote"></p>
     <div class="board" id="board"></div>
     <div id="bmore"></div>
   </div>
