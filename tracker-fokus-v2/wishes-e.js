@@ -1,5 +1,5 @@
 /* Вариант Г «Полки + Карта 1000»: сотни-квадратики, полки с номерами и стоимостью, шаги с процентами для любой цели,
-   редактирование карточки, карта желаний и обои. ?n=many — сотни целей; ?theme=dark — тёмная тема. Цели и имена вымышленные. */
+   редактирование карточки, коллаж желаний и обои. ?n=many — сотни целей; ?theme=dark — тёмная тема. Цели и имена вымышленные. */
 (function () {
   const Q = new URLSearchParams(location.search);
   const GUEST = Q.get('tier') === 'guest';
@@ -395,10 +395,11 @@
       ${D.length ? `<div class="tro">${shown.map(g => `<button class="tp" data-open="${g.id}"><span class="d">${IC.cup}№${num(g)} · ${esc(g.doneAt)}</span><b>${T(g.t)}</b></button>`).join('')}</div>${D.length > 6 ? `<button class="more" data-wall-d>${wallAll ? 'Свернуть' : 'Показать все ' + D.length}</button>` : ''}` : `<p class="none">${nb('Первая исполненная цель станет праздником.')}</p>`}`;
   }
 
-  // ---------- карта желаний (картинками) ----------
+  // ---------- коллаж желаний ----------
   function bShuffle(a) { let s = bSeed * 9301 + 49297; const r = () => (s = (s * 16807) % 2147483647) / 2147483647; const x = a.slice(); if (bSeed) for (let i = x.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [x[i], x[j]] = [x[j], x[i]]; } return x; }
-  const inTab = (g, k) => k === 'all' ? true : k === 'done' ? g.st === 'done' : g.cat === k && g.st !== 'done';
-  function boardItems() { const L = live().filter(g => g.img && inTab(g, bTab)); return bShuffle(L.slice().sort((a, b) => ((b.st === 'work') - (a.st === 'work')) || ((b.st === 'done') - (a.st === 'done')))); }
+  // в коллаже только неисполненные желания с фото: исполненное уже исполнено (Саша 19.11)
+  const inTab = (g, k) => g.st !== 'done' && (k === 'all' || g.cat === k);
+  function boardItems() { const L = live().filter(g => g.img && inTab(g, bTab)); return bShuffle(L.slice().sort((a, b) => (b.st === 'work') - (a.st === 'work'))); }
   const SZ = ['xl', '', 't', '', 'w', '', '', 't', 'w', '', '', ''];
   // раскладка без дыр: крупные плитки только там, где после них хватает мелких, чтобы закрыть ряды
   function boardCols() { const b = $('#board'); return b ? Math.max(1, getComputedStyle(b).gridTemplateColumns.split(' ').filter(Boolean).length) : 5; }
@@ -432,9 +433,9 @@
   }
   let bRz; addEventListener('resize', () => { clearTimeout(bRz); bRz = setTimeout(() => { if (view === 'board') renderBoard(); }, 200); });
   function renderBoard() {
-    const L = live().filter(g => g.img), cnt = {}; ['all', 'be', 'do', 'have', 'done'].forEach(k => { cnt[k] = L.filter(g => inTab(g, k)).length; });
+    const L = live().filter(g => g.img), cnt = {}; ['all', 'be', 'do', 'have'].forEach(k => { cnt[k] = L.filter(g => inTab(g, k)).length; });
     const noImg = live().filter(g => !g.img && inTab(g, bTab)).length;
-    $('#btabs').innerHTML = [['all', 'Все'], ['be', 'Быть'], ['do', 'Делать'], ['have', 'Иметь'], ['done', 'Исполнено']].map(([k, l]) => `<button data-bt="${k}" aria-selected="${k === bTab}">${l}<em>${cnt[k]}</em></button>`).join('');
+    $('#btabs').innerHTML = [['all', 'Все'], ['be', 'Быть'], ['do', 'Делать'], ['have', 'Иметь']].map(([k, l]) => `<button data-bt="${k}" aria-selected="${k === bTab}">${l}<em>${cnt[k]}</em></button>`).join('');
     const it = boardItems(), shown = it.slice(0, bN);
     $('#bnote').innerHTML = noImg ? nb(`В коллаже только цели с фото. Ещё ${noImg} без фото: открой цель и добавь фото, она появится здесь.`) : '';
     const szs = fitSizes(shown.length);
@@ -490,7 +491,7 @@
     if (e.target === wp || e.target.closest('[data-wx]')) closeWp();
     const f = e.target.closest('[data-wf]'); if (f) { wpFmt = f.dataset.wf; wp.querySelectorAll('[data-wf]').forEach(b => b.setAttribute('aria-pressed', String(b === f))); drawWp(); }
     if (e.target.closest('[data-wsh]')) { bSeed++; drawWp(); if (view === 'board') renderBoard(); }
-    if (e.target.closest('[data-wdl]')) { $('#wpc').toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `karta-zhelaniy-${wpFmt === 'phone' ? 'telefon' : 'komputer'}.png`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); toast('Картинка скачана. Поставь её на обои'); }); }
+    if (e.target.closest('[data-wdl]')) { $('#wpc').toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `kollazh-zhelaniy-${wpFmt === 'phone' ? 'telefon' : 'komputer'}.png`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); toast('Картинка скачана. Поставь её на обои'); }); }
   });
 
   // ---------- лимит бесплатного уровня ----------
@@ -502,7 +503,7 @@
       <h3>${T(UPT[kind])}</h3>
       <p>${T((pre ? pre + ' ' : '') + 'У тебя бесплатный уровень доступа: 10 желаний, 1 цель в работе и 1 в фокусе дня.')}</p>
       <ul><li>${IC.check}${nb('все 1000 желаний')}</li><li>${IC.check}${nb('до 15 целей в работе')}</li><li>${IC.check}${nb('до 3 целей в фокусе дня')}</li></ul>
-      <div class="acts"><button class="btn soft" data-ux>Не сейчас</button><a class="btn pri" href="${UPGRADE}" target="_blank" rel="noopener">Открыть за $20</a></div></div>`;
+      <div class="acts"><button class="btn soft" data-ux>Не сейчас</button><a class="btn pri" href="${UPGRADE}" target="_blank" rel="noopener">Повысить тариф</a></div></div>`;
     us.classList.add('on'); setTimeout(() => us.querySelector('a.btn').focus(), 60);
   }
   function closeUs() { us.classList.remove('on'); }
@@ -563,7 +564,7 @@
   }
   $('#capHost').innerHTML = `<form class="cap glass" id="cap"><input placeholder="Новая цель или желание…" autocomplete="off" aria-label="Новая цель"><div class="seg" role="group" aria-label="Категория">${Object.entries(CAT).map(([k, v]) => `<button type="button" class="c-${k}" data-cat="${k}"><i></i>${v.l}</button>`).join('')}</div><button class="add" disabled>${IC.plus}<span>Записать</span></button><button type="button" class="imp" data-imp aria-label="Импорт">${IC.up}<span>Импорт</span></button></form>`;
   $('#sicon').innerHTML = IC.search;
-  function renderLim() { const el = $('#limLine'); if (!el) return; if (!GUEST) { el.textContent = ''; return; } const n = live().length; el.innerHTML = `${nb('Записано ' + n + ' из ' + MAXW + ' желаний. Все 1000 открыты членам Альянса.')} <a href="${UPGRADE}" target="_blank" rel="noopener">Открыть</a>`; }
+  function renderLim() { const el = $('#limLine'); if (!el) return; if (!GUEST) { el.textContent = ''; return; } const n = live().length; el.innerHTML = `${nb('Записано ' + n + ' из ' + MAXW + ' желаний.')} <a href="${UPGRADE}" target="_blank" rel="noopener">Повысить тариф</a>`; }
 
   document.addEventListener('click', e => {
     if (e.target.closest('.sheet,.wp,.cele')) return;
