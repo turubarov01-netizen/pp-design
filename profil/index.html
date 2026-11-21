@@ -397,30 +397,8 @@ body.as-owner.editing .va .hero-edit.owner-only { display: grid !important; }
 @media (max-width: 760px) { .va .avw .fbub { left: -64px; bottom: 96%; border-radius: 14px 14px 4px 14px; } }
 @media (max-width: 760px) { .va .cover .btn { font-size: 0; gap: 0; width: 40px; padding: 0; justify-content: center; } }
 
-/* =================== v7: одна палитра кабинета (белое стекло, синий→фиолетовый акцент, нейтральные). Оранжевый — только фениксы, зелёный/красный — только плюс и минус кармы =================== */
-.va .hero-av, .vp .hero-av { background: var(--grad); }
-.va .av.c1, .va .av.c2, .va .av.c3, .va .av.c4, .va .av.c6 { background: linear-gradient(135deg, #6f8cff, #5a6dff); }
-.va .av.c2, .va .av.c4 { background: linear-gradient(135deg, #8a9bc4, #5e6f99); }
-.va .av.c5 { background: linear-gradient(135deg, #64748b, #475569); }
-.va .chip.lvl, .va .chip.clan { background: rgba(255,255,255,.72); border: 1px solid var(--line); color: var(--ink-2); font-weight: 600; }
-.va .chip.lvl svg { color: var(--blue); }
-.va .who h2 em.nick { font-style: normal; color: var(--blue-ink); }
-.va .recs-badge { background: rgba(47,123,255,.1); color: var(--blue-ink); }
-.va .recs-badge svg { fill: var(--blue); stroke: var(--blue); }
-.va .ask-c.help, .va .ask-c.seek { background: rgba(255,255,255,.62); border: 1px solid var(--line); }
-.va .help .ask-h, .va .seek .ask-h { color: var(--blue-ink); }
-.va .help .ask-ic, .va .seek .ask-ic { background: var(--grad); }
-.va .ask-c.help .btn, .va .ask-c.seek .btn { color: var(--blue-ink); background: rgba(47,123,255,.08); }
-.va .biz-logo { background: rgba(47,123,255,.1); color: var(--blue-ink); }
-.va .track span.done { color: var(--blue-ink); border-color: rgba(47,123,255,.45); }
-.va .fcat.c-do, .va .fcat.c-have, .va .fcat.c-be { background: rgba(47,123,255,.1); color: var(--blue-ink); }
-.va .fnow { background: rgba(16,24,48,.04); }
-.va .fnow small { color: var(--muted); }
-.va .dr-b { background: rgba(47,123,255,.06); }
-.va .dr-cat { color: var(--blue-ink); }
-.va .dr-up svg { color: var(--blue); }
-.va .vote .btn.up { background: var(--grad); }
-.va .rank-ic { width: 15px; height: 15px; color: var(--blue); margin-right: 4px; vertical-align: -2px; }
+/* =================== v8: цветные акценты как в v6 (по просьбе Саши 21.11), от v7 остались только Альянс-имя и иконка ранга (белое стекло, синий→фиолетовый акцент, нейтральные). Оранжевый — только фениксы, зелёный/красный — только плюс и минус кармы =================== */
+.va .rank-ic { width: 15px; height: 15px; color: #7c3aed; margin-right: 4px; vertical-align: -2px; }
 /* Альянс-имя */
 .va .nm-only, .vp .nm-only { display: none; }
 body.nick-only .va .nm-full, body.nick-only .vp .nm-full { display: none; }
@@ -451,10 +429,8 @@ body.tier-pawn .vp .al-lock { display: block; }
 .vp-f.new .fi { box-shadow: none; }
 @media (max-width: 760px) { .al-lk { flex-wrap: wrap; } .al-lk .btn { margin-left: 0; width: 100%; justify-content: center; } }
 .al .fi.on { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,123,255,.15); }
-.va .av.c7 { background: linear-gradient(135deg, #6f8cff, #5a6dff); }
-.va .av.c8 { background: linear-gradient(135deg, #8a9bc4, #5e6f99); }
-.va .recs-badge { box-shadow: none; }
 .va .al .al-chk, .vp .al .al-chk { display: flex; align-items: center; margin: 10px 0 0; font-weight: 500; font-size: 13px; color: var(--ink-2); }
+.va .who h2 em.nick { font-style: normal; }
 
 /* =================== ВАРИАНТ B: бенто-визитка =================== */
 .vb .bento { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); grid-auto-rows: minmax(120px, auto); gap: 14px; }
@@ -984,6 +960,8 @@ body.shot .side { height: auto; min-height: 100vh; }
 
 
 
+
+
 <!-- Оформление страницы: видит только владелец -->
 <aside class="dz" aria-label="Обложка и бизнесы">
   <div class="dz-h">
@@ -1114,7 +1092,7 @@ body.shot .side { height: auto; min-height: 100vh; }
 
     <!-- ОБО МНЕ -->
     <div class="pane on" data-p="about">
-      <section class="glass do" style="--b1:#5b8cff;--b2:#4f6bff;--b3:#5a43d6;--bi:#3b4fd8">
+      <section class="glass do" style="--b1:#34d399;--b2:#10b981;--b3:#0f766e;--bi:#0b7a55">
         <div class="do-brand">
           <span class="do-logo">ЕЖ</span>
           <b>Школа питания «Ешь и живи»</b>
@@ -1129,8 +1107,8 @@ body.shot .side { height: auto; min-height: 100vh; }
         </div>
         <div class="biz-more">
           <div class="biz-cap">Ещё 2 проекта</div>
-          <div class="biz"><span class="biz-logo">ЕК</span><div><b>«Ешь и живи · Кухня»</b><small>готовые рационы с доставкой по Казани · с 2023 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
-          <div class="biz"><span class="biz-logo">35</span><div><b>Беговой клуб «35+»</b><small>сообщество, 120 участниц · с 2021 года</small></div><a href="#">Telegram <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz" style="--b1:#fdba74;--b3:#ea580c"><span class="biz-logo">ЕК</span><div><b>«Ешь и живи · Кухня»</b><small>готовые рационы с доставкой по Казани · с 2023 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz" style="--b1:#93c5fd;--b3:#2563eb"><span class="biz-logo">35</span><div><b>Беговой клуб «35+»</b><small>сообщество, 120 участниц · с 2021 года</small></div><a href="#">Telegram <svg class="i"><use href="#i-ext"/></svg></a></div>
         </div>
       </section>
 
@@ -1405,7 +1383,7 @@ body.shot .side { height: auto; min-height: 100vh; }
 
     <!-- ОБО МНЕ -->
     <div class="pane on" data-p="about">
-      <section class="glass do" style="--b1:#5b8cff;--b2:#4f6bff;--b3:#5a43d6;--bi:#3b4fd8">
+      <section class="glass do" style="--b1:#fbbf24;--b2:#d97706;--b3:#92400e;--bi:#b45309">
         <div class="do-brand">
           <span class="do-logo">ХД</span>
           <b>Сеть пекарен «Хлебный двор»</b>
@@ -1420,8 +1398,8 @@ body.shot .side { height: auto; min-height: 100vh; }
         </div>
         <div class="biz-more">
           <div class="biz-cap">Ещё 2 проекта</div>
-          <div class="biz"><span class="biz-logo">Ц</span><div><b>«ХД Цех»</b><small>замороженная выпечка для кафе и отелей · производство · с 2020 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
-          <div class="biz"><span class="biz-logo">О</span><div><b>Кофейни «Опара»</b><small>2 кофейни в центре города · с 2023 года</small></div><a href="#">Карты <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz" style="--b1:#94a3b8;--b3:#334155"><span class="biz-logo">Ц</span><div><b>«ХД Цех»</b><small>замороженная выпечка для кафе и отелей · производство · с 2020 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz" style="--b1:#f9a8d4;--b3:#be185d"><span class="biz-logo">О</span><div><b>Кофейни «Опара»</b><small>2 кофейни в центре города · с 2023 года</small></div><a href="#">Карты <svg class="i"><use href="#i-ext"/></svg></a></div>
         </div>
       </section>
 
