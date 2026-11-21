@@ -83,44 +83,185 @@ body.as-owner .owner-block { display: block !important; }
 .quote-by { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--muted); }
 .quote-by b { color: var(--ink); font-weight: 600; display: block; font-size: 13.5px; }
 
-/* =================== ВАРИАНТ A: профиль соцсети =================== */
+/* =================== ВАРИАНТ A: профиль соцсети (v2, правки Саши 21.11) =================== */
 .va .hero { overflow: hidden; padding: 0; }
 .va .cover { height: 176px; position: relative; background: url(img/cover.jpg) center 55%/cover; }
 .va .cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,16,32,0) 40%, rgba(11,16,32,.18)); }
 .va .cover .btn { position: absolute; right: 16px; top: 16px; z-index: 1; height: 34px; font-size: 13px; }
 .va .hero-b { padding: 0 28px 22px; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 0 22px; align-items: end; }
-.va .hero-b .av { --s: 124px; margin-top: -56px; position: relative; z-index: 1; border-width: 4px; box-shadow: 0 10px 30px rgba(20,34,70,.2); }
+.va .hero-b > .av { --s: 124px; margin-top: -56px; position: relative; z-index: 1; border-width: 4px; box-shadow: 0 10px 30px rgba(20,34,70,.2); }
 .va .who { padding-top: 14px; min-width: 0; }
+.va .name-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; }
 .va .who h2 { margin: 0; font-size: 28px; font-weight: 750; letter-spacing: -.02em; line-height: 1.15; }
+.va .rb { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px 0 5px; border-radius: 999px; border: 1px solid rgba(183,121,31,.22); background: rgba(255,247,230,.95); color: #8a5a12; font-size: 14px; font-weight: 700; cursor: pointer; transition: background-color .18s var(--ease), border-color .18s var(--ease); }
+.va .rb:hover { background: #fff3d6; border-color: rgba(183,121,31,.4); }
+.va .rb .stack .av { --s: 24px; border-width: 2px; font-size: 9px; }
+.va .rb svg { width: 15px; height: 15px; fill: #e0a526; stroke: #c98a12; }
+.va .rb span.t { font-weight: 500; color: #9a6a20; }
 .va .who .head { margin-top: 4px; font-size: 16px; color: var(--ink-2); }
 .va .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.va .chip.lvl svg { width: 13px; height: 13px; }
+.va .chip .now { color: var(--muted); }
 .va .acts { grid-column: 2; display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
 .va .stats { grid-column: 1 / -1; display: flex; gap: 28px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line-2); font-size: 14px; color: var(--muted); }
 .va .stats b { color: var(--ink); font-size: 17px; font-weight: 700; margin-right: 4px; }
-.va .tabs { display: flex; gap: 4px; margin: 16px 0; padding: 4px; border-radius: 14px; width: fit-content; background: var(--glass); border: 1px solid var(--glass-b); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
-.va .tabs span { padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--muted); }
-.va .tabs span.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(16,24,48,.1); }
+
+/* помогу / ищу — отдельная яркая полоса */
+.va .ask { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.va .ask-c { padding: 20px 22px; border-radius: 24px; display: flex; flex-direction: column; gap: 12px; border: 1px solid; box-shadow: 0 10px 34px rgba(20,34,70,.08); -webkit-backdrop-filter: blur(26px) saturate(1.4); backdrop-filter: blur(26px) saturate(1.4); }
+.va .ask-c.help { background: linear-gradient(140deg, rgba(214,250,233,.94), rgba(255,255,255,.8) 70%); border-color: rgba(14,159,110,.22); }
+.va .ask-c.seek { background: linear-gradient(140deg, rgba(233,228,255,.95), rgba(255,255,255,.8) 70%); border-color: rgba(123,97,255,.24); }
+.va .ask-h { display: flex; align-items: center; gap: 10px; font-size: 12.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.va .help .ask-h { color: var(--green-ink); } .va .seek .ask-h { color: #5b3fd6; }
+.va .ask-ic { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: #fff; flex: none; }
+.va .ask-ic svg { width: 18px; height: 18px; }
+.va .help .ask-ic { background: linear-gradient(135deg,#10b981,#0ea5e9); } .va .seek .ask-ic { background: var(--grad); }
+.va .ask-c p { margin: 0; font-size: 18px; line-height: 1.4; font-weight: 650; letter-spacing: -.01em; color: var(--ink); max-width: 36ch; }
+.va .ask-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.va .ask-tags span { padding: 4px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; background: rgba(255,255,255,.85); }
+.va .help .ask-tags span { color: var(--green-ink); } .va .seek .ask-tags span { color: #5b3fd6; }
+.va .ask-c .btn { align-self: flex-start; margin-top: auto; height: 36px; font-size: 13px; }
+.va .ask-c.help .btn { color: var(--green-ink); } .va .ask-c.seek .btn { color: #5b3fd6; }
+
+/* вкладки */
+.va .tabs { display: flex; gap: 4px; margin: 16px 0; padding: 4px; border-radius: 14px; width: fit-content; max-width: 100%; overflow-x: auto; background: var(--glass); border: 1px solid var(--glass-b); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+.va .tabs button { padding: 8px 14px; border: 0; border-radius: 10px; background: none; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; white-space: nowrap; transition: color .18s var(--ease), background-color .18s var(--ease); }
+.va .tabs button:hover { color: var(--ink); }
+.va .tabs button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(16,24,48,.1); }
 .va .tabs em { font-style: normal; color: var(--faint); font-weight: 500; margin-left: 4px; }
+.va .pane { display: none; }
+.va .pane.on { display: block; animation: pane-in .28s var(--ease); }
+@keyframes pane-in { from { opacity: 0; transform: translateY(6px); } }
 .va .cols { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 16px; align-items: start; }
 .va .box { padding: 22px 24px; }
 .va .col { display: grid; gap: 16px; min-width: 0; }
-.va .biz { display: flex; gap: 16px; align-items: flex-start; }
-.va .biz-logo { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg,#10b981,#84cc16); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 18px; flex: none; }
-.va .biz h4 { margin: 0; font-size: 16px; font-weight: 700; }
-.va .biz p { margin: 4px 0 0; color: var(--ink-2); font-size: 14.5px; }
-.va .facts { display: flex; gap: 24px; margin-top: 14px; font-size: 13px; color: var(--muted); }
-.va .facts b { display: block; font-size: 18px; color: var(--ink); font-weight: 700; }
-.va .help { display: grid; gap: 14px; }
-.va .help-l { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin-bottom: 6px; }
-.va .help p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+.va .edit { display: none; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--blue-ink); }
+.va .edit svg { width: 14px; height: 14px; }
+body.as-owner .va .edit { display: inline-flex; }
+
+/* чем занимаюсь */
+.va .do { display: grid; grid-template-columns: 210px minmax(0,1fr); padding: 8px; }
+.va .do-brand { border-radius: 18px; padding: 20px; color: #fff; display: flex; flex-direction: column; gap: 4px; background: radial-gradient(120% 90% at 0% 0%, #34d399 0%, #10b981 40%, #0f766e 100%); position: relative; overflow: hidden; }
+.va .do-brand::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,.12); }
+.va .do-logo { width: 54px; height: 54px; border-radius: 16px; background: #fff; color: #0f766e; display: grid; place-items: center; font-weight: 800; font-size: 19px; margin-bottom: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+.va .do-brand b { font-size: 16px; line-height: 1.25; }
+.va .do-brand small { font-size: 13px; opacity: .85; }
+.va .do-brand a { margin-top: auto; padding-top: 16px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; position: relative; z-index: 1; }
+.va .do-brand a svg { width: 14px; height: 14px; }
+.va .do-main { padding: 14px 18px 14px 24px; display: flex; flex-direction: column; min-width: 0; }
+.va .kick { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); display: flex; justify-content: space-between; align-items: center; }
+.va .do-big { margin: 8px 0 0; font-size: 24px; line-height: 1.25; font-weight: 700; letter-spacing: -.02em; max-width: 24ch; }
+.va .do-big em { font-style: normal; color: var(--green-ink); }
+.va .do-sub { margin: 8px 0 0; font-size: 15px; color: var(--ink-2); max-width: 54ch; }
+.va .do-facts { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-top: 18px; }
+.va .do-facts div { padding: 10px 12px; border-radius: 14px; background: rgba(16,185,129,.08); }
+.va .do-facts b { display: block; font-size: 18px; font-weight: 750; color: var(--green-ink); letter-spacing: -.01em; }
+.va .do-facts small { font-size: 12.5px; color: var(--muted); }
+
+/* навыки — кратко во «Обо мне» */
+.va .skill { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line-2); }
+.va .skill:first-of-type { border-top: 0; }
+.va .more-sk { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--line-2); }
+.va .more-sk a { font-size: 13px; font-weight: 600; color: var(--blue-ink); padding: 4px 4px; }
+
+/* карта навыков */
+.va .sk-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.va .sk-head h3 { margin: 0; font-size: 18px; font-weight: 750; flex: 1; }
+.va .find { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 12px; min-width: 220px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.85); color: var(--faint); font-size: 14px; }
+.va .seg { display: inline-flex; padding: 3px; border-radius: 11px; background: rgba(16,24,48,.05); }
+.va .seg b { padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.va .seg b.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(16,24,48,.1); }
+.va .sk-note { margin: 8px 0 0; font-size: 13.5px; color: var(--muted); }
+.va .clusters { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; margin-top: 16px; }
+.va .cl { padding: 16px 18px; border-radius: 18px; background: var(--tile); border: 1px solid rgba(255,255,255,.8); }
+.va .cl h4 { margin: 0 0 12px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.va .cl h4 i { width: 10px; height: 10px; border-radius: 3px; }
+.va .cl h4 small { margin-left: auto; font-size: 12.5px; font-weight: 500; color: var(--muted); }
+.va .chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.va .skc { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.9); font-size: 13px; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; transition: border-color .18s var(--ease), background-color .18s var(--ease); }
+.va .skc:hover { border-color: rgba(47,123,255,.4); }
+.va .skc i { font-style: normal; font-size: 12px; color: var(--faint); font-weight: 600; }
+.va .skc.l3 { font-size: 14px; padding: 6px 12px; color: var(--ink); }
+.va .skc.l4 { font-size: 15.5px; padding: 7px 14px; color: #fff; background: var(--grad); border-color: transparent; }
+.va .skc.l4 i { color: rgba(255,255,255,.8); }
+.va .skc.mine { background: rgba(47,123,255,.1); border-color: transparent; color: var(--blue-ink); }
+.va .skc.mine svg { width: 13px; height: 13px; }
+.va .skc.mine i { color: rgba(29,95,214,.6); }
+.va .skc.add { border-style: dashed; color: var(--blue-ink); display: none; }
+body.as-owner .va .skc.add { display: inline-flex; }
+
+/* рекомендации */
+.va .rec-grid { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 16px; align-items: start; }
+.va .rsum { display: flex; align-items: baseline; gap: 10px; }
+.va .rsum b { font-size: 40px; font-weight: 750; letter-spacing: -.03em; line-height: 1; }
+.va .rsum span { color: var(--muted); font-size: 14px; }
+.va .rbar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 14px 0 8px; gap: 2px; }
+.va .rbar i:first-child { background: linear-gradient(90deg,#10b981,#22c55e); }
+.va .rbar i:last-child { background: #f97316; }
+.va .rleg { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+.va .rleg b { color: var(--ink); }
+.va .rform { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line-2); display: grid; gap: 10px; }
+.va .rform h4 { margin: 0; font-size: 15px; font-weight: 700; }
+.va .tog { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px; border-radius: 12px; background: rgba(16,24,48,.05); }
+.va .tog button { height: 34px; border: 0; border-radius: 9px; background: none; font-size: 13.5px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.va .tog button.on.pos { background: #fff; color: var(--green-ink); box-shadow: 0 1px 3px rgba(16,24,48,.1); }
+.va .tog button.on.neg { background: #fff; color: #c2410c; box-shadow: 0 1px 3px rgba(16,24,48,.1); }
+.va .ta { min-height: 92px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.9); font-size: 14px; color: var(--faint); }
+.va .rform small { font-size: 12.5px; color: var(--muted); }
+.va .rlist { display: grid; gap: 12px; }
+.va .rcard { padding: 18px 20px; }
+.va .rcard-h { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.va .rcard-h b { display: block; color: var(--ink); font-size: 14px; font-weight: 650; }
+.va .rcard-h .av { --s: 38px; }
+.va .rk { margin-left: auto; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.va .rk.pos { background: rgba(14,159,110,.1); color: var(--green-ink); }
+.va .rk.neg { background: rgba(249,115,22,.12); color: #c2410c; }
+.va .rcard p { margin: 10px 0 0; font-size: 15px; line-height: 1.55; color: var(--ink); }
+.va .rcard .for { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+.va .rcard .for span { font-size: 12.5px; padding: 2px 8px; border-radius: 999px; background: rgba(47,123,255,.08); color: var(--blue-ink); font-weight: 600; }
+.va .reply { margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(16,24,48,.04); font-size: 14px; color: var(--ink-2); }
+.va .reply b { display: block; font-size: 13px; color: var(--ink); margin-bottom: 2px; }
+.va .rfilter { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.va .rfilter span { padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--muted); background: var(--glass); border: 1px solid var(--glass-b); }
+.va .rfilter span.on { background: var(--ink); color: #fff; border-color: transparent; }
+
+/* друзья */
+.va .fr-top { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.va .fr-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
+.va .fr { padding: 18px 14px 14px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+.va .fr .av { --s: 64px; border-width: 3px; margin-bottom: 6px; }
+.va .fr b { font-size: 14.5px; line-height: 1.25; }
+.va .fr small { font-size: 12.5px; color: var(--muted); line-height: 1.3; }
+.va .fr .mut { margin-top: 6px; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(47,123,255,.1); color: var(--blue-ink); }
+.va .fr .btn { margin-top: 10px; height: 32px; font-size: 13px; width: 100%; }
+
+/* путь в Альянсе и походы */
+.va .stage small { display: block; font-size: 12.5px; color: var(--muted); }
+.va .stage b { font-size: 16px; font-weight: 700; }
+.va .stage .bar { display: block; height: 8px; border-radius: 4px; background: rgba(47,123,255,.12); margin-top: 10px; overflow: hidden; }
+.va .stage .bar i { display: block; height: 100%; width: 35%; background: var(--grad); border-radius: 4px; }
+.va .steps { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; }
+.va .steps li { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.va .steps img, .va .steps .lg { width: 38px; height: 38px; border-radius: 11px; object-fit: cover; background: #fff; flex: none; border: 1px solid var(--line-2); }
+.va .steps b { display: block; font-size: 14px; line-height: 1.25; }
+.va .steps small { font-size: 12.5px; color: var(--muted); }
+.va .badge { font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(183,121,31,.14); color: var(--amber); margin-left: 4px; white-space: nowrap; }
+.va .badge.g { background: rgba(14,159,110,.12); color: var(--green-ink); }
 .va .faces { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 8px; }
 .va .face { display: grid; justify-items: center; gap: 6px; text-align: center; font-size: 12.5px; color: var(--ink-2); line-height: 1.25; }
 .va .face .av { --s: 52px; }
-.va .growth { display: flex; align-items: center; gap: 14px; }
-.va .growth .g { flex: 1; }
-.va .growth small { display: block; font-size: 12px; color: var(--muted); }
-.va .growth b { font-size: 18px; font-weight: 700; }
-.va .growth .arr { color: var(--green); font-weight: 700; font-size: 13px; background: rgba(14,159,110,.1); padding: 3px 8px; border-radius: 999px; }
+.va .hikes { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+.va .hike { overflow: hidden; padding: 0; }
+.va .hike-img { height: 150px; background-size: cover; background-position: center; position: relative; display: grid; place-items: center; }
+.va .hike-img img { width: 84px; height: 84px; object-fit: contain; border-radius: 20px; background: rgba(255,255,255,.92); padding: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+.va .hike-img .badge { position: absolute; left: 12px; top: 12px; margin: 0; background: rgba(255,255,255,.92); }
+.va .hike-b { padding: 16px 18px 18px; }
+.va .hike-b b { display: block; font-size: 16px; }
+.va .hike-b small { color: var(--muted); font-size: 13px; }
+.va .hike-b .row { display: flex; gap: 18px; margin-top: 12px; font-size: 13px; color: var(--muted); }
+.va .hike-b .row strong { display: block; font-size: 16px; color: var(--ink); }
+
+/* полоса владельца */
 .va .owner-bar { margin-bottom: 16px; padding: 14px 18px; display: none; align-items: center; gap: 16px; }
 body.as-owner .va .owner-bar { display: flex; }
 .va .meter { flex: 1; }
@@ -281,14 +422,28 @@ body.shot .side { height: auto; min-height: 100vh; }
   .content { padding: 14px 12px 90px; }
   .va .cover { height: 120px; }
   .va .hero-b { grid-template-columns: 1fr; padding: 0 18px 18px; }
-  .va .hero-b .av { --s: 96px; margin-top: -48px; }
+  .va .hero-b > .av { --s: 96px; margin-top: -48px; }
+  .va .who h2 { font-size: 25px; }
+  .va .rb span.t { display: none; }
   .va .acts { grid-column: 1; justify-content: flex-start; margin-top: 14px; }
-  .va .tabs span { white-space: nowrap; }
   .va .acts .btn.pri { flex: 1; }
   .va .stats { gap: 18px; flex-wrap: wrap; }
-  .va .tabs { width: 100%; overflow-x: auto; }
-  .va .cols { grid-template-columns: 1fr; }
-  .va .skill { flex-wrap: wrap; } .va .skill .stack { display: none; } .va .facts { gap: 16px; flex-wrap: wrap; }
+  .va .ask { grid-template-columns: 1fr; gap: 12px; }
+  .va .ask-c p { font-size: 16.5px; }
+  .va .tabs { width: 100%; }
+  .va .cols, .va .rec-grid { grid-template-columns: 1fr; }
+  .va .skill { flex-wrap: wrap; } .va .skill .stack { display: none; }
+  .va .do { grid-template-columns: 1fr; }
+  .va .do-brand { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 16px; }
+  .va .do-logo { margin: 0; width: 46px; height: 46px; }
+  .va .do-brand a { margin: 0 0 0 auto; padding: 0; }
+  .va .do-main { padding: 16px 10px 10px; }
+  .va .do-big { font-size: 21px; }
+  .va .do-facts { gap: 8px; } .va .do-facts b { font-size: 16px; }
+  .va .clusters { grid-template-columns: 1fr; }
+  .va .find { min-width: 0; flex: 1; }
+  .va .fr-grid { grid-template-columns: 1fr 1fr; }
+  .va .hikes { grid-template-columns: 1fr; }
   .vb .bento { grid-template-columns: 1fr; }
   .vb .bento > .t { grid-column: auto !important; grid-row: auto !important; }
   .vb .t-do .row, .vb .trail { grid-template-columns: 1fr 1fr; }
@@ -430,84 +585,215 @@ body.shot .side { height: auto; min-height: 100vh; }
 <div class="va">
   <div class="glass owner-bar">
     <div class="meter"><b>Страница заполнена на 70%</b><small>Добавьте навыки и обложку: так вас быстрее найдут через поиск участников</small><i></i></div>
-    <a class="btn pri" href="#"><svg class="i"><use href="#i-pen"/></svg>Оформить страницу</a>
+    <a class="btn pri" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
   </div>
   <section class="glass hero">
     <div class="cover"><a class="btn owner-only" href="#"><svg class="i"><use href="#i-image"/></svg>Сменить обложку</a></div>
     <div class="hero-b">
       <span class="av hero-av">АБ</span>
       <div class="who">
-        <h2>Анна Белова</h2>
+        <div class="name-row">
+          <h2>Анна Белова</h2>
+          <button class="rb" data-go="recs" title="Рекомендации"><span class="stack"><span class="av c3">ОС</span><span class="av c1">ИГ</span><span class="av c2">МК</span></span><svg class="i"><use href="#i-star"/></svg>23 <span class="t">рекомендации</span></button>
+        </div>
         <div class="head">Нутрициолог. Основательница онлайн-школы питания «Ешь и живи»</div>
         <div class="meta">
-          <span class="chip clan">Клан «Сфера»</span><span class="chip lvl">Бунтарь</span>
-          <span class="chip"><svg class="i" style="width:13px;height:13px"><use href="#i-pin"/></svg>Казань</span>
+          <span class="chip lvl"><svg class="i"><use href="#i-spark"/></svg>Уровень «Бунтарь»</span>
+          <span class="chip clan">Клан «Сфера»</span>
+          <span class="chip"><svg class="i" style="width:13px;height:13px"><use href="#i-pin"/></svg>Казань<span class="now">· сейчас в Лиссабоне</span></span>
           <span class="chip">214 дней в Альянсе</span>
         </div>
       </div>
       <div class="acts">
         <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a>
         <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
-        <a class="btn guest-only" href="#"><svg class="i"><use href="#i-star"/></svg>Рекомендовать</a>
-        <a class="btn owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать</a>
+        <a class="btn guest-only" href="#" data-go="recs"><svg class="i"><use href="#i-star"/></svg>Рекомендовать</a>
+        <a class="btn pri owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
+        <a class="btn owner-only" href="#"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
+        <a class="btn owner-only" href="?v=a&amp;as=guest"><svg class="i"><use href="#i-eye"/></svg>Как видят другие</a>
         <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
       </div>
       <div class="stats">
-        <span><b class="num">48</b>друзей</span><span><b class="num">6</b>общих</span><span><b class="num">23</b>рекомендации</span><span><b class="num">640</b>карма</span>
+        <span><b class="num">48</b>друзей</span><span><b class="num">6</b>общих</span><span><b class="num">24</b>навыка</span><span><b class="num">640</b>карма</span>
       </div>
     </div>
   </section>
-  <nav class="tabs"><span class="on">Обо мне</span><span>Навыки<em>4</em></span><span>Рекомендации<em>23</em></span><span>Друзья<em>48</em></span><span>Походы<em>3</em></span></nav>
-  <div class="cols">
-    <div class="col">
-      <section class="glass box">
-        <div class="sec-h"><h3>Чем занимаюсь</h3></div>
-        <div class="biz">
-          <span class="biz-logo">ЕЖ</span>
-          <div>
-            <h4>Школа питания «Ешь и живи»</h4>
-            <p>Учу женщин 35+ есть без диет и срывов. Групповой курс на 8 недель и личное сопровождение. Сейчас собираю команду под второй поток.</p>
-            <div class="facts"><span><b>с 2019</b>в деле</span><span><b class="num">340</b>учеников</span><span><b>онлайн</b>формат</span></div>
+
+  <div class="ask">
+    <section class="ask-c help">
+      <div class="ask-h"><span class="ask-ic"><svg class="i"><use href="#i-heart"/></svg></span>Чем могу помочь<a class="edit" href="#" style="margin-left:auto"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></div>
+      <p>Разберу рацион, продуктовую линейку и первый запуск курса</p>
+      <div class="ask-tags"><span>Нутрициология</span><span>Продуктовая линейка</span><span>Запуск курса</span></div>
+      <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Попросить помощь</a>
+    </section>
+    <section class="ask-c seek">
+      <div class="ask-h"><span class="ask-ic"><svg class="i"><use href="#i-search"/></svg></span>Кого ищу<a class="edit" href="#" style="margin-left:auto"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></div>
+      <p>Монтажёра Reels и партнёра на запуск второго потока</p>
+      <div class="ask-tags"><span>Монтажёр Reels</span><span>Партнёр на запуск</span></div>
+      <a class="btn guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Предложить человека</a>
+    </section>
+  </div>
+
+  <nav class="tabs">
+    <button data-t="about" class="on">Обо мне</button>
+    <button data-t="skills">Навыки<em>24</em></button>
+    <button data-t="recs">Рекомендации<em>23</em></button>
+    <button data-t="friends">Друзья<em>48</em></button>
+    <button data-t="hikes">Походы<em>3</em></button>
+  </nav>
+
+  <!-- ОБО МНЕ -->
+  <div class="pane on" data-p="about">
+    <div class="cols">
+      <div class="col">
+        <section class="glass do">
+          <div class="do-brand">
+            <span class="do-logo">ЕЖ</span>
+            <b>Школа питания «Ешь и живи»</b>
+            <small>онлайн · с 2019 года</small>
+            <a href="#">Сайт школы <svg class="i"><use href="#i-ext"/></svg></a>
           </div>
-        </div>
-      </section>
-      <section class="glass box">
-        <div class="sec-h"><h3>Навыки</h3><small>подтверждают участники Альянса</small></div>
-        <div class="skill"><div class="skill-n">Нутрициология<small>подтвердили 12 человек, среди них Игорь Граф</small></div><span class="stack"><span class="av c1" style="--s:28px">ИГ</span><span class="av c2" style="--s:28px">МК</span><span class="av c3" style="--s:28px">ОС</span></span><button class="plus1 on"><svg class="i"><use href="#i-check"/></svg>Вы подтвердили</button></div>
-        <div class="skill"><div class="skill-n">Запуск онлайн-курсов<small>подтвердили 8</small></div><span class="stack"><span class="av c4" style="--s:28px">ДЛ</span><span class="av c5" style="--s:28px">РТ</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>Подтвердить</button></div>
-        <div class="skill"><div class="skill-n">Reels и короткие видео<small>подтвердили 5</small></div><span class="stack"><span class="av c6" style="--s:28px">ЕВ</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>Подтвердить</button></div>
-        <div class="skill"><div class="skill-n">Продажи в переписке<small>подтвердили 3</small></div><span class="stack"><span class="av c7" style="--s:28px">АН</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>Подтвердить</button></div>
-      </section>
-      <section class="glass box">
-        <div class="sec-h"><h3>Рекомендации</h3><a href="#">Все 23</a></div>
-        <p class="quote">«Анна за час разобрала мой рацион и линейку продуктов. После этого я подняла чек на курс в полтора раза и впервые продала личное сопровождение.»</p>
-        <div class="quote-by"><span class="av c3" style="--s:34px">ОС</span><div><b>Ольга Смирнова</b>психолог, клан «Авалон»</div></div>
-      </section>
+          <div class="do-main">
+            <div class="kick">Чем занимаюсь<a class="edit" href="#"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></div>
+            <p class="do-big">Учу женщин 35+ есть <em>без диет и срывов</em></p>
+            <p class="do-sub">Групповой курс на 8 недель и личное сопровождение. Сейчас собираю команду под второй поток.</p>
+            <div class="do-facts"><div><b class="num">340</b><small>учеников</small></div><div><b>8 недель</b><small>длится курс</small></div><div><b>2-й поток</b><small>сейчас набор</small></div></div>
+          </div>
+        </section>
+        <section class="glass box">
+          <div class="sec-h"><h3>Навыки</h3><a href="#" data-go="skills">Все 24</a></div>
+          <div class="skill"><div class="skill-n">Нутрициология<small>подтвердили 12 человек, среди них Игорь Граф</small></div><span class="stack"><span class="av c1" style="--s:28px">ИГ</span><span class="av c2" style="--s:28px">МК</span><span class="av c3" style="--s:28px">ОС</span></span><button class="plus1 on"><svg class="i"><use href="#i-check"/></svg>Вы подтвердили</button></div>
+          <div class="skill"><div class="skill-n">Запуск онлайн-курсов<small>подтвердили 8</small></div><span class="stack"><span class="av c4" style="--s:28px">ДЛ</span><span class="av c5" style="--s:28px">РТ</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>Подтвердить</button></div>
+          <div class="skill"><div class="skill-n">Диетология<small>подтвердили 7</small></div><span class="stack"><span class="av c6" style="--s:28px">ЕВ</span><span class="av c8" style="--s:28px">ТР</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>Подтвердить</button></div>
+          <div class="more-sk chips">
+            <span class="skc">Продуктовая линейка <i>6</i></span><span class="skc">Reels <i>5</i></span><span class="skc">Telegram-канал <i>4</i></span><span class="skc">Вебинары <i>4</i></span><a href="#" data-go="skills">ещё 18</a>
+          </div>
+        </section>
+        <section class="glass box">
+          <div class="sec-h"><h3>Рекомендации</h3><a href="#" data-go="recs">Все 23</a></div>
+          <p class="quote">«Анна за час разобрала мой рацион и линейку продуктов. После этого я подняла чек на курс в полтора раза и впервые продала личное сопровождение.»</p>
+          <div class="quote-by"><span class="av c3" style="--s:34px">ОС</span><div><b>Ольга Смирнова</b>психолог, клан «Авалон»</div></div>
+        </section>
+      </div>
+      <div class="col">
+        <section class="glass box">
+          <div class="sec-h"><h3>Путь в Альянсе</h3></div>
+          <div class="stage"><small>Маршрутная карта</small><b>Шаг 14 из 40</b><span class="bar"><i></i></span></div>
+          <ul class="steps">
+            <li><img src="img/pp-logo.png" alt=""><div><b>План Продюсера · Поток 5 <span class="badge">финалист</span></b><small>сентябрь–октябрь 2026</small></div></li>
+            <li><img src="img/mesto-logo.webp" alt=""><div><b>Место притяжения · Поток 2</b><small>прошла, август 2026</small></div></li>
+            <li><img src="img/hike-summit.webp" alt=""><div><b>Поход «Фокус» <span class="badge g">вершина</span></b><small>21 день, ноябрь 2026</small></div></li>
+          </ul>
+        </section>
+        <section class="glass box">
+          <div class="sec-h"><h3>Общие друзья</h3><a href="#" data-go="friends">Все 6</a></div>
+          <div class="faces">
+            <span class="face"><span class="av c1">ИГ</span>Игорь Граф</span>
+            <span class="face"><span class="av c2">МК</span>Мария Ким</span>
+            <span class="face"><span class="av c4">ДЛ</span>Денис Лебедев</span>
+            <span class="face"><span class="av c6">ЕВ</span>Елена Волкова</span>
+            <span class="face"><span class="av c7">АН</span>Алексей Носов</span>
+            <span class="face"><span class="av c8">ТР</span>Тимур Рахимов</span>
+          </div>
+        </section>
+      </div>
     </div>
-    <div class="col">
-      <section class="glass box help">
-        <div><div class="help-l">Чем могу помочь</div><p>Разберу рацион, продуктовую линейку и первый запуск курса</p></div>
-        <div><div class="help-l">Кого ищу</div><p>Монтажёра Reels и партнёра на запуск второго потока</p></div>
-      </section>
-      <section class="glass box">
-        <div class="sec-h"><h3>Общие друзья</h3><a href="#">Все 6</a></div>
-        <div class="faces">
-          <span class="face"><span class="av c1">ИГ</span>Игорь Граф</span>
-          <span class="face"><span class="av c2">МК</span>Мария Ким</span>
-          <span class="face"><span class="av c4">ДЛ</span>Денис Лебедев</span>
-          <span class="face"><span class="av c6">ЕВ</span>Елена Волкова</span>
-          <span class="face"><span class="av c7">АН</span>Алексей Носов</span>
-          <span class="face"><span class="av c8">ТР</span>Тимур Рахимов</span>
+  </div>
+
+  <!-- НАВЫКИ -->
+  <div class="pane" data-p="skills">
+    <section class="glass box">
+      <div class="sk-head">
+        <h3>24 навыка</h3>
+        <span class="find"><svg class="i"><use href="#i-search"/></svg>Найти навык</span>
+        <span class="seg"><b class="on">По группам</b><b>По подтверждениям</b></span>
+      </div>
+      <p class="sk-note">Чем крупнее навык, тем больше участников его подтвердили. Нажмите на навык, чтобы подтвердить.</p>
+      <div class="clusters">
+        <div class="cl"><h4><i style="background:#10b981"></i>Экспертиза<small>6 навыков · 31 подтверждение</small></h4>
+          <div class="chips"><span class="skc l4 mine"><svg class="i"><use href="#i-check"/></svg>Нутрициология <i>12</i></span><span class="skc l3">Диетология <i>7</i></span><span class="skc">Психология питания <i>4</i></span><span class="skc">Спортивное питание <i>3</i></span><span class="skc">Детское питание <i>3</i></span><span class="skc">Гормональный баланс <i>2</i></span><span class="skc add"><svg class="i"><use href="#i-plus"/></svg>Добавить</span></div></div>
+        <div class="cl"><h4><i style="background:#2f7bff"></i>Продукт и запуски<small>6 навыков · 25</small></h4>
+          <div class="chips"><span class="skc l3">Запуск онлайн-курсов <i>8</i></span><span class="skc l3">Продуктовая линейка <i>6</i></span><span class="skc">Вебинары <i>4</i></span><span class="skc">Упаковка оффера <i>3</i></span><span class="skc">Методология курса <i>2</i></span><span class="skc">Кураторство <i>2</i></span><span class="skc add"><svg class="i"><use href="#i-plus"/></svg>Добавить</span></div></div>
+        <div class="cl"><h4><i style="background:#7b61ff"></i>Маркетинг<small>6 навыков · 17</small></h4>
+          <div class="chips"><span class="skc l3">Reels <i>5</i></span><span class="skc">Telegram-канал <i>4</i></span><span class="skc">Сторис <i>3</i></span><span class="skc">Прогрев <i>2</i></span><span class="skc">Личный бренд <i>2</i></span><span class="skc">Таргет <i>1</i></span><span class="skc add"><svg class="i"><use href="#i-plus"/></svg>Добавить</span></div></div>
+        <div class="cl"><h4><i style="background:#f97316"></i>Продажи и команда<small>6 навыков · 12</small></h4>
+          <div class="chips"><span class="skc">Продажи в переписке <i>3</i></span><span class="skc">Продажи на созвоне <i>2</i></span><span class="skc">Найм <i>2</i></span><span class="skc">Делегирование <i>2</i></span><span class="skc">Отдел заботы <i>2</i></span><span class="skc">Финучёт <i>1</i></span><span class="skc add"><svg class="i"><use href="#i-plus"/></svg>Добавить</span></div></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- РЕКОМЕНДАЦИИ -->
+  <div class="pane" data-p="recs">
+    <div class="rec-grid">
+      <div>
+        <div class="rfilter"><span class="on">Все 23</span><span>Рекомендуют 21</span><span>Не рекомендуют 2</span><span>По навыку</span></div>
+        <div class="rlist">
+          <article class="glass rcard">
+            <div class="rcard-h"><span class="av c3">ОС</span><div><b>Ольга Смирнова</b>психолог, клан «Авалон» · 3 дня назад</div><span class="rk pos">Рекомендует</span></div>
+            <p>Анна за час разобрала мой рацион и линейку продуктов. После этого я подняла чек на курс в полтора раза и впервые продала личное сопровождение.</p>
+            <div class="for"><span>Нутрициология</span><span>Продуктовая линейка</span></div>
+          </article>
+          <article class="glass rcard">
+            <div class="rcard-h"><span class="av c1">ИГ</span><div><b>Игорь Граф</b>основатель Альянса · 2 недели назад</div><span class="rk pos">Рекомендует</span></div>
+            <p>Одна из самых собранных участниц потока. Дошла до финала ПП и за месяц перестроила продукт под новый чек.</p>
+            <div class="for"><span>Запуск онлайн-курсов</span></div>
+          </article>
+          <article class="glass rcard">
+            <div class="rcard-h"><span class="av c5">РТ</span><div><b>Роман Титов</b>клан «Сфера» · месяц назад</div><span class="rk neg">Не рекомендует</span></div>
+            <p>Договорились о совместном эфире, Анна перенесла его дважды. По содержанию претензий нет.</p>
+            <div class="reply"><b>Ответ Анны</b>Роман, справедливо. Эфир провели 14 ноября, спасибо, что дождались.</div>
+          </article>
         </div>
-      </section>
-      <section class="glass box">
-        <div class="sec-h"><h3>Рост в Альянсе</h3></div>
-        <div class="growth">
-          <div class="g"><small>Точка А, в месяц</small><b class="num">120 000 ₽</b></div>
-          <span class="arr">+242%</span>
-          <div class="g" style="text-align:right"><small>Сейчас, в месяц</small><b class="num">410 000 ₽</b></div>
+      </div>
+      <aside class="glass box">
+        <div class="rsum"><b class="num">23</b><span>рекомендации</span></div>
+        <div class="rbar"><i style="flex:21"></i><i style="flex:2"></i></div>
+        <div class="rleg"><span><b>21</b> рекомендуют</span><span><b>2</b> не рекомендуют</span></div>
+        <div class="rform guest-only" style="display:grid">
+          <h4>Ваша рекомендация</h4>
+          <div class="tog"><button class="pos on">Рекомендую</button><button class="neg">Не рекомендую</button></div>
+          <div class="ta">Расскажите, с чем Анна вам помогла и что получилось</div>
+          <div class="chips"><span class="skc mine"><svg class="i"><use href="#i-check"/></svg>Нутрициология</span><span class="skc">Запуск курсов</span><span class="skc">Reels</span></div>
+          <a class="btn pri" href="#"><svg class="i"><use href="#i-star"/></svg>Опубликовать</a>
+          <small>Анна увидит отзыв и сможет ответить под ним</small>
         </div>
-      </section>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ДРУЗЬЯ -->
+  <div class="pane" data-p="friends">
+    <div class="fr-top">
+      <span class="find"><svg class="i"><use href="#i-search"/></svg>Найти среди друзей</span>
+      <div class="rfilter" style="margin:0"><span class="on">Все 48</span><span>Общие 6</span><span>Из клана 12</span><span>Рядом</span></div>
+    </div>
+    <div class="fr-grid">
+      <div class="glass fr"><span class="av c1">ИГ</span><b>Игорь Граф</b><small>основатель Альянса</small><span class="mut">общий друг</span></div>
+      <div class="glass fr"><span class="av c2">МК</span><b>Мария Ким</b><small>маркетолог · клан «Сфера»</small><span class="mut">общий друг</span></div>
+      <div class="glass fr"><span class="av c4">ДЛ</span><b>Денис Лебедев</b><small>продюсер · клан «Авалон»</small><span class="mut">общий друг</span></div>
+      <div class="glass fr"><span class="av c6">ЕВ</span><b>Елена Волкова</b><small>диетолог · Самара</small><span class="mut">общий друг</span></div>
+      <div class="glass fr"><span class="av c7">АН</span><b>Алексей Носов</b><small>фитнес-тренер · Казань</small><a class="btn" href="#">Добавить</a></div>
+      <div class="glass fr"><span class="av c8">ТР</span><b>Тимур Рахимов</b><small>монтажёр Reels</small><a class="btn" href="#">Добавить</a></div>
+      <div class="glass fr"><span class="av c3">ОС</span><b>Ольга Смирнова</b><small>психолог · клан «Авалон»</small><a class="btn" href="#">Добавить</a></div>
+      <div class="glass fr"><span class="av c5">РТ</span><b>Роман Титов</b><small>таргетолог · клан «Сфера»</small><a class="btn" href="#">Добавить</a></div>
+    </div>
+  </div>
+
+  <!-- ПОХОДЫ -->
+  <div class="pane" data-p="hikes">
+    <div class="hikes">
+      <article class="glass hike">
+        <div class="hike-img" style="background-image:url(img/hike-summit.webp)"><span class="badge g">вершина</span></div>
+        <div class="hike-b"><b>Поход «Фокус»</b><small>3–24 ноября 2026</small><div class="row"><span><strong class="num">21</strong>день</span><span><strong class="num">18</strong>шагов к цели</span><span><strong class="num">14</strong>дней подряд</span></div></div>
+      </article>
+      <article class="glass hike">
+        <div class="hike-img" style="background:linear-gradient(135deg,#1e293b,#334155)"><img src="img/pp-logo.png" alt=""><span class="badge">финалист</span></div>
+        <div class="hike-b"><b>План Продюсера · Поток 5</b><small>сентябрь–октябрь 2026</small><div class="row"><span><strong class="num">8</strong>недель</span><span><strong class="num">3</strong>жизни из 3</span></div></div>
+      </article>
+      <article class="glass hike">
+        <div class="hike-img" style="background:linear-gradient(135deg,#fde68a,#fca5a5)"><img src="img/mesto-logo.webp" alt=""><span class="badge g">прошла</span></div>
+        <div class="hike-b"><b>Место притяжения · Поток 2</b><small>август 2026</small><div class="row"><span><strong class="num">14</strong>дней</span><span><strong class="num">12</strong>заданий</span></div></div>
+      </article>
     </div>
   </div>
 </div>
@@ -666,6 +952,17 @@ if (q.get('shot') === '1') document.body.classList.add('shot');
 document.getElementById('root').appendChild(document.getElementById('tpl-' + v).content.cloneNode(true));
 document.getElementById('ttl').textContent = as === 'owner' ? 'Моя страница' : 'Анна Белова';
 function togglePanel(on) { document.body.classList.toggle('panel', on); }
+function goTab(t) {
+  document.querySelectorAll('.va .tabs [data-t]').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  document.querySelectorAll('.va .pane').forEach(p => p.classList.toggle('on', p.dataset.p === t));
+}
+document.addEventListener('click', e => {
+  const g = e.target.closest('[data-t],[data-go]');
+  if (g) { e.preventDefault(); goTab(g.dataset.t || g.dataset.go); if (g.dataset.go) document.querySelector('.va .tabs').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+  const tb = e.target.closest('.va .tog button');
+  if (tb) tb.parentNode.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === tb));
+});
+if (q.get('tab')) goTab(q.get('tab'));
 // неразрывный пробел после коротких слов
 const SH = /(^|[\s«(])((?:в|и|с|к|о|у|а|на|по|за|от|до|из|не|ни|для|без|под|над|при|про|что|как|или|но|же|уже|все|её|его|мой|моя)) /gi;
 (function walk(n) { if (n.nodeType === 3) n.nodeValue = n.nodeValue.replace(SH, '$1$2 ').replace(/(\d) (?=[^\d\s])/g, '$1 '); else if (!['SCRIPT','STYLE'].includes(n.nodeName)) n.childNodes.forEach(walk); })(document.body);
