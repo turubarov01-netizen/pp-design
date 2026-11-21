@@ -83,10 +83,10 @@ body.as-owner .owner-block { display: block !important; }
 .quote-by { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--muted); }
 .quote-by b { color: var(--ink); font-weight: 600; display: block; font-size: 13.5px; }
 
-/* =================== ВАРИАНТ A: профиль соцсети (v4, правки Саши 21.11, 07:56) =================== */
+/* =================== ВАРИАНТ A: профиль соцсети (v5, правки Саши 21.11, 08:15) =================== */
 .va { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 20px; align-items: start; }
 .va .mainc { min-width: 0; display: grid; gap: 16px; }
-.va .rail { display: grid; gap: 14px; position: sticky; top: 84px; }
+.va .rail { display: grid; gap: 14px; position: sticky; top: 84px; min-width: 0; grid-template-columns: minmax(0,1fr); }
 .va .box { padding: 20px 22px; }
 .va .card { background: rgba(255,255,255,.86); border: 1px solid rgba(255,255,255,.9); border-radius: 22px; box-shadow: 0 6px 24px rgba(20,34,70,.07); }
 
@@ -95,7 +95,8 @@ body.as-owner .owner-block { display: block !important; }
 .va .cover { height: 150px; position: relative; background: url(img/cover.jpg) center 55%/cover; }
 .va .cover .btn { position: absolute; right: 16px; top: 16px; z-index: 1; height: 34px; font-size: 13px; }
 .va .hero-b { padding: 0 26px 20px; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 0 20px; align-items: end; }
-.va .hero-b > .av { --s: 116px; margin-top: -52px; position: relative; z-index: 1; border-width: 4px; box-shadow: 0 10px 30px rgba(20,34,70,.2); }
+.va .hero-b > .avw { margin-top: -52px; position: relative; z-index: 1; align-self: start; }
+.va .hero-b > .avw > .av { --s: 116px; position: relative; z-index: 2; border-width: 4px; box-shadow: 0 10px 30px rgba(20,34,70,.2); }
 .va .who { padding-top: 14px; min-width: 0; }
 .va .name-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; }
 .va .who h2 { margin: 0; font-size: 28px; font-weight: 750; letter-spacing: -.02em; line-height: 1.15; }
@@ -301,6 +302,73 @@ body.as-owner .va .karma-how { display: block; }
 .va .mylink a { display: inline-flex; align-items: center; gap: 4px; color: var(--blue-ink); font-weight: 600; }
 .va .mylink svg { width: 14px; height: 14px; }
 
+/* ---------- v5: Фрими у аватарки (видит только владелец) ---------- */
+.va .avw .cam { display: none; position: absolute; z-index: 3; right: 2px; bottom: 4px; width: 34px; height: 34px; border-radius: 50%; border: 3px solid #fff; background: var(--grad); color: #fff; place-items: center; cursor: pointer; box-shadow: 0 4px 12px rgba(47,123,255,.35); }
+.va .avw .cam svg { width: 16px; height: 16px; }
+.va .avw .frimi { display: none; position: absolute; z-index: 1; left: -58px; bottom: -4px; width: 86px; pointer-events: none; }
+.va .avw .frimi img { width: 100%; display: block; }
+.va .avw .fbub { position: absolute; left: -6px; bottom: 100%; margin-bottom: 4px; width: 132px; padding: 7px 10px; border-radius: 14px 14px 14px 4px; background: #fff; font-size: 12.5px; font-weight: 600; line-height: 1.3; color: var(--ink); box-shadow: 0 6px 18px rgba(20,34,70,.16); }
+body.as-owner .va .avw .cam { display: grid; }
+body.as-owner .va .avw .frimi { display: block; }
+body.as-owner .va .hero-b { padding-left: 84px; }
+
+/* ---------- v5: «Куда иду», три фокуса ---------- */
+.va .focus { padding-bottom: 16px; }
+.va .farr { display: inline-flex; gap: 4px; }
+.va .fa { width: 30px; height: 30px; border-radius: 9px; border: 1px solid var(--line); background: rgba(255,255,255,.8); display: grid; place-items: center; cursor: pointer; color: var(--ink-2); transition: background-color .18s var(--ease), border-color .18s var(--ease); }
+.va .fa:hover { background: #fff; border-color: rgba(47,123,255,.35); }
+.va .fa svg { width: 15px; height: 15px; }
+.va .fslide { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 4px -22px 0; padding: 0 22px; gap: 22px; scroll-padding: 0 22px; padding-bottom: 12px; margin-bottom: -12px; }
+.va .fslide::-webkit-scrollbar { display: none; }
+.va .fs { scroll-snap-align: start; display: flex; flex-direction: column; min-width: 0; }
+.va .fs-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.va .fcat { font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.va .fcat.c-do { background: rgba(47,123,255,.1); color: var(--blue-ink); }
+.va .fcat.c-have { background: rgba(14,159,110,.11); color: var(--green-ink); }
+.va .fcat.c-be { background: rgba(123,97,255,.11); color: #5b45d6; }
+.va .fnum { font-size: 12px; color: var(--faint); font-weight: 600; }
+.va .fgoal { display: block; margin-top: 10px; font-size: 17px; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; min-height: 2.6em; }
+.va .fprog { display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px; font-size: 13px; color: var(--muted); }
+.va .fprog b { font-size: 15px; font-weight: 750; color: var(--blue-ink); }
+.va .fbar { display: block; height: 8px; border-radius: 4px; background: rgba(47,123,255,.12); margin-top: 6px; overflow: hidden; }
+.va .fbar i { display: block; height: 100%; background: var(--grad); border-radius: 4px; }
+.va .fnow { margin-top: 12px; padding: 10px 12px; border-radius: 14px; background: rgba(255,176,32,.1); font-size: 14px; line-height: 1.35; color: var(--ink); }
+.va .fnow small { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #b45309; margin-bottom: 2px; }
+.va .fhelp { margin-top: 12px; width: 100%; }
+.va .fdots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
+.va .fdots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(16,24,48,.15); transition: width .25s var(--ease), background-color .25s var(--ease); }
+.va .fdots i.on { width: 18px; background: var(--blue); }
+.va .fnote { display: none; margin-top: 10px; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+body.as-owner .va .fnote { display: block; }
+
+/* ---------- v5: мечта Фримена ---------- */
+.va .dr-b { margin-top: 4px; padding: 16px; border-radius: 18px; background: linear-gradient(150deg, rgba(123,97,255,.12), rgba(47,123,255,.07) 60%, rgba(255,176,32,.1)); }
+.va .dr-cat { font-size: 12px; font-weight: 700; color: #5b45d6; }
+.va .dr-t { margin: 6px 0 0; font-size: 17px; font-weight: 700; line-height: 1.32; letter-spacing: -.01em; }
+.va .dr-who { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+.va .dr-who small { font-size: 12.5px; color: var(--muted); }
+.va .dream .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.va .dream .row2 .btn { padding: 0 10px; }
+.va .dr-up svg { color: #e5486b; }
+.va .dr-more { display: block; margin-top: 10px; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.va .dr-more.owner-only { display: none; } body.as-owner .va .dr-more.owner-only { display: block; }
+body.as-owner .va .avw .frimi.owner-only, body.as-owner .va .fnote.owner-only, body.as-owner .va .dr-more.owner-only { display: block !important; }
+body.as-owner .va .avw .cam.owner-only { display: grid !important; }
+@media (max-width: 760px) {
+  .va .hero-b > .avw { margin-top: -46px; justify-self: start; }
+  .va .hero-b > .avw > .av { --s: 92px; }
+  body.as-owner .va .hero-b { padding-left: 18px; }
+  .va .avw .frimi { left: auto; right: -78px; bottom: -2px; width: 70px; }
+  .va .avw .fbub { left: 54px; bottom: 30px; border-radius: 14px 14px 14px 4px; }
+}
+@media (max-width: 760px) {
+  body.as-owner .va .owner-bar { flex-direction: column; align-items: stretch; }
+  .va .meter { min-width: 0; }
+  .va .owner-bar > .btn { width: 100%; }
+  .va .mylink code { word-break: break-all; }
+  .va .acts .btn { flex: 1 1 auto; }
+}
+
 /* =================== ВАРИАНТ B: бенто-визитка =================== */
 .vb .bento { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); grid-auto-rows: minmax(120px, auto); gap: 14px; }
 .vb .t { padding: 20px 22px; position: relative; min-width: 0; }
@@ -461,6 +529,40 @@ body.design .dz { display: flex; }
 .dz-f { padding: 14px 20px; background: #fff; border-top: 1px solid var(--line-2); display: flex; gap: 8px; justify-content: flex-end; }
 @media (max-width: 760px) { .dz { width: 100%; } .mm { right: -6px; } }
 
+/* =================== v5: Настройки отдельно от страницы =================== */
+.vs { max-width: 980px; display: grid; gap: 16px; }
+.vs-move { display: flex; align-items: center; gap: 16px; padding: 18px 20px; color: var(--ink); }
+.vs-move .vs-av { --s: 52px; }
+.vs-move div { flex: 1; min-width: 0; }
+.vs-move b { display: block; font-size: 16.5px; font-weight: 700; }
+.vs-move small { display: block; margin-top: 3px; font-size: 13.5px; color: var(--muted); line-height: 1.4; }
+.vs-grid { display: grid; grid-template-columns: 240px minmax(0,1fr); gap: 16px; align-items: start; }
+.vs-nav { display: grid; gap: 2px; padding: 10px; position: sticky; top: 84px; }
+.vs-nav a { display: flex; align-items: center; gap: 10px; height: 42px; padding: 0 12px; border-radius: 12px; font-size: 14.5px; font-weight: 600; color: var(--ink-2); }
+.vs-nav a svg { width: 17px; height: 17px; color: var(--faint); }
+.vs-nav a.on { background: rgba(47,123,255,.1); color: var(--blue-ink); } .vs-nav a.on svg { color: var(--blue); }
+.vs-main { display: grid; gap: 14px; }
+.vs-main .box { padding: 20px 22px; }
+.vs-main h3 { margin: 0 0 6px; font-size: 17px; font-weight: 700; }
+.vrow { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-top: 1px solid var(--line-2); }
+.vrow:first-of-type { border-top: 0; }
+.vrow > div { flex: 1; min-width: 0; }
+.vrow small { display: block; font-size: 12.5px; color: var(--muted); }
+.vrow b { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; }
+.vrow b.ok { color: var(--green-ink); } .vrow b.ok svg { width: 15px; height: 15px; }
+.vrow em { display: block; font-style: normal; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.vrow .btn { height: 34px; font-size: 13px; }
+.vrow .btn.danger { color: #c2334d; }
+.tgl { width: 42px; height: 24px; border-radius: 12px; background: rgba(16,24,48,.16); position: relative; flex: none; }
+.tgl::after { content: ""; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.tgl.on { background: var(--blue); } .tgl.on::after { left: 21px; }
+@media (max-width: 760px) {
+  .vs-grid { grid-template-columns: 1fr; }
+  .vs-nav { position: static; grid-auto-flow: column; overflow-x: auto; }
+  .vs-nav a { white-space: nowrap; }
+  .vs-move { flex-wrap: wrap; } .vs-move .btn { width: 100%; }
+}
+
 /* =================== Панель для команды =================== */
 .scrim { position: fixed; inset: 0; background: rgba(11,16,32,.28); z-index: 40; display: none; }
 .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 460px; max-width: 100%; z-index: 41; background: #f8faff; box-shadow: -20px 0 60px rgba(11,16,32,.2); display: none; flex-direction: column; }
@@ -578,6 +680,12 @@ body.shot .side { height: auto; min-height: 100vh; }
   <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+  <symbol id="i-chl" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chr" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></symbol>
 </svg>
 
@@ -602,8 +710,8 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="mm" onclick="event.stopPropagation()">
           <div class="mm-h"><span class="av c2" id="mmA">МК</span><div><b id="mmN">Мария Ким</b><small>клан «Сфера»</small></div></div>
           <a class="hl" href="?v=a&amp;as=owner"><svg class="i"><use href="#i-users"/></svg>Моя страница</a>
-          <a href="?v=a&amp;as=owner"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
           <a href="?v=a&amp;as=owner&amp;design=1"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
+          <a href="?v=a&amp;as=owner&amp;screen=settings"><svg class="i"><use href="#i-gear"/></svg>Настройки</a>
           <hr><a href="#"><svg class="i"><use href="#i-bell"/></svg>Уведомления</a>
         </div></span>
     </header>
@@ -684,6 +792,11 @@ body.shot .side { height: auto; min-height: 100vh; }
 </aside>
 
 
+
+
+
+
+
 <!-- Оформление страницы: видит только владелец -->
 <aside class="dz" aria-label="Оформление страницы">
   <div class="dz-h">
@@ -740,13 +853,17 @@ body.shot .side { height: auto; min-height: 100vh; }
   <div class="mainc">
     <div class="glass owner-bar">
       <div class="meter"><b>Страница заполнена на 70%</b><small>Добавьте навыки и обложку: так вас быстрее найдут через поиск участников</small><i></i><div class="mylink">Адрес вашей страницы <code>wearefree.club/u/anna-belova</code><a href="#"><svg class="i"><use href="#i-copy"/></svg>Скопировать</a></div></div>
-      <a class="btn pri" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
+      <a class="btn pri" href="#"><svg class="i"><use href="#i-plus"/></svg>Добавить навыки</a>
     </div>
 
     <section class="glass hero">
       <div class="cover"><a class="btn owner-only" href="#"><svg class="i"><use href="#i-image"/></svg>Сменить обложку</a></div>
       <div class="hero-b">
-        <span class="av hero-av">АБ</span>
+        <div class="avw">
+          <span class="av hero-av">АБ</span>
+          <button class="cam owner-only" title="Поставить фото"><svg class="i"><use href="#i-cam"/></svg></button>
+          <div class="frimi owner-only"><img src="img/frimi/f6.webp" alt=""><span class="fbub">Поставьте фото, я&nbsp;подожду!</span></div>
+        </div>
         <div class="who">
           <div class="name-row">
             <h2>Анна Белова</h2>
@@ -763,7 +880,7 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="acts">
           <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a>
           <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
-          <a class="btn pri owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
+          <a class="btn pri owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Изменить</a>
           <a class="btn owner-only" href="#" onclick="toggleDesign(true);return false"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
           <a class="btn owner-only" href="?v=a&amp;as=guest"><svg class="i"><use href="#i-eye"/></svg>Как видят другие</a>
           <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
@@ -913,7 +1030,7 @@ body.shot .side { height: auto; min-height: 100vh; }
     <!-- КОНТАКТЫ -->
     <div class="pane" data-p="contacts">
       <div class="lockbar"><span class="ci"><svg class="i"><use href="#i-lock"/></svg></span><div><b>Контакты видят только друзья</b>Добавьте Анну в друзья, и после подтверждения здесь откроются телефон, почта и Telegram</div><a class="btn pri" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a></div>
-      <p class="owner-note">Эти контакты видят только ваши друзья и команда Альянса.</p>
+      <p class="owner-note">Эти контакты видят только ваши друзья и команда Альянса. <a class="edit" href="#"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></p>
       <section class="glass cont">
         <div class="crow"><span class="ci"><svg class="i"><use href="#i-phone"/></svg></span><div><small>Телефон</small><b class="blur">+7 917 245‑18‑14</b></div></div>
         <div class="crow"><span class="ci"><svg class="i"><use href="#i-mail"/></svg></span><div><small>Почта</small><b class="blur">anna.belova@mail.ru</b></div></div>
@@ -923,6 +1040,40 @@ body.shot .side { height: auto; min-height: 100vh; }
   </div>
 
   <aside class="rail">
+    <section class="glass box focus">
+      <div class="sec-h"><h3>Куда иду</h3><span class="farr"><button class="fa" onclick="fsGo(this,-1)" aria-label="Назад"><svg class="i"><use href="#i-chl"/></svg></button><button class="fa" onclick="fsGo(this,1)" aria-label="Дальше"><svg class="i"><use href="#i-chr"/></svg></button></span></div>
+      <div class="fslide" onscroll="fsDots(this)">
+        <article class="fs" data-k="0">
+          <div class="fs-top"><span class="fcat c-do">В фокусе · Делать</span><span class="fnum">1 из 3</span></div>
+          <b class="fgoal">Провести первый ретрит по питанию в Португалии</b>
+          <div class="fprog"><span>Шаг 34 из 100</span><b class="num">34%</b></div>
+          <span class="fbar"><i style="width:34%"></i></span>
+          <div class="fnow"><small>Сейчас ищет</small>Площадку на 20 человек под Лиссабоном, на май</div>
+          <a class="btn pri guest-only fhelp" href="#"><svg class="i"><use href="#i-heart"/></svg>Помочь</a>
+          <a class="btn owner-only fhelp" href="#"><svg class="i"><use href="#i-target"/></svg>Открыть в трекере</a>
+        </article>
+        <article class="fs" data-k="1">
+          <div class="fs-top"><span class="fcat c-have">В фокусе · Иметь</span><span class="fnum">2 из 3</span></div>
+          <b class="fgoal">Выручка школы «Ешь и живи» 3 млн ₽ в месяц</b>
+          <div class="fprog"><span>Шаг 58 из 100</span><b class="num">58%</b></div>
+          <span class="fbar"><i style="width:58%"></i></span>
+          <div class="fnow"><small>Сейчас ищет</small>Двух кураторов на второй поток курса</div>
+          <a class="btn pri guest-only fhelp" href="#"><svg class="i"><use href="#i-heart"/></svg>Помочь</a>
+          <a class="btn owner-only fhelp" href="#"><svg class="i"><use href="#i-target"/></svg>Открыть в трекере</a>
+        </article>
+        <article class="fs" data-k="2">
+          <div class="fs-top"><span class="fcat c-be">В фокусе · Быть</span><span class="fnum">3 из 3</span></div>
+          <b class="fgoal">Стать спикером большой конференции о здоровье</b>
+          <div class="fprog"><span>Шаг 21 из 100</span><b class="num">21%</b></div>
+          <span class="fbar"><i style="width:21%"></i></span>
+          <div class="fnow"><small>Сейчас ищет</small>Выход на организаторов конференций в Москве и Дубае</div>
+          <a class="btn pri guest-only fhelp" href="#"><svg class="i"><use href="#i-heart"/></svg>Помочь</a>
+          <a class="btn owner-only fhelp" href="#"><svg class="i"><use href="#i-target"/></svg>Открыть в трекере</a>
+        </article>
+      </div>
+      <div class="fdots"><i class="on"></i><i class=""></i><i class=""></i></div>
+      <small class="fnote owner-only">Фокусы берутся из «1000 целей»: то, что вы поставили в фокус. Гости видят под целью кнопку «Помочь».</small>
+    </section>
     <section class="glass box">
       <div class="sec-h"><h3>Этап бизнеса</h3></div>
       <div class="track"><span class="done">PMF</span><span class="cur">Scaling</span><span>Enterprise</span></div>
@@ -949,6 +1100,17 @@ body.shot .side { height: auto; min-height: 100vh; }
       <div class="sec-h"><h3>Общие друзья</h3><a href="#" data-go="friends">Все 6</a></div>
       <div class="faces"><span class="av c1">ИГ</span><span class="av c2">МК</span><span class="av c4">ДЛ</span><span class="av c6">ЕВ</span><small>Игорь Граф, Мария Ким и ещё 4</small></div>
     </section>
+    <section class="glass box dream">
+      <div class="sec-h"><h3>Мечта Анны</h3><button class="fa" title="Другая мечта" onclick="dreamNext(this)"><svg class="i"><use href="#i-shuffle"/></svg></button></div>
+      <div class="dr-b">
+        <span class="dr-cat">Делать · за 5 лет</span>
+        <p class="dr-t">Увидеть северное сияние в Исландии вместе с дочкой</p>
+        <div class="dr-who"><span class="stack"><span class="av c2" style="--s:26px">МК</span><span class="av c4" style="--s:26px">ДЛ</span><span class="av c6" style="--s:26px">ЕВ</span></span><small>Поддержали&nbsp;14, взяли себе&nbsp;3</small></div>
+      </div>
+      <div class="row2 guest-only"><a class="btn dr-up" href="#"><svg class="i"><use href="#i-heart"/></svg>Поддержать</a><a class="btn" href="#"><svg class="i"><use href="#i-plus"/></svg>Взять себе</a></div>
+      <small class="dr-more">Одна из 47 целей Анны, каждый раз новая</small>
+      <small class="dr-more owner-only">Каждый раз гостю показывается случайная мечта из вашего списка. Скрыть мечту можно в «1000 целях».</small>
+    </section>
     <section class="glass box vote guest-only">
       <div class="sec-h"><h3>Работали с Анной?</h3></div>
       <p>Ваш голос меняет её карму и место в рейтинге</p>
@@ -969,13 +1131,17 @@ body.shot .side { height: auto; min-height: 100vh; }
   <div class="mainc">
     <div class="glass owner-bar">
       <div class="meter"><b>Страница заполнена на 70%</b><small>Добавьте навыки и обложку: так вас быстрее найдут через поиск участников</small><i></i><div class="mylink">Адрес вашей страницы <code>wearefree.club/u/dmitry-orlov</code><a href="#"><svg class="i"><use href="#i-copy"/></svg>Скопировать</a></div></div>
-      <a class="btn pri" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
+      <a class="btn pri" href="#"><svg class="i"><use href="#i-plus"/></svg>Добавить навыки</a>
     </div>
 
     <section class="glass hero">
       <div class="cover"><a class="btn owner-only" href="#"><svg class="i"><use href="#i-image"/></svg>Сменить обложку</a></div>
       <div class="hero-b">
-        <span class="av hero-av">ДО</span>
+        <div class="avw">
+          <span class="av hero-av">ДО</span>
+          <button class="cam owner-only" title="Поставить фото"><svg class="i"><use href="#i-cam"/></svg></button>
+          <div class="frimi owner-only"><img src="img/frimi/f6.webp" alt=""><span class="fbub">Поставьте фото, я&nbsp;подожду!</span></div>
+        </div>
         <div class="who">
           <div class="name-row">
             <h2>Дмитрий Орлов</h2>
@@ -992,7 +1158,7 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="acts">
           <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a>
           <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
-          <a class="btn pri owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
+          <a class="btn pri owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Изменить</a>
           <a class="btn owner-only" href="#" onclick="toggleDesign(true);return false"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
           <a class="btn owner-only" href="?v=a&amp;as=guest"><svg class="i"><use href="#i-eye"/></svg>Как видят другие</a>
           <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
@@ -1142,7 +1308,7 @@ body.shot .side { height: auto; min-height: 100vh; }
     <!-- КОНТАКТЫ -->
     <div class="pane" data-p="contacts">
       <div class="lockbar"><span class="ci"><svg class="i"><use href="#i-lock"/></svg></span><div><b>Контакты видят только друзья</b>Добавьте Дмитрия в друзья, и после подтверждения здесь откроются телефон, почта и Telegram</div><a class="btn pri" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a></div>
-      <p class="owner-note">Эти контакты видят только ваши друзья и команда Альянса.</p>
+      <p class="owner-note">Эти контакты видят только ваши друзья и команда Альянса. <a class="edit" href="#"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></p>
       <section class="glass cont">
         <div class="crow"><span class="ci"><svg class="i"><use href="#i-phone"/></svg></span><div><small>Телефон</small><b class="blur">+7 917 245‑18‑14</b></div></div>
         <div class="crow"><span class="ci"><svg class="i"><use href="#i-mail"/></svg></span><div><small>Почта</small><b class="blur">anna.belova@mail.ru</b></div></div>
@@ -1152,6 +1318,40 @@ body.shot .side { height: auto; min-height: 100vh; }
   </div>
 
   <aside class="rail">
+    <section class="glass box focus">
+      <div class="sec-h"><h3>Куда иду</h3><span class="farr"><button class="fa" onclick="fsGo(this,-1)" aria-label="Назад"><svg class="i"><use href="#i-chl"/></svg></button><button class="fa" onclick="fsGo(this,1)" aria-label="Дальше"><svg class="i"><use href="#i-chr"/></svg></button></span></div>
+      <div class="fslide" onscroll="fsDots(this)">
+        <article class="fs" data-k="0">
+          <div class="fs-top"><span class="fcat c-have">В фокусе · Иметь</span><span class="fnum">1 из 3</span></div>
+          <b class="fgoal">Открыть 10-ю пекарню «Хлебный двор» до лета</b>
+          <div class="fprog"><span>Шаг 72 из 100</span><b class="num">72%</b></div>
+          <span class="fbar"><i style="width:72%"></i></span>
+          <div class="fnow"><small>Сейчас ищет</small>Помещение 80–120 м² в Академическом районе</div>
+          <a class="btn pri guest-only fhelp" href="#"><svg class="i"><use href="#i-heart"/></svg>Помочь</a>
+          <a class="btn owner-only fhelp" href="#"><svg class="i"><use href="#i-target"/></svg>Открыть в трекере</a>
+        </article>
+        <article class="fs" data-k="1">
+          <div class="fs-top"><span class="fcat c-do">В фокусе · Делать</span><span class="fnum">2 из 3</span></div>
+          <b class="fgoal">Запустить франшизу в двух городах Урала</b>
+          <div class="fprog"><span>Шаг 40 из 100</span><b class="num">40%</b></div>
+          <span class="fbar"><i style="width:40%"></i></span>
+          <div class="fnow"><small>Сейчас ищет</small>Юриста по франчайзингу и первых двух партнёров</div>
+          <a class="btn pri guest-only fhelp" href="#"><svg class="i"><use href="#i-heart"/></svg>Помочь</a>
+          <a class="btn owner-only fhelp" href="#"><svg class="i"><use href="#i-target"/></svg>Открыть в трекере</a>
+        </article>
+        <article class="fs" data-k="2">
+          <div class="fs-top"><span class="fcat c-be">В фокусе · Быть</span><span class="fnum">3 из 3</span></div>
+          <b class="fgoal">Выходить из операционки на 2 дня в неделю</b>
+          <div class="fprog"><span>Шаг 18 из 100</span><b class="num">18%</b></div>
+          <span class="fbar"><i style="width:18%"></i></span>
+          <div class="fnow"><small>Сейчас ищет</small>Операционного директора сети</div>
+          <a class="btn pri guest-only fhelp" href="#"><svg class="i"><use href="#i-heart"/></svg>Помочь</a>
+          <a class="btn owner-only fhelp" href="#"><svg class="i"><use href="#i-target"/></svg>Открыть в трекере</a>
+        </article>
+      </div>
+      <div class="fdots"><i class="on"></i><i class=""></i><i class=""></i></div>
+      <small class="fnote owner-only">Фокусы берутся из «1000 целей»: то, что вы поставили в фокус. Гости видят под целью кнопку «Помочь».</small>
+    </section>
     <section class="glass box">
       <div class="sec-h"><h3>Этап бизнеса</h3></div>
       <div class="track"><span class="done">PMF</span><span class="cur">Scaling</span><span>Enterprise</span></div>
@@ -1178,6 +1378,17 @@ body.shot .side { height: auto; min-height: 100vh; }
       <div class="sec-h"><h3>Общие друзья</h3><a href="#" data-go="friends">Все 6</a></div>
       <div class="faces"><span class="av c1">ИГ</span><span class="av c2">МК</span><span class="av c4">ДЛ</span><span class="av c6">ЕВ</span><small>Игорь Граф, Мария Ким и ещё 4</small></div>
     </section>
+    <section class="glass box dream">
+      <div class="sec-h"><h3>Мечта Дмитрия</h3><button class="fa" title="Другая мечта" onclick="dreamNext(this)"><svg class="i"><use href="#i-shuffle"/></svg></button></div>
+      <div class="dr-b">
+        <span class="dr-cat">Делать · за 1 год</span>
+        <p class="dr-t">Испечь хлеб в настоящей дровяной печи в Провансе</p>
+        <div class="dr-who"><span class="stack"><span class="av c2" style="--s:26px">МК</span><span class="av c4" style="--s:26px">ДЛ</span><span class="av c6" style="--s:26px">ЕВ</span></span><small>Поддержали&nbsp;9, взяли себе&nbsp;2</small></div>
+      </div>
+      <div class="row2 guest-only"><a class="btn dr-up" href="#"><svg class="i"><use href="#i-heart"/></svg>Поддержать</a><a class="btn" href="#"><svg class="i"><use href="#i-plus"/></svg>Взять себе</a></div>
+      <small class="dr-more">Одна из 32 целей Дмитрия, каждый раз новая</small>
+      <small class="dr-more owner-only">Каждый раз гостю показывается случайная мечта из вашего списка.</small>
+    </section>
     <section class="glass box vote guest-only">
       <div class="sec-h"><h3>Работали с Дмитрием?</h3></div>
       <p>Ваш голос меняет его карму и место в рейтинге</p>
@@ -1191,6 +1402,50 @@ body.shot .side { height: auto; min-height: 100vh; }
       <div class="person"><span class="av c3">АЗ</span><div>Артём Зуев<small>ресторан «Печь» · Екатеринбург</small></div><button class="plus1"><svg class="i"><use href="#i-plus"/></svg></button></div>
     </section>
   </aside>
+</div>
+</template>
+<template id="tpl-a-settings">
+<div class="vs">
+  <a class="glass vs-move" href="?v=a&amp;as=owner">
+    <span class="av c2 vs-av">АБ</span>
+    <div><b>Всё о вас теперь на вашей странице</b><small>Имя, фото, «О себе», «Чем могу помочь», «Кого ищу», города, бизнесы, навыки и контакты для друзей меняются прямо там, кнопкой «Изменить» у каждого блока</small></div>
+    <span class="btn pri">Моя страница</span>
+  </a>
+  <div class="vs-grid">
+    <nav class="glass vs-nav">
+      <a class="on" href="#vs-login"><svg class="i"><use href="#i-lock"/></svg>Вход и безопасность</a>
+      <a href="#vs-tg"><svg class="i"><use href="#i-send"/></svg>Telegram</a>
+      <a href="#vs-notify"><svg class="i"><use href="#i-bell"/></svg>Уведомления</a>
+      <a href="#vs-acc"><svg class="i"><use href="#i-gear"/></svg>Аккаунт</a>
+    </nav>
+    <div class="vs-main">
+      <section class="glass box" id="vs-login">
+        <h3>Вход и безопасность</h3>
+        <div class="vrow"><div><small>Почта для входа</small><b>anna.belova@mail.ru</b></div><a class="btn" href="#">Изменить</a></div>
+        <div class="vrow"><div><small>Пароль</small><b>изменён 3 месяца назад</b></div><a class="btn" href="#">Сменить</a></div>
+        <div class="vrow"><div><small>Дата рождения</small><b>12 марта 1988</b><em>на странице не показывается, изменить можно через поддержку</em></div></div>
+      </section>
+      <section class="glass box" id="vs-tg">
+        <h3>Telegram</h3>
+        <div class="vrow"><div><small>Бот Альянса</small><b class="ok"><svg class="i"><use href="#i-check"/></svg>Подключён к кабинету</b></div><a class="btn" href="#">Отключить</a></div>
+      </section>
+      <section class="glass box" id="vs-notify">
+        <h3>Уведомления</h3>
+        <div class="vrow"><div><b>Вам предлагают помощь с целью</b></div><span class="tgl on"></span></div>
+        <div class="vrow"><div><b>Новая рекомендация</b></div><span class="tgl on"></span></div>
+        <div class="vrow"><div><b>Заявка в друзья</b></div><span class="tgl on"></span></div>
+        <div class="vrow"><div><b>Подтвердили ваш навык</b></div><span class="tgl on"></span></div>
+        <div class="vrow"><div><b>Кто-то взял себе вашу мечту</b></div><span class="tgl"></span></div>
+        <div class="vrow"><div><b>Напоминания трекера</b><em>утром и вечером</em></div><span class="tgl on"></span></div>
+      </section>
+      <section class="glass box" id="vs-acc">
+        <h3>Аккаунт</h3>
+        <div class="vrow"><div><small>Язык кабинета</small><b>Русский</b></div><a class="btn" href="#">Изменить</a></div>
+        <div class="vrow"><div><small>Тема</small><b>Светлая</b></div><a class="btn" href="#">Изменить</a></div>
+        <div class="vrow"><div><small>Удалить аккаунт</small><em>все данные будут стёрты без возможности восстановить</em></div><a class="btn danger" href="#">Удалить</a></div>
+      </section>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -1344,15 +1599,23 @@ const as = q.get('as') || 'team';
 document.body.classList.add('as-' + as);
 if (q.get('panel') === '1') document.body.classList.add('panel');
 if (q.get('shot') === '1') document.body.classList.add('shot');
-const tplId = 'tpl-' + v + (v === 'a' && q.get('p') === 'klass' ? '-klass' : '');
+const tplId = 'tpl-' + v + (v === 'a' && q.get('screen') === 'settings' ? '-settings' : v === 'a' && q.get('p') === 'klass' ? '-klass' : '');
 document.getElementById('root').appendChild(document.getElementById(tplId).content.cloneNode(true));
 const nm = q.get('p') === 'klass' ? 'Дмитрий Орлов' : 'Анна Белова';
-document.getElementById('ttl').textContent = as === 'owner' ? 'Моя страница' : nm;
+document.getElementById('ttl').textContent = q.get('screen') === 'settings' ? 'Настройки' : as === 'owner' ? 'Моя страница' : nm;
 if (as === 'owner') { const ini = q.get('p') === 'klass' ? 'ДО' : 'АБ'; meI.textContent = ini; mmA.textContent = ini; mmN.textContent = nm; }
 if (q.get('menu') === '1') document.body.classList.add('menu');
 if (q.get('design') === '1') document.body.classList.add('design');
+if (q.get('screen') === 'settings') document.querySelector('.top .back').style.display = 'none';
 function toggleDesign(on) { document.body.classList.toggle('design', on); }
 document.addEventListener('click', e => { if (!e.target.closest('.me')) document.body.classList.remove('menu'); });
+// v5: листалка фокусов и случайная мечта
+function fsGo(b, d) { const r = b.closest('.focus').querySelector('.fslide'); r.scrollBy({ left: d * r.clientWidth, behavior: 'smooth' }); }
+function fsDots(r) { const k = Math.round(r.scrollLeft / r.clientWidth); r.parentNode.querySelectorAll('.fdots i').forEach((x, i) => x.classList.toggle('on', i === k)); }
+const DREAMS = { a: [['Делать · за 5 лет','Увидеть северное сияние в Исландии вместе с дочкой'],['Иметь · за 10 лет','Дом у океана в Португалии с садом и кухней для гостей'],['Быть · за 1 год','Пробежать первый полумарафон в Лиссабоне']],
+  klass: [['Делать · за 1 год','Испечь хлеб в настоящей дровяной печи в Провансе'],['Иметь · за 5 лет','Собственная мельница и поле пшеницы под Екатеринбургом'],['Быть · за 10 лет','Учить пекарей по всей России на своей школе']] };
+let dreamK = 0;
+function dreamNext(b) { const L = DREAMS[q.get('p') === 'klass' ? 'klass' : 'a']; dreamK = (dreamK + 1) % L.length; const c = b.closest('.dream'); c.querySelector('.dr-cat').textContent = L[dreamK][0]; c.querySelector('.dr-t').textContent = L[dreamK][1]; }
 function togglePanel(on) { document.body.classList.toggle('panel', on); }
 function goTab(t) {
   document.querySelectorAll('.va .tabs [data-t]').forEach(b => b.classList.toggle('on', b.dataset.t === t));
@@ -1372,7 +1635,7 @@ const mk = document.getElementById('mk');
 const link = (vv, a, label, p) => `<a class="${vv===v && a===as && (p||'0')===(q.get('panel')||'0') ? 'on' : ''}" href="?v=${vv}&as=${a}${p==='1'?'&panel=1':''}">${label}</a>`;
 mk.innerHTML = ['a','b','c'].map(x => link(x, as, 'Вариант ' + x.toUpperCase())).join('') + '<i></i>'
   + link(v,'guest','Гость') + link(v,'owner','Владелец') + link(v,'team','Команда') + link(v,'team','Панель команды','1')
-  + '<i></i><a class="' + (q.get('p')==='klass'?'on':'') + '" href="?v=a&as=guest&p=klass">Классический бизнес</a><a class="' + (q.get('design')==='1'?'on':'') + '" href="?v=a&as=owner&design=1">Оформление</a>';
+  + '<i></i><a class="' + (q.get('p')==='klass'?'on':'') + '" href="?v=a&as=guest&p=klass">Классический бизнес</a><a class="' + (q.get('design')==='1'?'on':'') + '" href="?v=a&as=owner&design=1">Оформление</a><a class="' + (q.get('screen')==='settings'?'on':'') + '" href="?v=a&as=owner&screen=settings">Настройки</a>';
 </script>
 </body>
 </html>
