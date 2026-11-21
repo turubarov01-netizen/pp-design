@@ -83,7 +83,7 @@ body.as-owner .owner-block { display: block !important; }
 .quote-by { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--muted); }
 .quote-by b { color: var(--ink); font-weight: 600; display: block; font-size: 13.5px; }
 
-/* =================== ВАРИАНТ A: профиль соцсети (v3, правки Саши 21.11 утро) =================== */
+/* =================== ВАРИАНТ A: профиль соцсети (v4, правки Саши 21.11, 07:56) =================== */
 .va { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 20px; align-items: start; }
 .va .mainc { min-width: 0; display: grid; gap: 16px; }
 .va .rail { display: grid; gap: 14px; position: sticky; top: 84px; }
@@ -99,13 +99,10 @@ body.as-owner .owner-block { display: block !important; }
 .va .who { padding-top: 14px; min-width: 0; }
 .va .name-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; }
 .va .who h2 { margin: 0; font-size: 28px; font-weight: 750; letter-spacing: -.02em; line-height: 1.15; }
-.va .rate { display: inline-flex; align-items: center; height: 32px; border-radius: 999px; background: rgba(14,159,110,.1); color: var(--green-ink); font-weight: 750; font-size: 15px; }
-.va .rate button { width: 30px; height: 32px; border: 0; background: none; color: inherit; cursor: pointer; display: grid; place-items: center; border-radius: 999px; transition: background-color .18s var(--ease); }
-.va .rate button:hover { background: rgba(14,159,110,.14); }
-.va .rate button.dn { color: var(--faint); }
-.va .rate button.dn:hover { background: rgba(16,24,48,.06); color: var(--ink-2); }
-.va .rate svg { width: 15px; height: 15px; stroke-width: 2.4; }
-.va .rate small { font-size: 12.5px; font-weight: 500; color: var(--muted); margin-left: 8px; }
+.va .recs-badge { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 13px 0 10px; border-radius: 999px; background: linear-gradient(135deg,#ffb020,#ff7a1a); color: #fff; font-size: 14px; font-weight: 600; box-shadow: 0 6px 16px rgba(255,138,30,.3); transition: transform .18s var(--ease), box-shadow .18s var(--ease); }
+.va .recs-badge:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(255,138,30,.38); }
+.va .recs-badge svg { width: 15px; height: 15px; fill: #fff; stroke: #fff; }
+.va .recs-badge b { font-size: 15px; font-weight: 800; }
 .va .who .head { margin-top: 4px; font-size: 16px; color: var(--ink-2); }
 .va .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .va .chip.lvl svg { width: 13px; height: 13px; }
@@ -144,9 +141,9 @@ body.as-owner .va .edit { display: inline-flex; }
 
 /* чем занимаюсь */
 .va .do { display: grid; grid-template-columns: 200px minmax(0,1fr); padding: 8px; }
-.va .do-brand { border-radius: 16px; padding: 18px; color: #fff; display: flex; flex-direction: column; gap: 4px; background: radial-gradient(120% 90% at 0% 0%, #34d399 0%, #10b981 40%, #0f766e 100%); position: relative; overflow: hidden; }
+.va .do-brand { border-radius: 16px; padding: 18px; color: #fff; display: flex; flex-direction: column; gap: 4px; background: radial-gradient(120% 90% at 0% 0%, var(--b1,#34d399) 0%, var(--b2,#10b981) 40%, var(--b3,#0f766e) 100%); position: relative; overflow: hidden; }
 .va .do-brand::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,.12); }
-.va .do-logo { width: 50px; height: 50px; border-radius: 15px; background: #fff; color: #0f766e; display: grid; place-items: center; font-weight: 800; font-size: 18px; margin-bottom: 10px; }
+.va .do-logo { width: 50px; height: 50px; border-radius: 15px; background: #fff; color: var(--b3,#0f766e); display: grid; place-items: center; font-weight: 800; font-size: 18px; margin-bottom: 10px; }
 .va .do-brand b { font-size: 15.5px; line-height: 1.25; }
 .va .do-brand small { font-size: 13px; opacity: .85; }
 .va .do-brand a { margin-top: auto; padding-top: 14px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; position: relative; z-index: 1; }
@@ -154,7 +151,7 @@ body.as-owner .va .edit { display: inline-flex; }
 .va .do-main { padding: 12px 16px 12px 22px; display: flex; flex-direction: column; min-width: 0; }
 .va .kick { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); display: flex; justify-content: space-between; align-items: center; }
 .va .do-big { margin: 8px 0 0; font-size: 23px; line-height: 1.25; font-weight: 700; letter-spacing: -.02em; }
-.va .do-big em { font-style: normal; color: var(--green-ink); }
+.va .do-big em { font-style: normal; color: var(--bi, var(--green-ink)); }
 .va .do-sub { margin: 8px 0 0; font-size: 15px; color: var(--ink-2); max-width: 54ch; }
 .va .do-facts { display: flex; gap: 26px; margin-top: 16px; }
 .va .do-facts b { display: block; font-size: 19px; font-weight: 750; color: var(--ink); letter-spacing: -.01em; }
@@ -262,6 +259,48 @@ body.as-owner .va .owner-bar { display: flex; }
 .top .back:hover { background: rgba(16,24,48,.09); color: var(--ink); }
 .top .back svg { width: 16px; height: 16px; }
 
+
+/* несколько проектов */
+.va .biz-more { grid-column: 1 / -1; margin: 10px 6px 2px; padding-top: 4px; border-top: 1px solid var(--line-2); }
+.va .biz-cap { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); padding: 10px 8px 2px; }
+.va .biz { display: flex; align-items: center; gap: 12px; padding: 9px 8px; border-radius: 14px; transition: background-color .18s var(--ease); }
+.va .biz:hover { background: rgba(47,123,255,.05); }
+.va .biz-logo { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 14px; flex: none; background: linear-gradient(135deg, var(--b1), var(--b3)); }
+.va .biz div { flex: 1; min-width: 0; line-height: 1.3; }
+.va .biz b { font-size: 15px; font-weight: 650; }
+.va .biz small { display: block; font-size: 13px; color: var(--muted); }
+.va .biz a { font-size: 13px; font-weight: 600; color: var(--blue-ink); display: inline-flex; gap: 5px; align-items: center; white-space: nowrap; }
+.va .biz a svg { width: 14px; height: 14px; }
+
+/* рейтинг Альянса */
+.va .rank { display: flex; align-items: center; gap: 14px; }
+.va .rank-n { font-size: 32px; font-weight: 800; letter-spacing: -.03em; line-height: 1; color: var(--ink); white-space: nowrap; }
+.va .rank-n small { display: block; font-size: 12.5px; font-weight: 600; color: var(--muted); letter-spacing: 0; margin-top: 4px; }
+.va .rank-m { font-size: 13px; color: var(--muted); line-height: 1.45; }
+.va .rank-m b { color: var(--ink); font-weight: 650; }
+.va .rank-up { color: var(--green-ink); font-weight: 700; }
+.va .karma-how { display: none; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line-2); font-size: 13px; color: var(--ink-2); }
+body.as-owner .va .karma-how { display: block; }
+.va .karma-how b { display: block; font-size: 13px; margin-bottom: 4px; color: var(--ink); }
+.va .karma-how ul { list-style: none; margin: 0; padding: 0; }
+.va .karma-how li { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; }
+.va .karma-how em { font-style: normal; font-weight: 700; color: var(--green-ink); white-space: nowrap; }
+.va .karma-how em.neg { color: #d94848; }
+
+/* голос: рекомендую / не рекомендую */
+.va .vote p { margin: 0 0 12px; font-size: 13.5px; color: var(--muted); }
+.va .vote .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.va .vote .btn { height: 40px; font-size: 13.5px; justify-content: center; padding: 0 8px; }
+.va .vote .btn svg { width: 15px; height: 15px; stroke-width: 2.4; }
+.va .vote .btn.up { background: linear-gradient(135deg,#ffb020,#ff7a1a); color: #fff; border-color: transparent; }
+.va .vote small { display: block; margin-top: 10px; font-size: 12px; color: var(--faint); line-height: 1.4; }
+
+/* адрес своей страницы */
+.va .mylink { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.va .mylink code { font-family: inherit; font-weight: 600; color: var(--ink); background: rgba(16,24,48,.05); padding: 3px 8px; border-radius: 8px; }
+.va .mylink a { display: inline-flex; align-items: center; gap: 4px; color: var(--blue-ink); font-weight: 600; }
+.va .mylink svg { width: 14px; height: 14px; }
+
 /* =================== ВАРИАНТ B: бенто-визитка =================== */
 .vb .bento { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); grid-auto-rows: minmax(120px, auto); gap: 14px; }
 .vb .t { padding: 20px 22px; position: relative; min-width: 0; }
@@ -365,6 +404,62 @@ body.as-owner .vb .t .sec-h small, body.as-owner .vb .t .sec-h a { display: none
 .vc .person .av { --s: 38px; }
 .vc .person div { flex: 1; min-width: 0; line-height: 1.25; }
 .vc .person small { display: block; color: var(--muted); font-size: 12.5px; }
+
+/* =================== v4: меню «Моя страница» и окно оформления =================== */
+.me { position: relative; cursor: pointer; display: grid; place-items: center; color: #fff; font-size: 12px; font-weight: 700; }
+.mm { display: none; position: absolute; top: 44px; right: 0; width: 264px; background: #fff; border-radius: 16px; box-shadow: 0 20px 50px rgba(11,16,32,.18); padding: 8px; z-index: 30; color: var(--ink); font-weight: 500; text-align: left; cursor: default; }
+body.menu .mm { display: block; }
+.mm-h { display: flex; gap: 10px; align-items: center; padding: 8px 10px 12px; border-bottom: 1px solid var(--line-2); margin-bottom: 6px; }
+.mm-h .av { --s: 40px; }
+.mm-h b { display: block; font-size: 14.5px; }
+.mm-h small { font-size: 12.5px; color: var(--muted); }
+.mm a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; font-size: 14px; color: var(--ink-2); }
+.mm a:hover { background: rgba(47,123,255,.07); color: var(--ink); }
+.mm a.hl { background: rgba(47,123,255,.1); color: var(--blue-ink); font-weight: 650; }
+.mm a svg { width: 16px; height: 16px; }
+.mm hr { border: 0; border-top: 1px solid var(--line-2); margin: 6px 0; }
+.dz { position: fixed; top: 0; right: 0; bottom: 0; width: 440px; max-width: 100%; z-index: 41; background: #f6f8fd; box-shadow: -20px 0 60px rgba(11,16,32,.2); display: none; flex-direction: column; }
+body.design .scrim { display: block; background: rgba(11,16,32,.1); }
+body.design .dz { display: flex; }
+.dz-h { padding: 18px 20px 14px; background: #fff; border-bottom: 1px solid var(--line-2); display: flex; align-items: flex-start; gap: 12px; }
+.dz-h h3 { margin: 0; font-size: 17px; font-weight: 750; }
+.dz-h small { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.dz-b { flex: 1; overflow: auto; padding: 0 20px 20px; }
+.dz-s { padding: 18px 0; border-bottom: 1px solid var(--line-2); }
+.dz-s:last-child { border-bottom: 0; }
+.dz-s h4 { margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.covers { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.covers span { height: 56px; border-radius: 12px; border: 2px solid transparent; background-size: cover; background-position: center; cursor: pointer; }
+.covers span.on { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,123,255,.2); }
+.covers .up { display: grid; place-items: center; background: #fff; border: 1.5px dashed rgba(16,24,48,.2); color: var(--muted); font-size: 11.5px; font-weight: 600; text-align: center; line-height: 1.2; }
+.lg { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 12.5px; background: linear-gradient(135deg, var(--b1), var(--b3)); flex: none; }
+.pj { background: #fff; border-radius: 16px; border: 1px solid var(--line-2); margin-bottom: 8px; }
+.pj-h { display: flex; align-items: center; gap: 10px; padding: 9px 12px; }
+.pj-h b { flex: 1; font-size: 14.5px; font-weight: 650; }
+.grip { width: 16px; height: 16px; color: var(--faint); cursor: grab; flex: none; }
+.pill-main { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(47,123,255,.1); color: var(--blue-ink); }
+.pj-b { padding: 14px 14px 16px; display: grid; gap: 14px; border-top: 1px solid var(--line-2); }
+.logo-row { display: flex; align-items: center; gap: 12px; }
+.logo-row .lg { width: 56px; height: 56px; border-radius: 16px; font-size: 18px; }
+.logo-row .btn { height: 34px; font-size: 13px; }
+.logo-row small { display: block; font-size: 12px; color: var(--muted); line-height: 1.35; margin-top: 6px; }
+.fl label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
+.fi { height: 40px; border-radius: 11px; border: 1px solid rgba(16,24,48,.12); background: #fff; display: flex; align-items: center; padding: 0 12px; font-size: 14px; color: var(--ink); min-width: 0; overflow: hidden; white-space: nowrap; }
+.fi3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+.fi3 .fi { font-size: 12.5px; padding: 0 8px; }
+.tip { display: block; font-size: 12px; color: var(--muted); margin-top: 6px; }
+.sw { display: flex; gap: 8px; flex-wrap: wrap; }
+.sw i { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--b1), var(--b3)); display: grid; place-items: center; cursor: pointer; font-style: normal; }
+.sw i.on { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--ink); }
+.sw i.pick { background: #fff; border: 1.5px dashed rgba(16,24,48,.25); color: var(--muted); font-weight: 600; }
+.dz .add { height: 38px; font-size: 13.5px; width: 100%; justify-content: center; margin-top: 2px; }
+.ord { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: #fff; border: 1px solid var(--line-2); border-radius: 12px; margin-bottom: 6px; font-size: 14px; font-weight: 550; }
+.tg { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 2px 2px; font-size: 14px; color: var(--ink-2); }
+.tg i { width: 40px; height: 24px; border-radius: 12px; background: rgba(16,24,48,.15); position: relative; flex: none; }
+.tg i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: left .2s var(--ease); }
+.tg i.on { background: var(--blue); } .tg i.on::after { left: 19px; }
+.dz-f { padding: 14px 20px; background: #fff; border-top: 1px solid var(--line-2); display: flex; gap: 8px; justify-content: flex-end; }
+@media (max-width: 760px) { .dz { width: 100%; } .mm { right: -6px; } }
 
 /* =================== Панель для команды =================== */
 .scrim { position: fixed; inset: 0; background: rgba(11,16,32,.28); z-index: 40; display: none; }
@@ -503,14 +598,21 @@ body.shot .side { height: auto; min-height: 100vh; }
       <h1 id="ttl">Анна Белова</h1>
       <span class="srch"><svg class="i"><use href="#i-search"/></svg><span>Поиск и действия</span><kbd>⌘ K</kbd></span>
       <svg class="i" style="width:20px;height:20px;color:var(--ink-2)"><use href="#i-bell"/></svg>
-      <span class="me"></span>
+      <span class="me" onclick="document.body.classList.toggle('menu')"><span id="meI">МК</span>
+        <div class="mm" onclick="event.stopPropagation()">
+          <div class="mm-h"><span class="av c2" id="mmA">МК</span><div><b id="mmN">Мария Ким</b><small>клан «Сфера»</small></div></div>
+          <a class="hl" href="?v=a&amp;as=owner"><svg class="i"><use href="#i-users"/></svg>Моя страница</a>
+          <a href="?v=a&amp;as=owner"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
+          <a href="?v=a&amp;as=owner&amp;design=1"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
+          <hr><a href="#"><svg class="i"><use href="#i-bell"/></svg>Уведомления</a>
+        </div></span>
     </header>
     <div class="content" id="root"></div>
   </div>
 </div>
 
 <!-- Панель для команды: одна на все варианты -->
-<div class="scrim" onclick="togglePanel(false)"></div>
+<div class="scrim" onclick="togglePanel(false);toggleDesign(false)"></div>
 <aside class="drawer" aria-label="Данные для команды">
   <div class="d-head">
     <div class="d-row1">
@@ -581,13 +683,63 @@ body.shot .side { height: auto; min-height: 100vh; }
   </div>
 </aside>
 
+
+<!-- Оформление страницы: видит только владелец -->
+<aside class="dz" aria-label="Оформление страницы">
+  <div class="dz-h">
+    <div><h3>Оформление страницы</h3><small>Изменения видны на странице сразу и сохраняются сами</small></div>
+    <button class="d-x" onclick="toggleDesign(false)" aria-label="Закрыть"><svg class="i"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="dz-b">
+    <div class="dz-s">
+      <h4>Обложка</h4>
+      <div class="covers">
+        <span class="on" style="background-image:url(img/cover.jpg)"></span>
+        <span style="background:linear-gradient(135deg,#a7f3d0,#0f766e)"></span>
+        <span style="background:linear-gradient(135deg,#fde68a,#d97706)"></span>
+        <span class="up">Своё<br>фото</span>
+      </div>
+    </div>
+    <div class="dz-s">
+      <h4>Проекты и бизнесы</h4>
+      <div class="pj open" style="--b1:#34d399;--b3:#0f766e">
+        <div class="pj-h"><svg class="i grip"><use href="#i-grip"/></svg><span class="lg">ЕЖ</span><b>Школа «Ешь и живи»</b><span class="pill-main">главный</span></div>
+        <div class="pj-b">
+          <div class="logo-row"><span class="lg">ЕЖ</span><div><a class="btn" href="#"><svg class="i"><use href="#i-image"/></svg>Загрузить логотип</a><small>PNG или SVG, квадрат. Пока нет логотипа, ставим буквы названия</small></div></div>
+          <div class="fl"><label>Цвет карточки</label>
+            <div class="sw">
+              <i class="on" style="--b1:#34d399;--b3:#0f766e"></i><i style="--b1:#fbbf24;--b3:#92400e"></i><i style="--b1:#fdba74;--b3:#ea580c"></i><i style="--b1:#f9a8d4;--b3:#be185d"></i><i style="--b1:#c4b5fd;--b3:#6d28d9"></i><i style="--b1:#93c5fd;--b3:#2563eb"></i><i style="--b1:#94a3b8;--b3:#334155"></i><i class="pick" title="Свой цвет">+</i>
+            </div>
+          </div>
+          <div class="fl"><label>Сайт или страница</label><div class="fi">eshizhivi.ru</div></div>
+          <div class="fl"><label>Что вы делаете, одной фразой</label><div class="fi">Учу женщин 35+ есть [без диет и срывов]</div><small class="tip">Слова в квадратных скобках выделятся цветом карточки</small></div>
+          <div class="fl"><label>Три цифры о бизнесе</label><div class="fi3"><span class="fi">340 · учеников</span><span class="fi">8 недель · курс</span><span class="fi">2-й поток · набор</span></div></div>
+        </div>
+      </div>
+      <div class="pj" style="--b1:#fdba74;--b3:#ea580c"><div class="pj-h"><svg class="i grip"><use href="#i-grip"/></svg><span class="lg">ЕК</span><b>«Ешь и живи · Кухня»</b></div></div>
+      <div class="pj" style="--b1:#93c5fd;--b3:#2563eb"><div class="pj-h"><svg class="i grip"><use href="#i-grip"/></svg><span class="lg">35</span><b>Беговой клуб «35+»</b></div></div>
+      <a class="btn add" href="#"><svg class="i"><use href="#i-plus"/></svg>Добавить проект</a>
+      <small class="tip">Перетащите проект наверх, чтобы сделать его главным</small>
+    </div>
+    <div class="dz-s">
+      <h4>Порядок блоков</h4>
+      <div class="ord"><svg class="i grip"><use href="#i-grip"/></svg>Значки</div>
+      <div class="ord"><svg class="i grip"><use href="#i-grip"/></svg>Навыки</div>
+      <div class="ord"><svg class="i grip"><use href="#i-grip"/></svg>Что говорят обо мне</div>
+      <div class="tg">Показывать значки, которых у меня ещё нет<i></i></div>
+      <div class="tg">Показывать город, где я сейчас<i class="on"></i></div>
+    </div>
+  </div>
+  <div class="dz-f"><a class="btn" href="?v=a&amp;as=guest">Посмотреть как гость</a><a class="btn pri" href="#" onclick="toggleDesign(false);return false">Готово</a></div>
+</aside>
+
 <nav class="mk" id="mk"></nav>
 
 <template id="tpl-a">
 <div class="va">
   <div class="mainc">
     <div class="glass owner-bar">
-      <div class="meter"><b>Страница заполнена на 70%</b><small>Добавьте навыки и обложку: так вас быстрее найдут через поиск участников</small><i></i></div>
+      <div class="meter"><b>Страница заполнена на 70%</b><small>Добавьте навыки и обложку: так вас быстрее найдут через поиск участников</small><i></i><div class="mylink">Адрес вашей страницы <code>wearefree.club/u/anna-belova</code><a href="#"><svg class="i"><use href="#i-copy"/></svg>Скопировать</a></div></div>
       <a class="btn pri" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
     </div>
 
@@ -598,7 +750,7 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="who">
           <div class="name-row">
             <h2>Анна Белова</h2>
-            <span class="rate" title="Рейтинг: плюсы минус минусы от участников"><button aria-label="Плюс"><svg class="i"><use href="#i-up2"/></svg></button><span class="num">23</span><button class="dn" aria-label="Минус"><svg class="i"><use href="#i-down2"/></svg></button></span>
+            <a class="recs-badge" href="#" data-go="recs"><svg class="i"><use href="#i-star"/></svg><b class="num">23</b> рекомендации</a>
           </div>
           <div class="head">Нутрициолог. Основательница онлайн-школы питания «Ешь и живи»</div>
           <div class="meta">
@@ -611,14 +763,13 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="acts">
           <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a>
           <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
-          <a class="btn guest-only" href="#" data-go="recs"><svg class="i"><use href="#i-star"/></svg>Рекомендовать</a>
           <a class="btn pri owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
-          <a class="btn owner-only" href="#"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
+          <a class="btn owner-only" href="#" onclick="toggleDesign(true);return false"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
           <a class="btn owner-only" href="?v=a&amp;as=guest"><svg class="i"><use href="#i-eye"/></svg>Как видят другие</a>
           <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
         </div>
         <div class="stats">
-          <span><b class="num">48</b>друзей</span><span><b class="num">6</b>общих</span><span><b class="num">18</b>рекомендаций</span><span><b class="num">24</b>навыка</span>
+          <span><b class="num">48</b>друзей</span><span><b class="num">6</b>общих</span><span><b class="num">9-е</b>место в рейтинге</span><span><b class="num">24</b>навыка</span>
         </div>
       </div>
     </section>
@@ -639,25 +790,30 @@ body.shot .side { height: auto; min-height: 100vh; }
     <nav class="tabs">
       <button data-t="about" class="on">Обо мне</button>
       <button data-t="skills">Навыки <em>24</em></button>
-      <button data-t="recs">Рекомендации <em>18</em></button>
+      <button data-t="recs">Рекомендации <em>23</em></button>
       <button data-t="friends">Друзья <em>48</em></button>
       <button data-t="contacts">Контакты <svg class="i guest-only"><use href="#i-lock"/></svg></button>
     </nav>
 
     <!-- ОБО МНЕ -->
     <div class="pane on" data-p="about">
-      <section class="glass do">
+      <section class="glass do" style="--b1:#34d399;--b2:#10b981;--b3:#0f766e;--bi:#0b7a55">
         <div class="do-brand">
           <span class="do-logo">ЕЖ</span>
           <b>Школа питания «Ешь и живи»</b>
-          <small>онлайн · с 2019 года</small>
-          <a href="#">Сайт школы <svg class="i"><use href="#i-ext"/></svg></a>
+          <small>онлайн-школа · с 2019 года</small>
+          <a href="#">eshizhivi.ru <svg class="i"><use href="#i-ext"/></svg></a>
         </div>
         <div class="do-main">
-          <div class="kick">Чем занимаюсь<a class="edit" href="#"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></div>
+          <div class="kick">Чем занимаюсь<a class="edit" href="#" onclick="toggleDesign(true);return false"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></div>
           <p class="do-big">Учу женщин 35+ есть <em>без диет и срывов</em></p>
           <p class="do-sub">Групповой курс на 8 недель и личное сопровождение. Сейчас собираю команду под второй поток.</p>
           <div class="do-facts"><div><b class="num">340</b><small>учеников</small></div><div><b>8 недель</b><small>длится курс</small></div><div><b>2-й поток</b><small>сейчас набор</small></div></div>
+        </div>
+        <div class="biz-more">
+          <div class="biz-cap">Ещё 2 проекта</div>
+          <div class="biz" style="--b1:#fdba74;--b3:#ea580c"><span class="biz-logo">ЕК</span><div><b>«Ешь и живи · Кухня»</b><small>готовые рационы с доставкой по Казани · с 2023 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz" style="--b1:#93c5fd;--b3:#2563eb"><span class="biz-logo">35</span><div><b>Беговой клуб «35+»</b><small>сообщество, 120 участниц · с 2021 года</small></div><a href="#">Telegram <svg class="i"><use href="#i-ext"/></svg></a></div>
         </div>
       </section>
 
@@ -677,14 +833,14 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="sec-h"><h3>Навыки</h3><a href="#" data-go="skills">Все 24</a></div>
         <p class="hint guest-only" style="display:block">Работали с Анной? Нажмите «+1» у навыка, в котором она вам помогла.</p>
         <div class="skill"><div class="skill-n"><b>Нутрициология</b><small>подтвердили 12, среди них Игорь Граф</small></div><span class="stack"><span class="av c1" style="--s:28px">ИГ</span><span class="av c2" style="--s:28px">МК</span><span class="av c3" style="--s:28px">ОС</span></span><button class="plus1 on"><svg class="i"><use href="#i-check"/></svg>Вы подтвердили</button></div>
-        <div class="skill"><div class="skill-n"><b>Запуск онлайн-курсов</b><small>подтвердили 8</small></div><span class="stack"><span class="av c4" style="--s:28px">ДЛ</span><span class="av c5" style="--s:28px">РТ</span></span><button class="plus1">+1 · Подтвердить</button></div>
-        <div class="skill"><div class="skill-n"><b>Диетология</b><small>подтвердили 7</small></div><span class="stack"><span class="av c6" style="--s:28px">ЕВ</span><span class="av c8" style="--s:28px">ТР</span></span><button class="plus1">+1 · Подтвердить</button></div>
-        <div class="skill"><div class="skill-n"><b>Продуктовая линейка</b><small>подтвердили 6</small></div><span class="stack"><span class="av c7" style="--s:28px">АН</span></span><button class="plus1">+1 · Подтвердить</button></div>
+        <div class="skill"><div class="skill-n"><b>Запуск онлайн-курсов</b><small>подтвердили 8</small></div><span class="stack"><span class="av c4" style="--s:28px">ДЛ</span><span class="av c5" style="--s:28px">РТ</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>1 · Подтвердить</button></div>
+        <div class="skill"><div class="skill-n"><b>Диетология</b><small>подтвердили 7</small></div><span class="stack"><span class="av c6" style="--s:28px">ЕВ</span><span class="av c8" style="--s:28px">ТР</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>1 · Подтвердить</button></div>
+        <div class="skill"><div class="skill-n"><b>Продуктовая линейка</b><small>подтвердили 6</small></div><span class="stack"><span class="av c7" style="--s:28px">АН</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>1 · Подтвердить</button></div>
         <a class="btn" href="#" data-go="skills" style="margin-top:12px;width:100%">Ещё 20 навыков</a>
       </section>
 
       <section class="glass box">
-        <div class="sec-h"><h3>Что говорят об Анне</h3><a href="#" data-go="recs">Все 18</a></div>
+        <div class="sec-h"><h3>Что говорят об Анне</h3><a href="#" data-go="recs">Все 23</a></div>
         <p class="quote">«Анна за час разобрала мой рацион и линейку продуктов. После этого я подняла чек на курс в полтора раза и впервые продала личное сопровождение.»</p>
         <div class="quote-by"><span class="av c3" style="--s:34px">ОС</span><div><b>Ольга Смирнова</b>психолог, клан «Авалон»</div></div>
       </section>
@@ -697,19 +853,19 @@ body.shot .side { height: auto; min-height: 100vh; }
         <p class="hint guest-only" style="display:block">Работали с Анной? Нажмите «+1» у навыка, в котором она вам помогла. Подтверждение видно всем.</p>
         <div class="sk-grid">
           <div class="skill"><div class="skill-n"><b>Нутрициология</b></div><span class="sk-cnt">12</span><button class="plus1 sm on"><svg class="i"><use href="#i-check"/></svg>Вы</button></div>
-          <div class="skill"><div class="skill-n"><b>Запуск онлайн-курсов</b></div><span class="sk-cnt">8</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Диетология</b></div><span class="sk-cnt">7</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Продуктовая линейка</b></div><span class="sk-cnt">6</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Reels</b></div><span class="sk-cnt">5</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Психология питания</b></div><span class="sk-cnt">4</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Telegram-канал</b></div><span class="sk-cnt">4</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Вебинары</b></div><span class="sk-cnt">4</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Упаковка оффера</b></div><span class="sk-cnt">3</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Продажи в переписке</b></div><span class="sk-cnt">3</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Сторис</b></div><span class="sk-cnt">3</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Спортивное питание</b></div><span class="sk-cnt">3</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Найм</b></div><span class="sk-cnt">2</span><button class="plus1 sm">+1</button></div>
-          <div class="skill"><div class="skill-n"><b>Личный бренд</b></div><span class="sk-cnt">2</span><button class="plus1 sm">+1</button></div>
+          <div class="skill"><div class="skill-n"><b>Запуск онлайн-курсов</b></div><span class="sk-cnt">8</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Диетология</b></div><span class="sk-cnt">7</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Продуктовая линейка</b></div><span class="sk-cnt">6</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Reels</b></div><span class="sk-cnt">5</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Психология питания</b></div><span class="sk-cnt">4</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Telegram-канал</b></div><span class="sk-cnt">4</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Вебинары</b></div><span class="sk-cnt">4</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Упаковка оффера</b></div><span class="sk-cnt">3</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Продажи в переписке</b></div><span class="sk-cnt">3</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Сторис</b></div><span class="sk-cnt">3</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Спортивное питание</b></div><span class="sk-cnt">3</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Найм</b></div><span class="sk-cnt">2</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Личный бренд</b></div><span class="sk-cnt">2</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
         </div>
         <a class="btn" href="#" style="margin-top:12px;width:100%">Показать ещё 10</a>
         <a class="btn add-sk" href="#"><svg class="i"><use href="#i-plus"/></svg>Добавить навык</a>
@@ -777,14 +933,262 @@ body.shot .side { height: auto; min-height: 100vh; }
       </div>
     </section>
     <section class="glass box">
+      <div class="sec-h"><h3>Рейтинг Альянса</h3><a href="#">Весь рейтинг</a></div>
+      <div class="rank"><div class="rank-n">9-е<small>из 261</small></div><div class="rank-m"><b>💎 Амбассадор</b> · карма 640<br><span class="rank-up">↑ 3 места</span> за 30 дней</div></div>
+      <div class="karma-how"><b>За что растёт карма</b><ul>
+        <li>Рекомендация участника<em>+5…+30</em></li>
+        <li>Прошли поход или программу<em>+20…+30</em></li>
+        <li>Подтвердили ваш навык<em>+5</em></li>
+        <li>Лайк вашего поста<em>+2</em></li>
+        <li>Новый друг<em>+2</em></li>
+        <li>Закрыли день в трекере<em>+1</em></li>
+        <li>Пропали на 14+ дней<em class="neg">−1…−3</em></li>
+      </ul></div>
+    </section>
+    <section class="glass box">
       <div class="sec-h"><h3>Общие друзья</h3><a href="#" data-go="friends">Все 6</a></div>
       <div class="faces"><span class="av c1">ИГ</span><span class="av c2">МК</span><span class="av c4">ДЛ</span><span class="av c6">ЕВ</span><small>Игорь Граф, Мария Ким и ещё 4</small></div>
+    </section>
+    <section class="glass box vote guest-only">
+      <div class="sec-h"><h3>Работали с Анной?</h3></div>
+      <p>Ваш голос меняет её карму и место в рейтинге</p>
+      <div class="row2"><a class="btn up" href="#" data-go="recs"><svg class="i"><use href="#i-up2"/></svg>Рекомендую</a><a class="btn" href="#"><svg class="i"><use href="#i-down2"/></svg>Не рекомендую</a></div>
+      <small>«Не рекомендую» нигде не публикуется. Его видит только команда Альянса.</small>
     </section>
     <section class="glass box">
       <div class="sec-h"><h3>Похожие участники</h3></div>
       <div class="person"><span class="av c6">ЕВ</span><div>Елена Волкова<small>диетолог · Самара</small></div><button class="plus1"><svg class="i"><use href="#i-plus"/></svg></button></div>
       <div class="person"><span class="av c7">АН</span><div>Алексей Носов<small>фитнес-тренер · Казань</small></div><button class="plus1"><svg class="i"><use href="#i-plus"/></svg></button></div>
       <div class="person"><span class="av c3">ОС</span><div>Ольга Смирнова<small>психолог · клан «Авалон»</small></div><button class="plus1"><svg class="i"><use href="#i-plus"/></svg></button></div>
+    </section>
+  </aside>
+</div>
+</template>
+<template id="tpl-a-klass">
+<div class="va">
+  <div class="mainc">
+    <div class="glass owner-bar">
+      <div class="meter"><b>Страница заполнена на 70%</b><small>Добавьте навыки и обложку: так вас быстрее найдут через поиск участников</small><i></i><div class="mylink">Адрес вашей страницы <code>wearefree.club/u/dmitry-orlov</code><a href="#"><svg class="i"><use href="#i-copy"/></svg>Скопировать</a></div></div>
+      <a class="btn pri" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
+    </div>
+
+    <section class="glass hero">
+      <div class="cover"><a class="btn owner-only" href="#"><svg class="i"><use href="#i-image"/></svg>Сменить обложку</a></div>
+      <div class="hero-b">
+        <span class="av hero-av">ДО</span>
+        <div class="who">
+          <div class="name-row">
+            <h2>Дмитрий Орлов</h2>
+            <a class="recs-badge" href="#" data-go="recs"><svg class="i"><use href="#i-star"/></svg><b class="num">23</b> рекомендации</a>
+          </div>
+          <div class="head">Владелец сети пекарен «Хлебный двор» и цеха выпечки</div>
+          <div class="meta">
+            <span class="chip lvl"><svg class="i"><use href="#i-spark"/></svg>Уровень «Бунтарь»</span>
+            <span class="chip clan">Клан «Сфера»</span>
+            <span class="chip"><svg class="i" style="width:13px;height:13px"><use href="#i-pin"/></svg>Екатеринбург</span>
+            <span class="chip">380 дней в Альянсе</span>
+          </div>
+        </div>
+        <div class="acts">
+          <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a>
+          <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
+          <a class="btn pri owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
+          <a class="btn owner-only" href="#" onclick="toggleDesign(true);return false"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
+          <a class="btn owner-only" href="?v=a&amp;as=guest"><svg class="i"><use href="#i-eye"/></svg>Как видят другие</a>
+          <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
+        </div>
+        <div class="stats">
+          <span><b class="num">48</b>друзей</span><span><b class="num">6</b>общих</span><span><b class="num">9-е</b>место в рейтинге</span><span><b class="num">24</b>навыка</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="ask">
+      <section class="ask-c help">
+        <div class="ask-h"><span class="ask-ic"><svg class="i"><use href="#i-heart"/></svg></span>Чем могу помочь<a class="edit" href="#" style="margin-left:auto"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></div>
+        <p>Покажу, как открыть точку за 3 месяца и посчитать окупаемость</p>
+        <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Попросить помощь</a>
+      </section>
+      <section class="ask-c seek">
+        <div class="ask-h"><span class="ask-ic"><svg class="i"><use href="#i-search"/></svg></span>Кого ищу<a class="edit" href="#" style="margin-left:auto"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></div>
+        <p>Технолога на производство и поставщика муки по Уралу</p>
+        <a class="btn guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Предложить человека</a>
+      </section>
+    </div>
+
+    <nav class="tabs">
+      <button data-t="about" class="on">Обо мне</button>
+      <button data-t="skills">Навыки <em>24</em></button>
+      <button data-t="recs">Рекомендации <em>23</em></button>
+      <button data-t="friends">Друзья <em>48</em></button>
+      <button data-t="contacts">Контакты <svg class="i guest-only"><use href="#i-lock"/></svg></button>
+    </nav>
+
+    <!-- ОБО МНЕ -->
+    <div class="pane on" data-p="about">
+      <section class="glass do" style="--b1:#fbbf24;--b2:#d97706;--b3:#92400e;--bi:#b45309">
+        <div class="do-brand">
+          <span class="do-logo">ХД</span>
+          <b>Сеть пекарен «Хлебный двор»</b>
+          <small>Екатеринбург · с 2016 года</small>
+          <a href="#">hlebdvor.ru <svg class="i"><use href="#i-ext"/></svg></a>
+        </div>
+        <div class="do-main">
+          <div class="kick">Чем занимаюсь<a class="edit" href="#"><svg class="i"><use href="#i-pen"/></svg>Изменить</a></div>
+          <p class="do-big">Кормлю Екатеринбург свежим хлебом <em>каждое утро с 7:00</em></p>
+          <p class="do-sub">7 пекарен у дома и своё производство. Сейчас запускаем франшизу в соседние города.</p>
+          <div class="do-facts"><div><b class="num">7</b><small>пекарен</small></div><div><b>2 тонны</b><small>хлеба в сутки</small></div><div><b class="num">64</b><small>сотрудника</small></div></div>
+        </div>
+        <div class="biz-more">
+          <div class="biz-cap">Ещё 2 проекта</div>
+          <div class="biz" style="--b1:#94a3b8;--b3:#334155"><span class="biz-logo">Ц</span><div><b>«ХД Цех»</b><small>замороженная выпечка для кафе и отелей · производство · с 2020 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz" style="--b1:#f9a8d4;--b3:#be185d"><span class="biz-logo">О</span><div><b>Кофейни «Опара»</b><small>2 кофейни в центре города · с 2023 года</small></div><a href="#">Карты <svg class="i"><use href="#i-ext"/></svg></a></div>
+        </div>
+      </section>
+
+      <section class="glass box">
+        <div class="sec-h"><h3>Значки</h3><small>походы и программы Альянса</small></div>
+        <div class="badges">
+          <span class="bdg"><img src="img/b-focus.webp" alt="">Фокус<small>вершина</small></span>
+          <span class="bdg"><img src="img/b-pp.webp" alt="">План Продюсера<small>финалист</small></span>
+          <span class="bdg"><img src="img/b-mesto.webp" alt="">Место притяжения<small>финалист</small></span>
+          <span class="bdg"><img src="img/b-ts.webp" alt="">Точка Сборки<small>пройдена</small></span>
+          <span class="bdg"><img src="img/b-top3.webp" alt="">Топ-3 потока<small>ПП · Поток 5</small></span>
+          <span class="bdg no"><img src="img/b-ii.webp" alt="">ИИнструменты<small>ещё нет</small></span>
+        </div>
+      </section>
+
+      <section class="glass box">
+        <div class="sec-h"><h3>Навыки</h3><a href="#" data-go="skills">Все 24</a></div>
+        <p class="hint guest-only" style="display:block">Работали с Дмитрием? Нажмите «+1» у навыка, в котором он вам помог.</p>
+        <div class="skill"><div class="skill-n"><b>Общепит</b><small>подтвердили 12, среди них Игорь Граф</small></div><span class="stack"><span class="av c1" style="--s:28px">ИГ</span><span class="av c2" style="--s:28px">МК</span><span class="av c3" style="--s:28px">ОС</span></span><button class="plus1 on"><svg class="i"><use href="#i-check"/></svg>Вы подтвердили</button></div>
+        <div class="skill"><div class="skill-n"><b>Производство</b><small>подтвердили 8</small></div><span class="stack"><span class="av c4" style="--s:28px">ДЛ</span><span class="av c5" style="--s:28px">РТ</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>1 · Подтвердить</button></div>
+        <div class="skill"><div class="skill-n"><b>Франчайзинг</b><small>подтвердили 7</small></div><span class="stack"><span class="av c6" style="--s:28px">ЕВ</span><span class="av c8" style="--s:28px">ТР</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>1 · Подтвердить</button></div>
+        <div class="skill"><div class="skill-n"><b>Управление персоналом</b><small>подтвердили 6</small></div><span class="stack"><span class="av c7" style="--s:28px">АН</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>1 · Подтвердить</button></div>
+        <a class="btn" href="#" data-go="skills" style="margin-top:12px;width:100%">Ещё 20 навыков</a>
+      </section>
+
+      <section class="glass box">
+        <div class="sec-h"><h3>Что говорят о Дмитрии</h3><a href="#" data-go="recs">Все 23</a></div>
+        <p class="quote">«Дмитрий показал свою таблицу окупаемости точки. Мы пересчитали по ней вторую кофейню и открыли её на 40% дешевле плана.»</p>
+        <div class="quote-by"><span class="av c3" style="--s:34px">СП</span><div><b>Сергей Пахомов</b>сеть кофеен, клан «Авалон»</div></div>
+      </section>
+    </div>
+
+    <!-- НАВЫКИ -->
+    <div class="pane" data-p="skills">
+      <section class="glass box">
+        <div class="sec-h"><h3>24 навыка</h3><small>по числу подтверждений</small></div>
+        <p class="hint guest-only" style="display:block">Работали с Дмитрием? Нажмите «+1» у навыка, в котором он вам помог. Подтверждение видно всем.</p>
+        <div class="sk-grid">
+          <div class="skill"><div class="skill-n"><b>Общепит</b></div><span class="sk-cnt">12</span><button class="plus1 sm on"><svg class="i"><use href="#i-check"/></svg>Вы</button></div>
+          <div class="skill"><div class="skill-n"><b>Производство</b></div><span class="sk-cnt">8</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Франчайзинг</b></div><span class="sk-cnt">7</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Управление персоналом</b></div><span class="sk-cnt">6</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Reels</b></div><span class="sk-cnt">5</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Психология питания</b></div><span class="sk-cnt">4</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Telegram-канал</b></div><span class="sk-cnt">4</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Вебинары</b></div><span class="sk-cnt">4</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Упаковка оффера</b></div><span class="sk-cnt">3</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Продажи в переписке</b></div><span class="sk-cnt">3</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Сторис</b></div><span class="sk-cnt">3</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Спортивное питание</b></div><span class="sk-cnt">3</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Найм</b></div><span class="sk-cnt">2</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+          <div class="skill"><div class="skill-n"><b>Личный бренд</b></div><span class="sk-cnt">2</span><button class="plus1 sm"><svg class="i"><use href="#i-plus"/></svg>1</button></div>
+        </div>
+        <a class="btn" href="#" style="margin-top:12px;width:100%">Показать ещё 10</a>
+        <a class="btn add-sk" href="#"><svg class="i"><use href="#i-plus"/></svg>Добавить навык</a>
+      </section>
+    </div>
+
+    <!-- РЕКОМЕНДАЦИИ -->
+    <div class="pane" data-p="recs">
+      <section class="glass rform guest-only" style="display:grid">
+        <h4>Рекомендовать Дмитрия</h4>
+        <div class="ta">Расскажите, с чем Дмитрий вам помогла и что получилось</div>
+        <div class="row"><small>Можно отметить навык, за который рекомендуете</small><a class="btn pri" href="#"><svg class="i"><use href="#i-star"/></svg>Опубликовать</a></div>
+      </section>
+      <div class="rlist">
+        <article class="glass rcard">
+          <div class="rcard-h"><span class="av c3">ОС</span><div><b>Ольга Смирнова</b>психолог, клан «Авалон» · 3 дня назад</div></div>
+          <p>Дмитрий за час разобрала мой рацион и линейку продуктов. После этого я подняла чек на курс в полтора раза и впервые продала личное сопровождение.</p>
+          <div class="for"><span>Общепит</span><span>Управление персоналом</span></div>
+        </article>
+        <article class="glass rcard">
+          <div class="rcard-h"><span class="av c1">ИГ</span><div><b>Игорь Граф</b>основатель Альянса · 2 недели назад</div></div>
+          <p>Одна из самых собранных участниц потока. Дошла до финала ПП и за месяц перестроила продукт под новый чек.</p>
+          <div class="for"><span>Производство</span></div>
+        </article>
+        <article class="glass rcard">
+          <div class="rcard-h"><span class="av c2">МК</span><div><b>Мария Ким</b>маркетолог, клан «Сфера» · месяц назад</div></div>
+          <p>Делали с Дмитрием совместный эфир. Подготовилась лучше меня, после эфира пришло 40 заявок на двоих.</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- ДРУЗЬЯ -->
+    <div class="pane" data-p="friends">
+      <div class="rfilter"><span class="on">Все 48</span><span>Общие 6</span><span>Из клана 12</span><span>Рядом</span></div>
+      <div class="fr-grid">
+        <div class="glass fr"><span class="av c1">ИГ</span><b>Игорь Граф</b><small>основатель Альянса</small><span class="mut">общий друг</span></div>
+        <div class="glass fr"><span class="av c2">МК</span><b>Мария Ким</b><small>маркетолог · клан «Сфера»</small><span class="mut">общий друг</span></div>
+        <div class="glass fr"><span class="av c4">ДЛ</span><b>Денис Лебедев</b><small>продюсер · клан «Авалон»</small><span class="mut">общий друг</span></div>
+        <div class="glass fr"><span class="av c6">ЕВ</span><b>Елена Волкова</b><small>диетолог · Самара</small><span class="mut">общий друг</span></div>
+        <div class="glass fr"><span class="av c7">АН</span><b>Алексей Носов</b><small>фитнес-тренер · Казань</small></div>
+        <div class="glass fr"><span class="av c8">ТР</span><b>Тимур Рахимов</b><small>монтажёр Reels</small></div>
+      </div>
+    </div>
+
+    <!-- КОНТАКТЫ -->
+    <div class="pane" data-p="contacts">
+      <div class="lockbar"><span class="ci"><svg class="i"><use href="#i-lock"/></svg></span><div><b>Контакты видят только друзья</b>Добавьте Дмитрия в друзья, и после подтверждения здесь откроются телефон, почта и Telegram</div><a class="btn pri" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a></div>
+      <p class="owner-note">Эти контакты видят только ваши друзья и команда Альянса.</p>
+      <section class="glass cont">
+        <div class="crow"><span class="ci"><svg class="i"><use href="#i-phone"/></svg></span><div><small>Телефон</small><b class="blur">+7 917 245‑18‑14</b></div></div>
+        <div class="crow"><span class="ci"><svg class="i"><use href="#i-mail"/></svg></span><div><small>Почта</small><b class="blur">anna.belova@mail.ru</b></div></div>
+        <div class="crow"><span class="ci"><svg class="i"><use href="#i-send"/></svg></span><div><small>Telegram</small><b class="blur">@anna_belova</b></div></div>
+      </section>
+    </div>
+  </div>
+
+  <aside class="rail">
+    <section class="glass box">
+      <div class="sec-h"><h3>Этап бизнеса</h3></div>
+      <div class="track"><span class="done">PMF</span><span class="cur">Scaling</span><span>Enterprise</span></div>
+      <div class="goal">
+        <div class="goal-t"><b>Цель этапа Scaling</b><span class="num">70%</span></div>
+        <small>по данным раздела «Финансы»</small>
+        <span class="bar"><i style="width:70%"></i></span>
+      </div>
+    </section>
+    <section class="glass box">
+      <div class="sec-h"><h3>Рейтинг Альянса</h3><a href="#">Весь рейтинг</a></div>
+      <div class="rank"><div class="rank-n">9-е<small>из 261</small></div><div class="rank-m"><b>💎 Амбассадор</b> · карма 640<br><span class="rank-up">↑ 3 места</span> за 30 дней</div></div>
+      <div class="karma-how"><b>За что растёт карма</b><ul>
+        <li>Рекомендация участника<em>+5…+30</em></li>
+        <li>Прошли поход или программу<em>+20…+30</em></li>
+        <li>Подтвердили ваш навык<em>+5</em></li>
+        <li>Лайк вашего поста<em>+2</em></li>
+        <li>Новый друг<em>+2</em></li>
+        <li>Закрыли день в трекере<em>+1</em></li>
+        <li>Пропали на 14+ дней<em class="neg">−1…−3</em></li>
+      </ul></div>
+    </section>
+    <section class="glass box">
+      <div class="sec-h"><h3>Общие друзья</h3><a href="#" data-go="friends">Все 6</a></div>
+      <div class="faces"><span class="av c1">ИГ</span><span class="av c2">МК</span><span class="av c4">ДЛ</span><span class="av c6">ЕВ</span><small>Игорь Граф, Мария Ким и ещё 4</small></div>
+    </section>
+    <section class="glass box vote guest-only">
+      <div class="sec-h"><h3>Работали с Дмитрием?</h3></div>
+      <p>Ваш голос меняет его карму и место в рейтинге</p>
+      <div class="row2"><a class="btn up" href="#" data-go="recs"><svg class="i"><use href="#i-up2"/></svg>Рекомендую</a><a class="btn" href="#"><svg class="i"><use href="#i-down2"/></svg>Не рекомендую</a></div>
+      <small>«Не рекомендую» нигде не публикуется. Его видит только команда Альянса.</small>
+    </section>
+    <section class="glass box">
+      <div class="sec-h"><h3>Похожие участники</h3></div>
+      <div class="person"><span class="av c6">СП</span><div>Сергей Пахомов<small>сеть кофеен · Тюмень</small></div><button class="plus1"><svg class="i"><use href="#i-plus"/></svg></button></div>
+      <div class="person"><span class="av c7">ИЛ</span><div>Ирина Лаптева<small>кондитерский цех · Пермь</small></div><button class="plus1"><svg class="i"><use href="#i-plus"/></svg></button></div>
+      <div class="person"><span class="av c3">АЗ</span><div>Артём Зуев<small>ресторан «Печь» · Екатеринбург</small></div><button class="plus1"><svg class="i"><use href="#i-plus"/></svg></button></div>
     </section>
   </aside>
 </div>
@@ -940,8 +1344,15 @@ const as = q.get('as') || 'team';
 document.body.classList.add('as-' + as);
 if (q.get('panel') === '1') document.body.classList.add('panel');
 if (q.get('shot') === '1') document.body.classList.add('shot');
-document.getElementById('root').appendChild(document.getElementById('tpl-' + v).content.cloneNode(true));
-document.getElementById('ttl').textContent = as === 'owner' ? 'Моя страница' : 'Анна Белова';
+const tplId = 'tpl-' + v + (v === 'a' && q.get('p') === 'klass' ? '-klass' : '');
+document.getElementById('root').appendChild(document.getElementById(tplId).content.cloneNode(true));
+const nm = q.get('p') === 'klass' ? 'Дмитрий Орлов' : 'Анна Белова';
+document.getElementById('ttl').textContent = as === 'owner' ? 'Моя страница' : nm;
+if (as === 'owner') { const ini = q.get('p') === 'klass' ? 'ДО' : 'АБ'; meI.textContent = ini; mmA.textContent = ini; mmN.textContent = nm; }
+if (q.get('menu') === '1') document.body.classList.add('menu');
+if (q.get('design') === '1') document.body.classList.add('design');
+function toggleDesign(on) { document.body.classList.toggle('design', on); }
+document.addEventListener('click', e => { if (!e.target.closest('.me')) document.body.classList.remove('menu'); });
 function togglePanel(on) { document.body.classList.toggle('panel', on); }
 function goTab(t) {
   document.querySelectorAll('.va .tabs [data-t]').forEach(b => b.classList.toggle('on', b.dataset.t === t));
@@ -960,7 +1371,8 @@ const SH = /(^|[\s«(])((?:в|и|с|к|о|у|а|на|по|за|от|до|из|н
 const mk = document.getElementById('mk');
 const link = (vv, a, label, p) => `<a class="${vv===v && a===as && (p||'0')===(q.get('panel')||'0') ? 'on' : ''}" href="?v=${vv}&as=${a}${p==='1'?'&panel=1':''}">${label}</a>`;
 mk.innerHTML = ['a','b','c'].map(x => link(x, as, 'Вариант ' + x.toUpperCase())).join('') + '<i></i>'
-  + link(v,'guest','Гость') + link(v,'owner','Владелец') + link(v,'team','Команда') + link(v,'team','Панель команды','1');
+  + link(v,'guest','Гость') + link(v,'owner','Владелец') + link(v,'team','Команда') + link(v,'team','Панель команды','1')
+  + '<i></i><a class="' + (q.get('p')==='klass'?'on':'') + '" href="?v=a&as=guest&p=klass">Классический бизнес</a><a class="' + (q.get('design')==='1'?'on':'') + '" href="?v=a&as=owner&design=1">Оформление</a>';
 </script>
 </body>
 </html>
