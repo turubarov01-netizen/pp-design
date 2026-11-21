@@ -369,6 +369,34 @@ body.as-owner .va .avw .cam.owner-only { display: grid !important; }
   .va .acts .btn { flex: 1 1 auto; }
 }
 
+/* =================== v6: правка по блокам, Фрими перед фото, псевдоним =================== */
+.va .avw .frimi { z-index: 3; left: -84px; bottom: -8px; width: 92px; }
+.va .avw .fbub { left: -10px; }
+body.as-owner .va .hero-b { padding-left: 106px; }
+.va .chip.nick { font-weight: 650; color: var(--ink); }
+/* «Изменить» у блоков видно только в режиме правки */
+body.as-owner .va .edit { display: none; }
+body.as-owner.editing .va .edit { display: inline-flex; }
+body.as-owner.editing .va section.glass { outline: 1.5px dashed rgba(47,123,255,.38); outline-offset: -1.5px; }
+body.as-owner.editing .va .ed-on, body.as-owner:not(.editing) .va .ed-off { display: none !important; }
+body.as-owner .va .hero-edit.owner-only { display: none !important; }
+body.as-owner.editing .va .hero-edit.owner-only { display: grid !important; }
+.va .hero-edit { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px 14px; margin-top: 18px; padding: 16px; border-radius: 16px; background: rgba(47,123,255,.05); border: 1px solid rgba(47,123,255,.16); }
+.va .he-f label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
+.va .he-f small { display: block; font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.35; }
+.va .he-f .fi.on { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,123,255,.15); }
+.va .he-f.wide { grid-column: 1 / -1; }
+.va .he-a { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.va .he-a small { font-size: 12.5px; color: var(--muted); }
+@media (max-width: 760px) {
+  .va .avw .frimi { left: auto; right: -84px; bottom: -4px; width: 74px; }
+  .va .avw .fbub { left: 60px; bottom: 34px; }
+  .va .hero-edit { grid-template-columns: 1fr; }
+  .va .he-a { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 760px) { .va .avw .fbub { left: -64px; bottom: 96%; border-radius: 14px 14px 4px 14px; } }
+@media (max-width: 760px) { .va .cover .btn { font-size: 0; gap: 0; width: 40px; padding: 0; justify-content: center; } }
+
 /* =================== ВАРИАНТ B: бенто-визитка =================== */
 .vb .bento { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); grid-auto-rows: minmax(120px, auto); gap: 14px; }
 .vb .t { padding: 20px 22px; position: relative; min-width: 0; }
@@ -563,6 +591,83 @@ body.design .dz { display: flex; }
   .vs-move { flex-wrap: wrap; } .vs-move .btn { width: 100%; }
 }
 
+/* =================== v6: меню под профилем, как в кабинете (KabinetMeMenu) =================== */
+.me { display: none !important; }
+.kab-me-wrap { position: relative; }
+.kab-me { display: flex; align-items: center; gap: 10px; padding: 4px 12px 4px 4px; border-radius: 14px; background: rgba(255,255,255,.8); border: 1px solid var(--line); cursor: pointer; font: inherit; color: var(--ink); text-align: left; }
+.kab-me:hover { background: #fff; }
+.kab-ava { width: 32px; height: 32px; border-radius: 10px; flex: none; display: grid; place-items: center; background: linear-gradient(135deg, var(--blue), var(--violet)); color: #fff; font-weight: 700; font-size: 13px; }
+.kab-me .nm { display: block; font-size: 14px; font-weight: 600; line-height: 1.25; }
+.kab-me .ph { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); line-height: 1.25; white-space: nowrap; }
+.kab-me .ph svg { width: 13px; height: 13px; color: #f07a2a; }
+.kab-me .ph svg.cl { color: var(--blue); }
+.kab-me .ph .dot { margin: 0 2px; color: var(--faint); }
+.kab-me-menu { display: none; position: absolute; right: 0; top: calc(100% + 8px); z-index: 70; min-width: 230px; padding: 6px; border-radius: 16px; background: #fff; border: 1px solid var(--line); box-shadow: 0 18px 50px rgba(16,24,48,.16); flex-direction: column; }
+body.menu .kab-me-menu { display: flex; }
+.kab-me-clan { display: flex; align-items: center; gap: 10px; padding: 10px 12px 12px; margin-bottom: 4px; border-bottom: 1px solid var(--line-2); }
+.kab-me-clan svg { width: 16px; height: 16px; color: var(--blue); }
+.kab-me-clan span { display: flex; flex-direction: column; gap: 1px; }
+.kab-me-clan .k { font-size: 12px; color: var(--muted); line-height: 1.25; }
+.kab-me-clan .v { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.kab-me-menu a, .kab-me-menu .out { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 14px; color: var(--ink); text-decoration: none; }
+.kab-me-menu a:hover { background: rgba(47,123,255,.07); }
+.kab-me-menu svg { width: 16px; height: 16px; color: var(--faint); flex: none; }
+.kab-me-menu a.new { background: rgba(47,123,255,.08); font-weight: 600; }
+.kab-me-menu a.new svg { color: var(--blue); }
+.kab-me-menu a.new em { margin-left: auto; font-style: normal; font-size: 11px; font-weight: 700; color: var(--blue-ink); background: rgba(47,123,255,.12); padding: 2px 7px; border-radius: 999px; }
+.kab-me-menu .out { color: var(--muted); border-top: 1px solid var(--line-2); border-radius: 0 0 10px 10px; margin-top: 4px; }
+@media (max-width: 760px) { .kab-me { padding: 3px; } .kab-me > span:last-child { display: none; } }
+
+/* =================== v6: экран «Профиль» — копия живого /profile =================== */
+.vp { max-width: 1120px; margin: 0 auto; }
+.vp-h h2 { margin: 0; font-size: 26px; font-weight: 750; letter-spacing: -.02em; }
+.vp-h p { margin: 4px 0 18px; color: var(--muted); font-size: 14.5px; }
+.vp-g { display: grid; grid-template-columns: 300px minmax(0,1fr); gap: 20px; align-items: start; }
+.vp-card { padding: 26px 22px 22px; text-align: center; position: sticky; top: 80px; }
+.vp-avw { position: relative; width: 112px; height: 112px; margin: 0 auto 14px; }
+.vp-av { --s: 112px; position: relative; z-index: 2; font-size: 34px; }
+.vp-frimi { position: absolute; z-index: 1; left: -50px; bottom: -2px; width: 80px; }
+.vp-cam { position: absolute; z-index: 3; right: 0; bottom: 2px; width: 34px; height: 34px; border-radius: 50%; border: 3px solid #fff; background: var(--grad); color: #fff; display: grid; place-items: center; }
+.vp-cam svg { width: 16px; height: 16px; }
+.vp-card h3 { margin: 0; font-size: 19px; font-weight: 700; }
+.vp-sub { margin: 4px 0 12px; color: var(--muted); font-size: 13.5px; }
+.vp-ph { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 999px; background: rgba(240,122,42,.1); color: #b4530f; font-size: 13.5px; }
+.vp-ph svg { width: 14px; height: 14px; color: #f07a2a; }
+.vp-fr { margin: 12px 0 14px; font-size: 13px; color: var(--muted); }
+.vp-fr b { color: var(--ink); }
+.vp-link { display: flex; align-items: center; justify-content: center; gap: 8px; height: 40px; border-radius: 12px; background: rgba(47,123,255,.1); color: var(--blue-ink); font-weight: 650; font-size: 14px; box-shadow: 0 0 0 2px rgba(47,123,255,.35); }
+.vp-link svg { width: 16px; height: 16px; }
+.vp-tabs { display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: rgba(16,24,48,.05); margin-bottom: 14px; width: max-content; max-width: 100%; overflow: auto; }
+.vp-tabs button { border: 0; background: none; font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 10px; color: var(--ink-2); white-space: nowrap; }
+.vp-tabs button.on { background: #fff; color: var(--ink); font-weight: 650; box-shadow: 0 2px 8px rgba(16,24,48,.08); }
+.vp-s { padding: 22px; margin-bottom: 14px; }
+.vp-s h3 { margin: 0; font-size: 17px; font-weight: 700; }
+.vp-d { margin: 3px 0 16px; color: var(--muted); font-size: 13.5px; }
+.vp-f2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin-bottom: 14px; }
+.vp-f { margin-bottom: 14px; }
+.vp-f2 .vp-f { margin: 0; }
+.vp-f label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
+.vp-f small { display: block; font-size: 12px; color: var(--muted); margin-top: 5px; }
+.vp-f .fi.dis { background: rgba(16,24,48,.04); color: var(--muted); }
+.vp-f .fi.ta { height: auto; min-height: 76px; align-items: flex-start; padding: 10px 12px; white-space: normal; line-height: 1.45; }
+.vp-f .fi.ta.s { min-height: 60px; }
+.vp-f .fi.sel { justify-content: space-between; }
+.vp-f .fi.sel::after { content: ''; width: 7px; height: 7px; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg) translateY(-2px); flex: none; margin-left: 10px; }
+.vp-f.new label::after { content: 'было «Позывной», теперь можно менять'; margin-left: 8px; font-size: 11px; font-weight: 700; color: var(--blue-ink); background: rgba(47,123,255,.12); padding: 2px 7px; border-radius: 999px; }
+.vp-f.new .fi { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,123,255,.15); }
+.vp-save { display: flex; justify-content: flex-end; }
+.vp-more { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.vp-more span { padding: 7px 12px; border-radius: 10px; background: rgba(16,24,48,.05); font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+.vp-more small { width: 100%; color: var(--muted); font-size: 12.5px; margin-top: 4px; }
+@media (max-width: 760px) {
+  .vp-g { grid-template-columns: 1fr; }
+  .vp-card { position: static; }
+  .vp-f2 { grid-template-columns: 1fr; }
+  .vp-f.new label::after { display: block; width: max-content; margin: 4px 0 0; }
+}
+.vp-r { min-width: 0; }
+@media (max-width: 760px) { .vp-g { grid-template-columns: minmax(0,1fr); } }
+
 /* =================== Панель для команды =================== */
 .scrim { position: fixed; inset: 0; background: rgba(11,16,32,.28); z-index: 40; display: none; }
 .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 460px; max-width: 100%; z-index: 41; background: #f8faff; box-shadow: -20px 0 60px rgba(11,16,32,.2); display: none; flex-direction: column; }
@@ -686,6 +791,14 @@ body.shot .side { height: auto; min-height: 100vh; }
   <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
   <symbol id="i-cam" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></symbol>
   <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-idcard" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M15 9h3"/><path d="M15 13h3"/><path d="M6 16.5c.6-1.4 1.7-2 3-2s2.4.6 3 2"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-backpack" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 10h8"/><path d="M8 18h8"/><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+  <symbol id="i-handshake" viewBox="0 0 24 24"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></symbol>
+  <symbol id="i-crown" viewBox="0 0 24 24"><path d="M11.56 3.27a.5.5 0 0 1 .88 0l2.95 5.6a1 1 0 0 0 1.52.29l4.27-3.66a.5.5 0 0 1 .82.5l-2.83 10.25a1 1 0 0 1-.96.75H5.8a1 1 0 0 1-.96-.75L2.02 6a.5.5 0 0 1 .82-.5l4.27 3.66a1 1 0 0 0 1.52-.29z"/><path d="M5 21h14"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></symbol>
 </svg>
 
@@ -706,14 +819,18 @@ body.shot .side { height: auto; min-height: 100vh; }
       <h1 id="ttl">Анна Белова</h1>
       <span class="srch"><svg class="i"><use href="#i-search"/></svg><span>Поиск и действия</span><kbd>⌘ K</kbd></span>
       <svg class="i" style="width:20px;height:20px;color:var(--ink-2)"><use href="#i-bell"/></svg>
-      <span class="me" onclick="document.body.classList.toggle('menu')"><span id="meI">МК</span>
-        <div class="mm" onclick="event.stopPropagation()">
-          <div class="mm-h"><span class="av c2" id="mmA">МК</span><div><b id="mmN">Мария Ким</b><small>клан «Сфера»</small></div></div>
-          <a class="hl" href="?v=a&amp;as=owner"><svg class="i"><use href="#i-users"/></svg>Моя страница</a>
-          <a href="?v=a&amp;as=owner&amp;design=1"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
-          <a href="?v=a&amp;as=owner&amp;screen=settings"><svg class="i"><use href="#i-gear"/></svg>Настройки</a>
-          <hr><a href="#"><svg class="i"><use href="#i-bell"/></svg>Уведомления</a>
-        </div></span>
+      <div class="kab-me-wrap"><button class="kab-me" onclick="document.body.classList.toggle('menu')"><span class="kab-ava" id="meI">МК</span><span><span class="nm" id="mmN">Мария Ким</span><span class="ph"><svg class="i cl"><use href="#i-shield"/></svg><span class="cn">Клан Сфера</span><span class="dot">·</span><svg class="i"><use href="#i-flame"/></svg><span id="mmP">86 фениксов</span></span></span></button>
+        <div class="kab-me-menu" onclick="event.stopPropagation()">
+          <div class="kab-me-clan"><svg class="i"><use href="#i-shield"/></svg><span><span class="k">Твой клан</span><span class="v">Клан Сфера</span></span></div>
+          <a class="new" href="?v=a&amp;as=owner"><svg class="i"><use href="#i-idcard"/></svg>Моя страница<em>новое</em></a>
+          <a href="?v=a&amp;as=owner&amp;screen=profile"><svg class="i"><use href="#i-user"/></svg>Профиль и настройки</a>
+          <a href="#"><svg class="i"><use href="#i-backpack"/></svg>Рюкзак</a>
+          <a href="#"><svg class="i"><use href="#i-bag"/></svg>Магазин фениксов</a>
+          <a href="#"><svg class="i"><use href="#i-flame"/></svg>История фениксов</a>
+          <a href="#"><svg class="i"><use href="#i-handshake"/></svg>Партнёрка</a>
+          <a href="#"><svg class="i"><use href="#i-crown"/></svg>Членство и уровни</a>
+          <span class="out"><svg class="i"><use href="#i-logout"/></svg>Выйти</span>
+        </div></div>
     </header>
     <div class="content" id="root"></div>
   </div>
@@ -797,10 +914,15 @@ body.shot .side { height: auto; min-height: 100vh; }
 
 
 
+
+
+
+
+
 <!-- Оформление страницы: видит только владелец -->
-<aside class="dz" aria-label="Оформление страницы">
+<aside class="dz" aria-label="Обложка и бизнесы">
   <div class="dz-h">
-    <div><h3>Оформление страницы</h3><small>Изменения видны на странице сразу и сохраняются сами</small></div>
+    <div><h3>Обложка и бизнесы</h3><small>Изменения видны на странице сразу и сохраняются сами</small></div>
     <button class="d-x" onclick="toggleDesign(false)" aria-label="Закрыть"><svg class="i"><use href="#i-x"/></svg></button>
   </div>
   <div class="dz-b">
@@ -857,7 +979,7 @@ body.shot .side { height: auto; min-height: 100vh; }
     </div>
 
     <section class="glass hero">
-      <div class="cover"><a class="btn owner-only" href="#"><svg class="i"><use href="#i-image"/></svg>Сменить обложку</a></div>
+      <div class="cover"><a class="btn owner-only" href="#" onclick="toggleDesign(true);return false"><svg class="i"><use href="#i-image"/></svg>Сменить обложку</a></div>
       <div class="hero-b">
         <div class="avw">
           <span class="av hero-av">АБ</span>
@@ -871,6 +993,7 @@ body.shot .side { height: auto; min-height: 100vh; }
           </div>
           <div class="head">Нутрициолог. Основательница онлайн-школы питания «Ешь и живи»</div>
           <div class="meta">
+            <span class="chip nick" title="Псевдоним">«Лиса»</span>
             <span class="chip lvl"><svg class="i"><use href="#i-spark"/></svg>Уровень «Бунтарь»</span>
             <span class="chip clan">Клан «Сфера»</span>
             <span class="chip"><svg class="i" style="width:13px;height:13px"><use href="#i-pin"/></svg>Казань<span class="now">· сейчас в Лиссабоне</span></span>
@@ -880,10 +1003,16 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="acts">
           <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a>
           <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
-          <a class="btn pri owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Изменить</a>
-          <a class="btn owner-only" href="#" onclick="toggleDesign(true);return false"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
+          <a class="btn pri owner-only ed-on" href="#" onclick="toggleEdit(true);return false"><svg class="i"><use href="#i-pen"/></svg>Редактировать</a><a class="btn pri owner-only ed-off" href="#" onclick="toggleEdit(false);return false"><svg class="i"><use href="#i-check"/></svg>Готово</a>
           <a class="btn owner-only" href="?v=a&amp;as=guest"><svg class="i"><use href="#i-eye"/></svg>Как видят другие</a>
           <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
+        </div>
+        <div class="hero-edit owner-only">
+          <div class="he-f"><label>Имя</label><span class="fi">Анна</span></div>
+          <div class="he-f"><label>Фамилия</label><span class="fi">Белова</span></div>
+          <div class="he-f"><label>Псевдоним</label><span class="fi on">Лиса</span><small>Придумайте сами, поменять можно в любой момент</small></div>
+          <div class="he-f wide"><label>Кто вы, одной строкой</label><span class="fi">Нутрициолог. Основательница онлайн-школы питания «Ешь и живи»</span></div>
+          <div class="he-a"><small>Те же данные в «Профиле и настройках»: меняете здесь, меняется и там</small><a class="btn pri" href="#">Сохранить</a></div>
         </div>
         <div class="stats">
           <span><b class="num">48</b>друзей</span><span><b class="num">6</b>общих</span><span><b class="num">9-е</b>место в рейтинге</span><span><b class="num">24</b>навыка</span>
@@ -1135,7 +1264,7 @@ body.shot .side { height: auto; min-height: 100vh; }
     </div>
 
     <section class="glass hero">
-      <div class="cover"><a class="btn owner-only" href="#"><svg class="i"><use href="#i-image"/></svg>Сменить обложку</a></div>
+      <div class="cover"><a class="btn owner-only" href="#" onclick="toggleDesign(true);return false"><svg class="i"><use href="#i-image"/></svg>Сменить обложку</a></div>
       <div class="hero-b">
         <div class="avw">
           <span class="av hero-av">ДО</span>
@@ -1149,6 +1278,7 @@ body.shot .side { height: auto; min-height: 100vh; }
           </div>
           <div class="head">Владелец сети пекарен «Хлебный двор» и цеха выпечки</div>
           <div class="meta">
+            <span class="chip nick" title="Псевдоним">«Пекарь»</span>
             <span class="chip lvl"><svg class="i"><use href="#i-spark"/></svg>Уровень «Бунтарь»</span>
             <span class="chip clan">Клан «Сфера»</span>
             <span class="chip"><svg class="i" style="width:13px;height:13px"><use href="#i-pin"/></svg>Екатеринбург</span>
@@ -1158,10 +1288,16 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="acts">
           <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a>
           <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
-          <a class="btn pri owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Изменить</a>
-          <a class="btn owner-only" href="#" onclick="toggleDesign(true);return false"><svg class="i"><use href="#i-image"/></svg>Оформить страницу</a>
+          <a class="btn pri owner-only ed-on" href="#" onclick="toggleEdit(true);return false"><svg class="i"><use href="#i-pen"/></svg>Редактировать</a><a class="btn pri owner-only ed-off" href="#" onclick="toggleEdit(false);return false"><svg class="i"><use href="#i-check"/></svg>Готово</a>
           <a class="btn owner-only" href="?v=a&amp;as=guest"><svg class="i"><use href="#i-eye"/></svg>Как видят другие</a>
           <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
+        </div>
+        <div class="hero-edit owner-only">
+          <div class="he-f"><label>Имя</label><span class="fi">Дмитрий</span></div>
+          <div class="he-f"><label>Фамилия</label><span class="fi">Орлов</span></div>
+          <div class="he-f"><label>Псевдоним</label><span class="fi on">Пекарь</span><small>Придумайте сами, поменять можно в любой момент</small></div>
+          <div class="he-f wide"><label>Кто вы, одной строкой</label><span class="fi">Владелец сети пекарен «Хлебный двор» и цеха выпечки</span></div>
+          <div class="he-a"><small>Те же данные в «Профиле и настройках»: меняете здесь, меняется и там</small><a class="btn pri" href="#">Сохранить</a></div>
         </div>
         <div class="stats">
           <span><b class="num">48</b>друзей</span><span><b class="num">6</b>общих</span><span><b class="num">9-е</b>место в рейтинге</span><span><b class="num">24</b>навыка</span>
@@ -1404,45 +1540,52 @@ body.shot .side { height: auto; min-height: 100vh; }
   </aside>
 </div>
 </template>
-<template id="tpl-a-settings">
-<div class="vs">
-  <a class="glass vs-move" href="?v=a&amp;as=owner">
-    <span class="av c2 vs-av">АБ</span>
-    <div><b>Всё о вас теперь на вашей странице</b><small>Имя, фото, «О себе», «Чем могу помочь», «Кого ищу», города, бизнесы, навыки и контакты для друзей меняются прямо там, кнопкой «Изменить» у каждого блока</small></div>
-    <span class="btn pri">Моя страница</span>
-  </a>
-  <div class="vs-grid">
-    <nav class="glass vs-nav">
-      <a class="on" href="#vs-login"><svg class="i"><use href="#i-lock"/></svg>Вход и безопасность</a>
-      <a href="#vs-tg"><svg class="i"><use href="#i-send"/></svg>Telegram</a>
-      <a href="#vs-notify"><svg class="i"><use href="#i-bell"/></svg>Уведомления</a>
-      <a href="#vs-acc"><svg class="i"><use href="#i-gear"/></svg>Аккаунт</a>
-    </nav>
-    <div class="vs-main">
-      <section class="glass box" id="vs-login">
-        <h3>Вход и безопасность</h3>
-        <div class="vrow"><div><small>Почта для входа</small><b>anna.belova@mail.ru</b></div><a class="btn" href="#">Изменить</a></div>
-        <div class="vrow"><div><small>Пароль</small><b>изменён 3 месяца назад</b></div><a class="btn" href="#">Сменить</a></div>
-        <div class="vrow"><div><small>Дата рождения</small><b>12 марта 1988</b><em>на странице не показывается, изменить можно через поддержку</em></div></div>
+<template id="tpl-a-profile">
+<div class="vp">
+  <div class="vp-h"><h2>Профиль</h2><p>Данные о вас, вход, уведомления и настройки в одном месте.</p></div>
+  <div class="vp-g">
+    <aside class="glass vp-card">
+      <div class="vp-avw">
+        <img class="vp-frimi" src="img/frimi/f6.webp" alt="">
+        <span class="av hero-av vp-av">АБ</span>
+        <button class="vp-cam" title="Сменить фото"><svg class="i"><use href="#i-cam"/></svg></button>
+      </div>
+      <h3>Анна Белова</h3>
+      <p class="vp-sub">Псевдоним «Лиса» · Казань</p>
+      <a class="vp-ph" href="#"><svg class="i"><use href="#i-flame"/></svg><b>120</b> фениксов</a>
+      <p class="vp-fr"><b>48 · 12</b> друзей · подписчиков</p>
+      <a class="vp-link" href="?v=a&amp;as=owner"><svg class="i"><use href="#i-idcard"/></svg>Как меня видят в клубе</a>
+    </aside>
+    <div class="vp-r">
+      <nav class="vp-tabs"><button class="on">О себе</button><button>Вход и безопасность</button><button>Уведомления</button><button>Аккаунт</button></nav>
+      <section class="glass vp-s">
+        <h3>О себе</h3>
+        <p class="vp-d">Это видят наставники и участники клуба.</p>
+        <div class="vp-f2">
+          <div class="vp-f"><label>Имя</label><span class="fi">Анна</span></div>
+          <div class="vp-f"><label>Фамилия</label><span class="fi">Белова</span></div>
+          <div class="vp-f new"><label>Псевдоним</label><span class="fi">Лиса</span><small>Придумайте сами, поменять можно в любой момент</small></div>
+          <div class="vp-f"><label>Дата рождения</label><span class="fi dis">12.04.1988</span><small>Указывается один раз. Изменить можно через поддержку</small></div>
+          <div class="vp-f"><label>Телефон</label><span class="fi">🇷🇺 +7&nbsp; 917 555-12-40</span></div>
+        </div>
+        <div class="vp-f"><label>О себе</label><span class="fi ta">Нутрициолог, 9 лет в профессии. Веду онлайн-школу питания «Ешь и живи»: учу женщин 35+ есть без диет и срывов.</span><small>До 2000 символов, форматирование тоже считается · 118 / 2000</small></div>
+        <div class="vp-f"><label>Чем могу помочь</label><span class="fi ta s">Разберу рацион и подскажу, как выстроить питание при плотном графике. Помогу запустить групповой курс.</span><small>Видят другие фриманы в «Фриманы рядом»: так вам чаще пишут · 104 / 300</small></div>
+        <div class="vp-f"><label>Кого ищу</label><span class="fi ta s">Площадку под ретрит в Португалии, двух кураторов на поток, выход на организаторов конференций.</span><small>96 / 300</small></div>
+        <div class="vp-save"><a class="btn pri" href="#">Сохранить</a></div>
       </section>
-      <section class="glass box" id="vs-tg">
-        <h3>Telegram</h3>
-        <div class="vrow"><div><small>Бот Альянса</small><b class="ok"><svg class="i"><use href="#i-check"/></svg>Подключён к кабинету</b></div><a class="btn" href="#">Отключить</a></div>
+      <section class="glass vp-s">
+        <h3>Тема, язык, время и валюта</h3>
+        <p class="vp-d">Как показывать кабинет, встречи и суммы.</p>
+        <div class="vp-f2">
+          <div class="vp-f"><label>Тема</label><span class="fi sel">Светлая</span><small>Меняется сразу и запоминается в аккаунте</small></div>
+          <div class="vp-f"><label>Язык</label><span class="fi sel">Русский</span><small>Кабинет и меню. Письма и уведомления пока на русском</small></div>
+          <div class="vp-f"><label>Часовой пояс</label><span class="fi sel">Как на устройстве (Europe/Lisbon)</span><small>Время встреч и дедлайнов показываем по нему</small></div>
+          <div class="vp-f"><label>Валюта</label><span class="fi sel">Рубль, ₽</span><small>В ней показываем суммы</small></div>
+        </div>
       </section>
-      <section class="glass box" id="vs-notify">
-        <h3>Уведомления</h3>
-        <div class="vrow"><div><b>Вам предлагают помощь с целью</b></div><span class="tgl on"></span></div>
-        <div class="vrow"><div><b>Новая рекомендация</b></div><span class="tgl on"></span></div>
-        <div class="vrow"><div><b>Заявка в друзья</b></div><span class="tgl on"></span></div>
-        <div class="vrow"><div><b>Подтвердили ваш навык</b></div><span class="tgl on"></span></div>
-        <div class="vrow"><div><b>Кто-то взял себе вашу мечту</b></div><span class="tgl"></span></div>
-        <div class="vrow"><div><b>Напоминания трекера</b><em>утром и вечером</em></div><span class="tgl on"></span></div>
-      </section>
-      <section class="glass box" id="vs-acc">
-        <h3>Аккаунт</h3>
-        <div class="vrow"><div><small>Язык кабинета</small><b>Русский</b></div><a class="btn" href="#">Изменить</a></div>
-        <div class="vrow"><div><small>Тема</small><b>Светлая</b></div><a class="btn" href="#">Изменить</a></div>
-        <div class="vrow"><div><small>Удалить аккаунт</small><em>все данные будут стёрты без возможности восстановить</em></div><a class="btn danger" href="#">Удалить</a></div>
+      <section class="glass vp-s vp-more">
+        <span>Где вы сейчас</span><span>Базы Фримена</span><span>Мои бизнесы</span><span>Навыки</span>
+        <small>Эти блоки остаются как сейчас</small>
       </section>
     </div>
   </div>
@@ -1599,16 +1742,18 @@ const as = q.get('as') || 'team';
 document.body.classList.add('as-' + as);
 if (q.get('panel') === '1') document.body.classList.add('panel');
 if (q.get('shot') === '1') document.body.classList.add('shot');
-const tplId = 'tpl-' + v + (v === 'a' && q.get('screen') === 'settings' ? '-settings' : v === 'a' && q.get('p') === 'klass' ? '-klass' : '');
+const tplId = 'tpl-' + v + (v === 'a' && q.get('screen') === 'profile' ? '-profile' : v === 'a' && q.get('p') === 'klass' ? '-klass' : '');
 document.getElementById('root').appendChild(document.getElementById(tplId).content.cloneNode(true));
 const nm = q.get('p') === 'klass' ? 'Дмитрий Орлов' : 'Анна Белова';
-document.getElementById('ttl').textContent = q.get('screen') === 'settings' ? 'Настройки' : as === 'owner' ? 'Моя страница' : nm;
-if (as === 'owner') { const ini = q.get('p') === 'klass' ? 'ДО' : 'АБ'; meI.textContent = ini; mmA.textContent = ini; mmN.textContent = nm; }
+document.getElementById('ttl').textContent = q.get('screen') === 'profile' ? 'Профиль' : as === 'owner' ? 'Моя страница' : nm;
+if (as === 'owner') { const ini = q.get('p') === 'klass' ? 'ДО' : 'АБ'; meI.textContent = ini; mmN.textContent = nm; mmP.textContent = q.get('p') === 'klass' ? '64 феникса' : '120 фениксов'; }
+if (q.get('editing') === '1') document.body.classList.add('editing');
+function toggleEdit(on) { document.body.classList.toggle('editing', on); }
 if (q.get('menu') === '1') document.body.classList.add('menu');
 if (q.get('design') === '1') document.body.classList.add('design');
-if (q.get('screen') === 'settings') document.querySelector('.top .back').style.display = 'none';
+if (q.get('screen') === 'profile') document.querySelector('.top .back').style.display = 'none';
 function toggleDesign(on) { document.body.classList.toggle('design', on); }
-document.addEventListener('click', e => { if (!e.target.closest('.me')) document.body.classList.remove('menu'); });
+document.addEventListener('click', e => { if (!e.target.closest('.kab-me-wrap')) document.body.classList.remove('menu'); });
 // v5: листалка фокусов и случайная мечта
 function fsGo(b, d) { const r = b.closest('.focus').querySelector('.fslide'); r.scrollBy({ left: d * r.clientWidth, behavior: 'smooth' }); }
 function fsDots(r) { const k = Math.round(r.scrollLeft / r.clientWidth); r.parentNode.querySelectorAll('.fdots i').forEach((x, i) => x.classList.toggle('on', i === k)); }
@@ -1635,7 +1780,7 @@ const mk = document.getElementById('mk');
 const link = (vv, a, label, p) => `<a class="${vv===v && a===as && (p||'0')===(q.get('panel')||'0') ? 'on' : ''}" href="?v=${vv}&as=${a}${p==='1'?'&panel=1':''}">${label}</a>`;
 mk.innerHTML = ['a','b','c'].map(x => link(x, as, 'Вариант ' + x.toUpperCase())).join('') + '<i></i>'
   + link(v,'guest','Гость') + link(v,'owner','Владелец') + link(v,'team','Команда') + link(v,'team','Панель команды','1')
-  + '<i></i><a class="' + (q.get('p')==='klass'?'on':'') + '" href="?v=a&as=guest&p=klass">Классический бизнес</a><a class="' + (q.get('design')==='1'?'on':'') + '" href="?v=a&as=owner&design=1">Оформление</a><a class="' + (q.get('screen')==='settings'?'on':'') + '" href="?v=a&as=owner&screen=settings">Настройки</a>';
+  + '<i></i><a class="' + (q.get('p')==='klass'?'on':'') + '" href="?v=a&as=guest&p=klass">Классический бизнес</a><a class="' + (q.get('editing')==='1'?'on':'') + '" href="?v=a&as=owner&editing=1">Правка</a><a class="' + (q.get('screen')==='profile'?'on':'') + '" href="?v=a&as=owner&screen=profile">Профиль</a><a class="' + (q.get('menu')==='1'?'on':'') + '" href="?v=a&as=owner&menu=1">Меню</a>';
 </script>
 </body>
 </html>
