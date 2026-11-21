@@ -397,6 +397,65 @@ body.as-owner.editing .va .hero-edit.owner-only { display: grid !important; }
 @media (max-width: 760px) { .va .avw .fbub { left: -64px; bottom: 96%; border-radius: 14px 14px 4px 14px; } }
 @media (max-width: 760px) { .va .cover .btn { font-size: 0; gap: 0; width: 40px; padding: 0; justify-content: center; } }
 
+/* =================== v7: одна палитра кабинета (белое стекло, синий→фиолетовый акцент, нейтральные). Оранжевый — только фениксы, зелёный/красный — только плюс и минус кармы =================== */
+.va .hero-av, .vp .hero-av { background: var(--grad); }
+.va .av.c1, .va .av.c2, .va .av.c3, .va .av.c4, .va .av.c6 { background: linear-gradient(135deg, #6f8cff, #5a6dff); }
+.va .av.c2, .va .av.c4 { background: linear-gradient(135deg, #8a9bc4, #5e6f99); }
+.va .av.c5 { background: linear-gradient(135deg, #64748b, #475569); }
+.va .chip.lvl, .va .chip.clan { background: rgba(255,255,255,.72); border: 1px solid var(--line); color: var(--ink-2); font-weight: 600; }
+.va .chip.lvl svg { color: var(--blue); }
+.va .who h2 em.nick { font-style: normal; color: var(--blue-ink); }
+.va .recs-badge { background: rgba(47,123,255,.1); color: var(--blue-ink); }
+.va .recs-badge svg { fill: var(--blue); stroke: var(--blue); }
+.va .ask-c.help, .va .ask-c.seek { background: rgba(255,255,255,.62); border: 1px solid var(--line); }
+.va .help .ask-h, .va .seek .ask-h { color: var(--blue-ink); }
+.va .help .ask-ic, .va .seek .ask-ic { background: var(--grad); }
+.va .ask-c.help .btn, .va .ask-c.seek .btn { color: var(--blue-ink); background: rgba(47,123,255,.08); }
+.va .biz-logo { background: rgba(47,123,255,.1); color: var(--blue-ink); }
+.va .track span.done { color: var(--blue-ink); border-color: rgba(47,123,255,.45); }
+.va .fcat.c-do, .va .fcat.c-have, .va .fcat.c-be { background: rgba(47,123,255,.1); color: var(--blue-ink); }
+.va .fnow { background: rgba(16,24,48,.04); }
+.va .fnow small { color: var(--muted); }
+.va .dr-b { background: rgba(47,123,255,.06); }
+.va .dr-cat { color: var(--blue-ink); }
+.va .dr-up svg { color: var(--blue); }
+.va .vote .btn.up { background: var(--grad); }
+.va .rank-ic { width: 15px; height: 15px; color: var(--blue); margin-right: 4px; vertical-align: -2px; }
+/* Альянс-имя */
+.va .nm-only, .vp .nm-only { display: none; }
+body.nick-only .va .nm-full, body.nick-only .vp .nm-full { display: none; }
+body.nick-only .va .nm-only, body.nick-only .vp .nm-only { display: inline; }
+.al label:first-child { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
+.al-in { position: relative; }
+.al-in .fi { padding-right: 104px; }
+.al-ok { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 650; color: var(--green-ink); }
+.al-ok svg { width: 14px; height: 14px; }
+.al small { display: block; font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+.al-chk { display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; font-size: 13px; color: var(--ink-2); cursor: pointer; }
+.al-chk input { width: 18px; height: 18px; margin: 0; accent-color: var(--blue); flex: none; cursor: pointer; }
+.al-prev { margin-top: 10px; padding: 9px 12px; border-radius: 12px; background: rgba(47,123,255,.07); font-size: 13px; color: var(--muted); }
+.al-prev b { color: var(--ink); font-weight: 700; }
+.al small.al-rule { margin-top: 8px; }
+.va .he-al { grid-column: span 1; }
+.va .hero-edit { grid-template-columns: 1fr 1fr; }
+.va .hero-edit .he-al { grid-column: 1 / -1; }
+.vp .al-lock { display: none; }
+body.tier-pawn .vp .al-open { display: none; }
+body.tier-pawn .vp .al-lock { display: block; }
+.al-lk { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(16,24,48,.04); border: 1px dashed rgba(16,24,48,.14); }
+.al-lk > svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
+.al-lk b { display: block; font-size: 14px; }
+.al-lk small { margin-top: 2px; }
+.al-lk .btn { margin-left: auto; height: 36px; font-size: 13px; white-space: nowrap; }
+.vp-f.new label::after { content: none; }
+.vp-f.new .fi { box-shadow: none; }
+@media (max-width: 760px) { .al-lk { flex-wrap: wrap; } .al-lk .btn { margin-left: 0; width: 100%; justify-content: center; } }
+.al .fi.on { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,123,255,.15); }
+.va .av.c7 { background: linear-gradient(135deg, #6f8cff, #5a6dff); }
+.va .av.c8 { background: linear-gradient(135deg, #8a9bc4, #5e6f99); }
+.va .recs-badge { box-shadow: none; }
+.va .al .al-chk, .vp .al .al-chk { display: flex; align-items: center; margin: 10px 0 0; font-weight: 500; font-size: 13px; color: var(--ink-2); }
+
 /* =================== ВАРИАНТ B: бенто-визитка =================== */
 .vb .bento { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); grid-auto-rows: minmax(120px, auto); gap: 14px; }
 .vb .t { padding: 20px 22px; position: relative; min-width: 0; }
@@ -919,6 +978,11 @@ body.shot .side { height: auto; min-height: 100vh; }
 
 
 
+
+
+
+
+
 <!-- Оформление страницы: видит только владелец -->
 <aside class="dz" aria-label="Обложка и бизнесы">
   <div class="dz-h">
@@ -988,12 +1052,11 @@ body.shot .side { height: auto; min-height: 100vh; }
         </div>
         <div class="who">
           <div class="name-row">
-            <h2>Анна Белова</h2>
+            <h2><span class="nm-full">Анна <em class="nick">«Звезда»</em> Белова</span><span class="nm-only">Звезда</span></h2>
             <a class="recs-badge" href="#" data-go="recs"><svg class="i"><use href="#i-star"/></svg><b class="num">23</b> рекомендации</a>
           </div>
           <div class="head">Нутрициолог. Основательница онлайн-школы питания «Ешь и живи»</div>
           <div class="meta">
-            <span class="chip nick" title="Псевдоним">«Лиса»</span>
             <span class="chip lvl"><svg class="i"><use href="#i-spark"/></svg>Уровень «Бунтарь»</span>
             <span class="chip clan">Клан «Сфера»</span>
             <span class="chip"><svg class="i" style="width:13px;height:13px"><use href="#i-pin"/></svg>Казань<span class="now">· сейчас в Лиссабоне</span></span>
@@ -1010,7 +1073,14 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="hero-edit owner-only">
           <div class="he-f"><label>Имя</label><span class="fi">Анна</span></div>
           <div class="he-f"><label>Фамилия</label><span class="fi">Белова</span></div>
-          <div class="he-f"><label>Псевдоним</label><span class="fi on">Лиса</span><small>Придумайте сами, поменять можно в любой момент</small></div>
+          <div class="he-f he-al"><div class="al">
+            <label>Альянс-имя</label>
+            <div class="al-in"><span class="fi on">Звезда</span><span class="al-ok"><svg class="i"><use href="#i-check"/></svg>Свободно</span></div>
+            <small>Одно слово, по которому вас зовут в Альянсе. Система проверяет, не занято ли оно другим участником</small>
+            <label class="al-chk"><input type="checkbox" onchange="document.body.classList.toggle('nick-only',this.checked)"><span>Показывать только Альянс-имя, без имени и фамилии</span></label>
+            <div class="al-prev">Так вас видят: <b><span class="nm-full">Анна «Звезда» Белова</span><span class="nm-only">Звезда</span></b></div>
+            <small class="al-rule">Доступно с тарифа «Стартовый». Если подписка закончится, имя освободится и его сможет занять другой участник</small>
+          </div></div>
           <div class="he-f wide"><label>Кто вы, одной строкой</label><span class="fi">Нутрициолог. Основательница онлайн-школы питания «Ешь и живи»</span></div>
           <div class="he-a"><small>Те же данные в «Профиле и настройках»: меняете здесь, меняется и там</small><a class="btn pri" href="#">Сохранить</a></div>
         </div>
@@ -1043,7 +1113,7 @@ body.shot .side { height: auto; min-height: 100vh; }
 
     <!-- ОБО МНЕ -->
     <div class="pane on" data-p="about">
-      <section class="glass do" style="--b1:#34d399;--b2:#10b981;--b3:#0f766e;--bi:#0b7a55">
+      <section class="glass do" style="--b1:#5b8cff;--b2:#4f6bff;--b3:#5a43d6;--bi:#3b4fd8">
         <div class="do-brand">
           <span class="do-logo">ЕЖ</span>
           <b>Школа питания «Ешь и живи»</b>
@@ -1058,8 +1128,8 @@ body.shot .side { height: auto; min-height: 100vh; }
         </div>
         <div class="biz-more">
           <div class="biz-cap">Ещё 2 проекта</div>
-          <div class="biz" style="--b1:#fdba74;--b3:#ea580c"><span class="biz-logo">ЕК</span><div><b>«Ешь и живи · Кухня»</b><small>готовые рационы с доставкой по Казани · с 2023 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
-          <div class="biz" style="--b1:#93c5fd;--b3:#2563eb"><span class="biz-logo">35</span><div><b>Беговой клуб «35+»</b><small>сообщество, 120 участниц · с 2021 года</small></div><a href="#">Telegram <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz"><span class="biz-logo">ЕК</span><div><b>«Ешь и живи · Кухня»</b><small>готовые рационы с доставкой по Казани · с 2023 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz"><span class="biz-logo">35</span><div><b>Беговой клуб «35+»</b><small>сообщество, 120 участниц · с 2021 года</small></div><a href="#">Telegram <svg class="i"><use href="#i-ext"/></svg></a></div>
         </div>
       </section>
 
@@ -1214,7 +1284,7 @@ body.shot .side { height: auto; min-height: 100vh; }
     </section>
     <section class="glass box">
       <div class="sec-h"><h3>Рейтинг Альянса</h3><a href="#">Весь рейтинг</a></div>
-      <div class="rank"><div class="rank-n">9-е<small>из 261</small></div><div class="rank-m"><b>💎 Амбассадор</b> · карма 640<br><span class="rank-up">↑ 3 места</span> за 30 дней</div></div>
+      <div class="rank"><div class="rank-n">9-е<small>из 261</small></div><div class="rank-m"><b><svg class="i rank-ic"><use href="#i-spark"/></svg>Амбассадор</b> · карма 640<br><span class="rank-up">↑ 3 места</span> за 30 дней</div></div>
       <div class="karma-how"><b>За что растёт карма</b><ul>
         <li>Рекомендация участника<em>+5…+30</em></li>
         <li>Прошли поход или программу<em>+20…+30</em></li>
@@ -1273,12 +1343,11 @@ body.shot .side { height: auto; min-height: 100vh; }
         </div>
         <div class="who">
           <div class="name-row">
-            <h2>Дмитрий Орлов</h2>
+            <h2><span class="nm-full">Дмитрий <em class="nick">«Пекарь»</em> Орлов</span><span class="nm-only">Пекарь</span></h2>
             <a class="recs-badge" href="#" data-go="recs"><svg class="i"><use href="#i-star"/></svg><b class="num">23</b> рекомендации</a>
           </div>
           <div class="head">Владелец сети пекарен «Хлебный двор» и цеха выпечки</div>
           <div class="meta">
-            <span class="chip nick" title="Псевдоним">«Пекарь»</span>
             <span class="chip lvl"><svg class="i"><use href="#i-spark"/></svg>Уровень «Бунтарь»</span>
             <span class="chip clan">Клан «Сфера»</span>
             <span class="chip"><svg class="i" style="width:13px;height:13px"><use href="#i-pin"/></svg>Екатеринбург</span>
@@ -1295,7 +1364,14 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="hero-edit owner-only">
           <div class="he-f"><label>Имя</label><span class="fi">Дмитрий</span></div>
           <div class="he-f"><label>Фамилия</label><span class="fi">Орлов</span></div>
-          <div class="he-f"><label>Псевдоним</label><span class="fi on">Пекарь</span><small>Придумайте сами, поменять можно в любой момент</small></div>
+          <div class="he-f he-al"><div class="al">
+            <label>Альянс-имя</label>
+            <div class="al-in"><span class="fi on">Пекарь</span><span class="al-ok"><svg class="i"><use href="#i-check"/></svg>Свободно</span></div>
+            <small>Одно слово, по которому вас зовут в Альянсе. Система проверяет, не занято ли оно другим участником</small>
+            <label class="al-chk"><input type="checkbox" onchange="document.body.classList.toggle('nick-only',this.checked)"><span>Показывать только Альянс-имя, без имени и фамилии</span></label>
+            <div class="al-prev">Так вас видят: <b><span class="nm-full">Дмитрий «Пекарь» Орлов</span><span class="nm-only">Пекарь</span></b></div>
+            <small class="al-rule">Доступно с тарифа «Стартовый». Если подписка закончится, имя освободится и его сможет занять другой участник</small>
+          </div></div>
           <div class="he-f wide"><label>Кто вы, одной строкой</label><span class="fi">Владелец сети пекарен «Хлебный двор» и цеха выпечки</span></div>
           <div class="he-a"><small>Те же данные в «Профиле и настройках»: меняете здесь, меняется и там</small><a class="btn pri" href="#">Сохранить</a></div>
         </div>
@@ -1328,7 +1404,7 @@ body.shot .side { height: auto; min-height: 100vh; }
 
     <!-- ОБО МНЕ -->
     <div class="pane on" data-p="about">
-      <section class="glass do" style="--b1:#fbbf24;--b2:#d97706;--b3:#92400e;--bi:#b45309">
+      <section class="glass do" style="--b1:#5b8cff;--b2:#4f6bff;--b3:#5a43d6;--bi:#3b4fd8">
         <div class="do-brand">
           <span class="do-logo">ХД</span>
           <b>Сеть пекарен «Хлебный двор»</b>
@@ -1343,8 +1419,8 @@ body.shot .side { height: auto; min-height: 100vh; }
         </div>
         <div class="biz-more">
           <div class="biz-cap">Ещё 2 проекта</div>
-          <div class="biz" style="--b1:#94a3b8;--b3:#334155"><span class="biz-logo">Ц</span><div><b>«ХД Цех»</b><small>замороженная выпечка для кафе и отелей · производство · с 2020 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
-          <div class="biz" style="--b1:#f9a8d4;--b3:#be185d"><span class="biz-logo">О</span><div><b>Кофейни «Опара»</b><small>2 кофейни в центре города · с 2023 года</small></div><a href="#">Карты <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz"><span class="biz-logo">Ц</span><div><b>«ХД Цех»</b><small>замороженная выпечка для кафе и отелей · производство · с 2020 года</small></div><a href="#">Сайт <svg class="i"><use href="#i-ext"/></svg></a></div>
+          <div class="biz"><span class="biz-logo">О</span><div><b>Кофейни «Опара»</b><small>2 кофейни в центре города · с 2023 года</small></div><a href="#">Карты <svg class="i"><use href="#i-ext"/></svg></a></div>
         </div>
       </section>
 
@@ -1499,7 +1575,7 @@ body.shot .side { height: auto; min-height: 100vh; }
     </section>
     <section class="glass box">
       <div class="sec-h"><h3>Рейтинг Альянса</h3><a href="#">Весь рейтинг</a></div>
-      <div class="rank"><div class="rank-n">9-е<small>из 261</small></div><div class="rank-m"><b>💎 Амбассадор</b> · карма 640<br><span class="rank-up">↑ 3 места</span> за 30 дней</div></div>
+      <div class="rank"><div class="rank-n">9-е<small>из 261</small></div><div class="rank-m"><b><svg class="i rank-ic"><use href="#i-spark"/></svg>Амбассадор</b> · карма 640<br><span class="rank-up">↑ 3 места</span> за 30 дней</div></div>
       <div class="karma-how"><b>За что растёт карма</b><ul>
         <li>Рекомендация участника<em>+5…+30</em></li>
         <li>Прошли поход или программу<em>+20…+30</em></li>
@@ -1550,8 +1626,8 @@ body.shot .side { height: auto; min-height: 100vh; }
         <span class="av hero-av vp-av">АБ</span>
         <button class="vp-cam" title="Сменить фото"><svg class="i"><use href="#i-cam"/></svg></button>
       </div>
-      <h3>Анна Белова</h3>
-      <p class="vp-sub">Псевдоним «Лиса» · Казань</p>
+      <h3><span class="nm-full">Анна «Звезда» Белова</span><span class="nm-only">Звезда</span></h3>
+      <p class="vp-sub">Казань</p>
       <a class="vp-ph" href="#"><svg class="i"><use href="#i-flame"/></svg><b>120</b> фениксов</a>
       <p class="vp-fr"><b>48 · 12</b> друзей · подписчиков</p>
       <a class="vp-link" href="?v=a&amp;as=owner"><svg class="i"><use href="#i-idcard"/></svg>Как меня видят в клубе</a>
@@ -1564,7 +1640,20 @@ body.shot .side { height: auto; min-height: 100vh; }
         <div class="vp-f2">
           <div class="vp-f"><label>Имя</label><span class="fi">Анна</span></div>
           <div class="vp-f"><label>Фамилия</label><span class="fi">Белова</span></div>
-          <div class="vp-f new"><label>Псевдоним</label><span class="fi">Лиса</span><small>Придумайте сами, поменять можно в любой момент</small></div>
+          <div class="vp-f vp-al">
+            <div class="al al-open">
+            <label>Альянс-имя</label>
+            <div class="al-in"><span class="fi on">Звезда</span><span class="al-ok"><svg class="i"><use href="#i-check"/></svg>Свободно</span></div>
+            <small>Одно слово, по которому вас зовут в Альянсе. Система проверяет, не занято ли оно другим участником</small>
+            <label class="al-chk"><input type="checkbox" onchange="document.body.classList.toggle('nick-only',this.checked)"><span>Показывать только Альянс-имя, без имени и фамилии</span></label>
+            <div class="al-prev">Так вас видят: <b><span class="nm-full">Анна «Звезда» Белова</span><span class="nm-only">Звезда</span></b></div>
+            <small class="al-rule">Доступно с тарифа «Стартовый». Если подписка закончится, имя освободится и его сможет занять другой участник</small>
+            </div>
+            <div class="al al-lock">
+            <label>Альянс-имя</label>
+            <div class="al-lk"><svg class="i"><use href="#i-lock"/></svg><div><b>Доступно с тарифа «Стартовый»</b><small>Одно слово, по которому вас зовут в Альянсе, например «Граф»</small></div><a class="btn pri" href="#">Повысить тариф</a></div>
+            </div>
+          </div>
           <div class="vp-f"><label>Дата рождения</label><span class="fi dis">12.04.1988</span><small>Указывается один раз. Изменить можно через поддержку</small></div>
           <div class="vp-f"><label>Телефон</label><span class="fi">🇷🇺 +7&nbsp; 917 555-12-40</span></div>
         </div>
@@ -1744,10 +1833,12 @@ if (q.get('panel') === '1') document.body.classList.add('panel');
 if (q.get('shot') === '1') document.body.classList.add('shot');
 const tplId = 'tpl-' + v + (v === 'a' && q.get('screen') === 'profile' ? '-profile' : v === 'a' && q.get('p') === 'klass' ? '-klass' : '');
 document.getElementById('root').appendChild(document.getElementById(tplId).content.cloneNode(true));
-const nm = q.get('p') === 'klass' ? 'Дмитрий Орлов' : 'Анна Белова';
+const nm = q.get('p') === 'klass' ? 'Дмитрий «Пекарь» Орлов' : 'Анна «Звезда» Белова';
 document.getElementById('ttl').textContent = q.get('screen') === 'profile' ? 'Профиль' : as === 'owner' ? 'Моя страница' : nm;
 if (as === 'owner') { const ini = q.get('p') === 'klass' ? 'ДО' : 'АБ'; meI.textContent = ini; mmN.textContent = nm; mmP.textContent = q.get('p') === 'klass' ? '64 феникса' : '120 фениксов'; }
 if (q.get('editing') === '1') document.body.classList.add('editing');
+if (q.get('nick') === 'only') { document.body.classList.add('nick-only'); document.querySelectorAll('.al-chk input').forEach(x => x.checked = true); if (as === 'owner') mmN.textContent = q.get('p') === 'klass' ? 'Пекарь' : 'Звезда'; }
+if (q.get('tier') === 'pawn') document.body.classList.add('tier-pawn');
 function toggleEdit(on) { document.body.classList.toggle('editing', on); }
 if (q.get('menu') === '1') document.body.classList.add('menu');
 if (q.get('design') === '1') document.body.classList.add('design');
@@ -1780,7 +1871,7 @@ const mk = document.getElementById('mk');
 const link = (vv, a, label, p) => `<a class="${vv===v && a===as && (p||'0')===(q.get('panel')||'0') ? 'on' : ''}" href="?v=${vv}&as=${a}${p==='1'?'&panel=1':''}">${label}</a>`;
 mk.innerHTML = ['a','b','c'].map(x => link(x, as, 'Вариант ' + x.toUpperCase())).join('') + '<i></i>'
   + link(v,'guest','Гость') + link(v,'owner','Владелец') + link(v,'team','Команда') + link(v,'team','Панель команды','1')
-  + '<i></i><a class="' + (q.get('p')==='klass'?'on':'') + '" href="?v=a&as=guest&p=klass">Классический бизнес</a><a class="' + (q.get('editing')==='1'?'on':'') + '" href="?v=a&as=owner&editing=1">Правка</a><a class="' + (q.get('screen')==='profile'?'on':'') + '" href="?v=a&as=owner&screen=profile">Профиль</a><a class="' + (q.get('menu')==='1'?'on':'') + '" href="?v=a&as=owner&menu=1">Меню</a>';
+  + '<i></i><a class="' + (q.get('p')==='klass'?'on':'') + '" href="?v=a&as=guest&p=klass">Классический бизнес</a><a class="' + (q.get('editing')==='1'?'on':'') + '" href="?v=a&as=owner&editing=1">Правка</a><a class="' + (q.get('screen')==='profile'?'on':'') + '" href="?v=a&as=owner&screen=profile">Профиль</a><a class="' + (q.get('menu')==='1'?'on':'') + '" href="?v=a&as=owner&menu=1">Меню</a><a class="' + (q.get('nick')==='only'?'on':'') + '" href="?v=a&as=owner&editing=1&nick=only">Только Альянс-имя</a><a class="' + (q.get('tier')==='pawn'?'on':'') + '" href="?v=a&as=owner&screen=profile&tier=pawn">Без «Стартового»</a>';
 </script>
 </body>
 </html>
