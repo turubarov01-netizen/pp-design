@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Личная страница участника · три варианта</title>
+<style>
+@font-face { font-family: "Medeo Sans"; src: url(fonts/MedeoSansVariable.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Bebas Neue"; src: url(fonts/bebasneue-bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+:root {
+  --blue: #2f7bff; --blue-ink: #1d5fd6; --violet: #7b61ff; --green: #0e9f6e; --green-ink: #0b7d57; --amber: #b7791f;
+  --ink: #0b1020; --ink-2: #39425a; --muted: #5b647a; --faint: #8a93a8;
+  --line: rgba(47,123,255,.12); --line-2: rgba(16,24,48,.08);
+  --glass: rgba(255,255,255,.74); --glass-b: rgba(255,255,255,.6); --tile: rgba(255,255,255,.62);
+  --grad: linear-gradient(135deg, #2f7bff 0%, #5a6dff 55%, #7b61ff 100%);
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Medeo Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.5; color: var(--ink);
+  background: #9db4cc url(img/wall-light.jpg) center/cover fixed no-repeat; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+svg.i { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.num { font-variant-numeric: tabular-nums; }
+.glass { background: var(--glass); border: 1px solid var(--glass-b); border-radius: 24px; -webkit-backdrop-filter: blur(26px) saturate(1.4); backdrop-filter: blur(26px) saturate(1.4); box-shadow: 0 10px 34px rgba(20,34,70,.08); }
+
+/* ---------- оболочка кабинета (упрощённо) ---------- */
+.shell { display: flex; min-height: 100vh; }
+.side { width: 232px; flex: none; padding: 18px 12px; background: var(--glass); border-right: 1px solid var(--glass-b); -webkit-backdrop-filter: blur(28px) saturate(1.4); backdrop-filter: blur(28px) saturate(1.4); position: sticky; top: 0; height: 100vh; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px; }
+.brand i { width: 30px; height: 30px; border-radius: 50%; background: var(--grad); display: block; }
+.brand b { display: block; font-size: 14px; line-height: 1.2; }
+.brand small { font-size: 11px; color: var(--muted); }
+.nav { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; font-size: 14px; font-weight: 500; color: var(--ink-2); }
+.nav.on { background: rgba(47,123,255,.1); color: var(--blue-ink); font-weight: 600; }
+.main { flex: 1; min-width: 0; }
+.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 12px; height: 60px; padding: 0 28px; background: var(--glass); border-bottom: 1px solid var(--glass-b); -webkit-backdrop-filter: blur(28px) saturate(1.4); backdrop-filter: blur(28px) saturate(1.4); }
+.top h1 { margin: 0; font-size: 17px; font-weight: 700; flex: 1; }
+.srch { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 8px 0 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.8); color: var(--muted); font-size: 13px; }
+.srch kbd { font: 600 11px "Medeo Sans", sans-serif; padding: 2px 6px; border-radius: 6px; background: rgba(47,123,255,.07); border: 1px solid rgba(47,123,255,.14); color: var(--ink-2); }
+.me { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#334155,#64748b); }
+.content { padding: 24px 28px 64px; max-width: 1180px; }
+
+/* ---------- аватарки ---------- */
+.av { --s: 36px; width: var(--s); height: var(--s); border-radius: 50%; display: inline-grid; place-items: center; flex: none; color: #fff; font-weight: 700; font-size: calc(var(--s) * .38); letter-spacing: .01em; border: 2px solid rgba(255,255,255,.9); }
+.c1 { background: linear-gradient(135deg,#f59e0b,#ef4444); } .c2 { background: linear-gradient(135deg,#10b981,#0ea5e9); } .c3 { background: linear-gradient(135deg,#8b5cf6,#ec4899); }
+.c4 { background: linear-gradient(135deg,#0ea5e9,#6366f1); } .c5 { background: linear-gradient(135deg,#64748b,#334155); } .c6 { background: linear-gradient(135deg,#f97316,#eab308); }
+.c7 { background: linear-gradient(135deg,#14b8a6,#22c55e); } .c8 { background: linear-gradient(135deg,#e11d48,#9333ea); }
+.hero-av { background: linear-gradient(140deg,#ffb07a 0%,#ff6f91 45%,#7b61ff 100%); }
+.stack { display: flex; } .stack .av { margin-left: -8px; } .stack .av:first-child { margin-left: 0; }
+
+/* ---------- кнопки, чипы ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.86); font-size: 14px; font-weight: 600; color: var(--ink); cursor: pointer; white-space: nowrap; transition: background-color .18s var(--ease), border-color .18s var(--ease); }
+.btn:hover { background: #fff; border-color: rgba(47,123,255,.35); }
+.btn.pri { background: var(--grad); color: #fff; border-color: transparent; box-shadow: 0 6px 18px rgba(47,123,255,.28); }
+.btn.ico { width: 40px; padding: 0; }
+.btn.team { background: rgba(11,16,32,.86); color: #fff; border-color: transparent; }
+.btn.team:hover { background: #0b1020; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.7); border: 1px solid var(--line-2); font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+.chip.lvl { background: rgba(123,97,255,.12); border-color: transparent; color: #5b3fd6; font-weight: 600; }
+.chip.clan { background: rgba(47,123,255,.1); border-color: transparent; color: var(--blue-ink); font-weight: 600; }
+.sec-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
+.sec-h h3 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -.01em; }
+.sec-h a { font-size: 13px; font-weight: 600; color: var(--blue-ink); }
+.sec-h small { font-size: 13px; color: var(--muted); font-weight: 500; }
+.muted { color: var(--muted); }
+.owner-only, .team-only { display: none !important; }
+body.as-owner .owner-only { display: inline-flex !important; }
+body.as-owner .guest-only { display: none !important; }
+body.as-team .team-only { display: inline-flex !important; }
+body.as-owner .owner-block { display: block !important; }
+.owner-block { display: none !important; }
+
+/* навык с подтверждениями */
+.skill { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line-2); }
+.skill:first-of-type { border-top: 0; }
+.skill-n { flex: 1; min-width: 0; font-weight: 600; font-size: 14.5px; }
+.skill-n small { display: block; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+.plus1 { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,.8); font-size: 13px; font-weight: 600; color: var(--blue-ink); cursor: pointer; }
+.plus1.on { background: rgba(47,123,255,.1); border-color: transparent; }
+.quote { margin: 0; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+.quote-by { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.quote-by b { color: var(--ink); font-weight: 600; display: block; font-size: 13.5px; }
+
+/* =================== ВАРИАНТ A: профиль соцсети =================== */
+.va .hero { overflow: hidden; padding: 0; }
+.va .cover { height: 176px; position: relative; background: url(img/cover.jpg) center 55%/cover; }
+.va .cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,16,32,0) 40%, rgba(11,16,32,.18)); }
+.va .cover .btn { position: absolute; right: 16px; top: 16px; z-index: 1; height: 34px; font-size: 13px; }
+.va .hero-b { padding: 0 28px 22px; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 0 22px; align-items: end; }
+.va .hero-b .av { --s: 124px; margin-top: -56px; position: relative; z-index: 1; border-width: 4px; box-shadow: 0 10px 30px rgba(20,34,70,.2); }
+.va .who { padding-top: 14px; min-width: 0; }
+.va .who h2 { margin: 0; font-size: 28px; font-weight: 750; letter-spacing: -.02em; line-height: 1.15; }
+.va .who .head { margin-top: 4px; font-size: 16px; color: var(--ink-2); }
+.va .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.va .acts { grid-column: 2; display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.va .stats { grid-column: 1 / -1; display: flex; gap: 28px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line-2); font-size: 14px; color: var(--muted); }
+.va .stats b { color: var(--ink); font-size: 17px; font-weight: 700; margin-right: 4px; }
+.va .tabs { display: flex; gap: 4px; margin: 16px 0; padding: 4px; border-radius: 14px; width: fit-content; background: var(--glass); border: 1px solid var(--glass-b); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+.va .tabs span { padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.va .tabs span.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(16,24,48,.1); }
+.va .tabs em { font-style: normal; color: var(--faint); font-weight: 500; margin-left: 4px; }
+.va .cols { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 16px; align-items: start; }
+.va .box { padding: 22px 24px; }
+.va .col { display: grid; gap: 16px; min-width: 0; }
+.va .biz { display: flex; gap: 16px; align-items: flex-start; }
+.va .biz-logo { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg,#10b981,#84cc16); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 18px; flex: none; }
+.va .biz h4 { margin: 0; font-size: 16px; font-weight: 700; }
+.va .biz p { margin: 4px 0 0; color: var(--ink-2); font-size: 14.5px; }
+.va .facts { display: flex; gap: 24px; margin-top: 14px; font-size: 13px; color: var(--muted); }
+.va .facts b { display: block; font-size: 18px; color: var(--ink); font-weight: 700; }
+.va .help { display: grid; gap: 14px; }
+.va .help-l { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin-bottom: 6px; }
+.va .help p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+.va .faces { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 8px; }
+.va .face { display: grid; justify-items: center; gap: 6px; text-align: center; font-size: 12.5px; color: var(--ink-2); line-height: 1.25; }
+.va .face .av { --s: 52px; }
+.va .growth { display: flex; align-items: center; gap: 14px; }
+.va .growth .g { flex: 1; }
+.va .growth small { display: block; font-size: 12px; color: var(--muted); }
+.va .growth b { font-size: 18px; font-weight: 700; }
+.va .growth .arr { color: var(--green); font-weight: 700; font-size: 13px; background: rgba(14,159,110,.1); padding: 3px 8px; border-radius: 999px; }
+.va .owner-bar { margin-bottom: 16px; padding: 14px 18px; display: none; align-items: center; gap: 16px; }
+body.as-owner .va .owner-bar { display: flex; }
+.va .meter { flex: 1; }
+.va .meter b { font-size: 14px; }
+.va .meter small { display: block; color: var(--muted); font-size: 13px; }
+.va .meter i { display: block; height: 6px; border-radius: 3px; background: rgba(47,123,255,.12); margin-top: 8px; overflow: hidden; }
+.va .meter i::after { content: ""; display: block; width: 70%; height: 100%; background: var(--grad); border-radius: 3px; }
+
+/* =================== ВАРИАНТ B: бенто-визитка =================== */
+.vb .bento { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); grid-auto-rows: minmax(120px, auto); gap: 14px; }
+.vb .t { padding: 20px 22px; position: relative; min-width: 0; }
+.vb .t-id { grid-column: span 5; grid-row: span 2; display: flex; flex-direction: column; }
+.vb .t-id .av { --s: 96px; border-width: 3px; }
+.vb .t-id h2 { margin: 16px 0 0; font-size: 30px; font-weight: 750; letter-spacing: -.02em; line-height: 1.1; }
+.vb .t-id .head { margin-top: 6px; color: var(--ink-2); font-size: 15.5px; }
+.vb .t-id .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.vb .t-id .acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; padding-top: 18px; }
+.vb .t-do { grid-column: span 7; grid-row: span 2; display: flex; flex-direction: column; }
+.vb .kick { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.vb .t-do .big { margin: 10px 0 0; font-size: 24px; line-height: 1.3; font-weight: 650; letter-spacing: -.015em; max-width: 30ch; }
+.vb .t-do .big em { font-style: normal; color: var(--blue-ink); }
+.vb .t-do .row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-top: auto; padding-top: 18px; }
+.vb .mini { padding: 12px 14px; border-radius: 16px; background: var(--tile); border: 1px solid rgba(255,255,255,.8); }
+.vb .mini small { display: block; font-size: 12px; color: var(--muted); }
+.vb .mini b { font-size: 17px; font-weight: 700; }
+.vb .t-skills { grid-column: span 4; grid-row: span 2; }
+.vb .t-help { grid-column: span 4; }
+.vb .t-help p { margin: 6px 0 0; font-size: 14.5px; color: var(--ink-2); }
+.vb .t-help p + .kick { margin-top: 12px; }
+.vb .t-rec { grid-column: span 4; grid-row: span 2; display: flex; flex-direction: column; }
+.vb .t-rec .quote { font-size: 17px; line-height: 1.5; margin-top: 12px; color: var(--ink); }
+.vb .t-rec .dots { display: flex; gap: 6px; margin-top: auto; padding-top: 14px; }
+.vb .t-rec .dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(16,24,48,.15); }
+.vb .t-rec .dots i:first-child { width: 18px; background: var(--blue); }
+.vb .t-friends { grid-column: span 4; }
+.vb .t-friends .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-top: 12px; }
+.vb .t-friends .av { --s: 40px; border-width: 2px; }
+.vb .t-trail { grid-column: span 12; }
+.vb .trail { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-top: 12px; }
+.vb .stop { display: flex; gap: 12px; align-items: center; padding: 12px; border-radius: 16px; background: var(--tile); border: 1px solid rgba(255,255,255,.8); }
+.vb .stop img, .vb .stop .lg { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; flex: none; background: #fff; }
+.vb .stop b { display: block; font-size: 14px; line-height: 1.25; }
+.vb .stop small { font-size: 12.5px; color: var(--muted); }
+.vb .badge { font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(183,121,31,.14); color: var(--amber); margin-left: 4px; }
+.vb .skill-bar { height: 6px; border-radius: 3px; background: rgba(47,123,255,.1); margin-top: 6px; overflow: hidden; }
+.vb .skill-bar i { display: block; height: 100%; background: var(--grad); border-radius: 3px; }
+.vb .sk { padding: 9px 0; border-top: 1px solid var(--line-2); }
+.vb .sk:first-of-type { border-top: 0; }
+.vb .sk-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 14.5px; font-weight: 600; }
+.vb .sk-top small { font-weight: 500; font-size: 12.5px; color: var(--muted); }
+/* оформление владельцем */
+.vb .edit-bar { display: none; align-items: center; gap: 14px; margin-bottom: 14px; padding: 12px 16px; }
+body.as-owner .vb .edit-bar { display: flex; }
+.vb .edit-bar b { font-size: 14px; }
+.vb .edit-bar small { color: var(--muted); font-size: 13px; }
+.vb .sw { display: flex; gap: 6px; margin-left: auto; }
+.vb .sw i { width: 24px; height: 24px; border-radius: 8px; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--line); }
+.vb .sw i.on { box-shadow: 0 0 0 2px var(--blue); }
+.vb .tctl { display: none; position: absolute; top: 12px; right: 12px; gap: 4px; }
+body.as-owner .vb .tctl { display: flex; }
+.vb .tctl span { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; background: rgba(255,255,255,.9); border: 1px solid var(--line); color: var(--muted); }
+body.as-owner .vb .t { outline: 1.5px dashed rgba(47,123,255,.35); outline-offset: -6px; }
+body.as-owner .vb .t .sec-h, body.as-owner .vb .t > .kick:first-of-type { padding-right: 72px; }
+body.as-owner .vb .t .sec-h small, body.as-owner .vb .t .sec-h a { display: none; }
+
+/* =================== ВАРИАНТ C: лента человека =================== */
+.vc .wrap { display: grid; grid-template-columns: minmax(0, 680px) 300px; gap: 20px; justify-content: center; align-items: start; }
+.vc .wrap > * { min-width: 0; }
+.vc .head { padding: 24px; }
+.vc .h-top { display: flex; gap: 20px; align-items: center; }
+.vc .h-top .av { --s: 96px; border-width: 3px; box-shadow: 0 0 0 3px rgba(47,123,255,.9); }
+.vc .h-top h2 { margin: 0; font-size: 24px; font-weight: 750; letter-spacing: -.02em; line-height: 1.15; }
+.vc .h-top .head-l { color: var(--ink-2); font-size: 15px; margin-top: 2px; }
+.vc .nums { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 10px; font-size: 13.5px; color: var(--muted); }
+.vc .nums b { color: var(--ink); font-weight: 700; font-size: 16px; display: block; line-height: 1.2; }
+.vc .bio { margin: 16px 0 0; font-size: 15px; color: var(--ink-2); max-width: 62ch; }
+.vc .ask { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.vc .ask div { padding: 10px 12px; border-radius: 14px; background: var(--tile); border: 1px solid rgba(255,255,255,.8); font-size: 13.5px; color: var(--ink-2); line-height: 1.4; }
+.vc .ask b { display: block; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin-bottom: 2px; }
+.vc .acts { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.vc .acts .btn.pri { flex: 1; }
+.vc .hl { display: flex; gap: 18px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line-2); overflow-x: auto; }
+.vc .hl a { display: grid; justify-items: center; gap: 6px; font-size: 12.5px; color: var(--ink-2); width: 68px; text-align: center; line-height: 1.2; }
+.vc .hl .ring { width: 62px; height: 62px; border-radius: 50%; padding: 3px; background: var(--grad); }
+.vc .hl .ring span { width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center; background: #fff; border: 2px solid #fff; overflow: hidden; color: var(--blue-ink); }
+.vc .hl .ring img { width: 100%; height: 100%; object-fit: cover; }
+.vc .hl .ring svg { width: 22px; height: 22px; }
+.vc .hl .ring.dim { background: rgba(16,24,48,.12); }
+.vc .ftabs { display: flex; gap: 4px; margin: 16px 0 12px; padding: 4px; width: fit-content; max-width: 100%; overflow-x: auto; border-radius: 14px; background: var(--glass); border: 1px solid var(--glass-b); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); font-size: 14px; font-weight: 600; color: var(--muted); }
+.vc .ftabs span { padding: 8px 14px; border-radius: 10px; white-space: nowrap; }
+.vc .ftabs span.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(16,24,48,.1); }
+.vc .post { padding: 18px 20px; margin-bottom: 12px; }
+.vc .p-h { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--muted); }
+.vc .p-h .av { --s: 34px; }
+.vc .p-h b { color: var(--ink); font-weight: 650; }
+.vc .p-k { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: rgba(47,123,255,.1); color: var(--blue-ink); }
+.vc .p-k.g { background: rgba(14,159,110,.1); color: var(--green-ink); }
+.vc .p-k.a { background: rgba(183,121,31,.14); color: var(--amber); }
+.vc .p-b { margin: 12px 0 0; font-size: 15px; color: var(--ink); line-height: 1.55; }
+.vc .p-goal { margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: var(--tile); border: 1px solid rgba(255,255,255,.8); }
+.vc .p-goal small { color: var(--muted); font-size: 12.5px; }
+.vc .p-goal .bar { height: 6px; border-radius: 3px; background: rgba(47,123,255,.12); margin-top: 8px; overflow: hidden; }
+.vc .p-goal .bar i { display: block; width: 38%; height: 100%; background: var(--grad); }
+.vc .p-f { display: flex; gap: 8px; margin-top: 12px; align-items: center; font-size: 13px; color: var(--muted); }
+.vc .p-f .plus1 { margin-right: 4px; }
+.vc .rail { display: grid; gap: 16px; position: sticky; top: 84px; }
+.vc .rail .box { padding: 18px 20px; }
+.vc .person { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; }
+.vc .person .av { --s: 38px; }
+.vc .person div { flex: 1; min-width: 0; line-height: 1.25; }
+.vc .person small { display: block; color: var(--muted); font-size: 12.5px; }
+
+/* =================== Панель для команды =================== */
+.scrim { position: fixed; inset: 0; background: rgba(11,16,32,.28); z-index: 40; display: none; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 460px; max-width: 100%; z-index: 41; background: #f8faff; box-shadow: -20px 0 60px rgba(11,16,32,.2); display: none; flex-direction: column; }
+body.panel .scrim { display: block; } body.panel .drawer { display: flex; }
+.d-head { padding: 18px 20px 14px; border-bottom: 1px solid var(--line-2); background: #fff; }
+.d-row1 { display: flex; align-items: center; gap: 12px; }
+.d-row1 .av { --s: 44px; }
+.d-row1 h3 { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.2; }
+.d-row1 small { font-size: 12.5px; color: var(--muted); }
+.d-x { margin-left: auto; width: 36px; height: 36px; border-radius: 10px; border: 0; background: rgba(16,24,48,.05); display: grid; place-items: center; cursor: pointer; }
+.d-acts { display: flex; gap: 8px; margin-top: 12px; }
+.d-acts .btn { height: 36px; font-size: 13px; padding: 0 12px; }
+.d-acts .btn.pri { flex: 1; }
+.d-body { flex: 1; overflow: auto; padding: 8px 20px 20px; }
+.d-sec { padding: 14px 0; border-bottom: 1px solid var(--line-2); }
+.d-sec h4 { margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.kv { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 6px 12px; font-size: 13.5px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; color: var(--ink); font-weight: 500; min-width: 0; overflow-wrap: anywhere; }
+.ok { color: var(--green-ink); } .warn { color: var(--amber); } .bad { color: #c2410c; }
+.acc { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.acc td { padding: 7px 0; border-top: 1px solid var(--line-2); vertical-align: top; }
+.acc tr:first-child td { border-top: 0; }
+.acc td:last-child { text-align: right; color: var(--muted); white-space: nowrap; }
+.pill { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
+.pill.on { background: rgba(14,159,110,.12); color: var(--green-ink); }
+.pill.off { background: rgba(16,24,48,.06); color: var(--muted); }
+.pill.fin { background: rgba(183,121,31,.14); color: var(--amber); }
+.d-foot { padding: 12px 20px; border-top: 1px solid var(--line-2); background: #fff; display: flex; gap: 8px; }
+.d-foot .btn { flex: 1; height: 38px; font-size: 13px; }
+
+/* ---------- переключатель макета (не часть дизайна) ---------- */
+.mk { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 60; display: flex; gap: 6px; padding: 6px; border-radius: 14px; background: rgba(11,16,32,.88); color: #fff; font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.mk a { padding: 6px 10px; border-radius: 9px; color: rgba(255,255,255,.7); font-weight: 600; }
+.mk a.on { background: rgba(255,255,255,.16); color: #fff; }
+.mk i { width: 1px; background: rgba(255,255,255,.2); margin: 4px 2px; }
+body.shot .mk { display: none; }
+body.shot { background-attachment: scroll; }
+body.shot .side { height: auto; min-height: 100vh; }
+
+/* ---------- телефон ---------- */
+@media (max-width: 760px) {
+  .side { display: none; }
+  .top { padding: 0 14px; }
+  .srch span, .srch kbd { display: none; } .srch { width: 38px; justify-content: center; padding: 0; }
+  .content { padding: 14px 12px 90px; }
+  .va .cover { height: 120px; }
+  .va .hero-b { grid-template-columns: 1fr; padding: 0 18px 18px; }
+  .va .hero-b .av { --s: 96px; margin-top: -48px; }
+  .va .acts { grid-column: 1; justify-content: flex-start; margin-top: 14px; }
+  .va .tabs span { white-space: nowrap; }
+  .va .acts .btn.pri { flex: 1; }
+  .va .stats { gap: 18px; flex-wrap: wrap; }
+  .va .tabs { width: 100%; overflow-x: auto; }
+  .va .cols { grid-template-columns: 1fr; }
+  .va .skill { flex-wrap: wrap; } .va .skill .stack { display: none; } .va .facts { gap: 16px; flex-wrap: wrap; }
+  .vb .bento { grid-template-columns: 1fr; }
+  .vb .bento > .t { grid-column: auto !important; grid-row: auto !important; }
+  .vb .t-do .row, .vb .trail { grid-template-columns: 1fr 1fr; }
+  .vb .t-do .big { font-size: 20px; }
+  .vc .wrap { grid-template-columns: 1fr; }
+  .vc .rail { display: none; }
+  .vc .ask { grid-template-columns: 1fr; }
+  .vc .h-top .av { --s: 76px; }
+  .drawer { width: 100%; }
+  .d-foot { flex-wrap: wrap; } .d-foot .btn { flex: 1 1 40%; padding: 0 10px; }
+  .kv { grid-template-columns: 120px minmax(0,1fr); }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></symbol>
+  <symbol id="i-mount" viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></symbol>
+  <symbol id="i-brief" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-login" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside class="side">
+    <div class="brand"><i></i><div><b>Личный кабинет</b><small>wearefree.club</small></div></div>
+    <a class="nav">Мой дашборд</a>
+    <a class="nav">Мой маршрут</a>
+    <a class="nav">Трекер Фримана</a>
+    <a class="nav">Календарь</a>
+    <a class="nav on">Члены Альянса</a>
+    <a class="nav">Лента</a>
+    <a class="nav">Сообщения</a>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <h1 id="ttl">Анна Белова</h1>
+      <span class="srch"><svg class="i"><use href="#i-search"/></svg><span>Поиск и действия</span><kbd>⌘ K</kbd></span>
+      <svg class="i" style="width:20px;height:20px;color:var(--ink-2)"><use href="#i-bell"/></svg>
+      <span class="me"></span>
+    </header>
+    <div class="content" id="root"></div>
+  </div>
+</div>
+
+<!-- Панель для команды: одна на все варианты -->
+<div class="scrim" onclick="togglePanel(false)"></div>
+<aside class="drawer" aria-label="Данные для команды">
+  <div class="d-head">
+    <div class="d-row1">
+      <span class="av hero-av">АБ</span>
+      <div><h3>Анна Белова</h3><small>ID 7f3c…a12e · клан «Сфера»</small></div>
+      <button class="d-x" onclick="togglePanel(false)" aria-label="Закрыть"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="d-acts">
+      <a class="btn pri" href="#"><svg class="i"><use href="#i-ext"/></svg>Открыть полную карточку</a>
+      <a class="btn" href="#"><svg class="i"><use href="#i-login"/></svg>Войти как</a>
+    </div>
+  </div>
+  <div class="d-body">
+    <div class="d-sec">
+      <h4>Аккаунт</h4>
+      <dl class="kv">
+        <dt>Почта</dt><dd>anna.b•••@mail.ru <span class="ok">подтверждена</span></dd>
+        <dt>Телефон</dt><dd>+7 917 •••‑••‑14</dd>
+        <dt>Telegram</dt><dd>@anna_belova · <span class="ok">бот подключён</span></dd>
+        <dt>Регистрация</dt><dd>21.04.2026 · по ссылке клана</dd>
+        <dt>Последний вход</dt><dd>сегодня, 14:02 МСК</dd>
+        <dt>Часовой пояс</dt><dd>Europe/Moscow</dd>
+      </dl>
+    </div>
+    <div class="d-sec">
+      <h4>Уровень и кабинет</h4>
+      <dl class="kv">
+        <dt>Уровень</dt><dd>Бунтарь · до 21.04.2027 <span class="muted">(оплата)</span></dd>
+        <dt>Ветка онбординга</dt><dd>Предприниматель → Альянс</dd>
+        <dt>Кабинет</dt><dd>Альянс, тема светлая</dd>
+        <dt>Клан и директор</dt><dd>Сфера · Юлия Дуганова</dd>
+        <dt>Маршрутная карта</dt><dd>шаг 14 из 40, последний 19.11</dd>
+      </dl>
+    </div>
+    <div class="d-sec">
+      <h4>Доступы</h4>
+      <table class="acc">
+        <tr><td>Альянс <span class="pill on">открыт</span></td><td>до 21.04.2027</td></tr>
+        <tr><td>План Продюсера · Поток 5 <span class="pill fin">финалист</span></td><td>записи до 10.12.2026</td></tr>
+        <tr><td>Место притяжения · Поток 2 <span class="pill on">открыт</span></td><td>навсегда</td></tr>
+        <tr><td>ИИнструменты <span class="pill off">закрыт</span></td><td>не покупала</td></tr>
+        <tr><td>Встречи по субботам <span class="pill on">можно</span></td><td>без лимита</td></tr>
+        <tr><td>Чат ПП-клуба <span class="pill on">в чате</span></td><td>с 04.11.2026</td></tr>
+      </table>
+    </div>
+    <div class="d-sec">
+      <h4>Деньги</h4>
+      <dl class="kv">
+        <dt>Оплачено всего</dt><dd class="num">214 990 ₽ · 3 счёта</dd>
+        <dt>Последняя оплата</dt><dd>12.11.2026 · 99 990 ₽ · CloudPayments</dd>
+        <dt>Открытые счета</dt><dd>нет</dd>
+        <dt>Партнёрка</dt><dd>привела 2 человек · начислено 14 999 ₽</dd>
+      </dl>
+    </div>
+    <div class="d-sec">
+      <h4>Отметки</h4>
+      <dl class="kv">
+        <dt>Тестовый аккаунт</dt><dd>нет</dd>
+        <dt>Спящий</dt><dd>нет</dd>
+        <dt>Жизни в ПП</dt><dd>3 из 3</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="d-foot">
+    <a class="btn" href="#">Карточка в CRM</a>
+    <a class="btn" href="#">Выдать доступ</a>
+    <a class="btn" href="#">Написать</a>
+  </div>
+</aside>
+
+<nav class="mk" id="mk"></nav>
+
+<template id="tpl-a">
+<div class="va">
+  <div class="glass owner-bar">
+    <div class="meter"><b>Страница заполнена на 70%</b><small>Добавьте навыки и обложку: так вас быстрее найдут через поиск участников</small><i></i></div>
+    <a class="btn pri" href="#"><svg class="i"><use href="#i-pen"/></svg>Оформить страницу</a>
+  </div>
+  <section class="glass hero">
+    <div class="cover"><a class="btn owner-only" href="#"><svg class="i"><use href="#i-image"/></svg>Сменить обложку</a></div>
+    <div class="hero-b">
+      <span class="av hero-av">АБ</span>
+      <div class="who">
+        <h2>Анна Белова</h2>
+        <div class="head">Нутрициолог. Основательница онлайн-школы питания «Ешь и живи»</div>
+        <div class="meta">
+          <span class="chip clan">Клан «Сфера»</span><span class="chip lvl">Бунтарь</span>
+          <span class="chip"><svg class="i" style="width:13px;height:13px"><use href="#i-pin"/></svg>Казань</span>
+          <span class="chip">214 дней в Альянсе</span>
+        </div>
+      </div>
+      <div class="acts">
+        <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a>
+        <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
+        <a class="btn guest-only" href="#"><svg class="i"><use href="#i-star"/></svg>Рекомендовать</a>
+        <a class="btn owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Редактировать</a>
+        <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
+      </div>
+      <div class="stats">
+        <span><b class="num">48</b>друзей</span><span><b class="num">6</b>общих</span><span><b class="num">23</b>рекомендации</span><span><b class="num">640</b>карма</span>
+      </div>
+    </div>
+  </section>
+  <nav class="tabs"><span class="on">Обо мне</span><span>Навыки<em>4</em></span><span>Рекомендации<em>23</em></span><span>Друзья<em>48</em></span><span>Походы<em>3</em></span></nav>
+  <div class="cols">
+    <div class="col">
+      <section class="glass box">
+        <div class="sec-h"><h3>Чем занимаюсь</h3></div>
+        <div class="biz">
+          <span class="biz-logo">ЕЖ</span>
+          <div>
+            <h4>Школа питания «Ешь и живи»</h4>
+            <p>Учу женщин 35+ есть без диет и срывов. Групповой курс на 8 недель и личное сопровождение. Сейчас собираю команду под второй поток.</p>
+            <div class="facts"><span><b>с 2019</b>в деле</span><span><b class="num">340</b>учеников</span><span><b>онлайн</b>формат</span></div>
+          </div>
+        </div>
+      </section>
+      <section class="glass box">
+        <div class="sec-h"><h3>Навыки</h3><small>подтверждают участники Альянса</small></div>
+        <div class="skill"><div class="skill-n">Нутрициология<small>подтвердили 12 человек, среди них Игорь Граф</small></div><span class="stack"><span class="av c1" style="--s:28px">ИГ</span><span class="av c2" style="--s:28px">МК</span><span class="av c3" style="--s:28px">ОС</span></span><button class="plus1 on"><svg class="i"><use href="#i-check"/></svg>Вы подтвердили</button></div>
+        <div class="skill"><div class="skill-n">Запуск онлайн-курсов<small>подтвердили 8</small></div><span class="stack"><span class="av c4" style="--s:28px">ДЛ</span><span class="av c5" style="--s:28px">РТ</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>Подтвердить</button></div>
+        <div class="skill"><div class="skill-n">Reels и короткие видео<small>подтвердили 5</small></div><span class="stack"><span class="av c6" style="--s:28px">ЕВ</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>Подтвердить</button></div>
+        <div class="skill"><div class="skill-n">Продажи в переписке<small>подтвердили 3</small></div><span class="stack"><span class="av c7" style="--s:28px">АН</span></span><button class="plus1"><svg class="i"><use href="#i-plus"/></svg>Подтвердить</button></div>
+      </section>
+      <section class="glass box">
+        <div class="sec-h"><h3>Рекомендации</h3><a href="#">Все 23</a></div>
+        <p class="quote">«Анна за час разобрала мой рацион и линейку продуктов. После этого я подняла чек на курс в полтора раза и впервые продала личное сопровождение.»</p>
+        <div class="quote-by"><span class="av c3" style="--s:34px">ОС</span><div><b>Ольга Смирнова</b>психолог, клан «Авалон»</div></div>
+      </section>
+    </div>
+    <div class="col">
+      <section class="glass box help">
+        <div><div class="help-l">Чем могу помочь</div><p>Разберу рацион, продуктовую линейку и первый запуск курса</p></div>
+        <div><div class="help-l">Кого ищу</div><p>Монтажёра Reels и партнёра на запуск второго потока</p></div>
+      </section>
+      <section class="glass box">
+        <div class="sec-h"><h3>Общие друзья</h3><a href="#">Все 6</a></div>
+        <div class="faces">
+          <span class="face"><span class="av c1">ИГ</span>Игорь Граф</span>
+          <span class="face"><span class="av c2">МК</span>Мария Ким</span>
+          <span class="face"><span class="av c4">ДЛ</span>Денис Лебедев</span>
+          <span class="face"><span class="av c6">ЕВ</span>Елена Волкова</span>
+          <span class="face"><span class="av c7">АН</span>Алексей Носов</span>
+          <span class="face"><span class="av c8">ТР</span>Тимур Рахимов</span>
+        </div>
+      </section>
+      <section class="glass box">
+        <div class="sec-h"><h3>Рост в Альянсе</h3></div>
+        <div class="growth">
+          <div class="g"><small>Точка А, в месяц</small><b class="num">120 000 ₽</b></div>
+          <span class="arr">+242%</span>
+          <div class="g" style="text-align:right"><small>Сейчас, в месяц</small><b class="num">410 000 ₽</b></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</template>
+
+<template id="tpl-b">
+<div class="vb">
+  <div class="glass edit-bar">
+    <div><b>Оформление страницы</b><br><small>Перетащите плитки, скройте лишнее, выберите цвет акцента</small></div>
+    <div class="sw"><i class="on" style="background:var(--grad)"></i><i style="background:linear-gradient(135deg,#10b981,#0ea5e9)"></i><i style="background:linear-gradient(135deg,#f97316,#ef4444)"></i><i style="background:linear-gradient(135deg,#334155,#0b1020)"></i></div>
+    <a class="btn pri" href="#">Готово</a>
+  </div>
+  <div class="bento">
+    <section class="glass t t-id">
+      <span class="av hero-av">АБ</span>
+      <h2>Анна Белова</h2>
+      <div class="head">Нутрициолог, школа питания «Ешь и живи»</div>
+      <div class="meta"><span class="chip clan">Клан «Сфера»</span><span class="chip lvl">Бунтарь</span><span class="chip">Казань</span><span class="chip">48 друзей</span></div>
+      <div class="acts">
+        <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>В друзья</a>
+        <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
+        <a class="btn ico guest-only" href="#" aria-label="Рекомендовать"><svg class="i"><use href="#i-star"/></svg></a>
+        <a class="btn owner-only" href="#"><svg class="i"><use href="#i-pen"/></svg>Оформить</a>
+        <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
+      </div>
+    </section>
+    <section class="glass t t-do">
+      <div class="tctl"><span><svg class="i"><use href="#i-grip"/></svg></span><span><svg class="i"><use href="#i-eye"/></svg></span></div>
+      <div class="kick">Чем занимаюсь</div>
+      <p class="big">Учу женщин 35+ <em>есть без диет и срывов</em>. Восемь недель в группе или личное сопровождение. Сейчас собираю команду под второй поток.</p>
+      <div class="row">
+        <div class="mini"><small>В деле</small><b>с 2019</b></div>
+        <div class="mini"><small>Учеников</small><b class="num">340</b></div>
+        <div class="mini"><small>Рост в Альянсе</small><b class="num" style="color:var(--green)">+242%</b></div>
+      </div>
+    </section>
+    <section class="glass t t-skills">
+      <div class="tctl"><span><svg class="i"><use href="#i-grip"/></svg></span><span><svg class="i"><use href="#i-eye"/></svg></span></div>
+      <div class="sec-h"><h3>Навыки</h3><small>подтверждения</small></div>
+      <div class="sk"><div class="sk-top">Нутрициология<small>12</small></div><div class="skill-bar"><i style="width:100%"></i></div></div>
+      <div class="sk"><div class="sk-top">Запуск онлайн-курсов<small>8</small></div><div class="skill-bar"><i style="width:66%"></i></div></div>
+      <div class="sk"><div class="sk-top">Reels и короткие видео<small>5</small></div><div class="skill-bar"><i style="width:42%"></i></div></div>
+      <div class="sk"><div class="sk-top">Продажи в переписке<small>3</small></div><div class="skill-bar"><i style="width:25%"></i></div></div>
+      <button class="plus1 guest-only" style="margin-top:10px"><svg class="i"><use href="#i-plus"/></svg>Подтвердить навык</button>
+    </section>
+    <section class="glass t t-rec">
+      <div class="tctl"><span><svg class="i"><use href="#i-grip"/></svg></span><span><svg class="i"><use href="#i-eye"/></svg></span></div>
+      <div class="kick">23 рекомендации</div>
+      <p class="quote">«За час разобрала мой рацион и линейку продуктов. После этого я подняла чек в полтора раза.»</p>
+      <div class="quote-by"><span class="av c3" style="--s:34px">ОС</span><div><b>Ольга Смирнова</b>психолог, клан «Авалон»</div></div>
+      <div class="dots"><i></i><i></i><i></i><i></i></div>
+    </section>
+    <section class="glass t t-help">
+      <div class="tctl"><span><svg class="i"><use href="#i-grip"/></svg></span><span><svg class="i"><use href="#i-eye"/></svg></span></div>
+      <div class="kick">Чем могу помочь</div>
+      <p>Разберу рацион, продуктовую линейку и первый запуск</p>
+      <div class="kick">Кого ищу</div>
+      <p>Монтажёра Reels, партнёра на второй поток</p>
+    </section>
+    <section class="glass t t-friends">
+      <div class="tctl"><span><svg class="i"><use href="#i-grip"/></svg></span><span><svg class="i"><use href="#i-eye"/></svg></span></div>
+      <div class="sec-h"><h3>Друзья</h3><a href="#">6 общих</a></div>
+      <div class="grid">
+        <span class="av c1">ИГ</span><span class="av c2">МК</span><span class="av c3">ОС</span><span class="av c4">ДЛ</span><span class="av c5">РТ</span><span class="av c6">ЕВ</span>
+        <span class="av c7">АН</span><span class="av c8">ТР</span><span class="av c2">ЮД</span><span class="av c4">СЛ</span><span class="av c1">ВП</span><span class="av c5" style="font-size:12px">+36</span>
+      </div>
+    </section>
+    <section class="glass t t-trail">
+      <div class="tctl"><span><svg class="i"><use href="#i-grip"/></svg></span><span><svg class="i"><use href="#i-eye"/></svg></span></div>
+      <div class="sec-h"><h3>Путь в Альянсе</h3><small>походы и программы</small></div>
+      <div class="trail">
+        <div class="stop"><img src="img/pp-logo.png" alt=""><div><b>План Продюсера · Поток 5<span class="badge">финалист</span></b><small>сентябрь, 2026</small></div></div>
+        <div class="stop"><img src="img/mesto-logo.webp" alt=""><div><b>Место притяжения · Поток 2</b><small>дошла до конца</small></div></div>
+        <div class="stop"><img src="img/hike-summit.webp" alt=""><div><b>Поход «Фокус»</b><small>идёт, день 12 из 30</small></div></div>
+        <div class="stop"><img src="img/fa-logo.webp" alt="" style="padding:6px"><div><b>Альянс</b><small>с апреля 2026</small></div></div>
+      </div>
+    </section>
+  </div>
+</div>
+</template>
+
+<template id="tpl-c">
+<div class="vc">
+  <div class="wrap">
+    <div>
+      <section class="glass head">
+        <div class="h-top">
+          <span class="av hero-av">АБ</span>
+          <div style="min-width:0;flex:1">
+            <h2>Анна Белова</h2>
+            <div class="head-l">Нутрициолог · «Ешь и живи» · Казань</div>
+            <div class="nums"><span><b class="num">48</b>друзей</span><span><b class="num">23</b>рекомендации</span><span><b class="num">3</b>похода</span><span><b class="num">214</b>дней в Альянсе</span></div>
+          </div>
+        </div>
+        <p class="bio">Учу женщин 35+ есть без диет и срывов. В Альянсе за полгода выросла с 120 до 410 тысяч в месяц, сейчас собираю команду под второй поток.</p>
+        <div class="ask">
+          <div><b>Помогу</b>Разберу рацион, продуктовую линейку и первый запуск</div>
+          <div><b>Ищу</b>Монтажёра Reels и партнёра на второй поток</div>
+        </div>
+        <div class="acts">
+          <a class="btn pri guest-only" href="#"><svg class="i"><use href="#i-users"/></svg>Добавить в друзья</a>
+          <a class="btn guest-only" href="#"><svg class="i"><use href="#i-msg"/></svg>Написать</a>
+          <a class="btn ico guest-only" href="#" aria-label="Рекомендовать"><svg class="i"><use href="#i-star"/></svg></a>
+          <a class="btn pri owner-only" href="#" style="flex:1"><svg class="i"><use href="#i-pen"/></svg>Редактировать профиль</a>
+          <button class="btn team team-only" onclick="togglePanel(true)"><svg class="i"><use href="#i-shield"/></svg>Для команды</button>
+        </div>
+        <div class="hl">
+          <a><span class="ring"><span><img src="img/pp-logo.png" alt=""></span></span>ПП · финал</a>
+          <a><span class="ring"><span><img src="img/hike-summit.webp" alt=""></span></span>Поход</a>
+          <a><span class="ring"><span><svg class="i"><use href="#i-brief"/></svg></span></span>Школа</a>
+          <a><span class="ring"><span><svg class="i"><use href="#i-spark"/></svg></span></span>Навыки</a>
+          <a><span class="ring"><span><svg class="i"><use href="#i-up"/></svg></span></span>Рост</a>
+          <a class="owner-only"><span class="ring dim"><span><svg class="i"><use href="#i-plus"/></svg></span></span>Добавить</a>
+        </div>
+      </section>
+      <nav class="ftabs"><span class="on">Активность</span><span>Навыки</span><span>Рекомендации</span><span>Друзья</span></nav>
+      <article class="glass post">
+        <div class="p-h"><span class="av hero-av">АБ</span><span><b>Анна</b> · сегодня</span><span class="p-k"><svg class="i" style="width:13px;height:13px"><use href="#i-check"/></svg>Шаг к цели</span></div>
+        <p class="p-b">Записала первое видео для воронки второго потока. Три дубля, но вышло живо.</p>
+        <div class="p-goal"><small>Цель · Запустить второй поток на 60 человек</small><div class="bar"><i></i></div></div>
+        <div class="p-f"><button class="plus1"><svg class="i"><use href="#i-heart"/></svg>Поддержать</button><span class="stack"><span class="av c1" style="--s:24px">ИГ</span><span class="av c2" style="--s:24px">МК</span></span>и ещё 10</div>
+      </article>
+      <article class="glass post">
+        <div class="p-h"><span class="av c3">ОС</span><span><b>Ольга Смирнова</b> рекомендует Анну · 2 дня назад</span><span class="p-k a"><svg class="i" style="width:13px;height:13px"><use href="#i-star"/></svg>Рекомендация</span></div>
+        <p class="p-b">«За час разобрала мой рацион и линейку продуктов. После этого я подняла чек в полтора раза и впервые продала личное сопровождение.»</p>
+      </article>
+      <article class="glass post">
+        <div class="p-h"><span class="av hero-av">АБ</span><span><b>Анна</b> · 12 сентября</span><span class="p-k g"><svg class="i" style="width:13px;height:13px"><use href="#i-mount"/></svg>Поход</span></div>
+        <p class="p-b">Дошла до финала «Плана Продюсера», поток 5. 47 дней, ни одной потерянной жизни.</p>
+      </article>
+    </div>
+    <aside class="rail">
+      <section class="glass box">
+        <div class="sec-h"><h3>Общие друзья</h3><small>6</small></div>
+        <div class="person"><span class="av c1">ИГ</span><div>Игорь Граф<small>основатель Альянса</small></div></div>
+        <div class="person"><span class="av c2">МК</span><div>Мария Ким<small>клан «Сфера»</small></div></div>
+        <div class="person"><span class="av c4">ДЛ</span><div>Денис Лебедев<small>клан «Авалон»</small></div></div>
+      </section>
+      <section class="glass box">
+        <div class="sec-h"><h3>Похожие участники</h3></div>
+        <div class="person"><span class="av c6">ЕВ</span><div>Елена Волкова<small>диетолог · Самара</small></div><button class="plus1"><svg class="i"><use href="#i-plus"/></svg></button></div>
+        <div class="person"><span class="av c7">АН</span><div>Алексей Носов<small>фитнес-тренер · Казань</small></div><button class="plus1"><svg class="i"><use href="#i-plus"/></svg></button></div>
+      </section>
+    </aside>
+  </div>
+</div>
+</template>
+
+<script>
+const q = new URLSearchParams(location.search);
+const v = (q.get('v') || 'a').toLowerCase();
+const as = q.get('as') || 'team';
+document.body.classList.add('as-' + as);
+if (q.get('panel') === '1') document.body.classList.add('panel');
+if (q.get('shot') === '1') document.body.classList.add('shot');
+document.getElementById('root').appendChild(document.getElementById('tpl-' + v).content.cloneNode(true));
+document.getElementById('ttl').textContent = as === 'owner' ? 'Моя страница' : 'Анна Белова';
+function togglePanel(on) { document.body.classList.toggle('panel', on); }
+// неразрывный пробел после коротких слов
+const SH = /(^|[\s«(])((?:в|и|с|к|о|у|а|на|по|за|от|до|из|не|ни|для|без|под|над|при|про|что|как|или|но|же|уже|все|её|его|мой|моя)) /gi;
+(function walk(n) { if (n.nodeType === 3) n.nodeValue = n.nodeValue.replace(SH, '$1$2 ').replace(/(\d) (?=[^\d\s])/g, '$1 '); else if (!['SCRIPT','STYLE'].includes(n.nodeName)) n.childNodes.forEach(walk); })(document.body);
+const mk = document.getElementById('mk');
+const link = (vv, a, label, p) => `<a class="${vv===v && a===as && (p||'0')===(q.get('panel')||'0') ? 'on' : ''}" href="?v=${vv}&as=${a}${p==='1'?'&panel=1':''}">${label}</a>`;
+mk.innerHTML = ['a','b','c'].map(x => link(x, as, 'Вариант ' + x.toUpperCase())).join('') + '<i></i>'
+  + link(v,'guest','Гость') + link(v,'owner','Владелец') + link(v,'team','Команда') + link(v,'team','Панель команды','1');
+</script>
+</body>
+</html>
